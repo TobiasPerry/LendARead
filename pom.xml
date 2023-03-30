@@ -22,7 +22,8 @@
   <properties>
         
     <servlet-api.version>2.5</servlet-api.version>
-        
+    <spring-api.version>4.2.5.RELEASE</spring-api.version>
+
     <jstl.version>1.2</jstl.version>
         
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,7 +66,7 @@
                 
         <artifactId>spring-webmvc</artifactId>
                 
-        <version>4.2.5.RELEASE</version>
+        <version>${spring-api.version}</version>
               
       </dependency>
             
@@ -75,7 +76,7 @@
                 
         <artifactId>spring-context</artifactId>
                 
-        <version>4.2.5.RELEASE</version>
+        <version>${spring-api.version}</version>
               
       </dependency>
           
