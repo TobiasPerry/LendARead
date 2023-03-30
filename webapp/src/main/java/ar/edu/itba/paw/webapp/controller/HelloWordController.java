@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import interfaces.UserService;
-import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -14,9 +12,6 @@ import org.springframework.web.servlet.ViewResolver;
 public class HelloWordController {
     private final ViewResolver viewResolver;
 
-    @Autowired
-    @Qualifier("userServiceImp")
-    private UserService us;
 
     @Autowired
     public HelloWordController(@Qualifier("viewResolver")final ViewResolver vr){
@@ -33,11 +28,5 @@ public class HelloWordController {
         mav.addObject("username","<span style='color:red'>PAW</span>");
         return mav;
     }
-    @RequestMapping("/user/{userId}")
-    public ModelAndView regiter(@PathVariable("userId") String id){
-        User user = us.searchById(Integer.parseInt(id));
-        final ModelAndView mav = new ModelAndView("helloword/user");
-        mav.addObject("userName",user.getName());
-        return mav;
-    }
+
 }
