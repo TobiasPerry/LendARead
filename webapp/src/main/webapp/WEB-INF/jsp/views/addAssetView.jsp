@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-md-6">
-                <form action="lendView/addAsset" method="post">
+                <form action="addAssetView/addAsset" method="post">
                     <ul class="list-unstyled">
                         <li><strong>Título:</strong> <input type="text" name="title" class="form-control" value="" /></li>
                         <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>

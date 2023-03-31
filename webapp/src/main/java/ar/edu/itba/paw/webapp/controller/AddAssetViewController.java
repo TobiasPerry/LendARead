@@ -13,11 +13,12 @@ import org.springframework.web.servlet.ViewResolver;
 public class AddAssetViewController {
     private final ViewResolver viewResolver;
 
-    @RequestMapping(value = "/lendView/addAsset", method = RequestMethod.POST)
+    @RequestMapping(value = "/addAssetView/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(
             @RequestParam(value = "title", required = true) final String title,
             @RequestParam(value = "condition", required = true) final String condition
     ){
+        // TODO Aca esta mal habria que volver o ir a una pagina de confirmacion no dejarlo en la misma pagina
         final ModelAndView mav = new ModelAndView("/views/addAssetView");
         System.out.println(title);
         System.out.println(condition);
