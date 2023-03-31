@@ -2,14 +2,11 @@
 <head>
     <title>Prestar Libro</title>
     <link href="/css/main.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 <body>
 
-
-<!-- Esto va a cambiar es un mockUp -->
-<jsp:include page="../components/navBar.jsp"/>
-
+    <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
     <div class="p-4 rounded" >
