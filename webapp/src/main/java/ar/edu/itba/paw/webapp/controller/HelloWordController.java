@@ -24,6 +24,13 @@ public class HelloWordController {
         final ModelAndView mav = new ModelAndView("/views/index");
         return mav;
     }
+
+    @RequestMapping("/discover")
+    public ModelAndView discoverVIew(){
+        final ModelAndView mav = new ModelAndView("/views/discoverView");
+        return mav;
+    }
+
     @RequestMapping( "/lendView")
     public ModelAndView lendView(){
         //El objeto ModelAndView nos deja detener el modelo y la view
