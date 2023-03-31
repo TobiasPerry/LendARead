@@ -30,10 +30,10 @@
                 <li class="nav-item">
                     <c:choose >
                         <c:when test='${path == "/lend"}'>
-                            <a class="nav-link active" aria-current="page" href="/lend">Lend</a>
+                            <a class="nav-link active" aria-current="page" href="/addAssetView">Lend</a>
                         </c:when>
                         <c:otherwise>
-                            <a class="nav-link " aria-current="page" href="/lend">Lend</a>
+                            <a class="nav-link " aria-current="page" href="/addAssetView">Lend</a>
                         </c:otherwise>
                     </c:choose>
                 </li>
