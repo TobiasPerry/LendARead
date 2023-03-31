@@ -5,10 +5,6 @@
 </head>
 <body>
 <!-- Esto va a cambiar es un mockUp -->
-<jsp:include page="../components/navBar.jsp">
-    <jsp:param name="homeClass" value="nav-link disable"/>
-    <jsp:param name="lendClass" value="nav-link active"/>
-
-</jsp:include>
+<jsp:include page="../components/navBar.jsp"/>
 </body>
 </html>

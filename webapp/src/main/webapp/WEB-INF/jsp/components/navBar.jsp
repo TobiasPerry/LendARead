@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: lauti
@@ -15,10 +17,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="${param.homeClass  }" aria-current="page" href="/">Home</a>
+                    <c:choose >
+                        <c:when test='${path == "/"}'>
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="nav-link " aria-current="page" href="/">Home</a>
+                        </c:otherwise>
+                    </c:choose>
+
                 </li>
                 <li class="nav-item">
-                    <a class="${param.lendClass}" aria-current="page" href="/lend">Lend</a>
+                    <c:choose >
+                        <c:when test='${path == "/lend"}'>
+                            <a class="nav-link active" aria-current="page" href="/lend">Lend</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="nav-link " aria-current="page" href="/lend">Lend</a>
+                        </c:otherwise>
+                    </c:choose>
                 </li>
             </ul>
             <form class="d-flex" role="search">
