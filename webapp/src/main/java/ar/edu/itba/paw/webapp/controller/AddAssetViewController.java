@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
 @Controller
-public class LendViewController {
+public class AddAssetViewController {
     private final ViewResolver viewResolver;
 
     @RequestMapping(value = "/lendView/addAsset", method = RequestMethod.POST)
@@ -18,20 +18,20 @@ public class LendViewController {
             @RequestParam(value = "title", required = true) final String title,
             @RequestParam(value = "condition", required = true) final String condition
     ){
-        final ModelAndView mav = new ModelAndView("/views/lendView");
+        final ModelAndView mav = new ModelAndView("/views/addAssetView");
         System.out.println(title);
         System.out.println(condition);
         return mav;
     }
 
     @Autowired
-    public LendViewController(@Qualifier("viewResolver")final ViewResolver vr){
+    public AddAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
         this.viewResolver = vr;
     }
 
-    @RequestMapping( "/lendView")
+    @RequestMapping( "/addAssetView")
     public ModelAndView lendView(){
-        final ModelAndView mav = new ModelAndView("/views/lendView");
+        final ModelAndView mav = new ModelAndView("/views/addAssetView");
         return mav;
     }
 }
