@@ -1,18 +1,22 @@
+.book-card{
+    margin: 10px;
+}
+
 .book-cover{
     height: 300px;
     width: 100px;
     background-color: aqua;
 }
 
-.container-center{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: aquamarine;
-}
-
 .lendView {
     background-color: #d0eaf7 !important;
 }
+
+.container-row-wrapped{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+}
+

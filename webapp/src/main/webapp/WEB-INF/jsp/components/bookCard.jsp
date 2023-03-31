@@ -9,7 +9,7 @@
 
 
 
-<div class="card" style="width: 18rem;">
+<div class="card book-card" style="width: 18rem;">
     <img src="https://i.pinimg.com/originals/d4/2e/d7/d42ed7bf30a4c1a6a201565f0bc61190.jpg" class="card-img-top" alt="Shoe Dog cover">
     <div class="card-body">
         <h2 class="card-title">${param.bookTitle}</h2>

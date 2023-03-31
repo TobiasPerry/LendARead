@@ -7,11 +7,78 @@
 <!-- Esto va a cambiar es un mockUp -->
 <jsp:include page="../components/navBar.jsp"/>
 
-<jsp:include page="../components/bookCard.jsp">
-    <jsp:param name="bookTitle" value="Shoe Dog"/>
-    <jsp:param name="bookAuthor" value="Phil Knight"/>
-    <jsp:param name="bookAvailability" value="Available"/>
-</jsp:include>
+<div class="container-row-wrapped">
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
 
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+
+    <jsp:include page="../components/bookCard.jsp">
+        <jsp:param name="bookTitle" value="Shoe Dog"/>
+        <jsp:param name="bookAuthor" value="Phil Knight"/>
+        <jsp:param name="bookAvailability" value="Available"/>
+    </jsp:include>
+</div>
 </body>
 </html>
