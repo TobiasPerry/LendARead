@@ -22,6 +22,7 @@ public class HelloWordController {
     public ModelAndView helloWord(){
         //El objeto ModelAndView nos deja detener el modelo y la view
         final ModelAndView mav = new ModelAndView("/views/index");
+        mav.addObject("path","/");
         return mav;
     }
 
@@ -35,6 +36,7 @@ public class HelloWordController {
     public ModelAndView lendView(){
         //El objeto ModelAndView nos deja detener el modelo y la view
         final ModelAndView mav = new ModelAndView("/views/lendView");
+        mav.addObject("path","/lend");
         return mav;
     }
 
