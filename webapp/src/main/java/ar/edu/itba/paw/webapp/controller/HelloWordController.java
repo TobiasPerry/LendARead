@@ -38,4 +38,10 @@ public class HelloWordController {
         return mav;
     }
 
+    @RequestMapping( "/assetView")
+    public ModelAndView assetView(){
+        //El objeto ModelAndView nos deja detener el modelo y la view
+        final ModelAndView mav = new ModelAndView("/views/assetView");
+        return mav;
+    }
 }
