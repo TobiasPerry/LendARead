@@ -1,7 +1,3 @@
-h2{
-    color:red;
-
-}
 .book-cover{
     height: 300px;
     width: 100px;
@@ -17,6 +13,6 @@ h2{
     background-color: aquamarine;
 }
 
-.bg-light-blue {
-    background-color: #d0eaf7;
+.lendView {
+    background-color: #d0eaf7 !important;
 }
