@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
@@ -21,11 +20,8 @@ public class HelloWordController {
     //En el requestMapping podemos ir agregandole cosas para poder tener mas especificaciones
     @RequestMapping( "/")
     public ModelAndView helloWord(){
-
         //El objeto ModelAndView nos deja detener el modelo y la view
-        final ModelAndView mav = new ModelAndView("helloword/index");
-        // Esto es una gran vulnerabilidad ya que el codigo que pongamos ahi lo va a renderear directamente
-        mav.addObject("username","<span style='color:red'>PAW</span>");
+        final ModelAndView mav = new ModelAndView("/views/index");
         return mav;
     }
 
