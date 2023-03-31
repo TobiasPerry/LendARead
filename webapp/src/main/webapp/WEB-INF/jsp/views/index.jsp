@@ -8,7 +8,13 @@
 <jsp:include page="../components/navBar.jsp">
     <jsp:param name="homeClass" value="nav-link disable"/>
     <jsp:param name="lendClass" value="nav-link active"/>
-
 </jsp:include>
+
+<jsp:include page="../components/bookCard.jsp">
+    <jsp:param name="bookTitle" value="Shoe Dog"/>
+    <jsp:param name="bookAuthor" value="Phil Knight"/>
+    <jsp:param name="bookAvailability" value="Available"/>
+</jsp:include>
+
 </body>
 </html>
