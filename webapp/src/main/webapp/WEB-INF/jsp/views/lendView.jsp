@@ -26,24 +26,31 @@
             </div>
 
             <div class="col-md-6">
-                <ul class="list-unstyled">
-                    <li><strong>Título:</strong> <input type="text" class="form-control" value="" /></li>
-                    <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>
-                    <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
-                    <li><strong>Ubicación:</strong> <input type="text" class="form-control" value="" /></li>
-                    <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
-                    <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
-                    <li>
-                        <strong>Estado:</strong> <span class="d-inline-block">
+                <form action="lendView/addAsset" method="post">
+                    <ul class="list-unstyled">
+                        <li><strong>Título:</strong> <input type="text" name="title" class="form-control" value="" /></li>
+                        <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>
+                        <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
+                        <li><strong>Ubicación:</strong> <input type="text" class="form-control" value="" /></li>
+                        <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
+                        <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
+                        <li>
+                            <strong>Estado:</strong> <span class="d-inline-block">
                         <select class="form-select d-inline-block" name="condition" style="width:auto;">
-                            <option value="Nuevo">Nuevo</option>
-                            <option value="Poco uso">Poco uso</option>
-                            <option value="Escrito">Escrito</option>
-                            <option value="Muy usado">Muy usado</option>
+                            <option value="as new">Nuevo</option>
+                            <option value="fine">Casi nuevo</option>
+                            <option value="very good">Muy bien</option>
+                            <option value="good">Bien</option>
+                            <option value="fair">Aceptable</option>
+                            <option value="poor">Pobre</option>
+                            <option value="ex-library">Ex-bibloteca</option>
+                            <option value="book club">Book club</option>
+                            <option value="binding copy">Dorso daniado</option>
                         </select></span>
-                    </li>
-                </ul>
-                <button class="btn btn-primary mt-3">Agregarlo!</button>
+                        </li>
+                    </ul>
+                    <button type="submit" class="btn btn-primary mt-3">Agregarlo! </button>
+                </form>
             </div>
         </div>
     </div>
