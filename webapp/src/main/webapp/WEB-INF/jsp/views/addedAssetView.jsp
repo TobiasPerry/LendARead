@@ -7,10 +7,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container my-5">
+    <h1 class="text-center mb-5">Perfecto! Se agrego el libro a nuestro inventario</h1>
+    <h2 class="text-center mb-5">Espera a que te contacten y coordina con la persona que pidio tu libro
+        para entregarselo.</h2>
+</div>
+
+</body>
 </html>
