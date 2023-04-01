@@ -8,6 +8,10 @@
 
     <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
+    <div id="snackbar" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
+        Asset added successfully!
+    </div>
+
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
     <div class="p-4 rounded" >
         <div class="row">
@@ -23,7 +27,7 @@
             </div>
 
             <div class="col-md-6">
-                <form action="addAssetView/addAsset" method="post">
+                <form action="addAsset" method="post">
                     <ul class="list-unstyled">
                         <li><strong>Título:</strong> <input type="text" name="title" class="form-control" value="" /></li>
                         <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>
@@ -62,6 +66,14 @@
             document.getElementById('uploadLabel').style.display = 'none';
         };
         reader.readAsDataURL(event.target.files[0]);
+    }
+
+    const showSnackbar = ${showSnackbar}; // Retrieve the attribute value
+    if (showSnackbar) {
+        document.getElementById('snackbar').classList.remove('d-none');
+        setTimeout(() => {
+            document.getElementById('snackbar').classList.add('d-none');
+        }, 3000);
     }
 </script>
 

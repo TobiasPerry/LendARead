@@ -8,17 +8,17 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
 @Controller
-public class BorrowAssetViewController {
+public class AddedAssetViewController {
     private final ViewResolver viewResolver;
 
     @Autowired
-    public BorrowAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
+    public AddedAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
         this.viewResolver = vr;
     }
 
-    @RequestMapping( "/borrowAssetView")
+    @RequestMapping( "/addedAssetView")
     public ModelAndView lendView(){
-        final ModelAndView mav = new ModelAndView("/views/borrowAssetView");
+        final ModelAndView mav = new ModelAndView("/views/addedAssetView");
         return mav;
     }
 }
