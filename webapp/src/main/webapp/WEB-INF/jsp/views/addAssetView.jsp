@@ -9,7 +9,7 @@
 <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
     <div id="snackbar" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
-       Libro agregado exitosamente!
+        Libro agregado exitosamente!
     </div>
 
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
@@ -29,27 +29,43 @@
             <div class="col-md-6">
                 <form action="addAsset" method="post">
                     <ul class="list-unstyled">
-                        <li><strong>Título:</strong> <input type="text" name="title" class="form-control" value="" /></li>
-                        <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>
-                        <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
-                        <li><strong>Ubicación:</strong> <input type="text" class="form-control" value="" /></li>
-                        <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
-                        <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
                         <li>
-                            <strong>Estado:</strong> <span class="d-inline-block">
-                        <select class="form-select d-inline-block" name="condition" style="width:auto;">
-                            <option value="as new">Nuevo</option>
-                            <option value="fine">Casi nuevo</option>
-                            <option value="very good">Muy bien</option>
-                            <option value="good">Bien</option>
-                            <option value="fair">Aceptable</option>
-                            <option value="poor">Pobre</option>
-                            <option value="ex-library">Ex-bibloteca</option>
-                            <option value="book club">Book club</option>
-                            <option value="binding copy">Dorso daniado</option>
-                        </select></span>
+                            <h2> Informacion del libro: </h2>
+                            <ul>
+                                <li><strong>Título:</strong> <input type="text" name="title" class="form-control" value="" /></li>
+                                <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>
+                                <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
+                                </ul>
                         </li>
-                    </ul>
+                                <li>
+                                    <h2> Ubicacion </h2>
+                                    <p> La informacion puntual no se va a compartir publicamente, unicamente la localidad, provincia y pais</p>
+                                    <ul>
+                                        <li><strong>Calle</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
+                                        <li><strong>Numero</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
+                                        <li><strong>Codigo postal</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
+                                        <li><strong>Localidad</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
+                                        <li><strong>Provincia</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
+                                        <li><strong>Pais</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
+                                    </ul>
+                                </li>
+                                <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
+                                <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
+                                <li>
+                                    <strong>Estado:</strong> <span class="d-inline-block mt-2">
+                                      <select class="form-select d-inline-block" name="condition" style="width:auto;">
+                                        <option value="as new">Nuevo</option>
+                                        <option value="fine">Casi nuevo</option>
+                                        <option value="very good">Muy bien</option>
+                                        <option value="good">Bien</option>
+                                        <option value="fair">Aceptable</option>
+                                        <option value="poor">Pobre</option>
+                                        <option value="ex-library">Ex-bibloteca</option>
+                                        <option value="book club">Book club</option>
+                                        <option value="binding copy">Dorso daniado</option>
+                                      </select></span>
+                                </li>
+                            </ul>
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo! </button>
                 </form>
             </div>
