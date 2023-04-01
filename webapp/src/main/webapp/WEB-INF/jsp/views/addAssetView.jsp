@@ -6,10 +6,10 @@
 </head>
 <body>
 
-    <jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
     <div id="snackbar" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
-        Asset added successfully!
+       Libro agregado exitosamente!
     </div>
 
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
