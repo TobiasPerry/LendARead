@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormElements"/>
+
 <head>
     <title>Prestar Libro</title>
     <link href="/css/main.css" rel="stylesheet"/>
@@ -8,7 +12,8 @@
 
 <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
-    <div id="snackbar" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
+
+    <div id="snackbarSucess" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
         Libro agregado exitosamente!
     </div>
 
@@ -28,44 +33,43 @@
 
             <div class="col-md-6">
                 <form action="addAsset" method="post">
+
                     <ul class="list-unstyled">
                         <li>
-                            <h2> Informacion del libro: </h2>
-                            <ul>
-                                <li><strong>Título:</strong> <input type="text" name="title" class="form-control" value="" /></li>
-                                <li><strong>Autor:</strong> <input type="text" class="form-control" value="" /></li>
-                                <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
-                                </ul>
+                            <h2> Informacion del libro </h2>
+                            <c:forEach var="element" items="${formElements.bookInfoElements}">
+                        <li><strong>${element.label}:</strong>
+                            <c:choose>
+                                <c:when test="${element.inputType == 'select'}">
+                                    <select class="form-select d-inline-block" name="${element.inputName}" style="width:auto;">
+                                        <c:forEach var="option" items="${element.selectOptions}">
+                                            <option value="${option}">${option}</option>
+                                        </c:forEach>
+                                    </select>
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                                </c:otherwise>
+                            </c:choose>
                         </li>
-                                <li>
-                                    <h2> Ubicacion </h2>
-                                    <p> La informacion puntual no se va a compartir publicamente, unicamente la localidad, provincia y pais</p>
-                                    <ul>
-                                        <li><strong>Calle</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
-                                        <li><strong>Numero</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
-                                        <li><strong>Codigo postal</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
-                                        <li><strong>Localidad</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
-                                        <li><strong>Provincia</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
-                                        <li><strong>Pais</strong> <input type="text" name="zipcode" class="form-control" value="" /></li>
-                                    </ul>
-                                </li>
-                                <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
-                                <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
-                                <li>
-                                    <strong>Estado:</strong> <span class="d-inline-block mt-2">
-                                      <select class="form-select d-inline-block" name="condition" style="width:auto;">
-                                        <option value="as new">Nuevo</option>
-                                        <option value="fine">Casi nuevo</option>
-                                        <option value="very good">Muy bien</option>
-                                        <option value="good">Bien</option>
-                                        <option value="fair">Aceptable</option>
-                                        <option value="poor">Pobre</option>
-                                        <option value="ex-library">Ex-bibloteca</option>
-                                        <option value="book club">Book club</option>
-                                        <option value="binding copy">Dorso daniado</option>
-                                      </select></span>
-                                </li>
-                            </ul>
+                        </c:forEach>
+                        <li>
+                            <h2> Ubicacion </h2>
+                            <p> Esta informacion se va a presentar para filtrar las busquedas, nunca se va a presentar junto con tu email
+                                y/o nombre sin tu consentimiento</p>
+                            <c:forEach var="element" items="${formElements.locationInfoElements}">
+                        <li><strong>${element.label}:</strong>
+                            <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                        </li>
+                        </c:forEach>
+                        <li>
+                            <h2> Contacto </h2>
+                            <c:forEach var="element" items="${formElements.locationInfoElements}">
+                        <li><strong>${element.label}:</strong>
+                            <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                        </li>
+                        </c:forEach>
+                    </ul>
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo! </button>
                 </form>
             </div>
@@ -84,13 +88,15 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    const showSnackbar = ${showSnackbar}; // Retrieve the attribute value
-    if (showSnackbar) {
-        document.getElementById('snackbar').classList.remove('d-none');
+    const showSnackbarSucess= ${showSnackbarSucess}; // Retrieve the attribute value
+    if (showSnackbarSucess) {
+        document.getElementById('snackbarSucess').classList.remove('d-none');
         setTimeout(() => {
-            document.getElementById('snackbar').classList.add('d-none');
+            document.getElementById('snackbarSucess').classList.add('d-none');
         }, 3000);
     }
+
+
 </script>
 
 
