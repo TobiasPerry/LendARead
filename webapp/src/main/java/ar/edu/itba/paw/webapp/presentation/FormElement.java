@@ -1,11 +1,11 @@
 package ar.edu.itba.paw.webapp.presentation;
 
 public class FormElement {
-    private String label;
-    private String inputType;
-    private String inputName;
-    private String inputValue;
-    private String[] selectOptions;
+    private final String label;
+    private final String inputType;
+    private final String inputName;
+    private final String inputValue;
+    private final String[] selectOptions;
 
     public FormElement(String label, String inputType, String inputName, String inputValue, String[] selectOptions) {
         this.label = label;
@@ -35,5 +35,4 @@ public class FormElement {
         return label;
     }
 
-    // Constructor, getters, and setters
 }

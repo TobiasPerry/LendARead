@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
+import java.util.Arrays;
+
 @Controller
 public class BorrowAssetViewController {
     private final ViewResolver viewResolver;
@@ -17,11 +19,9 @@ public class BorrowAssetViewController {
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public String borrowAsset(
-            @RequestParam(value = "email", required = true) final String email,
-            @RequestParam(value = "guidelines", required = true) final String guidelines,
-            @RequestParam(value = "location", required = true) final String location,
             Model model
     ){
+
         model.addAttribute("showSnackbar", true);
 
         return viewName;

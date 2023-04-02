@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormElements"/>
+<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormElementsAddAsset"/>
 
 <head>
     <title>Prestar Libro</title>
@@ -15,6 +15,10 @@
 
     <div id="snackbarSucess" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
         Libro agregado exitosamente!
+    </div>
+
+    <div id="snackbarFailure" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-danger text-light p-3 rounded">
+       Hubo un problema con lo ingresado!
     </div>
 
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
@@ -64,7 +68,7 @@
                         </c:forEach>
                         <li>
                             <h2> Contacto </h2>
-                            <c:forEach var="element" items="${formElements.locationInfoElements}">
+                            <c:forEach var="element" items="${formElements.contactInfoElements}">
                         <li><strong>${element.label}:</strong>
                             <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
                         </li>
@@ -88,7 +92,7 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    const showSnackbarSucess= ${showSnackbarSucess}; // Retrieve the attribute value
+    const showSnackbarSucess = '${showSnackbarSucess}' === 'true';
     if (showSnackbarSucess) {
         document.getElementById('snackbarSucess').classList.remove('d-none');
         setTimeout(() => {
@@ -96,7 +100,13 @@
         }, 3000);
     }
 
-
+    const showSnackbarInvalid = '${showSnackbarInvalid}' === 'true';
+    if (showSnackbarInvalid) {
+        document.getElementById('snackbarFailure').classList.remove('d-none');
+        setTimeout(() => {
+            document.getElementById('snackbarFailure').classList.add('d-none');
+        }, 3000);
+    }
 </script>
 
 

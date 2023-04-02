@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.webapp.presentation.FormElements;
+import ar.edu.itba.paw.webapp.presentation.FormElementsAddAsset;
+import ar.edu.itba.paw.webapp.presentation.FormValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -10,21 +13,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class AddAssetViewController {
     private final ViewResolver viewResolver;
+    FormElements formElements = new FormElementsAddAsset();
     final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public String addAsset(
-            @RequestParam(value = "title", required = true) final String title,
-            @RequestParam(value = "condition", required = true) final String condition,
-            Model model
+            Model model,
+            HttpServletRequest request
     ){
-        System.out.println(title);
-        System.out.println(condition);
+        FormValidation formValidation = formElements.validateRequest(request);
 
-        model.addAttribute("showSnackbar", true);
+        if(formValidation.isValid())
+            model.addAttribute("showSnackbarSucess", true);
+        else
+            model.addAttribute("showSnackbarInvalid", true);
 
         return viewName;
     }
