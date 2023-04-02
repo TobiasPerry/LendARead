@@ -37,8 +37,4 @@ public class FormElementImpl implements FormElement {
         return label;
     }
 
-    @Override
-    public boolean isValidInput(String input) {
-        return true;
-    }
 }

@@ -8,7 +8,13 @@ public class FormElementEmail extends FormElementImpl{
     }
 
     @Override
+    public String getInputType() {
+        return "Ingrese un email valido";
+    }
+
+    @Override
     public boolean isValidInput(String input) {
         return input != null && Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", input);
     }
+
 }
