@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormElementsAddAsset"/>
+<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView"/>
 
 <head>
     <title>Prestar Libro</title>

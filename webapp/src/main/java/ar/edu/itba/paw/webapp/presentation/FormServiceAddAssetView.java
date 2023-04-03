@@ -1,11 +1,10 @@
 package ar.edu.itba.paw.webapp.presentation;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FormElementsAddAsset implements FormElements {
+public class FormServiceAddAssetView implements FormService {
 
     private final FormElement[] bookInfoElements = new FormElementImpl[] {
             new FormElementNonNullString("Título", "title"),

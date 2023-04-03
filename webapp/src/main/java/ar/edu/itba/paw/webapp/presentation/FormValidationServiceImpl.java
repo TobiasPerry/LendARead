@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class FormValidationImpl implements FormValidation {
+public class FormValidationServiceImpl implements FormValidationService {
     private final List<FormElement> invalidElements;
 
-    FormValidationImpl(){
+    FormValidationServiceImpl(){
         invalidElements = new ArrayList<>();
     }
 
