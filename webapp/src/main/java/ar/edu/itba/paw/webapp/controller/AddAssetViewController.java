@@ -30,9 +30,15 @@ public class AddAssetViewController {
 
         if(formValidation.isValid())
             model.addAttribute("showSnackbarSucess", true);
-        else
+        else {
             model.addAttribute("showSnackbarInvalid", true);
-
+            StringBuilder message = new StringBuilder("Los siguientes argumentos estan mal: ");
+            for (String invalidElementInfo : formValidation) {
+                message.append(invalidElementInfo);
+                message.append('\n');
+            }
+            model.addAttribute("snackBarInvalidText", message.toString());
+        }
         return viewName;
     }
 

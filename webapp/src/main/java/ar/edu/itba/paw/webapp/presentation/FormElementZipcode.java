@@ -13,4 +13,9 @@ public class FormElementZipcode extends FormElementImpl{
     public boolean isValidInput(String input) {
         return ZIP_CODE_PATTERN.matcher(input).matches();
     }
+
+    @Override
+    public String getInvalidInputFormatMessage() {
+        return "ingrese un codigo postal de 4 digitos";
+    }
 }

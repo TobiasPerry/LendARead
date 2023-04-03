@@ -6,8 +6,14 @@ public class FormElementNonNullString extends FormElementImpl{
         super(label, "text", inputName, "");
     }
 
+
     @Override
     public boolean isValidInput(String input) {
         return input != null;
+    }
+
+    @Override
+    public String getInvalidInputFormatMessage() {
+        return "es un valor obligatorio";
     }
 }

@@ -19,4 +19,9 @@ public class FormElementEmail extends FormElementImpl{
         return EMAIL_PATTERN.matcher(input).matches();
     }
 
+    @Override
+    public String getInvalidInputFormatMessage() {
+        return "ingrese una direccion email";
+    }
+
 }

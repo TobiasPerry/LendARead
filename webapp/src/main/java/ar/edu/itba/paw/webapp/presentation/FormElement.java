@@ -7,9 +7,7 @@ public interface FormElement {
     default boolean isValidInput(String input) {
         return true;
     }
-    default String getValidInputFormat() {
-        return "";
-    }
+    String getInvalidInputFormatMessage();
 
     String getLabel();
 

@@ -7,6 +7,14 @@
     <title>Prestar Libro</title>
     <link href="/css/main.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <style>
+        .snackbar-text {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,7 +26,9 @@
     </div>
 
     <div id="snackbarFailure" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-danger text-light p-3 rounded">
-       Hubo un problema con lo ingresado!
+        <div class="snackbar-text">
+            <c:out value="${snackBarInvalidText}" />
+        </div>
     </div>
 
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>

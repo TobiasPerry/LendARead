@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.presentation;
 
 import java.util.function.Predicate;
 
-public class FormElementImpl implements FormElement {
+public abstract class FormElementImpl implements FormElement {
     private final String label;
     private final String inputType;
     private final String inputName;

@@ -12,4 +12,9 @@ public class FormElementDropdown extends FormElementImpl{
     public String[] getSelectOptions() {
         return selectOptions;
     }
+
+    @Override
+    public String getInvalidInputFormatMessage() {
+        return "ingrese una opcion valida";
+    }
 }
