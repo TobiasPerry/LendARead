@@ -1,4 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView"/>
+
 <head>
   <title>Pedir Prestado Libro</title>
   <link href="/css/main.css" rel="stylesheet"/>
@@ -24,11 +27,20 @@
 
       <div class="col-md-6">
         <form action="borrowAsset" method="post">
-          <ul class="list-unstyled">
-            <li><strong>Ingresa tu ubicacion</strong> <input type="text" name="location" class="form-control" value="" /></li>
-            <li><strong>Informacion para retirarlo </strong> <input type="text" name="guidelines" class="form-control" value="" /></li>
-            <li><strong>Mail</strong> <input type="text" name="email" class="form-control" value="" /></li>
-          </ul>
+            <h2> Ubicacion </h2>
+            <p> Esta informacion se va a presentar para filtrar las busquedas, nunca se va a presentar junto con tu email
+              y/o nombre sin tu consentimiento</p>
+            <c:forEach var="element" items="${formElements.locationInfoElements}">
+              <li><strong>${element.label}:</strong>
+                <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
+              </li>
+            </c:forEach>
+            <h2> Contacto </h2>
+            <c:forEach var="element" items="${formElements.contactInfoElements}">
+              <li><strong>${element.label}:</strong>
+                <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
+              </li>
+            </c:forEach>
           <button type="submit" class="btn btn-primary mt-3">Pedir prestado </button>
         </form>
       </div>
