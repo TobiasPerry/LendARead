@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.webapp.presentation.FormService;
+import ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @Controller
@@ -19,9 +22,11 @@ public class BorrowAssetViewController {
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public String borrowAsset(
-            Model model
+            Model model, HttpServletRequest request
     ){
 
+        FormService formService = new FormServiceBorrowAssetView();
+        formService.validateRequest(request);
         model.addAttribute("showSnackbar", true);
 
         return viewName;

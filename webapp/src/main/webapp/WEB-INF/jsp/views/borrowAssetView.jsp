@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView"/>
+<jsp:useBean id="formElementsBorrow" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView"/>
 
 <head>
   <title>Pedir Prestado Libro</title>
@@ -12,9 +12,8 @@
 <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
 
-  <div id="snackbar" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
-    Libro pedido exitosamente!
-  </div>
+    <jsp:include page="../components/snackbarComponent.jsp" />
+
   <h1 class="text-center mb-5">Quieres pedir prestado un libro?</h1>
   <div class="p-4 rounded lendView" >
     <div class="row">
@@ -30,13 +29,13 @@
             <h2> Ubicacion </h2>
             <p> Esta informacion se va a presentar para filtrar las busquedas, nunca se va a presentar junto con tu email
               y/o nombre sin tu consentimiento</p>
-            <c:forEach var="element" items="${formElements.locationInfoElements}">
+            <c:forEach var="element" items="${formElementsBorrow.locationInfoElements}">
               <li><strong>${element.label}:</strong>
                 <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
               </li>
             </c:forEach>
             <h2> Contacto </h2>
-            <c:forEach var="element" items="${formElements.contactInfoElements}">
+            <c:forEach var="element" items="${formElementsBorrow.contactInfoElements}">
               <li><strong>${element.label}:</strong>
                 <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
               </li>
@@ -47,13 +46,4 @@
     </div>
   </div>
 </div>
-<script>
-  const showSnackbar = ${showSnackbar}; // Retrieve the attribute value
-  if (showSnackbar) {
-    document.getElementById('snackbar').classList.remove('d-none');
-    setTimeout(() => {
-      document.getElementById('snackbar').classList.add('d-none');
-    }, 3000);
-  }
-</script>
 </body>
