@@ -6,7 +6,7 @@ public class FormElementZipcode extends FormElementImpl{
     private static final Pattern ZIP_CODE_PATTERN = Pattern.compile("^\\d{4}$");
 
     public FormElementZipcode(String label,String inputName) {
-        super(label, "text", inputName, "", null);
+        super(label, "text", inputName, "");
     }
 
     @Override

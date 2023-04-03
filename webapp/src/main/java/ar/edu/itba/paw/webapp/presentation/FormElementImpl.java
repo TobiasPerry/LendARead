@@ -7,14 +7,12 @@ public class FormElementImpl implements FormElement {
     private final String inputType;
     private final String inputName;
     private final String inputValue;
-    private final String[] selectOptions;
 
-    public FormElementImpl(String label, String inputType, String inputName, String inputValue, String[] selectOptions) {
+    public FormElementImpl(String label, String inputType, String inputName, String inputValue) {
         this.label = label;
         this.inputType = inputType;
         this.inputName = inputName;
         this.inputValue = inputValue;
-        this.selectOptions = selectOptions;
     }
 
     public String getInputType() {
@@ -27,10 +25,6 @@ public class FormElementImpl implements FormElement {
 
     public String getInputValue() {
         return inputValue;
-    }
-
-    public String[] getSelectOptions() {
-        return selectOptions;
     }
 
     public String getLabel() {

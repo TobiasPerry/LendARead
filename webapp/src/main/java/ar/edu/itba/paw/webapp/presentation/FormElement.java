@@ -10,4 +10,8 @@ public interface FormElement {
     default String getValidInputFormat() {
         return "";
     }
+
+    String getLabel();
+
+    String getInputType();
 }

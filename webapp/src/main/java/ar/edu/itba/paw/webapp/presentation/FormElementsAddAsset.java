@@ -12,8 +12,9 @@ public class FormElementsAddAsset implements FormElements {
             new FormElementNonNullString("Autor",  "author"),
             new FormElementNonNullString("Idioma", "language"),
             new FormElementNonNullString("ISBN", "isbn"),
-            new FormElementImpl("Estado", "select", "physicalCondition", "", new String[] {"asnew", "fine", "verygood", "good", "fair", "poor", "exlibrary", "bookclub", "bindingcopy"})
     };;
+
+    private final FormElementDropdown conditionsDropDown = new FormElementDropdown("Estado", "physicalCondition",  new String[] {"asnew", "fine", "verygood", "good", "fair", "poor", "exlibrary", "bookclub", "bindingcopy"});
     private final FormElement[] locationInfoElements  = new FormElementImpl[] {
             new FormElementZipcode("Codigo postal",  "zipcode"),
             new FormElementNonNullString("Localidad", "locality"),
@@ -48,4 +49,7 @@ public class FormElementsAddAsset implements FormElements {
                 .collect(Collectors.toList());
     }
 
+    public FormElementDropdown getConditionsDropDown() {
+        return this.conditionsDropDown;
+    }
 }

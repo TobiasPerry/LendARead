@@ -42,37 +42,32 @@
                         <li>
                             <h2> Informacion del libro </h2>
                             <c:forEach var="element" items="${formElements.bookInfoElements}">
-                        <li><strong>${element.label}:</strong>
-                            <c:choose>
-                                <c:when test="${element.inputType == 'select'}">
-                                    <select class="form-select d-inline-block" name="${element.inputName}" style="width:auto;">
-                                        <c:forEach var="option" items="${element.selectOptions}">
-                                            <option value="${option}">${option}</option>
-                                        </c:forEach>
-                                    </select>
-                                </c:when>
-                                <c:otherwise>
+                                <li><strong>${element.label}:</strong>
                                     <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
-                                </c:otherwise>
-                            </c:choose>
-                        </li>
-                        </c:forEach>
+                                </li>
+                            </c:forEach>
+                            <li><strong>${formElements.conditionsDropDown.label}</strong>
+                            <select class="form-select d-inline-block" name="${formElements.conditionsDropDown.inputName}" style="width:auto;">
+                                <c:forEach var="option" items="${formElements.conditionsDropDown.selectOptions}">
+                                    <option value="${option}">${option}</option>
+                                </c:forEach>
+                            </select>
                         <li>
                             <h2> Ubicacion </h2>
                             <p> Esta informacion se va a presentar para filtrar las busquedas, nunca se va a presentar junto con tu email
                                 y/o nombre sin tu consentimiento</p>
                             <c:forEach var="element" items="${formElements.locationInfoElements}">
-                        <li><strong>${element.label}:</strong>
-                            <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
-                        </li>
-                        </c:forEach>
+                                <li><strong>${element.label}:</strong>
+                                    <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                                </li>
+                            </c:forEach>
                         <li>
                             <h2> Contacto </h2>
                             <c:forEach var="element" items="${formElements.contactInfoElements}">
-                        <li><strong>${element.label}:</strong>
-                            <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
-                        </li>
-                        </c:forEach>
+                            <li><strong>${element.label}:</strong>
+                                <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                            </li>
+                            </c:forEach>
                     </ul>
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo! </button>
                 </form>
