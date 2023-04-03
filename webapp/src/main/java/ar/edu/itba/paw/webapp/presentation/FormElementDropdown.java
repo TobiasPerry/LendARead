@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.presentation;
 
+import java.util.Arrays;
+
 public class FormElementDropdown extends FormElementImpl{
 
     String[] selectOptions;
@@ -11,6 +13,15 @@ public class FormElementDropdown extends FormElementImpl{
 
     public String[] getSelectOptions() {
         return selectOptions;
+    }
+
+    @Override
+    public boolean isValidInput(String input) {
+       for (String option : selectOptions)
+           if(input.equals(option))
+               return true;
+
+       return false;
     }
 
     @Override

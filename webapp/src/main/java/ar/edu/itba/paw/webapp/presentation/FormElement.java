@@ -4,12 +4,14 @@ public interface FormElement {
 
     String getInputName();
 
-    default boolean isValidInput(String input) {
-        return true;
-    }
+     boolean isValidInput(String input);
     String getInvalidInputFormatMessage();
 
     String getLabel();
 
     String getInputType();
+
+    String getStatus();
+
+    void setInvalid();
 }

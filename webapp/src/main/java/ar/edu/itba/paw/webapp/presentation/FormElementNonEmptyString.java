@@ -1,15 +1,15 @@
 package ar.edu.itba.paw.webapp.presentation;
 
-public class FormElementNonNullString extends FormElementImpl{
+public class FormElementNonEmptyString extends FormElementImpl{
 
-    public FormElementNonNullString(String label, String inputName) {
+    public FormElementNonEmptyString(String label, String inputName) {
         super(label, "text", inputName, "");
     }
 
 
     @Override
     public boolean isValidInput(String input) {
-        return input != null;
+        return !input.isEmpty();
     }
 
     @Override

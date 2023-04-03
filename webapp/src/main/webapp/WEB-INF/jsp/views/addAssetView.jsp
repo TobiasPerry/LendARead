@@ -27,6 +27,7 @@
 
     <div id="snackbarFailure" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-danger text-light p-3 rounded">
         <div class="snackbar-text">
+            <strong><c:out value="${snackBarInvalidTextTitle}" />  </strong>
             <c:out value="${snackBarInvalidText}" />
         </div>
     </div>
@@ -52,8 +53,8 @@
                         <li>
                             <h2> Informacion del libro </h2>
                             <c:forEach var="element" items="${formElements.bookInfoElements}">
-                                <li><strong>${element.label}:</strong>
-                                    <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                                <li style="background: ${element.status}"><strong>${element.label}:</strong>
+                                    <input type="${element.inputType}" name="${element.inputName}" class="form-control"/>
                                 </li>
                             </c:forEach>
                             <li><strong>${formElements.conditionsDropDown.label}</strong>
@@ -68,14 +69,14 @@
                                 y/o nombre sin tu consentimiento</p>
                             <c:forEach var="element" items="${formElements.locationInfoElements}">
                                 <li><strong>${element.label}:</strong>
-                                    <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                                    <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
                                 </li>
                             </c:forEach>
                         <li>
                             <h2> Contacto </h2>
                             <c:forEach var="element" items="${formElements.contactInfoElements}">
                             <li><strong>${element.label}:</strong>
-                                <input type="${element.inputType}" name="${element.inputName}" class="form-control" value="${element.inputValue}" />
+                                <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
                             </li>
                             </c:forEach>
                     </ul>
@@ -110,7 +111,7 @@
         document.getElementById('snackbarFailure').classList.remove('d-none');
         setTimeout(() => {
             document.getElementById('snackbarFailure').classList.add('d-none');
-        }, 3000);
+        }, 10000);
     }
 </script>
 

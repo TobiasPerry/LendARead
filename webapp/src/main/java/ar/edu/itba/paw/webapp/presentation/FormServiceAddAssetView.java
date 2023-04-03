@@ -7,23 +7,23 @@ import java.util.stream.Collectors;
 public class FormServiceAddAssetView implements FormService {
 
     private final FormElement[] bookInfoElements = new FormElementImpl[] {
-            new FormElementNonNullString("Título", "title"),
-            new FormElementNonNullString("Autor",  "author"),
-            new FormElementNonNullString("Idioma", "language"),
-            new FormElementNonNullString("ISBN", "isbn"),
+            new FormElementNonEmptyString("Título", "title"),
+            new FormElementNonEmptyString("Autor",  "author"),
+            new FormElementNonEmptyString("Idioma", "language"),
+            new FormElementISBN("ISBN", "isbn"),
     };;
 
     private final FormElementDropdown conditionsDropDown = new FormElementDropdown("Estado", "physicalCondition",  new String[] {"asnew", "fine", "verygood", "good", "fair", "poor", "exlibrary", "bookclub", "bindingcopy"});
     private final FormElement[] locationInfoElements  = new FormElementImpl[] {
             new FormElementZipcode("Codigo postal",  "zipcode"),
-            new FormElementNonNullString("Localidad", "locality"),
-            new FormElementNonNullString("Provincia", "province"),
-            new FormElementNonNullString("Pais",  "country")
+            new FormElementNonEmptyString("Localidad", "locality"),
+            new FormElementNonEmptyString("Provincia", "province"),
+            new FormElementNonEmptyString("Pais",  "country")
     };;
     private final FormElement[] contactInfoElements  = new FormElementImpl[] {
             new FormElementEmail("Mail",  "email"),
-            new FormElementNonNullString("Nombre",  "name"),
-            new FormElementNonNullString("Mensaje para Retirarlo", "message")
+            new FormElementNonEmptyString("Nombre",  "name"),
+            new FormElementNonEmptyString("Mensaje para Retirarlo", "message")
     };;
 
     public FormElement[] getBookInfoElements() { return bookInfoElements; }

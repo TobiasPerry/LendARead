@@ -14,6 +14,7 @@ public class FormValidationServiceImpl implements FormValidationService {
     @Override
     public void addInvalidFormElement(FormElement formElement) {
         invalidElements.add(formElement);
+        formElement.setInvalid();
     }
 
     @Override
@@ -34,7 +35,7 @@ public class FormValidationServiceImpl implements FormValidationService {
             @Override
             public String next() {
                 FormElement formElement = formElementIterator.next();
-                return formElement.getInputName() + ": " + formElement.getInvalidInputFormatMessage();
+                return formElement.getLabel() + ": " + formElement.getInvalidInputFormatMessage();
             }
         };
     }

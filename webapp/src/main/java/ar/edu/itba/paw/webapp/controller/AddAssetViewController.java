@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class AddAssetViewController {
     private final ViewResolver viewResolver;
+    private final static String INVALID_INPUT_MESSAGE ="Los siguientes argumentos estan mal:" ;
     FormService formElements = new FormServiceAddAssetView();
     final String viewName = "views/addAssetView";
 
@@ -29,18 +30,25 @@ public class AddAssetViewController {
 
         if(formValidationService.isValid())
             model.addAttribute("showSnackbarSucess", true);
-        else {
-            model.addAttribute("showSnackbarInvalid", true);
-            StringBuilder message = new StringBuilder("Los siguientes argumentos estan mal: ");
-            for (String invalidElementInfo : formValidationService) {
-                message.append(invalidElementInfo);
-                message.append('\n');
-            }
-            model.addAttribute("snackBarInvalidText", message.toString());
-        }
+        else
+           updateSnackbar(model, formValidationService);
+
         return viewName;
     }
 
+    private void updateSnackbar(Model model, FormValidationService formValidationService) {
+        StringBuilder message = new StringBuilder();
+        int num = 0;
+        for (String invalidElementInfo : formValidationService) {
+            message.append('\n');
+            message.append(num++);
+            message.append(". ");
+            message.append(invalidElementInfo);
+        }
+        model.addAttribute("snackBarInvalidTextTitle", INVALID_INPUT_MESSAGE);
+        model.addAttribute("snackBarInvalidText", message.toString());
+        model.addAttribute("showSnackbarInvalid", true);
+    }
     @Autowired
     public AddAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
         this.viewResolver = vr;
