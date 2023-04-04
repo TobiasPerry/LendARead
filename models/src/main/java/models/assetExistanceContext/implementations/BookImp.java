@@ -1,29 +1,30 @@
 package models.assetExistanceContext.implementations;
 
 import models.Interfaces.Asset;
+import models.assetExistanceContext.interfaces.Book;
 
-public class Book implements Asset {
+public class BookImp implements Book {
 
     private final int uid;
 
     private final String isbn;
 
-    private final String autor;
+    private final String author;
 
     private final String title;
 
-    private final String lenguaje;
+    private final String language;
 
     private final byte[] photo;
 
     private final String type = "Book";
 
-    public Book(int uid, String isbn, String autor, String title, String lenguaje, byte[] photo) {
+    public BookImp(int uid, String isbn, String author, String title, String language, byte[] photo) {
         this.uid = uid;
         this.isbn = isbn;
-        this.autor = autor;
+        this.author = author;
         this.title = title;
-        this.lenguaje = lenguaje;
+        this.language = language;
         this.photo = photo;
     }
 
@@ -50,5 +51,20 @@ public class Book implements Asset {
     @Override
     public String type() {
         return this.type;
+    }
+
+    @Override
+    public String getIsbn() {
+        return this.isbn;
+    }
+
+    @Override
+    public String getLanguage() {
+        return this.language;
+    }
+
+    @Override
+    public String author() {
+        return this.author;
     }
 }
