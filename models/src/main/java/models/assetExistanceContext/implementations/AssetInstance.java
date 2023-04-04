@@ -1,6 +1,9 @@
 package models.assetExistanceContext.implementations;
 
-import models.implementations.UserImpl;
+
+import models.assetExistanceContext.interfaces.Book;
+import models.userContext.implementations.LocationImpl;
+import models.userContext.implementations.UserImpl;
 
 public class AssetInstance {
     private Book book;
@@ -9,5 +12,5 @@ public class AssetInstance {
 
     private UserImpl userReference;
 
-    private  LocationImpl location;
+    private LocationImpl location;
 }
