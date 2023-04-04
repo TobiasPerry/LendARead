@@ -1,4 +1,7 @@
-package models;
+package models.implementations;
+
+import models.Interfaces.BorrowRequest;
+import models.Interfaces.User;
 
 import java.time.LocalDateTime;
 import java.util.Date;
