@@ -1,4 +1,4 @@
 package models.assetLendingContext.implementations;
 
-public class LendingHistory {
+public class BorrowingHistoryImpl {
 }
