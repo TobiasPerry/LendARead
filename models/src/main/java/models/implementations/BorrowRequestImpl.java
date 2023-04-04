@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public class BorrowRequestImpl implements BorrowRequest {
-    private final Date dateIssued;
+    private final Date dateIssued ;
 
     private final LocalDateTime returnDate;
 
