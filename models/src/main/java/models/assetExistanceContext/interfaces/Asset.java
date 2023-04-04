@@ -1,4 +1,4 @@
-package models.Interfaces;
+package models.assetExistanceContext.interfaces;
 
 import sun.security.util.ByteArrays;
 

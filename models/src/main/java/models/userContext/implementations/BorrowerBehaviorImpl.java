@@ -1,4 +1,4 @@
 package models.userContext.implementations;
 
-public class BorrowerBehavior {
+public class BorrowerBehaviorImpl {
 }
