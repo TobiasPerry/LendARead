@@ -4,20 +4,42 @@ import models.Interfaces.Asset;
 
 public class Book implements Asset {
 
-    
+    private final int uid;
+
+    private final String isbn;
+
+    private final String autor;
+
+    private final String title;
+
+    private final String lenguaje;
+
+    private final byte[] photo;
+
+    private final String type = "Book";
+
+    public Book(int uid, String isbn, String autor, String title, String lenguaje, byte[] photo) {
+        this.uid = uid;
+        this.isbn = isbn;
+        this.autor = autor;
+        this.title = title;
+        this.lenguaje = lenguaje;
+        this.photo = photo;
+    }
+
     @Override
     public int getId() {
-        return 0;
+        return this.uid;
     }
 
     @Override
     public String getName() {
-        return null;
+        return this.title;
     }
 
     @Override
     public byte[] getPhoto() {
-        return new byte[0];
+        return this.photo;
     }
 
     @Override
@@ -27,6 +49,6 @@ public class Book implements Asset {
 
     @Override
     public String type() {
-        return null;
+        return this.type;
     }
 }
