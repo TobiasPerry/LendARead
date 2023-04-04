@@ -2,6 +2,8 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView;
+import ar.edu.itba.paw.webapp.presentation.FormValidationService;
+import ar.edu.itba.paw.webapp.presentation.SnackbarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -20,14 +22,17 @@ public class BorrowAssetViewController {
     private final ViewResolver viewResolver;
     final String viewName = "views/borrowAssetView";
 
+    private final FormServiceBorrowAssetView formElements = new FormServiceBorrowAssetView();
+
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public String borrowAsset(
             Model model, HttpServletRequest request
     ){
 
-        FormService formService = new FormServiceBorrowAssetView();
-        formService.validateRequest(request);
-        model.addAttribute("showSnackbar", true);
+        FormValidationService formValidationService = formElements.validateRequest(request);
+
+        SnackbarService.updateSnackbar(model, formValidationService);
+
 
         return viewName;
     }
