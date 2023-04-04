@@ -1,12 +1,11 @@
 package models.assetExistanceContext.implementations;
 
-
-import models.assetExistanceContext.interfaces.Book;
+import models.assetExistanceContext.interfaces.AssetInstance;
 import models.userContext.implementations.LocationImpl;
 import models.userContext.implementations.UserImpl;
 
-public class AssetInstance {
-    private Book book;
+public class AssetInstanceImpl implements AssetInstance {
+    private BookImpl bookImpl;
 
     private PhysicalCondition physicalCondition;
 
