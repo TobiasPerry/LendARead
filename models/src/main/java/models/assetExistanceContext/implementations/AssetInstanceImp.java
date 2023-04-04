@@ -5,7 +5,7 @@ import models.userContext.implementations.LocationImpl;
 import models.userContext.implementations.UserImpl;
 
 public class AssetInstanceImp implements AssetInstance {
-    private BookImp bookImp;
+    private BookImpl bookImpl;
 
     private PhysicalCondition physicalCondition;
 

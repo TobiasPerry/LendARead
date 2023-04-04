@@ -3,7 +3,7 @@ package models.assetExistanceContext.implementations;
 import models.Interfaces.Asset;
 import models.assetExistanceContext.interfaces.Book;
 
-public class BookImp implements Book {
+public class BookImpl implements Book {
 
     private final int uid;
 
@@ -19,7 +19,7 @@ public class BookImp implements Book {
 
     private final String type = "Book";
 
-    public BookImp(int uid, String isbn, String author, String title, String language, byte[] photo) {
+    public BookImpl(int uid, String isbn, String author, String title, String language, byte[] photo) {
         this.uid = uid;
         this.isbn = isbn;
         this.author = author;
