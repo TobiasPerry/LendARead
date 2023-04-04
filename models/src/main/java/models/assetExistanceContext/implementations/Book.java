@@ -1,6 +1,6 @@
 package models.assetExistanceContext.implementations;
 
-import models.Interfaces.Asset;
+import models.assetExistanceContext.interfaces.Asset;
 
 public class Book implements Asset {
 
