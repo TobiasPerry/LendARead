@@ -1,6 +1,7 @@
-package models.implementations;
+package models.userContext.implementations;
 
 import models.Interfaces.LenderBehavior;
+import models.assetLendingContext.implementations.LendingHistory;
 
 import javax.xml.stream.Location;
 import java.util.List;

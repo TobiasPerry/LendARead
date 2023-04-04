@@ -1,7 +1,8 @@
-package models.implementations;
+package models.userContext.implementations;
 
 import models.Interfaces.BorrowRequest;
 import models.Interfaces.User;
+import models.assetExistanceContext.implementations.AssetInstance;
 
 import java.time.LocalDateTime;
 import java.util.Date;

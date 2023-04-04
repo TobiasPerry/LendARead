@@ -1,4 +1,6 @@
-package models.implementations;
+package models.assetExistanceContext.implementations;
+
+import models.implementations.UserImpl;
 
 public class AssetInstance {
     private Book book;

@@ -1,4 +1,4 @@
-package models.implementations;
+package models.assetExistanceContext.implementations;
 
 import models.Interfaces.Asset;
 
