@@ -9,4 +9,5 @@ public class AssetInstance {
 
     private UserImpl userReference;
 
+    private  LocationImpl location;
 }
