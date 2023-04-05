@@ -17,42 +17,45 @@
 
     <jsp:include page="../components/navBar.jsp"/>
     <div class="container my-5">
-        <h1 class="text-center mb-3"><c:out value="Título"/></h1>
+        <h1 class="text-center mb-3"><c:out value="${name}"/></h1>
         <div class="d-flex">
             <img src="https://i.pinimg.com/originals/d4/2e/d7/d42ed7bf30a4c1a6a201565f0bc61190.jpg" class="w-25 h-25 mx-5" alt="Book cover">
             <div class="mx-4">
-                <h3>Información del libro</h3>
+                <h2>Información</h2>
+                <hr class="hr" />
                 <div>
-                    <h4>Título</h4>
-                    <p><c:out value="Mistborn"/></p>
+                    <p style="margin-bottom: -5px">Título</p>
+                    <h3><c:out value="${name}"/></h3>
 
-                    <h4>Autor</h4>
-                    <p><c:out value="Brandon Sanderson"/></p>
+                    <p style="margin-bottom: -5px">Autor</p>
+                    <h3><c:out value="${author}"/></h3>
                 
-                    <h4>Idioma</h4>
-                    <p><c:out value="Español"/></p>
+                    <p style="margin-bottom: -5px">Idioma</p>
+                    <h3><c:out value="${language}"/></h3>
                 
-                    <h4>ISBN</h4>
-                    <p><c:out value="9780765311788"/></p>
+                    <p style="margin-bottom: -5px">ISBN</p>
+                    <h3><c:out value="${isbn}"/></h3>
 
-                    <h4>Estado</h4>
-                    <p><c:out value="Bueno"/></p>
+                    <p style="margin-bottom: -5px">Estado</p>
+                    <h3><c:out value="${physicalCondition}"/></h3>
                 </div>
             </div>
+            <div class="vr" style="color: #849ba4; width: 2px"></div>
             <div class="mx-4">
-                <h3>Ubicación del libro</h3>
+                <h2>Ubicación</h2>
+                <hr class="hr" />
                 <div>
-                    <h4>Código postal</h4>
-                    <p><c:out value="1425"/></p>
+                    <p style="margin-bottom: -5px">Código postal</p>
+                    <h3><c:out value="${locationPC}"/></h3>
                     
-                    <h4>Localidad</h4>
-                    <p><c:out value="CABA"/></p>
+                    <p style="margin-bottom: -5px">Localidad</p>
+                    <h3><c:out value="${location}"/></h3>
                     
-                    <h4>Provincia</h4>
-                    <p><c:out value="CABA"/></p>
+                    <p style="margin-bottom: -5px">Provincia</p>
+                    <h3><c:out value="${province}"/></h3>
 
-                    <h4>País</h4>
-                    <p><c:out value="Argentina"/></p>
+                    <p style="margin-bottom: -5px">País</p>
+                    <h3><c:out value="${country}"/></h3>
                 </div>
             </div>
         </div>
