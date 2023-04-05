@@ -40,6 +40,10 @@ public class AddAssetViewController {
 
     @RequestMapping( "/addAssetView")
     public ModelAndView lendView(){
-        return new ModelAndView(viewName);
+        final ModelAndView mav = new ModelAndView(viewName);
+
+        mav.addObject("path","addAsset");
+
+        return  mav;
     }
 }
