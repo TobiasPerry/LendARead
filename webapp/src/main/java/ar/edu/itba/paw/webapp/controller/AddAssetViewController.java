@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
+import ar.edu.itba.paw.webapp.presentation.SnackbarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -28,26 +29,9 @@ public class AddAssetViewController {
     ){
         FormValidationService formValidationService = formElements.validateRequest(request);
 
-        if(formValidationService.isValid())
-            model.addAttribute("showSnackbarSucess", true);
-        else
-           updateSnackbar(model, formValidationService);
+        SnackbarService.updateSnackbar(model, formValidationService);
 
         return viewName;
-    }
-
-    private void updateSnackbar(Model model, FormValidationService formValidationService) {
-        StringBuilder message = new StringBuilder();
-        int num = 0;
-        for (String invalidElementInfo : formValidationService) {
-            message.append('\n');
-            message.append(num++);
-            message.append(". ");
-            message.append(invalidElementInfo);
-        }
-        model.addAttribute("snackBarInvalidTextTitle", INVALID_INPUT_MESSAGE);
-        model.addAttribute("snackBarInvalidText", message.toString());
-        model.addAttribute("showSnackbarInvalid", true);
     }
     @Autowired
     public AddAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){

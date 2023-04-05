@@ -21,16 +21,7 @@
 <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
 
-    <div id="snackbarSucess" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-success text-light p-3 rounded">
-        Libro agregado exitosamente!
-    </div>
-
-    <div id="snackbarFailure" class="d-none position-fixed bottom-0 end-0 mb-3 me-3 bg-danger text-light p-3 rounded">
-        <div class="snackbar-text">
-            <strong><c:out value="${snackBarInvalidTextTitle}" />  </strong>
-            <c:out value="${snackBarInvalidText}" />
-        </div>
-    </div>
+    <jsp:include page="../components/snackbarComponent.jsp" />
 
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
     <div class="p-4 rounded" >
@@ -96,22 +87,6 @@
             document.getElementById('uploadLabel').style.display = 'none';
         };
         reader.readAsDataURL(event.target.files[0]);
-    }
-
-    const showSnackbarSucess = '${showSnackbarSucess}' === 'true';
-    if (showSnackbarSucess) {
-        document.getElementById('snackbarSucess').classList.remove('d-none');
-        setTimeout(() => {
-            document.getElementById('snackbarSucess').classList.add('d-none');
-        }, 3000);
-    }
-
-    const showSnackbarInvalid = '${showSnackbarInvalid}' === 'true';
-    if (showSnackbarInvalid) {
-        document.getElementById('snackbarFailure').classList.remove('d-none');
-        setTimeout(() => {
-            document.getElementById('snackbarFailure').classList.add('d-none');
-        }, 10000);
     }
 </script>
 
