@@ -1,25 +1,21 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import interfaces.AssetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
 @Controller
 public class BorrowAssetViewController {
-    private final ViewResolver viewResolver;
+    AssetAvailabilityService assetAvailabilityService;
     final String viewName = "views/borrowAssetView";
 
     private final FormServiceBorrowAssetView formElements = new FormServiceBorrowAssetView();
@@ -33,13 +29,15 @@ public class BorrowAssetViewController {
 
         SnackbarService.updateSnackbar(model, formValidationService);
 
+        if(formValidationService.isValid())
+           assetAvailabilityService.borrowAsset();
 
         return viewName;
     }
 
     @Autowired
-    public BorrowAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
-        this.viewResolver = vr;
+    public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService){
+       this.assetAvailabilityService = assetAvailabilityService;
     }
 
     @RequestMapping( "/borrowAssetView")

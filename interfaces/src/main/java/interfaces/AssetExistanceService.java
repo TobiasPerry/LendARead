@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface AssetInstanceService {
+public interface AssetExistanceService {
 
     boolean addAssetInstance();
 

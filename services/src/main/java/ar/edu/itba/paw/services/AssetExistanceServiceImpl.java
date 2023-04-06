@@ -1,14 +1,15 @@
 package ar.edu.itba.paw.services;
 
-import interfaces.AssetInstanceService;
+import interfaces.AssetExistanceService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AssetInstanceServiceImpl implements AssetInstanceService {
+public class AssetExistanceServiceImpl implements AssetExistanceService {
 
     @Override
     public boolean addAssetInstance() {
         System.out.println("send to database a new book");
+
         return false;
     }
 
