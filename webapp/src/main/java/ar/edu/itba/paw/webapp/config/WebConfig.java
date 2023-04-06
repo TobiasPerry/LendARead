@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 import javax.sql.DataSource;
 
 @EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.paw.persistence"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.paw.persistence","ar.edu.itba.paw.services"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 

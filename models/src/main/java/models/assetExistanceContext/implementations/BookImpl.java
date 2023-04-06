@@ -13,19 +13,17 @@ public class BookImpl implements Book {
 
     private final String language;
 
-    private final byte[] photo;
+    private final byte[] photo= new byte[0];
 
     private final String type = "Book";
 
-    public BookImpl( String isbn, String author, String title, String language, byte[] photo) {
+    public BookImpl( String isbn, String author, String title, String language) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;
         this.language = language;
-        this.photo = photo;
+
     }
-
-
 
     @Override
     public String getName() {

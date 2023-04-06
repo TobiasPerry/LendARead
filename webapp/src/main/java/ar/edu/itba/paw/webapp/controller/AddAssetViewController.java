@@ -4,6 +4,8 @@ import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import interfaces.TestService;
+import models.assetExistanceContext.implementations.BookImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,10 @@ public class AddAssetViewController {
     private final ViewResolver viewResolver;
     private final static String INVALID_INPUT_MESSAGE ="Los siguientes argumentos estan mal:" ;
     FormService formElements = new FormServiceAddAssetView();
+
+    @Autowired
+    TestService testService;
+
     final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
@@ -33,6 +39,20 @@ public class AddAssetViewController {
 
         return viewName;
     }
+    @RequestMapping(value="/createAsset",method = RequestMethod.POST)
+    public String createAsset(String isbn,String title ){
+        BookImpl book = new BookImpl(isbn,"",title,"");
+        testService.createAsset(book);
+        return viewName;
+    }
+    @RequestMapping( "/addAssetViewTest")
+    public ModelAndView addAsetTest(){
+        final ModelAndView mav = new ModelAndView("views/testView");
+        mav.addObject("path","addAsset");
+
+        return  mav;
+    }
+
     @Autowired
     public AddAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
         this.viewResolver = vr;

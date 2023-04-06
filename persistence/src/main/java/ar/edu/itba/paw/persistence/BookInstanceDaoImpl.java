@@ -23,7 +23,7 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage"),rs.getBytes("photo")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl(),new LocationImpl());
+    private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl(),new LocationImpl());
 
     @Autowired
     public BookInstanceDaoImpl(final DataSource	ds) {
@@ -39,10 +39,12 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
         return Optional.of(bookList);
     }
 
+
     @Override
-    public Optional<Integer> addAssetInstance(final AssetInstance ai)
+    public Optional<Integer> addAssetInstance(final Book ai)
     {
 
+        jdbcTemplate.update("INSERT INTO book(isbn, title,author,language,photo) SELECT ? , ?,'a','a','a'  WHERE NOT EXISTS (SELECT isbn FROM book WHERE isbn = ?)", ai.getIsbn(), ai.getName(), ai.getIsbn());
         return Optional.empty();
     }
 
