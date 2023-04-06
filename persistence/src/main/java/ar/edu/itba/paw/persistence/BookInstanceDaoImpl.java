@@ -43,8 +43,8 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
     @Override
     public Optional<Integer> addAssetInstance(final Book ai)
     {
-
-        jdbcTemplate.update("INSERT INTO book(isbn, title,author,language,photo) SELECT ? , ?,'a','a','a'  WHERE NOT EXISTS (SELECT isbn FROM book WHERE isbn = ?)", ai.getIsbn(), ai.getName(), ai.getIsbn());
+        //TODO fijarse como hacer de devolver el id o de devolver algo
+        jdbcTemplate.update("INSERT INTO book(isbn, title,author,language,photo) SELECT ? , ?,'?','?','?'  WHERE NOT EXISTS (SELECT isbn FROM book WHERE isbn = ?)", ai.getIsbn(), ai.getName(),ai.author(),ai.getLanguage(),ai.getPhoto(), ai.getIsbn());
         return Optional.empty();
     }
 
