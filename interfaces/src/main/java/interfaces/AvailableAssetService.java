@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.services;
+package interfaces;
 
 import models.assetExistanceContext.interfaces.AssetInstance;
 import models.assetLendingContext.interfaces.AvailableAsset;

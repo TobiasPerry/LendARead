@@ -4,6 +4,7 @@ import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import interfaces.AssetInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AddAssetViewController {
-    private final ViewResolver viewResolver;
-    private final static String INVALID_INPUT_MESSAGE ="Los siguientes argumentos estan mal:" ;
-    FormService formElements = new FormServiceAddAssetView();
+    private FormService formElements = new FormServiceAddAssetView();
+
+    private final AssetInstanceService assetInstanceService;
     final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
@@ -31,11 +32,14 @@ public class AddAssetViewController {
 
         SnackbarService.updateSnackbar(model, formValidationService);
 
+        if(formValidationService.isValid()) {
+            assetInstanceService.addAssetInstance();
+        }
         return viewName;
     }
     @Autowired
-    public AddAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
-        this.viewResolver = vr;
+    public AddAssetViewController(AssetInstanceService assetInstanceService){
+        this.assetInstanceService = assetInstanceService;
     }
 
     @RequestMapping( "/addAssetView")
