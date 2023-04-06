@@ -4,22 +4,21 @@ import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import interfaces.AssetExistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AddAssetViewController {
-    private final ViewResolver viewResolver;
-    private final static String INVALID_INPUT_MESSAGE ="Los siguientes argumentos estan mal:" ;
-    FormService formElements = new FormServiceAddAssetView();
+    private FormService formService = new FormServiceAddAssetView();
+
+    private final AssetExistanceService assetExistanceService;
     final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
@@ -27,15 +26,18 @@ public class AddAssetViewController {
             Model model,
             HttpServletRequest request
     ){
-        FormValidationService formValidationService = formElements.validateRequest(request);
+        FormValidationService formValidationService = formService.validateRequest(request);
 
         SnackbarService.updateSnackbar(model, formValidationService);
+
+        if(formValidationService.isValid())
+            assetExistanceService.addAssetInstance();
 
         return viewName;
     }
     @Autowired
-    public AddAssetViewController(@Qualifier("viewResolver")final ViewResolver vr){
-        this.viewResolver = vr;
+    public AddAssetViewController(AssetExistanceService assetExistanceService){
+        this.assetExistanceService = assetExistanceService;
     }
 
     @RequestMapping( "/addAssetView")
