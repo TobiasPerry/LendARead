@@ -5,8 +5,9 @@
 
 <head>
     <title>Prestar Libro</title>
-    <link href="/css/main.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
+
     <style>
         .snackbar-text {
             white-space: pre-wrap;
@@ -15,8 +16,9 @@
             max-width: 100%;
         }
     </style>
+    <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
 </head>
-<body>
+<body data-path="${path}">
 
 <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
