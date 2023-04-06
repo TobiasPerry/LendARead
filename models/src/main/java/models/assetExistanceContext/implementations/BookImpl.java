@@ -4,7 +4,6 @@ import models.assetExistanceContext.interfaces.Book;
 
 public class BookImpl implements Book {
 
-    private final int uid;
 
     private final String isbn;
 
@@ -18,8 +17,7 @@ public class BookImpl implements Book {
 
     private final String type = "Book";
 
-    public BookImpl(int uid, String isbn, String author, String title, String language, byte[] photo) {
-        this.uid = uid;
+    public BookImpl( String isbn, String author, String title, String language, byte[] photo) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;
@@ -27,10 +25,7 @@ public class BookImpl implements Book {
         this.photo = photo;
     }
 
-    @Override
-    public int getId() {
-        return this.uid;
-    }
+
 
     @Override
     public String getName() {
