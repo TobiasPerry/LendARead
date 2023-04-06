@@ -12,4 +12,11 @@ public class AssetInstanceImpl implements AssetInstance {
     private UserImpl userReference;
 
     private LocationImpl location;
+
+    public AssetInstanceImpl(BookImpl bookImpl, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location) {
+        this.bookImpl = bookImpl;
+        this.physicalCondition = physicalCondition;
+        this.userReference = userReference;
+        this.location = location;
+    }
 }
