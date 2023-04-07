@@ -6,8 +6,6 @@ import java.util.Arrays;
 
 public class BookImpl implements Book {
 
-    static int NEXT = 0; //NOT SURE IF THIS IS CORRECT
-    private final int uid;
 
     private final String isbn;
 
@@ -17,33 +15,23 @@ public class BookImpl implements Book {
 
     private final String language;
 
-    private final byte[] photo;
 
     private final String type = "Book";
 
-    public BookImpl(String isbn, String author, String title, String language, byte[] photo) {
-        this.uid = NEXT++;
+    public BookImpl(String isbn, String author, String title, String language) {
         this.isbn = isbn;
         this.author = author;
         this.title = title;
         this.language = language;
-        this.photo = photo;
     }
 
-    @Override
-    public int getId() {
-        return this.uid;
-    }
+
 
     @Override
     public String getName() {
         return this.title;
     }
 
-    @Override
-    public byte[] getPhoto() {
-        return this.photo;
-    }
 
     @Override
     public String display() {
@@ -73,12 +61,10 @@ public class BookImpl implements Book {
     @Override
     public String toString() {
         return "BookImpl{" +
-                "uid=" + uid +
                 ", isbn='" + isbn + '\'' +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", language='" + language + '\'' +
-                ", photo=" + Arrays.toString(photo) +
                 ", type='" + type + '\'' +
                 '}';
     }

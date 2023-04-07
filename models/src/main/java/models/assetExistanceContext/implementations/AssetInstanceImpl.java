@@ -34,4 +34,9 @@ public class AssetInstanceImpl implements AssetInstance {
     private User userReference;
 
     private Location location;
+
+    @Override
+    public Book getBook() {
+        return book;
+    }
 }
