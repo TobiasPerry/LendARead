@@ -1,10 +1,25 @@
 package ar.edu.itba.paw.webapp.presentation;
 
+import models.assetExistanceContext.factories.AssetInstanceFactory;
+import models.assetExistanceContext.factories.BookFactory;
+import models.assetExistanceContext.implementations.AssetInstanceImpl;
+import models.assetExistanceContext.implementations.BookImpl;
+import models.assetExistanceContext.implementations.PhysicalCondition;
+import models.assetExistanceContext.interfaces.AssetInstance;
+import models.assetExistanceContext.interfaces.Book;
+import models.userContext.factories.LocationFactory;
+import models.userContext.factories.UserFactory;
+import models.userContext.interfaces.Location;
+import models.userContext.interfaces.User;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FormServiceAddAssetView implements FormService {
+@Service
+final public class FormServiceAddAssetView implements FormService {
 
     private final FormElement[] bookInfoElements = new FormElementImpl[] {
             new FormElementNonEmptyString("Título", "title"),
@@ -13,7 +28,7 @@ public class FormServiceAddAssetView implements FormService {
             new FormElementISBN("ISBN", "isbn"),
     };;
 
-    private final FormElementDropdown conditionsDropDown = new FormElementDropdown("Estado", "physicalCondition",  new String[] {"asnew", "fine", "verygood", "good", "fair", "poor", "exlibrary", "bookclub", "bindingcopy"});
+    private final FormElementDropdown conditionsDropDown = new FormElementDropdown("Estado", "physicalCondition",  new String[] {"ASNEW", "FINE", "VERYGOOD", "GOOD", "FAIR", "POOR", "EXLIBRARY", "BOOKCLUB", "BINDINGCOPY"});
     private final FormElement[] locationInfoElements  = new FormElementImpl[] {
             new FormElementZipcode("Codigo postal",  "zipcode"),
             new FormElementNonEmptyString("Localidad", "locality"),
@@ -50,5 +65,32 @@ public class FormServiceAddAssetView implements FormService {
 
     public FormElementDropdown getConditionsDropDown() {
         return this.conditionsDropDown;
+    }
+
+    public AssetInstance createAssetInstance(HttpServletRequest request) {
+
+        User user = UserFactory.createUser(
+                request.getParameter("email"),
+                request.getParameter("name"),
+                request.getParameter("message")
+        );
+
+        Location location = LocationFactory.createLocation(
+                request.getParameter("zipcode"),
+                request.getParameter("locality"),
+                request.getParameter("province"),
+                request.getParameter("country")
+        );
+
+        Book book = BookFactory.createBook(
+                request.getParameter("isbn"),
+                request.getParameter("author"),
+                request.getParameter("title"),
+                request.getParameter("language"),
+                null);
+
+        PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getParameter("physicalCondition"));
+
+        return AssetInstanceFactory.createAssetInstance(book, physicalCondition, user, location);
     }
 }

@@ -9,5 +9,16 @@ public enum PhysicalCondition {
     POOR,
     EXLIBRARY,
     BOOKCLUB,
-    BINDINGCOPY
+    BINDINGCOPY;
+
+    public static PhysicalCondition fromString(String value) {
+        if (value != null) {
+            for (PhysicalCondition condition : PhysicalCondition.values()) {
+                if (value.equalsIgnoreCase(condition.toString())) {
+                    return condition;
+                }
+            }
+        }
+        throw new IllegalArgumentException("No enum constant found for value: " + value);
+    }
 }

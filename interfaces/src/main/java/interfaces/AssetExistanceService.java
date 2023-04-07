@@ -1,8 +1,9 @@
 package interfaces;
 
+import models.assetExistanceContext.interfaces.AssetInstance;
+
 public interface AssetExistanceService {
 
-    boolean addAssetInstance();
+    boolean addAssetInstance(AssetInstance assetInstance);
 
-    boolean removeAssetInstance();
 }
