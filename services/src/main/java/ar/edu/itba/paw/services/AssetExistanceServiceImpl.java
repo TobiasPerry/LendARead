@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
+
     @Override
     public boolean addAssetInstance(AssetInstance assetInstance) {
 
-        return false;
+        System.out.println(assetInstance.toString());
+        return true;
     }
 }

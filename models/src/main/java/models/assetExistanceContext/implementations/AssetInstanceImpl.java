@@ -17,6 +17,16 @@ public class AssetInstanceImpl implements AssetInstance {
         this.location = location;
     }
 
+    @Override
+    public String toString() {
+        return "AssetInstanceImpl{" +
+                "book=" + book +
+                ", physicalCondition=" + physicalCondition +
+                ", userReference=" + userReference +
+                ", location=" + location +
+                '}';
+    }
+
     private Book book;
 
     private PhysicalCondition physicalCondition;

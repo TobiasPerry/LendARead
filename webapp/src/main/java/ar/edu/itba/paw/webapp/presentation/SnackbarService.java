@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 
      private SnackbarService() {}
 
-
     static public void displaySuccess(Model model) {
         model.addAttribute("showSnackbarSucess", true);
     }
