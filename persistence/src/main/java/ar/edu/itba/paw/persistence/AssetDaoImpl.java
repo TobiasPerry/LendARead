@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.itba.edu.paw.persistenceinterfaces.BookInstanceDao;
+import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import models.assetExistanceContext.implementations.AssetInstanceImpl;
 import models.assetExistanceContext.implementations.BookImpl;
 import models.assetExistanceContext.implementations.PhysicalCondition;
-import models.assetExistanceContext.interfaces.AssetInstance;
 import models.assetExistanceContext.interfaces.Book;
 import models.userContext.implementations.LocationImpl;
 import models.userContext.implementations.UserImpl;
@@ -25,22 +24,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class BookInstanceDaoImpl implements BookInstanceDao {
+public class AssetDaoImpl implements AssetDao {
 
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl("","",""),new LocationImpl("","","",""));
+    private static final RowMapper<Book>ROW_MAPPER = (rs,rownum)-> new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage"));
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs,rownum) -> rs.getInt("uid");
     @Autowired
-    public BookInstanceDaoImpl(final DataSource	ds) {
+    public AssetDaoImpl(final DataSource	ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
 
     @Override
-    public Optional<List<AssetInstanceImpl>> getAvailableBooks() {
-        final List<AssetInstanceImpl> bookList = jdbcTemplate.query("SELECT * FROM bookinstance",ROW_MAPPER);
+    public Optional<List<Book>> getAssets() {
+        final List<Book> bookList = jdbcTemplate.query("SELECT * FROM bookinstance",ROW_MAPPER);
         if(bookList.isEmpty())
             return Optional.empty();
         return Optional.of(bookList);
@@ -50,11 +49,9 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
     @Override
     public Optional<Integer> addAsset(final Book ai)
     {
-        //TODO fijarse como hacer de devolver el id o de devolver algo
 
         String query ="INSERT INTO book(isbn, title,author,language,photo) VALUES (?,?,?,?,?)  ON CONFLICT DO NOTHING RETURNING uid";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        // Ejecutar la consulta y obtener el ID generado
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection conexion) throws SQLException {
