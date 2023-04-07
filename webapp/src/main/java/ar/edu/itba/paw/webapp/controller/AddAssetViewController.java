@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.webapp.presentation.FormService;
 import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
@@ -15,11 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class AddAssetViewController {
-    private FormService formService = new FormServiceAddAssetView();
+final public class AddAssetViewController {
+    private final FormServiceAddAssetView formService;
 
     private final AssetExistanceService assetExistanceService;
-    final String viewName = "views/addAssetView";
+    private final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public String addAsset(
@@ -28,16 +27,21 @@ public class AddAssetViewController {
     ){
         FormValidationService formValidationService = formService.validateRequest(request);
 
-        SnackbarService.updateSnackbar(model, formValidationService);
+        SnackbarService.displayValidation(model, formValidationService);
 
-        if(formValidationService.isValid())
-            assetExistanceService.addAssetInstance();
+        if(!formValidationService.isValid())
+            return viewName;
+
+        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(request));
+        if(addedBookSuccessfully)
+            SnackbarService.displaySuccess(model);
 
         return viewName;
     }
     @Autowired
-    public AddAssetViewController(AssetExistanceService assetExistanceService){
+    public AddAssetViewController(AssetExistanceService assetExistanceService, FormServiceAddAssetView formServiceAddAssetView){
         this.assetExistanceService = assetExistanceService;
+        this.formService = formServiceAddAssetView;
     }
 
     @RequestMapping( "/addAssetView")

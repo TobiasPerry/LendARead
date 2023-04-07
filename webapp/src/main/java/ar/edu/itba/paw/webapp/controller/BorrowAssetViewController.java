@@ -27,7 +27,7 @@ public class BorrowAssetViewController {
 
         FormValidationService formValidationService = formElements.validateRequest(request);
 
-        SnackbarService.updateSnackbar(model, formValidationService);
+        SnackbarService.displayValidation(model, formValidationService);
 
         if(formValidationService.isValid())
            assetAvailabilityService.borrowAsset();

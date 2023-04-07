@@ -6,10 +6,12 @@ import org.springframework.ui.Model;
 
      private SnackbarService() {}
 
-    static public void updateSnackbar(Model model, FormValidationService formValidationService) {
-        if(formValidationService.isValid())
-            model.addAttribute("showSnackbarSucess", true);
-        else {
+
+    static public void displaySuccess(Model model) {
+        model.addAttribute("showSnackbarSucess", true);
+    }
+
+    static public void displayValidation(Model model, FormValidationService formValidationService) {
             StringBuilder message = new StringBuilder();
             int num = 0;
             for (String invalidElementInfo : formValidationService) {
@@ -22,5 +24,4 @@ import org.springframework.ui.Model;
             model.addAttribute("snackBarInvalidText", message.toString());
             model.addAttribute("showSnackbarInvalid", true);
         }
-    }
 }
