@@ -30,7 +30,7 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl(),new LocationImpl());
+    private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl("","",""),new LocationImpl("","","",""));
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs,rownum) -> rs.getInt("uid");
     @Autowired
     public BookInstanceDaoImpl(final DataSource	ds) {
@@ -48,7 +48,7 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
 
 
     @Override
-    public Optional<Integer> addAssetInstance(final Book ai)
+    public Optional<Integer> addAsset(final Book ai)
     {
         //TODO fijarse como hacer de devolver el id o de devolver algo
 
@@ -71,8 +71,8 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
         if(keyHolder.getKey() == null){
             return getUid(ai);
         }else {
-            int idGenerado = keyHolder.getKey().intValue();
-            return Optional.of(idGenerado);
+            int generatedId = keyHolder.getKey().intValue();
+            return Optional.of(generatedId);
         }
     }
     private Optional<Integer> getUid(final Book bi){

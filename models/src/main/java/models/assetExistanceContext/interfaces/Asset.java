@@ -5,7 +5,6 @@ public interface Asset {
 
      String getName();
 
-    byte[] getPhoto();
 
     String display();
 

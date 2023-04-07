@@ -16,7 +16,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         }
         // Mock. Debe conectarse con la capa de persistencia.
         // TODO. Una vez la capa de persistencia este implementada, devolverla
-        AssetInstance assetInstance = new AssetInstanceImpl();
+      //  AssetInstance assetInstance = new AssetInstanceImpl();
         // HashMap<String, String> info = assetInstance.display(); TODO
         HashMap<String, String> info = new HashMap<>();
         info.put("id", id);

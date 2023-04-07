@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface BookInstanceDao {
     Optional<List<AssetInstanceImpl>> getAvailableBooks();
 
-    Optional<Integer> addAssetInstance(final Book ai);
+    Optional<Integer> addAsset(final Book ai);
 }
