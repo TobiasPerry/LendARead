@@ -10,8 +10,6 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     @Override
     public boolean addAssetInstance(AssetInstance assetInstance) {
 
-
-
         return false;
     }
 }

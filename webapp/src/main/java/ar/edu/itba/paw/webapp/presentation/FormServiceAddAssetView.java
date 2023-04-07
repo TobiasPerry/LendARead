@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.presentation;
 
+import models.assetExistanceContext.factories.AssetInstanceFactory;
 import models.assetExistanceContext.factories.BookFactory;
 import models.assetExistanceContext.implementations.AssetInstanceImpl;
 import models.assetExistanceContext.implementations.BookImpl;
@@ -88,9 +89,8 @@ final public class FormServiceAddAssetView implements FormService {
                 request.getParameter("language"),
                 null);
 
-
         PhysicalCondition physicalCondition = PhysicalCondition.valueOf(request.getParameter("inputName"));
 
-        return new AssetInstanceImpl(book, physicalCondition, user, location);
+        return AssetInstanceFactory.createAssetInstance(book, physicalCondition, user, location);
     }
 }
