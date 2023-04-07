@@ -29,7 +29,7 @@ public class AssetDaoImpl implements AssetDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl("","",""),new LocationImpl("","","",""));
+    private static final RowMapper<Book>ROW_MAPPER = (rs,rownum)-> new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage"));
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs,rownum) -> rs.getInt("uid");
     @Autowired
     public AssetDaoImpl(final DataSource	ds) {
@@ -38,8 +38,8 @@ public class AssetDaoImpl implements AssetDao {
 
 
     @Override
-    public Optional<List<AssetInstanceImpl>> getAssets() {
-        final List<AssetInstanceImpl> bookList = jdbcTemplate.query("SELECT * FROM bookinstance",ROW_MAPPER);
+    public Optional<List<Book>> getAssets() {
+        final List<Book> bookList = jdbcTemplate.query("SELECT * FROM bookinstance",ROW_MAPPER);
         if(bookList.isEmpty())
             return Optional.empty();
         return Optional.of(bookList);
