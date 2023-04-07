@@ -10,10 +10,17 @@ import models.userContext.implementations.LocationImpl;
 import models.userContext.implementations.UserImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +31,7 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
     private final JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<AssetInstanceImpl>ROW_MAPPER = (rs,rownum)-> new AssetInstanceImpl(new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage")),PhysicalCondition.valueOf(rs.getString("physicalCondition")),new UserImpl(),new LocationImpl());
-
+    private static final RowMapper<Integer> ROW_MAPPER_UID = (rs,rownum) -> rs.getInt("uid");
     @Autowired
     public BookInstanceDaoImpl(final DataSource	ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
@@ -44,8 +51,36 @@ public class BookInstanceDaoImpl implements BookInstanceDao {
     public Optional<Integer> addAssetInstance(final Book ai)
     {
         //TODO fijarse como hacer de devolver el id o de devolver algo
-        jdbcTemplate.update("INSERT INTO book(isbn, title,author,language,photo) SELECT ? , ?,'?','?','?'  WHERE NOT EXISTS (SELECT isbn FROM book WHERE isbn = ?)", ai.getIsbn(), ai.getName(),ai.author(),ai.getLanguage(),ai.getPhoto(), ai.getIsbn());
-        return Optional.empty();
+
+        String query ="INSERT INTO book(isbn, title,author,language,photo) VALUES (?,?,?,?,?)  ON CONFLICT DO NOTHING RETURNING uid";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        // Ejecutar la consulta y obtener el ID generado
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection conexion) throws SQLException {
+                PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                pstmt.setString(1, ai.getIsbn());
+                pstmt.setString(2,ai.getName());
+                pstmt.setString(3,ai.author());
+                pstmt.setString(4,ai.getLanguage());
+                pstmt.setBytes(5,new byte[0]);
+                return pstmt;
+            }
+        }, keyHolder);
+
+        if(keyHolder.getKey() == null){
+            return getUid(ai);
+        }else {
+            int idGenerado = keyHolder.getKey().intValue();
+            return Optional.of(idGenerado);
+        }
     }
+    private Optional<Integer> getUid(final Book bi){
+        final List<Integer> ids =  jdbcTemplate.query("SELECT uid FROM book WHERE isbn = ?",new Object[]{bi.getIsbn()},ROW_MAPPER_UID);
+        if(ids.isEmpty())
+            return Optional.empty();
+        return Optional.of(ids.get(0));
+    }
+
 
 }

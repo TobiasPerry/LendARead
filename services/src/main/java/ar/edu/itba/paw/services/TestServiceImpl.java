@@ -12,6 +12,7 @@ public class TestServiceImpl implements TestService {
     private BookInstanceDao bookDao;
     @Override
     public void createAsset(Book bi) {
-        bookDao.addAssetInstance(bi);
+
+        System.out.println(bookDao.addAssetInstance(bi));
     }
 }
