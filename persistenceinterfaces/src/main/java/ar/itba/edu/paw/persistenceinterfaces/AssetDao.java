@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface AssetDao {
     Optional<List<Book>> getAssets();
 
-    Optional<Integer> addAsset(final Book ai);
+    Optional<Integer> addAsset(final Book bi);
 }

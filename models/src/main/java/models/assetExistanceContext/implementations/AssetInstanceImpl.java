@@ -39,4 +39,19 @@ public class AssetInstanceImpl implements AssetInstance {
     public Book getBook() {
         return book;
     }
+
+    @Override
+    public User getOwner() {
+        return userReference;
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    @Override
+    public PhysicalCondition getPhysicalCondition() {
+        return physicalCondition;
+    }
 }

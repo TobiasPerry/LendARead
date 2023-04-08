@@ -21,5 +21,22 @@ final public class UserImpl implements User {
                 ", message='" + message + '\'' +
                 '}';
     }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getBehavior() {
+        return message;
+    }
+
+    @Override
+    public String getTelephone() {
+        return "Phone";
+    }
+
+
 }
 
