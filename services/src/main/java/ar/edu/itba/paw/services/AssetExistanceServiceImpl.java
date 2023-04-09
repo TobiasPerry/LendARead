@@ -25,8 +25,10 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     public boolean addAssetInstance(AssetInstance assetInstance) {
         Optional<Integer> assetId = bookDao.addAsset(assetInstance.getBook());
         Optional<Integer> userId = userDao.addUser(assetInstance.getOwner());
-        if(assetId.isPresent() && userId.isPresent())
-            assetInstanceDao.addAssetInstance(assetId.get(),userId.get(),assetInstance);
-        return true;
+        if(assetId.isPresent() && userId.isPresent()) {
+            assetInstanceDao.addAssetInstance(assetId.get(), userId.get(), assetInstance);
+            return true;
+        }
+        return false;
     }
 }
