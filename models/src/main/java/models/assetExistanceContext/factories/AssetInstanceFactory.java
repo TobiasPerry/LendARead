@@ -8,7 +8,7 @@ import models.userContext.interfaces.Location;
 import models.userContext.interfaces.User;
 
 public class AssetInstanceFactory {
-    public static AssetInstance createAssetInstance(Book book, PhysicalCondition physicalCondition, User user, Location location) {
-        return new AssetInstanceImpl(book, physicalCondition, user, location);
+    public static AssetInstance createAssetInstance(int id,Book book, PhysicalCondition physicalCondition, User user, Location location) {
+        return new AssetInstanceImpl(id,book, physicalCondition, user, location);
     }
 }

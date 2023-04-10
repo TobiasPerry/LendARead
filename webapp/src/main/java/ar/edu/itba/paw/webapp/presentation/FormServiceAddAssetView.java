@@ -91,6 +91,6 @@ final public class FormServiceAddAssetView implements FormService {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getParameter("physicalCondition"));
 
-        return AssetInstanceFactory.createAssetInstance(book, physicalCondition, user, location);
+        return AssetInstanceFactory.createAssetInstance(0, book, physicalCondition, user, location);
     }
 }

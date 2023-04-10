@@ -10,7 +10,8 @@ import models.userContext.interfaces.User;
 
 public class AssetInstanceImpl implements AssetInstance {
 
-    public AssetInstanceImpl(Book book, PhysicalCondition physicalCondition, User userReference, Location location) {
+    public AssetInstanceImpl(int id,Book book, PhysicalCondition physicalCondition, User userReference, Location location) {
+        this.id = id;
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
@@ -28,6 +29,8 @@ public class AssetInstanceImpl implements AssetInstance {
     }
 
     private Book book;
+
+    private int id;
 
     private PhysicalCondition physicalCondition;
 
