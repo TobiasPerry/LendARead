@@ -10,77 +10,20 @@
 <jsp:include page="../components/navBar.jsp"/>
 
 <div class="container-row-wrapped">
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
 
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
+    <c:if test="${books.size() > 0}">
+        <c:forEach var="book" items="${books}">
+            <jsp:include page="../components/bookCard.jsp">
+                <jsp:param name="bookTitle" value="${book.getBook().getName()}"/>
+                <jsp:param name="bookAuthor" value="${book.getBook().author()}"/>
+                <jsp:param name="bookAvailability" value="X"/>
+            </jsp:include>
+        </c:forEach>
+    </c:if>
 
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
-
-    <jsp:include page="../components/bookCard.jsp">
-        <jsp:param name="bookTitle" value="Shoe Dog"/>
-        <jsp:param name="bookAuthor" value="Phil Knight"/>
-        <jsp:param name="bookAvailability" value="Available"/>
-    </jsp:include>
+    <c:if test="${books.size() <= 0}">
+        <h1>No books to show</h1>
+    </c:if>
 </div>
 </body>
 </html>
