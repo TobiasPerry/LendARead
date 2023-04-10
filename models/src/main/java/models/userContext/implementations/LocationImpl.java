@@ -24,4 +24,29 @@ final public class LocationImpl implements Location {
                 ", country='" + country + '\'' +
                 '}';
     }
+
+    @Override
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    @Override
+    public String getLocality() {
+        return locality;
+    }
+
+    @Override
+    public String getProvince() {
+        return province;
+    }
+
+    @Override
+    public String getCountry() {
+        return country;
+    }
+
+    @Override
+    public String getAddress() {
+        return null;
+    }
 }

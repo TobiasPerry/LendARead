@@ -12,11 +12,19 @@ CREATE TABLE IF NOT EXISTS users(
     mail varchar(100) unique,
     telephone varchar(100)
 );
+CREATE TABLE IF NOT EXISTS location(
+    id SERIAL primary key,
+    zipcode varchar(100) NOT NULL,
+    locality varchar(100) NOT NULL,
+    province varchar(100) NOT NULL,
+    country varchar(100) NOT NULL,
+    address varchar(100)
+    );
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,
     assetId INT references book(uid) ON DELETE CASCADE,
     owner INT references users(id) ON DELETE CASCADE,
-    location varchar(100),
+    locationId INT references location(id) ON DELETE SET NULL,
     physicalCondition varchar(100),
     status varchar(100)
 );

@@ -6,6 +6,6 @@ import models.assetExistanceContext.interfaces.Book;
 import java.util.Optional;
 
 public interface AssetInstanceDao {
-    Optional<Integer> addAssetInstance(final int id,int ownerId,final AssetInstance ai);
+    Optional<Integer> addAssetInstance(final int id,int ownerId,int locationId,final AssetInstance ai);
 
 }
