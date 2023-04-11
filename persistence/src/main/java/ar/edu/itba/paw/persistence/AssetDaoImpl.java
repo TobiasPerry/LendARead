@@ -4,6 +4,7 @@ import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,7 +26,7 @@ public class AssetDaoImpl implements AssetDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<Book>ROW_MAPPER = (rs,rownum)-> new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lenguage"));
+    private static final RowMapper<Book>ROW_MAPPER = (rs,rownum)-> new BookImpl(rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("language"));
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs,rownum) -> rs.getInt("uid");
     @Autowired
     public AssetDaoImpl(final DataSource	ds) {
@@ -67,6 +68,19 @@ public class AssetDaoImpl implements AssetDao {
             return Optional.of(generatedId);
         }
     }
+
+    @Override
+    public Optional<Book> getBook(String isbn) {
+        Object[] params = new Object[] {isbn};
+        Book book;
+        try {
+            book = jdbcTemplate.queryForObject("SELECT isbn, author, title, language FROM book where isbn = ?", params, ROW_MAPPER);
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
+        return Optional.of(book);
+    }
+
     private Optional<Integer> getUid(final Book bi){
         final List<Integer> ids =  jdbcTemplate.query("SELECT uid FROM book WHERE isbn = ?",new Object[]{bi.getIsbn()},ROW_MAPPER_UID);
         if(ids.isEmpty())

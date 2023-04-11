@@ -20,11 +20,11 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@RequestParam(required = false) String id) {
-        if (id == null) {
+    public ModelAndView assetInfoView(@RequestParam(required = false) String isbn) {
+        if (isbn == null) {
             return new ModelAndView("/views/notFoundView");
         }
-        HashMap<String, String> info = this.assetInstanceService.getAssetInstanceDisplay(id);
+        HashMap<String, String> info = this.assetInstanceService.getAssetInstanceDisplay(isbn);
         if (info == null) {
             System.out.println("Not found");
             return new ModelAndView("/views/notFoundView");
@@ -33,7 +33,6 @@ public class AssetViewController {
         for (String key : info.keySet()) {
             mav.addObject(key, info.get(key));
         }
-        System.out.println(id);
         return mav;
     }
 }

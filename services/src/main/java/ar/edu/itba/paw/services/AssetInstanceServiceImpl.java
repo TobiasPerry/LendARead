@@ -7,31 +7,43 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
+import jdk.nashorn.internal.runtime.options.Option;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AssetInstanceServiceImpl implements AssetInstanceService {
 
+    @Autowired
+    AssetDao assetDao;
+
     @Override
-    public HashMap<String, String> getAssetInstanceDisplay(String id) {
-        if (! id.equals("1234")) {
-            return null;
-        }
+    public HashMap<String, String> getAssetInstanceDisplay(String isbn) {
         // Mock. Debe conectarse con la capa de persistencia.
         // TODO. Una vez la capa de persistencia este implementada, devolverla
       //  AssetInstance assetInstance = new AssetInstanceImpl();
         // HashMap<String, String> info = assetInstance.display(); TODO
+
+        Optional<Book> opt = this.assetDao.getBook(isbn);
+        if (! opt.isPresent()) {
+            return null;
+        }
+
+        Book book = opt.get();
+
         HashMap<String, String> info = new HashMap<>();
-        info.put("id", id);
-        info.put("name", "Mistborn");
-        info.put("type", "book");
-        info.put("isbn", "9780765311788");
-        info.put("author", "Brandon Sanderson");
-        info.put("language", "English");
+//        info.put("id", id);
+        info.put("name", book.getName());
+        info.put("type", book.type());
+        info.put("isbn", book.getIsbn());
+        info.put("author", book.author());
+        info.put("language", book.getLanguage());
         info.put("physicalCondition", "new");
         info.put("locationPC", "1425");
         info.put("location", "CABA");
