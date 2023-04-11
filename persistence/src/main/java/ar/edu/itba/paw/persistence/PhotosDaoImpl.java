@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -46,7 +47,11 @@ public class PhotosDaoImpl implements PhotosDao {
     }
 
     @Override
-    public Optional<Integer> getPhoto(int id) {
-        return Optional.empty();
+    public Optional<byte []> getPhoto(int id) {
+        String query = "SELECT photo FROM photos WHERE id = ?";
+
+        List<byte[]> photos = jdbcTemplate.query(query,(rs, colnum)-> rs.getBytes("photo"),id);
+
+        return photos.stream().findFirst();
     }
 }
