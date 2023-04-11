@@ -32,10 +32,12 @@
             <div class="col-md-6 d-flex flex-column align-items-center">
                 <div class="image-container position-relative">
                     <img src="#" alt="Book Cover" class="img-fluid" id="bookImage" style="max-width: 100%; max-height: 100%;">
-                    <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
-                        <i class="bi bi-cloud-upload"></i> Subir foto
-                        <input type="file" id="uploadImage" class="d-none" accept="image/*" onchange="previewImage(event)">
-                    </label>
+                    <form action="/uploadImage" method="post" enctype="multipart/form-data" id="uploadForm">
+                        <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
+                            <i class="bi bi-cloud-upload"></i> Subir foto
+                            <input type="file" id="uploadImage" name="file" class="d-none" accept="image/*" onchange="previewImage(event)">
+                        </label>
+                    </form>
                 </div>
             </div>
 
@@ -87,6 +89,8 @@
             const output = document.getElementById('bookImage');
             output.src = reader.result;
             document.getElementById('uploadLabel').style.display = 'none';
+            // Submit the form after previewing the image
+            document.getElementById('uploadForm').submit();
         };
         reader.readAsDataURL(event.target.files[0]);
     }
