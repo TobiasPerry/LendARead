@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import models.assetExistanceContext.implementations.AssetInstanceImpl;
-import models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

@@ -1,12 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
-import models.assetExistanceContext.implementations.AssetInstanceImpl;
-import models.assetExistanceContext.implementations.BookImpl;
-import models.assetExistanceContext.implementations.PhysicalCondition;
-import models.assetExistanceContext.interfaces.Book;
-import models.userContext.implementations.LocationImpl;
-import models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -50,7 +46,7 @@ public class AssetDaoImpl implements AssetDao {
     public Optional<Integer> addAsset(final Book ai)
     {
 
-        String query ="INSERT INTO book(isbn, title,author,language,photo) VALUES (?,?,?,?,?)  ON CONFLICT DO NOTHING RETURNING uid";
+        String query ="INSERT INTO book(isbn, title,author,language) VALUES (?,?,?,?)  ON CONFLICT DO NOTHING RETURNING uid";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -60,7 +56,6 @@ public class AssetDaoImpl implements AssetDao {
                 pstmt.setString(2,ai.getName());
                 pstmt.setString(3,ai.author());
                 pstmt.setString(4,ai.getLanguage());
-                pstmt.setBytes(5,new byte[0]);
                 return pstmt;
             }
         }, keyHolder);

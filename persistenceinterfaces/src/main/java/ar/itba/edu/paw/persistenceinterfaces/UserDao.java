@@ -1,6 +1,6 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 import java.util.Optional;
 
