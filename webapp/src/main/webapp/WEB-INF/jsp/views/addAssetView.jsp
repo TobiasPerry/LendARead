@@ -32,18 +32,15 @@
             <div class="col-md-6 d-flex flex-column align-items-center">
                 <div class="image-container position-relative">
                     <img src="#" alt="Book Cover" class="img-fluid" id="bookImage" style="max-width: 100%; max-height: 100%;">
-                    <form action="/uploadImage" method="post" enctype="multipart/form-data" id="uploadForm">
-                        <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
-                            <i class="bi bi-cloud-upload"></i> Subir foto
-                            <input type="file" id="uploadImage" name="file" class="d-none" accept="image/*" onchange="previewImage(event)">
-                        </label>
-                    </form>
+                    <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
+                        <i class="bi bi-cloud-upload"></i> Subir foto
+                        <input type="file" id="uploadImage" name="file" class="d-none" accept="image/*" onchange="previewImage(event)">
+                    </label>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <form action="addAsset" method="post">
-
+                <form action="addAsset" method="post" enctype="multipart/form-data">
                     <ul class="list-unstyled">
                         <li>
                             <h2> Informacion del libro </h2>
@@ -75,6 +72,7 @@
                             </li>
                             </c:forEach>
                     </ul>
+                    <input type="file" id="hiddenUploadImage" name="file" class="d-none" accept="image/*">
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo! </button>
                 </form>
             </div>
@@ -89,10 +87,9 @@
             const output = document.getElementById('bookImage');
             output.src = reader.result;
             document.getElementById('uploadLabel').style.display = 'none';
-            // Submit the form after previewing the image
-            document.getElementById('uploadForm').submit();
         };
         reader.readAsDataURL(event.target.files[0]);
+        document.getElementById('hiddenUploadImage').files = event.target.files;
     }
 </script>
 
