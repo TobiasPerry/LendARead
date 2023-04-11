@@ -5,5 +5,5 @@ import java.util.Optional;
 public interface PhotosDao {
     Optional<Integer> addPhoto(final byte[] photo);
 
-    Optional<Integer> getPhoto(int id);
+    Optional<byte []> getPhoto(int id);
 }
