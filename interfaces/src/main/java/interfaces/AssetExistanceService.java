@@ -1,6 +1,7 @@
 package interfaces;
 
-import models.assetExistanceContext.interfaces.AssetInstance;
+
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 
 public interface AssetExistanceService {
 

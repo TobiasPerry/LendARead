@@ -37,7 +37,7 @@ final public class AddAssetViewController {
         try {
             fileByteArray = file.getBytes();
         } catch (Exception e) {
-           // 
+           //
         }
 
         FormValidationService formValidationService = formService.validateRequest(request);
