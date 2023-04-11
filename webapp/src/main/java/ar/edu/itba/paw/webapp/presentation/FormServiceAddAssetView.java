@@ -1,16 +1,14 @@
 package ar.edu.itba.paw.webapp.presentation;
 
-import models.assetExistanceContext.factories.AssetInstanceFactory;
-import models.assetExistanceContext.factories.BookFactory;
-import models.assetExistanceContext.implementations.AssetInstanceImpl;
-import models.assetExistanceContext.implementations.BookImpl;
-import models.assetExistanceContext.implementations.PhysicalCondition;
-import models.assetExistanceContext.interfaces.AssetInstance;
-import models.assetExistanceContext.interfaces.Book;
-import models.userContext.factories.LocationFactory;
-import models.userContext.factories.UserFactory;
-import models.userContext.interfaces.Location;
-import models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
+import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
+import ar.edu.itba.paw.models.userContext.factories.UserFactory;
+import ar.edu.itba.paw.models.userContext.interfaces.Location;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,0 +1,24 @@
+package ar.edu.itba.paw.models.assetExistanceContext.implementations;
+
+public enum PhysicalCondition {
+    ASNEW,
+    FINE,
+    VERYGOOD,
+    GOOD,
+    FAIR,
+    POOR,
+    EXLIBRARY,
+    BOOKCLUB,
+    BINDINGCOPY;
+
+    public static PhysicalCondition fromString(String value) {
+        if (value != null) {
+            for (PhysicalCondition condition : PhysicalCondition.values()) {
+                if (value.equalsIgnoreCase(condition.toString())) {
+                    return condition;
+                }
+            }
+        }
+        throw new IllegalArgumentException("No enum constant found for value: " + value);
+    }
+}

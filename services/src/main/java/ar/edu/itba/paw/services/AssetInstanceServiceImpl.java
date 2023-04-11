@@ -1,12 +1,12 @@
 package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import models.assetExistanceContext.implementations.AssetInstanceImpl;
-import models.assetExistanceContext.implementations.BookImpl;
-import models.assetExistanceContext.implementations.PhysicalCondition;
-import models.assetExistanceContext.interfaces.AssetInstance;
-import models.assetExistanceContext.interfaces.Book;
-import models.userContext.implementations.LocationImpl;
-import models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

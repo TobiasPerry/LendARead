@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
-import models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

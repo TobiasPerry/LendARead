@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
-import models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
