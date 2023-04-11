@@ -31,17 +31,14 @@ public class LocationDaoImpl implements LocationDao {
     public Optional<Integer> addLocation(Location lc) {
         String query = "INSERT INTO location(zipcode,locality,province,country,address) VALUES(?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection conexion) throws SQLException {
-                PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-                pstmt.setString(1, lc.getZipcode());
-                pstmt.setString(2, lc.getLocality());
-                pstmt.setString(3, lc.getProvince());
-                pstmt.setString(4, lc.getCountry());
-                pstmt.setString(5, lc.getAddress());
-                return pstmt;
-            }
+        jdbcTemplate.update(conexion -> {
+            PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, lc.getZipcode());
+            pstmt.setString(2, lc.getLocality());
+            pstmt.setString(3, lc.getProvince());
+            pstmt.setString(4, lc.getCountry());
+            pstmt.setString(5, lc.getAddress());
+            return pstmt;
         }, keyHolder);
         if(keyHolder.getKeys() == null){
             return Optional.empty();
