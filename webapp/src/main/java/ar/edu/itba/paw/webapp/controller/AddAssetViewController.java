@@ -27,6 +27,19 @@ final public class AddAssetViewController {
             Model model,
             HttpServletRequest request
     ){
+        if (file.isEmpty()) {
+            model.addAttribute("message", "Please select an image to upload.");
+            return "views/addAssetView";
+        }
+
+        byte[] fileByteArray = new byte[0];
+
+        try {
+            fileByteArray = file.getBytes();
+        } catch (Exception e) {
+           // 
+        }
+
         FormValidationService formValidationService = formService.validateRequest(request);
 
         SnackbarService.displayValidation(model, formValidationService);
@@ -34,7 +47,7 @@ final public class AddAssetViewController {
         if(!formValidationService.isValid())
             return viewName;
 
-        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(request));
+        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(request), fileByteArray);
         if(addedBookSuccessfully)
             SnackbarService.displaySuccess(model);
 

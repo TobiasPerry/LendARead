@@ -26,10 +26,11 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     private LocationDao locationDao;
 
     @Override
-    public boolean addAssetInstance(AssetInstance assetInstance) {
+    public boolean addAssetInstance(AssetInstance assetInstance, byte[] photo) {
         Optional<Integer> assetId = bookDao.addAsset(assetInstance.getBook());
         Optional<Integer> userId = userDao.addUser(assetInstance.getOwner());
         Optional<Integer> locationId = locationDao.addLocation(assetInstance.getLocation());
+
         if(assetId.isPresent() && userId.isPresent() && locationId.isPresent()) {
             assetInstanceDao.addAssetInstance(assetId.get(), userId.get(),locationId.get(), assetInstance);
             return true;
