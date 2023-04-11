@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
