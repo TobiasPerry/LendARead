@@ -20,10 +20,10 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
     @Override
-    public Optional<Integer> addAssetInstance(int assetId,int ownerId,int locationId, AssetInstance ai) {
-        String query = "INSERT INTO assetinstance(assetid,owner,locationid,physicalcondition,status) VALUES(?,?,?,?,?)";
+    public Optional<Integer> addAssetInstance(int assetId,int ownerId,int locationId,int photoId, AssetInstance ai) {
+        String query = "INSERT INTO assetinstance(assetid,owner,locationid,physicalcondition,status,photoid) VALUES(?,?,?,?,?,?)";
 
-        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),"");
+        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),"",photoId);
 
 
         return Optional.empty();
