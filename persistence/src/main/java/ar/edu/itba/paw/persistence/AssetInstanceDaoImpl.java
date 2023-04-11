@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,5 +28,10 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<AssetInstance>> getAllAssetInstances(){
+        return null;
     }
 }
