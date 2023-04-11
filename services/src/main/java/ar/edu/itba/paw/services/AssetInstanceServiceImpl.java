@@ -1,10 +1,17 @@
 package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import models.assetExistanceContext.implementations.AssetInstanceImpl;
-import models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class AssetInstanceServiceImpl implements AssetInstanceService {
@@ -33,4 +40,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
         return info;
     }
+
+    public List<AssetInstance> getAllAssetsInstances(){
+        List<AssetInstance> books = new ArrayList<>();
+        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Phill Knight", "Shoe Dog", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
+        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Knight", "Biblia", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
+        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Phill ", "og", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
+        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Evans", "DDD", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
+        return books;
+    }
+
 }

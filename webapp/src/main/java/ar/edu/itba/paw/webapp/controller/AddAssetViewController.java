@@ -3,12 +3,14 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
 import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
-import interfaces.AssetExistanceService;
+import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ final public class AddAssetViewController {
     private final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
-    public String addAsset(
+    public String addAsset(@RequestParam("file") MultipartFile file,
             Model model,
             HttpServletRequest request
     ){

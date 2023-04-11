@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import org.springframework.stereotype.Service;
 
 @Service

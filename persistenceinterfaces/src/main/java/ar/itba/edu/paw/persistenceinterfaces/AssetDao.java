@@ -1,7 +1,6 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import models.assetExistanceContext.implementations.AssetInstanceImpl;
-import models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 
 import java.util.List;
 import java.util.Optional;
