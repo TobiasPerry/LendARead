@@ -1,13 +1,6 @@
 package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
