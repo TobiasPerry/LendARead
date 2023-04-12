@@ -24,11 +24,11 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
-                    rs.getInt("ai.id"),
-                    new BookImpl(rs.getString("b.isbn"), rs.getString("b.author"), rs.getString("b.title"), rs.getString("b.language")),
-                    PhysicalCondition.fromString(rs.getString("ai.physicalcondition")),
-                    new UserImpl(rs.getString("u.mail"), "X", "X"),
-                    new LocationImpl(rs.getString("l.zipcode"), rs.getString("l.locality"), rs.getString("l.province"), rs.getString("l.country"))
+                    rs.getInt("assetid"),
+                    new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
+                    PhysicalCondition.fromString(rs.getString("physicalcondition")),
+                    new UserImpl(rs.getString("mail"), "X", "X"),
+                    new LocationImpl(rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country"))
                     );
 //new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")
     @Autowired
@@ -46,6 +46,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     @Override
     public Optional<List<AssetInstance>> getAllAssetInstances(){
+
         String query = "select * from assetinstance as ai join book as b on ai.assetid=b.uid join location as l on ai.locationid=l.id join users as u on ai.owner=u.id";
 
         List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK);
