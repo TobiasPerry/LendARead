@@ -20,11 +20,9 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@RequestParam(required = false) String isbn) {
-        if (isbn == null) {
-            return new ModelAndView("/views/notFoundView");
-        }
-        HashMap<String, String> info = this.assetInstanceService.getAssetInstanceDisplay(isbn);
+    public ModelAndView assetInfoView(@RequestParam(required = true) int id) {
+
+        HashMap<String, String> info = this.assetInstanceService.getAssetInstanceDisplay(id);
         if (info == null) {
             System.out.println("Not found");
             return new ModelAndView("/views/notFoundView");

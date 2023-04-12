@@ -7,7 +7,9 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
+import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,33 +25,31 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Autowired
     AssetDao assetDao;
 
-    @Override
-    public HashMap<String, String> getAssetInstanceDisplay(String isbn) {
-        // Mock. Debe conectarse con la capa de persistencia.
-        // TODO. Una vez la capa de persistencia este implementada, devolverla
-      //  AssetInstance assetInstance = new AssetInstanceImpl();
-        // HashMap<String, String> info = assetInstance.display(); TODO
+    @Autowired
+    AssetInstanceDao assetInstanceDao;
 
-        Optional<Book> opt = this.assetDao.getBook(isbn);
-        if (! opt.isPresent()) {
+    @Override
+    public HashMap<String, String> getAssetInstanceDisplay(int id) {
+        Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
+        if (! assetInstanceOpt.isPresent()) {
             return null;
         }
 
-        Book book = opt.get();
-
+        AssetInstance assetInstance = assetInstanceOpt.get();
+        Book book = assetInstance.getBook();
+        Location loc = assetInstance.getLocation();
         HashMap<String, String> info = new HashMap<>();
-//        info.put("id", id);
+        info.put("id", Integer.toString(id));
         info.put("name", book.getName());
         info.put("type", book.type());
         info.put("isbn", book.getIsbn());
         info.put("author", book.author());
         info.put("language", book.getLanguage());
-        info.put("physicalCondition", "new");
-        info.put("locationPC", "1425");
-        info.put("location", "CABA");
-        info.put("province", "CABA");
-        info.put("country", "Argentina");
-
+        info.put("physicalCondition", assetInstance.getPhysicalCondition().toString());
+        info.put("locationPC", loc.getZipcode());
+        info.put("location", loc.getLocality());
+        info.put("province", loc.getProvince());
+        info.put("country", loc.getCountry());
         return info;
     }
 
