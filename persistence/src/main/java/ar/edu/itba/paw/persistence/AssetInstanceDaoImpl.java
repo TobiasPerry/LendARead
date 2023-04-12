@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
