@@ -7,12 +7,13 @@ import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 public class AssetInstanceImpl implements AssetInstance {
 
-    public AssetInstanceImpl(int id,Book book, PhysicalCondition physicalCondition, User userReference, Location location) {
+    public AssetInstanceImpl(int id,Book book, PhysicalCondition physicalCondition, User userReference, Location location,int imageId) {
         this.id = id;
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
         this.location = location;
+        this.imageId = imageId;
     }
 
     @Override
@@ -35,6 +36,7 @@ public class AssetInstanceImpl implements AssetInstance {
 
     private Location location;
 
+    private int imageId;
     @Override
     public Book getBook() {
         return book;
@@ -48,6 +50,11 @@ public class AssetInstanceImpl implements AssetInstance {
     @Override
     public Location getLocation() {
         return location;
+    }
+
+    @Override
+    public int getImageId() {
+        return imageId;
     }
 
     @Override
