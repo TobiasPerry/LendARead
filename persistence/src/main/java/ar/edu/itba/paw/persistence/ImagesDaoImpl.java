@@ -1,30 +1,27 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.itba.edu.paw.persistenceinterfaces.PhotosDao;
+import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PhotosDaoImpl implements PhotosDao {
+public class ImagesDaoImpl implements ImagesDao {
 
 
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PhotosDaoImpl(final DataSource ds) {
+    public ImagesDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
     @Override

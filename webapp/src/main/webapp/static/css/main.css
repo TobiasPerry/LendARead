@@ -21,4 +21,7 @@
     margin: auto;
     justify-content: center;
 }
+.imagen-card{
+    object-fit: fill;
+}
 

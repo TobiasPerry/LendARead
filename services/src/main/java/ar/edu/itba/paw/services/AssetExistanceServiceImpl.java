@@ -23,7 +23,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     private LocationDao locationDao;
 
     @Autowired
-    private PhotosDao photosDao;
+    private ImagesDao photosDao;
 
     @Override
     public boolean addAssetInstance(AssetInstance assetInstance, byte[] photo) {

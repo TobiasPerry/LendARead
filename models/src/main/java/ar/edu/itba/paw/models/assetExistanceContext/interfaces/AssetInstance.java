@@ -13,6 +13,6 @@ public interface AssetInstance {
 
     PhysicalCondition getPhysicalCondition();
 
-
+    int getImageId();
 
 }

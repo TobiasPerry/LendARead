@@ -37,7 +37,7 @@ public class BookImpl implements Book {
     }
 
     @Override
-    public String type() {
+    public String getType() {
         return this.type;
     }
 
@@ -52,7 +52,7 @@ public class BookImpl implements Book {
     }
 
     @Override
-    public String author() {
+    public String getAuthor() {
         return this.author;
     }
 
