@@ -54,7 +54,7 @@ public class AssetDaoImpl implements AssetDao {
                 PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 pstmt.setString(1, ai.getIsbn());
                 pstmt.setString(2,ai.getName());
-                pstmt.setString(3,ai.author());
+                pstmt.setString(3,ai.getAuthor());
                 pstmt.setString(4,ai.getLanguage());
                 return pstmt;
             }

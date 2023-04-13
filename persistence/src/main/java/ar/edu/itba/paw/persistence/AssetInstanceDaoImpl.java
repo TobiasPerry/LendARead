@@ -28,7 +28,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
                     new UserImpl(rs.getString("mail"), "X", "X"),
-                    new LocationImpl(rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country"))
+                    new LocationImpl(rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
+                    rs.getInt("photoId")
                     );
 //new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")
     @Autowired
