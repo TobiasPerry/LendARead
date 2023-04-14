@@ -21,8 +21,7 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@RequestParam(required = true) int id) {
-        System.out.println("llegue");
+    public ModelAndView assetInfoView(@RequestParam() int id) {
         HashMap<String, String> info = this.assetInstanceService.getAssetInstanceDisplay(id);
         if (info == null) {
             System.out.println("Not found");
