@@ -14,6 +14,7 @@
     <c:if test="${books.size() > 0}">
         <c:forEach var="book" items="${books}">
             <jsp:include page="../components/bookCard.jsp">
+                <jsp:param name="id" value="${book.id}"/>
                 <jsp:param name="bookTitle" value="${book.book.name}"/>
                 <jsp:param name="bookAuthor" value="${book.book.author}"/>
                 <jsp:param name="bookAvailability" value="X"/>

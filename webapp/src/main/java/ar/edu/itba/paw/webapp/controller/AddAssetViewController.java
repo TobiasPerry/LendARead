@@ -23,21 +23,18 @@ final public class AddAssetViewController {
     private final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
-    public String addAsset(@RequestParam("file") MultipartFile file,
+    public String addAsset(@RequestParam(required = false,name ="file") MultipartFile file,
             Model model,
             HttpServletRequest request
     ){
-        if (file.isEmpty()) {
-            model.addAttribute("message", "Please select an image to upload.");
-            return "views/addAssetView";
-        }
-
         byte[] fileByteArray = new byte[0];
 
-        try {
-            fileByteArray = file.getBytes();
-        } catch (Exception e) {
-           //
+        if (!file.isEmpty()) {
+            try {
+                fileByteArray = file.getBytes();
+            } catch (Exception e) {
+                //
+            }
         }
 
         FormValidationService formValidationService = formService.validateRequest(request);
