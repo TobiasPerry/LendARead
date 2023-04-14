@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,19 +24,21 @@ public class BorrowAssetViewController {
     private final FormServiceBorrowAssetView formElements = new FormServiceBorrowAssetView();
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
-    public ModelAndView borrowAsset(
-            @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
-            final BindingResult errors, Model model, @RequestParam int id
-    ){
+    public ModelAndView borrowAsset( @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
+                                    final BindingResult errors, Model model,
+                                    @RequestParam() int id){
 
         if(errors.hasErrors())
-            return borrowAssetView(id, borrowAssetForm);
+            return borrowAssetView(borrowAssetForm, id);
 
         System.out.println(borrowAssetForm);
 
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
 
-        return borrowAssetView(id, borrowAssetForm);
+        if(borrowRequestSuccessful)
+            SnackbarService.displaySuccess(model);
+
+        return borrowAssetView(borrowAssetForm, id);
     }
 
     @Autowired
@@ -48,8 +47,7 @@ public class BorrowAssetViewController {
     }
 
     @RequestMapping( "/borrowAssetView")
-    public ModelAndView borrowAssetView(@RequestParam int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm){
-
-        return new ModelAndView(viewName);
+    public ModelAndView borrowAssetView(@ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm, @RequestParam() int id){
+        return new ModelAndView(viewName).addObject("id", id);
     }
 }
