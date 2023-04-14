@@ -54,11 +54,12 @@ final public class AddAssetViewController {
 //        if(!formValidationService.isValid())
 //            return viewName;
 
-        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(request), fileByteArray);
+        System.out.println(addAssetForm);
+        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), fileByteArray);
         if(addedBookSuccessfully)
             SnackbarService.displaySuccess(model);
 
-        return viewName;
+        return lendView(addAssetForm);
     }
     @Autowired
     public AddAssetViewController(AssetExistanceService assetExistanceService, FormServiceAddAssetView formServiceAddAssetView){
@@ -66,7 +67,7 @@ final public class AddAssetViewController {
         this.formService = formServiceAddAssetView;
     }
 
-    @RequestMapping( "/addAssetView")
+    @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView lendView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm){
         final ModelAndView mav = new ModelAndView(viewName);
 

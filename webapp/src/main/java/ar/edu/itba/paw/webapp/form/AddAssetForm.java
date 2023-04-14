@@ -19,7 +19,6 @@ public class AddAssetForm {
     private String language;
 
     @NotEmpty
-    @Pattern(regexp = "^(97(8|9))?\\d{9}(\\d|X)$") // ISBN-10 or ISBN-13 format
     private String isbn;
 
     @NotEmpty

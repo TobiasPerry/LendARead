@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,30 +67,30 @@ final public class FormServiceAddAssetView implements FormService {
         return this.conditionsDropDown;
     }
 
-    public AssetInstance createAssetInstance(HttpServletRequest request) {
+    public AssetInstance createAssetInstance(AddAssetForm request) {
 
         User user = UserFactory.createUser(-1,
-                request.getParameter("email"),
-                request.getParameter("name"),
-                request.getParameter("message")
+                request.getEmail(),
+                request.getName(),
+                request.getMessage()
         );
 
         Location location = LocationFactory.createLocation(
                 -1,
-                request.getParameter("zipcode"),
-                request.getParameter("locality"),
-                request.getParameter("province"),
-                request.getParameter("country")
+                request.getZipcode(),
+                request.getLocality(),
+                request.getProvince(),
+                request.getCountry()
         );
 
         Book book = BookFactory.createBook(
-                request.getParameter("isbn"),
-                request.getParameter("author"),
-                request.getParameter("title"),
-                request.getParameter("language"),
+                request.getIsbn(),
+                request.getAuthor(),
+                request.getTitle(),
+                request.getLanguage(),
                 null);
 
-        PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getParameter("physicalCondition"));
+        PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
         return AssetInstanceFactory.createAssetInstance(-1, book, physicalCondition, user, location,-1, AssetState.PUBLIC);
     }
