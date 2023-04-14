@@ -25,21 +25,14 @@
       </div>
 
       <div class="col-md-6">
-        <form action="borrowAsset" method="post">
-            <h2> Ubicacion </h2>
-            <p> Esta informacion se va a presentar para filtrar las busquedas, nunca se va a presentar junto con tu email
-              y/o nombre sin tu consentimiento</p>
-            <c:forEach var="element" items="${formElementsBorrow.locationInfoElements}">
-              <li><strong>${element.label}:</strong>
-                <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
-              </li>
-            </c:forEach>
-            <h2> Contacto </h2>
-            <c:forEach var="element" items="${formElementsBorrow.contactInfoElements}">
-              <li><strong>${element.label}:</strong>
-                <input type="${element.inputType}" name="${element.inputName}" class="form-control"  />
-              </li>
-            </c:forEach>
+        <form action="" method="post">
+          <ul class="list-unstyled">
+            <li><strong>Ingresa tu ubicacion</strong> <input type="text" name="title" class="form-control" value="" /></li>
+            <li><strong>Informacion para retirarlo </strong> <input type="text" class="form-control" value="" /></li>
+            <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
+            <li><strong>Ubicación:</strong> <input type="text" class="form-control" value="" /></li>
+            <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
+            <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
           <button type="submit" class="btn btn-primary mt-3">Pedir prestado </button>
         </form>
       </div>
