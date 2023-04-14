@@ -28,7 +28,7 @@
                     <img src="#" alt="Book Cover" class="img-fluid" id="bookImage" style="max-width: 100%; max-height: 100%;">
                     <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
                         <i class="bi bi-cloud-upload"></i> Subir foto
-                        <input type="file" id="uploadImage" name="file" class="d-none" accept="image/*" onchange="previewImage(event)">
+                        <input type="file" id="uploadImage" name="file" class="d-none" accept="image/*" onchange="storeAndPreviewImage(event)">
                     </label>
                 </div>
             </div>
@@ -127,16 +127,22 @@
 </div>
 
 <script>
-    function previewImage(event) {
+    function storeAndPreviewImage(event) {
         const reader = new FileReader();
-        reader.onload = function() {
-            const output = document.getElementById('bookImage');
-            output.src = reader.result;
-            document.getElementById('uploadLabel').style.display = 'none';
-        };
+        reader.onload = function(e) {
+            document.getElementById('bookImage').src = e.target.result;
+            localStorage.setItem('uploadedImage', e.target.result);
+        }
         reader.readAsDataURL(event.target.files[0]);
-        document.getElementById('hiddenUploadImage').files = event.target.files;
+    }
+
+    window.onload = function() {
+        const uploadedImage = localStorage.getItem('uploadedImage');
+        if (uploadedImage) {
+            document.getElementById('bookImage').src = uploadedImage;
+        }
     }
 </script>
+
 
 </body>
