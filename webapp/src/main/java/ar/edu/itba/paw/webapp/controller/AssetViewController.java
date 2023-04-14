@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ public class AssetViewController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ModelAndView assetInfoView(@RequestParam(required = true) int id) {
-
+        System.out.println("llegue");
         HashMap<String, String> info = this.assetInstanceService.getAssetInstanceDisplay(id);
         if (info == null) {
             System.out.println("Not found");
