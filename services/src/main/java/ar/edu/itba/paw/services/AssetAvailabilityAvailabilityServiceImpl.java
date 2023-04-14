@@ -14,6 +14,6 @@ public class AssetAvailabilityAvailabilityServiceImpl implements AssetAvailabili
 //           return true;
 //        }
 
-        return false;
+        return true;
     }
 }
