@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="formElementsBorrow" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView"/>
 
@@ -25,16 +26,51 @@
       </div>
 
       <div class="col-md-6">
-        <form action="" method="post">
-          <ul class="list-unstyled">
-            <li><strong>Ingresa tu ubicacion</strong> <input type="text" name="title" class="form-control" value="" /></li>
-            <li><strong>Informacion para retirarlo </strong> <input type="text" class="form-control" value="" /></li>
-            <li><strong>ISBN:</strong> <input type="text" class="form-control" value="" /></li>
-            <li><strong>Ubicación:</strong> <input type="text" class="form-control" value="" /></li>
-            <li><strong>Mail:</strong> <input type="text" class="form-control" value="" /></li>
-            <li><strong>Mensaje para Retirarlo:</strong> <input type="text" class="form-control" value="" /></li>
-          <button type="submit" class="btn btn-primary mt-3">Pedir prestado </button>
-        </form>
+        <form:form modelAttribute="borrowAssetForm" method="post">
+          <div>
+            <form:errors path="postalCode" cssClass="error" element="p"/>
+            <label>Postal Code:
+              <form:input path="postalCode" placeholder="Postal Code"/>
+            </label>
+          </div>
+          <div>
+            <form:errors path="locality" cssClass="error" element="p"/>
+            <label>Locality:
+              <form:input path="locality" placeholder="Locality"/>
+            </label>
+          </div>
+          <div>
+            <form:errors path="province" cssClass="error" element="p"/>
+            <label>Province:
+              <form:input path="province" placeholder="Province"/>
+            </label>
+          </div>
+          <div>
+            <form:errors path="country" cssClass="error" element="p"/>
+            <label>Country:
+              <form:input path="country" placeholder="Country"/>
+            </label>
+          </div>
+          <div>
+            <form:errors path="email" cssClass="error" element="p"/>
+            <label>Email:
+              <form:input path="email" placeholder="Email"/>
+            </label>
+          </div>
+          <div>
+            <form:errors path="name" cssClass="error" element="p"/>
+            <label>Name:
+              <form:input path="name" placeholder="Name"/>
+            </label>
+          </div>
+          <div>
+            <form:errors path="message" cssClass="error" element="p"/>
+            <label>Message:
+              <form:input path="message" placeholder="Message"/>
+            </label>
+          </div>
+          <button type="submit">Submit</button>
+        </form:form>
       </div>
     </div>
   </div>
