@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView"/>
 
@@ -18,7 +19,7 @@
     <jsp:include page="../components/snackbarComponent.jsp" />
 
     <h1 class="text-center mb-5">Quieres prestar un libro?</h1>
-    <div class="form-container">
+    <div class="p-4 rounded" >
         <div class="row">
 
             <div class="col-md-6 d-flex flex-column align-items-center">
@@ -32,51 +33,94 @@
             </div>
 
             <div class="col-md-6">
-                <form action="addAsset" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <h2>Informacion del libro</h2>
-                        <c:forEach var="element" items="${formElements.bookInfoElements}">
-                            <div class="form-group">
-                                <label>${element.label}:</label>
-                                <input type="${element.inputType}" name="${element.inputName}" class="form-control"/>
-                            </div>
-                        </c:forEach>
-                    </div>
 
-                    <div class="form-group">
-                        <label>${formElements.conditionsDropDown.label}</label>
-                        <select class="form-select" name="${formElements.conditionsDropDown.inputName}">
-                            <c:forEach var="option" items="${formElements.conditionsDropDown.selectOptions}">
-                                <option value="${option}">${option}</option>
-                            </c:forEach>
-                        </select>
+                <h2>Add Asset</h2>
+                <c:url var="addAssetUrl" value="/addAsset"/>
+                <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data">
+                    <div>
+                        <form:errors path="title" cssClass="error" element="p"/>
+                        <label>Title:
+                        <form:input path="title" placeholder="Title"/>
+                        </label>
                     </div>
-
-                    <div class="form-group">
-                        <h2>Ubicacion</h2>
-                        <p>Esta informacion se va a presentar para filtrar las busquedas, nunca se va a presentar junto con tu email
-                            y/o nombre sin tu consentimiento</p>
-                        <c:forEach var="element" items="${formElements.locationInfoElements}">
-                            <div class="form-group">
-                                <label>${element.label}:</label>
-                                <input type="${element.inputType}" name="${element.inputName}" class="form-control"/>
-                            </div>
-                        </c:forEach>
+                    <div>
+                        <form:errors path="author" cssClass="error" element="p"/>
+                        <label>Author:
+                        <form:input path="author" placeholder="Author"/>
+                        </label>
                     </div>
-
-                    <div class="form-group">
-                        <h2>Contacto</h2>
-                        <c:forEach var="element" items="${formElements.contactInfoElements}">
-                            <div class="form-group">
-                                <label>${element.label}:</label>
-                                <input type="${element.inputType}" name="${element.inputName}" class="form-control"/>
-                            </div>
-                        </c:forEach>
+                    <div>
+                        <form:errors path="language" cssClass="error" element="p"/>
+                        <label>Language:
+                        <form:input path="language" placeholder="Language"/>
+                        </label>
                     </div>
-
+                    <div>
+                        <form:errors path="isbn" cssClass="error" element="p"/>
+                        <label>ISBN:
+                        <form:input path="isbn" placeholder="ISBN"/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>Physical Condition:
+                        <form:select path="physicalCondition">
+                            <form:option value="asnew">Nuevo</form:option>
+                            <form:option value="fine">Casi nuevo</form:option>
+                            <form:option value="verygood">Muy bien</form:option>
+                            <form:option value="good">Bien</form:option>
+                            <form:option value="fair">Aceptable</form:option>
+                            <form:option value="poor">Pobre</form:option>
+                            <form:option value="exlibrary">Ex-biblioteca</form:option>
+                            <form:option value="bookclub">Book club</form:option>
+                            <form:option value="bindingcopy">Dorso dañado</form:option>
+                        </form:select>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="zipcode" cssClass="error" element="p"/>
+                        <label>Postal Code:
+                            <form:input path="zipcode" placeholder="Postal Code"/>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="locality" cssClass="error" element="p"/>
+                        <label>Locality:
+                            <form:input path="locality" placeholder="Locality"/>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="province" cssClass="error" element="p"/>
+                        <label>Province:
+                            <form:input path="province" placeholder="Province"/>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="country" cssClass="error" element="p"/>
+                        <label>Country:
+                            <form:input path="country" placeholder="Country"/>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="email" cssClass="error" element="p"/>
+                        <label>Email:
+                            <form:input path="email" placeholder="Email"/>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="name" cssClass="error" element="p"/>
+                        <label>Name:
+                            <form:input path="name" placeholder="Name"/>
+                        </label>
+                    </div>
+                    <div>
+                        <form:errors path="message" cssClass="error" element="p"/>
+                        <label>Message:
+                            <form:input path="message" placeholder="Message"/>
+                        </label>
+                    </div>
                     <input type="file" id="hiddenUploadImage" name="file" class="d-none" accept="image/*">
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo!</button>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>
