@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import java.nio.file.Files;
+import java.io.File;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -27,40 +28,33 @@ final public class AddAssetViewController {
     private final String viewName = "views/addAssetView";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
-    public ModelAndView addAsset(@RequestParam(required = false,name ="file") MultipartFile file,
+    public ModelAndView addAsset(@RequestParam(required = false,name ="file") MultipartFile image,
                            @Valid @ModelAttribute final AddAssetForm addAssetForm,
                                  final BindingResult errors,
-                                 HttpServletRequest request,
                                  Model model) {
 
-        if(errors.hasErrors()) {
+        if(errors.hasErrors())
             return lendView(addAssetForm);
-        }
 
-        byte[] fileByteArray = new byte[0];
+        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 
-        if (!file.isEmpty()) {
-            try {
-                fileByteArray = file.getBytes();
-            } catch (Exception e) {
-                //
-            }
-        }
-
-        //FormValidationService formValidationService = formService.validateRequest(request);
-
-        //SnackbarService.displayValidation(model, formValidationService);
-
-//        if(!formValidationService.isValid())
-//            return viewName;
-
-        System.out.println(addAssetForm);
-        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), fileByteArray);
         if(addedBookSuccessfully)
             SnackbarService.displaySuccess(model);
 
         return lendView(addAssetForm);
     }
+
+    private static byte[] handleImage(MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                return file.getBytes();
+            } catch (Exception e) {
+                //
+            }
+        }
+        return null;
+    }
+
     @Autowired
     public AddAssetViewController(AssetExistanceService assetExistanceService, FormServiceAddAssetView formServiceAddAssetView){
         this.assetExistanceService = assetExistanceService;

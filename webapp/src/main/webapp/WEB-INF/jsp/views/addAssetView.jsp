@@ -34,7 +34,6 @@
 
             <div class="col-md-6">
 
-                <h2>Add Asset</h2>
                 <c:url var="addAssetUrl" value="/addAsset"/>
                 <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data">
                     <div>

@@ -1,10 +1,14 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class AddAssetForm {
+
+    private MultipartFile image;
 
     @NotEmpty
     @Size(min = 2, max = 100)
@@ -143,5 +147,12 @@ public class AddAssetForm {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public MultipartFile getImage() { return this.image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }
