@@ -5,5 +5,7 @@ public interface User {
 
     String getBehavior();
 
+    int getId();
+
     String getTelephone();
 }

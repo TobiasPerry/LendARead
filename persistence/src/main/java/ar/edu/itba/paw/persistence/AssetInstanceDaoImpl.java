@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
@@ -24,12 +25,13 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
-                    rs.getInt("assetid"),
+                    rs.getInt(1),
                     new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    new UserImpl(rs.getString("mail"), "X", "X"),
-                    new LocationImpl(rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
-                    rs.getInt("photoId")
+                    new UserImpl(rs.getInt("owner"),rs.getString("mail"), "X", "X"),
+                    new LocationImpl(rs.getInt("locationid"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
+                    rs.getInt("photoId"),
+                    AssetState.fromString(rs.getString("status"))
                     );
 //new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")
     @Autowired
@@ -40,7 +42,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     public Optional<Integer> addAssetInstance(int assetId,int ownerId,int locationId,int photoId, AssetInstance ai) {
         String query = "INSERT INTO assetinstance(assetid,owner,locationid,physicalcondition,status,photoid) VALUES(?,?,?,?,?,?)";
 
-        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),"",photoId);
+
+        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),ai.getAssetState().name(),photoId);
 
         return Optional.empty();
     }

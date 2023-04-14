@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS photos(
     id SERIAL primary key,
     photo bytea NOT NULL
 );
+
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,
     assetId INT references book(uid) ON DELETE CASCADE,
@@ -31,4 +32,11 @@ CREATE TABLE IF NOT EXISTS AssetInstance(
     physicalCondition varchar(100),
     photoId INT references photos(id) ON DELETE SET NULL,
     status varchar(100)
+);
+CREATE TABLE IF NOT EXISTS lendings(
+    id SERIAL primary key,
+    assetInstanceId INT references AssetInstance(id),
+    borrowerId INT references users(id),
+    lendDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    devolutionDate TIMESTAMP NOT NULL
 );

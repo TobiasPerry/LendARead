@@ -7,10 +7,12 @@ final public class UserImpl implements User {
     private final String name;
     private final String message;
 
-    public UserImpl(String email, String name, String message) {
+    private final  int id;
+    public UserImpl(int id,String email, String name, String message) {
         this.email = email;
         this.name = name;
         this.message = message;
+        this.id = id;
     }
 
     @Override
@@ -20,6 +22,11 @@ final public class UserImpl implements User {
                 ", name='" + name + '\'' +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

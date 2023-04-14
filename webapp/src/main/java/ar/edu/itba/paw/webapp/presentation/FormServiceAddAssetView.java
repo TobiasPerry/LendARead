@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
@@ -67,13 +68,14 @@ final public class FormServiceAddAssetView implements FormService {
 
     public AssetInstance createAssetInstance(HttpServletRequest request) {
 
-        User user = UserFactory.createUser(
+        User user = UserFactory.createUser(-1,
                 request.getParameter("email"),
                 request.getParameter("name"),
                 request.getParameter("message")
         );
 
         Location location = LocationFactory.createLocation(
+                -1,
                 request.getParameter("zipcode"),
                 request.getParameter("locality"),
                 request.getParameter("province"),
@@ -89,6 +91,6 @@ final public class FormServiceAddAssetView implements FormService {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getParameter("physicalCondition"));
 
-        return AssetInstanceFactory.createAssetInstance(-1, book, physicalCondition, user, location,-1);
+        return AssetInstanceFactory.createAssetInstance(-1, book, physicalCondition, user, location,-1, AssetState.PUBLIC);
     }
 }
