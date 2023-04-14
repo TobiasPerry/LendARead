@@ -27,7 +27,7 @@
 
       <div class="col-md-6">
 
-        <c:url var="borrowAssetUrl" value="/borrowAssetView?id=${id}"/>
+        <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}"/>
         <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}">
           <div>
             <form:errors path="postalCode" cssClass="error" element="p"/>

@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
-import ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView;
-import ar.edu.itba.paw.webapp.presentation.FormValidationService;
 import ar.edu.itba.paw.webapp.presentation.SnackbarService;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -21,24 +16,20 @@ public class BorrowAssetViewController {
     AssetAvailabilityService assetAvailabilityService;
     final String viewName = "views/borrowAssetView";
 
-    private final FormServiceBorrowAssetView formElements = new FormServiceBorrowAssetView();
-
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public ModelAndView borrowAsset( @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
                                     final BindingResult errors, Model model,
-                                    @RequestParam() int id){
+                                    @RequestParam("id") int id){
 
         if(errors.hasErrors())
             return borrowAssetView(borrowAssetForm, id);
-
-        System.out.println(borrowAssetForm);
 
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
 
         if(borrowRequestSuccessful)
             SnackbarService.displaySuccess(model);
 
-        return borrowAssetView(borrowAssetForm, id);
+        return borrowAssetView(new BorrowAssetForm(), id);
     }
 
     @Autowired
@@ -46,8 +37,8 @@ public class BorrowAssetViewController {
        this.assetAvailabilityService = assetAvailabilityService;
     }
 
-    @RequestMapping( "/borrowAssetView")
-    public ModelAndView borrowAssetView(@ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm, @RequestParam() int id){
+    @RequestMapping( value = "/borrowAssetView", method = RequestMethod.GET)
+    public ModelAndView borrowAssetView(@ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm, @RequestParam("id") int id){
         return new ModelAndView(viewName).addObject("id", id);
     }
 }
