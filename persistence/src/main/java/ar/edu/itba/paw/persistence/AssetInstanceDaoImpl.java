@@ -33,22 +33,28 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String author = rs.getString("author");
             String title = rs.getString("title");
             String language = rs.getString("language");
+            Integer bookId = rs.getInt("book_id");
             Book book = new BookImpl(isbn, author, title, language);
 
             String zipcode = rs.getString("zipcode");
             String locality = rs.getString("locality");
             String province = rs.getString("province");
             String country = rs.getString("country");
+            Integer locId = rs.getInt("loc_id");
 
-            Location loc = new LocationImpl(zipcode, locality, province, country);
+            Location loc = new LocationImpl(locId, zipcode, locality, province, country);
 
             String email = rs.getString("email");
-            User user = new UserImpl(email, "", "");
+            Integer userId = rs.getInt("user_id");
+            User user = new UserImpl(userId, email, "", "");
 
-            int id = rs.getInt("id");
+            Integer id = rs.getInt("id");
+            Integer imgId = rs.getInt("photo_id");
+
             PhysicalCondition physicalcondition = PhysicalCondition.fromString(rs.getString("physicalcondition"));
+            AssetState aState = AssetState.fromString(rs.getString("status"));
 
-            return new AssetInstanceImpl(id, book, physicalcondition, user, loc);
+            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState);
         }
     };
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
@@ -83,7 +89,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         AssetInstance assetInstance;
         try {
             Object[] params = new Object[] {assetId};
-            String query = "SELECT ai.id AS id, ai.photoid, ai.status, ai.physicalcondition, b.title AS title, b.isbn AS isbn, b.language AS language, b.author AS author, l.locality AS locality, l.zipcode AS zipcode, l.province AS province, l.country AS country, u.behavior AS user_behavior, u.mail AS email, u.telephone FROM assetinstance ai JOIN book b ON ai.assetid = b.uid JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE ai.id = ?";
+            String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status, ai.physicalcondition, b.id AS book_id, b.title AS title, b.isbn AS isbn, b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality, l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id u.behavior AS user_behavior, u.mail AS email, u.telephone FROM assetinstance ai JOIN book b ON ai.assetid = b.uid JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE ai.id = ?";
             assetInstance = jdbcTemplate.queryForObject(query, params, ROW_MAPPER_AI);
             return Optional.of(assetInstance);
         } catch (EmptyResultDataAccessException ex) {

@@ -35,9 +35,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         HashMap<String, String> info = new HashMap<>();
         info.put("id", Integer.toString(id));
         info.put("name", book.getName());
-        info.put("type", book.type());
+        info.put("type", book.getType());
         info.put("isbn", book.getIsbn());
-        info.put("author", book.author());
+        info.put("author", book.getAuthor());
         info.put("language", book.getLanguage());
         info.put("physicalCondition", assetInstance.getPhysicalCondition().toString());
         info.put("locationPC", loc.getZipcode());
