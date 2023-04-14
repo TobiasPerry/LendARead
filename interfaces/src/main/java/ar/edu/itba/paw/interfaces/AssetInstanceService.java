@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface AssetInstanceService {
-    HashMap<String, String> getAssetInstanceDisplay(String id);
+    HashMap<String, String> getAssetInstanceDisplay(int id);
 
     public List<AssetInstance> getAllAssetsInstances();
 }
