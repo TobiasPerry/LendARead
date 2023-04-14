@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
-import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import ar.edu.itba.paw.webapp.form.SnackbarService;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,8 @@ import javax.validation.Valid;
 public class BorrowAssetViewController {
     AssetAvailabilityService assetAvailabilityService;
     final String viewName = "views/borrowAssetView";
+
+    ImageService imageService;
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public ModelAndView borrowAsset( @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
@@ -33,8 +36,9 @@ public class BorrowAssetViewController {
     }
 
     @Autowired
-    public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService){
+    public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService, ImageService imageService){
        this.assetAvailabilityService = assetAvailabilityService;
+       this.imageService = imageService;
     }
 
     @RequestMapping( value = "/borrowAssetView", method = RequestMethod.GET)

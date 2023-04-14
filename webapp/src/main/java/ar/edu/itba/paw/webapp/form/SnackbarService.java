@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.presentation;
+package ar.edu.itba.paw.webapp.form;
 
 import org.springframework.ui.Model;
 

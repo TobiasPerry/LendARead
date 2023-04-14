@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
-import ar.edu.itba.paw.webapp.presentation.FormServiceAddAssetView;
-import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import ar.edu.itba.paw.webapp.form.FormServiceAddAssetView;
+import ar.edu.itba.paw.webapp.form.SnackbarService;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
