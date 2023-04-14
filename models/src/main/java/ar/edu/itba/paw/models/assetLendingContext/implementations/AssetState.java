@@ -3,32 +3,18 @@ package ar.edu.itba.paw.models.assetLendingContext.implementations;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 
 public enum AssetState {
-    PUBLIC() {
-        @Override
-        boolean canBorrow() {
-            return true;
-        }
-    },
-    PRIVATE() {
-        @Override
-        boolean canBorrow() {
-            return false;
-        }
-    },
-    BORROWED() {
-        @Override
-        boolean canBorrow() {
-            return false;
-        }
-    },
-    FROZEN() {
-        @Override
-        boolean canBorrow() {
-            return false;
-        }
-    };
+    PUBLIC(true),
+    PRIVATE(false),
+    BORROWED(false),
 
-    boolean canBorrow() { return false;}
+    FROZEN(false);
+
+    private final boolean canBorrow;
+
+    AssetState(boolean canBorrow){
+        this.canBorrow = canBorrow;
+    }
+    public boolean canBorrow() { return canBorrow;}
     public static AssetState fromString(String value) {
         if (value != null) {
             for (AssetState condition : AssetState.values()) {

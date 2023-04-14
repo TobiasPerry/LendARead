@@ -8,5 +8,5 @@ import java.util.Date;
 
 public interface LendingDao {
 
-    int createLending(AssetInstance ai, User us, Date devolutionDate);
+    boolean createLending(AssetInstance ai, User us, Date devolutionDate);
 }

@@ -57,4 +57,15 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         return Optional.of(assets);
     }
+
+    @Override
+    public Boolean changeStatus(AssetInstance ai, AssetState as) {
+        String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
+        try {
+            jdbcTemplate.update(query,ai.getId(),as.name());
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

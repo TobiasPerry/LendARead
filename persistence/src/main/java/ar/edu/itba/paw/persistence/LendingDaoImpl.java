@@ -21,11 +21,11 @@ public class LendingDaoImpl implements LendingDao {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
     @Override
-    public int createLending(AssetInstance ai, User us, Date devolutionDate) {
+    public boolean createLending(AssetInstance ai, User us, Date devolutionDate) {
         String query = "INSERT INTO lendings(assetinstanceid,borrowerId,lendDate,devolutionDate) VALUES(?,?,?,?)";
 
-        jdbcTemplate.update(query,new Object[]{ai.getId(),us.getId(), LocalDate.now(),devolutionDate});
+        jdbcTemplate.update(query,ai.getId(),us.getId(), LocalDate.now(),devolutionDate);
 
-        return 0;
+        return true;
     }
 }
