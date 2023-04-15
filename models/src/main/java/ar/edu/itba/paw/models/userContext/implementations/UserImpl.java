@@ -44,6 +44,11 @@ final public class UserImpl implements User {
         return "Phone";
     }
 
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
 
 }
 

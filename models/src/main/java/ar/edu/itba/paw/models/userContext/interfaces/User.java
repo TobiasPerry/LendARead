@@ -8,4 +8,6 @@ public interface User {
     int getId();
 
     String getTelephone();
+
+    String getName();
 }
