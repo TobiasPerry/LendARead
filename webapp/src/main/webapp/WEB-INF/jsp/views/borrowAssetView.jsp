@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="formElementsBorrow" scope="session" class="ar.edu.itba.paw.webapp.form.FormServiceBorrowAssetView"/>
 
 <head>
   <title>Pedir Prestado Libro</title>

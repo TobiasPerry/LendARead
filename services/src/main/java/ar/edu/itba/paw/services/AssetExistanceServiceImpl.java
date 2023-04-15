@@ -10,20 +10,24 @@ import java.util.Optional;
 
 @Service
 final public class AssetExistanceServiceImpl implements AssetExistanceService {
-    @Autowired
-    private AssetDao bookDao;
+    private final AssetDao bookDao;
+
+    private final UserDao userDao;
+
+    private final AssetInstanceDao assetInstanceDao;
+
+    private final LocationDao locationDao;
+
+    private final ImagesDao photosDao;
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private AssetInstanceDao assetInstanceDao;
-
-    @Autowired
-    private LocationDao locationDao;
-
-    @Autowired
-    private ImagesDao photosDao;
+    public AssetExistanceServiceImpl(AssetDao bookDao, UserDao userDao, AssetInstanceDao assetInstanceDao, LocationDao locationDao, ImagesDao photosDao) {
+        this.bookDao = bookDao;
+        this.userDao = userDao;
+        this.assetInstanceDao = assetInstanceDao;
+        this.locationDao = locationDao;
+        this.photosDao = photosDao;
+    }
 
     @Override
     public boolean addAssetInstance(AssetInstance assetInstance, byte[] photo) {

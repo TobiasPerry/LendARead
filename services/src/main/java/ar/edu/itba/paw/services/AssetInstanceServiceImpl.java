@@ -16,11 +16,15 @@ import java.util.Optional;
 @Service
 public class AssetInstanceServiceImpl implements AssetInstanceService {
 
-    @Autowired
-    AssetDao assetDao;
+    private final AssetDao assetDao;
+
+    private final AssetInstanceDao assetInstanceDao;
 
     @Autowired
-    AssetInstanceDao assetInstanceDao;
+    public AssetInstanceServiceImpl(AssetDao assetDao, AssetInstanceDao assetInstanceDao) {
+        this.assetDao = assetDao;
+        this.assetInstanceDao = assetInstanceDao;
+    }
 
     @Override
     public HashMap<String, String> getAssetInstanceDisplay(int id) {

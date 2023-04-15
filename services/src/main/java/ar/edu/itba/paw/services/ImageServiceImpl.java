@@ -12,8 +12,12 @@ import java.util.Optional;
 @Service
 public class ImageServiceImpl implements ImageService {
 
+    private final ImagesDao imagesDao;
+
     @Autowired
-    private ImagesDao imagesDao;
+    public ImageServiceImpl(ImagesDao imagesDao) {
+        this.imagesDao = imagesDao;
+    }
 
     @Override
     public byte[] getPhoto(int id) {
