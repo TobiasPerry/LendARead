@@ -27,29 +27,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     @Override
-    public HashMap<String, String> getAssetInstanceDisplay(int id) {
+    public Optional<AssetInstance> getAssetInstance(int id) {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
-        if (! assetInstanceOpt.isPresent()) {
+        if (!assetInstanceOpt.isPresent()) {
             return null;
         }
 
         AssetInstance assetInstance = assetInstanceOpt.get();
-        Book book = assetInstance.getBook();
-        Location loc = assetInstance.getLocation();
-        HashMap<String, String> info = new HashMap<>();
-        info.put("id", Integer.toString(id));
-        info.put("name", book.getName());
-        info.put("type", book.getType());
-        info.put("isbn", book.getIsbn());
-        info.put("author", book.getAuthor());
-        info.put("language", book.getLanguage());
-        info.put("physicalCondition", assetInstance.getPhysicalCondition().nameSpanish());
-        info.put("locationPC", loc.getZipcode());
-        info.put("location", loc.getLocality());
-        info.put("province", loc.getProvince());
-        info.put("country", loc.getCountry());
-        info.put("imageId",Integer.toString(assetInstance.getImageId()));
-        return info;
+        return Optional.of(assetInstance);
     }
 
     public List<AssetInstance> getAllAssetsInstances(){

@@ -83,7 +83,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
                 "<li>Código Postal: %s</li>\n" +
                 "</ul>\n" +
                 "<p>Por favor, mantente en contacto con quien solicitó el préstamo para acordar algún otro detalle.\n" +
-                "Muchas Gracias por utilizar LendABook! Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080/\">aquí</a></p>\n",
+                "Muchas Gracias por utilizar LendABook! \n" +
+                "Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080/\">aquí</a></p>\n",
                 lenderName, bookName, borrowerName, borrowerEmail, locationCountry, locationProvince, locationName, locationZip);
 
         EmailServiceImpl.sendEmail(email, subject, body);
