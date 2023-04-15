@@ -18,6 +18,12 @@
     font-style: oblique;
 }
 
+.book-info-container {
+    background-color: #b0c4c4;
+    border-radius: 5px;
+    padding: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .container-row-wrapped{
     display: flex;
     flex-flow: row wrap;

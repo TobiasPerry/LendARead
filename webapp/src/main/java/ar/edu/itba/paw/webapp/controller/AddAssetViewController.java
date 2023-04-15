@@ -24,6 +24,8 @@ final public class AddAssetViewController {
     private final AssetExistanceService assetExistanceService;
     private final String viewName = "views/addAssetView";
 
+    private final String SUCESS_MSG = "Libro agregado exitosamente!";
+
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(required = false,name ="file") MultipartFile image,
                            @Valid @ModelAttribute final AddAssetForm addAssetForm,
@@ -31,12 +33,12 @@ final public class AddAssetViewController {
                                  Model model) {
 
         if(errors.hasErrors())
-            return addAssetView(addAssetForm);
+            return addAssetView(addAssetForm).addObject("showSnackbarInvalid", true);
 
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 
         if(addedBookSuccessfully)
-            SnackbarService.displaySuccess(model);
+            SnackbarService.displaySuccess(model, SUCESS_MSG);
 
         return addAssetView(addAssetForm);
     }
