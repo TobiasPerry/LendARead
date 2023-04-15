@@ -11,13 +11,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
+import java.util.Base64;
 
 @Controller
-public class BorrowAssetViewController {
-    AssetAvailabilityService assetAvailabilityService;
-    final String viewName = "views/borrowAssetView";
+final public class BorrowAssetViewController {
+    private AssetAvailabilityService assetAvailabilityService;
+    private final String viewName = "views/borrowAssetView";
+    private final static String SUCCESS_MSG = "Libro pedido exitosamente!";
 
-    ImageService imageService;
+    private ImageService imageService;
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public ModelAndView borrowAsset( @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
@@ -25,12 +27,12 @@ public class BorrowAssetViewController {
                                     @RequestParam("id") int id){
 
         if(errors.hasErrors())
-            return borrowAssetView(borrowAssetForm, id);
+            return borrowAssetView(borrowAssetForm, id).addObject("showSnackbarInvalid", true);
 
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
 
         if(borrowRequestSuccessful)
-            SnackbarService.displaySuccess(model);
+            SnackbarService.displaySuccess(model, SUCCESS_MSG);
 
         return borrowAssetView(new BorrowAssetForm(), id);
     }
@@ -43,6 +45,8 @@ public class BorrowAssetViewController {
 
     @RequestMapping( value = "/borrowAssetView", method = RequestMethod.GET)
     public ModelAndView borrowAssetView(@ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm, @RequestParam("id") int id){
-        return new ModelAndView(viewName).addObject("id", id);
+        String image = Base64.getEncoder().encodeToString(imageService.getPhoto(id));
+
+        return new ModelAndView(viewName).addObject("id", id).addObject("bookImage", image);
     }
 }

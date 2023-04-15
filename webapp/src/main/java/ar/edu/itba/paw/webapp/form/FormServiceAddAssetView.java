@@ -30,12 +30,7 @@ final public class FormServiceAddAssetView implements FormService {
                 request.getCountry()
         );
 
-        Book book = BookFactory.createBook(
-                request.getIsbn(),
-                request.getAuthor(),
-                request.getTitle(),
-                request.getLanguage(),
-                null);
+        Book book = BookFactory.createBook(request.getIsbn());
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 

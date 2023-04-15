@@ -8,7 +8,6 @@
     <title>Prestar Libro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
-    <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
 </head>
 
@@ -34,89 +33,79 @@
             </div>
 
             <div class="col-md-6">
-
                 <c:url var="addAssetUrl" value="/addAsset"/>
-                <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data">
-                    <div>
-                        <form:errors path="title" cssClass="error" element="p"/>
-                        <label>Title:
-                        <form:input path="title" placeholder="Title"/>
-                        </label>
+                <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" class="container">
+                        <div class="book-info-container">
+                            <h2>Libro:</h2>
+                            <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="physicalCondition" class="form-label">Estado:</label>
+                                <form:select path="physicalCondition" id="physicalCondition" class="form-control">
+                                    <form:option value="asnew">Nuevo</form:option>
+                                    <form:option value="fine">Casi nuevo</form:option>
+                                    <form:option value="verygood">Muy bien</form:option>
+                                    <form:option value="good">Bien</form:option>
+                                    <form:option value="fair">Aceptable</form:option>
+                                    <form:option value="poor">Pobre</form:option>
+                                    <form:option value="exlibrary">Ex-biblioteca</form:option>
+                                    <form:option value="bookclub">Book club</form:option>
+                                    <form:option value="bindingcopy">Dorso dañado</form:option>
+                                </form:select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="isbn" class="form-label">ISBN:</label>
+                                <form:input path="isbn" id="isbn" placeholder="ISBN" class="form-control"/>
+                                <form:errors path="isbn" cssClass="text-danger small" element="small"/>
+                            </div>
+                        </div>
                     </div>
                     <div>
-                        <form:errors path="author" cssClass="error" element="p"/>
-                        <label>Author:
-                        <form:input path="author" placeholder="Author"/>
-                        </label>
+                        <h2>Ubicacion: </h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="locality" class="form-label">Localidad:</label>
+                                <form:input path="locality" id="locality" placeholder="Locality" class="form-control"/>
+                                <form:errors path="locality" cssClass="text-danger small" element="small"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="province" class="form-label">Provincia:</label>
+                                <form:input path="province" id="province" placeholder="Province" class="form-control"/>
+                                <form:errors path="province" cssClass="text-danger small" element="small"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="country" class="form-label">Pais:</label>
+                                <form:input path="country" id="country" placeholder="Country" class="form-control"/>
+                                <form:errors path="country" cssClass="text-danger small" element="small"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="zipcode" class="form-label">Codigo postal:</label>
+                                <form:input path="zipcode" id="zipcode" placeholder="Postal Code" class="form-control"/>
+                                <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
+                            </div>
+
+                        </div>
                     </div>
                     <div>
-                        <form:errors path="language" cssClass="error" element="p"/>
-                        <label>Language:
-                        <form:input path="language" placeholder="Language"/>
-                        </label>
+                        <h2>Contacto: </h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <form:input path="name" id="name" placeholder="Name" class="form-control"/>
+                                <form:errors path="name" cssClass="text-danger small" element="small"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <form:input path="email" id="email" placeholder="Email" class="form-control"/>
+                                <form:errors path="email" cssClass="text-danger small" element="small"/>
+                            </div>
+                        </div>
                     </div>
                     <div>
-                        <form:errors path="isbn" cssClass="error" element="p"/>
-                        <label>ISBN:
-                        <form:input path="isbn" placeholder="ISBN"/>
-                        </label>
-                    </div>
-                    <div>
-                        <label>Physical Condition:
-                        <form:select path="physicalCondition">
-                            <form:option value="asnew">Nuevo</form:option>
-                            <form:option value="fine">Casi nuevo</form:option>
-                            <form:option value="verygood">Muy bien</form:option>
-                            <form:option value="good">Bien</form:option>
-                            <form:option value="fair">Aceptable</form:option>
-                            <form:option value="poor">Pobre</form:option>
-                            <form:option value="exlibrary">Ex-biblioteca</form:option>
-                            <form:option value="bookclub">Book club</form:option>
-                            <form:option value="bindingcopy">Dorso dañado</form:option>
-                        </form:select>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="zipcode" cssClass="error" element="p"/>
-                        <label>Postal Code:
-                            <form:input path="zipcode" placeholder="Postal Code"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="locality" cssClass="error" element="p"/>
-                        <label>Locality:
-                            <form:input path="locality" placeholder="Locality"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="province" cssClass="error" element="p"/>
-                        <label>Province:
-                            <form:input path="province" placeholder="Province"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="country" cssClass="error" element="p"/>
-                        <label>Country:
-                            <form:input path="country" placeholder="Country"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="email" cssClass="error" element="p"/>
-                        <label>Email:
-                            <form:input path="email" placeholder="Email"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="name" cssClass="error" element="p"/>
-                        <label>Name:
-                            <form:input path="name" placeholder="Name"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="message" cssClass="error" element="p"/>
-                        <label>Message:
-                            <form:input path="message" placeholder="Message"/>
-                        </label>
+                        <h4>Mensaje:</h4>
+                        <form:input path="message" id="message" placeholder="Message" class="form-control"/>
+                        <form:errors path="message" cssClass="text-danger small" element="small"/>
                     </div>
                     <input type="file" id="hiddenUploadImage" name="file" class="d-none" accept="image/*">
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo!</button>

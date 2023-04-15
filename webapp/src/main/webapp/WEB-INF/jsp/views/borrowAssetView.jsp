@@ -15,64 +15,72 @@
 
     <jsp:include page="../components/snackbarComponent.jsp" />
 
-  <h1 class="text-center mb-5">Quieres pedir prestado un libro?</h1>
+  <h1 class="text-center mb-5">Quieres pedir prestado este libro? </h1>
   <div class="p-4 rounded lendView" >
     <div class="row">
 
       <div class="col-md-6 d-flex flex-column align-items-center">
         <div class="image-container position-relative" style="width: 100%; height: 100%;">
-          <img src="https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/61aFldsgAmL._AC_UF1000,1000_QL80_.jpg" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 100%; height: 100%; object-fit: contain;">
+          <img src="data:image/jpeg;base64,${bookImage}" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
       </div>
 
       <div class="col-md-6">
-
         <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}"/>
-        <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}">
+        <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
           <div>
-            <form:errors path="postalCode" cssClass="error" element="p"/>
-            <label>Postal Code:
-              <form:input path="postalCode" placeholder="Postal Code"/>
-            </label>
+            <h3>Ubicacion:</h3>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="postalCode" class="form-label">Codigo postal:</label>
+              <form:input path="postalCode" id="postalCode" placeholder="Postal Code" class="form-control"/>
+              <form:errors path="postalCode" cssClass="text-danger small" element="small"/>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="locality" class="form-label">Localidad:</label>
+              <form:input path="locality" id="locality" placeholder="Locality" class="form-control"/>
+              <form:errors path="locality" cssClass="text-danger small" element="small"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="province" class="form-label">Provincia:</label>
+              <form:input path="province" id="province" placeholder="Province" class="form-control"/>
+              <form:errors path="province" cssClass="text-danger small" element="small"/>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="country" class="form-label">Pais:</label>
+              <form:input path="country" id="country" placeholder="Country" class="form-control"/>
+              <form:errors path="country" cssClass="text-danger small" element="small"/>
+            </div>
+          </div>
           </div>
           <div>
-            <form:errors path="locality" cssClass="error" element="p"/>
-            <label>Locality:
-              <form:input path="locality" placeholder="Locality"/>
-            </label>
+            <h3> Contacto: </h3>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <form:input path="email" id="email" placeholder="Email" class="form-control"/>
+              <form:errors path="email" cssClass="text-danger small" element="small"/>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="name" class="form-label">Nombre:</label>
+              <form:input path="name" id="name" placeholder="Name" class="form-control"/>
+              <form:errors path="name" cssClass="text-danger small" element="small"/>
+            </div>
           </div>
-          <div>
-            <form:errors path="province" cssClass="error" element="p"/>
-            <label>Province:
-              <form:input path="province" placeholder="Province"/>
-            </label>
           </div>
-          <div>
-            <form:errors path="country" cssClass="error" element="p"/>
-            <label>Country:
-              <form:input path="country" placeholder="Country"/>
-            </label>
-          </div>
-          <div>
-            <form:errors path="email" cssClass="error" element="p"/>
-            <label>Email:
-              <form:input path="email" placeholder="Email"/>
-            </label>
-          </div>
-          <div>
-            <form:errors path="name" cssClass="error" element="p"/>
-            <label>Name:
-              <form:input path="name" placeholder="Name"/>
-            </label>
-          </div>
-          <div>
-            <form:errors path="message" cssClass="error" element="p"/>
-            <label>Message:
-              <form:input path="message" placeholder="Message"/>
-            </label>
-          </div>
-          <button type="submit">Submit</button>
+            <div >
+              <h3>Mensaje:</h3>
+              <form:input path="message" id="message" placeholder="Message" class="form-control"/>
+              <form:errors path="message" cssClass="text-danger small" element="small"/>
+            </div>
+        <button type="submit" class="btn btn-primary m-8">Pedir prestado</button>
+
+      </div>
+
         </form:form>
+
       </div>
     </div>
   </div>

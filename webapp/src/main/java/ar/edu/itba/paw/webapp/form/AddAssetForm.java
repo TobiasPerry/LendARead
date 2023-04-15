@@ -9,19 +9,6 @@ import javax.validation.constraints.Size;
 public class AddAssetForm {
 
     private MultipartFile image;
-
-    @NotEmpty
-    @Size(min = 2, max = 100)
-    private String title;
-
-    @NotEmpty
-    @Size(min = 2, max = 100)
-    private String author;
-
-    @NotEmpty
-    @Size(min = 2, max = 100)
-    private String language;
-
     @NotEmpty
     private String isbn;
 
@@ -52,31 +39,6 @@ public class AddAssetForm {
     @NotEmpty
     @Size(min = 10, max = 200)
     private String message;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
     public String getIsbn() {
         return isbn;
     }
