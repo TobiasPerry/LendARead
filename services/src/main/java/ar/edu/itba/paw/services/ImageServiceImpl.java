@@ -15,22 +15,9 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImagesDao imagesDao;
 
-    private static byte[] defaultImage() {
-        File fi = new File("src/main/static/noImage.jpeg");
-
-        byte[] fileContent = new byte[0];
-
-        try {
-            fileContent = Files.readAllBytes(fi.toPath());
-        } catch (Exception e) {
-            //
-        }
-        return fileContent;
-    }
-
     @Override
     public byte[] getPhoto(int id) {
         Optional<byte[]> image = imagesDao.getPhoto(id);
-        return image.orElse(defaultImage());
+        return image.orElse(null);
     }
 }

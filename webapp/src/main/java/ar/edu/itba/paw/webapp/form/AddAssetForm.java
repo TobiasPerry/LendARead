@@ -8,7 +8,6 @@ import javax.validation.constraints.Size;
 
 public class AddAssetForm {
 
-    private MultipartFile image;
     @NotEmpty
     private String isbn;
 
@@ -109,12 +108,5 @@ public class AddAssetForm {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public MultipartFile getImage() { return this.image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
     }
 }

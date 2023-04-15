@@ -27,13 +27,16 @@ final public class AddAssetViewController {
     private final String SUCESS_MSG = "Libro agregado exitosamente!";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
-    public ModelAndView addAsset(@RequestParam(required = false,name ="file") MultipartFile image,
-                           @Valid @ModelAttribute final AddAssetForm addAssetForm,
+    public ModelAndView addAsset(@RequestParam(name ="file") MultipartFile image,
+                                 @Valid @ModelAttribute final AddAssetForm addAssetForm,
                                  final BindingResult errors,
                                  Model model) {
 
-        if(errors.hasErrors())
-            return addAssetView(addAssetForm).addObject("showSnackbarInvalid", true);
+
+        if(errors.hasErrors() || image.isEmpty())
+            return addAssetView(addAssetForm)
+                    .addObject("showSnackbarInvalid", true)
+                    .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
 
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 
