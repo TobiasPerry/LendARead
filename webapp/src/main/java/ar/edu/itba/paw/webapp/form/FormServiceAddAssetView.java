@@ -42,7 +42,7 @@ final public class FormServiceAddAssetView implements FormService {
         try {
             book = this.libraryAPIService.getBookByISBN(request.getIsbn());
         } catch (IOException exc) {
-            book = BookFactory.createBook(request.getIsbn());
+            book = BookFactory.createBook(request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
         }
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
