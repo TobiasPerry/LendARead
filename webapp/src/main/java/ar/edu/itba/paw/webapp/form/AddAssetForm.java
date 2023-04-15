@@ -9,8 +9,17 @@ import javax.validation.constraints.Size;
 public class AddAssetForm {
 
     private MultipartFile image;
+
+
     @NotEmpty
     private String isbn;
+    @NotEmpty
+    private String language;
+    @NotEmpty
+    private String author;
+
+    @NotEmpty
+    private String title;
 
     @NotEmpty
     private String physicalCondition;
@@ -41,6 +50,30 @@ public class AddAssetForm {
     private String message;
     public String getIsbn() {
         return isbn;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setIsbn(String isbn) {

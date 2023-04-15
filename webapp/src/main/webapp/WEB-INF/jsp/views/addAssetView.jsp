@@ -57,6 +57,7 @@
                                 <form:input path="isbn" id="isbn" placeholder="ISBN" class="form-control"/>
                                 <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                             </div>
+
                         </div>
                     </div>
                     <div>
