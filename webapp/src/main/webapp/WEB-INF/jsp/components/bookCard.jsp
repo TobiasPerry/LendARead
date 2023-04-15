@@ -22,7 +22,7 @@
             </c:choose>
             <div class="card-body">
                 <h2 class="card-title">${param.bookTitle}</h2>
-                <h5 class="card-text">${param.bookAuthor} - ${param.bookAvailability}</h5>
+                <h5 class="card-text">${param.bookAuthor}</h5>
             </div>
         </div>
 

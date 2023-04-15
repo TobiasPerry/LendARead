@@ -23,7 +23,6 @@
                         <jsp:param name="id" value="${book.id}"/>
                         <jsp:param name="bookTitle" value="${book.book.name}"/>
                         <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                        <jsp:param name="bookAvailability" value="X"/>
                         <jsp:param name="imageId" value="${book.imageId}"/>
                     </jsp:include>
                 </c:forEach>
