@@ -40,10 +40,14 @@ final public class AddAssetViewController {
 
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 
-        if(addedBookSuccessfully)
+        if(addedBookSuccessfully) {
             SnackbarService.displaySuccess(model, SUCESS_MSG);
+            return addAssetView(addAssetForm);
+        }
 
-        return addAssetView(addAssetForm);
+        return  addAssetView(addAssetForm)
+                    .addObject("showSnackbarInvalid", true)
+                    .addObject("snackBarInvalidTextTitle",  "Hubo un error guardando el libro");
     }
 
     private static byte[] handleImage(MultipartFile file) {

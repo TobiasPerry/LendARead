@@ -34,10 +34,12 @@ final public class BorrowAssetViewController {
 
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id,new UserImpl(-1,borrowAssetForm.getEmail(),borrowAssetForm.getName(),borrowAssetForm.getMessage()), LocalDate.now().plusWeeks(2));
 
-        if(borrowRequestSuccessful)
+        if(borrowRequestSuccessful) {
             SnackbarService.displaySuccess(model, SUCCESS_MSG);
+            return borrowAssetView(new BorrowAssetForm(),id,imageId);
+        }
 
-        return borrowAssetView(new BorrowAssetForm(),id,imageId);
+       return borrowAssetView(borrowAssetForm,id,imageId).addObject("showSnackbarInvalid", true);
     }
 
     @Autowired
