@@ -1,49 +1,48 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.webapp.presentation.FormServiceBorrowAssetView;
-import ar.edu.itba.paw.webapp.presentation.FormValidationService;
-import ar.edu.itba.paw.webapp.presentation.SnackbarService;
+import ar.edu.itba.paw.interfaces.ImageService;
+import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
+import ar.edu.itba.paw.webapp.form.SnackbarService;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 public class BorrowAssetViewController {
     AssetAvailabilityService assetAvailabilityService;
     final String viewName = "views/borrowAssetView";
 
-    private final FormServiceBorrowAssetView formElements = new FormServiceBorrowAssetView();
+    ImageService imageService;
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
-    public String borrowAsset(
-            Model model, HttpServletRequest request
-    ){
+    public ModelAndView borrowAsset( @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
+                                    final BindingResult errors, Model model,
+                                    @RequestParam("id") int id){
 
-        FormValidationService formValidationService = formElements.validateRequest(request);
+        if(errors.hasErrors())
+            return borrowAssetView(borrowAssetForm, id);
 
-        SnackbarService.displayValidation(model, formValidationService);
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
 
-        if(formValidationService.isValid())
-           assetAvailabilityService.borrowAsset();
+        if(borrowRequestSuccessful)
+            SnackbarService.displaySuccess(model);
 
-        return viewName;
+        return borrowAssetView(new BorrowAssetForm(), id);
     }
 
     @Autowired
-    public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService){
+    public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService, ImageService imageService){
        this.assetAvailabilityService = assetAvailabilityService;
+       this.imageService = imageService;
     }
 
-    @RequestMapping( "/borrowAssetView")
-    public ModelAndView lendView(@RequestParam int id){
-
-        return new ModelAndView(viewName);
+    @RequestMapping( value = "/borrowAssetView", method = RequestMethod.GET)
+    public ModelAndView borrowAssetView(@ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm, @RequestParam("id") int id){
+        return new ModelAndView(viewName).addObject("id", id);
     }
 }
