@@ -43,7 +43,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         info.put("isbn", book.getIsbn());
         info.put("author", book.getAuthor());
         info.put("language", book.getLanguage());
-        info.put("physicalCondition", assetInstance.getPhysicalCondition().toString());
+        info.put("physicalCondition", assetInstance.getPhysicalCondition().nameSpanish());
         info.put("locationPC", loc.getZipcode());
         info.put("location", loc.getLocality());
         info.put("province", loc.getProvince());
