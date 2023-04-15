@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="text-center mt-5">
-            <button type="button" class="btn btn-primary">Pedir prestado este libro!</button>
+            <a type="button" class="btn btn-primary" href="/borrowAssetView?id=${id}">Pedir prestado este libro!</a>
         </div>
     </div>
 </body>

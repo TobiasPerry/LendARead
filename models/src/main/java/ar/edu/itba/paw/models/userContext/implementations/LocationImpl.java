@@ -8,11 +8,13 @@ final public class LocationImpl implements Location {
     private final String province;
     private final String country;
 
-    public LocationImpl(String zipcode, String locality, String province, String country) {
+    private final int id;
+    public LocationImpl(int id,String zipcode, String locality, String province, String country) {
         this.zipcode = zipcode;
         this.locality = locality;
         this.province = province;
         this.country = country;
+        this.id = id;
     }
 
     @Override

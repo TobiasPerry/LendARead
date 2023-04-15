@@ -62,7 +62,7 @@ public class HelloWordController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-type", MediaType.IMAGE_JPEG_VALUE);
-        headers.set("Content-Disposition","attachment; filename=\"whaterver.jpg\""); // to view in browser change attachment to inline
+        headers.set("Content-Disposition","inline; filename=\"whaterver.jpg\"");
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(array);
     }

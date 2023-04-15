@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.interfaces.Location;
+import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,30 +17,33 @@ import java.util.Optional;
 public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Autowired
-    private AssetInstanceDao assetInstanceDao;
+    AssetDao assetDao;
+
+    @Autowired
+    AssetInstanceDao assetInstanceDao;
 
     @Override
-    public HashMap<String, String> getAssetInstanceDisplay(String id) {
-        if (! id.equals("1234")) {
+    public HashMap<String, String> getAssetInstanceDisplay(int id) {
+        Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
+        if (! assetInstanceOpt.isPresent()) {
             return null;
         }
-        // Mock. Debe conectarse con la capa de persistencia.
-        // TODO. Una vez la capa de persistencia este implementada, devolverla
-      //  AssetInstance assetInstance = new AssetInstanceImpl();
-        // HashMap<String, String> info = assetInstance.display(); TODO
-        HashMap<String, String> info = new HashMap<>();
-        info.put("id", id);
-        info.put("name", "Mistborn");
-        info.put("type", "book");
-        info.put("isbn", "9780765311788");
-        info.put("author", "Brandon Sanderson");
-        info.put("language", "English");
-        info.put("physicalCondition", "new");
-        info.put("locationPC", "1425");
-        info.put("location", "CABA");
-        info.put("province", "CABA");
-        info.put("country", "Argentina");
 
+        AssetInstance assetInstance = assetInstanceOpt.get();
+        Book book = assetInstance.getBook();
+        Location loc = assetInstance.getLocation();
+        HashMap<String, String> info = new HashMap<>();
+        info.put("id", Integer.toString(id));
+        info.put("name", book.getName());
+        info.put("type", book.getType());
+        info.put("isbn", book.getIsbn());
+        info.put("author", book.getAuthor());
+        info.put("language", book.getLanguage());
+        info.put("physicalCondition", assetInstance.getPhysicalCondition().toString());
+        info.put("locationPC", loc.getZipcode());
+        info.put("location", loc.getLocality());
+        info.put("province", loc.getProvince());
+        info.put("country", loc.getCountry());
         return info;
     }
 

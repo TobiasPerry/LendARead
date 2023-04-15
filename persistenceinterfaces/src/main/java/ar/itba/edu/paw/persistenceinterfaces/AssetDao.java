@@ -9,4 +9,6 @@ public interface AssetDao {
     Optional<List<Book>> getAssets();
 
     Optional<Integer> addAsset(final Book bi);
+
+    Optional<Book> getBook(final String isbn);
 }
