@@ -36,3 +36,19 @@
     object-fit: fill;
 }
 
+.display-flex {
+    display: flex;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.field-group {
+    display: flex;
+}
+
+.field {
+    flex: 1;
+    padding-right: 8px;
+}
