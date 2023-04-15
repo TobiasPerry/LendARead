@@ -26,6 +26,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
+
     }
 
     @Override
@@ -37,6 +38,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         if(!ai.get().getAssetState().canBorrow())
             return false;
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
-        return lendingDao.borrowAssetInstance(ai.get().getId(),userID.get(),LocalDate.now(),devolutionDate);
+        boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),userID.get(),LocalDate.now(),devolutionDate);
+        if (saved) {
+            EmailServiceImpl.sendEmail(borrower.getEmail(), "Préstamo de Libro:  " + ai.get().getBook().getName(), "Hola.\nEl préstamo del libro" + ai.get().getBook().getName() + " se confirmado. Por favor recordá los datos para retirarlo:\n" + ai.get().getLocation().toString());
+        }
+        return saved;
     }
 }
