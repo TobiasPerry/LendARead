@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<jsp:useBean id="formElements" scope="session" class="ar.edu.itba.paw.webapp.form.FormServiceAddAssetView"/>
 
 <head>
     <title>Prestar Libro</title>
