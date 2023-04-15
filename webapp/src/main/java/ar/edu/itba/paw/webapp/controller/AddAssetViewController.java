@@ -33,7 +33,7 @@ final public class AddAssetViewController {
                                  Model model) {
 
         if(errors.hasErrors())
-            return addAssetView(addAssetForm);
+            return addAssetView(addAssetForm).addObject("showSnackbarInvalid", true);
 
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 

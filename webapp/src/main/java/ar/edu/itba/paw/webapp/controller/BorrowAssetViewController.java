@@ -26,7 +26,7 @@ final public class BorrowAssetViewController {
                                     @RequestParam("id") int id){
 
         if(errors.hasErrors())
-            return borrowAssetView(borrowAssetForm, id);
+            return borrowAssetView(borrowAssetForm, id).addObject("showSnackbarInvalid", true);
 
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
 
