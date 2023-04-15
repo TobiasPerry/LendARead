@@ -25,7 +25,7 @@
     <div class="main-class">
         <div style="background-color: #FFFFFF; margin: 50px; border-radius: 20px; padding: 20px">
             <div class="container-row-wrapped">
-                <img src="<c:url value="/getImage/${imageId}"/>" class="w-25 h-25 mx-5" alt="Book cover">
+                <img src="<c:url value="/getImage/${imageId}"/>" class="mx-5" alt="Book cover" style="height: 600px; width: 400px; object-fit: cover">
                 <div class="w-25 h-25 mx-5">
                     <h1><c:out value="${name}"/></h1>
                     <h3>by <c:out value="${author}"/></h3>
