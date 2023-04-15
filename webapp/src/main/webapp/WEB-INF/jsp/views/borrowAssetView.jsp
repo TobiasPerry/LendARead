@@ -26,53 +26,54 @@
       </div>
 
       <div class="col-md-6">
-
         <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}"/>
-        <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}">
-          <div>
-            <form:errors path="postalCode" cssClass="error" element="p"/>
-            <label>Postal Code:
-              <form:input path="postalCode" placeholder="Postal Code"/>
-            </label>
+        <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="postalCode" class="form-label">Postal Code:</label>
+              <form:input path="postalCode" id="postalCode" placeholder="Postal Code" class="form-control"/>
+              <form:errors path="postalCode" cssClass="text-danger small" element="small"/>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="locality" class="form-label">Locality:</label>
+              <form:input path="locality" id="locality" placeholder="Locality" class="form-control"/>
+              <form:errors path="locality" cssClass="text-danger small" element="small"/>
+            </div>
           </div>
-          <div>
-            <form:errors path="locality" cssClass="error" element="p"/>
-            <label>Locality:
-              <form:input path="locality" placeholder="Locality"/>
-            </label>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="province" class="form-label">Province:</label>
+              <form:input path="province" id="province" placeholder="Province" class="form-control"/>
+              <form:errors path="province" cssClass="text-danger small" element="small"/>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="country" class="form-label">Country:</label>
+              <form:input path="country" id="country" placeholder="Country" class="form-control"/>
+              <form:errors path="country" cssClass="text-danger small" element="small"/>
+            </div>
           </div>
-          <div>
-            <form:errors path="province" cssClass="error" element="p"/>
-            <label>Province:
-              <form:input path="province" placeholder="Province"/>
-            </label>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <form:input path="email" id="email" placeholder="Email" class="form-control"/>
+              <form:errors path="email" cssClass="text-danger small" element="small"/>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="name" class="form-label">Name:</label>
+              <form:input path="name" id="name" placeholder="Name" class="form-control"/>
+              <form:errors path="name" cssClass="text-danger small" element="small"/>
+            </div>
           </div>
-          <div>
-            <form:errors path="country" cssClass="error" element="p"/>
-            <label>Country:
-              <form:input path="country" placeholder="Country"/>
-            </label>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="message" class="form-label">Message:</label>
+              <form:input path="message" id="message" placeholder="Message" class="form-control"/>
+              <form:errors path="message" cssClass="text-danger small" element="small"/>
+            </div>
           </div>
-          <div>
-            <form:errors path="email" cssClass="error" element="p"/>
-            <label>Email:
-              <form:input path="email" placeholder="Email"/>
-            </label>
-          </div>
-          <div>
-            <form:errors path="name" cssClass="error" element="p"/>
-            <label>Name:
-              <form:input path="name" placeholder="Name"/>
-            </label>
-          </div>
-          <div>
-            <form:errors path="message" cssClass="error" element="p"/>
-            <label>Message:
-              <form:input path="message" placeholder="Message"/>
-            </label>
-          </div>
-          <button type="submit">Submit</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </form:form>
+
       </div>
     </div>
   </div>

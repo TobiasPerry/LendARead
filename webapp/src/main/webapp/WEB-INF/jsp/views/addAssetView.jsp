@@ -34,36 +34,36 @@
             </div>
 
             <div class="col-md-6">
-
                 <c:url var="addAssetUrl" value="/addAsset"/>
-                <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data">
-                    <div>
-                        <form:errors path="title" cssClass="error" element="p"/>
-                        <label>Title:
-                        <form:input path="title" placeholder="Title"/>
-                        </label>
+                <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" class="container">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="title" class="form-label">Title:</label>
+                        <form:input path="title" id="title" placeholder="Title" class="form-control"/>
+                        <form:errors path="title" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <form:errors path="author" cssClass="error" element="p"/>
-                        <label>Author:
-                        <form:input path="author" placeholder="Author"/>
-                        </label>
+                    <div class="col-md-6 mb-3">
+                        <label for="author" class="form-label">Author:</label>
+                        <form:input path="author" id="author" placeholder="Author" class="form-control"/>
+                        <form:errors path="author" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <form:errors path="language" cssClass="error" element="p"/>
-                        <label>Language:
-                        <form:input path="language" placeholder="Language"/>
-                        </label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="language" class="form-label">Language:</label>
+                        <form:input path="language" id="language" placeholder="Language" class="form-control"/>
+                        <form:errors path="language" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <form:errors path="isbn" cssClass="error" element="p"/>
-                        <label>ISBN:
-                        <form:input path="isbn" placeholder="ISBN"/>
-                        </label>
+                    <div class="col-md-6 mb-3">
+                        <label for="isbn" class="form-label">ISBN:</label>
+                        <form:input path="isbn" id="isbn" placeholder="ISBN" class="form-control"/>
+                        <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <label>Physical Condition:
-                        <form:select path="physicalCondition">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="physicalCondition" class="form-label">Physical Condition:</label>
+                        <form:select path="physicalCondition" id="physicalCondition" class="form-control">
                             <form:option value="asnew">Nuevo</form:option>
                             <form:option value="fine">Casi nuevo</form:option>
                             <form:option value="verygood">Muy bien</form:option>
@@ -74,51 +74,51 @@
                             <form:option value="bookclub">Book club</form:option>
                             <form:option value="bindingcopy">Dorso dañado</form:option>
                         </form:select>
-                        </label>
                     </div>
-                    <div>
-                        <form:errors path="zipcode" cssClass="error" element="p"/>
-                        <label>Postal Code:
-                            <form:input path="zipcode" placeholder="Postal Code"/>
-                        </label>
+                    <div class="col-md-6 mb-3">
+                        <label for="zipcode" class="form-label">Postal Code:</label>
+                        <form:input path="zipcode" id="zipcode" placeholder="Postal Code" class="form-control"/>
+                        <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <form:errors path="locality" cssClass="error" element="p"/>
-                        <label>Locality:
-                            <form:input path="locality" placeholder="Locality"/>
-                        </label>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="locality" class="form-label">Locality:</label>
+                        <form:input path="locality" id="locality" placeholder="Locality" class="form-control"/>
+                        <form:errors path="locality" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <form:errors path="province" cssClass="error" element="p"/>
-                        <label>Province:
-                            <form:input path="province" placeholder="Province"/>
-                        </label>
+                    <div class="col-md-6 mb-3">
+                        <label for="province" class="form-label">Province:</label>
+                        <form:input path="province" id="province" placeholder="Province" class="form-control"/>
+                        <form:errors path="province" cssClass="text-danger small" element="small"/>
                     </div>
-                    <div>
-                        <form:errors path="country" cssClass="error" element="p"/>
-                        <label>Country:
-                            <form:input path="country" placeholder="Country"/>
-                        </label>
+                </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label">Country:</label>
+                            <form:input path="country" id="country" placeholder="Country" class="form-control"/>
+                            <form:errors path="country" cssClass="text-danger small" element="small"/>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <form:input path="email" id="email" placeholder="Email" class="form-control"/>
+                            <form:errors path="email" cssClass="text-danger small" element="small"/>
+                        </div>
                     </div>
-                    <div>
-                        <form:errors path="email" cssClass="error" element="p"/>
-                        <label>Email:
-                            <form:input path="email" placeholder="Email"/>
-                        </label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Name:</label>
+                            <form:input path="name" id="name" placeholder="Name" class="form-control"/>
+                            <form:errors path="name" cssClass="text-danger small" element="small"/>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="message" class="form-label">Message:</label>
+                            <form:input path="message" id="message" placeholder="Message" class="form-control"/>
+                            <form:errors path="message" cssClass="text-danger small" element="small"/>
+                        </div>
                     </div>
-                    <div>
-                        <form:errors path="name" cssClass="error" element="p"/>
-                        <label>Name:
-                            <form:input path="name" placeholder="Name"/>
-                        </label>
-                    </div>
-                    <div>
-                        <form:errors path="message" cssClass="error" element="p"/>
-                        <label>Message:
-                            <form:input path="message" placeholder="Message"/>
-                        </label>
-                    </div>
-                    <input type="file" id="hiddenUploadImage" name="file" class="d-none" accept="image/*">
+
+                        <input type="file" id="hiddenUploadImage" name="file" class="d-none" accept="image/*">
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo!</button>
                 </form:form>
             </div>
