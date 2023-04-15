@@ -11,5 +11,9 @@ public class SnackbarService {
         model.addAttribute("showSnackbarSucess", true);
         model.addAttribute("snackbarSuccessMessage", msg);
     }
+    static public void displaySuccess(ModelAndView model, String msg) {
+        model.addObject("showSnackbarSucess", true);
+        model.addObject("snackbarSuccessMessage", msg);
+    }
 
 }
