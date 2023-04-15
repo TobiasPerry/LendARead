@@ -1,8 +1,13 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.LibraryAPIService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,8 +16,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LibraryAPIService {
-    public Map<String, String> getBookByISBN(String isbn) throws IOException, JSONException {
+@Service
+public class LibraryAPIServiceImpl implements LibraryAPIService {
+
+    @Override
+    public Book getBookByISBN(final String isbn) throws IOException {
         String apiUrl = "https://openlibrary.org/isbn/" + isbn + ".json";
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -44,7 +52,8 @@ public class LibraryAPIService {
             bookInfo.put("author", getAuthorNames(authorsArray));
             bookInfo.put("language", getLanguages(languagesArray));
 
-            return bookInfo;
+            Book book = new BookImpl(bookInfo.get("ISBN"), bookInfo.get("author"), bookInfo.get("title"),bookInfo.get("language"));
+            return book;
         } else {
             throw new IOException("Failed to get book information. Response Code: " + responseCode);
         }
