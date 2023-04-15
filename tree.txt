@@ -1,0 +1,172 @@
+.
+├── README.md
+├── interfaces
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           └── java
+│               ├── ar
+│               │   └── edu
+│               │       └── itba
+│               │           └── paw
+│               │               └── interfaces
+│               │                   ├── AssetAvailabilityService.java
+│               │                   ├── AssetExistanceService.java
+│               │                   ├── AssetInstanceService.java
+│               │                   ├── ImageService.java
+│               │                   ├── LibraryAPIService.java
+│               │                   └── TestService.java
+│               └── interfaces
+│                   └── AssetExistanceService.java
+├── models
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           └── java
+│               └── ar
+│                   └── edu
+│                       └── itba
+│                           └── paw
+│                               └── models
+│                                   ├── assetExistanceContext
+│                                   │   ├── factories
+│                                   │   │   ├── AssetInstanceFactory.java
+│                                   │   │   └── BookFactory.java
+│                                   │   ├── implementations
+│                                   │   │   ├── AssetInstanceImpl.java
+│                                   │   │   ├── BookImpl.java
+│                                   │   │   └── PhysicalCondition.java
+│                                   │   └── interfaces
+│                                   │       ├── Asset.java
+│                                   │       ├── AssetInstance.java
+│                                   │       └── Book.java
+│                                   ├── assetLendingContext
+│                                   │   ├── implementations
+│                                   │   │   ├── AssetState.java
+│                                   │   │   ├── AvailableAssetImpl.java
+│                                   │   │   ├── BorrowRequestImpl.java
+│                                   │   │   ├── BorrowingHistoryImpl.java
+│                                   │   │   └── LendingHistoryImpl.java
+│                                   │   └── interfaces
+│                                   │       ├── AvailableAsset.java
+│                                   │       ├── BorrowRequest.java
+│                                   │       ├── BorrowingHistory.java
+│                                   │       └── LendingHistory.java
+│                                   └── userContext
+│                                       ├── factories
+│                                       │   ├── LocationFactory.java
+│                                       │   └── UserFactory.java
+│                                       ├── implementations
+│                                       │   ├── BorrowerBehaviorImpl.java
+│                                       │   ├── LenderBehaviorImpl.java
+│                                       │   ├── LocationImpl.java
+│                                       │   ├── LocationsImpl.java
+│                                       │   └── UserImpl.java
+│                                       └── interfaces
+│                                           ├── BorrowerBehavior.java
+│                                           ├── LenderBehavior.java
+│                                           ├── Location.java
+│                                           ├── Locations.java
+│                                           └── User.java
+├── persistence
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── ar
+│           │       └── edu
+│           │           └── itba
+│           │               └── paw
+│           │                   └── persistence
+│           │                       ├── AssetDaoImpl.java
+│           │                       ├── AssetInstanceDaoImpl.java
+│           │                       ├── ImagesDaoImpl.java
+│           │                       ├── LendingDaoImpl.java
+│           │                       ├── LocationDaoImpl.java
+│           │                       └── UserDaoImpl.java
+│           └── resources
+│               └── schema.sql
+├── persistenceinterfaces
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           └── java
+│               └── ar
+│                   └── itba
+│                       └── edu
+│                           └── paw
+│                               └── persistenceinterfaces
+│                                   ├── AssetDao.java
+│                                   ├── AssetInstanceDao.java
+│                                   ├── ImagesDao.java
+│                                   ├── LendingDao.java
+│                                   ├── LocationDao.java
+│                                   └── UserDao.java
+├── pom.xml
+├── services
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── ar
+│           │       └── edu
+│           │           └── itba
+│           │               └── paw
+│           │                   └── services
+│           │                       ├── AssetAvailabilityAvailabilityServiceImpl.java
+│           │                       ├── AssetExistanceServiceImpl.java
+│           │                       ├── AssetInstanceServiceImpl.java
+│           │                       ├── ImageServiceImpl.java
+│           │                       └── LibraryAPIServiceImpl.java
+│           └── static
+│               └── defaultBookImage.png
+├── tree.txt
+└── webapp
+    ├── pom.xml
+    └── src
+        └── main
+            ├── java
+            │   └── ar
+            │       └── edu
+            │           └── itba
+            │               └── paw
+            │                   └── webapp
+            │                       ├── config
+            │                       │   └── WebConfig.java
+            │                       ├── controller
+            │                       │   ├── AddAssetViewController.java
+            │                       │   ├── AssetViewController.java
+            │                       │   ├── BorrowAssetViewController.java
+            │                       │   ├── FileUploadController.java
+            │                       │   ├── HelloWordController.java
+            │                       │   └── ImagesController.java
+            │                       └── form
+            │                           ├── AddAssetForm.java
+            │                           ├── BorrowAssetForm.java
+            │                           ├── FormService.java
+            │                           ├── FormServiceAddAssetView.java
+            │                           ├── FormServiceBorrowAssetView.java
+            │                           └── SnackbarService.java
+            └── webapp
+                ├── WEB-INF
+                │   ├── jsp
+                │   │   ├── components
+                │   │   │   ├── bookCard.jsp
+                │   │   │   ├── navBar.jsp
+                │   │   │   └── snackbarComponent.jsp
+                │   │   └── views
+                │   │       ├── addAssetView.jsp
+                │   │       ├── assetView.jsp
+                │   │       ├── borrowAssetView.jsp
+                │   │       ├── discoverView.jsp
+                │   │       ├── index.jsp
+                │   │       └── notFoundView.jsp
+                │   └── web.xml
+                └── static
+                    ├── css
+                    │   ├── addAssetView.css
+                    │   └── main.css
+                    └── javaScript
+                        └── topbar.js
+
+79 directories, 90 files

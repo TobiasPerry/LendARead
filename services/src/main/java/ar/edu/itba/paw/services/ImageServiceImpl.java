@@ -16,7 +16,7 @@ public class ImageServiceImpl implements ImageService {
     private ImagesDao imagesDao;
 
     private static byte[] defaultImage() {
-        File fi = new File("src/main/static/defaultBookImage.png");
+        File fi = new File("src/main/static/noImage.jpeg");
 
         byte[] fileContent = new byte[0];
 
