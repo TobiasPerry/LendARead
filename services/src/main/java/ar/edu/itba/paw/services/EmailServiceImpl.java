@@ -28,7 +28,7 @@ class EmailServiceImpl {
             msj.setFrom(new InternetAddress("lendabookservice@gmail.com"));
             msj.setRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             msj.setSubject(subject);
-            msj.setText(message);
+            msj.setContent(message, "text/html");
             Transport.send(msj);
         } catch (MessagingException e) {
             System.out.println("ERROR: Couldn't send email");
