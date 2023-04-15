@@ -11,8 +11,11 @@
 <jsp:include page="../components/navBar.jsp"/>
 <div  class="main-class">
 
+        <div class="container-row-wrapped" style="margin-top: 50px">
+            <h1>Available books</h1>
+        </div>
 
-        <div class="container-row-wrapped">
+        <div class="container-row-wrapped" style="margin-top: 50px">
 
             <c:if test="${books.size() > 0}">
                 <c:forEach var="book" items="${books}">

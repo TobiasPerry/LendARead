@@ -8,5 +8,9 @@
 
 .main-class{
     flex-grow: 1;
-    background-color: lightgray;
+    background-color: #E3DDE0;
+}
+
+.card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Add a box shadow on hover */
 }
