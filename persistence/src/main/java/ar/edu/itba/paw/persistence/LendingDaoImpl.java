@@ -21,10 +21,9 @@ public class LendingDaoImpl implements LendingDao {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
     @Override
-    public boolean createLending(AssetInstance ai, User us, Date devolutionDate) {
+    public boolean createLending(int assetInstanceId, int userId, LocalDate devolutionDate) {
         String query = "INSERT INTO lendings(assetinstanceid,borrowerId,lendDate,devolutionDate) VALUES(?,?,?,?)";
-
-        jdbcTemplate.update(query,ai.getId(),us.getId(), LocalDate.now(),devolutionDate);
+        jdbcTemplate.update(query,assetInstanceId,userId, LocalDate.now(),devolutionDate);
 
         return true;
     }

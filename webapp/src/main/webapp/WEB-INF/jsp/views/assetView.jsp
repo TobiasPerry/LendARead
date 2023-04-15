@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="text-center mt-5">
-            <a type="button" class="btn btn-primary" data-toggle="modal" href="/borrowAssetView?id=${id}">Pedir prestado este libro!</a>
+            <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${id}&imageId=${imageId}"/>">Pedir prestado este libro!</a>
         </div>
     </div>
 </body>
