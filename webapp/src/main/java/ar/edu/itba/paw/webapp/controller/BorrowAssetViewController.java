@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.ImageService;
+import ar.edu.itba.paw.interfaces.LendingsService;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarService;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
@@ -11,10 +13,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
+import java.util.Date;
 
 @Controller
 public class BorrowAssetViewController {
-    AssetAvailabilityService assetAvailabilityService;
+    LendingsService lendingsService;
     final String viewName = "views/borrowAssetView";
 
     ImageService imageService;
@@ -27,7 +30,7 @@ public class BorrowAssetViewController {
         if(errors.hasErrors())
             return borrowAssetView(borrowAssetForm, id);
 
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
+        boolean borrowRequestSuccessful = lendingsService.lendBook(id,new UserImpl(-1,borrowAssetForm.getEmail(),borrowAssetForm.getName(),borrowAssetForm.getMessage()),new Date());
 
         if(borrowRequestSuccessful)
             SnackbarService.displaySuccess(model);
@@ -36,8 +39,8 @@ public class BorrowAssetViewController {
     }
 
     @Autowired
-    public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService, ImageService imageService){
-       this.assetAvailabilityService = assetAvailabilityService;
+    public BorrowAssetViewController(LendingsService lendingsService, ImageService imageService){
+       this.lendingsService = lendingsService;
        this.imageService = imageService;
     }
 
