@@ -67,12 +67,14 @@ final public class AddAssetViewController {
         this.assetExistanceService = assetExistanceService;
         this.formService = formServiceAddAssetView;
     }
-
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("path", "addAsset");
+    }
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm){
         final ModelAndView mav = new ModelAndView(viewName);
 
-        mav.addObject("path","addAsset");
         return  mav;
     }
 }

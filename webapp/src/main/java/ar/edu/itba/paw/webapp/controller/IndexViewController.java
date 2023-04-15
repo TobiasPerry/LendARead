@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,16 +34,17 @@ public class IndexViewController {
         this.imageService = imageService;
     }
 
-    //En el requestMapping podemos ir agregandole cosas para poder tener mas especificaciones
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("path", "home");
+    }
     @RequestMapping( "/")
     public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
-        //El objeto ModelAndView nos deja detener el modelo y la view
         final ModelAndView mav = new ModelAndView("/views/index");
         List<AssetInstance> books = assetInstanceService.getAllAssetsInstances();
         mav.addObject("books", books);
         if(showSnackbarSucess)
             SnackbarService.displaySuccess(mav,snackbarSuccessMessage);
-        mav.addObject("path","home");
         return mav;
     }
 

@@ -6,39 +6,13 @@
 <head>
     <title>Prestar Libro</title>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
-    <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <style>
-        .flex-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+    <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
+    <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
 
-        .image-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .form-wrapper {
-            flex: 1;
-        }
-
-        .field-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .field {
-            flex: 1;
-        }
-    </style>
 </head>
 
-<body>
+<body data-path="${path}">
 
 <jsp:include page="../components/navBar.jsp"/>
 <div class="container my-5">
