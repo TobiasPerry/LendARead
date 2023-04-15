@@ -10,7 +10,7 @@
 
 
 <div class="book-card">
-    <a href="<c:url value="/info?id=${param.id}"/>">
+    <a href="<c:url value="/info?id=${param.id}"/>" style="text-decoration: none">
         <div class="card">
             <c:choose>
                 <c:when test="${param.imageId != 0}">

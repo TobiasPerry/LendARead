@@ -38,3 +38,16 @@
 .text-color{
     color: #7DCFB6;
 }
+
+.main-class{
+    flex-grow: 1;
+    background-color: #E3DDE0;
+}
+
+.body-class{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

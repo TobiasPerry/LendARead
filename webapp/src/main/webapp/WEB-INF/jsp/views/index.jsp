@@ -9,7 +9,7 @@
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
 <jsp:include page="../components/navBar.jsp"/>
-<div  class="main-class">
+<div class="main-class">
 
         <div class="container-row-wrapped" style="margin-top: 50px">
             <h1>Available books</h1>
