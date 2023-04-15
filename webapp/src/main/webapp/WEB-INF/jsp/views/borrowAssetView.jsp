@@ -51,7 +51,10 @@
               <form:errors path="message" cssClass="text-danger small" element="small"/>
             </div>
 
-            <button type="submit" class="btn btn-primary m-8">Pedir prestado</button>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary m-8">Pedir prestado</button>
+            </div>
+
           </form:form>
         </div>
       </div>

@@ -157,7 +157,9 @@
                             </div>
                         </div>
                         <input type="file" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
-                        <button type="submit" class="btn btn-primary mt-3">Agregarlo!</button>
+                        <div style="display: flex; justify-content: center;">
+                            <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">Agregarlo!</button>
+                        </div>
                     </form:form>
                 </div>
             </div>
