@@ -1,0 +1,12 @@
+.body-class{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-class{
+    flex-grow: 1;
+    background-color: lightgray;
+}
