@@ -5,25 +5,29 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
-import ar.itba.edu.paw.persistenceinterfaces.LendingDao;
+import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class AssetAvailabilityAvailabilityServiceImpl implements AssetAvailabilityService {
-    @Autowired
-    private LendingDao lendingDao;
+public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
+    private final AssetAvailabilityDao lendingDao;
+
+    private final AssetInstanceDao assetInstanceDao;
+
+    private final UserDao userDao;
 
     @Autowired
-    private AssetInstanceDao assetInstanceDao;
+    public AssetAvailabilityServiceImpl(AssetAvailabilityDao lendingDao, AssetInstanceDao assetInstanceDao, UserDao userDao) {
+        this.lendingDao = lendingDao;
+        this.assetInstanceDao = assetInstanceDao;
+        this.userDao = userDao;
 
-    @Autowired
-    private UserDao userDao;
+    }
 
     @Override
     public boolean borrowAsset(int assetId, User borrower, LocalDate devolutionDate) {
@@ -34,6 +38,10 @@ public class AssetAvailabilityAvailabilityServiceImpl implements AssetAvailabili
         if(!ai.get().getAssetState().canBorrow())
             return false;
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
-        return lendingDao.createLending(ai.get().getId(),userID.get(),devolutionDate);
+        boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),userID.get(),LocalDate.now(),devolutionDate);
+        if (saved) {
+            EmailServiceImpl.sendEmail(borrower.getEmail(), "Préstamo de Libro:  " + ai.get().getBook().getName(), "Hola.\nEl préstamo del libro" + ai.get().getBook().getName() + " se confirmado. Por favor recordá los datos para retirarlo:\n" + ai.get().getLocation().toString());
+        }
+        return saved;
     }
 }

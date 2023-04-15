@@ -1,22 +1,31 @@
 package ar.edu.itba.paw.webapp.form;
 
+import org.hibernate.validator.constraints.ISBN;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class AddAssetForm {
 
-    private MultipartFile image;
     @NotEmpty
+    @ISBN
     private String isbn;
+    @NotEmpty
+    private String language;
+    @NotEmpty
+    private String author;
+
+    @NotEmpty
+    private String title;
 
     @NotEmpty
     private String physicalCondition;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d{5}$") // 5-digit postal code
+    @Pattern(regexp = "^\\d{4}$")
     private String zipcode;
 
     @NotEmpty
@@ -29,7 +38,7 @@ public class AddAssetForm {
     private String country;
 
     @NotEmpty
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") // Email format
+    @Email
     private String email;
 
     @NotEmpty
@@ -39,8 +48,33 @@ public class AddAssetForm {
     @NotEmpty
     @Size(min = 10, max = 200)
     private String message;
+
     public String getIsbn() {
         return isbn;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setIsbn(String isbn) {
@@ -109,12 +143,5 @@ public class AddAssetForm {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public MultipartFile getImage() { return this.image;
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
     }
 }

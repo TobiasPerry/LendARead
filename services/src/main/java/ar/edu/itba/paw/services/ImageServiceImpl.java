@@ -12,25 +12,16 @@ import java.util.Optional;
 @Service
 public class ImageServiceImpl implements ImageService {
 
+    private final ImagesDao imagesDao;
+
     @Autowired
-    private ImagesDao imagesDao;
-
-    private static byte[] defaultImage() {
-        File fi = new File("src/main/static/defaultBookImage.png");
-
-        byte[] fileContent = new byte[0];
-
-        try {
-            fileContent = Files.readAllBytes(fi.toPath());
-        } catch (Exception e) {
-            //
-        }
-        return fileContent;
+    public ImageServiceImpl(ImagesDao imagesDao) {
+        this.imagesDao = imagesDao;
     }
 
     @Override
     public byte[] getPhoto(int id) {
         Optional<byte[]> image = imagesDao.getPhoto(id);
-        return image.orElse(defaultImage());
+        return image.orElse(null);
     }
 }

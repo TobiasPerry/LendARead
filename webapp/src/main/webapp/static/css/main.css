@@ -18,10 +18,11 @@
     font-style: oblique;
 }
 
-.book-info-container {
-    background-color: #b0c4c4;
-    border-radius: 5px;
-    padding: 3px;
+.info-container {
+    background-color: #ececec;
+    border-radius: 20px;
+    padding: 15px;
+    margin: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .container-row-wrapped{
@@ -34,4 +35,23 @@
 .imagen-card{
     object-fit: fill;
 }
+.form-label {
+    font-weight: bold;
+    margin: 2px;
+}
+.display-flex {
+    display: flex;
+}
 
+.flex-1 {
+    flex: 1;
+}
+
+.field-group {
+    display: flex;
+}
+
+.field {
+    flex: 1;
+    padding-right: 8px;
+}
