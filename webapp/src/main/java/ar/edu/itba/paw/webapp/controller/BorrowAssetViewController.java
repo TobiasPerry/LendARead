@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
+import java.util.Base64;
 
 @Controller
 final public class BorrowAssetViewController {
@@ -44,6 +45,8 @@ final public class BorrowAssetViewController {
 
     @RequestMapping( value = "/borrowAssetView", method = RequestMethod.GET)
     public ModelAndView borrowAssetView(@ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm, @RequestParam("id") int id){
-        return new ModelAndView(viewName).addObject("id", id);
+        String image = Base64.getEncoder().encodeToString(imageService.getPhoto(id));
+
+        return new ModelAndView(viewName).addObject("id", id).addObject("bookImage", image);
     }
 }

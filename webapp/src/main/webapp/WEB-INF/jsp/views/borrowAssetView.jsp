@@ -15,13 +15,13 @@
 
     <jsp:include page="../components/snackbarComponent.jsp" />
 
-  <h1 class="text-center mb-5">Quieres pedir prestado un libro?</h1>
+  <h1 class="text-center mb-5">Quieres pedir prestado este libro? </h1>
   <div class="p-4 rounded lendView" >
     <div class="row">
 
       <div class="col-md-6 d-flex flex-column align-items-center">
         <div class="image-container position-relative" style="width: 100%; height: 100%;">
-          <img src="https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/61aFldsgAmL._AC_UF1000,1000_QL80_.jpg" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 100%; height: 100%; object-fit: contain;">
+          <img src="data:image/jpeg;base64,${bookImage}" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
       </div>
 
