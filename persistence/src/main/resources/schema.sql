@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users(
     behavior varchar(100),
     id SERIAL primary key,
     mail varchar(100) unique,
+    name varchar(100) not null,
     telephone varchar(100)
 );
 CREATE TABLE IF NOT EXISTS location(
