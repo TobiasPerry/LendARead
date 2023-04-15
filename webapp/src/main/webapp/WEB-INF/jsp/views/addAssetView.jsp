@@ -107,7 +107,6 @@
                         <form:input path="message" id="message" placeholder="Mensaje" class="form-control"/>
                         <form:errors path="message" cssClass="text-danger small" element="small"/>
                     </div>
-                    <!-- Add this line inside the form element -->
                     <input type="file" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo!</button>
                 </form:form>
