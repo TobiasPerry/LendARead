@@ -44,12 +44,6 @@ public class HelloWordController {
         return mav;
     }
 
-    @RequestMapping("/discover")
-    public ModelAndView discoverVIew(){
-        final ModelAndView mav = new ModelAndView("/views/discoverView");
-        return mav;
-    }
-
     @RequestMapping( "/assetView")
     public ModelAndView assetView(){
         //El objeto ModelAndView nos deja detener el modelo y la view

@@ -29,7 +29,7 @@
         <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}&imageId=${imageId}"/>
         <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
 
-          <div>
+        <div class="info-container">
             <h3> Contacto: </h3>
           <div class="row">
             <div class="col-md-6 mb-3">
@@ -44,7 +44,7 @@
             </div>
           </div>
           </div>
-            <div >
+        <div class="info-container">
               <h3>Mensaje:</h3>
               <form:input path="message" id="message" placeholder="Message" class="form-control"/>
               <form:errors path="message" cssClass="text-danger small" element="small"/>
