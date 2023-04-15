@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
     }
     @Override
     public Optional<Integer> addUser(User us) {
-        String query = "INSERT INTO users(behavior,mail,telephone) VALUES(?,?,?) ON CONFLICT DO NOTHING RETURNING id";
+        String query = "INSERT INTO users(behavior,mail,telephone,name) VALUES(?,?,?,?) ON CONFLICT DO NOTHING RETURNING id";
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -39,6 +39,8 @@ public class UserDaoImpl implements UserDao {
             pstmt.setString(1, "lender");
             pstmt.setString(2,us.getEmail());
             pstmt.setString(3,us.getTelephone());
+            pstmt.setString(4,us.getName());
+
 
             return pstmt;
         }, keyHolder);

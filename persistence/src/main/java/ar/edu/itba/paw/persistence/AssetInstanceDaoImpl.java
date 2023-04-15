@@ -64,7 +64,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     rs.getInt("id"),
                     new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), "X", "X"),
+                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X"),
                     new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
                     rs.getInt("photo_id"),
                     AssetState.fromString(rs.getString("status"))
@@ -93,7 +93,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                     " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                     " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id ," +
-                    " u.mail AS email, u.telephone FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
+                    " u.mail AS email, u.telephone,u.name as user_name  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
                     " JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id " +
                     "WHERE ai.id = ?";
             assetInstance = jdbcTemplate.queryForObject(query, params, ROW_MAPPER_AI);
@@ -110,7 +110,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-                " u.mail AS email, u.telephone FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
 
         List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name());

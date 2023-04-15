@@ -46,8 +46,9 @@ final public class AddAssetViewController {
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 
         if(addedBookSuccessfully) {
-            SnackbarService.displaySuccess(model, SUCESS_MSG);
-            return addAssetView(addAssetForm);
+            ModelAndView index = new ModelAndView("redirect:/");
+            SnackbarService.displaySuccess(index,SUCESS_MSG);
+            return index;
         }
 
         return  addAssetView(addAssetForm)
@@ -71,12 +72,14 @@ final public class AddAssetViewController {
         this.assetExistanceService = assetExistanceService;
         this.formService = formServiceAddAssetView;
     }
-
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("path", "addAsset");
+    }
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm){
         final ModelAndView mav = new ModelAndView(viewName);
 
-        mav.addObject("path","addAsset");
         return  mav;
     }
 }

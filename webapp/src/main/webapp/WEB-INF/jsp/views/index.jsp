@@ -9,6 +9,7 @@
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
 <jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/snackbarComponent.jsp"/>
 <div class="main-class">
 
         <div class="container-row-wrapped" style="margin-top: 50px">
@@ -23,7 +24,6 @@
                         <jsp:param name="id" value="${book.id}"/>
                         <jsp:param name="bookTitle" value="${book.book.name}"/>
                         <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                        <jsp:param name="bookAvailability" value="X"/>
                         <jsp:param name="imageId" value="${book.imageId}"/>
                     </jsp:include>
                 </c:forEach>

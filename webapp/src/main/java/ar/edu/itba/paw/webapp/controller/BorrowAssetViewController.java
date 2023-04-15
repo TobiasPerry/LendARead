@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Base64;
 
@@ -35,8 +34,9 @@ final public class BorrowAssetViewController {
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id,new UserImpl(-1,borrowAssetForm.getEmail(),borrowAssetForm.getName(),borrowAssetForm.getMessage()), LocalDate.now().plusWeeks(2));
 
         if(borrowRequestSuccessful) {
-            SnackbarService.displaySuccess(model, SUCCESS_MSG);
-            return borrowAssetView(new BorrowAssetForm(),id,imageId);
+            ModelAndView index = new ModelAndView("redirect:/");
+            SnackbarService.displaySuccess(index,SUCCESS_MSG);
+            return index;
         }
 
        return borrowAssetView(borrowAssetForm,id,imageId).addObject("showSnackbarInvalid", true);
