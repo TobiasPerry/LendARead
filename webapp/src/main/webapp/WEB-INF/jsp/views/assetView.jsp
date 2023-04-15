@@ -18,54 +18,88 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
 </head>
-<body class="lendView">
+
+<body data-path="${path}" class=" body-class">
 
     <jsp:include page="../components/navBar.jsp"/>
-    <div class="container my-5">
-        <h1 class="text-center mb-3"><c:out value="${name}"/></h1>
-        <div class="d-flex">
-            <img src="<c:url value="/getImage/${imageId}"/>" class="w-25 h-25 mx-5" alt="Book cover">
-            <div class="mx-4">
-                <h2>Información</h2>
-                <hr class="hr" />
-                <div>
-                    <p style="margin-bottom: -5px">Título</p>
-                    <h3><c:out value="${name}"/></h3>
-
-                    <p style="margin-bottom: -5px">Autor</p>
-                    <h3><c:out value="${author}"/></h3>
-                
-                    <p style="margin-bottom: -5px">Idioma</p>
-                    <h3><c:out value="${language}"/></h3>
-                
-                    <p style="margin-bottom: -5px">ISBN</p>
-                    <h3><c:out value="${isbn}"/></h3>
-
-                    <p style="margin-bottom: -5px">Estado</p>
-                    <h3><c:out value="${physicalCondition}"/></h3>
+    <div class="main-class">
+        <div style="background-color: #FFFFFF; margin: 50px; border-radius: 20px; padding: 20px">
+            <div class="container-row-wrapped">
+                <img src="<c:url value="/getImage/${imageId}"/>" class="w-25 h-25 mx-5" alt="Book cover">
+                <div class="w-25 h-25 mx-5">
+                    <h1><c:out value="${name}"/></h1>
+                    <h3>by <c:out value="${author}"/></h3>
+                    <h3>Idioma: <c:out value="${language}"/></h3>
+                    <h5>ISBN: <c:out value="${isbn}"/></h5>
+                    <h5>Estado: <c:out value="${physicalCondition}"/></h5>
                 </div>
-            </div>
-            <div class="vr" style="color: #849ba4; width: 2px"></div>
-            <div class="mx-4">
-                <h2>Ubicación</h2>
-                <hr class="hr" />
-                <div>
+
+                <div class="w-25 h-25 mx-5" style="border: 2px solid #E3DDE0; border-radius: 10px; padding: 20px">
                     <p style="margin-bottom: -5px">Código postal</p>
                     <h3><c:out value="${locationPC}"/></h3>
-                    
+
                     <p style="margin-bottom: -5px">Localidad</p>
                     <h3><c:out value="${location}"/></h3>
-                    
+
                     <p style="margin-bottom: -5px">Provincia</p>
                     <h3><c:out value="${province}"/></h3>
 
                     <p style="margin-bottom: -5px">País</p>
                     <h3><c:out value="${country}"/></h3>
+
+                    <div class="text-center mt-5">
+                        <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${id}&imageId=${imageId}"/>">Pedir prestado este libro!</a>
+                    </div>
+
                 </div>
             </div>
-        </div>
-        <div class="text-center mt-5">
-            <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${id}&imageId=${imageId}"/>">Pedir prestado este libro!</a>
+<%--            <div class="container my-5">--%>
+<%--                <h1 class="text-center mb-3"><c:out value="${name}"/></h1>--%>
+<%--                <div class="d-flex">--%>
+<%--                    <img src="<c:url value="/getImage/${imageId}"/>" class="w-25 h-25 mx-5" alt="Book cover">--%>
+<%--                    <div class="mx-4">--%>
+<%--                        <h2>Información</h2>--%>
+<%--                        <hr class="hr" />--%>
+<%--                        <div>--%>
+<%--                            <p style="margin-bottom: -5px">Título</p>--%>
+<%--                            <h3><c:out value="${name}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">Autor</p>--%>
+<%--                            <h3><c:out value="${author}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">Idioma</p>--%>
+<%--                            <h3><c:out value="${language}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">ISBN</p>--%>
+<%--                            <h3><c:out value="${isbn}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">Estado</p>--%>
+<%--                            <h3><c:out value="${physicalCondition}"/></h3>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                    <div class="vr" style="color: #849ba4; width: 2px"></div>--%>
+<%--                    <div class="mx-4">--%>
+<%--                        <h2>Ubicación</h2>--%>
+<%--                        <hr class="hr" />--%>
+<%--                        <div>--%>
+<%--                            <p style="margin-bottom: -5px">Código postal</p>--%>
+<%--                            <h3><c:out value="${locationPC}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">Localidad</p>--%>
+<%--                            <h3><c:out value="${location}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">Provincia</p>--%>
+<%--                            <h3><c:out value="${province}"/></h3>--%>
+
+<%--                            <p style="margin-bottom: -5px">País</p>--%>
+<%--                            <h3><c:out value="${country}"/></h3>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <div class="text-center mt-5">--%>
+<%--                    <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${id}&imageId=${imageId}"/>">Pedir prestado este libro!</a>--%>
+<%--                </div>--%>
+<%--            </div>--%>
         </div>
     </div>
 </body>
