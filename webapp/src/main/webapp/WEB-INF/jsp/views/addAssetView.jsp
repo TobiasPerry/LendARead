@@ -38,6 +38,11 @@
                         <div class="info-container">
                             <h2>Libro:</h2>
                             <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="title" class="form-label">Titulo:</label>
+                                    <form:input path="title" id="title" placeholder="Titulo" class="form-control"/>
+                                    <form:errors path="title" cssClass="text-danger small" element="small"/>
+                                </div>
                             <div class="col-md-6 mb-3">
                                 <label for="physicalCondition" class="form-label">Estado:</label>
                                 <form:select path="physicalCondition" id="physicalCondition" class="form-control">
@@ -52,11 +57,22 @@
                                     <form:option value="bindingcopy">Dorso dañado</form:option>
                                 </form:select>
                             </div>
+
                             <div class="col-md-6 mb-3">
                                 <label for="isbn" class="form-label">ISBN:</label>
                                 <form:input path="isbn" id="isbn" placeholder="ISBN" class="form-control"/>
                                 <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                             </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="author" class="form-label">Autor:</label>
+                                    <form:input path="author" id="author" placeholder="Autor" class="form-control"/>
+                                    <form:errors path="author" cssClass="text-danger small" element="small"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="language" class="form-label">Idioma:</label>
+                                    <form:input path="language" id="language" placeholder="Idioma" class="form-control"/>
+                                    <form:errors path="language" cssClass="text-danger small" element="small"/>
+                                </div>
                         </div>
                     </div>
                     <div class="info-container">
