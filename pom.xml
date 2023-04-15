@@ -21,6 +21,7 @@
     
   <properties>
     <org.json.version>20230227</org.json.version>
+    <javaMail.version>1.4.7</javaMail.version>
     <javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
     <org.hibernate.validator>6.2.4.Final</org.hibernate.validator>
     <servlet-api.version>2.5</servlet-api.version>
@@ -112,6 +113,12 @@
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
         <version>${org.json.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>${javaMail.version}</version>
+
       </dependency>
           
     </dependencies>
