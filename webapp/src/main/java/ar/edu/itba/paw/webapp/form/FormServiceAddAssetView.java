@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.interfaces.LibraryAPIService;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
@@ -10,10 +11,17 @@ import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 final public class FormServiceAddAssetView implements FormService {
+
+    @Autowired
+    LibraryAPIService libraryAPIService;
+
     public AssetInstance createAssetInstance(AddAssetForm request) {
 
         User user = UserFactory.createUser(-1,
@@ -30,7 +38,12 @@ final public class FormServiceAddAssetView implements FormService {
                 request.getCountry()
         );
 
-        Book book = BookFactory.createBook(request.getIsbn());
+        Book book;
+        try {
+            book = this.libraryAPIService.getBookByISBN(request.getIsbn());
+        } catch (IOException exc) {
+            book = BookFactory.createBook(request.getIsbn());
+        }
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 

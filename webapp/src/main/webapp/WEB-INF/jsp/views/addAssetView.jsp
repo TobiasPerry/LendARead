@@ -35,7 +35,7 @@
             <div class="col-md-6">
                 <c:url var="addAssetUrl" value="/addAsset"/>
                 <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" class="container">
-                        <div class="book-info-container">
+                        <div class="info-container">
                             <h2>Libro:</h2>
                             <div class="row">
                             <div class="col-md-6 mb-3">
@@ -60,40 +60,40 @@
 
                         </div>
                     </div>
-                    <div>
+                    <div class="info-container">
                         <h2>Ubicacion: </h2>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="locality" class="form-label">Localidad:</label>
-                                <form:input path="locality" id="locality" placeholder="Locality" class="form-control"/>
+                                <form:input path="locality" id="locality" placeholder="Localidad" class="form-control"/>
                                 <form:errors path="locality" cssClass="text-danger small" element="small"/>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="province" class="form-label">Provincia:</label>
-                                <form:input path="province" id="province" placeholder="Province" class="form-control"/>
+                                <form:input path="province" id="province" placeholder="Provincia" class="form-control"/>
                                 <form:errors path="province" cssClass="text-danger small" element="small"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="country" class="form-label">Pais:</label>
-                                <form:input path="country" id="country" placeholder="Country" class="form-control"/>
+                                <form:input path="country" id="country" placeholder="Pais" class="form-control"/>
                                 <form:errors path="country" cssClass="text-danger small" element="small"/>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="zipcode" class="form-label">Codigo postal:</label>
-                                <form:input path="zipcode" id="zipcode" placeholder="Postal Code" class="form-control"/>
+                                <form:input path="zipcode" id="zipcode" placeholder="Codigo postal" class="form-control"/>
                                 <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
                             </div>
 
                         </div>
                     </div>
-                    <div>
+                    <div class="info-container">
                         <h2>Contacto: </h2>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label">Nombre:</label>
-                                <form:input path="name" id="name" placeholder="Name" class="form-control"/>
+                                <form:input path="name" id="name" placeholder="Nombre" class="form-control"/>
                                 <form:errors path="name" cssClass="text-danger small" element="small"/>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -103,9 +103,9 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="info-container">
                         <h4>Mensaje:</h4>
-                        <form:input path="message" id="message" placeholder="Message" class="form-control"/>
+                        <form:input path="message" id="message" placeholder="Mensaje" class="form-control"/>
                         <form:errors path="message" cssClass="text-danger small" element="small"/>
                     </div>
                     <!-- Add this line inside the form element -->
