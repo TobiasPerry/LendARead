@@ -13,5 +13,5 @@ public interface AssetInstanceDao {
     Optional<AssetInstance> getAssetInstance(final int assetId);
     Optional<List<AssetInstance>> getAllAssetInstances();
 
-    Boolean changeStatus(AssetInstance ai, AssetState as);
+    Boolean changeStatus(int assetInstanceID, AssetState as);
 }

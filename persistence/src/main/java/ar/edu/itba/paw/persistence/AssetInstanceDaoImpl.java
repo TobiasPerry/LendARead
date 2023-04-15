@@ -110,19 +110,19 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-                " u.mail AS email, u.telephone FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
-                " JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id";
+                " u.mail AS email, u.telephone FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK);
+        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name());
 
         return Optional.of(assets);
     }
 
     @Override
-    public Boolean changeStatus(AssetInstance ai, AssetState as) {
+    public Boolean changeStatus(int assetInstanceId, AssetState as) {
         String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
-            jdbcTemplate.update(query,ai.getId(),as.name());
+            jdbcTemplate.update(query,as.name(),assetInstanceId);
             return true;
         }catch (Exception e){
             return false;
