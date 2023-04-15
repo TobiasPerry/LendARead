@@ -28,30 +28,35 @@
       <div class="col-md-6">
         <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}"/>
         <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
+          <div>
+            <h3>Ubicacion:</h3>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="postalCode" class="form-label">Postal Code:</label>
+              <label for="postalCode" class="form-label">Codigo postal:</label>
               <form:input path="postalCode" id="postalCode" placeholder="Postal Code" class="form-control"/>
               <form:errors path="postalCode" cssClass="text-danger small" element="small"/>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="locality" class="form-label">Locality:</label>
+              <label for="locality" class="form-label">Localidad:</label>
               <form:input path="locality" id="locality" placeholder="Locality" class="form-control"/>
               <form:errors path="locality" cssClass="text-danger small" element="small"/>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="province" class="form-label">Province:</label>
+              <label for="province" class="form-label">Provincia:</label>
               <form:input path="province" id="province" placeholder="Province" class="form-control"/>
               <form:errors path="province" cssClass="text-danger small" element="small"/>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="country" class="form-label">Country:</label>
+              <label for="country" class="form-label">Pais:</label>
               <form:input path="country" id="country" placeholder="Country" class="form-control"/>
               <form:errors path="country" cssClass="text-danger small" element="small"/>
             </div>
           </div>
+          </div>
+          <div>
+            <h3> Contacto: </h3>
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="email" class="form-label">Email:</label>
@@ -59,19 +64,21 @@
               <form:errors path="email" cssClass="text-danger small" element="small"/>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="name" class="form-label">Name:</label>
+              <label for="name" class="form-label">Nombre:</label>
               <form:input path="name" id="name" placeholder="Name" class="form-control"/>
               <form:errors path="name" cssClass="text-danger small" element="small"/>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="message" class="form-label">Message:</label>
+          </div>
+            <div >
+              <h3>Mensaje:</h3>
               <form:input path="message" id="message" placeholder="Message" class="form-control"/>
               <form:errors path="message" cssClass="text-danger small" element="small"/>
             </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary m-8">Pedir prestado</button>
+
+      </div>
+
         </form:form>
 
       </div>

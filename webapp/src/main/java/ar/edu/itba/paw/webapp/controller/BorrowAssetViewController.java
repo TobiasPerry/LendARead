@@ -13,11 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-public class BorrowAssetViewController {
-    AssetAvailabilityService assetAvailabilityService;
-    final String viewName = "views/borrowAssetView";
+final public class BorrowAssetViewController {
+    private AssetAvailabilityService assetAvailabilityService;
+    private final String viewName = "views/borrowAssetView";
+    private final static String SUCCESS_MSG = "Libro pedido exitosamente!";
 
-    ImageService imageService;
+    private ImageService imageService;
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
     public ModelAndView borrowAsset( @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
@@ -30,7 +31,7 @@ public class BorrowAssetViewController {
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset();
 
         if(borrowRequestSuccessful)
-            SnackbarService.displaySuccess(model);
+            SnackbarService.displaySuccess(model, SUCCESS_MSG);
 
         return borrowAssetView(new BorrowAssetForm(), id);
     }

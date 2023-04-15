@@ -36,7 +36,7 @@
                 <c:url var="addAssetUrl" value="/addAsset"/>
                 <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" class="container">
                         <div class="book-info-container">
-                            <h2> Datos del libro</h2>
+                            <h2>Libro:</h2>
                             <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="physicalCondition" class="form-label">Estado:</label>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div>
-                        <h2>Datos ubicacion: </h2>
+                        <h2>Ubicacion: </h2>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="locality" class="form-label">Localidad:</label>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div>
-                        <h2> Datos contacto: </h2>
+                        <h2>Contacto: </h2>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="name" class="form-label">Nombre:</label>
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div>
-                        <h4>Mensaje para el que lo pida prestado:</h4>
+                        <h4>Mensaje:</h4>
                         <form:input path="message" id="message" placeholder="Message" class="form-control"/>
                         <form:errors path="message" cssClass="text-danger small" element="small"/>
                     </div>
