@@ -24,7 +24,7 @@
     <div class="container my-5">
         <h1 class="text-center mb-3"><c:out value="${name}"/></h1>
         <div class="d-flex">
-            <img src="https://i.pinimg.com/originals/d4/2e/d7/d42ed7bf30a4c1a6a201565f0bc61190.jpg" class="w-25 h-25 mx-5" alt="Book cover">
+            <img src="<c:url value="/getImage/${imageId}"/>" class="w-25 h-25 mx-5" alt="Book cover">
             <div class="mx-4">
                 <h2>Información</h2>
                 <hr class="hr" />
