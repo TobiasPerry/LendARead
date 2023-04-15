@@ -83,7 +83,9 @@
                                     <form:option value="bindingcopy">Dorso dañado</form:option>
                                 </form:select>
                             </div>
-                            <div class="field">
+                        </div>
+                        <div class="field-group">
+                        <div class="field">
                                 <label for="isbn" class="form-label">ISBN:</label>
                                 <form:input path="isbn" id="isbn" placeholder="ISBN" class="form-control"/>
                                 <form:errors path="isbn" cssClass="text-danger small" element="small"/>
@@ -93,11 +95,14 @@
                                 <form:input path="author" id="author" placeholder="Autor" class="form-control"/>
                                 <form:errors path="author" cssClass="text-danger small" element="small"/>
                             </div>
+                        <div class="field-group">
+
                             <div class="field">
                                 <label for="language" class="form-label">Idioma:</label>
                                 <form:input path="language" id="language" placeholder="Idioma" class="form-control"/>
                                 <form:errors path="language" cssClass="text-danger small" element="small"/>
                             </div>
+                        </div>
                         </div>
                     </div>
                     <div class="info-container">
@@ -113,7 +118,10 @@
                                 <form:input path="province" id="province" placeholder="Provincia" class="form-control"/>
                                 <form:errors path="province" cssClass="text-danger small" element="small"/>
                             </div>
-                            <div class="field">
+                        </div>
+                        <div class="field-group">
+
+                        <div class="field">
                                 <label for="country" class="form-label">Pais:</label>
                                 <form:input path="country" id="country" placeholder="Pais" class="form-control"/>
                                 <form:errors path="country" cssClass="text-danger small" element="small"/>
