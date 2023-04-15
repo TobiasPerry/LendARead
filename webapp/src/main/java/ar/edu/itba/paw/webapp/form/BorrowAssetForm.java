@@ -5,17 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class BorrowAssetForm {
-    @NotEmpty
-    private String postalCode;
 
-    @NotEmpty
-    private String locality;
-
-    @NotEmpty
-    private String province;
-
-    @NotEmpty
-    private String country;
 
     @NotEmpty
     @Email
@@ -26,38 +16,6 @@ public class BorrowAssetForm {
 
     @Size(min = 1, max = 1000)
     private String message;
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getLocality() {
-        return locality;
-    }
-
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 
     public String getEmail() {
         return email;

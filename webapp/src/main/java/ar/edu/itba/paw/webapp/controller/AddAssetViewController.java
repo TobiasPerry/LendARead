@@ -65,7 +65,6 @@ final public class AddAssetViewController {
         final ModelAndView mav = new ModelAndView(viewName);
 
         mav.addObject("path","addAsset");
-
         return  mav;
     }
 }

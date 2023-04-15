@@ -44,6 +44,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         info.put("location", loc.getLocality());
         info.put("province", loc.getProvince());
         info.put("country", loc.getCountry());
+        info.put("imageId",Integer.toString(assetInstance.getImageId()));
         return info;
     }
 

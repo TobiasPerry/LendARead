@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS location(
 );
 CREATE TABLE IF NOT EXISTS photos(
     id SERIAL primary key,
-    photo bytea NOT NULL
+    photo bytea
 );
 
 CREATE TABLE IF NOT EXISTS AssetInstance(
