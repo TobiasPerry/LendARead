@@ -27,7 +27,7 @@
                     <img src="#" alt="Book Cover" class="img-fluid" id="bookImage" style="max-width: 100%; max-height: 100%;">
                     <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
                         <i class="bi bi-cloud-upload"></i> Subir foto
-                        <input type="file" id="uploadImage" name="file" class="d-none" accept="image/*" onchange="storeAndPreviewImage(event)">
+<%--                        image input--%>
                     </label>
                 </div>
             </div>
@@ -107,7 +107,8 @@
                         <form:input path="message" id="message" placeholder="Message" class="form-control"/>
                         <form:errors path="message" cssClass="text-danger small" element="small"/>
                     </div>
-                    <input type="file" id="hiddenUploadImage" name="file" class="d-none" accept="image/*">
+                    <!-- Add this line inside the form element -->
+                    <input type="file" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
                     <button type="submit" class="btn btn-primary mt-3">Agregarlo!</button>
                 </form:form>
             </div>
@@ -116,19 +117,18 @@
 </div>
 
 <script>
-    function storeAndPreviewImage(event) {
+    function previewImage() {
+        const fileInput = document.getElementById('uploadImage');
+        const file = fileInput.files[0];
+        const img = document.getElementById('bookImage');
         const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('bookImage').src = e.target.result;
-            localStorage.setItem('uploadedImage', e.target.result);
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
 
-    window.onload = function() {
-        const uploadedImage = localStorage.getItem('uploadedImage');
-        if (uploadedImage) {
-            document.getElementById('bookImage').src = uploadedImage;
+        reader.addEventListener('load', function () {
+            img.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
         }
     }
 </script>
