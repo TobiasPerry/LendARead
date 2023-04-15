@@ -13,9 +13,8 @@ public class EmailServiceImpl implements EmailService {
 
     Properties props;
     Session session;
-    String address;
 
-    public void createSession(final String user, final String appPassword) {
+    public void sendEmail(final String addressTo, final String subject, final String message) {
         this.props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
@@ -24,20 +23,15 @@ public class EmailServiceImpl implements EmailService {
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
-        this.address = user;
-
         this.session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user,appPassword);
+                return new PasswordAuthentication("lendabookservice@gmail.com","dijwfcejvnxeizvg");
             }
         });
-    }
-
-    public void sendEmail(final String addressTo, final String subject, final String message) {
         Message msj = new MimeMessage(this.session);
         try {
-            msj.setFrom(new InternetAddress(this.address));
+            msj.setFrom(new InternetAddress("lendabookservice@gmail.com"));
             msj.setRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             msj.setSubject(subject);
             msj.setText(message);
@@ -47,4 +41,5 @@ public class EmailServiceImpl implements EmailService {
             System.err.println(e.getMessage());
         }
     }
+
 }
