@@ -17,13 +17,31 @@ public class BookImpl implements Book {
     private final String type = "Book";
 
     public BookImpl(String isbn, String author, String title, String language) {
-        this.isbn = isbn;
+        this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
         this.language = language;
     }
 
+    private static String convertToISBN13(String isbn) {
+        // Eliminar guiones y espacios en blanco del ISBN
+        isbn = isbn.replace("-", "").replace(" ", "");
 
+        // Verificar si el ISBN es de longitud 10
+        if (isbn.length() == 10) {
+            // Calcular el dígito de control del ISBN-13
+            int sum = 0;
+            for (int i = 0; i < 9; i++) {
+                int digit = Character.getNumericValue(isbn.charAt(i));
+                sum += (i % 2 == 0) ? digit : digit * 3;
+            }
+            int checkDigit = (10 - (sum % 10)) % 10;
+
+            // Construir el ISBN-13 completo
+            isbn = "978" + isbn.substring(0, 9) + checkDigit;
+        }
+        return isbn;
+    }
 
     @Override
     public String getName() {
