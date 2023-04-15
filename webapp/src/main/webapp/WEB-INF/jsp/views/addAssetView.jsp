@@ -52,7 +52,7 @@
 
                 <div class="image-wrapper">
                     <div class="image-container position-relative">
-                        <img src="#" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
+                        <img src="<c:url value="/static/images/no_image_placeholder.jpg"/>" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
                         <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
                             <i class="bi bi-cloud-upload"></i> Subir foto
                         </label>
