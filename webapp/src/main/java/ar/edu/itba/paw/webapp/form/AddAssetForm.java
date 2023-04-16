@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class AddAssetForm {
 
     @NotEmpty
-    @ISBN
+    @ISBN(type = ISBN.Type.ANY)
     private String isbn;
     @NotEmpty
     private String language;

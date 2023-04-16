@@ -11,11 +11,11 @@
 <jsp:include page="../components/navBar.jsp"/>
 <jsp:include page="../components/snackbarComponent.jsp"/>
 <div class="main-class">
-
-        <div class="container-row-wrapped" style="margin-top: 50px">
-            <h1>Available books</h1>
-        </div>
-
+        <c:if test="${books.size() > 0}">
+            <div class="container-row-wrapped" style="margin-top: 50px">
+                <h1>Libros disponibles</h1>
+            </div>
+        </c:if>
         <div class="container-row-wrapped" style="margin-top: 50px">
 
             <c:if test="${books.size() > 0}">
@@ -30,7 +30,7 @@
             </c:if>
 
             <c:if test="${books.size() <= 0}">
-                <h1>No books to show</h1>
+                <h1>No hay libros disponibles</h1>
             </c:if>
         </div>
 
