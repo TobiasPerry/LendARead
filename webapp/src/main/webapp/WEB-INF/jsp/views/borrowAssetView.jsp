@@ -60,7 +60,7 @@
 </div>
 
 <jsp:include page="../components/modal.jsp">
-  <jsp:param name="title" value="Pretamo confirmado"/>
+  <jsp:param name="modalTitle" value="Prestamo confirmado"/>
   <jsp:param name="text" value="El préstamo se ha solicitado con exito, pronto recibirás un email con la información de contacto del dueño del libro."/>
 </jsp:include>
 

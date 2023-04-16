@@ -138,7 +138,7 @@
 </div>
 
 <jsp:include page="../components/modal.jsp">
-    <jsp:param name="title" value="Libro subido"/>
+    <jsp:param name="modalTitle" value="Libro subido"/>
     <jsp:param name="text" value="El libro se ha añadido a nuestra base de datos. Te enviaremos un mail cuando otro usuario solicite prestamo de este libro."/>
 </jsp:include>
 
