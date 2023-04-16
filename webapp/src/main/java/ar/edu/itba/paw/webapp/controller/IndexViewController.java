@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.webapp.form.SnackbarService;
+import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +44,7 @@ public class IndexViewController {
         List<AssetInstance> books = assetInstanceService.getAllAssetsInstances();
         mav.addObject("books", books);
         if(showSnackbarSucess)
-            SnackbarService.displaySuccess(mav,snackbarSuccessMessage);
+            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
         return mav;
     }
 

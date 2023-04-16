@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
-import ar.edu.itba.paw.webapp.form.SnackbarService;
+import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +35,7 @@ final public class BorrowAssetViewController {
 
         if(borrowRequestSuccessful) {
             ModelAndView index = new ModelAndView("redirect:/");
-            SnackbarService.displaySuccess(index,SUCCESS_MSG);
+            SnackbarControl.displaySuccess(index,SUCCESS_MSG);
             return index;
         }
 

@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.form;
+package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.LibraryAPIService;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
@@ -11,16 +11,21 @@ import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
-@Service
-final public class FormServiceAddAssetView implements FormService {
+@Controller
+final public class FormControllerAddAssetView {
+
+    LibraryAPIService libraryAPIService;
 
     @Autowired
-    LibraryAPIService libraryAPIService;
+    public FormControllerAddAssetView(LibraryAPIService libraryAPIService) {
+        this.libraryAPIService = libraryAPIService;
+    }
 
     public AssetInstance createAssetInstance(AddAssetForm request) {
 

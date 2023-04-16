@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
-import ar.edu.itba.paw.webapp.form.FormServiceAddAssetView;
-import ar.edu.itba.paw.webapp.form.SnackbarService;
+import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,7 @@ import javax.validation.Valid;
 
 @Controller
 final public class AddAssetViewController {
-    private final FormServiceAddAssetView formService;
+    private final FormControllerAddAssetView formController;
 
     private final AssetExistanceService assetExistanceService;
     private final String viewName = "views/addAssetView";
@@ -43,11 +42,11 @@ final public class AddAssetViewController {
                     .addObject("showSnackbarInvalid", true)
                     .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
 
-        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
+        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formController.createAssetInstance(addAssetForm), handleImage(image));
 
         if(addedBookSuccessfully) {
             ModelAndView index = new ModelAndView("redirect:/");
-            SnackbarService.displaySuccess(index,SUCESS_MSG);
+            SnackbarControl.displaySuccess(index,SUCESS_MSG);
             return index;
         }
 
@@ -68,9 +67,9 @@ final public class AddAssetViewController {
     }
 
     @Autowired
-    public AddAssetViewController(AssetExistanceService assetExistanceService, FormServiceAddAssetView formServiceAddAssetView){
+    public AddAssetViewController(AssetExistanceService assetExistanceService, FormControllerAddAssetView formControllerAddAssetView){
         this.assetExistanceService = assetExistanceService;
-        this.formService = formServiceAddAssetView;
+        this.formController = formControllerAddAssetView;
     }
     @ModelAttribute
     public void addAttributes(Model model) {
