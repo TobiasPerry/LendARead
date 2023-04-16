@@ -21,8 +21,8 @@
                 </c:otherwise>
             </c:choose>
             <div class="card-body">
-                <h2 class="card-title">${param.bookTitle}</h2>
-                <h5 class="card-text">${param.bookAuthor}</h5>
+                <h2 class="card-title"><c:out value="${param.bookTitle}"/></h2>
+                <h5 class="card-text"><c:out value="${param.bookAuthor}"/></h5>
             </div>
         </div>
 
