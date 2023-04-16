@@ -6,6 +6,7 @@ final public class UserImpl implements User {
     private final String email;
     private final String name;
     private final String message;
+    private final String behavior;
 
     private final  int id;
     public UserImpl(int id,String email, String name, String message) {
@@ -13,6 +14,7 @@ final public class UserImpl implements User {
         this.name = name;
         this.message = message;
         this.id = id;
+        this.behavior = "lender";
     }
 
     @Override
@@ -36,7 +38,7 @@ final public class UserImpl implements User {
 
     @Override
     public String getBehavior() {
-        return message;
+        return behavior;
     }
 
     @Override

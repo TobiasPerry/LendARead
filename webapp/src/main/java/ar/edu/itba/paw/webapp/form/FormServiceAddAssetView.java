@@ -27,7 +27,7 @@ final public class FormServiceAddAssetView implements FormService {
         User user = UserFactory.createUser(-1,
                 request.getEmail(),
                 request.getName(),
-                request.getMessage()
+                ""
         );
 
         Location location = LocationFactory.createLocation(

@@ -45,12 +45,6 @@
               </div>
             </div>
 
-            <div class="info-container">
-              <h3>Mensaje:</h3>
-              <form:input path="message" id="message" placeholder="Message" class="form-control"/>
-              <form:errors path="message" cssClass="text-danger small" element="small"/>
-            </div>
-
             <div class="d-flex justify-content-center">
               <button type="submit" class="btn btn-primary m-8">Pedir prestado</button>
             </div>

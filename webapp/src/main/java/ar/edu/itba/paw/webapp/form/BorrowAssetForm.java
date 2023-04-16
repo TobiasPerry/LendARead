@@ -11,9 +11,6 @@ public class BorrowAssetForm {
     @NotEmpty
     private String name;
 
-    @Size(min = 1, max = 1000)
-    private String message;
-
     public String getEmail() {
         return email;
     }
@@ -30,11 +27,4 @@ public class BorrowAssetForm {
         this.name = name;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }
