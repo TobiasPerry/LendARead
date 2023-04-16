@@ -5,10 +5,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class BorrowAssetForm {
-    @Email
+//    @Email
     private String email;
 
-    @NotEmpty
+    //@NotEmpty
     private String name;
 
     @Size(min = 1, max = 1000)
