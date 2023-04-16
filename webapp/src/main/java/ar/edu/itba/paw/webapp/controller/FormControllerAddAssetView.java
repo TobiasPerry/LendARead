@@ -32,7 +32,7 @@ final public class FormControllerAddAssetView {
         User user = UserFactory.createUser(-1,
                 request.getEmail(),
                 request.getName(),
-                request.getMessage()
+                ""
         );
 
         Location location = LocationFactory.createLocation(

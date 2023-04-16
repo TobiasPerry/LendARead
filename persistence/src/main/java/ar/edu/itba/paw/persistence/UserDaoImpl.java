@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conexion -> {
             PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, "lender");
+            pstmt.setString(1, us.getBehavior());
             pstmt.setString(2,us.getEmail());
             pstmt.setString(3,us.getTelephone());
             pstmt.setString(4,us.getName());
