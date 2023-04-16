@@ -1,14 +1,15 @@
 package ar.edu.itba.paw.webapp.form;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
+
 import javax.validation.constraints.Size;
 
 public class BorrowAssetForm {
-//    @Email
+     @Email
     private String email;
 
-    //@NotEmpty
+    @NotEmpty
     private String name;
 
     @Size(min = 1, max = 1000)

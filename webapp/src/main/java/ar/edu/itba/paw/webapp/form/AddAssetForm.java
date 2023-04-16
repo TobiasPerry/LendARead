@@ -1,51 +1,51 @@
 package ar.edu.itba.paw.webapp.form;
 
-//import org.hibernate.validator.constraints.ISBN;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.Isbn;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class AddAssetForm {
 
-    //@NotEmpty
-//    @ISBN(type = ISBN.Type.ANY)
+    @NotEmpty
+    @Isbn
     private String isbn;
-    //@NotEmpty
+    @NotEmpty
     private String language;
-    //@NotEmpty
+    @NotEmpty
     private String author;
 
-    //@NotEmpty
+    @NotEmpty
     private String title;
 
-    //@NotEmpty
+    @NotEmpty
     private String physicalCondition;
 
-    //@NotEmpty
+    @NotEmpty
     @Pattern(regexp = "^\\d{4}$")
     private String zipcode;
 
-    //@NotEmpty
+    @NotEmpty
     private String locality;
 
-    //@NotEmpty
+    @NotEmpty
     private String province;
 
-    //@NotEmpty
+    @NotEmpty
     private String country;
 
-    //@NotEmpty
-//    @Email
+    @NotEmpty
+    @Email
     private String email;
 
-    //@NotEmpty
+    @NotEmpty
     @Size(min = 2, max = 100)
     private String name;
 
-    //@NotEmpty
+    @NotEmpty
     @Size(min = 10, max = 200)
     private String message;
 
