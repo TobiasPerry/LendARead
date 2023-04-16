@@ -46,9 +46,9 @@ final public class AddAssetViewController {
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formService.createAssetInstance(addAssetForm), handleImage(image));
 
         if(addedBookSuccessfully) {
-            ModelAndView index = new ModelAndView("redirect:/");
-            SnackbarService.displaySuccess(index,SUCESS_MSG);
-            return index;
+            ModelAndView addAssetView = addAssetView(addAssetForm);
+            SnackbarService.displaySuccess(addAssetView,SUCESS_MSG);
+            return addAssetView;
         }
 
         return  addAssetView(addAssetForm)

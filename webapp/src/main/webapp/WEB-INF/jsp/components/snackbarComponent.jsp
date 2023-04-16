@@ -12,13 +12,6 @@
 </div>
 
 <script>
-    const showSnackbarSucess = '${showSnackbarSucess}' === 'true';
-    if (showSnackbarSucess) {
-        document.getElementById('snackbarSucess').classList.remove('d-none');
-        setTimeout(() => {
-            document.getElementById('snackbarSucess').classList.add('d-none');
-        }, 3000);
-    }
 
     const showSnackbarInvalid = '${showSnackbarInvalid}' === 'true';
     if (showSnackbarInvalid) {
