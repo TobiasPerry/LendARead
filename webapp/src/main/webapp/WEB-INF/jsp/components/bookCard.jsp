@@ -14,7 +14,7 @@
         <div class="card">
             <c:choose>
                 <c:when test="${param.imageId != 0}">
-                    <img src="/getImage/${param.imageId}" class="card-img-top imagen-card" alt="Shoe Dog cover" style="height: 400px; object-fit: cover">
+                    <img src="<c:url value="/getImage/${param.imageId}"/>" class="card-img-top imagen-card" alt="Shoe Dog cover" style="height: 400px; object-fit: cover">
                 </c:when>
                 <c:otherwise>
                     <img src="https://i.pinimg.com/originals/d4/2e/d7/d42ed7bf30a4c1a6a201565f0bc61190.jpg" class="card-img-top imagen-card" alt="Shoe Dog cover">

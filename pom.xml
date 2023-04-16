@@ -23,7 +23,7 @@
     <org.json.version>20230227</org.json.version>
     <javaMail.version>1.4.7</javaMail.version>
     <javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
-    <org.hibernate.validator>6.2.4.Final</org.hibernate.validator>
+    <org.hibernate.validator>5.4.3.Final</org.hibernate.validator>
     <servlet-api.version>2.5</servlet-api.version>
     <spring-api.version>4.2.5.RELEASE</spring-api.version>
     <org.postgresql.version>42.2.5</org.postgresql.version>
@@ -54,6 +54,11 @@
         <groupId>commons-fileupload</groupId>
         <artifactId>commons-fileupload</artifactId>
         <version>${commons-file-upload.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.el</groupId>
+        <artifactId>javax.el-api</artifactId>
+        <version>3.0.0</version>
       </dependency>
 
       <dependency>
