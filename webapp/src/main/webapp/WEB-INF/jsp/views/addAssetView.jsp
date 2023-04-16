@@ -123,13 +123,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="info-container">
-                            <h4>Mensaje:</h4>
-                            <div class="field">
-                                <form:input path="message" id="message" placeholder="Mensaje" class="form-control"/>
-                                <form:errors path="message" cssClass="text-danger small" element="small"/>
-                            </div>
-                        </div>
                         <input type="file" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
                         <div style="display: flex; justify-content: center;">
                             <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">Agregarlo!</button>
