@@ -45,9 +45,7 @@ public class AddAssetForm {
     @Size(min = 2, max = 100)
     private String name;
 
-    @NotEmpty
-    @Size(min = 10, max = 200)
-    private String message;
+
 
     public String getIsbn() {
         return isbn;
@@ -137,11 +135,5 @@ public class AddAssetForm {
         this.name = name;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

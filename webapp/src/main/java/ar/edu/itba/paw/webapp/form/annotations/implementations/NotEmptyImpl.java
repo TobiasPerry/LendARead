@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.form.annotations.implementations;
 
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.Isbn;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
 
 import javax.validation.ConstraintValidator;

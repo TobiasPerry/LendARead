@@ -14,5 +14,6 @@ public class EmailImpl implements ConstraintValidator<Email, String> {
             return true;
         } else {
             return false;
-        }    }
+        }
+    }
 }
