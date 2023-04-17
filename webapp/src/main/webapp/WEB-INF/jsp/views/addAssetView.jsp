@@ -38,7 +38,7 @@
 
                 <div class="form-wrapper">
                     <c:url var="addAssetUrl" value="/addAsset"/>
-                    <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data">
+                    <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" accept-charset="utf-8">
                         <div class="info-container">
                             <h2>Libro:</h2>
                             <div class="field-group">
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="physicalCondition" class="form-label">Estado:</label>
-                                    <form:select path="physicalCondition" id="physicalCondition" class="form-control">
+                                    <form:select path="physicalCondition" id="physicalCondition" class="form-control" accept-charset="utf-8">
                                         <form:option value="asnew">Nuevo</form:option>
                                         <form:option value="fine">Casi nuevo</form:option>
                                         <form:option value="verygood">Muy bien</form:option>

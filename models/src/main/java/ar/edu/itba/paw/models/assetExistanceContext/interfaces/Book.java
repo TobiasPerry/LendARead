@@ -9,4 +9,8 @@ public interface Book extends Asset {
 
     String getAuthor();
 
+    void setAuthor(String author);
+
+    void setLanguage(String language);
+
 }

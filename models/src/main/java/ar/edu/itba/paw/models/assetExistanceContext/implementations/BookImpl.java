@@ -7,11 +7,11 @@ public class BookImpl implements Book {
 
     private final String isbn;
 
-    private final String author;
+    private String author;
 
     private final String title;
 
-    private final String language;
+    private String language;
 
 
     private final String type = "Book";
@@ -73,6 +73,17 @@ public class BookImpl implements Book {
     public String getAuthor() {
         return this.author;
     }
+
+    @Override
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Override
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
 
     @Override
     public String toString() {

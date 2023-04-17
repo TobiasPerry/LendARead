@@ -46,6 +46,12 @@ final public class FormControllerAddAssetView {
         Book book;
         try {
             book = this.libraryAPIService.getBookByISBN(request.getIsbn());
+            if (book.getAuthor().isEmpty()) {
+                book.setAuthor(request.getAuthor());
+            }
+            if (book.getLanguage().isEmpty()) {
+                book.setLanguage(request.getLanguage());
+            }
         } catch (IOException exc) {
             book = BookFactory.createBook(request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
         }
