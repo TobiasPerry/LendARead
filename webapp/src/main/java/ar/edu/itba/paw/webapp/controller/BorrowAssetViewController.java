@@ -35,7 +35,7 @@ final public class BorrowAssetViewController {
 
         if(borrowRequestSuccessful) {
             ModelAndView borrowAssetView =  borrowAssetView(borrowAssetForm,id,imageId);
-            SnackbarService.displaySuccess(borrowAssetView,SUCCESS_MSG);
+            SnackbarControl.displaySuccess(borrowAssetView,SUCCESS_MSG);
             return borrowAssetView;
         }
 
