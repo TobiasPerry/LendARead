@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <nav class="navbar navbar-expand-lg" style="height: 50px; background-color: #393E41" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Lend a Read</a>
+        <a class="navbar-brand" href="<c:url value="/"/>">Lend a Read</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
