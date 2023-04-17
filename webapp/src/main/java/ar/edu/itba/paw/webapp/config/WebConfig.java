@@ -40,7 +40,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         vr.setViewClass(JstlView.class);
         vr.setPrefix("/WEB-INF/jsp/");
         vr.setSuffix(".jsp");
-
+        vr.setContentType("text/html;charset=UTF-8");
         return vr;
     }
     @Override
