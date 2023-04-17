@@ -21,6 +21,7 @@
 
             <c:if test="${books.size() > 0}">
                 <c:forEach var="book" items="${books}">
+                    <% request.setCharacterEncoding("utf-8"); %>
                     <jsp:include page="../components/bookCard.jsp">
                         <jsp:param name="id" value="${book.id}"/>
                         <jsp:param name="bookTitle" value="${book.book.name}"/>
