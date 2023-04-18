@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
@@ -23,20 +25,17 @@ final public class AddAssetViewController {
     private final String viewName = "views/addAssetView";
 
     private final String SUCESS_MSG = "Libro agregado exitosamente!";
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public String handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("showSnackbarInvalid", true);
-        redirectAttributes.addFlashAttribute("snackBarInvalidTextTitle", "File size exceeds limit");
-        return "redirect:/addAssetView";
-    }
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name ="file") MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
                                  final BindingResult errors,
-                                 Model model) {
+                                 Model model, HttpServletResponse response) {
+
+        response.setContentType("text/html; charset=UTF-8");
 
 
+        System.out.println(addAssetForm.getLocality());
         if(errors.hasErrors() || image.isEmpty())
             return addAssetView(addAssetForm)
                     .addObject("showSnackbarInvalid", true)
