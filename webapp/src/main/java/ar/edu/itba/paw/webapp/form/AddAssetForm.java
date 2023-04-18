@@ -14,14 +14,18 @@ public class AddAssetForm {
     @Isbn
     private String isbn;
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String language;
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String author;
 
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String title;
 
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String physicalCondition;
 
     @NotEmpty
@@ -29,12 +33,15 @@ public class AddAssetForm {
     private String zipcode;
 
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String locality;
 
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String province;
 
     @NotEmpty
+    @Size(min = 3,max = 100)
     private String country;
 
     @NotEmpty
