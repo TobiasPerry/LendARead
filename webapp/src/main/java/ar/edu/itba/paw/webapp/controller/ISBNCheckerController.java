@@ -38,12 +38,4 @@ public class ISBNCheckerController {
         }
         return ResponseEntity.ok(response);
     }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public static class BookNotFoundException extends RuntimeException {
-        public BookNotFoundException(String message) {
-            super(message);
-        }
-    }
-
 }
