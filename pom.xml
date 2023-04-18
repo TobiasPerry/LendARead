@@ -46,6 +46,16 @@
         <version>${javax.validation-api.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
+        <version>1.6.2</version>
+      </dependency>
+      <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator</artifactId>
         <version>${org.hibernate.validator}</version>
@@ -56,8 +66,8 @@
         <version>${commons-file-upload.version}</version>
       </dependency>
       <dependency>
-        <groupId>javax.el</groupId>
-        <artifactId>javax.el-api</artifactId>
+        <groupId>javax.mail</groupId>
+        <artifactId>javax.mail-api</artifactId>
         <version>3.0.0</version>
       </dependency>
       <dependency>

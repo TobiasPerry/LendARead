@@ -6,6 +6,7 @@
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/index.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
+    <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
