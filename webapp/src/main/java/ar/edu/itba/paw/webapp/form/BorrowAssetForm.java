@@ -7,11 +7,11 @@ import javax.validation.constraints.Size;
 
 public class BorrowAssetForm {
      @Email
-     @Size(min = 2, max = 100)
+     @Size(min = 3, max = 100)
      private String email;
 
     @NotEmpty
-    @Size(min = 2, max = 100)
+    @Size(min = 3, max = 100)
     private String name;
 
     public String getEmail() {
