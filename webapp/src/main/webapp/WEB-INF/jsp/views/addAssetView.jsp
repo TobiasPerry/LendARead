@@ -44,7 +44,7 @@
                             <div class="field-group">
                                 <div class="field">
                                     <label for="title" class="form-label">Titulo:</label>
-                                    <form:input path="title" id="title" placeholder="Titulo" class="form-control"/>
+                                    <form:input path="title" id="title" placeholder="Titulo" class="form-control" disabled="true"/>
                                     <form:errors path="title" cssClass="text-danger small" element="small"/>
                                 </div>
                                 <div class="field">
@@ -70,14 +70,14 @@
                                 </div>
                                 <div class="field">
                                     <label for="author" class="form-label">Autor:</label>
-                                    <form:input path="author" id="author" placeholder="Autor" class="form-control"/>
+                                    <form:input path="author" id="author" placeholder="Autor" class="form-control" disabled="true"/>
                                     <form:errors path="author" cssClass="text-danger small" element="small"/>
                                 </div>
                             <div class="field-group">
 
                                 <div class="field">
                                     <label for="language" class="form-label">Idioma:</label>
-                                    <form:input path="language" id="language" placeholder="Idioma" class="form-control"/>
+                                    <form:input path="language" id="language" placeholder="Idioma" class="form-control" disabled="true"/>
                                     <form:errors path="language" cssClass="text-danger small" element="small"/>
                                 </div>
                             </div>
@@ -158,4 +158,42 @@
             reader.readAsDataURL(file);
         }
     }
+</script>
+<script>
+    const isbnInput = document.getElementById('isbn');
+    const titleInput = document.getElementById('title');
+    const authorInput = document.getElementById('author');
+    const languageInput = document.getElementById('language');
+
+    isbnInput.addEventListener('input', async (event) => {
+        const isbn = event.target.value;
+        if (isbn.length === 13) {
+            try {
+                let url = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`;
+
+                const response = await fetch(url + isbn);
+                const book = await response.json();
+                titleInput.value = book.name || '';
+                authorInput.value = book.author || '';
+                languageInput.value = book.language || '';
+                // enable inputs for missing information
+                if (!book.name) titleInput.disabled = false;
+                if (!book.author) authorInput.disabled = false;
+                if (!book.language) languageInput.disabled = false;
+                console.log(book);
+                console.log(url + isbn)
+            } catch (error) {
+                console.error(error);
+                // handle error
+            }
+        } else {
+            // clear inputs and disable
+            titleInput.value = '';
+            authorInput.value = '';
+            languageInput.value = '';
+            titleInput.disabled = true;
+            authorInput.disabled = true;
+            languageInput.disabled = true;
+        }
+    });
 </script>
