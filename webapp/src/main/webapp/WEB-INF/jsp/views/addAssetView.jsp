@@ -40,7 +40,7 @@
                     <c:url var="addAssetUrl" value="/addAsset"/>
                     <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
                         <div class="info-container">
-                            <h1>Libro:</h2>
+                            <h2>Libro:</h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="title" class="form-label">Titulo:</label>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="info-container">
-                            <h1>Ubicacion: </h2>
+                            <h2>Ubicacion: </h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="locality" class="form-label">Localidad:</label>
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="info-container">
-                            <h1>Contacto: </h2>
+                            <h2>Contacto: </h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="name" class="form-label">Nombre:</label>
@@ -126,7 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="file" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
+                        <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
                         <div style="display: flex; justify-content: center;">
                             <button type="submit" class="btn btn-primary" style="padding: 9px 20px;">Agregarlo!</button>
                         </div>
@@ -175,7 +175,7 @@
             try {
                 inputFields.forEach(field => field.classList.add('loading'))
                 let url = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`;
-                const response = await fetch(url + isbn);
+                const response = await fetch(url + isbn); //No te dejan usar fetch para tu back end
                 const book = await response.json();
                 titleInput.value = book.name || '';
                 authorInput.value = book.author || '';
