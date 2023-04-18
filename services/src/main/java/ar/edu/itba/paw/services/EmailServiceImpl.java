@@ -1,14 +1,18 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfaces.EmailService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-
-class EmailServiceImpl {
-    public static void sendEmail(final String addressTo, final String subject, final String message) {
+@Service
+class EmailServiceImpl implements EmailService {
+    @Override
+    @Async
+    public void sendEmail(final String addressTo, final String subject, final String message) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
