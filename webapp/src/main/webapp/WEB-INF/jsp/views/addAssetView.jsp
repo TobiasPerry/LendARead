@@ -38,9 +38,9 @@
 
                 <div class="form-wrapper">
                     <c:url var="addAssetUrl" value="/addAsset"/>
-                    <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-8">
+                    <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
                         <div class="info-container">
-                            <h2>Libro:</h2>
+                            <h1>Libro:</h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="title" class="form-label">Titulo:</label>
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="physicalCondition" class="form-label">Estado:</label>
-                                    <form:select path="physicalCondition" id="physicalCondition" class="form-control" accept-charset="utf-8">
+                                    <form:select path="physicalCondition" id="physicalCondition" class="form-control" accept-charset="utf-9">
                                         <form:option value="asnew">Nuevo</form:option>
                                         <form:option value="fine">Casi nuevo</form:option>
                                         <form:option value="verygood">Muy bien</form:option>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="info-container">
-                            <h2>Ubicacion: </h2>
+                            <h1>Ubicacion: </h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="locality" class="form-label">Localidad:</label>
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="info-container">
-                            <h2>Contacto: </h2>
+                            <h1>Contacto: </h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="name" class="form-label">Nombre:</label>
@@ -128,7 +128,7 @@
                         </div>
                         <input type="file" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
                         <div style="display: flex; justify-content: center;">
-                            <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">Agregarlo!</button>
+                            <button type="submit" class="btn btn-primary" style="padding: 9px 20px;">Agregarlo!</button>
                         </div>
                     </form:form>
                 </div>
@@ -168,8 +168,12 @@
 
     isbnInput.addEventListener('input', async (event) => {
         const isbn = event.target.value;
+
+        const inputFields = [titleInput, authorInput, languageInput];
+
         if (isbn.length === 13) {
             try {
+                inputFields.forEach(field => field.classList.add('loading'))
                 let url = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`;
                 const response = await fetch(url + isbn);
                 const book = await response.json();
@@ -177,6 +181,9 @@
                 authorInput.value = book.author || '';
                 languageInput.value = book.language || '';
                 console.log(book);
+
+                inputFields.forEach(field => field.classList.remove('loading'))
+
                 // enable inputs for missing information
                 if (!book.name) titleInput.readOnly = false;
                 if (!book.author) authorInput.readOnly = false;
