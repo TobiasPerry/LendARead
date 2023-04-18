@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
@@ -23,12 +24,14 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     private final UserDao userDao;
 
+    private final EmailService emailService;
+
     @Autowired
-    public AssetAvailabilityServiceImpl(AssetAvailabilityDao lendingDao, AssetInstanceDao assetInstanceDao, UserDao userDao) {
+    public AssetAvailabilityServiceImpl(AssetAvailabilityDao lendingDao, AssetInstanceDao assetInstanceDao, UserDao userDao,EmailService emailService) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
-
+        this.emailService = emailService;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),userID.get(),LocalDate.now(),devolutionDate);
         if (saved) {
+
             sendBorrowerEmail(ai.get(), borrower);
             sendLenderEmail(ai.get(), borrower);
         }
@@ -87,7 +91,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
                 "Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080/\">aquí</a></p>\n",
                 lenderName, bookName, borrowerName, borrowerEmail, locationCountry, locationProvince, locationName, locationZip);
 
-        EmailServiceImpl.sendEmail(email, subject, body);
+        emailService.sendEmail(email, subject, body);
         System.out.println("SENT TO LENDER " + email);
     }
 
@@ -131,7 +135,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
                 "<p>Muchas Gracias por utilizar LendABook!\n" +
                 "Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080\">aquí</a></p>\n", borrowerName, bookName, ownerName, ownerEmail, locationCountry, locationName, locationProvince, locationZip);
 
-        EmailServiceImpl.sendEmail(email, subjectBuilder.toString(), body);
+        emailService.sendEmail(email, subjectBuilder.toString(), body);
         System.out.println("SENT TO BORROWER " + email);
     }
 }
