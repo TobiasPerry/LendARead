@@ -48,3 +48,13 @@
 .field {
     flex: 1;
 }
+
+/* Style for readonly inputs */
+input[readonly] {
+    background-color: #eee;
+    color: #777;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+}

@@ -38,13 +38,13 @@
 
                 <div class="form-wrapper">
                     <c:url var="addAssetUrl" value="/addAsset"/>
-                    <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" accept-charset="utf-8">
+                    <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-8">
                         <div class="info-container">
                             <h2>Libro:</h2>
                             <div class="field-group">
                                 <div class="field">
                                     <label for="title" class="form-label">Titulo:</label>
-                                    <form:input path="title" id="title" placeholder="Titulo" class="form-control"/>
+                                    <form:input path="title" id="title" placeholder="Titulo" class="form-control" readonly="true" />
                                     <form:errors path="title" cssClass="text-danger small" element="small"/>
                                 </div>
                                 <div class="field">
@@ -70,14 +70,14 @@
                                 </div>
                                 <div class="field">
                                     <label for="author" class="form-label">Autor:</label>
-                                    <form:input path="author" id="author" placeholder="Autor" class="form-control"/>
+                                    <form:input path="author" id="author" placeholder="Autor" class="form-control" readonly="true" />
                                     <form:errors path="author" cssClass="text-danger small" element="small"/>
                                 </div>
                             <div class="field-group">
 
                                 <div class="field">
                                     <label for="language" class="form-label">Idioma:</label>
-                                    <form:input path="language" id="language" placeholder="Idioma" class="form-control"/>
+                                    <form:input path="language" id="language" placeholder="Idioma" class="form-control" readonly="true" />
                                     <form:errors path="language" cssClass="text-danger small" element="small"/>
                                 </div>
                             </div>
@@ -158,4 +158,40 @@
             reader.readAsDataURL(file);
         }
     }
+</script>
+<script>
+    const isbnInput = document.getElementById('isbn');
+    const titleInput = document.getElementById('title');
+    const authorInput = document.getElementById('author');
+    const languageInput = document.getElementById('language');
+    const form = document.getElementById('form')
+
+    isbnInput.addEventListener('input', async (event) => {
+        const isbn = event.target.value;
+        if (isbn.length === 13) {
+            try {
+                let url = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`;
+                const response = await fetch(url + isbn);
+                const book = await response.json();
+                titleInput.value = book.name || '';
+                authorInput.value = book.author || '';
+                languageInput.value = book.language || '';
+                console.log(book);
+                // enable inputs for missing information
+                if (!book.name) titleInput.readOnly = false;
+                if (!book.author) authorInput.readOnly = false;
+                if (!book.language) languageInput.readOnly = false;
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            // clear inputs and disable
+            titleInput.value = '';
+            authorInput.value = '';
+            languageInput.value = '';
+            titleInput.readOnly = true;
+            authorInput.readOnly = true;
+            languageInput.readOnly = true;
+        }
+    });
 </script>
