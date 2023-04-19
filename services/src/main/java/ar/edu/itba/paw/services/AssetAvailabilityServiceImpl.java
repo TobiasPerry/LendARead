@@ -59,20 +59,16 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             return;
         }
         Map<String,Object> variables = new HashMap<>();
-        User lender = assetInstance.getOwner();
+        User owner = assetInstance.getOwner();
         Location location = assetInstance.getLocation();
         Book book = assetInstance.getBook();
-        variables.put("bookTitle",book.getName());
-        variables.put("name",lender.getName());
-        variables.put("borrowerName",borrower.getName());
-        variables.put("borroweEmail",borrower.getEmail());
-        variables.put("province",location.getProvince());
-        variables.put("locality",location.getLocality());
-        variables.put("zipcode",location.getZipcode());
-        variables.put("country",location.getCountry());
-        String email = lender.getEmail();
+        variables.put("book",book);
+        variables.put("borrower",borrower);
+        variables.put("owner",owner);
+        variables.put("location",location);
+        String email = owner.getEmail();
         String bookName = book.getName();
-        String subject = String.format("Lendabook: Préstamo de tu libro \"%s\"", bookName);
+        String subject = String.format("Lendabook: Préstamo de tu libro %s", bookName);
         emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
         System.out.println("SENT TO LENDER " + email);
     }
@@ -87,14 +83,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         User owner = assetInstance.getOwner();
         Location location = assetInstance.getLocation();
         Map<String,Object> variables = new HashMap<>();
-        variables.put("bookTitle",book.getName());
-        variables.put("name",borrower.getName());
-        variables.put("LenderName",owner.getName());
-        variables.put("LenderEmail",owner.getEmail());
-        variables.put("province",location.getProvince());
-        variables.put("locality",location.getLocality());
-        variables.put("zipcode",location.getZipcode());
-        variables.put("country",location.getCountry());
+        variables.put("book",book);
+        variables.put("borrower",borrower);
+        variables.put("owner",owner);
+        variables.put("location",location);
 
         emailService.sendEmail(email, "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
         System.out.println("SENT TO BORROWER " + email);

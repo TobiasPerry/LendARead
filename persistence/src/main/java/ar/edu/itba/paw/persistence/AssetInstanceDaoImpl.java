@@ -46,7 +46,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
             String email = rs.getString("email");
             Integer userId = rs.getInt("user_id");
-            User user = new UserImpl(userId, email, "", "");
+            String ownerName = rs.getString("user_name");
+            User user = new UserImpl(userId, email, ownerName, "");
 
             Integer id = rs.getInt("id");
             Integer imgId = rs.getInt("photo_id");
