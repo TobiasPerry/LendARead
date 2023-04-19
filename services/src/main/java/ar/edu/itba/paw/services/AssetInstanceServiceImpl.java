@@ -3,6 +3,8 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
+import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +39,19 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return Optional.of(assetInstance);
     }
 
-    public List<AssetInstance> getAllAssetsInstances(int from, int to){
+    public Page getAllAssetsInstances(int pageNum){
 
-        Optional<List<AssetInstance>> optionalAssetInstances = assetInstanceDao.getAllAssetInstances(from, to);
+        final int itemsPerPage = 20;
 
-        List<AssetInstance> assetInstances;
+        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage);
 
-        if(optionalAssetInstances.isPresent()) {
-            assetInstances = optionalAssetInstances.get();
-            return assetInstances;
+        Page page;
+
+        if(optionalPage.isPresent()) {
+            page = optionalPage.get();
+            return page;
         }
-        return new ArrayList<>();
+        return new PageImpl(new ArrayList<>(), 1, 1);
 
     }
 

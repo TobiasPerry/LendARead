@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,8 +42,8 @@ public class IndexViewController {
     @RequestMapping( "/")
     public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
         final ModelAndView mav = new ModelAndView("/views/index");
-        List<AssetInstance> books = assetInstanceService.getAllAssetsInstances(0, 10);
-        mav.addObject("books", books);
+        Page page = assetInstanceService.getAllAssetsInstances(1);
+        mav.addObject("books", page.getBooks());
 
         mav.addObject("nextPage", false);
         mav.addObject("previousPage", true);
@@ -52,30 +53,26 @@ public class IndexViewController {
         return mav;
     }
 
-    @RequestMapping("/discovery/{from}-{to}")
-    public ModelAndView discoveryView(@PathVariable String from, @PathVariable String to){
+    @RequestMapping("/discovery/{pageNum}")
+    public ModelAndView discoveryView(@PathVariable String pageNum){
         final ModelAndView mav = new ModelAndView("/views/index");
 
-        int fromParsed, toParsed;
+        int pageNumParsed;
 
         try {
-            fromParsed = Integer.parseInt(from);
-            toParsed = Integer.parseInt(to);
+            pageNumParsed = Integer.parseInt(pageNum);
         }catch (NumberFormatException e){
             // In case the parameters received cannot be parsed as integers, we'll return a not found view
             return new ModelAndView("/views/notFoundView");
         }
 
-        if(fromParsed < 0 || toParsed < 0 || fromParsed > toParsed)
-            // In case the parameters are not valid, we'll return a not found view
-            // TODO: Move this logic to service?
-            return new ModelAndView("/views/notFoundView");
+        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed);
 
-        List<AssetInstance> books = assetInstanceService.getAllAssetsInstances(fromParsed, toParsed);
-
-        mav.addObject("books", books);
-        mav.addObject("nextPage", false);
-        mav.addObject("previousPage", false);
+        mav.addObject("books", page.getBooks());
+        mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
+        mav.addObject("previousPage", page.getCurrentPage() != 1);
+        mav.addObject("currentPage", page.getCurrentPage());
+        mav.addObject("totalPages", page.getTotalPages());
 
         return mav;
     }
