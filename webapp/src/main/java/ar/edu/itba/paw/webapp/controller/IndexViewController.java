@@ -43,6 +43,10 @@ public class IndexViewController {
         final ModelAndView mav = new ModelAndView("/views/index");
         List<AssetInstance> books = assetInstanceService.getAllAssetsInstances(0, 10);
         mav.addObject("books", books);
+
+        mav.addObject("nextPage", false);
+        mav.addObject("previousPage", true);
+
         if(showSnackbarSucess)
             SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
         return mav;
@@ -70,6 +74,8 @@ public class IndexViewController {
         List<AssetInstance> books = assetInstanceService.getAllAssetsInstances(fromParsed, toParsed);
 
         mav.addObject("books", books);
+        mav.addObject("nextPage", false);
+        mav.addObject("previousPage", false);
 
         return mav;
     }

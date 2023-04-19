@@ -18,9 +18,9 @@
                 <h1>Libros disponibles</h1>
             </div>
         </c:if>
-        <div class="container-row-wrapped" style="margin-top: 50px">
 
-            <c:if test="${books.size() > 0}">
+        <c:if test="${books.size() > 0}">
+            <div class="container-row-wrapped" style="margin-top: 50px">
                 <c:forEach var="book" items="${books}">
                     <% request.setCharacterEncoding("utf-8"); %>
                     <jsp:include page="../components/bookCard.jsp">
@@ -30,22 +30,21 @@
                         <jsp:param name="imageId" value="${book.imageId}"/>
                     </jsp:include>
                 </c:forEach>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </c:if>
+            </div>
+            <div class="container-row-wrapped" style="margin-top: 50px">
+                <jsp:include page="../components/paginationButton.jsp">
+                    <jsp:param name="previous" value="${previousPage}"/>
+                    <jsp:param name="next" value="${nextPage}"/>
+                </jsp:include>
+            </div>
+        </c:if>
 
-            <c:if test="${books.size() <= 0}">
+        <c:if test="${books.size() <= 0}">
+            <div class="container-row-wrapped" style="margin-top: 50px">
                 <h1>No hay libros disponibles</h1>
-            </c:if>
-        </div>
+            </div>
+        </c:if>
+
 
 </div>
 </body>
