@@ -37,10 +37,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return Optional.of(assetInstance);
     }
 
-    public List<AssetInstance> getAllAssetsInstances(){
-        //List<AssetInstance> books = new ArrayList<>();
+    public List<AssetInstance> getAllAssetsInstances(int from, int to){
 
-        Optional<List<AssetInstance>> optionalAssetInstances = assetInstanceDao.getAllAssetInstances();
+        Optional<List<AssetInstance>> optionalAssetInstances = assetInstanceDao.getAllAssetInstances(from, to);
 
         List<AssetInstance> assetInstances;
 
@@ -49,10 +48,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             return assetInstances;
         }
         return new ArrayList<>();
-//        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Phill Knight", "Shoe Dog", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
-//        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Knight", "Biblia", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
-//        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Phill ", "og", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
-//        books.add(new AssetInstanceImpl(0, new BookImpl("12324", "Evans", "DDD", "English"), PhysicalCondition.ASNEW, new UserImpl("a@a.com", "ippo", "hola"), new LocationImpl("1234", "vil", "BS", "AR")));
 
     }
 

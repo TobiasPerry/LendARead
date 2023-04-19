@@ -11,7 +11,7 @@ public interface AssetInstanceDao {
     Optional<Integer> addAssetInstance(final int id,int ownerId,int locationId,int photoId,final AssetInstance ai);
 
     Optional<AssetInstance> getAssetInstance(final int assetId);
-    Optional<List<AssetInstance>> getAllAssetInstances();
+    Optional<List<AssetInstance>> getAllAssetInstances(int from, int to);
 
     Boolean changeStatus(int assetInstanceID, AssetState as);
 }

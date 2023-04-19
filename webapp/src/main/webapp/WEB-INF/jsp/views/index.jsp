@@ -30,6 +30,16 @@
                         <jsp:param name="imageId" value="${book.imageId}"/>
                     </jsp:include>
                 </c:forEach>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
             </c:if>
 
             <c:if test="${books.size() <= 0}">

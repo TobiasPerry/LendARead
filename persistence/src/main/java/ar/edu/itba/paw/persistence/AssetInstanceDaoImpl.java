@@ -104,16 +104,19 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public Optional<List<AssetInstance>> getAllAssetInstances(){
+    public Optional<List<AssetInstance>> getAllAssetInstances(int from, int to){
+
+        int offset = from;
+        int limit = to - from;
 
         String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
                 " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name());
+        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name(), limit, offset);
 
         return Optional.of(assets);
     }

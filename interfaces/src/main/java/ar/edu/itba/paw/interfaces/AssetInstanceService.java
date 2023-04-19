@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface AssetInstanceService {
     Optional<AssetInstance> getAssetInstance(int id);
 
-    public List<AssetInstance> getAllAssetsInstances();
+    public List<AssetInstance> getAllAssetsInstances(int from, int to);
 }

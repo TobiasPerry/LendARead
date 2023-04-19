@@ -41,12 +41,39 @@ public class IndexViewController {
     @RequestMapping( "/")
     public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
         final ModelAndView mav = new ModelAndView("/views/index");
-        List<AssetInstance> books = assetInstanceService.getAllAssetsInstances();
+        List<AssetInstance> books = assetInstanceService.getAllAssetsInstances(0, 10);
         mav.addObject("books", books);
         if(showSnackbarSucess)
             SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
         return mav;
     }
+
+    @RequestMapping("/discovery/{from}-{to}")
+    public ModelAndView discoveryView(@PathVariable String from, @PathVariable String to){
+        final ModelAndView mav = new ModelAndView("/views/index");
+
+        int fromParsed, toParsed;
+
+        try {
+            fromParsed = Integer.parseInt(from);
+            toParsed = Integer.parseInt(to);
+        }catch (NumberFormatException e){
+            // In case the parameters received cannot be parsed as integers, we'll return a not found view
+            return new ModelAndView("/views/notFoundView");
+        }
+
+        if(fromParsed < 0 || toParsed < 0 || fromParsed > toParsed)
+            // In case the parameters are not valid, we'll return a not found view
+            // TODO: Move this logic to service?
+            return new ModelAndView("/views/notFoundView");
+
+        List<AssetInstance> books = assetInstanceService.getAllAssetsInstances(fromParsed, toParsed);
+
+        mav.addObject("books", books);
+
+        return mav;
+    }
+
 
     @RequestMapping( "/assetView")
     public ModelAndView assetView(){
