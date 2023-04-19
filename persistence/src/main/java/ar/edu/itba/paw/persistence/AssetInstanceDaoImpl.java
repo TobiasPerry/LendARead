@@ -61,6 +61,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     };
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
 
+
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
@@ -109,37 +110,28 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     @Override
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage){
 
-        int from = pageNum * itemsPerPage;
-        int to = from + itemsPerPage;
+        int offset = (pageNum - 1) * itemsPerPage;
+        int limit = itemsPerPage;
 
-//        String query = "SELECT t.id AS id, ai.photoid AS photo_id, ai.status AS status," +
-//                " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
-//                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
-//                " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-//                " u.mail AS email, u.telephone,u.name as user_name, CEIL(COUNT(*) OVER ()::float / 10) AS total_pages FROM ( select * from assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-//                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE ai.status=? ) as t LIMIT ? OFFSET ?";
+        String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
+                " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
+                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
+                " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
+                " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
 
-        String query = "SELECT t.id as id, t.photoid as photo_id, t.status as status, t.physicalcondition as physicalcondition,\n" +
-                "    t.book_id as book_id, t.title as title, t.isbn as isbn, t.language as language, t.author as author,\n" +
-                "    t.loc_id as loc_id, t.locality as locality, t.zipcode as zipcode, t.province as province, t.country as country,\n" +
-                "    t.user_id as user_id, t.mail as mail, t.telephone as telephone, t.user_name as use_name,\n" +
-                "    CEIL(COUNT(*) OVER ()::float / 10) as total_pages\n" +
-                "FROM (\n" +
-                "    SELECT ai.id, ai.photoid, ai.status, ai.physicalcondition,\n" +
-                "        b.uid AS book_id, b.title, b.isbn, b.language, b.author,\n" +
-                "        l.id AS loc_id, l.locality, l.zipcode, l.province, l.country,\n" +
-                "        u.id AS user_id, u.mail, u.telephone, u.name AS user_name,\n" +
-                "        ROW_NUMBER() OVER (ORDER BY ai.id) AS row_number\n" +
-                "    FROM assetinstance ai\n" +
-                "    JOIN book b ON ai.assetid = b.uid\n" +
-                "    JOIN location l ON ai.locationid = l.id\n" +
-                "    LEFT JOIN users u ON ai.owner = u.id\n" +
-                "    WHERE ai.status = ?\n" +
-                ") t\n" +
-                "WHERE t.row_number BETWEEN ? AND ?;\n";
+        String queryCant = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
+                " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
+                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
+                " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
+                " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name(), from, to);
-        Page page = new PageImpl(assets, 1, 1);
+        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name(), limit, offset);
+
+        int totalPages = jdbcTemplate.query(queryCant, ,AssetState.PUBLIC.name()).get(0);
+
+        Page page = new PageImpl(assets, pageNum, totalPages);
         return Optional.of(page);
     }
 
