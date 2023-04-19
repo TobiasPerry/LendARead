@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,18 @@ import java.util.Properties;
 @Service
 class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
+    private final SpringTemplateEngine templateEngine;
+
+
+    private final String baseUrl;
     @Autowired
-    private SpringTemplateEngine templateEngine;
+    public EmailServiceImpl(JavaMailSender javaMailSender, SpringTemplateEngine templateEngine,@Qualifier("baseUrl") String baseUrl) {
+        this.javaMailSender = javaMailSender;
+        this.templateEngine = templateEngine;
+        this.baseUrl = baseUrl;
+    }
 
     @Override
     @Async
@@ -42,6 +50,7 @@ class EmailServiceImpl implements EmailService {
     @Override
     public String lenderMailFormat(Map<String,Object> variables,String mailTemplate){
         Context thymeleafContext = new Context();
+        variables.put("path",baseUrl);
         thymeleafContext.setVariables(variables);
         return templateEngine.process(mailTemplate, thymeleafContext);
     }

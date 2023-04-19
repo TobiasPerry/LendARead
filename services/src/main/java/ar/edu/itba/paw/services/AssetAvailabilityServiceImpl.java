@@ -70,7 +70,6 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         String bookName = book.getName();
         String subject = String.format("Lendabook: Préstamo de tu libro %s", bookName);
         emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
-        System.out.println("SENT TO LENDER " + email);
     }
 
     private void sendBorrowerEmail(AssetInstance assetInstance, User borrower) {
