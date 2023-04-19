@@ -49,6 +49,7 @@
       <artifactId>interfaces</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>persistenceinterfaces</artifactId>
@@ -58,6 +59,10 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>models</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.thymeleaf</groupId>
+      <artifactId>thymeleaf-spring5</artifactId>
     </dependency>
   </dependencies>
 

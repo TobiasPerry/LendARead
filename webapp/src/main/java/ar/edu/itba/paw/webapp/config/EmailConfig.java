@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +13,19 @@ import java.util.Properties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @EnableAsync
 @ComponentScan({"ar.edu.itba.paw.services"})
 @PropertySource({"classpath:/mail-config.properties"})
 @Configuration
 public class EmailConfig {
+
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Autowired
     private Environment environment;
@@ -37,5 +45,26 @@ public class EmailConfig {
         properties.put("mail.debug", environment.getProperty("mail.debug"));
 
         return javaMailSender;
+    }
+    @Bean
+    public ITemplateResolver thymeleafTemplateResolver() {
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+
+        templateResolver.setPrefix("emails/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode("HTML");
+        templateResolver.setCharacterEncoding("UTF-8");
+
+        return templateResolver;
+    }
+
+    @Bean
+    public SpringTemplateEngine springtemplateEngine(ITemplateResolver templateResolver) {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+
+        templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.setTemplateEngineMessageSource(messageSource);
+
+        return templateEngine;
     }
 }

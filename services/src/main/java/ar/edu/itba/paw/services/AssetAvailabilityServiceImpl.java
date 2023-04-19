@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -56,42 +58,22 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         if (assetInstance == null || borrower == null) {
             return;
         }
-
+        Map<String,Object> variables = new HashMap<>();
         User lender = assetInstance.getOwner();
         Location location = assetInstance.getLocation();
         Book book = assetInstance.getBook();
-
+        variables.put("bookTitle",book.getName());
+        variables.put("name",lender.getName());
+        variables.put("borrowerName",borrower.getName());
+        variables.put("borroweEmail",borrower.getEmail());
+        variables.put("province",location.getProvince());
+        variables.put("locality",location.getLocality());
+        variables.put("zipcode",location.getZipcode());
+        variables.put("country",location.getCountry());
         String email = lender.getEmail();
-        String lenderName = lender.getName();
-        String borrowerName = borrower.getName();
         String bookName = book.getName();
-        String borrowerEmail = borrower.getEmail();
-        String locationCountry = location.getCountry();
-        String locationProvince = location.getProvince();
-        String locationName = location.getLocality();
-        String locationZip = location.getZipcode();
-
         String subject = String.format("Lendabook: Préstamo de tu libro \"%s\"", bookName);
-        String body = String.format("<p>Hola %s</p>\n" +
-                "<p>Te informamos que tu libro &quot;%s&quot; ha sido solicitado para su préstamo. \n" +
-                "Los datos del usuario a prestar el libro son los siguientes:</p>\n" +
-                "<ul>\n" +
-                "<li>Nombre: %s</li>\n" +
-                "<li>Email: %s</li>\n" +
-                "</ul>\n" +
-                "<p>Te recordamos que los detalles suministrados de la ubicación para la entrega del mismo son los siguientes:</p>\n" +
-                "<ul>\n" +
-                "<li>País: %s</li>\n" +
-                "<li>Provincia: %s</li>\n" +
-                "<li>Localidad: %s</li>\n" +
-                "<li>Código Postal: %s</li>\n" +
-                "</ul>\n" +
-                "<p>Por favor, mantente en contacto con quien solicitó el préstamo para acordar algún otro detalle.\n" +
-                "Muchas Gracias por utilizar LendABook! \n" +
-                "Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080/\">aquí</a></p>\n",
-                lenderName, bookName, borrowerName, borrowerEmail, locationCountry, locationProvince, locationName, locationZip);
-
-        emailService.sendEmail(email, subject, body);
+        emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
         System.out.println("SENT TO LENDER " + email);
     }
 
@@ -104,38 +86,17 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         Book book = assetInstance.getBook();
         User owner = assetInstance.getOwner();
         Location location = assetInstance.getLocation();
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("bookTitle",book.getName());
+        variables.put("name",borrower.getName());
+        variables.put("LenderName",owner.getName());
+        variables.put("LenderEmail",owner.getEmail());
+        variables.put("province",location.getProvince());
+        variables.put("locality",location.getLocality());
+        variables.put("zipcode",location.getZipcode());
+        variables.put("country",location.getCountry());
 
-        String bookName = book.getName();
-        String borrowerName = borrower.getName();
-        String ownerEmail = owner.getEmail();
-        String ownerName = owner.getName();
-        String locationName = location.getLocality();
-        String locationProvince = location.getProvince();
-        String locationCountry = location.getCountry();
-        String locationZip = location.getZipcode();
-
-        StringBuilder subjectBuilder = new StringBuilder();
-        subjectBuilder.append("Lendabook: Préstamo libro ").append(bookName);
-
-        String body = String.format("<p>Hola %s</p>\n" +
-                "<p>Te informamos que se ha confirmado el préstamo del libro &quot;%s&quot;.\n" +
-                "Te presentamos la información de contacto de su dueño:</p>\n" +
-                "<ul>\n" +
-                "<li>Nombre: %s</li>\n" +
-                "<li>Email: %s</li>\n" +
-                "</ul>\n" +
-                "<p>Los detalles de la ubicación en la cual se deberá realizar la entrega son los siguientes:</p>\n" +
-                "<ul>\n" +
-                "<li>País: %s</li>\n" +
-                "<li>Provincia: %s</li>\n" +
-                "<li>Localidad: %s</li>\n" +
-                "<li>Código Postal: %s</li>\n" +
-                "</ul>\n" +
-                "<p>Por favor, mantente en contacto con el dueño del libro para acordar algún otro detalle.</p>\n" +
-                "<p>Muchas Gracias por utilizar LendABook!\n" +
-                "Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080\">aquí</a></p>\n", borrowerName, bookName, ownerName, ownerEmail, locationCountry, locationName, locationProvince, locationZip);
-
-        emailService.sendEmail(email, subjectBuilder.toString(), body);
+        emailService.sendEmail(email, "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
         System.out.println("SENT TO BORROWER " + email);
     }
 }

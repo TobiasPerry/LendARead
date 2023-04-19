@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<p style="color: red">Hola <span th:text="${name}">Peter Static</span>!</p>
+<p>Te informamos que tu libro <span th:text="${bookTitle}">book name</span>; ha sido solicitado para su préstamo.
+    Los datos del usuario a prestar el libro son los siguientes:</p>
+<ul>
+    "<li>Nombre: <span th:text="${borrowerName}">book name</span></li>
+    <li>Email: <span th:text="${borrowerEmail}">book name</span></li>
+    </ul>
+<p>Te recordamos que los detalles suministrados de la ubicación para la entrega del mismo son los siguientes:</p>
+<ul>
+    <li>País: <span th:text="${country}">book name</span></li>
+    <li>Provincia: <span th:text="${province}">book name</span></li>
+    <li>Localidad: <span th:text="${locality}">book name</span></li>
+    <li>Código Postal: <span th:text="${zipcode}">book name</span></li>
+    </ul>
+<p>Por favor, mantente en contacto con quien solicitó el préstamo para acordar algún otro detalle.
+    Muchas Gracias por utilizar LendABook!
+    Puedes seguir explorando libros ingresando <a href=\"http://localhost:8080/\">aquí</a></p>
+</body>
+</html>

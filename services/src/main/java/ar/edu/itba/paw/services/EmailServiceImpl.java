@@ -5,16 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 @Service
 class EmailServiceImpl implements EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
     @Override
     @Async
@@ -25,11 +32,17 @@ class EmailServiceImpl implements EmailService {
             msj.setFrom(new InternetAddress("lendabookservice@gmail.com"));
             msj.setRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             msj.setSubject(subject);
-            msj.setContent(message, "text/html");
+            msj.setContent( message,"text/html");
             javaMailSender.send(msj);
         } catch (MessagingException e) {
             System.out.println("ERROR: Couldn't send email");
             System.err.println(e.getMessage());
         }
+    }
+    @Override
+    public String lenderMailFormat(Map<String,Object> variables,String mailTemplate){
+        Context thymeleafContext = new Context();
+        thymeleafContext.setVariables(variables);
+        return templateEngine.process(mailTemplate, thymeleafContext);
     }
 }
