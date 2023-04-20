@@ -7,6 +7,7 @@
     <link href="<c:url value="/static/css/index.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
+    <title>Lend a book</title>
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -35,7 +36,7 @@
                 <jsp:include page="../components/paginationButton.jsp">
                     <jsp:param name="previous" value="${previousPage}"/>
                     <jsp:param name="next" value="${nextPage}"/>
-                    <jsp:param name="page" value="${page}"/>`
+                    <jsp:param name="page" value="${page}"/>
                 </jsp:include>
             </div>
         </c:if>

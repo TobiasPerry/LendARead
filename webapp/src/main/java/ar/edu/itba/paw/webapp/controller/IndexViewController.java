@@ -41,18 +41,19 @@ public class IndexViewController {
     }
     @RequestMapping( "/")
     public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
-        final ModelAndView mav = new ModelAndView("/views/index");
-        Page page = assetInstanceService.getAllAssetsInstances(1);
-
-        mav.addObject("books", page.getBooks());
-        mav.addObject("nextPage", false);
-        mav.addObject("previousPage", true);
-        mav.addObject("page", 1);
-
-        if(showSnackbarSucess)
-            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
-
-        return mav;
+//        final ModelAndView mav = new ModelAndView("/views/index");
+//        Page page = assetInstanceService.getAllAssetsInstances(1);
+//
+//        mav.addObject("books", page.getBooks());
+//        mav.addObject("nextPage", false);
+//        mav.addObject("previousPage", true);
+//        mav.addObject("page", 1);
+//
+//        if(showSnackbarSucess)
+//            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
+//
+//        return mav;
+        return discoveryView("1");
     }
 
     @RequestMapping("/discovery/{pageNum}")
