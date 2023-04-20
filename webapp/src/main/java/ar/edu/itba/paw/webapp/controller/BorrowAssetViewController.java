@@ -18,7 +18,7 @@ import java.util.Base64;
 @Controller
 final public class BorrowAssetViewController {
     private AssetAvailabilityService assetAvailabilityService;
-    private final String viewName = "views/borrowAssetView";
+    private final static String viewName = "views/borrowAssetView";
     private final static String SUCCESS_MSG = "Libro pedido exitosamente!";
 
     private ImageService imageService;

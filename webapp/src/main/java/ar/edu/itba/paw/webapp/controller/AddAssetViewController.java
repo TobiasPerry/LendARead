@@ -22,9 +22,9 @@ final public class AddAssetViewController {
     private final FormControllerAddAssetView formController;
 
     private final AssetExistanceService assetExistanceService;
-    private final String viewName = "views/addAssetView";
+    private final static String viewName = "views/addAssetView";
 
-    private final String SUCESS_MSG = "Libro agregado exitosamente!";
+    private final static String SUCESS_MSG = "Libro agregado exitosamente!";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name ="file") MultipartFile image,
