@@ -127,7 +127,14 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name(), limit, offset);
 
-        int totalPages = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name()).get(0);
+        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name());
+
+        int totalPages;
+
+        if(!queryOutput.isEmpty())
+            totalPages = queryOutput.get(0);
+        else
+            totalPages = 0;
 
         Page page = new PageImpl(assets, pageNum, totalPages);
         return Optional.of(page);
