@@ -35,6 +35,7 @@
                 <jsp:include page="../components/paginationButton.jsp">
                     <jsp:param name="previous" value="${previousPage}"/>
                     <jsp:param name="next" value="${nextPage}"/>
+                    <jsp:param name="page" value="${page}"/>`
                 </jsp:include>
             </div>
         </c:if>

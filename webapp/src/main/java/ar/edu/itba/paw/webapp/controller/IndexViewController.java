@@ -43,13 +43,15 @@ public class IndexViewController {
     public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
         final ModelAndView mav = new ModelAndView("/views/index");
         Page page = assetInstanceService.getAllAssetsInstances(1);
-        mav.addObject("books", page.getBooks());
 
+        mav.addObject("books", page.getBooks());
         mav.addObject("nextPage", false);
         mav.addObject("previousPage", true);
+        mav.addObject("page", 1);
 
         if(showSnackbarSucess)
             SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
+
         return mav;
     }
 
@@ -73,6 +75,7 @@ public class IndexViewController {
         mav.addObject("previousPage", page.getCurrentPage() != 1);
         mav.addObject("currentPage", page.getCurrentPage());
         mav.addObject("totalPages", page.getTotalPages());
+        mav.addObject("page", page.getCurrentPage());
 
         return mav;
     }

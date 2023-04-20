@@ -61,6 +61,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     };
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
 
+    private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) ->  rs.getInt("pageCount");
 
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
@@ -120,16 +121,12 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
 
-        String queryCant = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
-                " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
-                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
-                " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-                " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
+        String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
 
         List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name(), limit, offset);
 
-        int totalPages = jdbcTemplate.query(queryCant, ,AssetState.PUBLIC.name()).get(0);
+        int totalPages = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name()).get(0);
 
         Page page = new PageImpl(assets, pageNum, totalPages);
         return Optional.of(page);

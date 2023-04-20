@@ -8,12 +8,12 @@
       <c:choose>
         <c:when test="${param.previous == false}">
           <li class="page-item disabled">
-            <a class="page-link">Previous</a>
+            <a class="page-link" href="<c:url value="/discovery/${param.page + 1}"/>">Previous</a>
           </li>
         </c:when>
         <c:otherwise>
           <li class="page-item">
-            <a class="page-link">Previous</a>
+            <a class="page-link" href="">Previous</a>
           </li>
         </c:otherwise>
       </c:choose>
@@ -25,7 +25,7 @@
           </li>
         </c:when>
         <c:otherwise>
-          <li class="page-item">
+          <li class="page-item" href="<c:url value="/discovery/${param.page - 1}"/>">
             <a class="page-link">Next</a>
           </li>
         </c:otherwise>
