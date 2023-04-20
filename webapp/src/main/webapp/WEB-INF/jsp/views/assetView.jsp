@@ -27,30 +27,30 @@
     <div class="main-class">
         <div style="background-color: #FFFFFF; margin: 50px; border-radius: 20px; padding: 20px">
             <div class="container-row-wrapped">
-                <img src="<c:url value="/getImage/${imageId}"/>" class="mx-5" alt="Book cover" style="height: 600px; width: 400px; object-fit: cover">
+                <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" class="mx-5" alt="Book cover" style="height: 600px; width: 400px; object-fit: cover">
                 <div class="w-25 h-25 mx-5">
-                    <h1 class="textOverflow"><c:out value="${name} "/></h1>
-                    <h3 class="textOverflow">by <c:out value="${author}"/></h3>
-                    <h3 >Idioma: <c:out value="${language}"/></h3>
-                    <h5>ISBN: <c:out value="${isbn}"/></h5>
-                    <h5>Estado: <c:out value="${physicalCondition}"/></h5>
+                    <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>
+                    <h3 class="textOverflow">by <c:out value="${assetInstance.book.author}"/></h3>
+                    <h3 >Idioma: <c:out value="${assetInstance.book.language}"/></h3>
+                    <h5>ISBN: <c:out value="${assetInstance.book.isbn}"/></h5>
+                    <h5>Estado: <c:out value="${assetInstance.physicalCondition}"/></h5>
                 </div>
 
                 <div class="w-25 h-25 mx-5" style="border: 2px solid #E3DDE0; border-radius: 10px; padding: 20px">
                     <p style="margin-bottom: -5px">Código postal</p>
-                    <h3 class="textOverflow"><c:out value="${locationPC}"/></h3>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.zipcode}"/></h3>
 
                     <p style="margin-bottom: -5px">Localidad</p>
-                    <h3 class="textOverflow"><c:out value="${location}"/></h3>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.locality}"/></h3>
 
                     <p style="margin-bottom: -5px">Provincia</p>
-                    <h3 class="textOverflow"><c:out value="${province}"/></h3>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.province}"/></h3>
 
                     <p style="margin-bottom: -5px">País</p>
-                    <h3 class="textOverflow"><c:out value="${country}"/></h3>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
 
                     <div class="text-center mt-5">
-                        <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${id}&imageId=${imageId}"/>">Pedir prestado este libro!</a>
+                        <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${assetInstance.id}&imageId=${assetInstance.imageId}"/>">Pedir prestado este libro!</a>
                     </div>
 
                 </div>
