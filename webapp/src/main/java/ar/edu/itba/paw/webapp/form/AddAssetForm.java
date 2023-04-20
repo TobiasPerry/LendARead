@@ -10,46 +10,48 @@ import javax.validation.constraints.Size;
 
 public class AddAssetForm {
 
-    @NotEmpty
-    @Isbn
+    @NotEmpty(message = "addAssetForm.isbn.notEmpty")
+    @Isbn(message = "addAssetForm.isbn.invalid")
     private String isbn;
-    @NotEmpty
-    @Size(min = 3,max = 100)
+
+    @NotEmpty(message = "addAssetForm.language.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.language.size")
     private String language;
-    @NotEmpty
-    @Size(min = 3,max = 100)
+
+    @NotEmpty(message = "addAssetForm.author.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.author.size")
     private String author;
 
-    @NotEmpty
-    @Size(min = 3,max = 100)
+    @NotEmpty(message = "addAssetForm.title.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.title.size")
     private String title;
 
-    @NotEmpty
-    @Size(min = 3,max = 100)
+    @NotEmpty(message = "addAssetForm.physicalCondition.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.physicalCondition.size")
     private String physicalCondition;
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d{4}$")
+    @NotEmpty(message = "addAssetForm.zipcode.notEmpty")
+    @Pattern(regexp = "^\\d{4}$", message = "addAssetForm.zipcode.pattern")
     private String zipcode;
 
-    @NotEmpty
-    @Size(min = 3,max = 100)
+    @NotEmpty(message = "addAssetForm.locality.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.locality.size")
     private String locality;
 
-    @NotEmpty
-    @Size(min = 3,max = 100)
+    @NotEmpty(message = "addAssetForm.province.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.province.size")
     private String province;
 
-    @NotEmpty
-    @Size(min = 3,max = 100)
+    @NotEmpty(message = "addAssetForm.country.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.country.size")
     private String country;
 
-    @NotEmpty
-    @Email
+    @NotEmpty(message = "addAssetForm.email.notEmpty")
+    @Email(message = "addAssetForm.email.invalid")
     private String email;
 
-    @NotEmpty
-    @Size(min = 3, max = 100)
+    @NotEmpty(message = "addAssetForm.name.notEmpty")
+    @Size(min = 3, max = 100, message = "addAssetForm.name.size")
     private String name;
 
 

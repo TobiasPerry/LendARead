@@ -31,7 +31,8 @@
                     <div class="image-container position-relative">
                         <img src="<c:url value="/static/images/no_image_placeholder.jpg"/>" alt="Book Cover" class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
                         <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary" id="uploadLabel">
-                            <i class="bi bi-cloud-upload"></i> Subir foto
+                            <i class="bi bi-cloud-upload"></i>
+                                <spring:message code="addAssetView.uploadImage" />
                         </label>
                     </div>
                 </div>
@@ -43,12 +44,12 @@
                             <h2>Libro:</h2>
                             <div class="field-group">
                                 <div class="field">
-                                    <label for="title" class="form-label">Titulo:</label>
+                                    <label for="title" class="form-label"> <spring:message code="addAssetView.titleLabel" /></label>
                                     <form:input path="title" id="title" placeholder="Titulo" class="form-control" readonly="true" />
                                     <form:errors path="title" cssClass="text-danger small" element="small"/>
                                 </div>
                                 <div class="field">
-                                    <label for="physicalCondition" class="form-label">Estado:</label>
+                                    <label for="physicalCondition" class="form-label"> <spring:message code="addAssetView.physicalConditionLabel" /></label>
                                     <form:select path="physicalCondition" id="physicalCondition" class="form-control" accept-charset="utf-9">
                                         <form:option value="asnew">Nuevo</form:option>
                                         <form:option value="fine">Casi nuevo</form:option>
