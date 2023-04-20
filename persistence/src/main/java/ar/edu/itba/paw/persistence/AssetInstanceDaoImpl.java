@@ -9,6 +9,8 @@ import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     };
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
 
+    private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) ->  rs.getInt("pageCount");
+
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
@@ -70,6 +74,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     rs.getInt("photo_id"),
                     AssetState.fromString(rs.getString("status"))
                     );
+
 //new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")
     @Autowired
     public AssetInstanceDaoImpl(final DataSource ds) {
@@ -105,18 +110,27 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public Optional<List<AssetInstance>> getAllAssetInstances(){
+    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage){
+
+        int offset = (pageNum - 1) * itemsPerPage;
+        int limit = itemsPerPage;
 
         String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
                 " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
+
+        String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name());
+        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK,AssetState.PUBLIC.name(), limit, offset);
 
-        return Optional.of(assets);
+        int totalPages = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name()).get(0);
+
+        Page page = new PageImpl(assets, pageNum, totalPages);
+        return Optional.of(page);
     }
 
     @Override

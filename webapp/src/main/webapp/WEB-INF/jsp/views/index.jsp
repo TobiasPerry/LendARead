@@ -7,6 +7,7 @@
     <link href="<c:url value="/static/css/index.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
+    <title>Lend a book</title>
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -18,9 +19,9 @@
                 <h1>Libros disponibles</h1>
             </div>
         </c:if>
-        <div class="container-row-wrapped" style="margin-top: 50px">
 
-            <c:if test="${books.size() > 0}">
+        <c:if test="${books.size() > 0}">
+            <div class="container-row-wrapped" style="margin-top: 50px">
                 <c:forEach var="book" items="${books}">
                     <% request.setCharacterEncoding("utf-8"); %>
                     <jsp:include page="../components/bookCard.jsp">
@@ -30,12 +31,22 @@
                         <jsp:param name="imageId" value="${book.imageId}"/>
                     </jsp:include>
                 </c:forEach>
-            </c:if>
+            </div>
+            <div class="container-row-wrapped" style="margin-top: 50px">
+                <jsp:include page="../components/paginationButton.jsp">
+                    <jsp:param name="previous" value="${previousPage}"/>
+                    <jsp:param name="next" value="${nextPage}"/>
+                    <jsp:param name="page" value="${page}"/>
+                </jsp:include>
+            </div>
+        </c:if>
 
-            <c:if test="${books.size() <= 0}">
+        <c:if test="${books.size() <= 0}">
+            <div class="container-row-wrapped" style="margin-top: 50px">
                 <h1>No hay libros disponibles</h1>
-            </c:if>
-        </div>
+            </div>
+        </c:if>
+
 
 </div>
 </body>
