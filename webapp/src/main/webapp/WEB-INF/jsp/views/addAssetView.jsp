@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <head>
     <title>Prestar Libro</title>
@@ -23,7 +23,7 @@
 
         <jsp:include page="../components/snackbarComponent.jsp" />
 
-        <h1 class="text-center mb-5">¿Quieres prestar un libro?</h1>
+        <h1 class="text-center mb-5"><spring:message code="addAssetView.title"> </spring:message></h1>
         <div class="p-4 rounded" >
             <div class="flex-container">
 

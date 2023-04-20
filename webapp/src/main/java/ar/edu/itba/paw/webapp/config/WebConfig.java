@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.config;
 import ar.edu.itba.paw.webapp.controller.CustomHandlerExceptionResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
@@ -21,8 +22,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 @EnableWebMvc
 @EnableAsync
@@ -30,6 +34,14 @@ import javax.sql.DataSource;
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence" })
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
+    @Bean
+    public MessageSource messageSource(){
+        final ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
+        ms.setBasename("classpath:i18n/messages");
+        ms.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+        return ms;
+    }
+
     @Autowired
     private Environment environment;
     @Bean
