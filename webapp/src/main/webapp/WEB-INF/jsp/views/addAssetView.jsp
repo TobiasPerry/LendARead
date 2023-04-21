@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <head>
-    <title>Prestar Libro</title>
+    <title><spring:message code="addAssetView.titleView" /></title>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -41,7 +41,7 @@
                     <c:url var="addAssetUrl" value="/addAsset"/>
                     <form:form modelAttribute="addAssetForm" method="post" action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
                     <div class="info-container">
-                        <h2>Libro:</h2>
+                        <h2><spring:message code="addAssetView.bookInfo" /></h2>
                         <div class="field-group">
                             <div class="field">
                                 <label for="title" class="form-label"> <spring:message code="addAssetView.titleLabel" /></label>
