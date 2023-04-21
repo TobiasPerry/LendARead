@@ -10,50 +10,36 @@ import javax.validation.constraints.Size;
 
 public class AddAssetForm {
 
-    @NotEmpty(message = "addAssetForm.isbn.notEmpty")
-    @Isbn(message = "addAssetForm.isbn.invalid")
+    @Isbn
     private String isbn;
-
-    @NotEmpty(message = "addAssetForm.language.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.language.size")
+    @Size(min = 3,max = 100)
     private String language;
-
-    @NotEmpty(message = "addAssetForm.author.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.author.size")
+    @Size(min = 3,max = 100)
     private String author;
 
-    @NotEmpty(message = "addAssetForm.title.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.title.size")
+    @Size(min = 3,max = 100)
     private String title;
 
-    @NotEmpty(message = "addAssetForm.physicalCondition.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.physicalCondition.size")
+    @Size(min = 3,max = 100)
     private String physicalCondition;
 
-    @NotEmpty(message = "addAssetForm.zipcode.notEmpty")
-    @Pattern(regexp = "^\\d{4}$", message = "addAssetForm.zipcode.pattern")
+    @Pattern(regexp = "^\\d{4}$")
     private String zipcode;
 
-    @NotEmpty(message = "addAssetForm.locality.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.locality.size")
+    @Size(min = 3,max = 100)
     private String locality;
 
-    @NotEmpty(message = "addAssetForm.province.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.province.size")
+    @Size(min = 3,max = 100)
     private String province;
 
-    @NotEmpty(message = "addAssetForm.country.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.country.size")
+    @Size(min = 3,max = 100)
     private String country;
 
-    @NotEmpty(message = "addAssetForm.email.notEmpty")
-    @Email(message = "addAssetForm.email.invalid")
+    @Email
     private String email;
 
-    @NotEmpty(message = "addAssetForm.name.notEmpty")
-    @Size(min = 3, max = 100, message = "addAssetForm.name.size")
+    @Size(min = 3, max = 100)
     private String name;
-
 
 
     public String getIsbn() {
