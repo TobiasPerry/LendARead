@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <nav class="navbar navbar-expand-lg" style="height: 50px; background-color: #393E41" data-bs-theme="dark">
     <div class="container-fluid">
@@ -10,10 +11,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link navItem" id="home" aria-current="page" href="<c:url value="/"/>">Inicio</a>
+                    <a class="nav-link navItem" id="home" aria-current="page" href="<c:url value="/"/>"><spring:message code="navBar.home" /></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>">Prestar libro</a>
+                    <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.borrow" /></a>
                 </li>
             </ul>
 

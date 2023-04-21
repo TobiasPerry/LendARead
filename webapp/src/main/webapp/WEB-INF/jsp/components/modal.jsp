@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -12,7 +13,7 @@
         <c:out value="${param.text}"/>
       </div>
       <div class="modal-footer">
-        <a type="button" class="btn btn-primary" href="<c:url value="/"/>">Seguir explorando</a>
+        <a type="button" class="btn btn-primary" href="<c:url value="/"/>"><spring:message code="exploringModal.continue" /></a>
       </div>
     </div>
   </div>
