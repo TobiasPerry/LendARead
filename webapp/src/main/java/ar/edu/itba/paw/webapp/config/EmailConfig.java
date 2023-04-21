@@ -43,7 +43,7 @@ public class EmailConfig {
         properties.put("mail.smtp.auth", environment.getProperty("mail.smtp.auth"));
         properties.put("mail.smtp.starttls.enable", environment.getProperty("mail.smtp.starttls.enable"));
         properties.put("mail.debug", environment.getProperty("mail.debug"));
-
+        properties.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
         return javaMailSender;
     }
     @Bean
