@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,7 +17,7 @@
 <div class="main-class">
         <c:if test="${books.size() > 0}">
             <div class="container-row-wrapped" style="margin-top: 50px">
-                <h1>Libros disponibles</h1>
+                <h1><spring:message code="indexView.title" /></h1>
             </div>
         </c:if>
 
@@ -43,7 +44,7 @@
 
         <c:if test="${books.size() <= 0}">
             <div class="container-row-wrapped" style="margin-top: 50px">
-                <h1>No hay libros disponibles</h1>
+                <h1><spring:message code="indexView.noBooks" /></h1>
             </div>
         </c:if>
 

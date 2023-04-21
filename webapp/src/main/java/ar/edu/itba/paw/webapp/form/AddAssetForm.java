@@ -10,48 +10,36 @@ import javax.validation.constraints.Size;
 
 public class AddAssetForm {
 
-    @NotEmpty
     @Isbn
     private String isbn;
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String language;
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String author;
 
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String title;
 
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String physicalCondition;
 
-    @NotEmpty
     @Pattern(regexp = "^\\d{4}$")
     private String zipcode;
 
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String locality;
 
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String province;
 
-    @NotEmpty
     @Size(min = 3,max = 100)
     private String country;
 
-    @NotEmpty
     @Email
     private String email;
 
-    @NotEmpty
     @Size(min = 3, max = 100)
     private String name;
-
 
 
     public String getIsbn() {
