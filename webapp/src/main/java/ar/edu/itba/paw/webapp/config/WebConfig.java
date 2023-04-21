@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
