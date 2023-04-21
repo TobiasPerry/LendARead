@@ -45,17 +45,27 @@ public class UserDaoImpl implements UserDao {
             return pstmt;
         }, keyHolder);
         if(keyHolder.getKeys() == null){
-            return getUid(us);
+            return getUid(us.getEmail());
         }else {
             int generatedId =(int) keyHolder.getKeys().get("id");
             return Optional.of(generatedId);
         }
     }
-    private Optional<Integer> getUid(User us){
+    private Optional<Integer> getUid(String email){
         String query = "SELECT id FROM users WHERE mail = ?";
-        final List<Integer> ids = jdbcTemplate.query(query,new Object[]{us.getEmail()},ROW_MAPPER_ID);
+        final List<Integer> ids = jdbcTemplate.query(query,new Object[]{email},ROW_MAPPER_ID);
         if(ids.isEmpty())
             return Optional.empty();
         return Optional.of(ids.get(0));
+    }
+    public Optional<Integer> getUser(String email){
+        return getUid(email);
+    }
+    public boolean changePassword(String email,String newPassword){
+        String query = "UPDATE users SET password = ? WHERE email = ?";
+        final int updates = jdbcTemplate.update(query,email,newPassword);
+        if(updates != 0)
+            return true;
+        return false;
     }
 }
