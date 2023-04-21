@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,13 +41,46 @@ public class IndexViewController {
     }
     @RequestMapping( "/")
     public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
+//        final ModelAndView mav = new ModelAndView("/views/index");
+//        Page page = assetInstanceService.getAllAssetsInstances(1);
+//
+//        mav.addObject("books", page.getBooks());
+//        mav.addObject("nextPage", false);
+//        mav.addObject("previousPage", true);
+//        mav.addObject("page", 1);
+//
+//        if(showSnackbarSucess)
+//            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
+//
+//        return mav;
+        return discoveryView("1");
+    }
+
+    @RequestMapping("/discovery/{pageNum}")
+    public ModelAndView discoveryView(@PathVariable String pageNum){
         final ModelAndView mav = new ModelAndView("/views/index");
-        List<AssetInstance> books = assetInstanceService.getAllAssetsInstances();
-        mav.addObject("books", books);
-        if(showSnackbarSucess)
-            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
+
+        int pageNumParsed;
+
+        try {
+            pageNumParsed = Integer.parseInt(pageNum);
+        }catch (NumberFormatException e){
+            // In case the parameters received cannot be parsed as integers, we'll return a not found view
+            return new ModelAndView("/views/notFoundView");
+        }
+
+        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed);
+
+        mav.addObject("books", page.getBooks());
+        mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
+        mav.addObject("previousPage", page.getCurrentPage() != 1);
+        mav.addObject("currentPage", page.getCurrentPage());
+        mav.addObject("totalPages", page.getTotalPages());
+        mav.addObject("page", page.getCurrentPage());
+
         return mav;
     }
+
 
     @RequestMapping( "/assetView")
     public ModelAndView assetView(){

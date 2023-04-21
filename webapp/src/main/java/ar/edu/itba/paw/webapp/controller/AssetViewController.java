@@ -23,24 +23,14 @@ public class AssetViewController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ModelAndView assetInfoView(@RequestParam() int id,@ModelAttribute("borrowAssetForm") final BorrowAssetForm form) {
-        Optional<AssetInstance> assetInstanceOpt = this.assetInstanceService.getAssetInstance(id);
+        Optional<AssetInstance> assetInstanceOpt = assetInstanceService.getAssetInstance(id);
+
         if (! assetInstanceOpt.isPresent()) {
-            System.out.println("Not found");
             return new ModelAndView("/views/notFoundView");
         }
-        AssetInstance assetInstance = assetInstanceOpt.get();
+
         final ModelAndView mav = new ModelAndView("/views/assetView");
-        mav.addObject("imageId", assetInstance.getImageId());
-        mav.addObject("name", assetInstance.getBook().getName());
-        mav.addObject("author", assetInstance.getBook().getAuthor());
-        mav.addObject("language", assetInstance.getBook().getLanguage());
-        mav.addObject("isbn", assetInstance.getBook().getIsbn());
-        mav.addObject("physicalCondition", assetInstance.getAssetState());
-        mav.addObject("locationPC", assetInstance.getLocation().getZipcode());
-        mav.addObject("location", assetInstance.getLocation().getLocality());
-        mav.addObject("province", assetInstance.getLocation().getProvince());
-        mav.addObject("country", assetInstance.getLocation().getCountry());
-        mav.addObject("id", assetInstance.getId());
+        mav.addObject("assetInstance", assetInstanceOpt.get());
 
         return mav;
     }
