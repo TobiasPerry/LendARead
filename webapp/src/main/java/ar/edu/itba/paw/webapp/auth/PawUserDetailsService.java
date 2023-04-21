@@ -28,9 +28,8 @@ public class PawUserDetailsService implements UserDetailsService {
 
         //TODO HACER QUE TENGA LOS ROLES QUE SE NECESITAN BIEN LOS DEBEMOS MAPPEAR EN BD
         final Collection<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_EDITOR"));
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER_ADMIN"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-       return new PawUserDetails(user.getEmail(),user.getPassword(),null);
+       return new PawUserDetails(s,user.getPassword(),authorities);
     }
 }

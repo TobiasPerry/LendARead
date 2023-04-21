@@ -40,7 +40,7 @@ public class IndexViewController {
         model.addAttribute("path", "home");
     }
     @RequestMapping( "/")
-    public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
+    public ModelAndView indexView(){
 //        final ModelAndView mav = new ModelAndView("/views/index");
 //        Page page = assetInstanceService.getAllAssetsInstances(1);
 //

@@ -16,20 +16,10 @@ import javax.validation.Valid;
 @Controller
 public class LoginViewController {
     private final String viewName = "views/loginView";
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView loginPost(@Valid @ModelAttribute final LoginForm loginForm, final BindingResult errors) {
 
-        //login service logic
-
-        if(errors.hasErrors()) {
-            return login(loginForm);
-        }
-
-        return new ModelAndView("redirect:/");
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@Valid @ModelAttribute final LoginForm loginForm) {
+    public ModelAndView login() {
         return new ModelAndView(viewName);
     }
 
