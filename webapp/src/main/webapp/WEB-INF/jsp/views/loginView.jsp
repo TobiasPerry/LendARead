@@ -12,15 +12,15 @@
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
 </head>
 
-<body>
+<body style="overflow-y: hidden;">
 
 <section class="vh-100">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 text-black">
+            <div class="col-sm-6 text-black main-class">
 
-                <div class="px-5 ms-xl-4">
-                    <span class="h1 fw-bold mb-0">Logo</span>
+                <div class="px-5 ms-xl-4 mt-10">
+                    <img src="<c:url value="/static/images/logo-oscuro.png"/>" alt="Lend a read logo" style="width: 300px">
                 </div>
 
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
@@ -28,29 +28,32 @@
                     <c:url	value="/login"	var="loginUrl"	/>
                     <form action="${loginUrl}" method="post" style="width: 23rem;">
 
-                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
+                        <h2 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;">Log in</h2>
 
-                        <div class="form-outline mb-4">
-                            <label>Username:
-                                <input	type="text" name="email"/>
+                        <div class="form-outline mb-4" style="width: 100%">
+                            <label style="width: 100%">Username
+                                <input class="form-control"	type="text" name="email"/>
                             </label>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label>Password:
-                                <input	name="password"	type="password"/>
+                            <label style="width: 100%">Password
+                                <input class="form-control"	name="password"	type="password"/>
                             </label>
+                            <small id="passwordHelpInline" class="text-muted">
+                                <br>Must be 8-20 characters long.
+                            </small>
                         </div>
 
-                        <div class="form-outline mb-4">
-                            <label>
-                                <input name="rememberme" type="checkbox">
+                        <div class="form-outline mb-4 text-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" name="rememberme" type="checkbox">
                                 Remember Me!
                             </label>
                         </div>
 
-                        <div class="pt-1 mb-4">
-                            <input	type="submit"	value="Login!"/>
+                        <div class="pt-1 mb-4 text-center">
+                            <input class="btn btn-light"	type="submit"	value="Login!"/>
                         </div>
 
                     </form>
