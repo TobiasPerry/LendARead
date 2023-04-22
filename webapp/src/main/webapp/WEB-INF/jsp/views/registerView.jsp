@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>register!</title>
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
 </head>
 <body>
 <h1>Registration Form</h1>
