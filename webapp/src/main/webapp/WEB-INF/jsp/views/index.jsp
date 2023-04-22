@@ -16,39 +16,14 @@
 <jsp:include page="../components/navBar.jsp"/>
 <jsp:include page="../components/snackbarComponent.jsp"/>
 <div class="main-class">
-        <c:if test="${books.size() > 0}">
-            <div class="container-row-wrapped" style="margin-top: 50px">
-                <h1><spring:message code="indexView.title" /></h1>
-            </div>
-        </c:if>
 
-        <c:if test="${books.size() > 0}">
-            <div class="container-row-wrapped" style="margin-top: 50px">
-                <c:forEach var="book" items="${books}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/bookCard.jsp">
-                        <jsp:param name="id" value="${book.id}"/>
-                        <jsp:param name="bookTitle" value="${book.book.name}"/>
-                        <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                        <jsp:param name="imageId" value="${book.imageId}"/>
-                    </jsp:include>
-                </c:forEach>
-            </div>
-            <div class="container-row-wrapped" style="margin-top: 50px">
-                <jsp:include page="../components/paginationButton.jsp">
-                    <jsp:param name="previous" value="${previousPage}"/>
-                    <jsp:param name="next" value="${nextPage}"/>
-                    <jsp:param name="page" value="${page}"/>
-                </jsp:include>
-            </div>
-        </c:if>
+    <div class="container-row-wrapped" style="margin-top: 50px">
+        <h1>Lend a read</h1>
+    </div>
 
-        <c:if test="${books.size() <= 0}">
-            <div class="container-row-wrapped" style="margin-top: 50px">
-                <h1><spring:message code="indexView.noBooks" /></h1>
-            </div>
-        </c:if>
-
+    <div class="container-row-wrapped" style="margin-top: 50px">
+        <a href="<c:url value='/discovery/1'/>"><button class="btn">Ver libros</button></a>
+    </div>
 
 </div>
 </body>

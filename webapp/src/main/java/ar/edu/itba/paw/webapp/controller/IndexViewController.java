@@ -41,24 +41,14 @@ public class IndexViewController {
     }
     @RequestMapping( "/")
     public ModelAndView indexView(){
-//        final ModelAndView mav = new ModelAndView("/views/index");
-//        Page page = assetInstanceService.getAllAssetsInstances(1);
-//
-//        mav.addObject("books", page.getBooks());
-//        mav.addObject("nextPage", false);
-//        mav.addObject("previousPage", true);
-//        mav.addObject("page", 1);
-//
-//        if(showSnackbarSucess)
-//            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
-//
-//        return mav;
-        return discoveryView("1");
+        final ModelAndView mav = new ModelAndView("/views/index");
+
+        return mav;
     }
 
     @RequestMapping("/discovery/{pageNum}")
     public ModelAndView discoveryView(@PathVariable String pageNum){
-        final ModelAndView mav = new ModelAndView("/views/index");
+        final ModelAndView mav = new ModelAndView("/views/discoveryView");
 
         int pageNumParsed;
 
