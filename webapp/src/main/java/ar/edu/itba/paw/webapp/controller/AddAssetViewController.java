@@ -43,7 +43,7 @@ final public class AddAssetViewController {
 
         if(addedBookSuccessfully) {
             ModelAndView addAssetView = addAssetView(addAssetForm);
-            SnackbarControl.displaySuccess(addAssetView,SUCESS_MSG);
+                SnackbarControl.displaySuccess(addAssetView,SUCESS_MSG);
             return addAssetView;
         }
 
