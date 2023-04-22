@@ -23,7 +23,7 @@
                     <img src="<c:url value="/static/images/logo-oscuro.png"/>" alt="Lend a read logo" style="width: 300px">
                 </div>
 
-                <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+                <div class="d-flex justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
                     <c:url	value="/login"	var="loginUrl"	/>
                     <form action="${loginUrl}" method="post" style="width: 23rem;">
