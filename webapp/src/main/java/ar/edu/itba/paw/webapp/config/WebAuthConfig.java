@@ -54,7 +54,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/login","/register").anonymous()
                 .antMatchers("/addAssetView","/addAsset").hasRole("LENDER")
                 .antMatchers("/borrowAssetView").hasRole("BORROWER")
-                .antMatchers("/**").authenticated().expressionHandler(webSecurityExpressionHandler()).
+                .antMatchers("/**").authenticated()
+                .expressionHandler(webSecurityExpressionHandler()).
                 and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
                 .defaultSuccessUrl("/",   false) // Me va a volver a donde estaba antes
