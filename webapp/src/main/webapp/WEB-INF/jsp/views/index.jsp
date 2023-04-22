@@ -7,7 +7,8 @@
     <link href="<c:url value="/static/css/index.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
-    <title>Lend a book</title>
+    <title>Lend a read</title>
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
