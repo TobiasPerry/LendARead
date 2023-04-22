@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
@@ -49,7 +50,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String email = rs.getString("email");
             Integer userId = rs.getInt("user_id");
             String ownerName = rs.getString("user_name");
-            User user = new UserImpl(userId, email, ownerName, "","");
+            User user = new UserImpl(userId, email, ownerName, "","", Behaviour.fromString(rs.getString("behavior")));
 
             Integer id = rs.getInt("id");
             Integer imgId = rs.getInt("photo_id");
@@ -69,7 +70,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     rs.getInt("id"),
                     new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X",""),
+                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X","",Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
                     rs.getInt("photo_id"),
                     AssetState.fromString(rs.getString("status"))

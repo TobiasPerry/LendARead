@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
@@ -24,7 +25,8 @@ final public class FormFactoryAddAssetView {
                 email,
                 DEFAULT_STRING_VALUE,
                 DEFAULT_STRING_VALUE,
-                DEFAULT_STRING_VALUE
+                DEFAULT_STRING_VALUE,
+                Behaviour.LENDER
         );
 
         Location location = LocationFactory.createLocation(

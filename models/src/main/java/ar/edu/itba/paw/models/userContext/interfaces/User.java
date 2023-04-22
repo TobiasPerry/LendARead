@@ -1,11 +1,13 @@
 package ar.edu.itba.paw.models.userContext.interfaces;
 
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
+
 public interface User {
     String getEmail();
 
     String getPassword();
 
-    String getBehavior();
+    Behaviour getBehavior();
 
     int getId();
 

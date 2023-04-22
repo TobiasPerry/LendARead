@@ -25,10 +25,8 @@ public class PawUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         final User user = userService.getUser(s).orElseThrow(()->new UsernameNotFoundException("Not user for" + s));
-
-        //TODO HACER QUE TENGA LOS ROLES QUE SE NECESITAN BIEN LOS DEBEMOS MAPPEAR EN BD
         final Collection<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getBehavior().toString()));
 
        return new PawUserDetails(s,user.getPassword(),authorities);
     }

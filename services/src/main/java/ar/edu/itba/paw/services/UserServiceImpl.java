@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int createUser(String email,String name,String telephone,String password) {
-        userDao.addUser("lender",email,name,telephone,passwordEncoder.encode(password));
+        userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
         return 0;
     }
 }
