@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-//Esta clase nos resuelve no utilizar el full name
 public class PawUserDetails extends User {
     public PawUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
