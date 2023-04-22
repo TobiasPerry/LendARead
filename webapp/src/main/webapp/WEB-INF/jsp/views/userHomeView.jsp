@@ -23,22 +23,27 @@
       justify-content: space-between;
       flex-wrap: wrap;
     }
-    .column {
-      flex-basis: 48%;
-      margin-bottom: 20px;
-    }
     table {
       width: 100%;
       border-collapse: collapse;
-      background-color: #D1E9C3;
+    }
+    .table-title{
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 20px;
+      flex: 1;
+      min-width: 400px;
+      margin: 0 10px 20px;
     }
     th, td {
-      border: 1px solid #2B3B2B;
-      padding: 8px;
-      text-align: left;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+      border-radius: 10px;
     }
     th {
       background-color: #2B3B2B;
+      opacity: 0.8;
       color: #D1E9C3;
     }
     button {
@@ -50,97 +55,102 @@
     }
   </style>
 </head>
-<body>
-<h1><spring:message code="greeting" /></h1>
 
-<div class="container">
-  <div class="column">
-    <h2><spring:message code="my_books" /></h2>
-    <table>
-      <thead>
-      <tr>
-        <th><spring:message code="image" /></th>
-        <th><spring:message code="book_name" /></th>
-        <th><spring:message code="author" /></th>
-        <th><spring:message code="isbn" /></th>
-        <th><spring:message code="language" /></th>
-        <th><spring:message code="description" /></th>
-        <th><spring:message code="status" /></th>
-      </tr>
-      </thead>
-      <tbody>
-      <c:forEach items="${myBooks}" var="book">
-        <tr>
-          <td><img src="${book.image}" alt="${book.name}" /></td>
-          <td>${book.name}</td>
-          <td>${book.author}</td>
-          <td>${book.isbn}</td>
-          <td>${book.language}</td>
-          <td>${book.description}</td>
-          <td>
-            <form action="/changeStatus" method="post">
-              <input type="hidden" name="bookId" value="${book.id}" />
-              <button type="submit">${book.status ? 'Public' : 'Private'}</button>
-            </form>
-          </td>
-        </tr>
-      </c:forEach>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="column">
-    <h2><spring:message code="borrowed_books" /></h2>
-    <table>
-      <thead>
-      <tr>
-        <th><spring:message code="image" /></th>
-        <th><spring:message code="book_name" /></th>
-        <th><spring:message code="author" /></th>
-        <th><spring:message code="return_date" /></th>
-      </tr>
-      </thead>
-      <tbody>
-      <c:forEach items="${borrowedBooks}" var="book">
-        <tr>
-          <td><img src="${book.image}" alt="${book.name}" /></td>
-          <td>${book.name}</td>
-          <td>${book.author}</td>
-          <td>${book.returnDate}</td>
-        </tr>
-      </c:forEach>
-      </tbody>
-    </table>
-  </div>
-</div>
+<body class="body-class">
 <div>
-  <h2><spring:message code="lended_books" /></h2>
-  <table>
-    <thead>
-    <tr>
-      <th><spring:message code="image" /></th>
-      <th><spring:message code="book_name" /></th>
-      <th><spring:message code="author" /></th>
-      <th><spring:message code="isbn" /></th>
-      <th><spring:message code="language" /></th>
-      <th><spring:message code="description" /></th>
-      <th><spring:message code="expected_retrieval_date" /></th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${lendedBooks}" var="book">
-      <tr>
-        <td><img src="${book.image}" alt="${book.name}" /></td>
-        <td>${book.name}</td>
-        <td>${book.author}</td>
-        <td>${book.isbn}</td>
-        <td>${book.language}</td>
-        <td>${book.description}</td>
-        <td>${book.expectedRetrievalDate}</td>
-      </tr>
-    </c:forEach>
-    </tbody>
-  </table>
+  <div >
+    <h1><spring:message code="greeting" /></h1>
+
+    <div class="container">
+      <div class="table-title">
+        <h2><spring:message code="my_books" /></h2>
+        <table>
+          <thead>
+          <tr>
+            <th><spring:message code="image" /></th>
+            <th><spring:message code="book_name" /></th>
+            <th><spring:message code="author" /></th>
+            <th><spring:message code="isbn" /></th>
+            <th><spring:message code="language" /></th>
+            <th><spring:message code="description" /></th>
+            <th><spring:message code="status" /></th>
+          </tr>
+          </thead>
+          <tbody>
+          <c:forEach items="${myBooks}" var="book">
+            <tr>
+              <td><img src="${book.image}" alt="${book.name}" /></td>
+              <td>${book.name}</td>
+              <td>${book.author}</td>
+              <td>${book.isbn}</td>
+              <td>${book.language}</td>
+              <td>${book.description}</td>
+              <td>
+                <form action="/changeStatus" method="post">
+                  <input type="hidden" name="bookId" value="${book.id}" />
+                  <button type="submit">${book.status ? 'Public' : 'Private'}</button>
+                </form>
+              </td>
+            </tr>
+          </c:forEach>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-title">
+        <h2><spring:message code="borrowed_books" /></h2>
+        <table>
+          <thead>
+          <tr>
+            <th><spring:message code="image" /></th>
+            <th><spring:message code="book_name" /></th>
+            <th><spring:message code="author" /></th>
+            <th><spring:message code="return_date" /></th>
+          </tr>
+          </thead>
+          <tbody>
+          <c:forEach items="${borrowedBooks}" var="book">
+            <tr>
+              <td><img src="${book.image}" alt="${book.name}" /></td>
+              <td>${book.name}</td>
+              <td>${book.author}</td>
+              <td>${book.returnDate}</td>
+            </tr>
+          </c:forEach>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="table-title">
+      <h2><spring:message code="lended_books" /></h2>
+      <table>
+        <thead>
+        <tr>
+          <th><spring:message code="image" /></th>
+          <th><spring:message code="book_name" /></th>
+          <th><spring:message code="author" /></th>
+          <th><spring:message code="isbn" /></th>
+          <th><spring:message code="language" /></th>
+          <th><spring:message code="description" /></th>
+          <th><spring:message code="expected_retrieval_date" /></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${lendedBooks}" var="book">
+          <tr>
+            <td><img src="${book.image}" alt="${book.name}" /></td>
+            <td>${book.name}</td>
+            <td>${book.author}</td>
+            <td>${book.isbn}</td>
+            <td>${book.language}</td>
+            <td>${book.description}</td>
+            <td>${book.expectedRetrievalDate}</td>
+          </tr>
+        </c:forEach>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 </body>
 </html>
