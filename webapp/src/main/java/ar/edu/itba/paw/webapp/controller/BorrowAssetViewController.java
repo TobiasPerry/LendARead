@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ final public class BorrowAssetViewController {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         LocalDate devolutionDay = LocalDate.now().plusWeeks(2);
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, UserFactory.createUser(DEFAULT_INT,email,DEFAULT_STRING,DEFAULT_STRING,DEFAULT_STRING),devolutionDay);
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, UserFactory.createUser(DEFAULT_INT,email,DEFAULT_STRING,DEFAULT_STRING,DEFAULT_STRING,Behaviour.BORROWER),devolutionDay);
 
         if(borrowRequestSuccessful) {
             ModelAndView borrowAssetView =  borrowAssetView(id,imageId);

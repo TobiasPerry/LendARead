@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,12 +34,27 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    @Bean
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+        return expressionHandler;
+    }
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "LENDER_ROLE > BORROW_ROLE";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
+    }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
         http.sessionManagement().invalidSessionUrl("/login")
                 .and().authorizeRequests().
                 antMatchers("/login","/register").anonymous()
-                .antMatchers("/**").authenticated().
+                .antMatchers("/addAssetView","/addAsset").hasRole("LENDER")
+                .antMatchers("/borrowAssetView").hasRole("BORROWER")
+                .antMatchers("/**").authenticated().expressionHandler(webSecurityExpressionHandler()).
                 and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
                 .defaultSuccessUrl("/",   false) // Me va a volver a donde estaba antes
@@ -50,7 +68,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
     }
     @Override
-    protected	void	configure(AuthenticationManagerBuilder auth)	throws	Exception {
+    protected void configure(AuthenticationManagerBuilder auth)	throws	Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
         @Override

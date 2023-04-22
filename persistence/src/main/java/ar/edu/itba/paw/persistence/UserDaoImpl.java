@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
@@ -24,21 +25,21 @@ public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
     private static final RowMapper<Integer> ROW_MAPPER_ID = (rs, rownum) -> rs.getInt("id");
-    private static final RowMapper<User> ROW_MAPPER_USER =  (rs,rownum)->new UserImpl(rs.getInt("id"),rs.getString("mail"),rs.getString("name"), rs.getString("telephone"),rs.getString("password") );
+    private static final RowMapper<User> ROW_MAPPER_USER =  (rs,rownum)->new UserImpl(rs.getInt("id"),rs.getString("mail"),rs.getString("name"), rs.getString("telephone"),rs.getString("password"), Behaviour.fromString(rs.getString("behavior")) );
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
     @Override
-    public Optional<Integer> addUser(String behavior,String email,String name,String telephone,String password) {
+    public Optional<Integer> addUser(Behaviour behavior,String email,String name,String telephone,String password) {
         String query = "INSERT INTO users(behavior,mail,telephone,name,password) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING RETURNING id";
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conexion -> {
             PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, behavior);
+            pstmt.setString(1, behavior.toString());
             pstmt.setString(2,email);
             pstmt.setString(3,telephone);
             pstmt.setString(4,name);
