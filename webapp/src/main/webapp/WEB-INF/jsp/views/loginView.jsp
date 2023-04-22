@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 
 <head>
@@ -25,16 +26,16 @@
                 <div class="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     <c:url value="/login" var="loginUrl" />
                     <form action="${loginUrl}" method="post" style="width: 23rem;">
-                        <h2 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;">Log in</h2>
+                        <h2 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;"><spring:message code="auth.login" /></h2>
 
                         <div class="form-outline mb-4" style="width: 100%">
-                            <label style="width: 100%">Username
+                            <label style="width: 100%"><spring:message code="auth.username" />
                                 <input class="form-control" type="text" name="email" />
                             </label>
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label style="width: 100%">Password
+                            <label style="width: 100%"><spring:message code="auth.password" />
                                 <input class="form-control" name="password" type="password" />
                             </label>
                         </div>
@@ -42,7 +43,7 @@
                         <div class="form-outline mb-4 text-center">
                             <label class="form-check-label">
                                 <input class="form-check-input" name="rememberme" type="checkbox">
-                                Remember Me!
+                                <spring:message code="auth.rememberMe" />
                             </label>
                         </div>
 
@@ -51,7 +52,7 @@
                         </div>
 
                         <div class="pt-1 mb-4 text-center">
-                            <a href="<c:url value="/register"/>" class="text-muted">Do not have an account? Register</a>
+                            <a href="<c:url value="/register"/>" class="text-muted"><spring:message code="auth.doNotHaveAccount" /></a>
                         </div>
 
                     </form>

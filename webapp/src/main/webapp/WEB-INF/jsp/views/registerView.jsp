@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>register!</title>
@@ -22,26 +23,26 @@
                 <div class="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     <c:url	value="/register"	var="registerUrl"	/>
                     <form:form method="post" action="${registerUrl}" modelAttribute="registerForm" style="width: 23rem;">
-                    <h2 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;">Register</h2>
+                    <h2 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;"><spring:message code="auth.register" /></h2>
 
                     <div class="form-outline mb-4">
-                        <label for="name" style="width: 100%">Name
+                        <label for="name" style="width: 100%"><spring:message code="auth.username" />
                             <form:input class="form-control" type="text" path="name" name="name" required="true"/>
                         </label>
                     </div>
 
                     <div class="form-outline mb-4">
-                        <label for="email" style="width: 100%">Email
+                        <label for="email" style="width: 100%"><spring:message code="auth.email" />
                             <form:input class="form-control" type="email" path="email" name="email" required="true"/>
                         </label>
                     </div>
 
                     <div class="form-outline mb-4">
-                        <label for="password" style="width: 100%">Password
+                        <label for="password" style="width: 100%"><spring:message code="auth.password" />
                             <form:password class="form-control" path="password"  name="password" required="true"/>
                         </label>
                         <small id="passwordHelpInline" class="text-muted">
-                            <br>Must be 8-20 characters long.
+                            <br><spring:message code="auth.passwordLength" />
                         </small>
                     </div>
 
@@ -50,7 +51,7 @@
                     </div>
 
                     <div class="pt-1 mb-4 text-center">
-                        <a href="<c:url value="/login"/>" class="text-muted">Already have an account? Log In</a>
+                        <a href="<c:url value="/login"/>" class="text-muted"><spring:message code="auth.alreadyHaveAccount" /></a>
                     </div>
 
                     </form:form>
