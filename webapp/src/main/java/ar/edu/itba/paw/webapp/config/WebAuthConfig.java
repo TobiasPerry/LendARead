@@ -30,7 +30,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http)	throws	Exception {
         http.sessionManagement().invalidSessionUrl("/login")
                 .and().authorizeRequests().
-                antMatchers("/login").anonymous()
+                antMatchers("/login","/register").anonymous()
                 .antMatchers("/**").authenticated().
                 and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")

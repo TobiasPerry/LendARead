@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS users(
     id SERIAL primary key,
     mail varchar(100) unique,
     name varchar(100) not null,
-    telephone varchar(100)
+    telephone varchar(100),
+    password varchar(200)
 );
 CREATE TABLE IF NOT EXISTS location(
     id SERIAL primary key,

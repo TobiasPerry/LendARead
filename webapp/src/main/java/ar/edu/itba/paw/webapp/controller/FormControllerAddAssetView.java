@@ -32,6 +32,7 @@ final public class FormControllerAddAssetView {
         User user = UserFactory.createUser(-1,
                 request.getEmail(),
                 request.getName(),
+                "",
                 ""
         );
 

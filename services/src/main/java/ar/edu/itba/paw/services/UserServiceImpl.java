@@ -12,24 +12,23 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final PasswordEncoder passwordEnconder;
+    private final PasswordEncoder passwordEncoder;
     private final UserDao userDao;
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEnconder,UserDao userDao) {
-        this.passwordEnconder = passwordEnconder;
+    public UserServiceImpl(PasswordEncoder passwordEncoder,UserDao userDao) {
+        this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
     }
 
 
-
     @Override
     public Optional<User> getUser(String email) {
-
-        return Optional.of(new UserImpl(0,email,"laucha","eee"));
+        return userDao.getUser(email);
     }
 
     @Override
-    public int createUser(String email, String password) {
+    public int createUser(String email,String name,String telephone,String password) {
+        userDao.addUser("lender",email,name,telephone,passwordEncoder.encode(password));
         return 0;
     }
 }

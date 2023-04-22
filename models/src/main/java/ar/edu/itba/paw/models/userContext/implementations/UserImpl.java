@@ -9,13 +9,13 @@ final public class UserImpl implements User {
     private final String behavior;
     private final String password;
     private final  int id;
-    public UserImpl(int id,String email, String name, String message) {
+    public UserImpl(int id,String email, String name, String message,String password) {
         this.email = email;
         this.name = name;
         this.message = message;
         this.id = id;
         this.behavior = "lender";
-        this.password = "root";
+        this.password = password;
     }
 
     @Override

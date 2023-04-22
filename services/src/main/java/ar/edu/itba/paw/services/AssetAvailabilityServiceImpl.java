@@ -39,13 +39,13 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public boolean borrowAsset(int assetId, User borrower, LocalDate devolutionDate) {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
-        Optional<Integer> userID = userDao.addUser(borrower);
-        if(!ai.isPresent() || !userID.isPresent())
+        Optional<User> user = userDao.getUser(borrower.getEmail());
+        if(!ai.isPresent() || !user.isPresent())
             return false;
         if(!ai.get().getAssetState().canBorrow())
             return false;
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
-        boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),userID.get(),LocalDate.now(),devolutionDate);
+        boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
 
             sendBorrowerEmail(ai.get(), borrower);

@@ -31,7 +31,7 @@ final public class BorrowAssetViewController {
         if(errors.hasErrors())
             return borrowAssetView(borrowAssetForm,id,imageId).addObject("showSnackbarInvalid", true);
 
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id,new UserImpl(-1,borrowAssetForm.getEmail(),borrowAssetForm.getName(),""), LocalDate.now().plusWeeks(2));
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id,new UserImpl(-1,borrowAssetForm.getEmail(),borrowAssetForm.getName(),"",""), LocalDate.now().plusWeeks(2));
 
         if(borrowRequestSuccessful) {
             ModelAndView borrowAssetView =  borrowAssetView(borrowAssetForm,id,imageId);
