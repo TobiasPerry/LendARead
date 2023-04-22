@@ -37,9 +37,6 @@
                             <label style="width: 100%">Password
                                 <input class="form-control" name="password" type="password" />
                             </label>
-                            <small id="passwordHelpInline" class="text-muted">
-                                <br>Must be 8-20 characters long.
-                            </small>
                         </div>
 
                         <div class="form-outline mb-4 text-center">
@@ -51,6 +48,10 @@
 
                         <div class="pt-1 mb-4 text-center">
                             <input class="btn btn-light" type="submit" value="Login!" />
+                        </div>
+
+                        <div class="pt-1 mb-4 text-center">
+                            <a href="<c:url value="/register"/>" class="text-muted">Do not have an account? Register</a>
                         </div>
 
                     </form>
