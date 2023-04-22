@@ -111,21 +111,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="info-container">
-                            <h2>Contacto: </h2>
-                            <div class="field-group">
-                                <div class="field">
-                                    <label for="name" class="form-label">Nombre:</label>
-                                    <form:input path="name" id="name" placeholder="Nombre" class="form-control"/>
-                                    <form:errors path="name" cssClass="text-danger small" element="small"/>
-                                </div>
-                                <div class="field">
-                                    <label for="email" class="form-label">Email:</label>
-                                    <form:input path="email" id="email" placeholder="Email" class="form-control"/>
-                                    <form:errors path="email" cssClass="text-danger small" element="small"/>
-                                </div>
-                            </div>
-                        </div>
                         <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;" onchange="previewImage()" />
                         <div style="display: flex; justify-content: center;">
                             <button type="submit" class="btn btn-primary" style="padding: 9px 20px;">Agregarlo!</button>

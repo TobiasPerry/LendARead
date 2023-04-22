@@ -1,25 +1,23 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.webapp.formFactories.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
 final public class AddAssetViewController {
-    private final FormControllerAddAssetView formController;
 
     private final AssetExistanceService assetExistanceService;
     private final static String viewName = "views/addAssetView";
@@ -34,14 +32,14 @@ final public class AddAssetViewController {
 
         response.setContentType("text/html; charset=UTF-8");
 
-
-        System.out.println(addAssetForm.getLocality());
         if(errors.hasErrors() || image.isEmpty())
             return addAssetView(addAssetForm)
                     .addObject("showSnackbarInvalid", true)
                     .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
 
-        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(formController.createAssetInstance(addAssetForm), handleImage(image));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm,email), handleImage(image));
 
         if(addedBookSuccessfully) {
             ModelAndView addAssetView = addAssetView(addAssetForm);
@@ -66,9 +64,8 @@ final public class AddAssetViewController {
     }
 
     @Autowired
-    public AddAssetViewController(AssetExistanceService assetExistanceService, FormControllerAddAssetView formControllerAddAssetView){
+    public AddAssetViewController(AssetExistanceService assetExistanceService){
         this.assetExistanceService = assetExistanceService;
-        this.formController = formControllerAddAssetView;
     }
     @ModelAttribute
     public void addAttributes(Model model) {

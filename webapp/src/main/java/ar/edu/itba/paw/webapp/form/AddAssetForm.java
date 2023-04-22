@@ -44,13 +44,7 @@ public class AddAssetForm {
     @Size(min = 3,max = 100)
     private String country;
 
-    @NotEmpty
-    @Email
-    private String email;
 
-    @NotEmpty
-    @Size(min = 3, max = 100)
-    private String name;
 
 
 
@@ -124,22 +118,6 @@ public class AddAssetForm {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
 
