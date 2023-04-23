@@ -9,6 +9,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/login.css"/>" rel="stylesheet"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@700&display=swap" rel="stylesheet">
+
 </head>
 <body style="overflow-y: hidden;">
 
@@ -23,7 +28,7 @@
                 <div class="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     <c:url	value="/register"	var="registerUrl"	/>
                     <form:form method="post" action="${registerUrl}" modelAttribute="registerForm" style="width: 23rem;">
-                    <h2 class="fw-normal mb-3 pb-3 text-center" style="letter-spacing: 1px;"><spring:message code="auth.register" /></h2>
+                    <h2 class="mb-3 pb-3 text-center" style="letter-spacing: 1px;"><spring:message code="auth.register" /></h2>
 
                     <div class="form-outline mb-4">
                         <label for="name" style="width: 100%"><spring:message code="auth.username" />
