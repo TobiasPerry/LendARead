@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="pt-1 mb-4 text-center">
-                            <input class="btn btn-light" type="submit" value="Login!" />
+                            <input class="btn btn-light" type="submit" value="<spring:message code="auth.logInBtn"/>" />
                         </div>
 
                         <div class="pt-1 mb-4 text-center">
