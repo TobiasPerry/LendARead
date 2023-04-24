@@ -58,12 +58,15 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public Page getAllAssetsInstances() {
 
+        //not working as expected, talk ippo
         int next = 1;
         Page allAssetInstances = getAllAssetsInstances(next);
 
-        while(!allAssetInstances.getBooks().isEmpty())
-            allAssetInstances.getBooks().addAll(getAllAssetsInstances(next).getBooks());
-
+        Page nextPage = getAllAssetsInstances(next++);
+        while(nextPage.getCurrentPage() != nextPage.getTotalPages()) {
+            allAssetInstances.getBooks().addAll(nextPage.getBooks());
+            nextPage = getAllAssetsInstances(next++);
+        }
         return allAssetInstances;
     }
 
