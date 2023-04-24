@@ -43,20 +43,19 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "LENDER_ROLE > BORROW_ROLE";
+        String hierarchy = "ROLE_LENDER > ROLE_BORROWER";
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
         http.sessionManagement().invalidSessionUrl("/login")
-                .and().authorizeRequests().
-                antMatchers("/login","/register").anonymous()
+                .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
+                .antMatchers("/login","/register").anonymous()
+                .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
                 .antMatchers("/addAssetView","/addAsset").hasRole("LENDER")
-                .antMatchers("/borrowAssetView").hasRole("BORROWER")
                 .antMatchers("/**").authenticated()
-                .expressionHandler(webSecurityExpressionHandler()).
-                and().formLogin().loginPage("/login")
+                .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
                 .defaultSuccessUrl("/",   false) // Me va a volver a donde estaba antes
                 .and().rememberMe().rememberMeParameter("rememberme")
