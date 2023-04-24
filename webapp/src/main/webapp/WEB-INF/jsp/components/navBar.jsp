@@ -9,7 +9,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link navItem" id="home" aria-current="page" href="<c:url value="/"/>"><spring:message code="navBar.home" /></a>
@@ -18,14 +18,19 @@
                     <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.borrow" /></a>
                 </li>
                 <li class="nav-item">
-                    <a href="<c:url value="/logout"/>">
-                        <button type="button" class="btn btn-outline-light">Log Out</button>
+                    <a class="nav-link navItem" id="userHome"  aria-current="page" href="<c:url value='/userHome'/>">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+<%--                    <a href="<c:url value="/logout"/>">--%>
+<%--                        <button type="button" class="btn btn-outline-light">Log Out</button>--%>
+<%--                    </a>--%>
+                    <a class="nav-link navItem" id="logout"  aria-current="page" href="<c:url value='/logout'/>">
+                        <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </li>
             </ul>
-            <a class="nav-link navItem" id="userHome"  aria-current="page" href="<c:url value='/userHome'/>">
-                <i class="fas fa-user"></i>
-            </a>
         </div>
     </div>
 </nav>
