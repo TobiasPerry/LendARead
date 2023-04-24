@@ -53,7 +53,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().
                 antMatchers("/login","/register").anonymous()
                 .antMatchers("/addAssetView","/addAsset").hasRole("LENDER")
-                .antMatchers("/borrowAssetView").hasRole("BORROWER")
+                .antMatchers("/borrowAssetView").hasAnyRole("BORROWER", "LENDER")
                 .antMatchers("/**").authenticated()
                 .expressionHandler(webSecurityExpressionHandler()).
                 and().formLogin().loginPage("/login")
