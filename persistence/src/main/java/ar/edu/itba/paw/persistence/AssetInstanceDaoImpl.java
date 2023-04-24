@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
@@ -49,7 +50,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String email = rs.getString("email");
             Integer userId = rs.getInt("user_id");
             String ownerName = rs.getString("user_name");
-            User user = new UserImpl(userId, email, ownerName, "");
+            User user = new UserImpl(userId, email, ownerName, "","", Behaviour.fromString(rs.getString("behavior")));
 
             Integer id = rs.getInt("id");
             Integer imgId = rs.getInt("photo_id");
@@ -69,7 +70,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     rs.getInt("id"),
                     new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X"),
+                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X","",Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
                     rs.getInt("photo_id"),
                     AssetState.fromString(rs.getString("status"))
@@ -99,7 +100,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                     " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                     " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id ," +
-                    " u.mail AS email, u.telephone,u.name as user_name  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
+                    " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
                     " JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id " +
                     "WHERE ai.id = ?";
             assetInstance = jdbcTemplate.queryForObject(query, params, ROW_MAPPER_AI);
@@ -119,7 +120,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-                " u.mail AS email, u.telephone,u.name as user_name FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
 
         String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +

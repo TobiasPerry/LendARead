@@ -17,6 +17,11 @@
                 <li class="nav-item">
                     <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.borrow" /></a>
                 </li>
+                <li class="nav-item">
+                    <a href="<c:url value="/logout"/>">
+                        <button type="button" class="btn btn-outline-light">Log Out</button>
+                    </a>
+                </li>
             </ul>
             <a class="nav-link navItem" id="userHome"  aria-current="page" href="<c:url value='/userHome'/>">
                 <i class="fas fa-user"></i>

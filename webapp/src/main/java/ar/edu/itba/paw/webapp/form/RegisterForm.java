@@ -4,7 +4,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 public class RegisterForm {
 
     @NotEmpty
@@ -21,4 +24,5 @@ public class RegisterForm {
     @NotEmpty
     @Size(min = 3,max = 100)
     private String name;
+
 }

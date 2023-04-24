@@ -7,6 +7,9 @@
     <title><spring:message  code="addAssetView.titleView" /></title>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
@@ -112,23 +115,6 @@
                                     <label for="zipcode" class="form-label">${zipcodeLabel}</label>
                                     <form:input path="zipcode" id="zipcode" placeholder="${zipcodeLabel}" class="form-control"/>
                                     <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="info-container">
-                            <h2><spring:message code="addAssetView.contactInfo"/></h2>
-                            <div class="field-group">
-                                <div class="field">
-                                    <spring:message code="addAssetView.nameLabel" var="nameLabel" />
-                                    <label for="name" class="form-label">${nameLabel}</label>
-                                    <form:input path="name" id="name" placeholder="${nameLabel}" class="form-control"/>
-                                    <form:errors path="name" cssClass="text-danger small" element="small"/>
-                                </div>
-                                <div class="field">
-                                    <spring:message code="addAssetView.emailLabel" var="emailLabel" />
-                                    <label for="email" class="form-label">${emailLabel}</label>
-                                    <form:input path="email" id="email" placeholder="${emailLabel}" class="form-control"/>
-                                    <form:errors path="email" cssClass="text-danger small" element="small"/>
                                 </div>
                             </div>
                         </div>

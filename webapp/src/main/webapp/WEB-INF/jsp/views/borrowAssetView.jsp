@@ -35,26 +35,10 @@
           <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
 
             <div class="info-container">
-              <h3><spring:message code="borrowAssetView.contactInfo"/></h3>
-              <div class="field-group">
-                <div class="field">
-                  <spring:message code="borrowAssetView.emailLabel" var="emailLabel" />
-                  <label for="email" class="form-label">${emailLabel}</label>
-                  <form:input path="email" id="email" placeholder="${emailLabel}" class="form-control"/>
-                  <form:errors path="email" cssClass="text-danger small" element="small"/>
-                </div>
-                <div class="field">
-                  <spring:message code="borrowAssetView.nameLabel" var="nameLabel" />
-                  <label for="name" class="form-label">${nameLabel}</label>
-                  <form:input path="name" id="name" placeholder="${nameLabel}" class="form-control"/>
-                  <form:errors path="name" cssClass="text-danger small" element="small"/>
-                </div>
+              <div class="d-flex justify-content-center">
+                <spring:message code="borrowAssetView.borrowButton" var="borrowButton" />
+                <button type="submit" class="btn btn-primary m-8">${borrowButton}</button>
               </div>
-            </div>
-
-            <div class="d-flex justify-content-center">
-              <spring:message code="borrowAssetView.borrowButton" var="borrowButton" />
-              <button type="submit" class="btn btn-primary m-8">${borrowButton}</button>
             </div>
 
           </form:form>

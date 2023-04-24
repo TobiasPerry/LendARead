@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,25 +42,16 @@ public class IndexViewController {
         model.addAttribute("path", "home");
     }
     @RequestMapping( "/")
-    public ModelAndView indexView(@RequestParam(required = false,name="showSnackbarSucess") boolean showSnackbarSucess,@RequestParam(required = false,name="snackbarSuccessMessage") String snackbarSuccessMessage){
-//        final ModelAndView mav = new ModelAndView("/views/index");
-//        Page page = assetInstanceService.getAllAssetsInstances(1);
-//
-//        mav.addObject("books", page.getBooks());
-//        mav.addObject("nextPage", false);
-//        mav.addObject("previousPage", true);
-//        mav.addObject("page", 1);
-//
-//        if(showSnackbarSucess)
-//            SnackbarControl.displaySuccess(mav,snackbarSuccessMessage);
-//
-//        return mav;
-        return discoveryView("1");
+    public ModelAndView indexView(){
+        //System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_BORROWER")));
+        final ModelAndView mav = new ModelAndView("/views/index");
+
+        return mav;
     }
 
     @RequestMapping("/discovery/{pageNum}")
     public ModelAndView discoveryView(@PathVariable String pageNum){
-        final ModelAndView mav = new ModelAndView("/views/index");
+        final ModelAndView mav = new ModelAndView("/views/discoveryView");
 
         int pageNumParsed;
 

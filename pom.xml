@@ -31,11 +31,10 @@
     <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
     <commons-file-upload.version>1.4</commons-file-upload.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+    <spring-security.version>4.0.4.RELEASE</spring-security.version>
     <maven.compiler.source>1.8</maven.compiler.source>
-        
     <maven.compiler.target>1.8</maven.compiler.target>
-      
+    <lombok.version>1.18.20</lombok.version>
   </properties>
     
   <dependencyManagement>
@@ -86,54 +85,49 @@
         <artifactId>jackson-databind</artifactId>
         <version>2.12.3</version>
       </dependency>
-
       <dependency>
-                
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
         <groupId>javax.servlet</groupId>
-                
         <artifactId>servlet-api</artifactId>
-                
         <version>${servlet-api.version}</version>
-                
         <scope>provided</scope>
-              
       </dependency>
             
       <dependency>
-                
         <groupId>javax.servlet</groupId>
-                
         <artifactId>jstl</artifactId>
-                
         <version>${jstl.version}</version>
-                
       </dependency>
       <dependency>
         <groupId>org.postgresql</groupId>
-
         <artifactId>postgresql</artifactId>
-
         <version>${org.postgresql.version}</version>
       </dependency>
             
       <dependency>
-                
         <groupId>org.springframework</groupId>
-                
         <artifactId>spring-webmvc</artifactId>
-                
         <version>${spring-api.version}</version>
-              
       </dependency>
             
       <dependency>
-                
         <groupId>org.springframework</groupId>
-                
         <artifactId>spring-context</artifactId>
-                
         <version>${spring-api.version}</version>
-              
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -149,9 +143,13 @@
         <groupId>javax.mail</groupId>
         <artifactId>mail</artifactId>
         <version>${javaMail.version}</version>
-
       </dependency>
-          
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
     </dependencies>
       
   </dependencyManagement>

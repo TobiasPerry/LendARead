@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @EnableWebMvc
 @EnableAsync
 @PropertySource("classpath:/application.properties")
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence" })
+@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.formFactories"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
