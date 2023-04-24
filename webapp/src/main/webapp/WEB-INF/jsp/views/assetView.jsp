@@ -26,7 +26,7 @@
 <jsp:include page="../components/navBar.jsp"/>
 <div class="main-class">
     <div style="background-color: #FFFFFF; margin: 50px; border-radius: 20px; padding: 20px">
-        <div class="container-row-wrapped">
+        <div class="container-row-wrapped" style="width: 100%;">
             <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" class="mx-5" alt="Book cover" style="height: 600px; width: 400px; object-fit: cover">
             <div class="w-25 h-25 mx-5">
                 <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>

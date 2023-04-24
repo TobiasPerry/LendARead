@@ -22,11 +22,11 @@
 <jsp:include page="../components/snackbarComponent.jsp"/>
 <div class="main-class">
 
-    <div class="container-row-wrapped" style="margin-top: 50px">
+    <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
         <h1>Lend a read</h1>
     </div>
 
-    <div class="container-row-wrapped" style="margin-top: 50px">
+    <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
         <a href="<c:url value='/discovery/1'/>"><button class="btn">Ver libros</button></a>
     </div>
 

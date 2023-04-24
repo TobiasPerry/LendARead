@@ -41,7 +41,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     public Page getAllAssetsInstances(int pageNum){
 
-        final int itemsPerPage = 5;
+        final int itemsPerPage = 15;
 
         Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage);
 
