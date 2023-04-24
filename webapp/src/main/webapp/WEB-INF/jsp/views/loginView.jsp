@@ -43,6 +43,9 @@
                             <label style="width: 100%"><spring:message code="auth.password" />
                                 <input class="form-control" name="password" type="password" />
                             </label>
+                            <c:if test="${param.error != null}">
+                                <label style="color:red;"><spring:message code="auth.loginError"/></label>
+                            </c:if>
                         </div>
 
                         <div class="form-outline mb-4 text-center">

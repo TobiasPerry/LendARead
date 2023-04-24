@@ -33,18 +33,21 @@
                     <div class="form-outline mb-4">
                         <label for="name" style="width: 100%"><spring:message code="auth.username" />
                             <form:input class="form-control" type="text" path="name" name="name" required="true"/>
+                            <form:errors path="name" cssClass="text-danger small" element="small"/>
                         </label>
                     </div>
 
                     <div class="form-outline mb-4">
                         <label for="email" style="width: 100%"><spring:message code="auth.email" />
                             <form:input class="form-control" type="email" path="email" name="email" required="true"/>
+                            <form:errors path="email" cssClass="text-danger small" element="small"/>
                         </label>
                     </div>
 
                     <div class="form-outline mb-4">
                         <label for="password" style="width: 100%"><spring:message code="auth.password" />
                             <form:password class="form-control" path="password"  name="password" required="true"/>
+                            <form:errors path="password" cssClass="text-danger small" element="small"/>
                         </label>
                         <small id="passwordHelpInline" class="text-muted">
                             <br><spring:message code="auth.passwordLength" />
