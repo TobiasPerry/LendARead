@@ -53,6 +53,10 @@
       cursor: pointer;
       padding: 6px;
     }
+
+    .image {
+      width: 150px;
+    }
   </style>
 </head>
 
@@ -70,25 +74,22 @@
             <th><spring:message code="image" /></th>
             <th><spring:message code="book_name" /></th>
             <th><spring:message code="author" /></th>
-            <th><spring:message code="isbn" /></th>
             <th><spring:message code="language" /></th>
             <th><spring:message code="description" /></th>
             <th><spring:message code="status" /></th>
           </tr>
           </thead>
           <tbody>
-          <c:forEach items="${myBooks}" var="book">
+          <c:forEach items="${myBooks}" var="asset">
             <tr>
-              <td><img src="${book.image}" alt="${book.name}" /></td>
-              <td>${book.name}</td>
-              <td>${book.author}</td>
-              <td>${book.isbn}</td>
-              <td>${book.language}</td>
-              <td>${book.description}</td>
+              <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
+              <td>${asset.book.name}</td>
+              <td>${asset.book.author}</td>
+              <td>${asset.book.language}</td>
+<%--              <td>${asset.description}</td>--%>
               <td>
-                <form action="/changeStatus" method="post">
-                  <input type="hidden" name="bookId" value="${book.id}" />
-                  <button type="submit">${book.status ? 'Public' : 'Private'}</button>
+                <form action="/changeStatus?id=${asset.id}" method="post">
+                  <button type="submit">${asset.assetState.canBorrow() ? 'Public' : 'Private'}</button>
                 </form>
               </td>
             </tr>
@@ -109,12 +110,12 @@
           </tr>
           </thead>
           <tbody>
-          <c:forEach items="${borrowedBooks}" var="book">
+          <c:forEach items="${borrowedBooks}" var="asset">
             <tr>
-              <td><img src="${book.image}" alt="${book.name}" /></td>
-              <td>${book.name}</td>
-              <td>${book.author}</td>
-              <td>${book.returnDate}</td>
+              <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
+              <td>${asset.book.name}</td>
+              <td>${asset.book.author}</td>
+<%--              <td>${asset.returnDate}</td>--%>
             </tr>
           </c:forEach>
           </tbody>
@@ -131,20 +132,20 @@
           <th><spring:message code="author" /></th>
           <th><spring:message code="isbn" /></th>
           <th><spring:message code="language" /></th>
-          <th><spring:message code="description" /></th>
+<%--          <th><spring:message code="description" /></th>--%>
           <th><spring:message code="expected_retrieval_date" /></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${lendedBooks}" var="book">
+        <c:forEach items="${lendedBooks}" var="asset">
           <tr>
-            <td><img src="${book.image}" alt="${book.name}" /></td>
-            <td>${book.name}</td>
-            <td>${book.author}</td>
-            <td>${book.isbn}</td>
-            <td>${book.language}</td>
-            <td>${book.description}</td>
-            <td>${book.expectedRetrievalDate}</td>
+            <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
+            <td>${asset.book.name}</td>
+            <td>${asset.book.author}</td>
+            <td>${asset.book.isbn}</td>
+            <td>${asset.book.language}</td>
+<%--            <td>${asset.book.description}</td>--%>
+<%--            <td>${asset.expectedRetrievalDate}</td>--%>
           </tr>
         </c:forEach>
         </tbody>
