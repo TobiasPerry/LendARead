@@ -23,9 +23,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-<%--                    <a href="<c:url value="/logout"/>">--%>
-<%--                        <button type="button" class="btn btn-outline-light">Log Out</button>--%>
-<%--                    </a>--%>
                     <a class="nav-link navItem" id="logout"  aria-current="page" href="<c:url value='/logout'/>">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
