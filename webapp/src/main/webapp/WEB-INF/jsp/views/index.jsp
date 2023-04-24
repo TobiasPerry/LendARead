@@ -24,13 +24,13 @@
 
         <c:if test="${books.size() > 0}">
             <div class="container-row-wrapped" style="margin-top: 50px">
-                <c:forEach var="book" items="${books}">
+                <c:forEach var="asset" items="${books}">
                     <% request.setCharacterEncoding("utf-8"); %>
                     <jsp:include page="../components/bookCard.jsp">
-                        <jsp:param name="id" value="${book.id}"/>
-                        <jsp:param name="bookTitle" value="${book.book.name}"/>
-                        <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                        <jsp:param name="imageId" value="${book.imageId}"/>
+                        <jsp:param name="id" value="${asset.id}"/>
+                        <jsp:param name="bookTitle" value="${asset.book.name}"/>
+                        <jsp:param name="bookAuthor" value="${asset.book.author}"/>
+                        <jsp:param name="imageId" value="${asset.imageId}"/>
                     </jsp:include>
                 </c:forEach>
             </div>

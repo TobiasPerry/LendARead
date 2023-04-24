@@ -55,4 +55,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     }
 
+    @Override
+    public boolean removeAssetInstance(int id) {
+        return assetDao.deleteAsset(id);
+    }
+
 }
