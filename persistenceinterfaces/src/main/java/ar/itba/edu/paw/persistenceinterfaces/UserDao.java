@@ -9,4 +9,6 @@ public interface UserDao {
     public Optional<Integer> addUser(Behaviour behavior, String email, String name, String telephone, String password);
     boolean changePassword(String email,String newPassword);
      Optional<User> getUser(String email);
+
+     boolean changeRole(String email,Behaviour behaviour);
 }
