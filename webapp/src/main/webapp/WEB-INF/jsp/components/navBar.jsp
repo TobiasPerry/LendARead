@@ -18,7 +18,7 @@
                     <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.borrow" /></a>
                 </li>
             </ul>
-            <a class="nav-link navItem" href="<c:url value='/userHome'/>">
+            <a class="nav-link navItem" id="userHome"  aria-current="page" href="<c:url value='/userHome'/>">
                 <i class="fas fa-user"></i>
             </a>
         </div>
