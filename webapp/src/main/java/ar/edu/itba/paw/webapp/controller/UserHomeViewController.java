@@ -2,10 +2,11 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
-import ar.edu.itba.paw.webapp.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,35 +15,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class UserHomeViewController {
     private final AssetInstanceService assetInstanceService;
 
     private final AssetAvailabilityService assetAvailabilityService;
 
+    private final UserAssetInstanceService userAssetInstanceService;
+
     private static final String registerViewName = "views/userHomeView";
 
     @Autowired
-    public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService) {
+    public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
-
+        this.userAssetInstanceService = userAssetInstanceService;
     }
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() {
 
+        ModelAndView model = new ModelAndView(registerViewName);
 
-        int pages = 1;
-        Page page = assetInstanceService.getAllAssetsInstances(pages);
-        List<AssetInstance> lendedBooks = page.getBooks();
+        model.addObject("isLender", !currentUserIsBorrower());
+        model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
 
-        return new ModelAndView(registerViewName).addObject("lendedBooks", lendedBooks)
-                                                 .addObject("borrowedBooks", lendedBooks)
-                                                 .addObject("myBooks", lendedBooks);
+        return model;
+    }
+
+    private boolean currentUserIsBorrower() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+                .contains(new SimpleGrantedAuthority("ROLE_BORROWER"));
+    }
+
+    private String currentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
@@ -52,18 +59,22 @@ public class UserHomeViewController {
         if(assetInstance.getAssetState().canBorrow())
             assetAvailabilityService.setAssetPrivate(id);
         else
-            assetAvailabilityService.setAssetPrivate(id);
+            assetAvailabilityService.setAssetPublic(id);
 
         return home();
     }
 
     @RequestMapping(value ="/deleteAsset", method = RequestMethod.POST)
     public ModelAndView deleteAsset(@RequestParam("id") int id) {
-        System.out.println(id);
         assetInstanceService.removeAssetInstance(id);
         return home();
     }
 
+    @RequestMapping(value ="/becomeLender", method = RequestMethod.POST)
+    public ModelAndView becomeLender() {
+        ///change the authority for the current user.
+        return home();
+    }
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("path", "userHome");
