@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,6 +62,11 @@ public class UserHomeViewController {
         System.out.println(id);
         assetInstanceService.removeAssetInstance(id);
         return home();
+    }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("path", "userHome");
     }
 
 }

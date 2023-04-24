@@ -78,9 +78,11 @@
   </style>
 </head>
 
-<body class="body-class">
-<div>
-  <div>
+<body data-path="${path}" class = "body-class">
+
+<jsp:include page="../components/navBar.jsp"/>
+<div class="main-class">
+    <div class="container my-5">
     <h1><spring:message code="greeting" /></h1>
 
     <div class="container">
