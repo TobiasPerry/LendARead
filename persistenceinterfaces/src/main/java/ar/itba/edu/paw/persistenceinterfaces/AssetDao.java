@@ -11,4 +11,6 @@ public interface AssetDao {
     Optional<Integer> addAsset(final Book bi);
 
     Optional<Book> getBook(final String isbn);
+
+    boolean deleteAsset(final int id);
 }

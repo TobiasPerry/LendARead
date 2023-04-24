@@ -81,6 +81,11 @@ public class AssetDaoImpl implements AssetDao {
         return Optional.of(book);
     }
 
+    @Override
+    public boolean deleteAsset(int id) {
+        return false;
+    }
+
     private Optional<Integer> getUid(final Book bi){
         final List<Integer> ids =  jdbcTemplate.query("SELECT uid FROM book WHERE isbn = ?",new Object[]{bi.getIsbn()},ROW_MAPPER_UID);
         if(ids.isEmpty())

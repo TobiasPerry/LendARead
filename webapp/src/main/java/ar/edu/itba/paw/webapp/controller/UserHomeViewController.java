@@ -56,5 +56,11 @@ public class UserHomeViewController {
         return home();
     }
 
+    @RequestMapping(value ="/deleteAsset", method = RequestMethod.POST)
+    public ModelAndView deleteAsset(@RequestParam("id") int id) {
+        System.out.println(id);
+        assetInstanceService.removeAssetInstance(id);
+        return home();
+    }
 
 }

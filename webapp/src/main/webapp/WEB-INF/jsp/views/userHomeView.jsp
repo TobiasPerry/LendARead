@@ -7,7 +7,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Home Page</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Overpass:400,700|Roboto:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -32,7 +34,7 @@
       padding: 15px;
       border-radius: 20px;
       flex: 1;
-      min-width: 400px;
+      min-width: 600px;
       margin: 0 10px 20px;
     }
     th, td {
@@ -54,15 +56,31 @@
       padding: 6px;
     }
 
+    .button-status {
+      border-radius: 10px;
+    }
+    .button-status:hover {opacity: 0.5}
+
     .image {
       width: 150px;
+    }
+
+    .icon-style {
+        color: white;
+    }
+    .dropdown-toggle::after {
+        display: none;
+    }
+    .image-container {
+        position: relative;
+        display: inline-block;
     }
   </style>
 </head>
 
 <body class="body-class">
 <div>
-  <div >
+  <div>
     <h1><spring:message code="greeting" /></h1>
 
     <div class="container">
@@ -75,21 +93,37 @@
             <th><spring:message code="book_name" /></th>
             <th><spring:message code="author" /></th>
             <th><spring:message code="language" /></th>
-            <th><spring:message code="description" /></th>
+<%--            <th><spring:message code="description" /></th>--%>
             <th><spring:message code="status" /></th>
           </tr>
           </thead>
           <tbody>
           <c:forEach items="${myBooks}" var="asset">
             <tr>
-              <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
+                <td>
+                    <div class="image-container">
+                        <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
+
+                        <div class="dropdown" style="position: absolute; bottom: 10px; right: 10px;">
+                            <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButton" onclick="toggleDropdown(event)">
+                                <i class="fas fa-ellipsis-v icon-style"></i>
+                            </button>
+                            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton" style="display: none;">
+                                <form action="/deleteAsset?id=${asset.id}" method="post" style="display:inline;">
+                                    <button class="dropdown-item" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
               <td>${asset.book.name}</td>
               <td>${asset.book.author}</td>
               <td>${asset.book.language}</td>
 <%--              <td>${asset.description}</td>--%>
               <td>
                 <form action="/changeStatus?id=${asset.id}" method="post">
-                  <button type="submit">${asset.assetState.canBorrow() ? 'Public' : 'Private'}</button>
+                  <button class="button-status" type="submit">${asset.assetState.canBorrow() ? 'Public' : 'Private'}</button>
                 </form>
               </td>
             </tr>
@@ -155,3 +189,20 @@
 </div>
 </body>
 </html>
+<script>
+    function toggleDropdown(event) {
+        event.stopPropagation(); // Prevent the click event from bubbling up
+        var dropdownMenu = document.getElementById("dropdownMenu");
+        if (dropdownMenu.style.display === "none") {
+            dropdownMenu.style.display = "block";
+        } else {
+            dropdownMenu.style.display = "none";
+        }
+    }
+
+    // Close the dropdown menu if clicked outside
+    document.addEventListener('click', function () {
+        var dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.style.display = "none";
+    });
+</script>
