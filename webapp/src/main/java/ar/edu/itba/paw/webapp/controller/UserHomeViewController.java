@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
@@ -19,11 +20,15 @@ import java.util.List;
 public class UserHomeViewController {
     private final AssetInstanceService assetInstanceService;
 
+    private final AssetAvailabilityService assetAvailabilityService;
+
     private static final String registerViewName = "views/userHomeView";
 
     @Autowired
-    public UserHomeViewController(AssetInstanceService assetInstanceService) {
+    public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService) {
         this.assetInstanceService = assetInstanceService;
+        this.assetAvailabilityService = assetAvailabilityService;
+
     }
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
@@ -41,7 +46,13 @@ public class UserHomeViewController {
 
     @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
     public ModelAndView changeMyBookStatus(@RequestParam("id") int id) {
-        //assetInstanceService.getAssetInstance(id).get()
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id).get();
+
+        if(assetInstance.getAssetState().canBorrow())
+            assetAvailabilityService.setAssetPrivate(id);
+        else
+            assetAvailabilityService.setAssetPrivate(id);
+
         return home();
     }
 
