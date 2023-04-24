@@ -25,7 +25,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     @Override
     public UserAssets getUserAssets(String email) {
         List<AssetInstance> allMyBooks = assetInstanceService.getAllAssetsInstances()
-                .getBooks().stream().filter(book -> book.getOwner().getEmail().equals(email)).collect(Collectors.toList());
+                                        .getBooks().stream().filter(book -> book.getOwner().getEmail().equals(email)).collect(Collectors.toList());
 
         List<AssetInstance> myBooks = allMyBooks.stream().filter(book -> book.getAssetState().canBorrow()).collect(Collectors.toList());
 

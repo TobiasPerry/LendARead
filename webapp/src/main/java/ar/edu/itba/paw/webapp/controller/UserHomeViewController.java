@@ -34,12 +34,13 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() {
+        return init().addObject("table", "my_books");
+    }
 
+    private ModelAndView init() {
         ModelAndView model = new ModelAndView(registerViewName);
-
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
-
         return model;
     }
 
@@ -68,6 +69,11 @@ public class UserHomeViewController {
     public ModelAndView deleteAsset(@RequestParam("id") int id) {
         assetInstanceService.removeAssetInstance(id);
         return home();
+    }
+
+    @RequestMapping(value = "/changeTable", method = RequestMethod.POST)
+    public ModelAndView changeTable(@RequestParam("type") String table) {
+        return init().addObject("table", table);
     }
 
     @RequestMapping(value ="/becomeLender", method = RequestMethod.POST)
