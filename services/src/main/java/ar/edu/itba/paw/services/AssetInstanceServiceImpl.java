@@ -56,18 +56,18 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     @Override
-    public Page getAllAssetsInstances() {
+    public List<AssetInstance> getAllAssetsInstances() {
+        int pageNumber = 1;
+        Page allAssetInstances = getAllAssetsInstances(pageNumber);
 
-        //not working as expected, talk ippo
-        int next = 1;
-        Page allAssetInstances = getAllAssetsInstances(next);
-
-        Page nextPage = getAllAssetsInstances(next++);
-        while(nextPage.getCurrentPage() != nextPage.getTotalPages()) {
-            allAssetInstances.getBooks().addAll(nextPage.getBooks());
-            nextPage = getAllAssetsInstances(next++);
+        List<AssetInstance> combinedBooks = new ArrayList<>(allAssetInstances.getBooks());
+        while (allAssetInstances.getCurrentPage() < allAssetInstances.getTotalPages()) {
+            pageNumber++;
+            allAssetInstances = getAllAssetsInstances(pageNumber);
+            combinedBooks.addAll(allAssetInstances.getBooks());
         }
-        return allAssetInstances;
+
+       return combinedBooks;
     }
 
     @Override

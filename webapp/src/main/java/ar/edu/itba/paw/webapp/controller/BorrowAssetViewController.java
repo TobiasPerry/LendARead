@@ -34,7 +34,7 @@ final public class BorrowAssetViewController {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         LocalDate devolutionDay = LocalDate.now().plusWeeks(2);
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, UserFactory.createUser(DEFAULT_INT,email,DEFAULT_STRING,DEFAULT_STRING,DEFAULT_STRING,Behaviour.BORROWER),devolutionDay);
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, email,devolutionDay);
 
         if(borrowRequestSuccessful) {
             ModelAndView borrowAssetView =  borrowAssetView(id,imageId);

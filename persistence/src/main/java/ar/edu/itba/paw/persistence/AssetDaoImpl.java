@@ -83,7 +83,9 @@ public class AssetDaoImpl implements AssetDao {
 
     @Override
     public boolean deleteAsset(int id) {
-        return false;
+        String sql = "DELETE FROM assetInstance WHERE id = ?";
+        int numberOfRowsAffected = jdbcTemplate.update(sql, id);
+        return numberOfRowsAffected > 0;
     }
 
     private Optional<Integer> getUid(final Book bi){

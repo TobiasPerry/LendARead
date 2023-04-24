@@ -7,7 +7,7 @@ import java.util.Date;
 
 public interface AssetAvailabilityService {
 
-    boolean borrowAsset(int assetId, User borrower, LocalDate devolutionDate);
+    boolean borrowAsset(int assetId, String borrower, LocalDate devolutionDate);
 
     boolean setAssetPrivate(int assetId);
 
