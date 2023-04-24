@@ -13,6 +13,6 @@ public class AvailableAssetImpl implements AvailableAsset {
 
     @Override
     public boolean canBorrow(User user) {
-        return assetState.canBorrow() ; // assetInstance.getUser() != user
+        return assetState.isPublic() ; // assetInstance.getUser() != user
     }
 }

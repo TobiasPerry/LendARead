@@ -10,14 +10,12 @@ import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,12 +42,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         Optional<User> user = userDao.getUser(borrower);
         if(!ai.isPresent() || !user.isPresent())
             return false;
-        if(!ai.get().getAssetState().canBorrow())
+        if(!ai.get().getAssetState().isPublic())
             return false;
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
-
             sendBorrowerEmail(ai.get(), borrower);
             sendLenderEmail(ai.get(), borrower);
         }

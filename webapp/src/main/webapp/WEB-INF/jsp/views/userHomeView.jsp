@@ -175,7 +175,7 @@
                                             <%--              <td>${asset.description}</td>--%>
                                         <td>
                                             <form action="/changeStatus?id=${asset.id}" method="post">
-                                                <button class="button-status" type="submit">${asset.assetState.canBorrow() ? 'Public' : 'Private'}</button>
+                                                <button class="button-status" type="submit">${asset.assetState.public() ? 'Public' : 'Private'}</button>
                                             </form>
                                         </td>
                                     </tr>

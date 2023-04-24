@@ -57,7 +57,7 @@ public class UserHomeViewController {
     public ModelAndView changeMyBookStatus(@RequestParam("id") int id) {
         AssetInstance assetInstance = assetInstanceService.getAssetInstance(id).get();
 
-        if(assetInstance.getAssetState().canBorrow())
+        if(assetInstance.getAssetState().isPublic())
             assetAvailabilityService.setAssetPrivate(id);
         else
             assetAvailabilityService.setAssetPublic(id);

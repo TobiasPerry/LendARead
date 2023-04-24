@@ -25,30 +25,30 @@ final public class BorrowAssetViewController {
     private final static int DEFAULT_INT = -1;
     private final static String viewName = "views/borrowAssetView";
     private final static String SUCCESS_MSG = "Libro pedido exitosamente!";
-
     private final ImageService imageService;
 
     @RequestMapping(value = "/borrowAsset", method = RequestMethod.POST)
-    public ModelAndView borrowAsset(@RequestParam("id") int id,@RequestParam("imageId") int imageId){
+    public ModelAndView borrowAsset(@RequestParam("id") int id, @RequestParam("imageId") int imageId){
 
-
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        LocalDate devolutionDay = LocalDate.now().plusWeeks(2);
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, email,devolutionDay);
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
 
         if(borrowRequestSuccessful) {
             ModelAndView borrowAssetView =  borrowAssetView(id,imageId);
-            SnackbarControl.displaySuccess(borrowAssetView,SUCCESS_MSG);
+            SnackbarControl.displaySuccess(borrowAssetView, SUCCESS_MSG);
             return borrowAssetView;
         }
 
-       return borrowAssetView(id,imageId).addObject("showSnackbarInvalid", true);
+        return borrowAssetView(id,imageId).addObject("showSnackbarInvalid", true);
+    }
+
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     @Autowired
     public BorrowAssetViewController(AssetAvailabilityService assetAvailabilityService, ImageService imageService){
-       this.assetAvailabilityService = assetAvailabilityService;
-       this.imageService = imageService;
+        this.assetAvailabilityService = assetAvailabilityService;
+        this.imageService = imageService;
     }
 
     @RequestMapping( value = "/borrowAssetView", method = RequestMethod.GET)
