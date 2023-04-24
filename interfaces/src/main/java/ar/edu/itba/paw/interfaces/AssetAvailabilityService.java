@@ -9,4 +9,8 @@ public interface AssetAvailabilityService {
 
     boolean borrowAsset(int assetId, User borrower, LocalDate devolutionDate);
 
+    boolean setAssetPrivate(int assetId);
+
+    boolean setAssetPublic(int assetId);
+
 }

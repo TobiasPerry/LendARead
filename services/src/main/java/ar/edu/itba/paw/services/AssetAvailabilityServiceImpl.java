@@ -54,6 +54,16 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         return saved;
     }
 
+    @Override
+    public boolean setAssetPrivate(int assetId) {
+        return assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE);
+    }
+
+    @Override
+    public boolean setAssetPublic(int assetId) {
+        return assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC);
+    }
+
     private void sendLenderEmail(AssetInstance assetInstance, User borrower) {
         if (assetInstance == null || borrower == null) {
             return;
