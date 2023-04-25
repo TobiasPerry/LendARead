@@ -66,6 +66,14 @@ public class UserDaoImpl implements UserDao {
         final List<User> user = jdbcTemplate.query(query,ROW_MAPPER_USER,email);
         return user.stream().findFirst();
     }
+
+    @Override
+    public Optional<User> getUser(int id) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        final List<User> user = jdbcTemplate.query(query,ROW_MAPPER_USER,id);
+        return user.stream().findFirst();
+    }
+
     public boolean changePassword(String email,String newPassword){
         String query = "UPDATE users SET password = ? WHERE mail = ?";
         final int updates = jdbcTemplate.update(query,email,newPassword);

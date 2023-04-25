@@ -31,8 +31,9 @@
         </div>
 
         <div class="form-container flex-1">
-          <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}&imageId=${imageId}"/>
-          <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
+          <form:form method="post" action="/borrowAsset" class="container">
+            <input type="hidden" name="id" value="${id}" />
+            <input type="hidden" name="imageId" value="${imageId}" />
 
             <div class="info-container">
               <div class="d-flex justify-content-center">
@@ -40,9 +41,9 @@
                 <button type="submit" class="btn btn-primary m-8">${borrowButton}</button>
               </div>
             </div>
-
           </form:form>
         </div>
+
       </div>
     </div>
   </div>

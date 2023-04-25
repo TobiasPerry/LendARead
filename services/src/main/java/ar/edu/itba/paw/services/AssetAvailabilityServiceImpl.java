@@ -71,7 +71,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
         for (LendingDetails lendingDetail : lendingDetails) {
             AssetInstance assetInstance = assetInstanceDao.getAssetInstance(lendingDetail.getAssetInstanceId()).get();
-            String borrower = ""//userDao.getUser(lendingDetail.getBorrowerId())
+            String borrower = userDao.getUser(lendingDetail.getBorrowerId()).get().getName();
             borrowedAssetInstances.add(new BorrowedAssetInstanceImpl(assetInstance, lendingDetail.getReturnDate().toString(), borrower));
         }
 
