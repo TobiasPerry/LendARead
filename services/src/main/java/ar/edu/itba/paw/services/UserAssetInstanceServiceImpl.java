@@ -35,11 +35,11 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     }
 
     private List<BorrowedAssetInstance> getMyLendedBooks(String email) {
-       return assetAvailabilityService.getAllBorrowedAssetsInstances().stream().filter(borrowedAssetInstance -> borrowedAssetInstance.getBorrower().equals(email)).collect(Collectors.toList());
+       return assetAvailabilityService.getAllBorrowedAssetsInstances().stream().filter(borrowedAssetInstance -> !borrowedAssetInstance.getBorrower().equals(email)).collect(Collectors.toList());
     }
 
     private List<BorrowedAssetInstance> getMyBorrowedBooks(String email) {
-        return assetAvailabilityService.getAllBorrowedAssetsInstances().stream().filter(borrowedAssetInstance -> !borrowedAssetInstance.getBorrower().equals(email)).collect(Collectors.toList());
+        return assetAvailabilityService.getAllBorrowedAssetsInstances().stream().filter(borrowedAssetInstance -> borrowedAssetInstance.getBorrower().equals(email)).collect(Collectors.toList());
     }
     @Override
     public UserAssets getUserAssets(String email) {

@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginLogOutViewController {
     private final String viewName = "views/loginView";
 
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login( ) {
         ModelAndView mv = new ModelAndView(viewName);

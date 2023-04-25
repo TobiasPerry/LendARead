@@ -50,12 +50,25 @@
                 <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
 
                 <div class="text-center mt-5">
-                    <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${assetInstance.id}&imageId=${assetInstance.imageId}"/>"><spring:message code="assetView.borrowButton" /></a>
+                    <form:form action="<c:url value='/borrowAsset'/>" method="post">
+                        <form:input type="hidden" name="id" value="${assetInstance.id}"  path="id"/>
+                        <form:input type="hidden" name="imageId" value="${assetInstance.imageId}" path="imageId" />
+                        <button type="submit" class="btn btn-primary">
+                            <spring:message code="assetView.borrowButton" />
+                        </button>
+                    </form:form>
                 </div>
+
 
             </div>
         </div>
     </div>
 </div>
+<% request.setCharacterEncoding("utf-8"); %>
+<jsp:include page="../components/modal.jsp">
+    <jsp:param name="modalTitle" value="Prestamo confirmado"/>
+    <jsp:param name="text" value="El préstamo se ha solicitado con exito, pronto recibirás un email con la información de contacto del dueño del libro."/>
+</jsp:include>
+
 </body>
 </html>

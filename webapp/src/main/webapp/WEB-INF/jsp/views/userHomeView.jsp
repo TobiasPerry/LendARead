@@ -197,8 +197,8 @@
                                                 <th><spring:message code="author" /></th>
                                                 <th><spring:message code="isbn" /></th>
                                                 <th><spring:message code="language" /></th>
-                                                    <%--          <th><spring:message code="description" /></th>--%>
                                                 <th><spring:message code="expected_retrieval_date" /></th>
+                                                <th><spring:message code="borrower_name" /></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -209,8 +209,8 @@
                                                     <td>${asset.book.author}</td>
                                                     <td>${asset.book.isbn}</td>
                                                     <td>${asset.book.language}</td>
-                                                        <%--            <td>${asset.book.description}</td>--%>
-                                                        <%--            <td>${asset.expectedRetrievalDate}</td>--%>
+                                                    <td>${asset.dueDate}</td>
+                                                    <td>${asset.borrower}</td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
@@ -246,7 +246,7 @@
                                         <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
                                         <td>${asset.book.name}</td>
                                         <td>${asset.book.author}</td>
-                                            <%--              <td>${asset.returnDate}</td>--%>
+                                        <td>${asset.dueDate}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
