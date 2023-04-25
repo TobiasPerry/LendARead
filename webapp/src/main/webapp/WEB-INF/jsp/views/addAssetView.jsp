@@ -138,9 +138,11 @@
     <jsp:param name="text" value="El libro se ha añadido a nuestra base de datos. Te enviaremos un mail cuando otro usuario solicite prestamo de este libro."/>
 </jsp:include>
 
+<spring:message code="addAssetView.changeRole.title" var="title" />
 <% request.setCharacterEncoding("utf-8"); %>
 <jsp:include page="../components/addAssetModal.jsp">
-    <jsp:param name="modalTitle" value="¿Queres empezar a prestar libros?"/>
+
+    <jsp:param name="modalTitle" value="${title}"/>
     <jsp:param name="text" value="Apartir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos."/>
 </jsp:include>
 
