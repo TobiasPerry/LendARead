@@ -132,18 +132,22 @@
         </div>
     </div>
 </div>
+
+<spring:message code="addAssetView.addBookModal.title" var="modalTitle" />
+<spring:message code="addAssetView.addBookModal.text" var="modalText" />
 <% request.setCharacterEncoding("utf-8"); %>
 <jsp:include page="../components/modal.jsp">
-    <jsp:param name="modalTitle" value="Libro subido"/>
-    <jsp:param name="text" value="El libro se ha añadido a nuestra base de datos. Te enviaremos un mail cuando otro usuario solicite prestamo de este libro."/>
+    <jsp:param name="modalTitle" value="${modalTitle}"/>
+    <jsp:param name="text" value="${modalText}"/>
 </jsp:include>
 
 <spring:message code="addAssetView.changeRole.title" var="title" />
+<spring:message code="addAssetView.changeRole.text" var="text" />
+
 <% request.setCharacterEncoding("utf-8"); %>
 <jsp:include page="../components/addAssetModal.jsp">
-
     <jsp:param name="modalTitle" value="${title}"/>
-    <jsp:param name="text" value="Apartir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos."/>
+    <jsp:param name="text" value="${text}"/>
 </jsp:include>
 
 </body>
