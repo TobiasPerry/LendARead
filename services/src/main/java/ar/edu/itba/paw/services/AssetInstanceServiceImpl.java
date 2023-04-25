@@ -44,7 +44,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
         final int itemsPerPage = 15;
 
-
+        // TODO remove this when implemented
         List<String> authors = new ArrayList<>();
         authors.add("Andre Agassi");
         List<String> lang = new ArrayList<>();
