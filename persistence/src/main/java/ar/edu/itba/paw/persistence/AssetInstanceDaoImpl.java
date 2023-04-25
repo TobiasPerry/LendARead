@@ -161,6 +161,73 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
+    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn) {
+
+        if(authorsIn.isEmpty() && languagesIn.isEmpty() && physicalConditionsIn.isEmpty())
+            return getAllAssetInstances(pageNum, itemsPerPage);
+
+        int offset = (pageNum - 1) * itemsPerPage;
+        int limit = itemsPerPage;
+
+        final StringBuilder query = new StringBuilder();
+        query.append("SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
+                " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
+                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
+                " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
+                " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?");
+
+        if(!authorsIn.isEmpty()) {
+            query.append(" AND b.author IN (''");
+            authorsIn.forEach((author) -> query.append(",'").append(author).append("'"));
+            query.append(")");
+        }
+        if(!languagesIn.isEmpty()) {
+            query.append(" AND b.language IN (''");
+            languagesIn.forEach((language) -> query.append(",'").append(language).append("'"));
+            query.append(")");
+        }
+        if(!physicalConditionsIn.isEmpty()) {
+            query.append(" AND ai.physicalcondition IN (''");
+            physicalConditionsIn.forEach((physicalCondition) -> query.append(",'").append(physicalCondition).append("'"));
+            query.append(")");
+        }
+
+        query.append(" LIMIT ? OFFSET ?");
+
+        List<AssetInstance> assets = jdbcTemplate.query(query.toString(), ROW_MAPPER_BOOK, AssetState.PUBLIC.name(), limit, offset);
+
+        String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
+
+        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name());
+
+        int totalPages;
+
+        if(!queryOutput.isEmpty())
+            totalPages = queryOutput.get(0);
+        else
+            totalPages = 0;
+
+        String queryAuthors = "SELECT distinct b.author as author FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
+        List<String> authors = jdbcTemplate.query(queryAuthors, ROW_MAPPER_AUTHORS, AssetState.PUBLIC.name());
+
+        String queryLanguages = "SELECT distinct b.language as language FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
+        List<String> languages = jdbcTemplate.query(queryLanguages, ROW_MAPPER_LANGUAGES, AssetState.PUBLIC.name());
+
+        String queryPhysicalConditions = "SELECT distinct ai.physicalcondition as physicalcondition  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
+        List<String> physicalConditions = jdbcTemplate.query(queryPhysicalConditions, ROW_MAPPER_PHYSICAL_CONDITIONS, AssetState.PUBLIC.name());
+
+        Page page = new PageImpl(assets, pageNum, totalPages, authors, languages, physicalConditions);
+
+        return Optional.of(page);
+    }
+
+
+        @Override
     public Boolean changeStatus(int assetInstanceId, AssetState as) {
         String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {

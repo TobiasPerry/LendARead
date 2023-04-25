@@ -44,7 +44,15 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
         final int itemsPerPage = 15;
 
-        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage);
+
+        List<String> authors = new ArrayList<>();
+        authors.add("Andre Agassi");
+        List<String> lang = new ArrayList<>();
+        lang.add("English");
+        List<String> phy = new ArrayList<>();
+        phy.add("ASNEW");
+
+        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, authors, lang, phy);
 
         Page page;
 
