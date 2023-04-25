@@ -53,14 +53,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .antMatchers("/login","/register").anonymous()
                 .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
-                .antMatchers("/addAssetView","/addAsset").hasRole("LENDER")
+                .antMatchers("/addAsset").hasRole("LENDER")
                 .antMatchers("/**").authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
                 .defaultSuccessUrl("/",   false) // Me va a volver a donde estaba antes
                 .and().rememberMe().rememberMeParameter("rememberme")
                 .userDetailsService(userDetailsService)
-                .key(environment.getProperty("persistence.key"))
+                .key(environment.getProperty("persistence.salt"))
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)).
                 and().logout().logoutUrl("/logout").
                 logoutSuccessUrl("/login").

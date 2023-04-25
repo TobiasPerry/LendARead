@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean changeRole(String email, Behaviour behaviour) {
         String query = "UPDATE users SET behavior = ? WHERE mail = ?";
-        final int updates = jdbcTemplate.update(query,email,behaviour);
+        final int updates = jdbcTemplate.update(query,behaviour.toString(),email);
         if(updates != 0)
             return true;
         return false;

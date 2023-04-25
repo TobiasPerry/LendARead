@@ -5,15 +5,19 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.webapp.auth.PawUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -28,14 +32,18 @@ public class UserRolesController {
     }
 
     @RequestMapping(value = "/changeRole",method = RequestMethod.POST)
-    public void changeROle(){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.changeRole(userDetails.getUsername(),Behaviour.LENDER);
-        Collection<GrantedAuthority> collection = new HashSet<>();
-        collection.add(new SimpleGrantedAuthority("ROLE_"+ Behaviour.LENDER));
-        UserDetails user = new PawUserDetails(userDetails.getUsername(), userDetails.getPassword(), collection);
-        final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    public ModelAndView changeRole(HttpServletRequest request){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        userService.changeRole(((UserDetails)auth.getPrincipal()).getUsername(),Behaviour.LENDER);
+
+        HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
+        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ Behaviour.LENDER));
+        Authentication newAuth = new
+                UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        return new ModelAndView("redirect:" + request.getHeader("Referer"));
     }
 
 

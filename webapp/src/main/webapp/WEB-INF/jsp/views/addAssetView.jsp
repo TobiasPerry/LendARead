@@ -3,13 +3,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+
 <head>
     <title><spring:message  code="addAssetView.titleView" /></title>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
@@ -125,6 +126,7 @@
                         </div>
                         </form:form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -134,6 +136,12 @@
 <jsp:include page="../components/modal.jsp">
     <jsp:param name="modalTitle" value="Libro subido"/>
     <jsp:param name="text" value="El libro se ha añadido a nuestra base de datos. Te enviaremos un mail cuando otro usuario solicite prestamo de este libro."/>
+</jsp:include>
+
+<% request.setCharacterEncoding("utf-8"); %>
+<jsp:include page="../components/addAssetModal.jsp">
+    <jsp:param name="modalTitle" value="¿Queres empezar a prestar libros?"/>
+    <jsp:param name="text" value="Apartir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos."/>
 </jsp:include>
 
 </body>
@@ -165,7 +173,7 @@
 
         const inputFields = [titleInput, authorInput, languageInput];
 
-        if (isbn.length === 13) {
+        if (isbn.length === 13 || isbn.length === 10) {
             try {
                 inputFields.forEach(field => field.classList.add('loading'))
                 let url = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`;

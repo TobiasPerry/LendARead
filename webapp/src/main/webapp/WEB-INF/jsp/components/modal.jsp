@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="${param.modalTitle}" aria-hidden="true">
+<div class="modal fade" id="myModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="${param.modalTitle}" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -22,6 +22,6 @@
 <script>
   const showSnackbarSucess = '${showSnackbarSucess}' === 'true';
   if (showSnackbarSucess) {
-    $('#myModal').modal();
+    new bootstrap.Modal($('#borrowUser')).show();
   }
 </script>
