@@ -17,10 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
@@ -52,9 +49,10 @@ public class IndexViewController {
         return mav;
     }
 
-    @RequestMapping("/discovery/{pageNum}")
+    @RequestMapping(value = "/discovery/{pageNum}", method = RequestMethod.GET)
     public ModelAndView discoveryView(
-            @PathVariable String pageNum
+            @PathVariable String pageNum,
+            @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm
             ){
         final ModelAndView mav = new ModelAndView("/views/discoveryView");
 

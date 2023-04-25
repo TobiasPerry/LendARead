@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -30,67 +31,91 @@
     </div>
 
 
-        <div class="container-row">
-            <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
-                <h5><spring:message code="discovery.filters.author"/></h5>
-                <ul>
-                    <c:forEach var="author" items="${authors}">
-                    <li><c:out value="${author}"/></li>
-                    </c:forEach>
-                </ul>
-                <h5><spring:message code="discovery.filters.language"/></h5>
-                <ul>
-                    <c:forEach var="language" items="${languages}">
-                        <li><c:out value="${language}"/></li>
-                    </c:forEach>
-                </ul>
-                <h5><spring:message code="discovery.filters.physicalCondition"/></h5>
-                <ul>
-                    <c:forEach var="physicalCondition" items="${physicalConditions}">
-                        <li><c:out value="${physicalCondition}"/></li>
-                    </c:forEach>
-                </ul>
-            </div>
+    <div class="container-row">
+        <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
 
-            <div class="container-column" style="flex: 0 1 85%;">
-                <c:if test="${books.size() > 0}">
-                    <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
-                        <h1><spring:message code="discovery.title"/></h1>
-                    </div>
+            <c:url	value="/discovery/${param.page}"	var="discoveryPageUrl"	/>
+            <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm"></form:form>
 
-                    <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
-                        <c:forEach var="book" items="${books}">
-                            <% request.setCharacterEncoding("utf-8"); %>
-                            <jsp:include page="../components/bookCard.jsp">
-                                <jsp:param name="id" value="${book.id}"/>
-                                <jsp:param name="bookTitle" value="${book.book.name}"/>
-                                <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                                <jsp:param name="imageId" value="${book.imageId}"/>
-                            </jsp:include>
-                        </c:forEach>
-                    </div>
-
-                    <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
-                        <jsp:include page="../components/paginationButton.jsp">
-                            <jsp:param name="previous" value="${previousPage}"/>
-                            <jsp:param name="next" value="${nextPage}"/>
-                            <jsp:param name="page" value="${page}"/>
-                        </jsp:include>
-                    </div>
-                </c:if>
-                <c:if test="${books.size() <= 0}">
-                    <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
-                        <h1><spring:message code="discovery.noBooks" /></h1>
-                    </div>
-                </c:if>
-            </div>
+            <h5><spring:message code="discovery.filters.author"/></h5>
+            <ul>
+                <c:forEach var="author" items="${authors}" varStatus="status">
+                    <input class="form-check-input" type="checkbox" value="" id="authors-${status.index}">
+                    <label class="form-check-label" for="authors-${status.index}">
+                        <c:out value="${author}"/>
+                    </label>
+                    <br>
+                </c:forEach>
+            </ul>
+            <h5><spring:message code="discovery.filters.language"/></h5>
+            <ul>
+                <c:forEach var="language" items="${languages}" varStatus="status">
+                    <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
+                    <label class="form-check-label" for="language-${status.index}">
+                        <c:out value="${language}"/>
+                    </label>
+                    <br>
+                </c:forEach>
+            </ul>
+            <h5><spring:message code="discovery.filters.physicalCondition"/></h5>
+            <ul>
+                <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
+                    <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
+                    <label class="form-check-label" for="physicalCondition-${status.index}">
+                        <c:out value="${physicalCondition}"/>
+                    </label>
+                    <br>
+                </c:forEach>
+            </ul>
+            <input class="btn btn-light" type="submit" value="SUBMIT~" id="submit-filter"/>">
         </div>
 
+        <div class="container-column" style="flex: 0 1 85%;">
+            <c:if test="${books.size() > 0}">
+                <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
+                    <h1><spring:message code="discovery.title"/></h1>
+                </div>
 
+                <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
+                    <c:forEach var="book" items="${books}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="../components/bookCard.jsp">
+                            <jsp:param name="id" value="${book.id}"/>
+                            <jsp:param name="bookTitle" value="${book.book.name}"/>
+                            <jsp:param name="bookAuthor" value="${book.book.author}"/>
+                            <jsp:param name="imageId" value="${book.imageId}"/>
+                        </jsp:include>
+                    </c:forEach>
+                </div>
 
-
-
-
+                <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
+                    <jsp:include page="../components/paginationButton.jsp">
+                        <jsp:param name="previous" value="${previousPage}"/>
+                        <jsp:param name="next" value="${nextPage}"/>
+                        <jsp:param name="page" value="${page}"/>
+                    </jsp:include>
+                </div>
+            </c:if>
+            <c:if test="${books.size() <= 0}">
+                <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
+                    <h1><spring:message code="discovery.noBooks" /></h1>
+                </div>
+            </c:if>
+        </div>
+    </div>
 </div>
 </body>
 </html>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[i]">`
+    })
+
+    document.getElementById("submit-filter").addEventListener(() => {
+
+    })
+
+
+</script>

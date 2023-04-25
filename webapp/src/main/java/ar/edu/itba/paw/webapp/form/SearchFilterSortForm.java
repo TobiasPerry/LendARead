@@ -18,6 +18,5 @@ public class SearchFilterSortForm {
 
     private List<String> languages;
 
-
 }
 

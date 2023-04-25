@@ -44,15 +44,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
         final int itemsPerPage = 15;
 
-        // TODO remove this when implemented
-        List<String> authors = new ArrayList<>();
-        authors.add("Andre Agassi");
-        List<String> lang = new ArrayList<>();
-        lang.add("English");
-        List<String> phy = new ArrayList<>();
-        phy.add("ASNEW");
-
-        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, authors, lang, phy);
+        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage);
 
         Page page;
 
@@ -63,6 +55,25 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
     }
+
+    public Page getAllAssetsInstances(int pageNum, List<String> authors, List<String> languages, List<String> physicalConditions){
+
+        final int itemsPerPage = 15;
+
+        if(authors.isEmpty() && languages.isEmpty() && physicalConditions.isEmpty())
+            return getAllAssetsInstances(pageNum);
+
+        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, authors, languages, physicalConditions);
+
+        Page page;
+
+        if(optionalPage.isPresent()) {
+            page = optionalPage.get();
+            return page;
+        }
+        return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
 
     @Override
     public Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery) {
