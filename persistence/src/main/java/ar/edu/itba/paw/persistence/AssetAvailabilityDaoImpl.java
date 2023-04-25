@@ -1,9 +1,14 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -15,6 +20,7 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private final static RowMapper<LendingDetails> rowMapper = new BeanPropertyRowMapper<>(LendingDetails.class);
     @Autowired
     public AssetAvailabilityDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
@@ -30,6 +36,8 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
 
     @Override
     public List<LendingDetails> getAllLendings() {
-        return null;
+        String query = "SELECT * FROM lendings";
+        List<LendingDetails> assets = jdbcTemplate.query(query, rowMapper);
+        return assets;
     }
 }

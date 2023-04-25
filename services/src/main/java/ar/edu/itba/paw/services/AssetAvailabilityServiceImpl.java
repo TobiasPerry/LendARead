@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
@@ -16,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
@@ -69,8 +67,15 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public List<BorrowedAssetInstance> getAllBorrowedAssetsInstances() {
         List<LendingDetails> lendingDetails =  lendingDao.getAllLendings();
+        List<BorrowedAssetInstance> borrowedAssetInstances = new ArrayList<>();
 
-        return null;
+        for (LendingDetails lendingDetail : lendingDetails) {
+            AssetInstance assetInstance = assetInstanceDao.getAssetInstance(lendingDetail.getAssetInstanceId()).get();
+            String borrower = ""//userDao.getUser(lendingDetail.getBorrowerId())
+            borrowedAssetInstances.add(new BorrowedAssetInstanceImpl(assetInstance, lendingDetail.getReturnDate().toString(), borrower));
+        }
+
+        return borrowedAssetInstances;
     }
 
     private void sendLenderEmail(AssetInstance assetInstance, String borrower) {
