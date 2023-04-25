@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
+import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,6 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -49,7 +53,9 @@ public class IndexViewController {
     }
 
     @RequestMapping("/discovery/{pageNum}")
-    public ModelAndView discoveryView(@PathVariable String pageNum){
+    public ModelAndView discoveryView(
+            @PathVariable String pageNum
+            ){
         final ModelAndView mav = new ModelAndView("/views/discoveryView");
 
         int pageNumParsed;
@@ -63,12 +69,22 @@ public class IndexViewController {
 
         Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed);
 
+
         mav.addObject("books", page.getBooks());
         mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
         mav.addObject("previousPage", page.getCurrentPage() != 1);
         mav.addObject("currentPage", page.getCurrentPage());
         mav.addObject("totalPages", page.getTotalPages());
         mav.addObject("page", page.getCurrentPage());
+
+        List<String> authors = page.getAuthors();
+        mav.addObject("authors", authors != null ? authors : new ArrayList<>());
+
+        List<String> languages = page.getLanguages();
+        mav.addObject("languages", languages != null ? languages : new ArrayList<>());
+
+        List<String> physicalConditions = page.getPhysicalConditions();
+        mav.addObject("physicalConditions", physicalConditions != null ? physicalConditions : new ArrayList<>());
 
         return mav;
     }

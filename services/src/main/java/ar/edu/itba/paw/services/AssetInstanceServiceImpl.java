@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,13 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             page = optionalPage.get();
             return page;
         }
-        return new PageImpl(new ArrayList<>(), 1, 1);
+        return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
+    }
+
+    @Override
+    public Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery) {
+        return getAllAssetsInstances(pageNum);
     }
 
     @Override

@@ -34,24 +34,21 @@
             <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
                 <h5><spring:message code="discovery.filters.author"/></h5>
                 <ul>
-                    <li>Item</li>
-                    <li>Item</li>
-                    <li>Item</li>
-                    <li>Item</li>
+                    <c:forEach var="author" items="${authors}">
+                    <li><c:out value="${author}"/></li>
+                    </c:forEach>
                 </ul>
                 <h5><spring:message code="discovery.filters.language"/></h5>
                 <ul>
-                    <li>Item</li>
-                    <li>Item</li>
-                    <li>Item</li>
-                    <li>Item</li>
+                    <c:forEach var="language" items="${languages}">
+                        <li><c:out value="${language}"/></li>
+                    </c:forEach>
                 </ul>
                 <h5><spring:message code="discovery.filters.physicalCondition"/></h5>
                 <ul>
-                    <li>Item</li>
-                    <li>Item</li>
-                    <li>Item</li>
-                    <li>Item</li>
+                    <c:forEach var="physicalCondition" items="${physicalConditions}">
+                        <li><c:out value="${physicalCondition}"/></li>
+                    </c:forEach>
                 </ul>
             </div>
 

@@ -3,6 +3,8 @@ package ar.itba.edu.paw.persistenceinterfaces;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface AssetInstanceDao {
