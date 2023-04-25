@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
@@ -24,5 +26,10 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
         jdbcTemplate.update(query,assetInstanceId,userId, borrowDate,devolutionDate);
 
         return true;
+    }
+
+    @Override
+    public List<LendingDetails> getAllLendings() {
+        return null;
     }
 }

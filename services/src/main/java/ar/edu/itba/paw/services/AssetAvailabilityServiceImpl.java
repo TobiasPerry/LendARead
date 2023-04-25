@@ -5,6 +5,8 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -61,6 +64,13 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public boolean setAssetPublic(int assetId) {
         return assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC);
+    }
+
+    @Override
+    public List<BorrowedAssetInstance> getAllBorrowedAssetsInstances() {
+        List<LendingDetails> lendingDetails =  lendingDao.getAllLendings();
+
+        return null;
     }
 
     private void sendLenderEmail(AssetInstance assetInstance, String borrower) {
