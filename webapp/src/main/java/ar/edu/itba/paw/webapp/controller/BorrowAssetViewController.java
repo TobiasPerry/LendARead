@@ -38,7 +38,7 @@ final public class BorrowAssetViewController {
             return borrowAssetView;
         }
 
-        return borrowAssetView(id,imageId).addObject("showSnackbarInvalid", true);
+        return new ModelAndView(":redirect/assetView");
     }
 
     private String getCurrentUserEmail() {

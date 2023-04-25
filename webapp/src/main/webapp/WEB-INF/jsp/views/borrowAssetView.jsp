@@ -32,7 +32,7 @@
 
         <div class="form-container flex-1">
           <c:url var="borrowAssetUrl" value="/borrowAsset?id=${id}&imageId=${imageId}"/>
-          <form:form modelAttribute="borrowAssetForm" method="post" action="${borrowAssetUrl}" class="container">
+          <form:form method="post" action="${borrowAssetUrl}" class="container">
 
             <div class="info-container">
               <h3><spring:message code="borrowAssetView.contactInfo"/></h3>
@@ -52,10 +52,8 @@
               </div>
             </div>
 
-            <div class="d-flex justify-content-center">
               <spring:message code="borrowAssetView.borrowButton" var="borrowButton" />
               <button type="submit" class="btn btn-primary m-8">${borrowButton}</button>
-            </div>
           </form:form>
         </div>
 
