@@ -40,8 +40,7 @@ public class UserHomeViewController {
     private ModelAndView init() {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
-       model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
-
+        model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
         return model;
     }
 

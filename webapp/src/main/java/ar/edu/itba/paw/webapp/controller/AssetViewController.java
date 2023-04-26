@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,7 +52,7 @@ public class AssetViewController {
             SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
             return assetInfoView;
         } catch (Exception e) {
-            //TODO CHEQUEAR ESTO
+            System.out.println("ENTRE");
         }
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         return assetInfoView;
@@ -59,7 +60,7 @@ public class AssetViewController {
     }
 
     private String getCurrentUserEmail() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return ((UserDetails )SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
 
 }
