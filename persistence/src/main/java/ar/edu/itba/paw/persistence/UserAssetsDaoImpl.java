@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
@@ -25,7 +26,17 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public List<BorrowedAssetInstance> getLendedAssets() {
+    public List<BorrowedAssetInstance> getLendedAssets(String Email) {
+        return null;
+    }
+
+    @Override
+    public List<BorrowedAssetInstance> getBorrowedAssets(String email) {
+        return null;
+    }
+
+    @Override
+    public List<AssetInstance> getUsersAssets(String email) {
         return null;
     }
 }

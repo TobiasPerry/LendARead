@@ -17,36 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
-    private final AssetInstanceService assetInstanceService;
-
-    private final AssetAvailabilityService assetAvailabilityService;
-
     private final UserAssetsDao userAssetsDao;
 
     @Autowired
-    public UserAssetInstanceServiceImpl(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetsDao userAssetsDao) {
-        this.assetInstanceService = assetInstanceService;
-        this.assetAvailabilityService = assetAvailabilityService;
+    public UserAssetInstanceServiceImpl(UserAssetsDao userAssetsDao) {
         this.userAssetsDao = userAssetsDao;
     }
 
-    private List<AssetInstance> getMyBookInventory(String email) {
-        return getAllMyBooks(email).stream().filter(book -> book.getAssetState().isPublic() || book.getAssetState().isPrivate()).collect(Collectors.toList());
-    }
-
-    private List<AssetInstance> getAllMyBooks(String email) {
-        return assetInstanceService.getAllAssetsInstances().stream().filter(book -> book.getOwner().getEmail().equals(email)).collect(Collectors.toList());
-    }
-
-    private List<BorrowedAssetInstance> getMyLendedBooks(String email) {
-       return assetAvailabilityService.getAllBorrowedAssetsInstances().stream().filter(borrowedAssetInstance -> !borrowedAssetInstance.getBorrower().equals(email)).collect(Collectors.toList());
-    }
-
-    private List<BorrowedAssetInstance> getMyBorrowedBooks(String email) {
-        return assetAvailabilityService.getAllBorrowedAssetsInstances().stream().filter(borrowedAssetInstance -> borrowedAssetInstance.getBorrower().equals(email)).collect(Collectors.toList());
-    }
     @Override
     public UserAssets getUserAssets(String email) {
-        return new UserAssetsImpl(getMyLendedBooks(email), getMyBorrowedBooks(email), getMyBookInventory(email));
+        return new UserAssetsImpl(userAssetsDao.getLendedAssets(email), userAssetsDao.getBorrowedAssets(email), userAssetsDao.getUsersAssets(email));
     }
 }

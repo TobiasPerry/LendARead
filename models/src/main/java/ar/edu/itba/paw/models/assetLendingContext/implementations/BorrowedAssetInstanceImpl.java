@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstan
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
-public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implements BorrowedAssetInstance {
+final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implements BorrowedAssetInstance {
 
     private final String dueDate;
 
