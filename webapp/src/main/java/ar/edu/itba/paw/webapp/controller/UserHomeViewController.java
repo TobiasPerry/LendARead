@@ -23,7 +23,7 @@ public class UserHomeViewController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
-    private static final String registerViewName = "views/userHomeView";
+    private static final String registerViewName = "/views/userHomeView";
 
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
@@ -40,7 +40,8 @@ public class UserHomeViewController {
     private ModelAndView init() {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
-        model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
+       model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
+
         return model;
     }
 

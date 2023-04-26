@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.util.Optional;
 
+
 @Controller
 public class AssetViewController {
+    private final static String SUCESS_MSG = "Libro agregado exitosamente!";
+
     private final AssetInstanceService assetInstanceService;
     private final AssetAvailabilityService assetAvailabilityService;
 
@@ -28,7 +32,7 @@ public class AssetViewController {
     public ModelAndView assetInfoView(@RequestParam() int id) {
         Optional<AssetInstance> assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
-        if (! assetInstanceOpt.isPresent()) {
+        if (!assetInstanceOpt.isPresent()) {
             return new ModelAndView("/views/notFoundView");
         }
 
@@ -40,14 +44,18 @@ public class AssetViewController {
 
     @RequestMapping(value = "/requestAsset", method = RequestMethod.POST)
     public ModelAndView requestAsset(@RequestParam("assetId") int id){
+        ModelAndView assetInfoView = assetInfoView(id);
 
         try {
             boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
+            SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
+            return assetInfoView;
         } catch (Exception e) {
-            //
+            //TODO CHEQUEAR ESTO
         }
+        SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
+        return assetInfoView;
 
-        return new ModelAndView("redirect:/");
     }
 
     private String getCurrentUserEmail() {
