@@ -43,7 +43,6 @@ public class IndexViewController {
     }
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        //System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_BORROWER")));
         final ModelAndView mav = new ModelAndView("/views/index");
 
         return mav;
