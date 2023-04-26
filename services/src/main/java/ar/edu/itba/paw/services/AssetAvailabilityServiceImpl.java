@@ -48,8 +48,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
-            sendBorrowerEmail(ai.get(), borrower);
-            sendLenderEmail(ai.get(), borrower);
+            //sendBorrowerEmail(ai.get(), borrower);
+            //sendLenderEmail(ai.get(), borrower);
         }
         return saved;
     }
