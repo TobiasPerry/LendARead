@@ -49,8 +49,14 @@
                 <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
 
                 <div class="text-center mt-5">
-                    <a type="button" class="btn btn-primary"  href="<c:url value="/borrowAssetView?id=${assetInstance.id}&imageId=${assetInstance.imageId}"/>"><spring:message code="assetView.borrowButton" /></a>
+                    <form action="/requestAsset?assetId=${assetInstance.id}" method="post">
+<%--                        <input type="hidden" name="assetId" value="${assetInstance.id}" />--%>
+                        <button type="submit" class="btn btn-primary">
+                            <spring:message code="assetView.borrowButton" />
+                        </button>
+                    </form>
                 </div>
+
 
             </div>
         </div>

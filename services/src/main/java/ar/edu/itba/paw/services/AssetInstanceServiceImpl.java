@@ -56,6 +56,21 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     @Override
+    public List<AssetInstance> getAllAssetsInstances() {
+        int pageNumber = 1;
+        Page allAssetInstances = getAllAssetsInstances(pageNumber);
+
+        List<AssetInstance> combinedBooks = new ArrayList<>(allAssetInstances.getBooks());
+        while (allAssetInstances.getCurrentPage() < allAssetInstances.getTotalPages()) {
+            pageNumber++;
+            allAssetInstances = getAllAssetsInstances(pageNumber);
+            combinedBooks.addAll(allAssetInstances.getBooks());
+        }
+
+       return combinedBooks;
+    }
+
+    @Override
     public boolean removeAssetInstance(int id) {
         return assetDao.deleteAsset(id);
     }

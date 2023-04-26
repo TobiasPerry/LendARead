@@ -13,5 +13,6 @@ public interface AssetInstanceService {
 
     public Page getAllAssetsInstances(int pageNum);
 
+    public List<AssetInstance> getAllAssetsInstances();
     boolean removeAssetInstance(int id);
 }

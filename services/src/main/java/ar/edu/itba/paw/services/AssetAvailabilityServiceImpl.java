@@ -5,6 +5,9 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
+import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
@@ -14,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
@@ -37,17 +38,16 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     }
 
     @Override
-    public boolean borrowAsset(int assetId, User borrower, LocalDate devolutionDate) {
+    public boolean borrowAsset(int assetId, String borrower, LocalDate devolutionDate) {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
-        Optional<User> user = userDao.getUser(borrower.getEmail());
+        Optional<User> user = userDao.getUser(borrower);
         if(!ai.isPresent() || !user.isPresent())
             return false;
-        if(!ai.get().getAssetState().canBorrow())
+        if(!ai.get().getAssetState().isPublic())
             return false;
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
-
             sendBorrowerEmail(ai.get(), borrower);
             sendLenderEmail(ai.get(), borrower);
         }
@@ -64,7 +64,21 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         return assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC);
     }
 
-    private void sendLenderEmail(AssetInstance assetInstance, User borrower) {
+    @Override
+    public List<BorrowedAssetInstance> getAllBorrowedAssetsInstances() {
+        List<LendingDetails> lendingDetails =  lendingDao.getAllLendings();
+        List<BorrowedAssetInstance> borrowedAssetInstances = new ArrayList<>();
+
+        for (LendingDetails lendingDetail : lendingDetails) {
+            AssetInstance assetInstance = assetInstanceDao.getAssetInstance(lendingDetail.getAssetInstanceId()).get();
+            String borrower = userDao.getUser(lendingDetail.getBorrowerId()).get().getName();
+            borrowedAssetInstances.add(new BorrowedAssetInstanceImpl(assetInstance, lendingDetail.getReturnDate().toString(), borrower));
+        }
+
+        return borrowedAssetInstances;
+    }
+
+    private void sendLenderEmail(AssetInstance assetInstance, String borrower) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -82,12 +96,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
     }
 
-    private void sendBorrowerEmail(AssetInstance assetInstance, User borrower) {
+    private void sendBorrowerEmail(AssetInstance assetInstance, String borrower) {
         if (assetInstance == null || borrower == null) {
             return;
         }
 
-        String email = borrower.getEmail();
         Book book = assetInstance.getBook();
         User owner = assetInstance.getOwner();
         Location location = assetInstance.getLocation();
@@ -97,7 +110,6 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         variables.put("owner",owner);
         variables.put("location",location);
 
-        emailService.sendEmail(email, "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
-        System.out.println("SENT TO BORROWER " + email);
+        emailService.sendEmail(borrower, "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
     }
 }
