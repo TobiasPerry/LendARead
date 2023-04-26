@@ -40,10 +40,14 @@ public class AssetViewController {
 
     @RequestMapping(value = "/requestAsset", method = RequestMethod.POST)
     public ModelAndView requestAsset(@RequestParam("assetId") int id){
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
 
-        System.out.println("sucess");
-        return new ModelAndView("redirect:/info?id=" + id);
+        try {
+            boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
+        } catch (Exception e) {
+            //
+        }
+
+        return new ModelAndView("redirect:/");
     }
 
     private String getCurrentUserEmail() {
