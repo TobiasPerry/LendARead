@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.userContext.implementations.UserAssetsImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
+import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,13 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
     private final AssetAvailabilityService assetAvailabilityService;
 
+    private final UserAssetsDao userAssetsDao;
+
     @Autowired
-    public UserAssetInstanceServiceImpl(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService) {
+    public UserAssetInstanceServiceImpl(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetsDao userAssetsDao) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
+        this.userAssetsDao = userAssetsDao;
     }
 
     private List<AssetInstance> getMyBookInventory(String email) {
