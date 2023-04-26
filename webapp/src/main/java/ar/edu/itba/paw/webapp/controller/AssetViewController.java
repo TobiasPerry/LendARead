@@ -43,8 +43,9 @@ public class AssetViewController {
 
         try {
             boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
+            System.out.println(borrowRequestSuccessful);
         } catch (Exception e) {
-            //
+            System.out.println(e.toString());
         }
 
         return new ModelAndView("redirect:/");
