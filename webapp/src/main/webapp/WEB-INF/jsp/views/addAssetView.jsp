@@ -53,7 +53,7 @@
                     <c:url var="addAssetUrl" value="/addAsset"/>
                     <form:form modelAttribute="addAssetForm" method="post"
                                action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
-                        <fieldset class="info-container active" data-step="1">
+                        <fieldset class="info-container d-none" data-step="1" id="isbn-fs">
                             <spring:message code="addAssetView.isbnLabel" var="isbnLabel"/>
                             <h2>ISBN</h2>
                             &#x1F6C8;
@@ -63,13 +63,15 @@
                                 los pediremos.
                             </text>
                             <form:input path="isbn" id="isbn" placeholder="${isbnLabel}" class="form-control"/>
+                            <small id="isbnError" class="text-danger small d-none">Please enter a valid ISBN</small>
+
                             <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-secondary mx-1" value="Atrás" disabled/>
                                 <input type="button" class="next-button btn btn-primary mx-1" value="Siguiente"/>
                             </div>
                         </fieldset>
-                        <fieldset class="info-container next" data-step="2">
+                        <fieldset class="info-container d-none" data-step="2">
                             <h2>Información del Libro</h2>
                             <div class="field-group">
                                 <div class="field">
@@ -128,7 +130,7 @@
                                 <input type="button" class="next-button btn btn-primary mx-1" value="Siguiente"/>
                             </div>
                         </fieldset>
-                        <fieldset class="info-container next" data-step="3">
+                        <fieldset class="info-container d-none" data-step="3">
                             <h2>Ubicaión</h2>
                             <div class="field-group">
                                 <div class="field">
@@ -213,45 +215,9 @@
     }
 </script>
 <script>
-    const isbnInput = document.getElementById('isbn');
-    const titleInput = document.getElementById('title');
-    const authorInput = document.getElementById('author');
-    const languageInput = document.getElementById('language');
-    const form = document.getElementById('form')
+    window.isbnUrl = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`
+</script>
 
-    isbnInput.addEventListener('input', async (event) => {
-        const isbn = event.target.value;
-
-        const inputFields = [titleInput, authorInput, languageInput];
-
-        if (isbn.length === 13 || isbn.length === 10) {
-            try {
-                inputFields.forEach(field => field.classList.add('loading'))
-                let url = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`;
-                const response = await fetch(url + isbn); //No te dejan usar fetch para tu back end
-                const book = await response.json();
-                titleInput.value = book.name || '';
-                authorInput.value = book.author || '';
-                languageInput.value = book.language || '';
-                console.log(book);
-
-                inputFields.forEach(field => field.classList.remove('loading'))
-
-                // enable inputs for missing information
-                if (!book.name) titleInput.readOnly = false;
-                if (!book.author) authorInput.readOnly = false;
-                if (!book.language) languageInput.readOnly = false;
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            // clear inputs and disable
-            titleInput.value = '';
-            authorInput.value = '';
-            languageInput.value = '';
-            titleInput.readOnly = true;
-            authorInput.readOnly = true;
-            languageInput.readOnly = true;
-        }
-    });
+<script>
+    let bindingResult = `<%= request.getAttribute("org.springframework.validation.BindingResult.addAssetForm") %>`;
 </script>

@@ -39,6 +39,7 @@
 
 .form-wrapper {
     flex: 1;
+    margin: auto;
 }
 
 .field-group {
