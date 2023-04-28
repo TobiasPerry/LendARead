@@ -56,10 +56,11 @@ public class IndexViewController {
     public ModelAndView discoveryView(
             @PathVariable String pageNum,
             @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
-            final BindingResult errors,
-            Model model, HttpServletResponse response
+            final BindingResult errors
             ){
-        final ModelAndView mav = new ModelAndView("/views/discoveryView");
+
+        if(errors.hasErrors())
+            return new ModelAndView("/views/discoveryView");
 
         int pageNumParsed;
 
@@ -70,8 +71,11 @@ public class IndexViewController {
             return new ModelAndView("/views/notFoundView");
         }
 
-        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed, new SearchQueryImpl(searchFilterSortForm.getAuthors(), searchFilterSortForm.getLanguages(), searchFilterSortForm.getPhysicalConditions()));
 
+        System.out.println(searchFilterSortForm.getAuthors());
+
+        final ModelAndView mav = new ModelAndView("/views/discoveryView");
         mav.addObject("books", page.getBooks());
         mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
         mav.addObject("previousPage", page.getCurrentPage() != 1);
@@ -98,6 +102,7 @@ public class IndexViewController {
         final ModelAndView mav = new ModelAndView("/views/assetView");
         return mav;
     }
+
     @RequestMapping( "/getImage/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable String id, HttpServletRequest request){
         byte[] array = imageService.getPhoto(Integer.parseInt(id));

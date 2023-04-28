@@ -194,7 +194,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         }
 
         query.append(" LIMIT ? OFFSET ?");
-
+        System.out.println(query);
         List<AssetInstance> assets = jdbcTemplate.query(query.toString(), ROW_MAPPER_BOOK, AssetState.PUBLIC.name(), limit, offset);
 
         String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +

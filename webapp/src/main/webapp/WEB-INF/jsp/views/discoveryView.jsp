@@ -34,9 +34,6 @@
     <div class="container-row">
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
 
-            <c:url	value="/discovery/${param.page}"	var="discoveryPageUrl"	/>
-            <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm"></form:form>
-
             <h5><spring:message code="discovery.filters.author"/></h5>
             <ul>
                 <c:forEach var="author" items="${authors}" varStatus="status">
@@ -61,7 +58,11 @@
                     <br>
                 </c:forEach>
             </ul>
-            <input class="btn btn-light" type="submit" value="submit" id="submit-filter"/>
+            <input class="btn btn-light" type="submit" value="APPLY" id="submit-filter"/>
+            <c:url	value="/discovery/${page}"	var="discoveryPageUrl"	/>
+            <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
+                <input class="btn btn-light" type="submit" value="submit" id=""/>
+            </form:form>
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
@@ -145,7 +146,7 @@
                 }
                 i++
             }
-    }, true)
+    })
 
 
 </script>

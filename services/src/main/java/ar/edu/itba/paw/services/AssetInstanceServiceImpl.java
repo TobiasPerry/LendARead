@@ -77,7 +77,11 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Override
     public Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery) {
-        return getAllAssetsInstances(pageNum);
+
+        if(searchQuery.getAuthors() == null)
+            return getAllAssetsInstances(pageNum);
+
+        return getAllAssetsInstances(pageNum, searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions());
     }
 
     @Override
