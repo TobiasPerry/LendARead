@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS AssetInstance(
 );
 CREATE TABLE IF NOT EXISTS lendings(
     id SERIAL primary key,
-    assetInstanceId INT references AssetInstance(id),
-    borrowerId INT references users(id),
+    assetInstanceId INT references AssetInstance(id) ON DELETE CASCADE ,
+    borrowerId INT references users(id)ON DELETE CASCADE ,
     lendDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     devolutionDate TIMESTAMP NOT NULL
 );

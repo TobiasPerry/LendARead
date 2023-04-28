@@ -2,17 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<style>
-    .nav-icon img {
-        width: 200px;
-        transition: all 0.2s ease-in-out;
-        -webkit-transition: all 0.2s ease-in-out;
-    }
-
-    .nav-icon:hover img {
-        transform: scale(1.1);
-    }
-</style>
+<link href="<c:url value="/static/css/navBar.css"/>" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <nav class="navbar navbar-expand-lg" style="height: 75px; background-color: #111711" data-bs-theme="dark">
     <div class="container-fluid">
