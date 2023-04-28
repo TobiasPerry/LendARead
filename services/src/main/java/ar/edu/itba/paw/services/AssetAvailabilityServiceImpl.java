@@ -48,8 +48,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
-            //sendBorrowerEmail(ai.get(), borrower);
-            //sendLenderEmail(ai.get(), borrower);
+            sendBorrowerEmail(ai.get(), borrower);
+            sendLenderEmail(ai.get(), borrower);
         }
         return saved;
     }
@@ -70,9 +70,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         List<BorrowedAssetInstance> borrowedAssetInstances = new ArrayList<>();
 
         for (LendingDetails lendingDetail : lendingDetails) {
-            AssetInstance assetInstance = assetInstanceDao.getAssetInstance(lendingDetail.getAssetInstanceId()).get();
-            String borrower = userDao.getUser(lendingDetail.getBorrowerId()).get().getName();
-            borrowedAssetInstances.add(new BorrowedAssetInstanceImpl(assetInstance, lendingDetail.getReturnDate().toString(), borrower));
+            Optional<AssetInstance> assetInstance = assetInstanceDao.getAssetInstance(lendingDetail.getAssetInstanceId());
+            if (assetInstance.isPresent()) {
+                String borrower = userDao.getUser(lendingDetail.getBorrowerId()).get().getName();
+                borrowedAssetInstances.add(new BorrowedAssetInstanceImpl(assetInstance.get(), lendingDetail.getReturnDate().toString(), borrower));
+            }
         }
 
         return borrowedAssetInstances;

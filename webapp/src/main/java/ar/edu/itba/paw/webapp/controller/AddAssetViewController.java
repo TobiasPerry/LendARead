@@ -1,11 +1,16 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.webapp.formFactories.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,10 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Collection;
 
 @Controller
 final public class AddAssetViewController {
 
+
+    private final UserService userService;
     private final AssetExistanceService assetExistanceService;
     private final static String viewName = "views/addAssetView";
 
@@ -64,7 +72,8 @@ final public class AddAssetViewController {
     }
 
     @Autowired
-    public AddAssetViewController(AssetExistanceService assetExistanceService){
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService){
+        this.userService = userService;
         this.assetExistanceService = assetExistanceService;
     }
     @ModelAttribute
@@ -73,8 +82,15 @@ final public class AddAssetViewController {
     }
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm){
-        final ModelAndView mav = new ModelAndView(viewName);
 
+        final ModelAndView mav = new ModelAndView(viewName);
+        Collection<? extends GrantedAuthority> auth =  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(auth.contains(new SimpleGrantedAuthority("ROLE_BORROWER"))){
+            mav.addObject("borrowerUser","true");
+        }else {
+            mav.addObject("borrowerUser","false");
+        }
         return  mav;
     }
+
 }

@@ -1,0 +1,9 @@
+.nav-icon img {
+    width: 200px;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+}
+
+.nav-icon:hover img {
+    transform: scale(1.1);
+}

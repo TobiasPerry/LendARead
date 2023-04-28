@@ -29,12 +29,11 @@ import java.util.List;
 public class IndexViewController {
     private final ViewResolver viewResolver;
     private final AssetInstanceService assetInstanceService;
-    private final ImageService imageService;
+
     @Autowired
-    public IndexViewController(@Qualifier("viewResolver")final ViewResolver vr, AssetInstanceService assetInstanceService,ImageService imageService){
+    public IndexViewController(@Qualifier("viewResolver")final ViewResolver vr, AssetInstanceService assetInstanceService){
         this.viewResolver = vr;
         this.assetInstanceService = assetInstanceService;
-        this.imageService = imageService;
     }
 
     @ModelAttribute
@@ -80,14 +79,5 @@ public class IndexViewController {
         final ModelAndView mav = new ModelAndView("/views/assetView");
         return mav;
     }
-    @RequestMapping( "/getImage/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String id, HttpServletRequest request){
-        byte[] array = imageService.getPhoto(Integer.parseInt(id));
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-type", MediaType.IMAGE_JPEG_VALUE);
-        headers.set("Content-Disposition","inline; filename=\"whaterver.jpg\"");
-
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(array);
-    }
 }

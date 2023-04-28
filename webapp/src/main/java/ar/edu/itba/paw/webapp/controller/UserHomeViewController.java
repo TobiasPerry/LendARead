@@ -23,7 +23,7 @@ public class UserHomeViewController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
-    private static final String registerViewName = "views/userHomeView";
+    private static final String registerViewName = "/views/userHomeView";
 
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {

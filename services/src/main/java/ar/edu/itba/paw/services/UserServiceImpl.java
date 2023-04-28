@@ -32,4 +32,9 @@ public class UserServiceImpl implements UserService {
         userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
         return 0;
     }
+
+    @Override
+    public boolean changeRole(String email, Behaviour behaviour) {
+        return userDao.changeRole(email,behaviour);
+    }
 }

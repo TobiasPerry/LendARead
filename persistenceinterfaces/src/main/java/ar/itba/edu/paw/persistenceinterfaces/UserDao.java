@@ -10,5 +10,7 @@ public interface UserDao {
     boolean changePassword(String email,String newPassword);
      Optional<User> getUser(String email);
 
+     boolean changeRole(String email,Behaviour behaviour);
+
      Optional<User> getUser(int id);
 }

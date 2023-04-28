@@ -68,6 +68,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean changeRole(String email, Behaviour behaviour) {
+        String query = "UPDATE users SET behavior = ? WHERE mail = ?";
+        final int updates = jdbcTemplate.update(query,behaviour.toString(),email);
+        if(updates != 0)
+            return true;
+        return false;
+    }
+
+
+    @Override
     public Optional<User> getUser(int id) {
         String query = "SELECT * FROM users WHERE id = ?";
         final List<User> user = jdbcTemplate.query(query,ROW_MAPPER_USER,id);

@@ -3,7 +3,6 @@ package ar.edu.itba.paw.models.userContext.implementations;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
-import jdk.nashorn.internal.objects.annotations.Setter;
 
 import java.util.List;
 
