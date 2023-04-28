@@ -43,58 +43,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         this.assetInstanceDao = assetInstanceDao;
     }
 
-
     @Override
-    public List<BorrowedAssetInstance> getBorrowedAssets(String email) {
-        String query = "SELECT " +
-                "    ai.id, ai.book, ai.physicalcondition, ai.owner, ai.location, ai.imageid, ai.assetstate, " +
-                "    b.isbn, b.author, b.title, b.language, " +
-                "    l.zipcode, l.locality, l.province, l.country, " +
-                "    owner.mail, owner.name AS owner_name, owner.behavior, l.devolutiondate" +
-                " FROM" +
-                "    lendings l" +
-                " JOIN" +
-                "    assetinstance ai ON l.assetinstanceid = ai.id" +
-                " JOIN" +
-                "    users u ON l.borrowerid = u.id" +
-                " JOIN" +
-                "    users owner ON ai.owner = owner.id" +
-                " JOIN" +
-                "    book b ON ai.book = b.uid" +
-                " JOIN" +
-                "    location l ON ai.location = l.id" +
-                " WHERE" +
-                "    u.mail = ?";
-
-        RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
-            Book book = new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language"));
-            Location location = new LocationImpl(rs.getInt("location"), rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country"));
-            User owner = new UserImpl(rs.getInt("owner"), rs.getString("mail"), rs.getString("owner_name"), "", "", Behaviour.fromString(rs.getString("behavior")));
-
-            AssetInstance assetInstance = new AssetInstanceImpl(
-                    rs.getInt("id"),
-                    book,
-                    PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    owner,
-                    location,
-                    rs.getInt("imageid"),
-                    AssetState.fromString(rs.getString("assetstate"))
-            );
-
-            String dueDate = rs.getTimestamp("devolutiondate").toString();
-            return new BorrowedAssetInstanceImpl(assetInstance, dueDate, rs.getString("owner_name"));
-        };
-
-        return jdbcTemplate.query(query, rowMapper, email);
-    }    @Override
-
-
     public List<BorrowedAssetInstance> getLendedAssets(String email) {
         String query = "SELECT " +
-                "    ai.id, ai.book, ai.physicalcondition, ai.owner, ai.location, ai.imageid, ai.assetstate, " +
-                "    b.isbn, b.author, b.title, b.language, " +
-                "    l.zipcode, l.locality, l.province, l.country, " +
-                "    u.mail, u.name AS borrower_name, u.behavior, l.devolutiondate" +
+                "    l.assetinstanceid," +
+                "    u.name AS borrower_name," +
+                "    l.devolutiondate" +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -103,70 +57,72 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
-                " JOIN" +
-                "    book b ON ai.book = b.uid" +
-                " JOIN" +
-                "    location l ON ai.location = l.id" +
                 " WHERE" +
                 "    owner.mail = ?";
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
-            Book book = new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language"));
-            Location location = new LocationImpl(rs.getInt("location"), rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country"));
-            User borrower = new UserImpl(rs.getInt("owner"), rs.getString("mail"), rs.getString("borrower_name"), "", "", Behaviour.fromString(rs.getString("behavior")));
-
-            AssetInstance assetInstance = new AssetInstanceImpl(
-                    rs.getInt("id"),
-                    book,
-                    PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    borrower,
-                    location,
-                    rs.getInt("imageid"),
-                    AssetState.fromString(rs.getString("assetstate"))
-            );
-
+            int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
-            return new BorrowedAssetInstanceImpl(assetInstance, dueDate, rs.getString("borrower_name"));
+            String borrower = rs.getString("borrower_name");
+
+            return assetInstanceDao.getAssetInstance(assetId)
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower))
+                    .orElse(null);
         };
 
         return jdbcTemplate.query(query, rowMapper, email);
     }
 
     @Override
+    public List<BorrowedAssetInstance> getBorrowedAssets(String email) {
+        String query = "SELECT " +
+                "    l.assetinstanceid," +
+                "    owner.name AS owner_name," +
+                "    l.devolutiondate" +
+                " FROM" +
+                "    lendings l" +
+                " JOIN" +
+                "    assetinstance ai ON l.assetinstanceid = ai.id" +
+                " JOIN" +
+                "    users u ON l.borrowerid = u.id" +
+                " JOIN" +
+                "    users owner ON ai.owner = owner.id" +
+                " WHERE" +
+                "    u.mail = ?";
+
+        RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
+            int assetId = rs.getInt("assetinstanceid");
+            String dueDate = rs.getTimestamp("devolutiondate").toString();
+            String owner = rs.getString("owner_name");
+
+            return assetInstanceDao.getAssetInstance(assetId)
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
+                    .orElse(null);
+        };
+
+        List<BorrowedAssetInstance> results = jdbcTemplate.query(query, rowMapper, email);
+        return results.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    @Override
     public List<AssetInstance> getUsersAssets(String email) {
         String query = "SELECT " +
-                "    ai.id, ai.book, ai.physicalcondition, ai.owner, ai.location, ai.imageid, ai.assetstate, " +
-                "    b.isbn, b.author, b.title, b.language, " +
-                "    l.zipcode, l.locality, l.province, l.country, " +
-                "    u.mail, u.name AS user_name, u.behavior" +
+                "    ai.id" +
                 " FROM" +
                 "    assetinstance ai" +
                 " JOIN" +
                 "    users u ON ai.owner = u.id" +
-                " JOIN" +
-                "    book b ON ai.book = b.uid" +
-                " JOIN" +
-                "    location l ON ai.location = l.id" +
                 " WHERE" +
                 "    u.mail = ?";
 
-        RowMapper<AssetInstance> rowMapper = (rs, rowNum) -> {
-            Book book = new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language"));
-            Location location = new LocationImpl(rs.getInt("location"), rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country"));
-            User user = new UserImpl(rs.getInt("owner"), rs.getString("mail"), rs.getString("user_name"), "", "", Behaviour.fromString(rs.getString("behavior")));
+        RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
+        List<Integer> assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
 
-            return new AssetInstanceImpl(
-                    rs.getInt("id"),
-                    book,
-                    PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    user,
-                    location,
-                    rs.getInt("imageid"),
-                    AssetState.fromString(rs.getString("assetstate"))
-            );
-        };
-
-        return jdbcTemplate.query(query, rowMapper, email);
+        return assetIds.stream()
+                .map(assetInstanceDao::getAssetInstance)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
 
