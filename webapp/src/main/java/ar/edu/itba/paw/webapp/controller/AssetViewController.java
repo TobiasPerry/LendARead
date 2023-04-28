@@ -57,6 +57,7 @@ public class AssetViewController {
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         return assetInfoView;
 
+        return new ModelAndView("redirect:/");
     }
 
     private String getCurrentUserEmail() {
