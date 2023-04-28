@@ -71,16 +71,11 @@ public class UserHomeViewController {
         return home();
     }
 
-    @RequestMapping(value = "/changeTable", method = RequestMethod.POST)
+    @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) {
         return init().addObject("table", table);
     }
 
-    @RequestMapping(value ="/becomeLender", method = RequestMethod.POST)
-    public ModelAndView becomeLender() {
-        ///change the authority for the current user.
-        return home();
-    }
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("path", "userHome");
