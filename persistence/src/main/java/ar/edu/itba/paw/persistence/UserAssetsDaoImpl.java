@@ -107,13 +107,13 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     @Override
     public List<AssetInstance> getUsersAssets(String email) {
         String query = "SELECT " +
-                "    ai.id" +
-                " FROM" +
-                "    assetinstance ai" +
-                " JOIN" +
-                "    users u ON ai.owner = u.id" +
-                " WHERE" +
-                "    u.mail = ?";
+                    "    ai.id" +
+                    " FROM" +
+                    "    assetinstance ai" +
+                    " JOIN" +
+                    "    users u ON ai.owner = u.id" +
+                    " WHERE" +
+                    "    u.mail = ?";
 
         RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
         List<Integer> assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
