@@ -40,10 +40,8 @@
             <h5><spring:message code="discovery.filters.author"/></h5>
             <ul>
                 <c:forEach var="author" items="${authors}" varStatus="status">
-                    <input class="form-check-input" type="checkbox" value="" id="authors-${status.index}">
-                    <label class="form-check-label" for="authors-${status.index}">
-                        <c:out value="${author}"/>
-                    </label>
+                    <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
+                    <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><c:out value="${author}"/></label>
                     <br>
                 </c:forEach>
             </ul>
@@ -51,9 +49,7 @@
             <ul>
                 <c:forEach var="language" items="${languages}" varStatus="status">
                     <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
-                    <label class="form-check-label" for="language-${status.index}">
-                        <c:out value="${language}"/>
-                    </label>
+                    <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><c:out value="${language}"/></label>
                     <br>
                 </c:forEach>
             </ul>
@@ -61,13 +57,11 @@
             <ul>
                 <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
                     <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
-                    <label class="form-check-label" for="physicalCondition-${status.index}">
-                        <c:out value="${physicalCondition}"/>
-                    </label>
+                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><c:out value="${physicalCondition}"/></label>
                     <br>
                 </c:forEach>
             </ul>
-            <input class="btn btn-light" type="submit" value="SUBMIT~" id="submit-filter"/>">
+            <input class="btn btn-light" type="submit" value="submit" id="submit-filter"/>
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
@@ -108,14 +102,50 @@
 </html>
 
 <script>
-
     document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[i]">`
+        let i = 0
+        for (const author of document.getElementsByClassName("authorLabel")) {
+            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[` + i + `]" id="authorId-` + i + `">`
+            i++
+        }
+        i = 0
+        for (const author of document.getElementsByClassName("languageLabel")) {
+            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + i + `]" id="languageId-` + i + `">`
+            i++
+        }
+        i = 0
+        for (const author of document.getElementsByClassName("physicalConditionLabel")) {
+            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="physicalConditions[` + i + `]" id="physicalConditionId-` + i + `">`
+            i++
+        }
     })
 
-    document.getElementById("submit-filter").addEventListener(() => {
-
-    })
+    document.getElementById("submit-filter").addEventListener("click", () => {
+        let i = 0
+        for (const author of document.getElementsByClassName("authorLabel")) {
+                if (document.getElementById("author-" + i).checked) {
+                    document.getElementById("authorId-" + i).value = document.getElementById("author-" + i + "-label").childNodes[0].textContent
+                    console.log(document.getElementById("author-" + i + "-label").childNodes[0].textContent)
+                }
+                i++
+            }
+            i = 0
+            for (const author of document.getElementsByClassName("languageLabel")) {
+                if(document.getElementById("language-" + i).checked){
+                    document.getElementById("languageId-" + i).value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
+                    console.log(document.getElementById("language-" + i + "-label").childNodes[0].textContent)
+                }
+                i++
+            }
+            i = 0
+            for (const author of document.getElementsByClassName("physicalConditionLabel")) {
+                if(document.getElementById("physicalCondition-" + i).checked){
+                    document.getElementById("physicalConditionId-" + i).value = document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent
+                    console.log(document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent)
+                }
+                i++
+            }
+    }, true)
 
 
 </script>

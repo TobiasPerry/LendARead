@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
@@ -17,11 +18,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +55,9 @@ public class IndexViewController {
     @RequestMapping(value = "/discovery/{pageNum}", method = RequestMethod.GET)
     public ModelAndView discoveryView(
             @PathVariable String pageNum,
-            @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm
+            @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
+            final BindingResult errors,
+            Model model, HttpServletResponse response
             ){
         final ModelAndView mav = new ModelAndView("/views/discoveryView");
 
@@ -65,8 +70,7 @@ public class IndexViewController {
             return new ModelAndView("/views/notFoundView");
         }
 
-        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed);
-
+        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         mav.addObject("books", page.getBooks());
         mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
