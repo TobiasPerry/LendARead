@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
-    private final UserAssetsDao userAssetsDao;
+    private final UserAssetsDao   userAssetsDao;
 
     @Autowired
     public UserAssetInstanceServiceImpl(UserAssetsDao userAssetsDao) {
