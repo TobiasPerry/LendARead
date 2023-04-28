@@ -59,7 +59,7 @@ public class UserHomeViewController {
 
         if(assetInstance.getAssetState().isPublic())
             assetAvailabilityService.setAssetPrivate(id);
-        else
+        else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
         return home();

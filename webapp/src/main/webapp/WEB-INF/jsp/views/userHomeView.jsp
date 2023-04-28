@@ -118,15 +118,15 @@
                     <div class="list-group">
                         <form action="/changeTable" method="post">
                             <input type="hidden" name="type" value="my_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select">My Books</button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="my_books" /></button>
                         </form>
                         <form action="/changeTable" method="post">
                             <input type="hidden" name="type" value="lended_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select">Lended Books</button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="lended_books" /></button>
                         </form>
                         <form action="/changeTable" method="post">
                             <input type="hidden" name="type" value="borrowed_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select">Borrowed Books</button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="borrowed_books" /></button>
                         </form>
                     </div>
 
