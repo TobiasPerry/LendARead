@@ -41,27 +41,20 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     public Page getAllAssetsInstances(int pageNum){
-
-        final int itemsPerPage = 15;
-
-        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage);
-
-        Page page;
-
-        if(optionalPage.isPresent()) {
-            page = optionalPage.get();
-            return page;
-        }
-        return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-
+        return getAllAssetsInstances(pageNum, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     public Page getAllAssetsInstances(int pageNum, List<String> authors, List<String> languages, List<String> physicalConditions){
 
         final int itemsPerPage = 15;
 
-        if(authors.isEmpty() && languages.isEmpty() && physicalConditions.isEmpty())
-            return getAllAssetsInstances(pageNum);
+        if(authors == null)
+            authors = new ArrayList<>();
+        if(languages == null)
+            languages = new ArrayList<>();
+        if(physicalConditions == null)
+            physicalConditions = new ArrayList<>();
+
 
         Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, authors, languages, physicalConditions);
 
@@ -77,11 +70,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Override
     public Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery) {
-
-        if(searchQuery.getAuthors() == null)
-            return getAllAssetsInstances(pageNum);
-
-        return getAllAssetsInstances(pageNum, searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions());
+        if(searchQuery != null)
+            return getAllAssetsInstances(pageNum, searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions());
+        return getAllAssetsInstances(pageNum);
     }
 
     @Override

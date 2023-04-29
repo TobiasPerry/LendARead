@@ -58,11 +58,13 @@
                     <br>
                 </c:forEach>
             </ul>
-            <input class="btn btn-light" type="submit" value="APPLY" id="submit-filter"/>
-            <c:url	value="/discovery/${page}"	var="discoveryPageUrl"	/>
+
+            <c:url	value="/discovery"	var="discoveryPageUrl"	/>
             <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
-                <input class="btn btn-light" type="submit" value="submit" id=""/>
+                <input class="btn btn-light" type="submit" value="submit" id="submit-filter"/>
+                <input type ="hidden" name="currentPage" id="currentPageID" value="1"/>
             </form:form>
+
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
@@ -84,11 +86,47 @@
                 </div>
 
                 <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
-                    <jsp:include page="../components/paginationButton.jsp">
-                        <jsp:param name="previous" value="${previousPage}"/>
-                        <jsp:param name="next" value="${nextPage}"/>
-                        <jsp:param name="page" value="${page}"/>
-                    </jsp:include>
+<%--                    PAGINATION--%>
+<%--                    <jsp:include page="../components/paginationButton.jsp">--%>
+<%--                        <jsp:param name="previous" value="${previousPage}"/>--%>
+<%--                        <jsp:param name="next" value="${nextPage}"/>--%>
+<%--                        <jsp:param name="page" value="${page}"/>--%>
+<%--                    </jsp:include>--%>
+
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <c:choose>
+                                    <c:when test="${previousPage == false}">
+                                        <li class="page-item disabled">
+                                            <p class="page-link"><spring:message code="paginationButton.previous" /></p>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="page-item">
+                                            <input type="button" id="previousPageButton" value="<spring:message code="paginationButton.previous" />"/>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <c:choose>
+                                    <c:when test="${nextPage == false}">
+                                        <li class="page-item disabled">
+                                            <p class="page-link"><spring:message code="paginationButton.next" /></p>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="page-item">
+<%--                                            <input type="button" id="nextPageButton" value="<spring:message code="paginationButton.next" />"/>--%>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </ul>
+                        </nav>
+                    </div>
+    <input type="button" id="nextPageButton" value="<spring:message code="paginationButton.next" />"/>
+<%--                    PAGINATION--%>
                 </div>
             </c:if>
             <c:if test="${books.size() <= 0}">
@@ -103,50 +141,53 @@
 </html>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        let i = 0
-        for (const author of document.getElementsByClassName("authorLabel")) {
-            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[` + i + `]" id="authorId-` + i + `">`
-            i++
-        }
-        i = 0
-        for (const author of document.getElementsByClassName("languageLabel")) {
-            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + i + `]" id="languageId-` + i + `">`
-            i++
-        }
-        i = 0
-        for (const author of document.getElementsByClassName("physicalConditionLabel")) {
-            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="physicalConditions[` + i + `]" id="physicalConditionId-` + i + `">`
-            i++
-        }
-    })
-
     document.getElementById("submit-filter").addEventListener("click", () => {
+        event.preventDefault(); // Prevent the default form submission behavior
         let i = 0
+        let j = 0
         for (const author of document.getElementsByClassName("authorLabel")) {
                 if (document.getElementById("author-" + i).checked) {
-                    document.getElementById("authorId-" + i).value = document.getElementById("author-" + i + "-label").childNodes[0].textContent
+                    document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[` + j + `]" id="authorId-` + j + `">`
+                    document.getElementById("authorId-" + j).value = document.getElementById("author-" + i + "-label").childNodes[0].textContent
                     console.log(document.getElementById("author-" + i + "-label").childNodes[0].textContent)
+                    j++
                 }
                 i++
             }
             i = 0
+            j = 0
             for (const author of document.getElementsByClassName("languageLabel")) {
                 if(document.getElementById("language-" + i).checked){
-                    document.getElementById("languageId-" + i).value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
+                    document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + j + `]" id="languageId-` + j + `">`
+                    document.getElementById("languageId-" + j).value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
                     console.log(document.getElementById("language-" + i + "-label").childNodes[0].textContent)
+                    j++
                 }
                 i++
             }
             i = 0
+            j = 0
             for (const author of document.getElementsByClassName("physicalConditionLabel")) {
                 if(document.getElementById("physicalCondition-" + i).checked){
-                    document.getElementById("physicalConditionId-" + i).value = document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent
+                    document.getElementById("springForm").innerHTML += `<input type ="hidden" name="physicalConditions[` + j + `]" id="physicalConditionId-` + j + `">`
+                    document.getElementById("physicalConditionId-" + j).value = document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent
                     console.log(document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent)
+                    j++
                 }
                 i++
             }
-    })
+        document.getElementById("springForm").submit();
+    }, true)
 
+    document.getElementById("previousPageButton").addEventListener("click", () => {
+        event.preventDefault(); // Prevent the default form submission behavior
+        document.getElementById("currentPageID").value = document.getElementById("currentPageID").value - 1
+        document.getElementById("springForm").submit();
+    });
 
+    document.getElementById("nextPageButton").addEventListener("click", () => {
+        event.preventDefault(); // Prevent the default form submission behavior
+        document.getElementById("currentPageID").value = document.getElementById("currentPageID").value + 1
+        document.getElementById("springForm").submit();
+    });
 </script>

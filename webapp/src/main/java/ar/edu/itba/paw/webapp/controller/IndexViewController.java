@@ -52,9 +52,8 @@ public class IndexViewController {
         return mav;
     }
 
-    @RequestMapping(value = "/discovery/{pageNum}", method = RequestMethod.GET)
+    @RequestMapping(value = "/discovery", method = RequestMethod.GET)
     public ModelAndView discoveryView(
-            @PathVariable String pageNum,
             @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
             final BindingResult errors
             ){
@@ -62,18 +61,15 @@ public class IndexViewController {
         if(errors.hasErrors())
             return new ModelAndView("/views/discoveryView");
 
-        int pageNumParsed;
+        int pageNum = searchFilterSortForm.getCurrentPage();
 
-        try {
-            pageNumParsed = Integer.parseInt(pageNum);
-        }catch (NumberFormatException e){
-            // In case the parameters received cannot be parsed as integers, we'll return a not found view
-            return new ModelAndView("/views/notFoundView");
-        }
-
-        Page page = assetInstanceService.getAllAssetsInstances(pageNumParsed, new SearchQueryImpl(searchFilterSortForm.getAuthors(), searchFilterSortForm.getLanguages(), searchFilterSortForm.getPhysicalConditions()));
-
-        System.out.println(searchFilterSortForm.getAuthors());
+        Page page = assetInstanceService.getAllAssetsInstances(
+                pageNum,
+                new SearchQueryImpl( ( searchFilterSortForm.getAuthors() != null ) ? searchFilterSortForm.getAuthors() : new ArrayList<>(),
+                        ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
+                        ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>()
+                )
+        );
 
         final ModelAndView mav = new ModelAndView("/views/discoveryView");
         mav.addObject("books", page.getBooks());
