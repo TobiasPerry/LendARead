@@ -116,17 +116,17 @@
             <div class="col-md-4">
                 <div class="list-group">
                     <div class="list-group">
-                        <form action="/changeTable" method="post">
+                        <form action="/changeTable" method="get">
                             <input type="hidden" name="type" value="my_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select">My Books</button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="my_books" /></button>
                         </form>
-                        <form action="/changeTable" method="post">
+                        <form action="/changeTable" method="get">
                             <input type="hidden" name="type" value="lended_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select">Lended Books</button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="lended_books" /></button>
                         </form>
-                        <form action="/changeTable" method="post">
+                        <form action="/changeTable" method="get">
                             <input type="hidden" name="type" value="borrowed_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select">Borrowed Books</button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="borrowed_books" /></button>
                         </form>
                     </div>
 
@@ -221,7 +221,7 @@
                                 <div class="promo-box">
                                     <h2><spring:message code="become_lender.title" /></h2>
                                     <p><spring:message code="become_lender.subtitle" /></p>
-                                    <form action="/becomeLender" method="post">
+                                    <form action="/changeRole" method="post">
                                         <button type="submit" class="button-status"><spring:message code="become_lender.button" /></button>
                                     </form>
                                 </div>
