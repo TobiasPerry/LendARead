@@ -23,40 +23,44 @@
 </head>
 <body data-path="${path}" class=" body-class">
 <jsp:include page="../components/navBar.jsp"/>
-<div class="main-class">
-    <div style="background-color: #FFFFFF; margin: 50px; border-radius: 20px; padding: 20px">
+<div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: row-reverse;">
+        <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content">
         <div class="container-row-wrapped">
-            <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" class="mx-5" alt="Book cover" style="height: 600px; width: 400px; object-fit: cover">
+            <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" class="mx-3" alt="Book cover" style="height: 500px; width: 300px; object-fit: cover">
             <div class="w-25 h-25 mx-5">
                 <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>
                 <h3 class="textOverflow"><spring:message code="assetView.by" /> <c:out value="${assetInstance.book.author}"/></h3>
-                <h3><spring:message code="assetView.language" />: <c:out value="${assetInstance.book.language}"/></h3>
-                <h5><spring:message code="assetView.isbn" />: <c:out value="${assetInstance.book.isbn}"/></h5>
-                <h5><spring:message code="assetView.condition" />: <c:out value="${assetInstance.physicalCondition}"/></h5>
+                <h6>
+                    <i>
+                        <u><c:out value="${assetInstance.physicalCondition}"/></u>
+                    </i>
+                </h6>
+                <h6 style="color: #7d7c7c"><spring:message code="assetView.language" />: <c:out value="${assetInstance.book.language}"/></h6>
+                <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn" />: <c:out value="${assetInstance.book.isbn}"/></h6>
+
+                <form action="/requestAsset?assetId=${assetInstance.id}" method="post">
+                    <button type="submit" class="btn btn-primary" style="background-color: #2B3B2B;border-color: #D1E9C3">
+                        <spring:message code="assetView.borrowButton" />
+                    </button>
+                </form>
+
             </div>
+            <div class="card" style="background-color:#e3e6e3;width: 18rem;height: fit-content">
+                <div class="card-body">
+                    <h5 class="card-title">Donde esta el libro?</h5>
+                    <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.zipcode" /></p>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.zipcode}"/></h3>
 
-            <div class="w-25 h-25 mx-5" style="border: 2px solid #E3DDE0; border-radius: 10px; padding: 20px">
-                <p style="margin-bottom: -5px"><spring:message code="assetView.zipcode" /></p>
-                <h3 class="textOverflow"><c:out value="${assetInstance.location.zipcode}"/></h3>
+                    <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.locality" /></p>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.locality}"/></h3>
 
-                <p style="margin-bottom: -5px"><spring:message code="assetView.locality" /></p>
-                <h3 class="textOverflow"><c:out value="${assetInstance.location.locality}"/></h3>
+                    <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.province" /></p>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.province}"/></h3>
 
-                <p style="margin-bottom: -5px"><spring:message code="assetView.province" /></p>
-                <h3 class="textOverflow"><c:out value="${assetInstance.location.province}"/></h3>
-
-                <p style="margin-bottom: -5px"><spring:message code="assetView.country" /></p>
-                <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
-
-                <div class="text-center mt-5">
-                    <form action="/requestAsset?assetId=${assetInstance.id}" method="post">
-<%--                        <input type="hidden" name="assetId" value="${assetInstance.id}" />--%>
-                        <button type="submit" class="btn btn-primary">
-                            <spring:message code="assetView.borrowButton" />
-                        </button>
-                    </form>
+                    <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.country" /></p>
+                    <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
                 </div>
-
+            </div>
 
             </div>
         </div>
