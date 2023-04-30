@@ -10,100 +10,8 @@
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
+    <link href="<c:url value="/static/css/userHomeView.css"/>" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Overpass:400,700|Roboto:400,700" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #D0DCD0;
-            color: #2B3B2B;
-        }
-        h1, h2 {
-            font-family: 'Overpass', sans-serif;
-            color: #111711;
-        }
-        .container {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .table-title{
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 20px;
-            flex: 1;
-            min-width: 800px;
-            margin: 0 10px 20px;
-        }
-        th, td {
-            padding: 10px;
-            margin: 10px;
-            text-align: center;
-            border-radius: 10px;
-        }
-        th {
-            background-color: #2B3B2B;
-            opacity: 0.8;
-            color: #D1E9C3;
-        }
-        button {
-            background-color: #2B3B2B;
-            color: #D1E9C3;
-            border: none;
-            cursor: pointer;
-            padding: 6px;
-        }
-
-        .button-status {
-            border-radius: 10px;
-            opacity: 0.6;
-        }
-        .button-status:hover {opacity: 1;}
-
-        .image {
-            width: 150px;
-        }
-
-        .icon-style {
-            color: white;
-        }
-        .dropdown-toggle::after {
-            display: none;
-        }
-        .image-container {
-            position: relative;
-            display: inline-block;
-        }
-        .promo-box {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 15px;
-            flex: 1;
-            margin: 0 10px 20px;
-            text-align: center;
-            background-color: #D1E9C3;
-        }
-
-        .promo-box h2 {
-            margin-top: 0;
-            font-size: 1.5em;
-        }
-
-        .promo-box p {
-            font-size: 1.1em;
-            margin: 1em 0;
-        }
-        .button-select {
-            background-color: inherit;
-            border: none;
-        }
-
-        .button-select:hover {opacity: 0.75;}
-    </style>
 </head>
 
 <body data-path="${path}" class = "body-class">
@@ -259,6 +167,13 @@
         </div>
     </div>
 </div>
+<spring:message code="addAssetView.addBookModal.title" var="modalTitle" />
+<spring:message code="addAssetView.addBookModal.text" var="modalText" />
+<% request.setCharacterEncoding("utf-8"); %>
+<jsp:include page="../components/modal.jsp">
+    <jsp:param name="modalTitle" value="${modalTitle}"/>
+    <jsp:param name="text" value="${modalText}"/>
+</jsp:include>
 
 </body>
 </html>

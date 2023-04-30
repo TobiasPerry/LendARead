@@ -62,7 +62,7 @@ public class UserHomeViewController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return home();
+        return home().addObject("showSnackbarSucess", "true");
     }
 
     @RequestMapping(value ="/deleteAsset", method = RequestMethod.POST)
