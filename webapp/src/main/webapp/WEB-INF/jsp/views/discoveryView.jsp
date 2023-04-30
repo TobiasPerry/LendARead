@@ -98,7 +98,7 @@
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item">
-                                    <button type="button" class="btn ${previousPage ? "" : "disabled"}" id="previousPageButton">value="<spring:message code="paginationButton.previous" />"</button>
+                                    <button type="button" class="btn ${previousPage ? "" : "disabled"}" id="previousPageButton"><spring:message code="paginationButton.previous" /></button>
                                 </li>
 
                                 <li class="page-item">

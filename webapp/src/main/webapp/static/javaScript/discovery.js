@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded",(event)=> {
 
     document.getElementById("nextPageButton").addEventListener("click", () => {
-        document.getElementById("currentPageID").value = document.getElementById("currentPageID").value + 1
+        document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
         document.getElementById("springForm").submit()
     });
 
     document.getElementById("previousPageButton").addEventListener("click", () => {
-        document.getElementById("currentPageID").value = document.getElementById("currentPageID").value - 1
+        document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) - 1
         document.getElementById("springForm").submit()
     });
 
