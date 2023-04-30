@@ -27,7 +27,7 @@
     </div>
 
     <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
-        <a href="<c:url value='/discovery/1'/>"><button class="btn">Ver libros</button></a>
+        <a href="<c:url value='/discovery'/>"><button class="btn">Ver libros</button></a>
     </div>
 
 </div>
