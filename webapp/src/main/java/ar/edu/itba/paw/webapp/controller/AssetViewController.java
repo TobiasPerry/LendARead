@@ -29,8 +29,8 @@ public class AssetViewController {
         this.assetAvailabilityService = assetAvailabilityService;
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@RequestParam() int id) {
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
+    public ModelAndView assetInfoView(@PathVariable(name = "id") int id) {
         Optional<AssetInstance> assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
         if (!assetInstanceOpt.isPresent()) {
@@ -47,13 +47,8 @@ public class AssetViewController {
     public ModelAndView requestAsset(@RequestParam("assetId") int id){
         ModelAndView assetInfoView = assetInfoView(id);
 
-        try {
-            boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
-            SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
-            return assetInfoView;
-        } catch (Exception e) {
-            System.out.println("ENTRE");
-        }
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
+        SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         return assetInfoView;
 

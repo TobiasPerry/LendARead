@@ -75,4 +75,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return assetDao.deleteAsset(id);
     }
 
+    @Override
+    public boolean isOwner(int id, String email) {
+        Optional<AssetInstance> assetInstance = getAssetInstance(id);
+        return assetInstance.map(instance -> instance.getOwner().getEmail().equals(email)).orElse(false);
+    }
+
 }

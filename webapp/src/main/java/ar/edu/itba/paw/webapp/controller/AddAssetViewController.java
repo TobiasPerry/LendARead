@@ -84,7 +84,7 @@ final public class AddAssetViewController {
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm){
 
         final ModelAndView mav = new ModelAndView(viewName);
-        Collection<? extends GrantedAuthority> auth =  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        Collection<? extends GrantedAuthority> auth =  userService.getCurrentRoles();
         if(auth.contains(new SimpleGrantedAuthority("ROLE_BORROWER"))){
             mav.addObject("borrowerUser","true");
         }else {

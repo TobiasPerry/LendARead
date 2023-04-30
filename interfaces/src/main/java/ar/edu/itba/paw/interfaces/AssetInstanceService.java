@@ -15,4 +15,6 @@ public interface AssetInstanceService {
 
     public List<AssetInstance> getAllAssetsInstances();
     boolean removeAssetInstance(int id);
+
+    boolean isOwner(int id,String email);
 }
