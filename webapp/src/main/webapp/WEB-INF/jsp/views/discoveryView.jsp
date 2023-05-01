@@ -100,9 +100,9 @@
                 </ul>
 
 
-                <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter"/>
-                <a href="/discovery">
-                    <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.clear"/>"/>
+                <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
+                <a href="<c:url value="/discovery"/>">
+                    <input class="btn btn-outline-dark" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
                 </a>
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
             </form:form>
