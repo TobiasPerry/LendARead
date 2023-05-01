@@ -16,31 +16,28 @@ document.addEventListener("DOMContentLoaded",(event)=> {
         let j = 0
         for (const author of document.getElementsByClassName("authorLabel")) {
             if (document.getElementById("author-" + i).checked) {
-                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[` + j + `]" id="authorId-` + j + `">`
-                document.getElementById("authorId-" + j).value = document.getElementById("author-" + i + "-label").childNodes[0].textContent
-                console.log(document.getElementById("author-" + i + "-label").childNodes[0].textContent)
+                const value = document.getElementById("author-" + i + "-label").childNodes[0].textContent
+                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[` + j + `]" id="authorId-` + j + `" value="` + value + `">`
                 j++
             }
             i++
         }
         i = 0
         j = 0
-        for (const author of document.getElementsByClassName("languageLabel")) {
+        for (const language of document.getElementsByClassName("languageLabel")) {
             if (document.getElementById("language-" + i).checked) {
-                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + j + `]" id="languageId-` + j + `">`
-                document.getElementById("languageId-" + j).value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
-                console.log(document.getElementById("language-" + i + "-label").childNodes[0].textContent)
+                const value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
+                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + j + `]" id="languageId-` + j + `" value="` + value +  `">`
                 j++
             }
             i++
         }
         i = 0
         j = 0
-        for (const author of document.getElementsByClassName("physicalConditionLabel")) {
+        for (const physicalCondition of document.getElementsByClassName("physicalConditionLabel")) {
+            const value = document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent
             if (document.getElementById("physicalCondition-" + i).checked) {
-                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="physicalConditions[` + j + `]" id="physicalConditionId-` + j + `">`
-                document.getElementById("physicalConditionId-" + j).value = document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent
-                console.log(document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent)
+                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="physicalConditions[` + j + `]" id="physicalConditionId-` + j + `" value="` + value + `">`
                 j++
             }
             i++

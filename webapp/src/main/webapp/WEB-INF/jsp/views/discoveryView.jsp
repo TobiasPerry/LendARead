@@ -93,7 +93,6 @@
                                     <li class="list-group-item physicalCondition-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
                                 </ul>
                                 <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
-                                <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
