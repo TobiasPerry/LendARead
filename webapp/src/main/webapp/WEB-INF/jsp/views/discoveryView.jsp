@@ -35,8 +35,7 @@
     <div class="container-row">
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
 
-            <c:url	value="/discovery"	var="discoveryPageUrl"	/>
-            <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
+
                 <h5><spring:message code="discovery.filters.author"/></h5>
                 <ul>
                     <c:choose>
@@ -52,7 +51,6 @@
                                 <ul class="list-group">
                                     <li class="list-group-item author-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></li>
                                 </ul>
-                                <input type ="hidden" name="authors[${status.index}]" value="${author}"/>
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
@@ -72,7 +70,6 @@
                                 <ul class="list-group">
                                     <li class="list-group-item language-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
                                 </ul>
-                                <input type ="hidden" name="languages[${status.index}]" value="${language}"/>
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
@@ -92,19 +89,36 @@
                                 <ul class="list-group">
                                     <li class="list-group-item physicalCondition-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
                                 </ul>
-                                <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
                 </ul>
 
-
+            <c:url	value="/discovery"	var="discoveryPageUrl"	/>
+            <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
                 <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
-                <a href="<c:url value="/discovery"/>">
-                    <input class="btn btn-outline-dark" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
-                </a>
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
+
+
+                    <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
+                        <input type ="hidden" name="authors[${status.index}]" value="${author}"/>
+                    </c:forEach>
+
+
+
+                    <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
+                        <input type ="hidden" name="languages[${status.index}]" value="${language}"/>
+                    </c:forEach>
+
+
+                    <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
+                        <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
+                    </c:forEach>
+
             </form:form>
+            <a href="<c:url value="/discovery"/>">
+                <input class="btn btn-outline-dark" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
+            </a>
 
         </div>
 
