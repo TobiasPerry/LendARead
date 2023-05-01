@@ -35,67 +35,75 @@
     <div class="container-row">
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
 
-            <h5><spring:message code="discovery.filters.author"/></h5>
-            <ul>
-                <c:choose>
-                    <c:when test="${authorsFiltered.size() <= 0}">
-                        <c:forEach var="author" items="${authors}" varStatus="status">
-                            <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
-                            <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><c:out value="${author}"/></label>
-                            <br>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
-                            <ul class="list-group">
-                                <li class="list-group-item author-filtered-item"><c:out value="${author}"/></li>
-                            </ul>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-            <h5><spring:message code="discovery.filters.language"/></h5>
-            <ul>
-                <c:choose>
-                    <c:when test="${languagesFiltered.size() <= 0}">
-                        <c:forEach var="language" items="${languages}" varStatus="status">
-                            <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
-                            <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><c:out value="${language}"/></label>
-                            <br>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
-                            <ul class="list-group">
-                                <li class="list-group-item language-filtered-item"><c:out value="${language}"/></li>
-                            </ul>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-            <h5><spring:message code="discovery.filters.physicalCondition"/></h5>
-            <ul>
-                <c:choose>
-                    <c:when test="${physicalConditionsFiltered.size() <= 0}">
-                        <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
-                            <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
-                            <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><c:out value="${physicalCondition}"/></label>
-                            <br>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
-                            <ul class="list-group">
-                                <li class="list-group-item physicalCondition-filtered-item"><c:out value="${physicalCondition}"/></li>
-                            </ul>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
-
             <c:url	value="/discovery"	var="discoveryPageUrl"	/>
             <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
-                <input class="btn btn-light" type="submit" value="submit" id="submit-filter"/>
+                <h5><spring:message code="discovery.filters.author"/></h5>
+                <ul>
+                    <c:choose>
+                        <c:when test="${authorsFiltered.size() <= 0}">
+                            <c:forEach var="author" items="${authors}" varStatus="status">
+                                <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
+                                <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></label>
+                                <br>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
+                                <ul class="list-group">
+                                    <li class="list-group-item author-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></li>
+                                </ul>
+                                <input type ="hidden" name="authors[${status.index}]" value="${author}"/>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+                <h5><spring:message code="discovery.filters.language"/></h5>
+                <ul>
+                    <c:choose>
+                        <c:when test="${languagesFiltered.size() <= 0}">
+                            <c:forEach var="language" items="${languages}" varStatus="status">
+                                <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
+                                <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></label>
+                                <br>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
+                                <ul class="list-group">
+                                    <li class="list-group-item language-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
+                                </ul>
+                                <input type ="hidden" name="languages[${status.index}]" value="${language}"/>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+                <h5><spring:message code="discovery.filters.physicalCondition"/></h5>
+                <ul>
+                    <c:choose>
+                        <c:when test="${physicalConditionsFiltered.size() <= 0}">
+                            <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
+                                <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
+                                <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></label>
+                                <br>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
+                                <ul class="list-group">
+                                    <li class="list-group-item physicalCondition-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
+                                </ul>
+                                <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
+                                <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+
+
+                <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter"/>
+                <a href="/discovery">
+                    <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.clear"/>"/>
+                </a>
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
             </form:form>
 
