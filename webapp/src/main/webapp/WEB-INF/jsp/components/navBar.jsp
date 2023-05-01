@@ -39,7 +39,7 @@
                 <security:authorize access="!isAuthenticated()">
                 <li class="nav-item">
                     <a class="nav-link navItem" id="login"  aria-current="page" href="<c:url value='/login'/>">
-                        LogIn
+                        <spring:message code="auth.login"/>
                     </a>
                 </li>
                 </security:authorize>
