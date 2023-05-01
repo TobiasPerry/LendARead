@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface AssetInstanceService {
     Optional<AssetInstance> getAssetInstance(int id);
 
-    public Page getAllAssetsInstances(int pageNum);
+     Page getAllAssetsInstances(int pageNum);
 
-    public List<AssetInstance> getAllAssetsInstances();
+     List<AssetInstance> getAllAssetsInstances();
     boolean removeAssetInstance(int id);
 
     boolean isOwner(int id,String email);

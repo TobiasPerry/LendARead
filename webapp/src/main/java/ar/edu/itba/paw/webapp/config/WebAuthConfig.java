@@ -71,16 +71,16 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
-        http.sessionManagement().invalidSessionUrl("/login")
+        http.sessionManagement().invalidSessionUrl("/")
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .antMatchers("/login","/register").anonymous()
                 .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
                 .antMatchers("/addAsset").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/deleteAsset/**").hasRole("LENDER").accessDecisionManager(accessDecisionManager())
-                .antMatchers("/**").authenticated()
+                .antMatchers("/info/**").authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
-                .defaultSuccessUrl("/",   false) // Me va a volver a donde estaba antes
+                .defaultSuccessUrl("/")
                 .and().rememberMe().rememberMeParameter("rememberme")
                 .userDetailsService(userDetailsService)
                 .key(environment.getProperty("persistence.salt"))

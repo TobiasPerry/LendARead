@@ -42,7 +42,10 @@ public class IndexViewController {
     }
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        final ModelAndView mav = new ModelAndView("/views/index");
+        Page page = assetInstanceService.getAllAssetsInstances(1);
+
+        ModelAndView mav = new ModelAndView("/views/index");
+        mav.addObject("books", page.getBooks());
 
         return mav;
     }
