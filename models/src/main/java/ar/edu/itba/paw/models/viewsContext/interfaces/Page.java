@@ -10,4 +10,10 @@ public interface Page {
 
     int getTotalPages();
 
+    List<String> getAuthors();
+
+    List<String> getLanguages();
+
+    List<String> getPhysicalConditions();
+
 }

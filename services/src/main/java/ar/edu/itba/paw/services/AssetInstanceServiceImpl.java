@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,22 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     public Page getAllAssetsInstances(int pageNum){
+        return getAllAssetsInstances(pageNum, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
 
-        final int itemsPerPage = 5;
+    public Page getAllAssetsInstances(int pageNum, List<String> authors, List<String> languages, List<String> physicalConditions){
 
-        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage);
+        final int itemsPerPage = 15;
+
+        if(authors == null)
+            authors = new ArrayList<>();
+        if(languages == null)
+            languages = new ArrayList<>();
+        if(physicalConditions == null)
+            physicalConditions = new ArrayList<>();
+
+
+        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, authors, languages, physicalConditions);
 
         Page page;
 
@@ -51,8 +64,15 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             page = optionalPage.get();
             return page;
         }
-        return new PageImpl(new ArrayList<>(), 1, 1);
+        return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
 
+
+    @Override
+    public Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery) {
+        if(searchQuery != null)
+            return getAllAssetsInstances(pageNum, searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions());
+        return getAllAssetsInstances(pageNum);
     }
 
     @Override

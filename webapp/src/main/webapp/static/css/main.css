@@ -30,10 +30,22 @@
 .container-row-wrapped{
     display: flex;
     flex-flow: row wrap;
-    width: 100%;
     margin: auto;
     justify-content: center;
 }
+.container-row{
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.container-column{
+    display: flex;
+    flex-flow: column;
+    /*width: 100%;*/
+}
+
 .imagen-card{
     object-fit: fill;
 }
