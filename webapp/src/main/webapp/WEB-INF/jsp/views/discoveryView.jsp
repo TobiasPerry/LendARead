@@ -37,27 +37,60 @@
 
             <h5><spring:message code="discovery.filters.author"/></h5>
             <ul>
-                <c:forEach var="author" items="${authors}" varStatus="status">
-                    <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
-                    <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><c:out value="${author}"/></label>
-                    <br>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${authorsFiltered.size() <= 0}">
+                        <c:forEach var="author" items="${authors}" varStatus="status">
+                            <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
+                            <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><c:out value="${author}"/></label>
+                            <br>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
+                            <ul class="list-group">
+                                <li class="list-group-item author-filtered-item"><c:out value="${author}"/></li>
+                            </ul>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </ul>
             <h5><spring:message code="discovery.filters.language"/></h5>
             <ul>
-                <c:forEach var="language" items="${languages}" varStatus="status">
-                    <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
-                    <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><c:out value="${language}"/></label>
-                    <br>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${languagesFiltered.size() <= 0}">
+                        <c:forEach var="language" items="${languages}" varStatus="status">
+                            <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
+                            <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><c:out value="${language}"/></label>
+                            <br>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
+                            <ul class="list-group">
+                                <li class="list-group-item language-filtered-item"><c:out value="${language}"/></li>
+                            </ul>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </ul>
             <h5><spring:message code="discovery.filters.physicalCondition"/></h5>
             <ul>
-                <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
-                    <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
-                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><c:out value="${physicalCondition}"/></label>
-                    <br>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${physicalConditionsFiltered.size() <= 0}">
+                        <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
+                            <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
+                            <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><c:out value="${physicalCondition}"/></label>
+                            <br>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
+                            <ul class="list-group">
+                                <li class="list-group-item physicalCondition-filtered-item"><c:out value="${physicalCondition}"/></li>
+                            </ul>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </ul>
 
             <c:url	value="/discovery"	var="discoveryPageUrl"	/>
@@ -87,13 +120,6 @@
                 </div>
 
                 <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
-<%--                    PAGINATION--%>
-<%--                    <jsp:include page="../components/paginationButton.jsp">--%>
-<%--                        <jsp:param name="previous" value="${previousPage}"/>--%>
-<%--                        <jsp:param name="next" value="${nextPage}"/>--%>
-<%--                        <jsp:param name="page" value="${page}"/>--%>
-<%--                    </jsp:include>--%>
-
                     <div>
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
@@ -107,8 +133,8 @@
                             </ul>
                         </nav>
                     </div>
-<%--                    PAGINATION--%>
                 </div>
+
             </c:if>
             <c:if test="${books.size() <= 0}">
                 <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">

@@ -81,12 +81,15 @@ public class IndexViewController {
 
         List<String> authors = page.getAuthors();
         mav.addObject("authors", authors != null ? authors : new ArrayList<>());
+        mav.addObject("authorsFiltered", (searchFilterSortForm.getAuthors() != null) ? searchFilterSortForm.getAuthors(): new ArrayList<>());
 
         List<String> languages = page.getLanguages();
         mav.addObject("languages", languages != null ? languages : new ArrayList<>());
+        mav.addObject("languagesFiltered", (searchFilterSortForm.getLanguages() != null) ? searchFilterSortForm.getLanguages(): new ArrayList<>());
 
         List<String> physicalConditions = page.getPhysicalConditions();
         mav.addObject("physicalConditions", physicalConditions != null ? physicalConditions : new ArrayList<>());
+        mav.addObject("physicalConditionsFiltered", (searchFilterSortForm.getPhysicalConditions() != null) ? searchFilterSortForm.getPhysicalConditions(): new ArrayList<>());
 
         return mav;
     }
