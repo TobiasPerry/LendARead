@@ -86,7 +86,7 @@
             <h1><spring:message code="index.mainText"/></h1>
             <h2><spring:message code="index.subText"/></h2>
             <div class="d-flex justify-content-center mt-4">
-                <a href="<c:url value="/discovery/1"/>" class="btn-get-started scrollto"><spring:message code="index.button"/></a>
+                <a href="<c:url value="/discovery"/>" class="btn-get-started scrollto"><spring:message code="index.button"/></a>
             </div>
         </div>
         <div class="image-container">
