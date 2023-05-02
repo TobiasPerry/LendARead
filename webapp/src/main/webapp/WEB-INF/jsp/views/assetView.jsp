@@ -25,8 +25,9 @@
 </head>
 <body data-path="${path}" class=" body-class">
 <jsp:include page="../components/navBar.jsp"/>
-<div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: row-reverse;">
-        <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content">
+
+<div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
+        <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; min-width: 50%">
         <div class="container-row-wrapped">
             <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" class="mx-3" alt="Book cover" style="height: 500px; width: 300px; object-fit: cover">
             <div class="w-25 h-25 mx-5">
@@ -47,7 +48,22 @@
                 </form>
 
             </div>
-            <div class="card" style="background-color:#e3e6e3;width: 18rem;height: fit-content">
+
+        </div>
+
+    </div>
+
+    <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
+
+        <div class="container-column" style="flex: 0 0 60%; padding-right: 10px">
+            <div id="map" style="width: 100%;height: 300px; border-radius: 25px;"></div>
+        </div>
+        <input type="hidden"
+               value="<c:out value="${assetInstance.location.locality}"/>, <c:out value="${assetInstance.location.province}"/>, <c:out value="${assetInstance.location.country}"/> <c:out value="${assetInstance.location.zipcode}"/>"
+                id="address">
+
+        <div class="container-column" style="flex: 0 0 40%; padding-left: 10px">
+            <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
                     <h5 class="card-title">Donde esta el libro?</h5>
                     <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.zipcode" /></p>
@@ -63,22 +79,16 @@
                     <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
                 </div>
             </div>
-            <div id="map" style="width: 400px;height: 400px"></div>
-
-            <!--
-              The `defer` attribute causes the callback to execute after the full HTML
-              document has been parsed. For non-blocking uses, avoiding race conditions,
-              and consistent behavior across browsers, consider loading using Promises
-              with https://www.npmjs.com/package/@googlemaps/js-api-loader.
-              -->
-            <script
-                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
-                    defer
-            ></script>
-            </div>
         </div>
+
     </div>
+
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+            defer
+    ></script>
 </div>
+
 <spring:message code="borrowAssetView.borrowBookModal.title" var="modalTitle" />
 <spring:message code="borrowAssetView.borrowBookModal.text" var="modalText" />
 <% request.setCharacterEncoding("utf-8"); %>
