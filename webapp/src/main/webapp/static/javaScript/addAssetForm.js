@@ -1,7 +1,9 @@
 const multiStepForm = document.getElementById('form')
 
 const formSteps = [...multiStepForm.querySelectorAll('[data-step]')]
+const stepCounters = [...multiStepForm.querySelectorAll('.stepper-item')]
 
+let currentStep;
 let currentFS;
 
 
@@ -18,23 +20,30 @@ nextButtons.forEach(button => {
             return
         }
 
+        const nextStepCounter = currentStep.nextElementSibling;
+
         currentFS.classList.remove('active')
         currentFS.classList.add('previous')
 
         nextFS.classList.remove('next')
         nextFS.classList.add('active')
+        nextStepCounter.classList.add('active-step')
         currentFS = nextFS
+        currentStep = nextStepCounter
     })
 })
 
 prevButtons.forEach(button => {
     button.addEventListener('click', e => {
         const prevFS = currentFS.previousElementSibling
+        const prevStepCounter = currentStep.previousElementSibling
 
         currentFS.classList.remove('active')
         currentFS.classList.add('next')
         prevFS.classList.remove('previous')
         prevFS.classList.add('active')
+        currentStep.classList.remove('active-step')
+        currentStep = prevStepCounter
         currentFS = prevFS
     })
 })
@@ -157,6 +166,7 @@ document.addEventListener("DOMContentLoaded", e => {
     }
 
     currentFS = formSteps.find(step => step.dataset.step === fsIndex.toString())
+    currentStep = stepCounters[formSteps.indexOf(currentFS)]
     formSteps.forEach(form => {
         let step = parseInt(form.dataset.step)
         if (step < fsIndex) {
@@ -171,7 +181,14 @@ document.addEventListener("DOMContentLoaded", e => {
         form.classList.remove('d-none')
     })
 
-    console.log(fsIndex)
+
+    let stepCounterIndex = parseInt(currentStep.dataset.stepCount)
+    stepCounters.forEach(step => {
+        let index = parseInt(step.dataset.stepCount)
+        if (index <= stepCounterIndex) {
+            step.classList.add('active-step')
+        }
+    })
 
 
     //One final check. If the currentFS is 2, we should not make readOnly the empty inputs
