@@ -5,12 +5,14 @@ body {
 }
 h1, h2 {
     font-family: 'Overpass', sans-serif;
+    font-weight: bold;
     color: #111711;
 }
 .container {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-top: 50px;
 }
 table {
     width: 100%;
@@ -29,6 +31,7 @@ th, td {
     margin: 10px;
     text-align: center;
     border-radius: 10px;
+    color:  #2B3B2B;
 }
 th {
     background-color: #2B3B2B;
@@ -93,3 +96,32 @@ button {
 }
 
 .button-select:hover {opacity: 0.75;}
+.button-select-active {
+    background-color: #dfead9;
+}
+
+.container-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sidebar,
+.content {
+    flex: 1;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

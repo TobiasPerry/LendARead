@@ -21,87 +21,90 @@
 <body data-path="${path}" class = "body-class">
 
 <jsp:include page="../components/navBar.jsp"/>
-<div class="main-class">
-    <div class="container my-5">
-        <h1><spring:message code="greeting" /></h1>
+<div class="container">
+    <div class="container-flex">
+        <h1> <spring:message code="greeting" arguments="${userEmail}" /></h1>
         <div class="row">
-            <div class="col-md-4">
+            <div class="sidebar">
                 <div class="list-group">
                     <div class="list-group">
                         <form action="/changeTable" method="get">
                             <input type="hidden" name="type" value="my_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="my_books" /></button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select <c:if test='${table == "my_books"}'>button-select-active</c:if>"><spring:message code="my_books" /></button>
                         </form>
                         <form action="/changeTable" method="get">
                             <input type="hidden" name="type" value="lended_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="lended_books" /></button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select <c:if test='${table == "lended_books"}'>button-select-active</c:if>"><spring:message code="lended_books" /></button>
                         </form>
                         <form action="/changeTable" method="get">
                             <input type="hidden" name="type" value="borrowed_books">
-                            <button type="submit" class="list-group-item list-group-item-action button-select"><spring:message code="borrowed_books" /></button>
+                            <button type="submit" class="list-group-item list-group-item-action button-select <c:if test='${table == "borrowed_books"}'>button-select-active</c:if>"><spring:message code="borrowed_books" /></button>
                         </form>
                     </div>
 
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="content">
                 <c:choose>
                     <c:when test="${table == 'my_books'}">
-                    <div class="container">
+                        <div class="container">
                         <div class="table-title">
                             <h2><spring:message code="my_books" /></h2>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th><spring:message code="image" /></th>
-                                    <th><spring:message code="book_name" /></th>
-                                    <th><spring:message code="author" /></th>
-                                    <th><spring:message code="language" /></th>
-                                        <%--            <th><spring:message code="description" /></th>--%>
-                                    <th><spring:message code="status" /></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${userAssets.myBooks}" var="asset">
+                            <div class="table-container">
+                                <table class="table table-striped">
+                                    <thead>
                                     <tr>
-                                        <td>
-                                            <div class="image-container">
-                                                <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
+                                        <th><spring:message code="image" /></th>
+                                        <th><spring:message code="book_name" /></th>
+                                        <th><spring:message code="author" /></th>
+                                        <th><spring:message code="language" /></th>
+                                            <%--            <th><spring:message code="description" /></th>--%>
+                                        <th><spring:message code="status" /></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${userAssets.myBooks}" var="asset">
+                                        <tr>
+                                            <td>
+                                                <div class="image-container">
+                                                    <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
 
-                                                <div class="dropdown" style="position: absolute; bottom: 10px; right: 10px;">
-                                                    <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButton" onclick="toggleDropdown(event)">
-                                                        <i class="fas fa-ellipsis-v icon-style"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton" style="display: none;">
-                                                        <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
-                                                            <button class="dropdown-item" type="submit">Delete</button>
-                                                        </form>
+                                                    <div class="dropdown" style="position: absolute; bottom: 10px; right: 10px;">
+                                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButton" onclick="toggleDropdown(event)">
+                                                            <i class="fas fa-ellipsis-v icon-style"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton" style="display: none;">
+                                                            <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
+                                                                <button class="dropdown-item" type="submit">Delete</button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
 
-                                        <td>${asset.book.name}</td>
-                                        <td>${asset.book.author}</td>
-                                        <td>${asset.book.language}</td>
-                                            <%--              <td>${asset.description}</td>--%>
-                                        <td>
-                                            <form action="/changeStatus?id=${asset.id}" method="post">
-                                                <button class="button-status" type="submit">${asset.assetState.isPublic() ? 'Public' : 'Private'}</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                                            <td>${asset.book.name}</td>
+                                            <td>${asset.book.author}</td>
+                                            <td>${asset.book.language}</td>
+                                                <%--              <td>${asset.description}</td>--%>
+                                            <td>
+                                                <form action="/changeStatus?id=${asset.id}" method="post">
+                                                    <button class="button-status" type="submit">${asset.assetState.isPublic() ? 'Public' : 'Private'}</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </c:when>
                     <c:when test="${table == 'lended_books'}">
                         <c:choose>
                             <c:when test="${isLender}">
-                                    <div class="table-title">
-                                        <h2><spring:message code="lended_books" /></h2>
-                                        <table>
+                                <div class="table-title">
+                                    <h2><spring:message code="lended_books" /></h2>
+                                    <div class="table-container">
+                                        <table class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th><spring:message code="image" /></th>
@@ -128,6 +131,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="promo-box">
@@ -143,26 +147,28 @@
                     <c:when test="${table == 'borrowed_books'}">
                         <div class="table-title">
                             <h2><spring:message code="borrowed_books" /></h2>
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th><spring:message code="image" /></th>
-                                    <th><spring:message code="book_name" /></th>
-                                    <th><spring:message code="author" /></th>
-                                    <th><spring:message code="return_date" /></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${userAssets.borrowedBooks}" var="asset">
+                            <div class="table-container">
+                                <table class="table table-striped">
+                                    <thead>
                                     <tr>
-                                        <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
-                                        <td>${asset.book.name}</td>
-                                        <td>${asset.book.author}</td>
-                                        <td>${asset.dueDate}</td>
+                                        <th><spring:message code="image" /></th>
+                                        <th><spring:message code="book_name" /></th>
+                                        <th><spring:message code="author" /></th>
+                                        <th><spring:message code="return_date" /></th>
                                     </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${userAssets.borrowedBooks}" var="asset">
+                                        <tr>
+                                            <td> <img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"  alt="${asset.book.name}" /></td>
+                                            <td>${asset.book.name}</td>
+                                            <td>${asset.book.author}</td>
+                                            <td>${asset.dueDate}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         </div>
                     </c:when>
@@ -171,6 +177,7 @@
         </div>
     </div>
 </div>
+
 <spring:message code="userHomeView.changeAssetStatus.title" var="modalTitle" />
 <spring:message code="userHomeView.changeAssetStatus.text" var="modalText" />
 <% request.setCharacterEncoding("utf-8"); %>
