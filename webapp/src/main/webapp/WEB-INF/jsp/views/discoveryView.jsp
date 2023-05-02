@@ -133,9 +133,6 @@
 
         <div class="container-column" style="flex: 0 1 85%;">
             <c:if test="${books.size() > 0}">
-                <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
-                    <h1><spring:message code="discovery.title"/></h1>
-                </div>
 
                 <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
                     <c:forEach var="book" items="${books}">
