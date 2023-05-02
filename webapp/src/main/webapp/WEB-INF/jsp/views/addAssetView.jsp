@@ -38,21 +38,39 @@
             <div class="flex-container">
 
                 <div class="image-wrapper">
-                    <div class="image-container position-relative">
+                    <label for="uploadImage" class="image-container position-relative">
                         <img src="<c:url value="/static/images/no_image_placeholder.jpg"/>" alt="Book Cover"
                              class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
-                        <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary"
-                               id="uploadLabel">
+                        <div class="img-hover-text">
                             <i class="bi bi-cloud-upload"></i>
-                            <spring:message code="addAssetView.uploadImage"/>
-                        </label>
-                    </div>
+                            <spring:message code="addAssetView.uploadImage"></spring:message>
+                        </div>
+<%--                        <label for="uploadImage" class="position-absolute bottom-0 end-0 btn btn-primary"--%>
+<%--                               id="uploadLabel">--%>
+<%--                            <i class="bi bi-cloud-upload"></i>--%>
+<%--                            <spring:message code="addAssetView.uploadImage"/>--%>
+<%--                        </label>--%>
+                    </label>
                 </div>
 
                 <div class="form-wrapper">
                     <c:url var="addAssetUrl" value="/addAsset"/>
                     <form:form modelAttribute="addAssetForm" method="post"
                                action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
+                        <div class="stepper-wrapper">
+                            <div class="stepper-item" data-step-count="1">
+                                <div class="step-counter">1</div>
+                                <div class="step-name">ISBN</div>
+                            </div>
+                            <div class="stepper-item" data-step-count="2">
+                                <div class="step-counter">2</div>
+                                <div class="step-name">DATOS</div>
+                            </div>
+                            <div class="stepper-item" data-step-count="3">
+                                <div class="step-counter">3</div>
+                                <div class="step-name">UBICACIÓN</div>
+                            </div>
+                        </div>
                         <fieldset class="info-container d-none" data-step="1" id="isbn-fs">
                             <spring:message code="addAssetView.isbnLabel" var="isbnLabel"/>
                             <h2>ISBN</h2>
