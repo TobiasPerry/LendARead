@@ -50,7 +50,7 @@
                         <div class="table-title">
                             <h2><spring:message code="my_books" /></h2>
                             <div class="table-container">
-                                <table class="table table-striped">
+                                <table class="table">
                                     <thead>
                                     <tr>
                                         <th><spring:message code="image" /></th>
@@ -65,22 +65,23 @@
                                     <c:forEach items="${userAssets.myBooks}" var="asset">
                                         <tr>
                                             <td>
-                                                <div class="image-container">
-                                                    <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
+                                                <div class="cell-wrapper">
+                                                    <div class="image-container">
+                                                        <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
 
-                                                    <div class="dropdown" style="position: absolute; bottom: 10px; right: 10px;">
-                                                        <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButton" onclick="toggleDropdown(event)">
-                                                            <i class="fas fa-ellipsis-v icon-style"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton" style="display: none;">
-                                                            <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
-                                                                <button class="dropdown-item" type="submit">Delete</button>
-                                                            </form>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButton" onclick="toggleDropdown(event)">
+                                                                <i class="fas fa-ellipsis-v icon-style"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                                                                <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
+                                                                    <button class="dropdown-item" type="submit">Delete</button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-
                                             <td>${asset.book.name}</td>
                                             <td>${asset.book.author}</td>
                                             <td>${asset.book.language}</td>
@@ -103,7 +104,7 @@
                                 <div class="table-title">
                                     <h2><spring:message code="lended_books" /></h2>
                                     <div class="table-container">
-                                        <table class="table table-striped">
+                                        <table class="table">
                                             <thead>
                                             <tr>
                                                 <th><spring:message code="image" /></th>
@@ -147,7 +148,7 @@
                         <div class="table-title">
                             <h2><spring:message code="borrowed_books" /></h2>
                             <div class="table-container">
-                                <table class="table table-striped">
+                                <table class="table">
                                     <thead>
                                     <tr>
                                         <th><spring:message code="image" /></th>
@@ -189,7 +190,7 @@
 </html>
 <script>
     function toggleDropdown(event) {
-        event.stopPropagation(); // Prevent the click event from bubbling up
+        event.stopPropagation();
         var dropdownMenu = document.getElementById("dropdownMenu");
         if (dropdownMenu.style.display === "none") {
             dropdownMenu.style.display = "block";
@@ -198,7 +199,6 @@
         }
     }
 
-    // Close the dropdown menu if clicked outside
     document.addEventListener('click', function () {
         var dropdownMenu = document.getElementById("dropdownMenu");
         dropdownMenu.style.display = "none";
