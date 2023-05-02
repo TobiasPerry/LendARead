@@ -15,64 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@700&display=swap" rel="stylesheet">
     <style>
-        svg {
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        #hero {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #D0DCD0;
-        }
 
-        #hero .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        #hero .text-container {
-            flex: 1;
-            text-align: center;
-            padding: 20px;
-        }
-
-        #hero .image-container {
-            flex: 1;
-            text-align: center;
-            padding: 20px;
-        }
-
-        #hero img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        @media only screen and (max-width: 768px) {
-            #hero {
-                flex-direction: column;
-                height: auto;
-            }
-
-            #hero .container {
-                flex-direction: column;
-            }
-
-            #hero .text-container {
-                order: 2;
-                padding: 0 20px;
-            }
-
-            #hero .image-container {
-                order: 1;
-                padding: 0 20px;
-            }
-        }
     </style>
 </head>
 
