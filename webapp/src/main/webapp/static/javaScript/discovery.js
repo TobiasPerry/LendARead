@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded",(event)=> {
+document.addEventListener("DOMContentLoaded",()=> {
 
     document.getElementById("nextPageButton").addEventListener("click", () => {
         document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
