@@ -9,15 +9,66 @@
         <div class="modal-content rounded-3 border-0 shadow">
             <div class="modal-header border-0" style="text-align: center">
                 <div class="icon-box">
-                    <i class="fas fa-check fa-lg"></i>
+                    <c:choose>
+                        <c:when test="${modalType == 'changeBookVisibility'}">
+                            <i class="fas fa-eye-slash fa-lg"></i>
+                        </c:when>
+                        <c:when test="${modalType == 'deleteBook'}">
+                            <i class="fas fa-trash fa-lg"></i>
+                        </c:when>
+                    </c:choose>
                 </div>
-                <h3 class="modal-title w-100 mt-2"><c:out value="${param.modalTitle}" /></h3>
+                <h3 class="modal-title w-100 mt-2">
+                <c:choose>
+                <c:when test="${modalType == 'changeBookVisibility'}">
+                    <spring:message code="userHomeView.changeVisibilityTitle" />
+                </c:when>
+                    <c:when test="${modalType == 'deleteBook'}">
+                        <spring:message code="userHomeView.deleteBookTitle" />
+                    </c:when>
+                </c:choose>
+                </h3>
             </div>
             <div class="modal-body text-center py-0 border-0">
-                <p class="mb-4"><c:out value="${param.text}" /></p>
+                <p class="mb-4">
+                <c:choose>
+                    <c:when test="${modalType == 'changeBookVisibility'}">
+                        <spring:message code="userHomeView.changeVisibilityText" />
+                    </c:when>
+                    <c:when test="${modalType == 'deleteBook'}">
+                        <spring:message code="userHomeView.deleteBookText" />
+                    </c:when>
+                </c:choose>
+                <c:out value="${param.text}" /></p>
             </div>
             <div class="modal-footer border-0">
-                <a type="button"  class="btn btn-primary rounded-pill px-4 py-2" href="/userHome" style="background-color: #2B3B2B; border-color: #00B4A0;"><spring:message code="userHomeView.changeAssetStatus.callToAction" /></a>
+                <c:choose>
+                    <c:when test="${modalType == 'changeBookVisibility'}">
+                        <form action="/changeStatus?id=${assetId}" method="post">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+                               <spring:message code="yes" />
+                            </button>
+                        </form>
+                        <form action="/userHome" method="get">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+                                <spring:message code="no" />
+                            </button>
+                        </form>
+                    </c:when>
+                    <c:when test="${modalType == 'deleteBook'}">
+                        <form action="/deleteAsset/${assetId}" method="post">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+                                <spring:message code="yes" />
+                            </button>
+                        </form>
+                        <form action="/userHome" method="get">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+                                <spring:message code="no" />
+                            </button>
+                        </form>
+                    </c:when>
+                </c:choose>
+
             </div>
         </div>
     </div>
