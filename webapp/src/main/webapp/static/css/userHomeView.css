@@ -108,6 +108,7 @@ button {
 .sidebar,
 .content {
     flex: 1;
+    margin-top: 10px;
 }
 
 .table-container {

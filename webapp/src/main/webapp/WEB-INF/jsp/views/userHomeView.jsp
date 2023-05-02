@@ -47,7 +47,6 @@
             <div class="content">
                 <c:choose>
                     <c:when test="${table == 'my_books'}">
-                        <div class="container">
                         <div class="table-title">
                             <h2><spring:message code="my_books" /></h2>
                             <div class="table-container">
