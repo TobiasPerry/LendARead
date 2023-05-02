@@ -120,7 +120,7 @@ input[type="text"].loading:after {
     content: "";
     border-bottom: 2px solid #ccc;
     width: 100%;
-    top: 20px;
+    top: 2.5vh;
     left: -50%;
     z-index: 2;
 }
@@ -130,7 +130,7 @@ input[type="text"].loading:after {
     content: "";
     border-bottom: 2px solid #ccc;
     width: 100%;
-    top: 20px;
+    top: 2.5vh;
     left: 50%;
     z-index: 2;
 }
@@ -161,6 +161,7 @@ input[type="text"].loading:after {
 .stepper-item:first-child::before {
     content: none;
 }
+
 .stepper-item:last-child::after {
     content: none;
 }
