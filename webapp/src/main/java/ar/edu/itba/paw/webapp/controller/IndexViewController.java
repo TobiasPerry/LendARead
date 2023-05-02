@@ -36,10 +36,7 @@ public class IndexViewController {
         this.assetInstanceService = assetInstanceService;
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("path", "home");
-    }
+
     @RequestMapping( "/")
     public ModelAndView indexView(){
         Page page = assetInstanceService.getAllAssetsInstances(1);
@@ -52,8 +49,9 @@ public class IndexViewController {
 
     @RequestMapping("/discovery/{pageNum}")
     public ModelAndView discoveryView(@PathVariable String pageNum){
-        final ModelAndView mav = new ModelAndView("/views/discoveryView");
 
+        final ModelAndView mav = new ModelAndView("/views/discoveryView");
+        mav.addObject("path", "home");
         int pageNumParsed;
 
         try {
