@@ -80,7 +80,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/userHome","/changeStatus","/changeRole","/requestAsset/**","/addAssetView/**").authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
-                .defaultSuccessUrl("/",false)
+                .defaultSuccessUrl("/discovery",false)
                 .and().rememberMe().rememberMeParameter("rememberme")
                 .userDetailsService(userDetailsService)
                 .key(environment.getProperty("persistence.salt"))
