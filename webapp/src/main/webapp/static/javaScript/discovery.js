@@ -48,6 +48,8 @@ document.addEventListener("DOMContentLoaded",(event)=> {
             document.getElementById("springForm").innerHTML += `<input type ="hidden" name="search" value="` + search + `">`
         }
 
+        document.getElementById("currentPageID").value = "1";
+
         document.getElementById("springForm").submit();
     }
 
