@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
+import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,7 @@ public class UserDaoImpl implements UserDao {
     private static final RowMapper<Integer> ROW_MAPPER_ID = (rs, rownum) -> rs.getInt("id");
     private static final RowMapper<User> ROW_MAPPER_USER =  (rs,rownum)->new UserImpl(rs.getInt("id"),rs.getString("mail"),rs.getString("name"), rs.getString("telephone"),rs.getString("password"), Behaviour.fromString(rs.getString("behavior")) );
 
+    private static final RowMapper<PasswordResetToken> ROW_MAPPER_PASSWORD_TOKEN = (rs,rownum) ->new PasswordResetTokenImpl(rs.getString("token"),rs.getString("mail"),rs.getObject("expiration", LocalDate.class));
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
@@ -84,11 +88,33 @@ public class UserDaoImpl implements UserDao {
         return user.stream().findFirst();
     }
 
+    @Override
     public boolean changePassword(String email,String newPassword){
         String query = "UPDATE users SET password = ? WHERE mail = ?";
-        final int updates = jdbcTemplate.update(query,email,newPassword);
-        if(updates != 0)
-            return true;
-        return false;
+        final int updates = jdbcTemplate.update(query,newPassword,email);
+        return updates != 0;
     }
+    @Override
+    public boolean setForgotPasswordToken(PasswordResetToken passwordResetToken){
+        String query = "INSERT INTO resetpasswordinfo(token,userid,expiration) VALUES(?,?,?)";
+        Optional<User> user = getUser(passwordResetToken.getUser());
+        if (!user.isPresent())
+            return false;
+        final int insert = jdbcTemplate.update(query,passwordResetToken.getToken(),user.get().getId(),passwordResetToken.getExpiryDate());
+        return insert != 0;
+    }
+
+    @Override
+    public Optional<PasswordResetToken> getPasswordRestToken(String token){
+        String query = "SELECT * FROM resetpasswordinfo as s join users as u on s.userid = u.id WHERE s.token = ?";
+        List<PasswordResetToken> passwordResetToken = jdbcTemplate.query(query,ROW_MAPPER_PASSWORD_TOKEN,token);
+        return passwordResetToken.stream().findFirst();
+    }
+
+    public int deletePasswordRestToken(String token){
+        String query = "DELETE FROM resetpasswordinfo where token = ?";
+        final int delete = jdbcTemplate.update(query,token);
+        return delete;
+    }
+
 }

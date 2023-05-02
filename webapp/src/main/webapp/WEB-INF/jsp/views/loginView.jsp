@@ -62,7 +62,9 @@
                         <div class="pt-1 mb-4 text-center">
                             <a href="<c:url value="/register"/>" class="text-muted"><spring:message code="auth.doNotHaveAccount" /></a>
                         </div>
-
+                        <div class="pt-1 mb-4 text-center">
+                            <a href="<c:url value="/forgotPassword"/>" class="text-muted">Forgot password?</a>
+                        </div>
                     </form>
                 </div>
 

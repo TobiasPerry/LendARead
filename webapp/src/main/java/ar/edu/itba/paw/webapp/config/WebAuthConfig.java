@@ -73,7 +73,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http)	throws	Exception {
         http.sessionManagement().invalidSessionUrl("/")
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
-                .antMatchers("/login","/register").anonymous()
+                .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
                 .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
                 .antMatchers("/addAsset").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/deleteAsset/**").hasRole("LENDER").accessDecisionManager(accessDecisionManager())

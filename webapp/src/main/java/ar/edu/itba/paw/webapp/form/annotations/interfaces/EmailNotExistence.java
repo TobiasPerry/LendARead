@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.form.annotations.interfaces;
 
-import ar.edu.itba.paw.webapp.form.annotations.implementations.EmailExistenceImpl;
 import ar.edu.itba.paw.webapp.form.annotations.implementations.EmailNotExistenceImpl;
 
 import javax.validation.Constraint;
@@ -12,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy= EmailExistenceImpl.class)
-public @interface EmailExistence {
+@Constraint(validatedBy= EmailNotExistenceImpl.class)
+public @interface EmailNotExistence {
 
     String message() default "{auth.register.error}";
 

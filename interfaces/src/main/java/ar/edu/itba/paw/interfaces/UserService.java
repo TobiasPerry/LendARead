@@ -19,4 +19,7 @@ public interface UserService {
 
     Collection
             <? extends GrantedAuthority> getCurrentRoles();
+    boolean createChangePasswordToken(String email);
+    boolean changePassword(String token,String password);
+    boolean isTokenValid(String token);
 }

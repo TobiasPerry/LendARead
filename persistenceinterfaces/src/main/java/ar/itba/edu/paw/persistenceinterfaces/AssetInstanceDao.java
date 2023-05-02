@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface AssetInstanceDao {
     Optional<Integer> addAssetInstance(final int id,int ownerId,int locationId,int photoId,final AssetInstance ai);
 
