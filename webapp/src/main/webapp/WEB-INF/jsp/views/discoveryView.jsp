@@ -10,8 +10,11 @@
     <script src="<c:url value="/static/javaScript/discovery.js"/>"></script>
     <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
+    <link href="<c:url value="/static/css/discovery.css"/>" rel="stylesheet"/>
     <title>Lend a read</title>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -136,16 +139,24 @@
                     </c:forEach>
                 </div>
 
-                <div class="container-row-wrapped" style="margin-top: 25px; width: 100%;">
+                <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                     <div>
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center">
+                            <ul class="pagination justify-content-center align-items-center">
                                 <li class="page-item">
-                                    <button type="button" class="btn ${previousPage ? "" : "disabled"}" id="previousPageButton"><spring:message code="paginationButton.previous" /></button>
+                                    <button type="button" class="btn mx-5 pagination-button ${previousPage ? "" : "disabled"}" id="previousPageButton" style="border-color: rgba(255, 255, 255, 0)">
+                                        <i class="bi bi-chevron-left"></i>  <spring:message code="paginationButton.previous"/>
+                                    </button>
+                                </li>
+
+                                <li>
+                                    <c:out value="${currentPage}"/> / <c:out value="${totalPages}"/>
                                 </li>
 
                                 <li class="page-item">
-                                    <button type="button" class="btn ${nextPage ? "" : "disabled"}" id="nextPageButton"> <spring:message code="paginationButton.next"/> </button>
+                                    <button type="button" class="btn mx-5 pagination-button ${nextPage ? "" : "disabled"}" id="nextPageButton" style="border-color: rgba(255, 255, 255, 0)">
+                                        <spring:message code="paginationButton.next"/> <i class="bi bi-chevron-right"></i>
+                                    </button>
                                 </li>
                             </ul>
                         </nav>
