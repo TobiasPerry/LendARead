@@ -15,6 +15,8 @@
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -42,16 +44,18 @@
                 <ul>
                     <c:choose>
                         <c:when test="${authorsFiltered.size() <= 0}">
-                            <c:forEach var="author" items="${authors}" varStatus="status">
-                                <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
-                                <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></label>
-                                <br>
-                            </c:forEach>
+                            <ul style="max-height: 200px; overflow-y: scroll">
+                                <c:forEach var="author" items="${authors}" varStatus="status">
+                                    <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
+                                    <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></label>
+                                    <br>
+                                </c:forEach>
+                            </ul>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item author-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></li>
+                                    <li class="list-group-item author-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -61,16 +65,18 @@
                 <ul>
                     <c:choose>
                         <c:when test="${languagesFiltered.size() <= 0}">
-                            <c:forEach var="language" items="${languages}" varStatus="status">
-                                <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
-                                <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></label>
-                                <br>
-                            </c:forEach>
+                            <ul style="max-height: 200px; overflow-y: scroll">
+                                <c:forEach var="language" items="${languages}" varStatus="status">
+                                    <input class="form-check-input" type="checkbox" value="" id="language-${status.index}">
+                                    <label class="form-check-label languageLabel" for="language-${status.index}" id="language-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></label>
+                                    <br>
+                                </c:forEach>
+                            </ul>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item language-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
+                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -80,16 +86,18 @@
                 <ul>
                     <c:choose>
                         <c:when test="${physicalConditionsFiltered.size() <= 0}">
-                            <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
-                                <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
-                                <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></label>
-                                <br>
-                            </c:forEach>
+                            <ul style="max-height: 200px; overflow-y: scroll">
+                                <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
+                                    <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
+                                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></label>
+                                    <br>
+                                </c:forEach>
+                            </ul>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item physicalCondition-filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
+                                    <li class="list-group-item physicalCondition-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -98,7 +106,6 @@
 
             <c:url	value="/discovery"	var="discoveryPageUrl"	/>
             <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
-                <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
 
                 <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
@@ -115,10 +122,12 @@
 
 
             </form:form>
-            <a href="<c:url value="/discovery"/>">
-                <input class="btn btn-outline-dark" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
-            </a>
-
+            <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
+                <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
+                <a href="<c:url value="/discovery"/>">
+                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
+                </a>
+            </div>
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
