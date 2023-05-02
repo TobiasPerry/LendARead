@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.webapp.form;
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailExistence;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailNotExistence;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
 import lombok.Getter;
@@ -15,7 +14,7 @@ public class RegisterForm {
     @NotEmpty
     @Size(min = 3,max = 100)
     @Email
-    @EmailExistence
+    @EmailNotExistence
     private String email;
 
     @NotEmpty

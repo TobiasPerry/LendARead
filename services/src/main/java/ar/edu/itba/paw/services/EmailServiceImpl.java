@@ -54,4 +54,5 @@ class EmailServiceImpl implements EmailService {
         thymeleafContext.setVariables(variables);
         return templateEngine.process(mailTemplate, thymeleafContext);
     }
+
 }

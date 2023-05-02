@@ -42,3 +42,9 @@ CREATE TABLE IF NOT EXISTS lendings(
     lendDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     devolutionDate TIMESTAMP NOT NULL
 );
+CREATE TABLE IF NOT EXISTS resetpasswordinfo(
+    id SERIAL primary key,
+    token text UNIQUE NOT NULL,
+    userId INT references users(id) ON DELETE CASCADE,
+    expiration TIMESTAMP NOT  NULL
+)
