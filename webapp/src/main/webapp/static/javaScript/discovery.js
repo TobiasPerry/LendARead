@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded",(event)=> {
         document.getElementById("springForm").submit()
     });
 
-    document.getElementById("submit-filter").addEventListener("click", () => {
+    const submitFilters = (event) =>{
         event.preventDefault(); // Prevent the default form submission behavior
         let i = 0
         let j = 0
@@ -42,8 +42,20 @@ document.addEventListener("DOMContentLoaded",(event)=> {
             }
             i++
         }
+
+        const search = document.getElementById("search-bar").value
+        if(search !== "" && search != null) {
+            document.getElementById("springForm").innerHTML += `<input type ="hidden" name="search" value="` + search + `">`
+        }
+
         document.getElementById("springForm").submit();
-    }, true);
+    }
 
+    document.getElementById("submit-filter").addEventListener("click", submitFilters, true);
 
+    document.getElementById("search-bar").addEventListener("keyup", (event) => {
+        if(event.key === "Enter" || event.code === "Enter") {
+            submitFilters(event)
+        }
+    })
 })

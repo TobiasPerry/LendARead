@@ -66,7 +66,8 @@ public class IndexViewController {
                 pageNum,
                 new SearchQueryImpl( ( searchFilterSortForm.getAuthors() != null ) ? searchFilterSortForm.getAuthors() : new ArrayList<>(),
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
-                        ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>()
+                        ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
+                        ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : ""
                 )
         );
 
@@ -89,6 +90,8 @@ public class IndexViewController {
         List<String> physicalConditions = page.getPhysicalConditions();
         mav.addObject("physicalConditions", physicalConditions != null ? physicalConditions : new ArrayList<>());
         mav.addObject("physicalConditionsFiltered", (searchFilterSortForm.getPhysicalConditions() != null) ? searchFilterSortForm.getPhysicalConditions(): new ArrayList<>());
+
+        mav.addObject("search", (searchFilterSortForm.getSearch() != null) ? searchFilterSortForm.getSearch() : "");
 
         return mav;
     }

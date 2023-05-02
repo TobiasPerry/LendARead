@@ -9,4 +9,6 @@ public interface SearchQuery {
     List<String> getLanguages();
 
     List<String> getPhysicalConditions();
+
+    public String getSearch();
 }

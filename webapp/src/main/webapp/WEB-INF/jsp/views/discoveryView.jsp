@@ -25,7 +25,7 @@
             <div class="">
                 <div class="form">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control form-input" placeholder="Search anything...">
+                    <input type="text" class="form-control form-input" placeholder="Search anything..." id="search-bar" value="${search}">
                 </div>
             </div>
         </div>
@@ -99,21 +99,18 @@
                 <input class="btn btn-light" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
 
+                <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
+                    <input type ="hidden" name="authors[${status.index}]" value="${author}"/>
+                </c:forEach>
 
-                    <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
-                        <input type ="hidden" name="authors[${status.index}]" value="${author}"/>
-                    </c:forEach>
+                <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
+                    <input type ="hidden" name="languages[${status.index}]" value="${language}"/>
+                </c:forEach>
 
+                <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
+                    <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
+                </c:forEach>
 
-
-                    <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
-                        <input type ="hidden" name="languages[${status.index}]" value="${language}"/>
-                    </c:forEach>
-
-
-                    <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
-                        <input type ="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
-                    </c:forEach>
 
             </form:form>
             <a href="<c:url value="/discovery"/>">

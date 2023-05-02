@@ -119,51 +119,11 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     @Override
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage){
-
-        return getAllAssetInstances(pageNum, itemsPerPage, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-//
-//        int offset = (pageNum - 1) * itemsPerPage;
-//        int limit = itemsPerPage;
-//
-//        String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
-//                " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
-//                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
-//                " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-//                " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-//                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? LIMIT ? OFFSET ?";
-//
-//        String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-//                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
-//
-//        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, AssetState.PUBLIC.name(), limit, offset);
-//
-//        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name());
-//
-//        int totalPages;
-//
-//        if(!queryOutput.isEmpty())
-//            totalPages = queryOutput.get(0);
-//        else
-//            totalPages = 0;
-//
-//        String queryAuthors = "SELECT distinct b.author as author FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-//                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
-//        List<String> authors = jdbcTemplate.query(queryAuthors, ROW_MAPPER_AUTHORS, AssetState.PUBLIC.name());
-//
-//        String queryLanguages = "SELECT distinct b.language as language FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-//                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
-//        List<String> languages = jdbcTemplate.query(queryLanguages, ROW_MAPPER_LANGUAGES, AssetState.PUBLIC.name());
-//
-//        String queryPhysicalConditions = "SELECT distinct ai.physicalcondition as physicalcondition  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-//                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
-//        List<String> physicalConditions = jdbcTemplate.query(queryPhysicalConditions, ROW_MAPPER_PHYSICAL_CONDITIONS, AssetState.PUBLIC.name());
-//
-//        Page page = new PageImpl(assets, pageNum, totalPages, authors, languages, physicalConditions);
-//        return Optional.of(page);
+        return getAllAssetInstances(pageNum, itemsPerPage, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
     }
 
     @Override
-    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn) {
+    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn, String search) {
 
         int offset = (pageNum - 1) * itemsPerPage;
         int limit = itemsPerPage;
@@ -191,6 +151,20 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             queryFilters.append(" AND ai.physicalcondition IN (''");
             physicalConditionsIn.forEach((physicalCondition) -> queryFilters.append(",'").append(physicalCondition).append("'"));
             queryFilters.append(")");
+        }
+
+        if(!search.equals("")) {
+            String[] searchParsed = search.split(" ", 0);
+            queryFilters.append(" AND ( ");
+            for(String searchItem : searchParsed){
+                queryFilters.append(" UPPER(b.author) LIKE UPPER('%").append(searchItem).append("%') ");
+                queryFilters.append("OR");
+                queryFilters.append(" UPPER(b.title) LIKE UPPER('%").append(searchItem).append("%') ");
+                queryFilters.append("OR");
+            }
+            queryFilters.deleteCharAt(queryFilters.length() - 1);
+            queryFilters.deleteCharAt(queryFilters.length() - 1);
+            queryFilters.append(" )");
         }
 
         String pagination = " LIMIT ? OFFSET ?";

@@ -15,5 +15,5 @@ public interface AssetInstanceDao {
 
     Boolean changeStatus(int assetInstanceID, AssetState as);
 
-    Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn);
+    Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn, String search);
 }
