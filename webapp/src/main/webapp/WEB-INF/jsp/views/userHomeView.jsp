@@ -65,21 +65,13 @@
                                     <c:forEach items="${userAssets.myBooks}" var="asset">
                                         <tr>
                                             <td>
-                                                <div class="cell-wrapper">
-                                                    <div class="image-container">
-                                                        <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
-
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-link dropdown-toggle p-0" type="button" id="dropdownMenuButton" onclick="toggleDropdown(event)">
-                                                                <i class="fas fa-ellipsis-v icon-style"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
-                                                                <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
-                                                                    <button class="dropdown-item" type="submit">Delete</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div class="image-container">
+                                                    <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
+                                                    <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
+                                                        <button class="btn btn-link p-0 icon-delete" type="submit">
+                                                            <i class="fas fa-trash icon-style"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                             <td>${asset.book.name}</td>
@@ -88,7 +80,16 @@
                                                 <%--              <td>${asset.description}</td>--%>
                                             <td>
                                                 <form action="/changeStatus?id=${asset.id}" method="post">
-                                                    <button class="button-status" type="submit">${asset.assetState.isPublic() ? 'Public' : 'Private'}</button>
+                                                    <button class="button-status" type="submit">
+                                                        <c:choose>
+                                                            <c:when test="${asset.assetState.isPublic()}">
+                                                                <spring:message code="public" />
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <spring:message code="private" />
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
