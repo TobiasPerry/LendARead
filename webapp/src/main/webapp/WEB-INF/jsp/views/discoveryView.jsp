@@ -25,7 +25,7 @@
             <div class="">
                 <div class="form">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control form-input" placeholder="Search anything..." id="search-bar" value="${search}">
+                    <input type="text" class="form-control form-input" placeholder="<spring:message code="discovery.search.placeholder"/>" id="search-bar" value="${search}">
                 </div>
             </div>
         </div>
