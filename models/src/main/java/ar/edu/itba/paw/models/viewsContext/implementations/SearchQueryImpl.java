@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
-import jdk.nashorn.internal.objects.annotations.Getter;
 
 import java.util.List;
 

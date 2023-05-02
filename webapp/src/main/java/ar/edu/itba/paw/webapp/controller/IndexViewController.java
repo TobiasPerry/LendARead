@@ -40,16 +40,17 @@ public class IndexViewController {
         this.assetInstanceService = assetInstanceService;
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("path", "home");
-    }
+
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        final ModelAndView mav = new ModelAndView("/views/index");
+        Page page = assetInstanceService.getAllAssetsInstances(1);
+
+        ModelAndView mav = new ModelAndView("/views/index");
+        mav.addObject("books", page.getBooks());
 
         return mav;
     }
+
 
     @RequestMapping(value = "/discovery", method = RequestMethod.GET)
     public ModelAndView discoveryView(
@@ -72,6 +73,7 @@ public class IndexViewController {
         );
 
         final ModelAndView mav = new ModelAndView("/views/discoveryView");
+        mav.addObject("path","home");
         mav.addObject("books", page.getBooks());
         mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
         mav.addObject("previousPage", page.getCurrentPage() != 1);

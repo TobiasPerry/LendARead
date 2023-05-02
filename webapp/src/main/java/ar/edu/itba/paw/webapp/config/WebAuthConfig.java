@@ -1,14 +1,20 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
+import ar.edu.itba.paw.webapp.auth.DeleteAssetVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,7 +24,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -29,11 +38,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
+    private DeleteAssetVoter editListVoter;
+    @Autowired
     private Environment environment;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
@@ -47,17 +59,28 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }
+    @Bean
+    public AccessDecisionManager accessDecisionManager() {
+        List<AccessDecisionVoter<?>> decisionVoters = Arrays.asList(
+                new WebExpressionVoter(),
+                new RoleVoter(),
+                new AuthenticatedVoter(),
+                editListVoter
+        );
+        return new UnanimousBased(decisionVoters);
+    }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
-        http.sessionManagement().invalidSessionUrl("/login")
+        http.sessionManagement().invalidSessionUrl("/")
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .antMatchers("/login","/register").anonymous()
                 .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
                 .antMatchers("/addAsset").hasRole("LENDER")
-                .antMatchers("/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/deleteAsset/**").hasRole("LENDER").accessDecisionManager(accessDecisionManager())
+                .antMatchers("/userHome","/changeStatus","/changeRole","/requestAsset/**","/addAssetView/**").authenticated()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
-                .defaultSuccessUrl("/",   false) // Me va a volver a donde estaba antes
+                .defaultSuccessUrl("/",false)
                 .and().rememberMe().rememberMeParameter("rememberme")
                 .userDetailsService(userDetailsService)
                 .key(environment.getProperty("persistence.salt"))
@@ -67,6 +90,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 and().exceptionHandling().accessDeniedPage("/errors/403")
                 .and().csrf().disable();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth)	throws	Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());

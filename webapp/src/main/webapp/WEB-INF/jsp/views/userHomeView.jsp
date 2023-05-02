@@ -73,7 +73,7 @@
                                                         <i class="fas fa-ellipsis-v icon-style"></i>
                                                     </button>
                                                     <div class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton" style="display: none;">
-                                                        <form action="/deleteAsset?id=${asset.id}" method="post" style="display:inline;">
+                                                        <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
                                                             <button class="dropdown-item" type="submit">Delete</button>
                                                         </form>
                                                     </div>

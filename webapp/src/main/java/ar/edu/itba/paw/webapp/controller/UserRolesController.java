@@ -41,7 +41,6 @@ public class UserRolesController {
         actualAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ Behaviour.LENDER));
         Authentication newAuth = new
                 UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
-
         SecurityContextHolder.getContext().setAuthentication(newAuth);
         return new ModelAndView("redirect:" + request.getHeader("Referer"));
     }

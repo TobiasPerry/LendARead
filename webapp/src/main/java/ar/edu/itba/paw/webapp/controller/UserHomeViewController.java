@@ -9,10 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -65,8 +62,8 @@ public class UserHomeViewController {
         return home().addObject("showSnackbarSucess", "true");
     }
 
-    @RequestMapping(value ="/deleteAsset", method = RequestMethod.POST)
-    public ModelAndView deleteAsset(@RequestParam("id") int id) {
+    @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
+    public ModelAndView deleteAsset(@PathVariable("id") int id) {
         assetInstanceService.removeAssetInstance(id);
         return home();
     }
