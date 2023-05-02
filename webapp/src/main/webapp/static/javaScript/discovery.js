@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded",(event)=> {
+document.addEventListener("DOMContentLoaded",()=> {
 
     document.getElementById("nextPageButton").addEventListener("click", () => {
         document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
@@ -47,6 +47,8 @@ document.addEventListener("DOMContentLoaded",(event)=> {
         if(search !== "" && search != null) {
             document.getElementById("springForm").innerHTML += `<input type ="hidden" name="search" value="` + search + `">`
         }
+
+        document.getElementById("currentPageID").value = "1";
 
         document.getElementById("springForm").submit();
     }

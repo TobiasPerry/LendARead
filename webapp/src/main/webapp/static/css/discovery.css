@@ -1,0 +1,13 @@
+.pagination-button:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.filtered-item{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.scrollable-list{
+    max-height: 200px;
+    overflow-y: scroll;
+    width: 90%;
+}

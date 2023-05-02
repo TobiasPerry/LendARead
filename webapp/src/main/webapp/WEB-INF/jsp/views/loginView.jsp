@@ -34,7 +34,7 @@
                         <h2 class=" mb-3 pb-3 text-center" style="letter-spacing: 1px;"><spring:message code="auth.login" /></h2>
 
                         <div class="form-outline mb-4" style="width: 100%">
-                            <label style="width: 100%"><spring:message code="auth.username" />
+                            <label style="width: 100%"><spring:message code="auth.email" />
                                 <input class="form-control" type="text" name="email" />
                             </label>
                         </div>
