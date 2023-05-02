@@ -210,3 +210,7 @@ document.addEventListener("DOMContentLoaded", e => {
         }
     }
 })
+
+document.querySelector('.img-hover-text').addEventListener(e => {
+
+})
