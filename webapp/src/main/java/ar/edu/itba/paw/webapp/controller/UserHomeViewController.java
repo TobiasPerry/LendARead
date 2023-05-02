@@ -60,9 +60,20 @@ public class UserHomeViewController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return home().addObject("showSnackbarSucess", "true");
+        return home();
     }
 
+    @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
+    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) {
+        return home().addObject("showSnackbarSucess", "true")
+                     .addObject("modalType", "changeBookVisibility").addObject("assetId", assetId);
+    }
+
+    @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
+    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) {
+        return home().addObject("showSnackbarSucess", "true")
+                .addObject("modalType", "deleteBook").addObject("assetId", assetId);
+    }
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
     public ModelAndView deleteAsset(@PathVariable("id") int id) {
         assetInstanceService.removeAssetInstance(id);

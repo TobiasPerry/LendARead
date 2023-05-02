@@ -67,7 +67,7 @@
                                             <td>
                                                 <div class="image-container">
                                                     <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="${asset.book.name}" />
-                                                    <form action="/deleteAsset/${asset.id}" method="post" style="display:inline;">
+                                                    <form action="/deleteAssetModal?assetId=${asset.id}" method="post" style="display:inline;">
                                                         <button class="btn btn-link p-0 icon-delete" type="submit">
                                                             <i class="fas fa-trash icon-style"></i>
                                                         </button>
@@ -79,7 +79,7 @@
                                             <td>${asset.book.language}</td>
                                                 <%--              <td>${asset.description}</td>--%>
                                             <td>
-                                                <form action="/changeStatus?id=${asset.id}" method="post">
+                                                <form action="/showChangeVisibilityModal?assetId=${asset.id}" method="post">
                                                     <button class="button-status" type="submit">
                                                         <c:choose>
                                                             <c:when test="${asset.assetState.isPublic()}">
@@ -177,14 +177,11 @@
             </div>
         </div>
     </div>
-</div>
 
-<spring:message code="userHomeView.changeAssetStatus.title" var="modalTitle" />
-<spring:message code="userHomeView.changeAssetStatus.text" var="modalText" />
 <% request.setCharacterEncoding("utf-8"); %>
 <jsp:include page="../components/userHomeModal.jsp">
-    <jsp:param name="modalTitle" value="${modalTitle}"/>
-    <jsp:param name="text" value="${modalText}"/>
+    <jsp:param name="modalType" value="${modalType}"/>
+    <jsp:param name="assetId" value="${assetId}"/>
 </jsp:include>
 
 </body>
