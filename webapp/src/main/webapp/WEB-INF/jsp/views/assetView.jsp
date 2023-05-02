@@ -18,6 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="/static/javaScript/map.js"></script>
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
 </head>
@@ -61,7 +63,18 @@
                     <h3 class="textOverflow"><c:out value="${assetInstance.location.country}"/></h3>
                 </div>
             </div>
+            <div id="map" style="width: 400px;height: 400px"></div>
 
+            <!--
+              The `defer` attribute causes the callback to execute after the full HTML
+              document has been parsed. For non-blocking uses, avoiding race conditions,
+              and consistent behavior across browsers, consider loading using Promises
+              with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+              -->
+            <script
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+                    defer
+            ></script>
             </div>
         </div>
     </div>
