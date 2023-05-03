@@ -22,7 +22,7 @@
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
 
-    <script src="/static/javaScript/addAssetForm.js" defer></script>
+    <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
 </head>
 
 <body data-path="${path}" class="body-class">
