@@ -63,7 +63,7 @@ input[readonly] {
 }
 
 input[type="text"].loading {
-    background-image: url('/static/images/loading-gif.gif');
+    background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODk0ZGE1ZWExMGIyNDIwNWZiZTgyZmM3YmNiMTlhNzlkNmRiYmI5ZiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PXM/kSaZVSQFpTdle527cm/giphy.gif');
     background-repeat: no-repeat;
     background-position: right 4px center;
     background-size: 20px 20px;
@@ -202,8 +202,10 @@ input[type="text"].loading:after {
 }
 
 /*Buttons*/
-.my-secondary-button{
-    background-color: rgba(255, 255, 255, 0);    outline-color: #2B3B2B;    text-decoration-color: #2B3B2B;
+.my-secondary-button {
+    background-color: rgba(255, 255, 255, 0);
+    outline-color: #2B3B2B;
+    text-decoration-color: #2B3B2B;
 }
 
 .my-primary-button{
