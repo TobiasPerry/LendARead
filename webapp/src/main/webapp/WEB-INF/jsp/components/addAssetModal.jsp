@@ -18,7 +18,7 @@
         <p class="mb-4"><c:out value="${param.text}" /></p>
       </div>
       <div class="modal-footer border-0">
-        <form action="/changeRole" method="post">
+        <form action="<c:url value="/changeRole"/>" method="post">
           <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
             <spring:message code="addAssetView.changeRole" />
           </button>
