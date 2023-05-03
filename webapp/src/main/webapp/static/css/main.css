@@ -110,3 +110,22 @@ h1 h2 h3 h4 h5 h6{
 ::-webkit-scrollbar-thumb:hover {
     background-color: #111711;
 }
+.btn-green {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 8px 30px 10px 30px;
+    border-radius: 4px;
+    transition: 0.5s;
+    color: #fff;
+    background: #16df7e;
+    box-shadow: 0 8px 28px rgba(22, 223, 126, 0.45);
+}
+
+.btn-green:hover {
+    background: #206bfb;
+    color: #fff;
+    box-shadow: 0 8px 28px rgba(32, 107, 251, 0.45);
+}

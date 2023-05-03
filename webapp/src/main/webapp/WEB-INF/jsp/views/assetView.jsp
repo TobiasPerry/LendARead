@@ -53,8 +53,7 @@
                         value="${assetInstance.book.isbn}"/></h6>
 
                 <form action="<c:url value="/requestAsset?assetId=${assetInstance.id}"/>" method="post">
-                    <button type="submit" class="btn btn-primary"
-                            style="background-color: #2B3B2B;border-color: #D1E9C3">
+                    <button type="submit" class="btn btn-green">
                         <spring:message code="assetView.borrowButton"/>
                     </button>
                 </form>
