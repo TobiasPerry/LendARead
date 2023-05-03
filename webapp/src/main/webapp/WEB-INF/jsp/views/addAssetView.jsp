@@ -87,9 +87,9 @@
 
                             <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                             <div class="mt-3 form-button-container">
-                                <input type="button" class="prev-button btn btn-secondary mx-1"
+                                <input type="button" class="prev-button btn btn-outline-success mx-1"
                                        value="<spring:message code="addAssetView.steps.prevButton"/>" disabled/>
-                                <input type="button" class="next-button btn btn-primary mx-1"
+                                <input type="button" class="next-button btn btn-outline-success mx-1"
                                        value="<spring:message code="addAssetView.steps.nextButton"/>"/>
                             </div>
                         </fieldset>
@@ -151,8 +151,12 @@
                                 </div>
                             </div>
                             <div class="mt-3 form-button-container">
-                                <input type="button" class="prev-button btn btn-primary mx-1" value="Atrás"/>
-                                <input type="button" class="next-button btn btn-primary mx-1" value="Siguiente"/>
+                                <input type="button" class="prev-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.prevButton"/>"
+                                />
+                                <input type="button" class="next-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.nextButton"/>"
+                                />
                             </div>
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="3">
@@ -194,9 +198,11 @@
                                 </div>
                             </div>
                             <div class="mt-3 form-button-container">
-                                <input type="button" class="prev-button btn btn-primary mx-1" value="Atrás"/>
+                                <input type="button" class="prev-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.prevButton"/>"
+                                />
                                 <spring:message code="addAssetView.addButton" var="addButton"/>
-                                <input type="submit" class="btn btn-success mx-1"
+                                <input type="submit" class="btn btn-green mx-1"
                                        value="<c:out value="${addButton}"/>"/>
                             </div>
                         </fieldset>

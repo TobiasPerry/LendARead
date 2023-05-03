@@ -200,3 +200,14 @@ input[type="text"].loading:after {
 .image-container:hover .img-hover-text {
     opacity: 1;
 }
+
+/*Buttons*/
+.my-secondary-button{
+    background-color: rgba(255, 255, 255, 0);    outline-color: #2B3B2B;    text-decoration-color: #2B3B2B;
+}
+
+.my-primary-button{
+    background-color: rgba(255, 255, 255, 0);
+    outline-color: #2B3B2B;
+    text-decoration-color: #2B3B2B;
+}
