@@ -48,7 +48,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
-            sendBorrowerEmail(ai.get(), borrower);
+            sendBorrowerEmail(ai.get(), user.get());
             sendLenderEmail(ai.get(), borrower);
         }
         return saved;
@@ -98,7 +98,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
     }
 
-    private void sendBorrowerEmail(AssetInstance assetInstance, String borrower) {
+    private void sendBorrowerEmail(AssetInstance assetInstance, User borrower) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -108,10 +108,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         Location location = assetInstance.getLocation();
         Map<String,Object> variables = new HashMap<>();
         variables.put("book",book);
-        variables.put("borrower",borrower);
+        variables.put("borrower",borrower.getName());
         variables.put("owner",owner);
         variables.put("location",location);
 
-        emailService.sendEmail(borrower, "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
+        emailService.sendEmail(borrower.getEmail(), "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
     }
 }
