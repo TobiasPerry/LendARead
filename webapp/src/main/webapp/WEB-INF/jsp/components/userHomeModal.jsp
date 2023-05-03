@@ -44,24 +44,28 @@
             <div class="modal-footer border-0">
                 <c:choose>
                     <c:when test="${modalType == 'changeBookVisibility'}">
-                        <form action="/changeStatus?id=${assetId}" method="post">
+                        <c:url var="changeStatusUrl" value="/changeStatus?id=${assetId}"/>
+                        <form action="${changeStatusUrl}" method="post">
                             <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                                <spring:message code="yes" />
                             </button>
                         </form>
-                        <form action="/userHome" method="get">
+                        <c:url var="userHomeUrl" value="/userHome"/>
+                        <form action="${userHomeUrl}" method="get">
                             <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                                 <spring:message code="no" />
                             </button>
                         </form>
                     </c:when>
                     <c:when test="${modalType == 'deleteBook'}">
-                        <form action="/deleteAsset/${assetId}" method="post">
+                        <c:url var="deleteAssetUrl" value="/deleteAsset/${assetId}"/>
+                        <form action="${deleteAssetUrl}" method="post">
                             <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                                 <spring:message code="yes" />
                             </button>
                         </form>
-                        <form action="/userHome" method="get">
+                        <c:url var="userHomeUrl" value="/userHome"/>
+                        <form action="${userHomeUrl}" method="get">
                             <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                                 <spring:message code="no" />
                             </button>
