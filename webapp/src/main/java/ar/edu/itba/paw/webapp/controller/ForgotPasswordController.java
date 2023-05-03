@@ -25,27 +25,30 @@ public class ForgotPasswordController {
     }
 
     @RequestMapping("/forgotPassword")
-    public ModelAndView forgotPassword( @ModelAttribute("emailForm") final EmailForm emailForm){
+    public ModelAndView forgotPassword(@ModelAttribute("emailForm") final EmailForm emailForm) {
         return new ModelAndView("/views/forgotPassword");
     }
-    @RequestMapping(value = "/forgotPassword",method = RequestMethod.POST)
-    public ModelAndView forgotPasswordPost(@Valid @ModelAttribute("emailForm") final EmailForm emailForm,final BindingResult errors){
-        if(errors.hasErrors()) {
+
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    public ModelAndView forgotPasswordPost(@Valid @ModelAttribute("emailForm") final EmailForm emailForm, final BindingResult errors) {
+        if (errors.hasErrors()) {
             return forgotPassword(emailForm);
         }
         userService.createChangePasswordToken(emailForm.getEmail());
-        return new ModelAndView("redirect: /changePassword");
+        return new ModelAndView("redirect:/changePassword");
     }
+
     @RequestMapping("/changePassword")
-    public ModelAndView changePassword(@ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm){
+    public ModelAndView changePassword(@ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm) {
         return new ModelAndView("/views/changePassword");
     }
-    @RequestMapping(value = "/changePassword",method = RequestMethod.POST)
-    public ModelAndView changePasswordPost(@Valid @ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm,final BindingResult errors){
-        if(errors.hasErrors()) {
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public ModelAndView changePasswordPost(@Valid @ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm, final BindingResult errors) {
+        if (errors.hasErrors()) {
             return changePassword(changePasswordForm);
         }
         userService.changePassword(changePasswordForm.getToken(), changePasswordForm.getPassword());
-        return new ModelAndView("redirect: /login");
+        return new ModelAndView("redirect:/login");
     }
 }
