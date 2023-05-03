@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 public class ChangePasswordForm {
 
+    @Size(min = 3,max = 500)
     @ValidToken
     private String token;
 

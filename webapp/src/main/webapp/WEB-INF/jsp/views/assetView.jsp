@@ -41,7 +41,7 @@
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.language" />: <c:out value="${assetInstance.book.language}"/></h6>
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn" />: <c:out value="${assetInstance.book.isbn}"/></h6>
 
-                <form action="/requestAsset?assetId=${assetInstance.id}" method="post">
+                <form action="<c:url value="/requestAsset?assetId=${assetInstance.id}"/>" method="post">
                     <button type="submit" class="btn btn-primary" style="background-color: #2B3B2B;border-color: #D1E9C3">
                         <spring:message code="assetView.borrowButton" />
                     </button>
