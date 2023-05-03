@@ -67,17 +67,10 @@
 
     <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
 
-        <div class="container-column" style="flex: 0 0 60%; padding-right: 10px">
-            <div id="map" style="width: 100%;height: 300px; border-radius: 25px;"></div>
-        </div>
-        <input type="hidden"
-               value="<c:out value="${assetInstance.location.locality}"/>, <c:out value="${assetInstance.location.province}"/>, <c:out value="${assetInstance.location.country}"/> <c:out value="${assetInstance.location.zipcode}"/>"
-               id="address">
-
-        <div class="container-column" style="flex: 0 0 40%; padding-left: 10px">
+        <div class="container-column" style="flex: 0 0 100%">
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
-                    <h5 class="card-title">Donde esta el libro?</h5>
+                    <h5 class="card-title"><spring:message code="assetView.locationTitle"/></h5>
                     <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.zipcode"/></p>
                     <h3 class="textOverflow"><c:out value="${assetInstance.location.zipcode}"/></h3>
 
