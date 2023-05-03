@@ -74,7 +74,7 @@
                         </div>
                         <fieldset class="info-container d-none" data-step="1" id="isbn-fs">
                             <spring:message code="addAssetView.isbnLabel" var="isbnLabel"/>
-                            <h2><spring:message code="addAssetView.steps.LOCATION.title"/></h2>
+                            <h2><spring:message code="addAssetView.steps.ISBN.title"/></h2>
                             &#x1F6C8;
                             <text class="form-subtitle">
                                 <spring:message code="addAssetView.steps.ISBN_NOTE"/>
