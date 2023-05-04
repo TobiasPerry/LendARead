@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
@@ -12,8 +13,8 @@ import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,7 +84,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     private static final RowMapper<String> ROW_MAPPER_PHYSICAL_CONDITIONS = (rs, rownum) -> rs.getString("physicalcondition");
 
-//new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")
     @Autowired
     public AssetInstanceDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
@@ -129,38 +129,44 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         int limit = itemsPerPage;
 
         final StringBuilder queryFilters = new StringBuilder();
+        List<Object> objects = new ArrayList<>();
 
         String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
                 " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?";
-
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? ";
+        objects.add(AssetState.PUBLIC.name());
         if(!authorsIn.isEmpty()) {
-            queryFilters.append(" AND b.author IN (''");
-            authorsIn.forEach((author) -> queryFilters.append(",'").append(author).append("'"));
+            queryFilters.append("AND b.author IN (''");
+            authorsIn.forEach((author) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
+            objects.addAll(authorsIn);
         }
         if(!languagesIn.isEmpty()) {
             queryFilters.append(" AND b.language IN (''");
-            languagesIn.forEach((language) -> queryFilters.append(",'").append(language).append("'"));
+            languagesIn.forEach((language) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
+            objects.addAll(languagesIn);
         }
         if(!physicalConditionsIn.isEmpty()) {
             queryFilters.append(" AND ai.physicalcondition IN (''");
-            physicalConditionsIn.forEach((physicalCondition) -> queryFilters.append(",'").append(physicalCondition).append("'"));
+            physicalConditionsIn.forEach((physicalCondition) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
+            objects.addAll(physicalConditionsIn);
         }
 
         if(!search.equals("")) {
             String[] searchParsed = search.split(" ", 0);
             queryFilters.append(" AND ( ");
             for(String searchItem : searchParsed){
-                queryFilters.append(" UPPER(b.author) LIKE UPPER('%").append(searchItem).append("%') ");
+                queryFilters.append(" UPPER(b.author) LIKE UPPER(").append("?").append(") ");
+                objects.add("%" + searchItem +"%");
                 queryFilters.append("OR");
-                queryFilters.append(" UPPER(b.title) LIKE UPPER('%").append(searchItem).append("%') ");
+                queryFilters.append(" UPPER(b.title) LIKE UPPER(").append("?").append(") ");
                 queryFilters.append("OR");
+                objects.add("%" + searchItem +"%");
             }
             queryFilters.deleteCharAt(queryFilters.length() - 1);
             queryFilters.deleteCharAt(queryFilters.length() - 1);
@@ -168,14 +174,38 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         }
 
         String pagination = " LIMIT ? OFFSET ?";
-        query = query + queryFilters + pagination;
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, AssetState.PUBLIC.name(), limit, offset);
+        query = query + queryFilters + pagination ;
+
+
+        objects.add(limit);
+        objects.add(offset);
+
+        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
+
+        objects.remove(objects.size() - 1);
+        objects.remove(objects.size() - 1);
+
+        String queryAuthors = "SELECT distinct b.author as author FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status =? " + queryFilters ;
+
+        String queryLanguages = "SELECT distinct b.language as language FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters  ;
+
+        String queryPhysicalConditions = "SELECT distinct ai.physicalcondition as physicalcondition  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters ;
+
+        List<String> authors = jdbcTemplate.query(queryAuthors, ROW_MAPPER_AUTHORS,objects.toArray());
+
+        List<String> physicalConditions = jdbcTemplate.query(queryPhysicalConditions, ROW_MAPPER_PHYSICAL_CONDITIONS,objects.toArray());
+
+        List<String> languages = jdbcTemplate.query(queryLanguages, ROW_MAPPER_LANGUAGES, objects.toArray());
+
+        objects.add(0,itemsPerPage);
 
         String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?" + queryFilters;
-
-        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, itemsPerPage, AssetState.PUBLIC.name());
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status = ? " + queryFilters;
+        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT,objects.toArray());
 
         int totalPages;
 
@@ -183,18 +213,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             totalPages = queryOutput.get(0);
         else
             totalPages = 0;
-
-        String queryAuthors = "SELECT distinct b.author as author FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?" + queryFilters;
-        List<String> authors = jdbcTemplate.query(queryAuthors, ROW_MAPPER_AUTHORS, AssetState.PUBLIC.name());
-
-        String queryLanguages = "SELECT distinct b.language as language FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?" + queryFilters;
-        List<String> languages = jdbcTemplate.query(queryLanguages, ROW_MAPPER_LANGUAGES, AssetState.PUBLIC.name());
-
-        String queryPhysicalConditions = "SELECT distinct ai.physicalcondition as physicalcondition  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=?" + queryFilters;
-        List<String> physicalConditions = jdbcTemplate.query(queryPhysicalConditions, ROW_MAPPER_PHYSICAL_CONDITIONS, AssetState.PUBLIC.name());
 
         Page page = new PageImpl(assets, pageNum, totalPages, authors, languages, physicalConditions);
 
