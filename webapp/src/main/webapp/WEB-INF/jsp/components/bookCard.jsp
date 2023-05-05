@@ -5,7 +5,7 @@
 
 <div class="book-card">
     <a href="<c:url value="/info/${param.id}"/>" style="text-decoration: none">
-        <div class="card" style="background-color: rgba(255, 255, 255, 0); border-color: rgba(255, 255, 255, 0)">
+        <div class="card">
             <c:choose>
                 <c:when test="${param.imageId != 0}">
                     <img src="<c:url value="/getImage/${param.imageId}"/>" class="card-img-top imagen-card" alt="<c:out value="${param.bookTitle}"/> " style="height: 400px; object-fit: cover">

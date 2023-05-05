@@ -75,6 +75,7 @@
                                     <th><spring:message code="language"/></th>
                                         <%--            <th><spring:message code="description" /></th>--%>
                                     <th><spring:message code="status"/></th>
+                                    <th><spring:message code="delete"/></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -84,12 +85,6 @@
                                             <div class="image-container">
                                                 <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>"
                                                      alt="<c:out value="${asset.book.name}"/>"/>
-                                                <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
-                                                      method="post" style="display:inline;">
-                                                    <button class="btn btn-link p-0 icon-delete" type="submit">
-                                                        <i class="fas fa-trash icon-style"></i>
-                                                    </button>
-                                                </form>
                                             </div>
                                         </td>
                                         <td><c:out value="${asset.book.name}"/></td>
@@ -111,6 +106,14 @@
                                                 </button>
                                             </form>
                                         </td>
+                                    <td>
+                                        <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
+                                              method="post" style="display:inline;">
+                                            <button class="btn btn-link p-0 " type="submit">
+                                                <i class="fas fa-trash icon-style"></i>
+                                            </button>
+                                        </form>
+                                    </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
