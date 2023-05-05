@@ -114,6 +114,10 @@ button {
     margin-top: 10px;
 }
 
+.table-selector {
+    width: 100px;
+}
+
 .table-container {
     width: 100%;
     overflow-x: auto;
