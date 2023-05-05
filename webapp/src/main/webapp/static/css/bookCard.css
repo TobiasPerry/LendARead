@@ -12,11 +12,17 @@
     width: 18rem;
 }
 
+.card{
+    background-color: rgba(255, 255, 255, 0);
+    border-color: rgba(255, 255, 255, 0);
+}
+
 .card:hover {
-    /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); !* Add a box shadow on hover *!*/
+    /*box-shadow: 0 0 20px rgba(130, 206, 52, 0.7); !* Add a box shadow on hover *!*/
+    background-color: rgba(255, 255, 255, 0.6);
     transform: scale(1.05);
 }
 
 .card {
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }

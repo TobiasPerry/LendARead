@@ -124,17 +124,16 @@
 
             </form:form>
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
-                <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
+                <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="margin:10px; width: 100px"/>
                 <a href="<c:url value="/discovery"/>">
-                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
+                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
                 </a>
             </div>
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
 
-
-            <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
+            <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
                 <c:forEach var="book" items="${books}">
                     <% request.setCharacterEncoding("utf-8"); %>
                     <jsp:include page="../components/bookCard.jsp">
@@ -145,6 +144,7 @@
                     </jsp:include>
                 </c:forEach>
             </div>
+
             <c:if test="${books.size() > 0}">
                 <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                     <div>

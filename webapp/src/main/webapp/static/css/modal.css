@@ -28,3 +28,6 @@
 .icon-box i {
     font-size: 3rem;
 }
+.btn:hover{
+    background-color: #2B3B2B;
+}
