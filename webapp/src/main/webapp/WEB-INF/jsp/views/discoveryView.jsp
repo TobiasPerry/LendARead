@@ -124,26 +124,27 @@
 
             </form:form>
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
-                <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="width: 100px"/>
+                <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="margin:10px; width: 100px"/>
                 <a href="<c:url value="/discovery"/>">
-                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="width: 100px"/>
+                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
                 </a>
             </div>
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
 
-
-            <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
-                <c:forEach var="book" items="${books}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/bookCard.jsp">
-                        <jsp:param name="id" value="${book.id}"/>
-                        <jsp:param name="bookTitle" value="${book.book.name}"/>
-                        <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                        <jsp:param name="imageId" value="${book.imageId}"/>
-                    </jsp:include>
-                </c:forEach>
+            <div class="container-row-wrapped" style="margin-top: 20px; width: 90%;">
+                <div class="container-row-wrapped" style="margin: 0 20px; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px">
+                    <c:forEach var="book" items="${books}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="../components/bookCard.jsp">
+                            <jsp:param name="id" value="${book.id}"/>
+                            <jsp:param name="bookTitle" value="${book.book.name}"/>
+                            <jsp:param name="bookAuthor" value="${book.book.author}"/>
+                            <jsp:param name="imageId" value="${book.imageId}"/>
+                        </jsp:include>
+                    </c:forEach>
+                </div>
             </div>
             <c:if test="${books.size() > 0}">
                 <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
