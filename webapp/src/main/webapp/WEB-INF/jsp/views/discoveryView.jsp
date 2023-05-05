@@ -133,19 +133,18 @@
 
         <div class="container-column" style="flex: 0 1 85%;">
 
-            <div class="container-row-wrapped" style="margin-top: 20px; width: 90%;">
-                <div class="container-row-wrapped" style="margin: 0 20px; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px">
-                    <c:forEach var="book" items="${books}">
-                        <% request.setCharacterEncoding("utf-8"); %>
-                        <jsp:include page="../components/bookCard.jsp">
-                            <jsp:param name="id" value="${book.id}"/>
-                            <jsp:param name="bookTitle" value="${book.book.name}"/>
-                            <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                            <jsp:param name="imageId" value="${book.imageId}"/>
-                        </jsp:include>
-                    </c:forEach>
-                </div>
+            <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
+                <c:forEach var="book" items="${books}">
+                    <% request.setCharacterEncoding("utf-8"); %>
+                    <jsp:include page="../components/bookCard.jsp">
+                        <jsp:param name="id" value="${book.id}"/>
+                        <jsp:param name="bookTitle" value="${book.book.name}"/>
+                        <jsp:param name="bookAuthor" value="${book.book.author}"/>
+                        <jsp:param name="imageId" value="${book.imageId}"/>
+                    </jsp:include>
+                </c:forEach>
             </div>
+
             <c:if test="${books.size() > 0}">
                 <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                     <div>
