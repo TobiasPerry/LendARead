@@ -36,7 +36,7 @@
     <div class="container-flex">
         <h1><spring:message code="greeting" arguments="${userEmail}"/></h1>
         <div class="row">
-            <div class="sidebar">
+            <div class="sidebar table-selector">
                 <div class="list-group">
                     <div class="list-group">
                         <form action="<c:url value="/changeTable" />" method="get">
@@ -58,7 +58,6 @@
                                 <spring:message code="borrowed_books"/></button>
                         </form>
                     </div>
-
                 </div>
             </div>
             <div class="content">
@@ -209,19 +208,3 @@
 
 </body>
 </html>
-<script>
-    function toggleDropdown(event) {
-        event.stopPropagation();
-        var dropdownMenu = document.getElementById("dropdownMenu");
-        if (dropdownMenu.style.display === "none") {
-            dropdownMenu.style.display = "block";
-        } else {
-            dropdownMenu.style.display = "none";
-        }
-    }
-
-    document.addEventListener('click', function () {
-        var dropdownMenu = document.getElementById("dropdownMenu");
-        dropdownMenu.style.display = "none";
-    });
-</script>
