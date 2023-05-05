@@ -12,11 +12,10 @@ import java.util.Optional;
 public interface AssetInstanceService {
     Optional<AssetInstance> getAssetInstance(int id);
 
-     Page getAllAssetsInstances(int pageNum);
+    Page getAllAssetsInstances(int pageNum,int itemsPerPage);
 
      List<AssetInstance> getAllAssetsInstances();
-     Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery);
-
+    Page getAllAssetsInstances(int pageNum, int itemPerPage, SearchQuery searchQuery);
     boolean removeAssetInstance(int id);
 
     boolean isOwner(int id,String email);

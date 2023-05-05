@@ -40,13 +40,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return Optional.of(assetInstance);
     }
 
-    public Page getAllAssetsInstances(int pageNum){
-        return getAllAssetsInstances(pageNum, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
+    @Override
+    public Page getAllAssetsInstances(int pageNum,int itemsPerPage){
+        return getAllAssetsInstances(pageNum, itemsPerPage,new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
     }
 
-    public Page getAllAssetsInstances(int pageNum, List<String> authors, List<String> languages, List<String> physicalConditions, String search){
+    public Page getAllAssetsInstances(int pageNum,int itemsPerPage, List<String> authors, List<String> languages, List<String> physicalConditions, String search){
 
-        final int itemsPerPage = 15;
+
 
         if(authors == null)
             authors = new ArrayList<>();
@@ -68,27 +69,29 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
 
-    @Override
-    public Page getAllAssetsInstances(int pageNum, SearchQuery searchQuery) {
-        if(searchQuery != null)
-            return getAllAssetsInstances(pageNum, searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions(), searchQuery.getSearch());
-        return getAllAssetsInstances(pageNum);
-    }
+
 
     @Override
     public List<AssetInstance> getAllAssetsInstances() {
         int pageNumber = 1;
-        Page allAssetInstances = getAllAssetsInstances(pageNumber);
+        int itemPerPage = 15;
+        Page allAssetInstances = getAllAssetsInstances(pageNumber,itemPerPage);
 
         List<AssetInstance> combinedBooks = new ArrayList<>(allAssetInstances.getBooks());
         while (allAssetInstances.getCurrentPage() < allAssetInstances.getTotalPages()) {
             pageNumber++;
-            allAssetInstances = getAllAssetsInstances(pageNumber);
+            allAssetInstances = getAllAssetsInstances(pageNumber,itemPerPage);
             combinedBooks.addAll(allAssetInstances.getBooks());
         }
 
        return combinedBooks;
     }
+
+    @Override
+    public Page getAllAssetsInstances(int pageNum, int itemPerPage, SearchQuery searchQuery) {
+        if(searchQuery != null)
+            return getAllAssetsInstances(pageNum, itemPerPage,searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions(), searchQuery.getSearch());
+        return getAllAssetsInstances(pageNum,itemPerPage);    }
 
     @Override
     public boolean removeAssetInstance(int id) {

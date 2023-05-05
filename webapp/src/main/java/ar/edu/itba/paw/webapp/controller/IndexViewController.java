@@ -43,7 +43,7 @@ public class IndexViewController {
 
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        Page page = assetInstanceService.getAllAssetsInstances(1);
+        Page page = assetInstanceService.getAllAssetsInstances(1,15);
 
         ModelAndView mav = new ModelAndView("/views/index");
         mav.addObject("books", page.getBooks());
@@ -64,7 +64,7 @@ public class IndexViewController {
         int pageNum = searchFilterSortForm.getCurrentPage();
 
         Page page = assetInstanceService.getAllAssetsInstances(
-                pageNum,
+                pageNum,15,
                 new SearchQueryImpl( ( searchFilterSortForm.getAuthors() != null ) ? searchFilterSortForm.getAuthors() : new ArrayList<>(),
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
                         ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
