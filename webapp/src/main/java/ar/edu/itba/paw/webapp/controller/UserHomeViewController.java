@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,13 +21,16 @@ public class UserHomeViewController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
+    private final UserService userService;
+
     private static final String registerViewName = "/views/userHomeView";
 
     @Autowired
-    public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
+    public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService, UserService userService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userAssetInstanceService = userAssetInstanceService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
@@ -38,7 +42,7 @@ public class UserHomeViewController {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
-        model.addObject("userEmail", currentUserEmail());
+        model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
         return model;
     }
 
