@@ -132,20 +132,20 @@
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
+
+
+            <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
+                <c:forEach var="book" items="${books}">
+                    <% request.setCharacterEncoding("utf-8"); %>
+                    <jsp:include page="../components/bookCard.jsp">
+                        <jsp:param name="id" value="${book.id}"/>
+                        <jsp:param name="bookTitle" value="${book.book.name}"/>
+                        <jsp:param name="bookAuthor" value="${book.book.author}"/>
+                        <jsp:param name="imageId" value="${book.imageId}"/>
+                    </jsp:include>
+                </c:forEach>
+            </div>
             <c:if test="${books.size() > 0}">
-
-                <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
-                    <c:forEach var="book" items="${books}">
-                        <% request.setCharacterEncoding("utf-8"); %>
-                        <jsp:include page="../components/bookCard.jsp">
-                            <jsp:param name="id" value="${book.id}"/>
-                            <jsp:param name="bookTitle" value="${book.book.name}"/>
-                            <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                            <jsp:param name="imageId" value="${book.imageId}"/>
-                        </jsp:include>
-                    </c:forEach>
-                </div>
-
                 <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                     <div>
                         <nav aria-label="Page navigation example">
@@ -169,8 +169,8 @@
                         </nav>
                     </div>
                 </div>
-
             </c:if>
+
             <c:if test="${books.size() <= 0}">
                 <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
                     <h1><spring:message code="discovery.noBooks" /></h1>

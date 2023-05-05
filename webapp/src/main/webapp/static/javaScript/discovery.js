@@ -1,14 +1,24 @@
 document.addEventListener("DOMContentLoaded",()=> {
 
-    document.getElementById("nextPageButton").addEventListener("click", () => {
-        document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
-        document.getElementById("springForm").submit()
-    });
+    const nextPageButton = document.getElementById("nextPageButton");
+    if(nextPageButton != null) {
+        nextPageButton.addEventListener("click", () => {
+            document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
+            document.getElementById("springForm").submit()
+        });
+    }else{
+        document.getElementById("currentPageID").value = 1;
+    }
 
-    document.getElementById("previousPageButton").addEventListener("click", () => {
-        document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) - 1
-        document.getElementById("springForm").submit()
-    });
+    const previousPageButton = document.getElementById("previousPageButton");
+    if(previousPageButton != null) {
+        previousPageButton.addEventListener("click", () => {
+            document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) - 1
+            document.getElementById("springForm").submit()
+        });
+    }else{
+        document.getElementById("currentPageID").value = 1;
+    }
 
     const submitFilters = (event) =>{
         event.preventDefault(); // Prevent the default form submission behavior
