@@ -21,15 +21,11 @@
             <c:forEach items="${userAssets.myBooks}" var="asset">
                 <tr>
                     <td>
-                        <div class="image-container">
-                            <img class="image" src="<c:url value='/getImage/${asset.imageId}'/>"
-                                 alt="<c:out value="${asset.book.name}"/>"/>
-                        </div>
+                        <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
                     </td>
                     <td><c:out value="${asset.book.name}"/></td>
                     <td><c:out value="${asset.book.author}"/></td>
                     <td><c:out value="${asset.book.language}"/></td>
-                        <%--              <td>${asset.description}</td>--%>
                     <td>
                         <form action="<c:url value="/showChangeVisibilityModal?assetId=${asset.id}"/>"
                               method="post">

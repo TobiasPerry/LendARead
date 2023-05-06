@@ -17,8 +17,9 @@
             <tbody>
             <c:forEach items="${userAssets.borrowedBooks}" var="asset">
                 <tr>
-                    <td><img class="image" src="<c:url value="/getImage/${asset.imageId}"/>"
-                             alt="${asset.book.name}"/></td>
+                    <td>
+                        <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
+                    </td>
                     <td><c:out value="${asset.book.name}"/></td>
                     <td><c:out value="${asset.book.author}"/></td>
                     <td><c:out value="${asset.dueDate}"/></td>
