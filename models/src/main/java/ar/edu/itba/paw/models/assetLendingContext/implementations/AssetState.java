@@ -17,13 +17,23 @@ public enum AssetState {
     BORROWED(){
         @Override
         public boolean isBorrowed() {
-            return false;
+            return true;
+        }
+    },
+    PENDING(){
+        @Override
+        public boolean isPending() {
+            return true;
         }
     };
 
+
     public boolean isPublic() { return false;}
     public boolean isBorrowed() { return false;}
-    public boolean isPrivate() { return true; }
+    public boolean isPrivate() { return false; }
+    public boolean isPending() {
+        return false;
+    }
 
     public static AssetState fromString(String value) {
         if (value != null) {

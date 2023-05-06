@@ -80,7 +80,7 @@ public class UserHomeViewController {
         ModelAndView model = new ModelAndView(registerViewName);
 
         model.addObject("isLender", !currentUserIsBorrower());
-
+        System.out.println(table + filter);
         model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filter));
         model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
         model.addObject("filter", filter);
