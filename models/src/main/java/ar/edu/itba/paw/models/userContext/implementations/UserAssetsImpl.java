@@ -14,6 +14,17 @@ public final class UserAssetsImpl implements UserAssets {
     private  final   List<AssetInstance> myBooks;
 
     @Override
+    public UserAssets filter(String table, String attribuite) {
+        return this;
+    }
+
+    @Override
+    public UserAssets sort(String table, String attribuite) {
+        return this;
+    }
+
+
+    @Override
     public List<BorrowedAssetInstance> getLendedBooks() {
         return lendedBooks;
     }

@@ -41,18 +41,24 @@
                     <div class="list-group">
                         <form action="<c:url value="/changeTable" />" method="get">
                             <input type="hidden" name="type" value="my_books">
+                            <input type="hidden" name="filter" value="${filter}">
+                            <input type="hidden" name="lastTable" value="${table}">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "my_books"}'>button-select-active</c:if>">
                                 <spring:message code="my_books"/></button>
                         </form>
                         <form action="<c:url value="/changeTable" />" method="get">
                             <input type="hidden" name="type" value="lended_books">
+                            <input type="hidden" name="filter" value="${filter}">
+                            <input type="hidden" name="lastTable" value="${table}">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "lended_books"}'>button-select-active</c:if>">
                                 <spring:message code="lended_books"/></button>
                         </form>
                         <form action="<c:url value="/changeTable" />" method="get">
                             <input type="hidden" name="type" value="borrowed_books">
+                            <input type="hidden" name="filter" value="${filter}">
+                            <input type="hidden" name="lastTable" value="${table}">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "borrowed_books"}'>button-select-active</c:if>">
                                 <spring:message code="borrowed_books"/></button>

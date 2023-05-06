@@ -1,10 +1,69 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<style>
+    .filter-button {
+        background-color: #2B3B2B;
+        margin-right: 10px;
+        border-radius: 20px;
+    }
+    .filter-button-selected {
+        opacity: 1;
+    }
+
+    .filter-button:not(.filter-button-selected) {
+        opacity: 0.6;
+    }
+
+</style>
 <c:choose>
     <c:when test="${isLender}">
         <div class="table-title">
-            <h2><spring:message code="lended_books"/></h2>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <h2><spring:message code="lended_books"/></h2>
+                <div>
+                    <div class="d-inline-flex">
+                        <c:url var="filterUrl" value="/applyFilter"/>
+                        <form action="${filterUrl}" method="get">
+                            <input type="hidden" name="table" value="lended_books">
+                            <input type="hidden" name="filter" value="all">
+                            <button type="submit" class="btn btn-primary filter-button ${filter == 'all' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
+                                <spring:message code="userHomeView.all" />
+                            </button>
+                        </form>
+                    </div>
+                    <div class="d-inline-flex">
+                        <c:url var="filterUrl" value="/applyFilter"/>
+                        <form action="${filterUrl}" method="get">
+                            <input type="hidden" name="table" value="lended_books">
+                            <input type="hidden" name="filter" value="pending">
+                            <button type="submit" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                                <spring:message code="userHomeView.pending" />
+                            </button>
+                        </form>
+                    </div>
+                    <div class="d-inline-flex">
+                        <c:url var="filterUrl" value="/applyFilter"/>
+                        <form action="${filterUrl}" method="get">
+                            <input type="hidden" name="table" value="lended_books">
+                            <input type="hidden" name="filter" value="inProgress">
+                            <button type="submit" class="btn btn-primary filter-button ${filter == 'inProgress' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                                <spring:message code="userHomeView.inProgress" />
+                            </button>
+                        </form>
+                    </div>
+                    <div class="d-inline-flex">
+                        <c:url var="filterUrl" value="/applyFilter"/>
+                        <form action="${filterUrl}" method="get">
+                            <input type="hidden" name="table" value="lended_books">
+                            <input type="hidden" name="filter" value="delayed">
+                            <button type="submit" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                                <spring:message code="userHomeView.delayed" />
+                            </button>
+                        </form>
+            </div>
+        </div>
+            </div>
             <div class="table-container">
                 <table class="table">
                     <thead>

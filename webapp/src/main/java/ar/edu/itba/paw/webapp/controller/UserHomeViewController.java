@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserHomeViewController {
@@ -25,6 +29,8 @@ public class UserHomeViewController {
 
     private static final String registerViewName = "/views/userHomeView";
 
+    private final Map<String, String> filters = new HashMap<>();
+
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService, UserService userService) {
         this.assetInstanceService = assetInstanceService;
@@ -35,7 +41,7 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() {
-        return init().addObject("table", "my_books");
+        return init().addObject("table", "my_books").addObject("filter", "all");
     }
 
     private ModelAndView init() {
@@ -68,9 +74,19 @@ public class UserHomeViewController {
 
         return home();
     }
-    @RequestMapping(value ="/changeTab", method = RequestMethod.POST)
-    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("tab") String tab) {
-        return home().addObject("table", table).addObject("tab", tab);
+    @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
+    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) {
+
+        ModelAndView model = new ModelAndView(registerViewName);
+
+        model.addObject("isLender", !currentUserIsBorrower());
+
+        model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filter));
+        model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
+        model.addObject("filter", filter);
+        model.addObject("table", table);
+
+        return model;
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
@@ -91,8 +107,9 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
-    public ModelAndView changeTable(@RequestParam("type") String table) {
-        return init().addObject("table", table);
+    public ModelAndView changeTable(@RequestParam("type") String table, @RequestParam("filter") String filter, @RequestParam("lastTable") String lastTable) {
+        filters.put(lastTable, filter);
+        return init().addObject("table", table).addObject("filter", filters.getOrDefault(table, "all"));
     }
 
     @ModelAttribute
