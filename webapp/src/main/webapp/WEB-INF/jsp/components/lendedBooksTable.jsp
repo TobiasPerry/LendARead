@@ -27,7 +27,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="all">
-                            <button type="submit" class="btn btn-primary filter-button ${filter == 'all' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show all lended books" class="btn btn-primary filter-button ${filter == 'all' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.all" />
                             </button>
                         </form>
@@ -37,7 +37,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="pending">
-                            <button type="submit" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show pending lended books" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.pending" />
                             </button>
                         </form>
@@ -47,7 +47,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="inProgress">
-                            <button type="submit" class="btn btn-primary filter-button ${filter == 'inProgress' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show in-progress lended books" class="btn btn-primary filter-button ${filter == 'inProgress' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.inProgress" />
                             </button>
                         </form>
@@ -57,7 +57,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="delayed">
-                            <button type="submit" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show delayed lended books" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.delayed" />
                             </button>
                         </form>
@@ -107,3 +107,11 @@
     </c:otherwise>
 </c:choose>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })
+</script>
