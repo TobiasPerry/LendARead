@@ -46,11 +46,13 @@ public class UserHomeViewController {
         return model;
     }
 
+    //to delete
     private boolean currentUserIsBorrower() {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .contains(new SimpleGrantedAuthority("ROLE_BORROWER"));
     }
 
+    //to delete
     private String currentUserEmail() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
@@ -65,6 +67,10 @@ public class UserHomeViewController {
             assetAvailabilityService.setAssetPublic(id);
 
         return home();
+    }
+    @RequestMapping(value ="/changeTab", method = RequestMethod.POST)
+    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("tab") String tab) {
+        return home().addObject("table", table).addObject("tab", tab);
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
