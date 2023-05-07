@@ -45,9 +45,13 @@ public class UserHomeViewController {
     }
 
     private ModelAndView init() {
+        return initWith(userAssetInstanceService.getUserAssets(currentUserEmail()));
+    }
+
+    private ModelAndView initWith(UserAssets userAssets) {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
-        model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
+        model.addObject("userAssets", userAssets);
         model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
         return model;
     }
@@ -77,28 +81,22 @@ public class UserHomeViewController {
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) {
 
-        ModelAndView model = new ModelAndView(registerViewName);
-
-        model.addObject("isLender", !currentUserIsBorrower());
-        System.out.println(table + filter);
-        model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filter));
-        model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
-        model.addObject("filter", filter);
-        model.addObject("table", table);
-
-        return model;
+        return initWith(userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filter))
+                .addObject("filter", filter).addObject("table", table);
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
     public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) {
         return home().addObject("showSnackbarSucess", "true")
-                     .addObject("modalType", "changeBookVisibility").addObject("assetId", assetId);
+                     .addObject("modalType", "changeBookVisibility")
+                     .addObject("assetId", assetId);
     }
 
     @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
     public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) {
         return home().addObject("showSnackbarSucess", "true")
-                .addObject("modalType", "deleteBook").addObject("assetId", assetId);
+                     .addObject("modalType", "deleteBook")
+                     .addObject("assetId", assetId);
     }
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
     public ModelAndView deleteAsset(@PathVariable("id") int id) {
@@ -109,7 +107,9 @@ public class UserHomeViewController {
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table, @RequestParam("filter") String filter, @RequestParam("lastTable") String lastTable) {
         filters.put(lastTable, filter);
-        return init().addObject("table", table).addObject("filter", filters.getOrDefault(table, "all"));
+        return initWith(userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filters.getOrDefault(table, "all")))
+                                    .addObject("table", table)
+                                    .addObject("filter", filters.getOrDefault(table, "all"));
     }
 
     @ModelAttribute
