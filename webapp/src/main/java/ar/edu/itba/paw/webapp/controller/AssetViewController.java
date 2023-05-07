@@ -3,15 +3,19 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
@@ -30,7 +34,7 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@PathVariable(name = "id") int id) {
+    public ModelAndView assetInfoView(@PathVariable(name = "id") int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm) {
         Optional<AssetInstance> assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
         if (!assetInstanceOpt.isPresent()) {
@@ -43,11 +47,16 @@ public class AssetViewController {
         return mav;
     }
 
-    @RequestMapping(value = "/requestAsset", method = RequestMethod.POST)
-    public ModelAndView requestAsset(@RequestParam("assetId") int id){
-        ModelAndView assetInfoView = assetInfoView(id);
+    @RequestMapping(value = "/requestAsset/{id}", method = RequestMethod.POST)
+    public ModelAndView requestAsset(@PathVariable(name = "id") int id, @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,final BindingResult errors){
+        //TODO manejar el error de la fecha
+        if (errors.hasErrors()){
+            System.out.println(errors);
+        }
+        ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm);
 
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(),LocalDate.parse(borrowAssetForm.getDate(),formatter));
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         return assetInfoView;
