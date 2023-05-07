@@ -20,20 +20,32 @@ public enum AssetState {
             return true;
         }
     },
-    PENDING(){
+    PENDING() {
         @Override
-        public boolean isPending() {
-            return true;
-        }
+        public boolean isPending() {return true; }
+
+    },
+//    CONFIRMED() {
+//        @Override
+//        public boolean isConfirmed() {return true;}
+//
+//    },
+    DELAYED() {
+        @Override
+        public boolean isDelayed() { return true;}
+
     };
 
 
     public boolean isPublic() { return false;}
     public boolean isBorrowed() { return false;}
     public boolean isPrivate() { return false; }
-    public boolean isPending() {
-        return false;
-    }
+
+    public boolean isPending() {return false; }
+
+//    public boolean isConfirmed() {return false;}
+
+    public boolean isDelayed() { return false;}
 
     public static AssetState fromString(String value) {
         if (value != null) {

@@ -20,6 +20,12 @@ public final class UserAssetsImpl implements UserAssets {
         if(table.equals("lended_books") && attribuite.equals("pending")) {
             this.lendedBooks = this.lendedBooks.stream().filter(book -> book.getAssetState().isPending()).collect(Collectors.toList());
         }
+        if(table.equals("lended_books") && attribuite.equals("delayed")) {
+            this.lendedBooks = this.lendedBooks.stream().filter(book -> book.getAssetState().isDelayed()).collect(Collectors.toList());
+        }
+        if(table.equals("lended_books") && attribuite.equals("confirmed")) {
+            this.lendedBooks = this.lendedBooks.stream().filter(book -> book.getAssetState().isBorrowed()).collect(Collectors.toList());
+        }
         return this;
     }
 

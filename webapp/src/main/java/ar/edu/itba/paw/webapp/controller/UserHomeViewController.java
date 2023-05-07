@@ -30,6 +30,7 @@ public class UserHomeViewController {
     private static final String registerViewName = "/views/userHomeView";
 
     private final Map<String, String> filters = new HashMap<>();
+    private  String currentTable = "my_books";
 
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService, UserService userService) {
@@ -41,30 +42,23 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() {
-        return init().addObject("table", "my_books").addObject("filter", "all");
+        return init().addObject("table", currentTable).addObject("filter", filters.getOrDefault(currentTable, "all"));
     }
 
     private ModelAndView init() {
-        return initWith(userAssetInstanceService.getUserAssets(currentUserEmail()));
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()));
     }
 
     private ModelAndView initWith(UserAssets userAssets) {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", userAssets);
-        model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
+        model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).get().getName());
         return model;
     }
 
-    //to delete
     private boolean currentUserIsBorrower() {
-        return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .contains(new SimpleGrantedAuthority("ROLE_BORROWER"));
-    }
-
-    //to delete
-    private String currentUserEmail() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return  userService.getCurrentRoles().contains(new SimpleGrantedAuthority("ROLE_BORROWER"));
     }
 
     @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
@@ -80,8 +74,8 @@ public class UserHomeViewController {
     }
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) {
-
-        return initWith(userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filter))
+        filters.put(table, filter);
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filter))
                 .addObject("filter", filter).addObject("table", table);
     }
 
@@ -105,9 +99,9 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
-    public ModelAndView changeTable(@RequestParam("type") String table, @RequestParam("filter") String filter, @RequestParam("lastTable") String lastTable) {
-        filters.put(lastTable, filter);
-        return initWith(userAssetInstanceService.getUserAssets(currentUserEmail()).filter(table, filters.getOrDefault(table, "all")))
+    public ModelAndView changeTable(@RequestParam("type") String table) {
+        currentTable = table;
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filters.getOrDefault(table, "all")))
                                     .addObject("table", table)
                                     .addObject("filter", filters.getOrDefault(table, "all"));
     }

@@ -46,8 +46,8 @@
                         <c:url var="filterUrl" value="/applyFilter"/>
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filter" value="inProgress">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show in-progress lended books" class="btn btn-primary filter-button ${filter == 'inProgress' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <input type="hidden" name="filter" value="confirmed">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show in-progress lended books" class="btn btn-primary filter-button ${filter == 'confirmed' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.inProgress" />
                             </button>
                         </form>
