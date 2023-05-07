@@ -15,6 +15,15 @@
         opacity: 0.6;
     }
 
+    .table-row-clickable {
+        cursor: pointer;
+        margin-bottom: 10px;
+        opacity: 0.7;
+    }
+    .table-row-clickable:hover {
+        opacity: 1;
+    }
+
 </style>
 <c:choose>
     <c:when test="${isLender}">
@@ -72,43 +81,24 @@
                         <th><spring:message code="book_name"/></th>
                         <th><spring:message code="expected_retrieval_date"/></th>
                         <th><spring:message code="borrower_name"/></th>
-                        <th><spring:message code="statusChange"/></th>
-
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${userAssets.lendedBooks}" var="asset">
-                        <tr>
+                        <tr class="table-row-clickable" data-href="<c:url value='/userBookDetails/${asset.id}'/>">
                             <td>
                                 <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
                             </td>
                             <td><c:out value="${asset.book.name}"/></td>
                             <td><c:out value="${asset.dueDate}"/></td>
                             <td><c:out value="${asset.borrower}"/></td>
-                            <td>
-                            <form action="<c:url value="/showChangeStatusModal?assetId=${asset.id}"/>"
-                                  method="post">
-                                <button class="button-status" type="submit">
-                                    <c:choose>
-                                        <c:when test="${asset.assetState.isBorrowed()}">
-                                            <spring:message code="userHomeView.inProgress"/>
-                                        </c:when>
-                                        <c:when test="${asset.assetState.isDelayed()}">
-                                            <spring:message code="userHomeView.delayed"/>
-                                        </c:when>
-                                        <c:when test="${asset.assetState.isPending()}">
-                                            <spring:message code="userHomeView.pending"/>
-                                        </c:when>
-                                    </c:choose>
-                                </button>
-                            </form>
-                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
             </div>
         </div>
+
     </c:when>
     <c:otherwise>
         <div class="promo-box">
@@ -129,4 +119,13 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
     })
+    document.addEventListener('DOMContentLoaded', function () {
+        var clickableRows = document.querySelectorAll('.table-row-clickable');
+        clickableRows.forEach(function (row) {
+            row.addEventListener('click', function () {
+                window.location.href = row.getAttribute('data-href');
+            });
+        });
+    });
+
 </script>
