@@ -30,7 +30,6 @@ public class UserHomeViewController {
     private static final String registerViewName = "/views/userHomeView";
 
     private final Map<String, String> filters = new HashMap<>();
-    private  String currentTable = "my_books";
 
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService, UserService userService) {
@@ -42,7 +41,7 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() {
-        return init().addObject("table", currentTable).addObject("filter", filters.getOrDefault(currentTable, "all"));
+        return init().addObject("table", "my_books").addObject("filter", "all");
     }
 
     private ModelAndView init() {
@@ -100,7 +99,6 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) {
-        currentTable = table;
         return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filters.getOrDefault(table, "all")))
                                     .addObject("table", table)
                                     .addObject("filter", filters.getOrDefault(table, "all"));
