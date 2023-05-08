@@ -98,7 +98,6 @@ function cleanISBN(isbn) {
 
 function isValidISBN(isbn) {
     if (isbn.length !== 10 && isbn.length !== 13) {
-        console.log("LEN ISBN")
         return false; // ISBN must be 10 or 13 digits long
     }
 
