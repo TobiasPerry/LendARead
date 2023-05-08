@@ -60,41 +60,11 @@ public class UserHomeViewController {
         return  userService.getCurrentRoles().contains(new SimpleGrantedAuthority("ROLE_BORROWER"));
     }
 
-    @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
-    public ModelAndView changeMyBookStatus(@RequestParam("id") int id) {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id).get();
-
-        if(assetInstance.getAssetState().isPublic())
-            assetAvailabilityService.setAssetPrivate(id);
-        else if(assetInstance.getAssetState().isPrivate())
-            assetAvailabilityService.setAssetPublic(id);
-
-        return home();
-    }
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) {
         filters.put(table, filter);
         return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filter))
                 .addObject("filter", filter).addObject("table", table);
-    }
-
-    @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
-    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) {
-        return home().addObject("showSnackbarSucess", "true")
-                     .addObject("modalType", "changeBookVisibility")
-                     .addObject("assetId", assetId);
-    }
-
-    @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
-    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) {
-        return home().addObject("showSnackbarSucess", "true")
-                     .addObject("modalType", "deleteBook")
-                     .addObject("assetId", assetId);
-    }
-    @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView deleteAsset(@PathVariable("id") int id) {
-        assetInstanceService.removeAssetInstance(id);
-        return home();
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
