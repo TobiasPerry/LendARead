@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
+import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class IndexViewController {
 
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        Page page = assetInstanceService.getAllAssetsInstances(1,15);
+        Page page = assetInstanceService.getAllAssetsInstances(1,4);
 
         ModelAndView mav = new ModelAndView("/views/index");
         mav.addObject("books", page.getBooks());
