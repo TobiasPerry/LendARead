@@ -66,6 +66,8 @@ async function checkAndFetchFromISBN() {
     }
 
     isbnInput.classList.add('loading')
+    nextButtons.item(0).readOnly = true
+
 
     let url = window.isbnUrl;
     const response = await fetch(url + isbn);
@@ -84,6 +86,7 @@ async function checkAndFetchFromISBN() {
     if (!book.language) languageInput.readOnly = false;
 
     isbnInput.classList.remove('loading')
+    nextButtons.item(0).readOnly = false
 
     isbnInput.value = isbn
     return true
@@ -209,8 +212,4 @@ document.addEventListener("DOMContentLoaded", e => {
             languageInput.readOnly = false
         }
     }
-})
-
-document.querySelector('.img-hover-text').addEventListener(e => {
-
 })
