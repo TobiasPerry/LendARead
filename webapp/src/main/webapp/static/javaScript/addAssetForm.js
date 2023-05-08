@@ -98,6 +98,7 @@ function cleanISBN(isbn) {
 
 function isValidISBN(isbn) {
     if (isbn.length !== 10 && isbn.length !== 13) {
+        console.log("LEN ISBN")
         return false; // ISBN must be 10 or 13 digits long
     }
 
@@ -106,16 +107,20 @@ function isValidISBN(isbn) {
 
     // Compute the checksum for ISBN-10
     if (isbn.length === 10) {
+        let checksum = 0
+
         for (let i = 0; i < 9; i++) {
-            checksum += parseInt(isbn.charAt(i)) * weights[i % 2];
+            checksum += parseInt(isbn.charAt(i)) * (i + 1)
         }
-        const lastDigit = isbn.charAt(9).toUpperCase();
-        if (lastDigit === 'X') {
-            checksum += 10;
+        let lastChar = isbn.charAt(9)
+        let lastDigit = 0
+        if (lastChar === 'X') {
+            lastDigit = 10
         } else {
-            checksum += parseInt(lastDigit);
+            lastDigit = parseInt(lastChar)
         }
-        return checksum % 11 === 0;
+
+        return checksum % 11 === lastDigit;
     }
 
     // Compute the checksum for ISBN-13
