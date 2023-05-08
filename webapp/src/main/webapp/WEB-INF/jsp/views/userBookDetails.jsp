@@ -29,6 +29,30 @@
 <body>
 
 <jsp:include page="../components/navBar.jsp"/>
+
+<div>
+
+    <form action="<c:url value="/showChangeVisibilityModal?assetId=${asset.id}"/>"
+          method="post">
+        <button class="button-status" type="submit">
+            <c:choose>
+                <c:when test="${asset.assetState.isPublic()}">
+                    <spring:message code="public"/>
+                </c:when>
+                <c:otherwise>
+                    <spring:message code="private"/>
+                </c:otherwise>
+            </c:choose>
+        </button>
+    </form>
+
+    <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
+          method="post" style="display:inline;">
+        <button class="btn btn-link p-0 " type="submit">
+            <i class="fas fa-trash icon-style"></i>
+        </button>
+    </form>
+</div>
 </body>
 <% request.setCharacterEncoding("utf-8"); %>
 <jsp:include page="../components/userHomeModal.jsp">

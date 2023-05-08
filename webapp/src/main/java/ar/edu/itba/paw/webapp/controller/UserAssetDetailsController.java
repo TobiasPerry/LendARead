@@ -24,7 +24,7 @@ public class UserAssetDetailsController {
     }
     @RequestMapping(value = "/userBookDetails/{assetId}", method = RequestMethod.GET)
     public ModelAndView userAssetDetails(@PathVariable(name = "assetId") int assetId) {
-        return new ModelAndView("/views/userBookDetails");
+        return new ModelAndView("/views/userBookDetails").addObject("asset", assetInstanceService.getAssetInstance(assetId).get());
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
@@ -55,6 +55,6 @@ public class UserAssetDetailsController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return new ModelAndView("redirect:/userHome");
+        return userAssetDetails(id);
     }
 }
