@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @Controller
-public class AssetViewController {
+final public class AssetViewController {
     private final static String SUCESS_MSG = "Libro agregado exitosamente!";
 
     private final AssetInstanceService assetInstanceService;
@@ -30,7 +30,7 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@PathVariable(name = "id") int id) {
+    public ModelAndView assetInfoView(@PathVariable(name = "id") final int id) {
         Optional<AssetInstance> assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
         if (!assetInstanceOpt.isPresent()) {
@@ -44,7 +44,7 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/requestAsset", method = RequestMethod.POST)
-    public ModelAndView requestAsset(@RequestParam("assetId") int id){
+    public ModelAndView requestAsset(@RequestParam("assetId") final int id){
         ModelAndView assetInfoView = assetInfoView(id);
 
         boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.now().plusWeeks(2));

@@ -18,7 +18,7 @@
     .table-row-clickable {
         cursor: pointer;
         margin-bottom: 10px;
-        opacity: 0.7;
+        opacity: 0.8;
     }
     .table-row-clickable:hover {
         opacity: 1;
@@ -70,8 +70,8 @@
                                 <spring:message code="userHomeView.delayed" />
                             </button>
                         </form>
-            </div>
-        </div>
+                    </div>
+                </div>
             </div>
             <div class="table-container">
                 <table class="table">
@@ -85,7 +85,8 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${userAssets.lendedBooks}" var="asset">
-                        <tr class="table-row-clickable" data-href="<c:url value='/userBookDetails/${asset.id}'/>">
+                        <c:url var="userUrl" value="/userBookDetails/${asset.id}"/>
+                        <tr class="table-row-clickable" data-href="${userUrl}">
                             <td>
                                 <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
                             </td>

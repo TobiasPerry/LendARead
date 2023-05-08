@@ -13,7 +13,7 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
     private final String dueDate;
 
     private final String borrower;
-    public BorrowedAssetInstanceImpl(AssetInstance assetInstance, String dueDate, String borrower) {
+    public BorrowedAssetInstanceImpl(final AssetInstance assetInstance, final String dueDate, final String borrower) {
         super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImageId(), assetInstance.getAssetState());
         this.dueDate = dueDate;
         this.borrower = borrower;
