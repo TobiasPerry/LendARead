@@ -29,8 +29,14 @@
 <body>
 
 <jsp:include page="../components/navBar.jsp"/>
-
+<div>
+<div class="back-button">
+    <a href="<c:url value='/userHomeReturn' />" class="btn btn-green">
+        <i class="fas fa-arrow-left"></i> <c:out value="${table}" />
+    </a>
+</div>
 <div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
+
     <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; min-width: 50%">
         <div class="container-row-wrapped">
             <img src="<c:url value="/getImage/${asset.imageId}"/>" class="mx-3" alt="Book cover"
@@ -54,26 +60,28 @@
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
 
+<%--                <c:when test="${asset.assetState.isPublic() or asset.assetState.isPrivate()}">--%>
                 <form action="<c:url value="/showChangeVisibilityModal?assetId=${asset.id}"/>"
-                  method="post">
-                <button class="btn-green" type="submit">
-                    <c:choose>
-                        <c:when test="${asset.assetState.isPublic()}">
-                            <spring:message code="public"/>
-                        </c:when>
-                        <c:otherwise>
-                            <spring:message code="private"/>
-                        </c:otherwise>
-                    </c:choose>
-                </button>
-            </form>
+                      method="post">
+                    <button class="btn-green" type="submit">
+                        <c:choose>
+                            <c:when test="${asset.assetState.isPublic()}">
+                                <spring:message code="public"/>
+                            </c:when>
+                            <c:otherwise>
+                                <spring:message code="private"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </button>
+                </form>
 
-            <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
-                  method="post" style="display:inline;">
-                <button class="btn-green " type="submit">
-                    <spring:message code="delete" />
-                </button>
-            </form>
+                <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
+                      method="post" style="display:inline;">
+                    <button class="btn-green " type="submit">
+                        <spring:message code="delete" />
+                    </button>
+                </form>
+<%--                </c:when>--%>
             </div>
         </div>
 
@@ -82,6 +90,7 @@
 
 
     </div>
+</div>
 </div>
 </body>
 <% request.setCharacterEncoding("utf-8"); %>

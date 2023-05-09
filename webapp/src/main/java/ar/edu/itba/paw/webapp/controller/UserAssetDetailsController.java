@@ -18,25 +18,35 @@ public class UserAssetDetailsController {
     private final AssetInstanceService assetInstanceService;
     private final AssetAvailabilityService assetAvailabilityService;
 
+    private  String table = "";
+
     public UserAssetDetailsController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
     }
+
+    @RequestMapping(value = "/userHomeReturn", method = RequestMethod.GET)
+    public ModelAndView returnUserHome() {
+        return new ModelAndView("redirect:/userHome");
+    }
     @RequestMapping(value = "/userBookDetails/{assetId}", method = RequestMethod.GET)
-    public ModelAndView userAssetDetails(@PathVariable(name = "assetId") int assetId) {
-        return new ModelAndView("/views/userBookDetails").addObject("asset", assetInstanceService.getAssetInstance(assetId).get());
+    public ModelAndView userAssetDetails(@PathVariable(name = "assetId") int assetId, @RequestParam("table") String table) {
+        this.table = table;
+        return new ModelAndView("/views/userBookDetails")
+                    .addObject("asset", assetInstanceService.getAssetInstance(assetId).get())
+                .addObject("table", table);
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
     public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) {
-        return userAssetDetails(assetId).addObject("showSnackbarSucess", "true")
+        return userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
                 .addObject("modalType", "changeBookVisibility")
                 .addObject("assetId", assetId);
     }
 
     @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
     public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) {
-        return  userAssetDetails(assetId).addObject("showSnackbarSucess", "true")
+        return  userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
                 .addObject("modalType", "deleteBook")
                 .addObject("assetId", assetId);
     }
@@ -55,6 +65,6 @@ public class UserAssetDetailsController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return userAssetDetails(id);
+        return userAssetDetails(id, this.table);
     }
 }
