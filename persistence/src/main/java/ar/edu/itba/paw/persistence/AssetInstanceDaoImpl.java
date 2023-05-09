@@ -13,7 +13,6 @@ import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
-import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -54,13 +53,13 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String ownerName = rs.getString("user_name");
             User user = new UserImpl(userId, email, ownerName, "","", Behaviour.fromString(rs.getString("behavior")));
 
-            Integer id = rs.getInt("id");
-            Integer imgId = rs.getInt("photo_id");
-
+            int id = rs.getInt("id");
+            int imgId = rs.getInt("photo_id");
+            int maxWeeks = rs.getInt("maxLendingDays");
             PhysicalCondition physicalcondition = PhysicalCondition.fromString(rs.getString("physicalcondition"));
             AssetState aState = AssetState.fromString(rs.getString("status"));
 
-            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState);
+            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState,maxWeeks);
         }
     };
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
@@ -75,7 +74,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X","",Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
                     rs.getInt("photo_id"),
-                    AssetState.fromString(rs.getString("status"))
+                    AssetState.fromString(rs.getString("status")),
+                    rs.getInt("maxLendingDays")
                     );
 
     private static final RowMapper<String> ROW_MAPPER_AUTHORS = (rs, rownum) -> rs.getString("author");
@@ -90,10 +90,10 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
     @Override
     public Optional<Integer> addAssetInstance(int assetId,int ownerId,int locationId,int photoId, AssetInstance ai) {
-        String query = "INSERT INTO assetinstance(assetid,owner,locationid,physicalcondition,status,photoid) VALUES(?,?,?,?,?,?)";
+        String query = "INSERT INTO assetinstance(assetid,owner,locationid,physicalcondition,status,photoid,maxLendingDays) VALUES(?,?,?,?,?,?,?)";
 
 
-        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),ai.getAssetState().name(),photoId);
+        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),ai.getAssetState().name(),photoId,ai.getMaxDays());
 
         return Optional.empty();
     }
@@ -107,7 +107,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                     " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                     " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                     " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id ," +
-                    " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
+                    " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior, ai.maxLendingDays as maxLendingDays FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
                     " JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id " +
                     "WHERE ai.id = ?";
             assetInstance = jdbcTemplate.queryForObject(query, params, ROW_MAPPER_AI);
@@ -135,7 +135,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
-                " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+                " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior, ai.maxLendingDays as maxLendingDays FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? ";
         objects.add(AssetState.PUBLIC.name());
         if(!authorsIn.isEmpty()) {

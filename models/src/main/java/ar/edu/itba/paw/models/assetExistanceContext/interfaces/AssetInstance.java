@@ -14,6 +14,8 @@ public interface AssetInstance {
 
     AssetState getAssetState();
 
+    int getMaxDays();
+
     int getId();
 
     PhysicalCondition getPhysicalCondition();
