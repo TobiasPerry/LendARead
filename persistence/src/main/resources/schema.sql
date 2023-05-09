@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS AssetInstance(
     physicalCondition varchar(100),
     photoId INT references photos(id) ON DELETE SET NULL,
     status varchar(100),
-    maxDays INT
+    maxLendingDays INT
 );
 CREATE TABLE IF NOT EXISTS lendings(
     id SERIAL primary key,
