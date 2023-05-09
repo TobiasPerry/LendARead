@@ -24,16 +24,7 @@ document.addEventListener("DOMContentLoaded",()=> {
         event.preventDefault(); // Prevent the default form submission behavior
         let i = 0
         let j = 0
-        for (const author of document.getElementsByClassName("authorLabel")) {
-            if (document.getElementById("author-" + i).checked) {
-                const value = document.getElementById("author-" + i + "-label").childNodes[0].textContent
-                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="authors[` + j + `]" id="authorId-` + j + `" value="` + value + `">`
-                j++
-            }
-            i++
-        }
-        i = 0
-        j = 0
+
         for (const language of document.getElementsByClassName("languageLabel")) {
             if (document.getElementById("language-" + i).checked) {
                 const value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
@@ -70,4 +61,42 @@ document.addEventListener("DOMContentLoaded",()=> {
             submitFilters(event)
         }
     })
+
+    // Sorting buttons handlers
+    document.getElementById("leastRecent").addEventListener("click", () => {
+        document.getElementById("sort").value = "RECENT";
+        document.getElementById("sortDirection").value = "ASCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("mostRecent").addEventListener("click", () => {
+        document.getElementById("sort").value = "RECENT";
+        document.getElementById("sortDirection").value = "DESCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("authorAscending").addEventListener("click", () => {
+        document.getElementById("sort").value = "AUTHOR_NAME";
+        document.getElementById("sortDirection").value = "ASCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("authorDescending").addEventListener("click", () => {
+        document.getElementById("sort").value = "AUTHOR_NAME";
+        document.getElementById("sortDirection").value = "DESCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("titleAscending").addEventListener("click", () => {
+        document.getElementById("sort").value = "TITLE_NAME";
+        document.getElementById("sortDirection").value = "ASCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("titleDescending").addEventListener("click", () => {
+        document.getElementById("sort").value = "TITLE_NAME";
+        document.getElementById("sortDirection").value = "DESCENDING";
+        document.getElementById("springForm").submit();
+    });
+
 })

@@ -3,6 +3,7 @@ package ar.itba.edu.paw.persistenceinterfaces;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +17,5 @@ public interface AssetInstanceDao {
 
     Boolean changeStatus(int assetInstanceID, AssetState as);
 
-    Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn, String search);
+    Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery);
 }

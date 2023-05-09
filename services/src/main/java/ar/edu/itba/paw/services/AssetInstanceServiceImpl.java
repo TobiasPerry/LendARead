@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
@@ -42,22 +43,16 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Override
     public Page getAllAssetsInstances(int pageNum,int itemsPerPage){
-        return getAllAssetsInstances(pageNum, itemsPerPage,new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
+        return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), ""));
     }
 
-    public Page getAllAssetsInstances(int pageNum,int itemsPerPage, List<String> authors, List<String> languages, List<String> physicalConditions, String search){
+    public Page getAllAssetsInstances(int pageNum,int itemsPerPage, SearchQuery searchQuery){
+
+        if(searchQuery == null)
+            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
 
 
-
-        if(authors == null)
-            authors = new ArrayList<>();
-        if(languages == null)
-            languages = new ArrayList<>();
-        if(physicalConditions == null)
-            physicalConditions = new ArrayList<>();
-
-
-        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, authors, languages, physicalConditions, search);
+        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
 
         Page page;
 
@@ -67,9 +62,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         }
         return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
-
-
-
 
     @Override
     public List<AssetInstance> getAllAssetsInstances() {
@@ -86,12 +78,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
        return combinedBooks;
     }
-
-    @Override
-    public Page getAllAssetsInstances(int pageNum, int itemPerPage, SearchQuery searchQuery) {
-        if(searchQuery != null)
-            return getAllAssetsInstances(pageNum, itemPerPage,searchQuery.getAuthors(), searchQuery.getLanguages(), searchQuery.getPhysicalConditions(), searchQuery.getSearch());
-        return getAllAssetsInstances(pageNum,itemPerPage);    }
 
     @Override
     public boolean removeAssetInstance(int id) {
