@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-
+<html>
 <head>
     <title><spring:message code="addAssetView.titleView"/></title>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
@@ -21,7 +21,7 @@
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
-
+    <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
 </head>
 
@@ -68,6 +68,12 @@
                             <div class="stepper-item" data-step-count="3">
                                 <div class="step-counter">3</div>
                                 <div class="step-name">
+                                    <spring:message code="addAssetView.steps.TIME"/>
+                                </div>
+                            </div>
+                            <div class="stepper-item" data-step-count="4">
+                                <div class="step-counter">4</div>
+                                <div class="step-name">
                                     <spring:message code="addAssetView.steps.LOCATION"/>
                                 </div>
                             </div>
@@ -83,8 +89,7 @@
                             <form:input path="isbn" id="isbn"
                                         placeholder="${isbnPH}"
                                         class="form-control"/>
-                            <small id="isbnError" class="text-danger small d-none">Please enter a valid ISBN</small>
-
+                            <small id="isbnError" class="text-danger small d-none"><spring:message code="Pattern.addAssetForm.isbn"/></small>
                             <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"
@@ -160,7 +165,36 @@
                             </div>
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="3">
-                            <h2><spring:message code="addAssetView.steps.LOCATION.title"/></h2>
+                            <h2><spring:message code="addAssetView.steps.TIME.title"/></h2>
+                            <text class="form-subtitle">
+                                <spring:message code="addAssetView.steps.TIME_NOTE"/>
+                            </text>
+                            <div class="field-group">
+                                <div class="field">
+                                    <spring:message code="addAssetView.maxWeeksLending" var="timeLabel"/>
+                                    <label for="time" class="form-label">${timeLabel}</label>
+                                    <form:input path="maxWeeks" id="time" placeholder="${timeLabel}"
+                                                class="form-control onlyNumber-input"/>
+                                    <form:errors path="maxWeeks" cssClass="text-danger small" element="small"/>
+                                </div>
+                                <div class="field">
+                                    <spring:message code="addAssetView.maxDays" var="timeDaysLabel"/>
+                                    <label for="timeDays" class="form-label">${timeDaysLabel}</label>
+                                    <form:input path="maxDays" id="timeDays" placeholder="${timeDaysLabel}"
+                                                class="form-control onlyNumber-input"/>
+                                    <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 form-button-container">
+                                <input type="button" class="prev-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.prevButton"/>"/>
+                                <input type="button" class="next-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.nextButton"/>"/>
+                            </div>
+                        </fieldset>
+                        <fieldset class="info-container d-none" data-step="4">
+                            <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
                             <div class="field-group">
                                 <div class="field">
                                     <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
@@ -233,22 +267,7 @@
 </jsp:include>
 
 </body>
-<script>
-    function previewImage() {
-        const fileInput = document.getElementById('uploadImage');
-        const file = fileInput.files[0];
-        const img = document.getElementById('bookImage');
-        const reader = new FileReader();
 
-        reader.addEventListener('load', function () {
-            img.src = reader.result;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
 <script>
     window.isbnUrl = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`
 </script>
@@ -256,3 +275,4 @@
 <script>
     let bindingResult = `<%= request.getAttribute("org.springframework.validation.BindingResult.addAssetForm") %>`;
 </script>
+</html>

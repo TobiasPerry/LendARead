@@ -14,8 +14,10 @@ public interface AssetInstanceService {
 
     Page getAllAssetsInstances(int pageNum,int itemsPerPage);
 
-     List<AssetInstance> getAllAssetsInstances();
+    List<AssetInstance> getAllAssetsInstances();
+
     Page getAllAssetsInstances(int pageNum, int itemPerPage, SearchQuery searchQuery);
+
     boolean removeAssetInstance(int id);
 
     boolean isOwner(int id,String email);

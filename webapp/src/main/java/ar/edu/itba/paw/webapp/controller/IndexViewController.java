@@ -4,8 +4,11 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
+import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,9 @@ public class IndexViewController {
 
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        Page page = assetInstanceService.getAllAssetsInstances(1,15);
+        Page page = assetInstanceService.getAllAssetsInstances(
+                1,4, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(),"", Sort.RECENT, SortDirection.DESCENDING)
+        );
 
         ModelAndView mav = new ModelAndView("/views/index");
         mav.addObject("books", page.getBooks());
@@ -65,10 +70,12 @@ public class IndexViewController {
 
         Page page = assetInstanceService.getAllAssetsInstances(
                 pageNum,15,
-                new SearchQueryImpl( ( searchFilterSortForm.getAuthors() != null ) ? searchFilterSortForm.getAuthors() : new ArrayList<>(),
+                new SearchQueryImpl(
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
                         ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
-                        ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : ""
+                        ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : "",
+                        ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.RECENT,
+                        ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING
                 )
         );
 
@@ -81,10 +88,6 @@ public class IndexViewController {
         mav.addObject("totalPages", page.getTotalPages());
         mav.addObject("page", page.getCurrentPage());
 
-        List<String> authors = page.getAuthors();
-        mav.addObject("authors", authors != null ? authors : new ArrayList<>());
-        mav.addObject("authorsFiltered", (searchFilterSortForm.getAuthors() != null) ? searchFilterSortForm.getAuthors(): new ArrayList<>());
-
         List<String> languages = page.getLanguages();
         mav.addObject("languages", languages != null ? languages : new ArrayList<>());
         mav.addObject("languagesFiltered", (searchFilterSortForm.getLanguages() != null) ? searchFilterSortForm.getLanguages(): new ArrayList<>());
@@ -94,6 +97,9 @@ public class IndexViewController {
         mav.addObject("physicalConditionsFiltered", (searchFilterSortForm.getPhysicalConditions() != null) ? searchFilterSortForm.getPhysicalConditions(): new ArrayList<>());
 
         mav.addObject("search", (searchFilterSortForm.getSearch() != null) ? searchFilterSortForm.getSearch() : "");
+
+        mav.addObject("sort", ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.DEFAULT);
+        mav.addObject("sortDirection", ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DEFAULT);
 
         return mav;
     }

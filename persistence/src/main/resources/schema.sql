@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS AssetInstance(
     locationId INT references location(id) ON DELETE SET NULL,
     physicalCondition varchar(100),
     photoId INT references photos(id) ON DELETE SET NULL,
-    status varchar(100)
+    status varchar(100),
+    maxLendingDays INT
 );
 CREATE TABLE IF NOT EXISTS lendings(
     id SERIAL primary key,
