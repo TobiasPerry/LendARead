@@ -47,7 +47,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             return false;
         if (LocalDate.now().plusDays(ai.get().getMaxDays()).isBefore(devolutionDate) )
             return false;
-        assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
+        assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
             sendBorrowerEmail(ai.get(), user.get());
