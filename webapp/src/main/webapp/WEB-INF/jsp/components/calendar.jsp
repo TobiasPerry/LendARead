@@ -48,8 +48,8 @@
     },
     restrictions: {
       minDate: new Date(),
-      maxDate: addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays)),
-      disabledDates: [],
+      maxDate: addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays)+1),
+      disabledDates: [addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays )+1)],
       enabledDates: [],
       daysOfWeekDisabled: [],
       disabledTimeIntervals: [],
@@ -58,13 +58,6 @@
     }
 
   });
-  function parseDate(input) {
-
-    let parts = input.split('-');
-
-    // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-    return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
-  }
   function addDays(date, days) {
     date.setDate(date.getDate() + days);
     return date;
