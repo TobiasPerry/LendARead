@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-
+<html>
 <head>
     <title><spring:message code="addAssetView.titleView"/></title>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
@@ -21,7 +21,7 @@
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
-
+    <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
 </head>
 
@@ -89,8 +89,7 @@
                             <form:input path="isbn" id="isbn"
                                         placeholder="${isbnPH}"
                                         class="form-control"/>
-                            <small id="isbnError" class="text-danger small d-none">Please enter a valid ISBN</small>
-
+                            <small id="isbnError" class="text-danger small d-none"><spring:message code="Pattern.addAssetForm.isbn"/></small>
                             <form:errors path="isbn" cssClass="text-danger small" element="small"/>
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"
@@ -268,44 +267,7 @@
 </jsp:include>
 
 </body>
-<script>
-    inputs = document.getElementsByClassName("onlyNumber-input")
 
-    Array.prototype.forEach.call(inputs, function (item,indx)
-    {
-        item.addEventListener("keypress", (event) => {
-        if (event.key.length !== 1) {
-            return true;
-        }
-        if (event.target.value.length > 0) {
-            if ("0123456789".indexOf(event.key) === -1) {
-                event.preventDefault();
-                return false;
-            }
-        } else {
-            if ("123456789".indexOf(event.key) === -1) {
-                event.preventDefault();
-                return false;
-            }
-        }
-    })});
-
-
-    function previewImage() {
-        const fileInput = document.getElementById('uploadImage');
-        const file = fileInput.files[0];
-        const img = document.getElementById('bookImage');
-        const reader = new FileReader();
-
-        reader.addEventListener('load', function () {
-            img.src = reader.result;
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
 <script>
     window.isbnUrl = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`
 </script>
@@ -313,3 +275,4 @@
 <script>
     let bindingResult = `<%= request.getAttribute("org.springframework.validation.BindingResult.addAssetForm") %>`;
 </script>
+</html>
