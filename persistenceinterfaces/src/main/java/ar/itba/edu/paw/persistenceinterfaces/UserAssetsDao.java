@@ -11,5 +11,5 @@ public interface UserAssetsDao {
 
     List<BorrowedAssetInstance> getBorrowedAssets(String email);
     List<AssetInstance> getUsersAssets(String email);
-
+    List<BorrowedAssetInstance> getLendedAssetsFilteredBy(String email, String Attribuite);
 }

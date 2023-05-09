@@ -77,14 +77,14 @@ public class UserHomeViewController {
     public ModelAndView sortUserHomeAssets(@RequestParam("table") String table,
                                            @RequestParam("attribute") String attribute,
                                            @RequestParam("direction") String direction) {
-        ModelAndView modelAndView = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).sort(table, attribute))
+
+        ModelAndView modelAndView = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).sort(table, attribute, direction))
                 .addObject("table", table)
                 .addObject("filter", filters.getOrDefault(table, "all"));
 
-        // Set the boolean values for asc_* variables
-        modelAndView.addObject("asc_book_name", "book_name".equals(attribute) && "asc".equals(direction));
-        modelAndView.addObject("asc_expected_retrieval_date", "expected_retrieval_date".equals(attribute) && "asc".equals(direction));
-        modelAndView.addObject("asc_borrower_name", "borrower_name".equals(attribute) && "asc".equals(direction));
+        modelAndView.addObject("sort_book_name", "book_name".equals(attribute) && "asc".equals(direction));
+        modelAndView.addObject("sort_expected_retrieval_date", "expected_retrieval_date".equals(attribute) && "asc".equals(direction));
+        modelAndView.addObject("sort_borrower_name", "borrower_name".equals(attribute) && "asc".equals(direction));
 
         return modelAndView;
     }

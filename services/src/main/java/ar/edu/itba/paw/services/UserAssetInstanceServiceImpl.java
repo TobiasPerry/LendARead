@@ -31,4 +31,10 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         return new UserAssetsImpl(userAssetsDao.getLendedAssets(email), userAssetsDao.getBorrowedAssets(email), userAssetsDao.getUsersAssets(email));
     }
 
+
+    @Override
+    public List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String atribuite) {
+        return userAssetsDao.getLendedAssetsFilteredBy(email, atribuite);
+    }
+
 }

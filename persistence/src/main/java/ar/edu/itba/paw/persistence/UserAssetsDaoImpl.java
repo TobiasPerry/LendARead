@@ -132,5 +132,10 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<BorrowedAssetInstance> getLendedAssetsFilteredBy(String email, String atribuite) {
+        return null;
+    }
+
 
 }

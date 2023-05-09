@@ -54,7 +54,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="all">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show all lended books" class="btn btn-primary filter-button ${filter == 'all' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.all'/>" class="btn btn-primary filter-button ${filter == 'all' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.all" />
                             </button>
                         </form>
@@ -64,7 +64,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="pending">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show pending lended books" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.pending'/>" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.pending" />
                             </button>
                         </form>
@@ -74,7 +74,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="confirmed">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show in-progress lended books" class="btn btn-primary filter-button ${filter == 'confirmed' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.confirmed'/>" class="btn btn-primary filter-button ${filter == 'confirmed' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.inProgress" />
                             </button>
                         </form>
@@ -84,7 +84,7 @@
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
                             <input type="hidden" name="filter" value="delayed">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Show delayed lended books" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.delayed'/>" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.delayed" />
                             </button>
                         </form>
@@ -100,10 +100,10 @@
                             <form action="/sortUserHomeAssets" method="get" class="sort-form">
                                 <input type="hidden" name="table" value="lended_books" />
                                 <input type="hidden" name="attribute" value="book_name" />
-                                <input type="hidden" name="direction" value="${asc_book_name ? 'desc' : 'asc'}" />
+                                <input type="hidden" name="direction" value="${sort_book_name ? 'desc' : 'asc'}" />
                                 <button type="submit" class="sort-button">
                                     <spring:message code="book_name"/>
-                                    <i class="fas fa-arrow-<c:out value='${asc_book_name ? "up" : "down"}' />"></i>
+                                    <i class="fas fa-arrow-<c:out value='${sort_book_name ? "up" : "down"}' />"></i>
                                 </button>
                             </form>
                         </th>
@@ -111,10 +111,10 @@
                             <form action="/sortUserHomeAssets" method="get" class="sort-form">
                                 <input type="hidden" name="table" value="lended_books" />
                                 <input type="hidden" name="attribute" value="expected_retrieval_date" />
-                                <input type="hidden" name="direction" value="${asc_expected_retrieval_date ? 'desc' : 'asc'}" />
+                                <input type="hidden" name="direction" value="${sort_expected_retrieval_date ? 'desc' : 'asc'}" />
                                 <button type="submit" class="sort-button">
                                     <spring:message code="expected_retrieval_date"/>
-                                    <i class="fas fa-arrow-<c:out value='${asc_expected_retrieval_date ? "up" : "down"}' />"></i>
+                                    <i class="fas fa-arrow-<c:out value='${sort_expected_retrieval_date ? "up" : "down"}' />"></i>
                                 </button>
                             </form>
                         </th>
@@ -122,10 +122,10 @@
                             <form action="/sortUserHomeAssets" method="get" class="sort-form">
                                 <input type="hidden" name="table" value="lended_books" />
                                 <input type="hidden" name="attribute" value="borrower_name" />
-                                <input type="hidden" name="direction" value="${asc_borrower_name ? 'desc' : 'asc'}" />
+                                <input type="hidden" name="direction" value="${sort_borrower_name ? 'desc' : 'asc'}" />
                                 <button type="submit" class="sort-button">
                                     <spring:message code="borrower_name"/>
-                                    <i class="fas fa-arrow-<c:out value='${asc_borrower_name ? "up" : "down"}' />"></i>
+                                    <i class="fas fa-arrow-<c:out value='${sort_borrower_name ? "up" : "down"}' />"></i>
                                 </button>
                             </form>
                         </th>
