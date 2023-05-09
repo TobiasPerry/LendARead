@@ -74,8 +74,8 @@ public class IndexViewController {
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
                         ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
                         ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : "",
-                        Sort.RECENT,
-                        SortDirection.DESCENDING
+                        ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.RECENT,
+                        ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING
                 )
         );
 
@@ -97,6 +97,9 @@ public class IndexViewController {
         mav.addObject("physicalConditionsFiltered", (searchFilterSortForm.getPhysicalConditions() != null) ? searchFilterSortForm.getPhysicalConditions(): new ArrayList<>());
 
         mav.addObject("search", (searchFilterSortForm.getSearch() != null) ? searchFilterSortForm.getSearch() : "");
+
+        mav.addObject("sort", ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.DEFAULT);
+        mav.addObject("sortDirection", ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DEFAULT);
 
         return mav;
     }

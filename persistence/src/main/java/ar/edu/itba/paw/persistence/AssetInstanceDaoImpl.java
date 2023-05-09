@@ -189,9 +189,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         objects.add(limit);
         objects.add(offset);
 
-        System.out.println(query);
-        System.out.println(objects);
-
         List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
 
         objects.remove(objects.size() - 1);

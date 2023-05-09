@@ -18,6 +18,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Popper JS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -39,6 +48,21 @@
 
     <div class="container-row">
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
+
+            <div class="btn-group mx-2 mb-4 mt-2" role="group">
+                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <spring:message code="discovery.sort.title"/>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" id="mostRecent"><spring:message code="discovery.sort.mostRecent"/></a></li>
+                    <li><a class="dropdown-item" id="leastRecent"><spring:message code="discovery.sort.leastRecent"/></a></li>
+                    <li><a class="dropdown-item" id="titleAscending"><spring:message code="discovery.sort.titleAscending"/></a></li>
+                    <li><a class="dropdown-item" id="titleDescending"><spring:message code="discovery.sort.titleDescending"/></a></li>
+                    <li><a class="dropdown-item" id="authorAscending"><spring:message code="discovery.sort.authorAscending"/></a></li>
+                    <li><a class="dropdown-item" id="authorDescending"><spring:message code="discovery.sort.authorDescending"/></a></li>
+                </ul>
+            </div>
+
                 <h5><spring:message code="discovery.filters.language"/></h5>
                 <ul>
                     <c:choose>
@@ -86,6 +110,9 @@
             <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
 
+                <input type ="hidden" name="sort" id="sort" value="${sort}"/>
+                <input type ="hidden" name="sortDirection" id="sortDirection" value="${sortDirection}"/>
+
                 <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
                     <input type ="hidden" name="languages[${status.index}]" value="${language}"/>
                 </c:forEach>
@@ -105,20 +132,20 @@
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
-
-            <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
-                <c:forEach var="book" items="${books}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/bookCard.jsp">
-                        <jsp:param name="id" value="${book.id}"/>
-                        <jsp:param name="bookTitle" value="${book.book.name}"/>
-                        <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                        <jsp:param name="imageId" value="${book.imageId}"/>
-                    </jsp:include>
-                </c:forEach>
-            </div>
-
             <c:if test="${books.size() > 0}">
+                <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
+                    <c:forEach var="book" items="${books}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="../components/bookCard.jsp">
+                            <jsp:param name="id" value="${book.id}"/>
+                            <jsp:param name="bookTitle" value="${book.book.name}"/>
+                            <jsp:param name="bookAuthor" value="${book.book.author}"/>
+                            <jsp:param name="imageId" value="${book.imageId}"/>
+                        </jsp:include>
+                    </c:forEach>
+                </div>
+
+
                 <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                     <div>
                         <nav aria-label="Page navigation example">

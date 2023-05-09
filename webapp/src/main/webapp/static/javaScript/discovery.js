@@ -61,4 +61,42 @@ document.addEventListener("DOMContentLoaded",()=> {
             submitFilters(event)
         }
     })
+
+    // Sorting buttons handlers
+    document.getElementById("leastRecent").addEventListener("click", () => {
+        document.getElementById("sort").value = "RECENT";
+        document.getElementById("sortDirection").value = "ASCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("mostRecent").addEventListener("click", () => {
+        document.getElementById("sort").value = "RECENT";
+        document.getElementById("sortDirection").value = "DESCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("authorAscending").addEventListener("click", () => {
+        document.getElementById("sort").value = "AUTHOR_NAME";
+        document.getElementById("sortDirection").value = "ASCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("authorDescending").addEventListener("click", () => {
+        document.getElementById("sort").value = "AUTHOR_NAME";
+        document.getElementById("sortDirection").value = "DESCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("titleAscending").addEventListener("click", () => {
+        document.getElementById("sort").value = "TITLE_NAME";
+        document.getElementById("sortDirection").value = "ASCENDING";
+        document.getElementById("springForm").submit();
+    });
+
+    document.getElementById("titleDescending").addEventListener("click", () => {
+        document.getElementById("sort").value = "TITLE_NAME";
+        document.getElementById("sortDirection").value = "DESCENDING";
+        document.getElementById("springForm").submit();
+    });
+
 })
