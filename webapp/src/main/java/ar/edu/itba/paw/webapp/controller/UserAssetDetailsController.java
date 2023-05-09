@@ -6,10 +6,8 @@ import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -67,4 +65,10 @@ public class UserAssetDetailsController {
 
         return userAssetDetails(id, this.table);
     }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("path", "userHome");
+    }
+
 }

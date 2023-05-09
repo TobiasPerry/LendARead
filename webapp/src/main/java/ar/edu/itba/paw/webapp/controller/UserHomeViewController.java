@@ -73,7 +73,15 @@ public class UserHomeViewController {
                                     .addObject("table", table)
                                     .addObject("filter", filters.getOrDefault(table, "all"));
     }
-
+    @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
+    public ModelAndView sortUserHomeAssets(@RequestParam("table") String table,
+                                     @RequestParam("attribute") String attribute,
+                                     @RequestParam("direction") String direction) {
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).sort(table, attribute))
+                .addObject("asc" + attribute, "asc".equalsIgnoreCase(direction))
+                .addObject("table", table)
+                .addObject("filter", filters.getOrDefault(table, "all"));
+    }
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("path", "userHome");

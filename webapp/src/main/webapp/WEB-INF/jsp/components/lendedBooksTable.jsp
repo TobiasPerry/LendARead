@@ -23,6 +23,24 @@
     .table-row-clickable:hover {
         opacity: 1;
     }
+    .sort-form {
+        display: inline;
+    }
+
+    .sort-button {
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        color: inherit;
+    }
+
+    .sort-button:hover {
+        color: #2B3B2B;
+        opacity: 0.7;
+    }
 
 </style>
 <c:choose>
@@ -78,9 +96,39 @@
                     <thead>
                     <tr>
                         <th><spring:message code="image"/></th>
-                        <th><spring:message code="book_name"/></th>
-                        <th><spring:message code="expected_retrieval_date"/></th>
-                        <th><spring:message code="borrower_name"/></th>
+                        <th>
+                            <form action="/sortUserHomeAssets" method="get" class="sort-form">
+                                <input type="hidden" name="table" value="lended_books" />
+                                <input type="hidden" name="attribute" value="book_name" />
+                                <input type="hidden" name="direction" value="${ascBookName ? 'asc' : 'desc'}" />
+                                <button type="submit" class="sort-button">
+                                    <spring:message code="book_name"/>
+                                    <i class="fas fa-arrow-${ascBookName ? 'up' : 'down'}"></i>
+                                </button>
+                            </form>
+                        </th>
+                        <th>
+                            <form action="/sortUserHomeAssets" method="get" class="sort-form">
+                                <input type="hidden" name="table" value="lended_books" />
+                                <input type="hidden" name="attribute" value="expected_retrieval_date" />
+                                <input type="hidden" name="direction" value="${ascExpectedRetrievalDate ? 'asc' : 'desc'}" />
+                                <button type="submit" class="sort-button">
+                                    <spring:message code="expected_retrieval_date"/>
+                                    <i class="fas fa-arrow-${ascExpectedRetrievalDate ? 'up' : 'down'}"></i>
+                                </button>
+                            </form>
+                        </th>
+                        <th>
+                            <form action="/sortUserHomeAssets" method="get" class="sort-form">
+                                <input type="hidden" name="table" value="lended_books" />
+                                <input type="hidden" name="attribute" value="borrower_name" />
+                                <input type="hidden" name="direction" value="${ascBorrowerName ? 'asc' : 'desc'}" />
+                                <button type="submit" class="sort-button">
+                                    <spring:message code="borrower_name"/>
+                                    <i class="fas fa-arrow-${ascBorrowerName ? 'up' : 'down'}"></i>
+                                </button>
+                            </form>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>

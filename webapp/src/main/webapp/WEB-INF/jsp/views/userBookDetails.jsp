@@ -26,16 +26,17 @@
     <link href="https://fonts.googleapis.com/css?family=Overpass:400,700|Roboto:400,700" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
 </head>
-<body>
+<body data-path="${path}" class="body-class">
 
 <jsp:include page="../components/navBar.jsp"/>
 <div>
-<div class="back-button">
-    <a href="<c:url value='/userHomeReturn' />" class="btn btn-green">
-        <i class="fas fa-arrow-left"></i> <c:out value="${table}" />
+<div class="back-button" style="display: flex; flex-direction: row; justify-content: l">
+    <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
+        <i class="fas fa-arrow-left"></i>
     </a>
+    <h2 class="textOverflow"> <c:out value="${table}" /> </h2>
 </div>
-<div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
+    <div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
 
     <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; min-width: 50%">
         <div class="container-row-wrapped">
