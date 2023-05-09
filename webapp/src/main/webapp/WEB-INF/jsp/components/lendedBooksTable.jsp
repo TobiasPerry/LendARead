@@ -100,10 +100,10 @@
                             <form action="/sortUserHomeAssets" method="get" class="sort-form">
                                 <input type="hidden" name="table" value="lended_books" />
                                 <input type="hidden" name="attribute" value="book_name" />
-                                <input type="hidden" name="direction" value="${ascBookName ? 'asc' : 'desc'}" />
+                                <input type="hidden" name="direction" value="${asc_book_name ? 'desc' : 'asc'}" />
                                 <button type="submit" class="sort-button">
                                     <spring:message code="book_name"/>
-                                    <i class="fas fa-arrow-${ascBookName ? 'up' : 'down'}"></i>
+                                    <i class="fas fa-arrow-<c:out value='${asc_book_name ? "up" : "down"}' />"></i>
                                 </button>
                             </form>
                         </th>
@@ -111,10 +111,10 @@
                             <form action="/sortUserHomeAssets" method="get" class="sort-form">
                                 <input type="hidden" name="table" value="lended_books" />
                                 <input type="hidden" name="attribute" value="expected_retrieval_date" />
-                                <input type="hidden" name="direction" value="${ascExpectedRetrievalDate ? 'asc' : 'desc'}" />
+                                <input type="hidden" name="direction" value="${asc_expected_retrieval_date ? 'desc' : 'asc'}" />
                                 <button type="submit" class="sort-button">
                                     <spring:message code="expected_retrieval_date"/>
-                                    <i class="fas fa-arrow-${ascExpectedRetrievalDate ? 'up' : 'down'}"></i>
+                                    <i class="fas fa-arrow-<c:out value='${asc_expected_retrieval_date ? "up" : "down"}' />"></i>
                                 </button>
                             </form>
                         </th>
@@ -122,10 +122,10 @@
                             <form action="/sortUserHomeAssets" method="get" class="sort-form">
                                 <input type="hidden" name="table" value="lended_books" />
                                 <input type="hidden" name="attribute" value="borrower_name" />
-                                <input type="hidden" name="direction" value="${ascBorrowerName ? 'asc' : 'desc'}" />
+                                <input type="hidden" name="direction" value="${asc_borrower_name ? 'desc' : 'asc'}" />
                                 <button type="submit" class="sort-button">
                                     <spring:message code="borrower_name"/>
-                                    <i class="fas fa-arrow-${ascBorrowerName ? 'up' : 'down'}"></i>
+                                    <i class="fas fa-arrow-<c:out value='${asc_borrower_name ? "up" : "down"}' />"></i>
                                 </button>
                             </form>
                         </th>
