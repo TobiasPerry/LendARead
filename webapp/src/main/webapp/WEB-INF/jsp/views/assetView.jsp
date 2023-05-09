@@ -29,14 +29,9 @@
     <script src="<c:url value="/static/javaScript/map.js"/>"></script>
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
-    <!-- Tempus Dominus JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/js/tempus-dominus.min.js" crossorigin="anonymous"></script>
-    <!-- Tempus Dominus Styles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 </head>
-<body data-path="${path}" class=" body-class">
+<body data-path="${path}" class=" body-class" data-maxDays="${assetInstance.maxDays}">
 <jsp:include page="../components/navBar.jsp"/>
 
 <div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
@@ -61,18 +56,10 @@
             <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
             <form:form modelAttribute="borrowAssetForm" method="post"
              action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
-                    <div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
-                        <form:input path="date" name="date" id="datetimepicker1Input" type="text" class="form-control" data-td-target="#datetimepicker1" readonly="true"/>
-                        <form:errors path="date" cssClass="text-danger small" element="small"/>
-
-                        <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
-                        <i class="fas fa-calendar"></i>
-                    </span>
-                    </div>
-
+                <h5><spring:message code="assetView.return"/></h5>
+                <jsp:include page="../components/calendar.jsp"/>
                 <input class="btn btn-green" type="submit" value="<spring:message code="assetView.borrowButton"/>">
                 </form:form>
-
             </div>
 
         </div>
@@ -111,55 +98,10 @@
     <jsp:param name="modalTitle" value="${modalTitle}"/>
     <jsp:param name="text" value="${modalText}"/>
 </jsp:include>
-    <script>
+<script>
 
-        new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
-            display: {
-                viewMode: "calendar",
-                components: {
-                    decades: true,
-                    year: true,
-                    month: true,
-                    date: true,
-                    hours: false,
-                    minutes: false,
-                    seconds: false
-                },
-                icons: {
-                    time: 'far fa-clock',
-                    date: 'far fa-calendar',
-                    up: 'far fa-arrow-up',
-                    down: 'far fa-arrow-down',
-                    previous: 'fas fa-chevron-left',
-                    next: 'fas fa-chevron-right',
-                    today: 'far fa-calendar-check-o',
-                    clear: 'far fa-trash',
-                    close: 'far fa-times'
-                },
 
-            },
-            localization:{
-                format: 'L'
-            },
-            restrictions: {
-                minDate: new Date(),
-                maxDate: parseDate("2023-05-11"),
-                disabledDates: [],
-                enabledDates: [],
-                daysOfWeekDisabled: [],
-                disabledTimeIntervals: [],
-                disabledHours: [],
-                enabledHours: []
-            }
 
-            });
-        function parseDate(input) {
-
-            let parts = input.split('-');
-
-            // new Date(year, month [, day [, hours[, minutes[, seconds[, ms]]]]])
-            return new Date(parts[0], parts[1]-1, parts[2]); // Note: months are 0-based
-        }
-    </script>
+</script>
 </body>
 </html>

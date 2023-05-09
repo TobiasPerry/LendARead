@@ -68,6 +68,12 @@
                             <div class="stepper-item" data-step-count="3">
                                 <div class="step-counter">3</div>
                                 <div class="step-name">
+                                    <spring:message code="addAssetView.steps.TIME"/>
+                                </div>
+                            </div>
+                            <div class="stepper-item" data-step-count="4">
+                                <div class="step-counter">4</div>
+                                <div class="step-name">
                                     <spring:message code="addAssetView.steps.LOCATION"/>
                                 </div>
                             </div>
@@ -160,7 +166,36 @@
                             </div>
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="3">
-                            <h2><spring:message code="addAssetView.steps.LOCATION.title"/></h2>
+                            <h2><spring:message code="addAssetView.steps.TIME.title"/></h2>
+                            <text class="form-subtitle">
+                                <spring:message code="addAssetView.steps.TIME_NOTE"/>
+                            </text>
+                            <div class="field-group">
+                                <div class="field">
+                                    <spring:message code="addAssetView.maxWeeksLending" var="timeLabel"/>
+                                    <label for="time" class="form-label">${timeLabel}</label>
+                                    <form:input path="maxWeeks" id="time" placeholder="${timeLabel}"
+                                                class="form-control onlyNumber-input"/>
+                                    <form:errors path="maxWeeks" cssClass="text-danger small" element="small"/>
+                                </div>
+                                <div class="field">
+                                    <spring:message code="addAssetView.maxDays" var="timeDaysLabel"/>
+                                    <label for="timeDays" class="form-label">${timeDaysLabel}</label>
+                                    <form:input path="maxDays" id="timeDays" placeholder="${timeDaysLabel}"
+                                                class="form-control onlyNumber-input"/>
+                                    <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 form-button-container">
+                                <input type="button" class="prev-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.prevButton"/>"/>
+                                <input type="button" class="next-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.nextButton"/>"/>
+                            </div>
+                        </fieldset>
+                        <fieldset class="info-container d-none" data-step="4">
+                            <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
                             <div class="field-group">
                                 <div class="field">
                                     <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
@@ -234,6 +269,28 @@
 
 </body>
 <script>
+    inputs = document.getElementsByClassName("onlyNumber-input")
+
+    Array.prototype.forEach.call(inputs, function (item,indx)
+    {
+        item.addEventListener("keypress", (event) => {
+        if (event.key.length !== 1) {
+            return true;
+        }
+        if (event.target.value.length > 0) {
+            if ("0123456789".indexOf(event.key) === -1) {
+                event.preventDefault();
+                return false;
+            }
+        } else {
+            if ("123456789".indexOf(event.key) === -1) {
+                event.preventDefault();
+                return false;
+            }
+        }
+    })});
+
+
     function previewImage() {
         const fileInput = document.getElementById('uploadImage');
         const file = fileInput.files[0];

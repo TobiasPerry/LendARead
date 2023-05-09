@@ -9,7 +9,7 @@ import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 public class AssetInstanceFactory {
-    public static AssetInstance createAssetInstance(int id, Book book, PhysicalCondition physicalCondition, User user, Location location, int photoId, AssetState state) {
-        return new AssetInstanceImpl(id,book, physicalCondition, user, location,photoId,state);
+    public static AssetInstance createAssetInstance(int id, Book book, PhysicalCondition physicalCondition, User user, Location location, int photoId, AssetState state,int maxWeeksLending) {
+        return new AssetInstanceImpl(id,book, physicalCondition, user, location,photoId,state,maxWeeksLending);
     }
 }

@@ -45,7 +45,7 @@ final public class AddAssetViewController {
                     .addObject("showSnackbarInvalid", true)
                     .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = userService.getCurrentUser();
 
         boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm,email), handleImage(image));
 
