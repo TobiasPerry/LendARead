@@ -60,6 +60,7 @@ final public class AddAssetViewController {
                     .addObject("snackBarInvalidTextTitle",  "Hubo un error guardando el libro");
     }
 
+    //FIXME
     private static byte[] handleImage(MultipartFile file) {
         if (!file.isEmpty()) {
             try {
