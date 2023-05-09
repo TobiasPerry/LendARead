@@ -66,7 +66,7 @@ public class IndexViewController {
 
         Page page = assetInstanceService.getAllAssetsInstances(
                 pageNum,15,
-                new SearchQueryImpl( ( searchFilterSortForm.getAuthors() != null ) ? searchFilterSortForm.getAuthors() : new ArrayList<>(),
+                new SearchQueryImpl(
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
                         ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
                         ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : ""
@@ -81,10 +81,6 @@ public class IndexViewController {
         mav.addObject("currentPage", page.getCurrentPage());
         mav.addObject("totalPages", page.getTotalPages());
         mav.addObject("page", page.getCurrentPage());
-
-        List<String> authors = page.getAuthors();
-        mav.addObject("authors", authors != null ? authors : new ArrayList<>());
-        mav.addObject("authorsFiltered", (searchFilterSortForm.getAuthors() != null) ? searchFilterSortForm.getAuthors(): new ArrayList<>());
 
         List<String> languages = page.getLanguages();
         mav.addObject("languages", languages != null ? languages : new ArrayList<>());

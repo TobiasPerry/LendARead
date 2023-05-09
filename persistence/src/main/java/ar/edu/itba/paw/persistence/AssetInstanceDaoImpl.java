@@ -12,7 +12,9 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,11 +121,11 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     @Override
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage){
-        return getAllAssetInstances(pageNum, itemsPerPage, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
+        return getAllAssetInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), ""));
     }
 
     @Override
-    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, List<String> authorsIn, List<String> languagesIn, List<String> physicalConditionsIn, String search) {
+    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
         int offset = (pageNum - 1) * itemsPerPage;
         int limit = itemsPerPage;
@@ -138,25 +140,23 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? ";
         objects.add(AssetState.PUBLIC.name());
-        if(!authorsIn.isEmpty()) {
-            queryFilters.append("AND b.author IN (''");
-            authorsIn.forEach((author) -> queryFilters.append(",").append("?"));
-            queryFilters.append(")");
-            objects.addAll(authorsIn);
-        }
+
+
+        final List<String> languagesIn = searchQuery.getLanguages();
         if(!languagesIn.isEmpty()) {
             queryFilters.append(" AND b.language IN (''");
             languagesIn.forEach((language) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
             objects.addAll(languagesIn);
         }
+        final List<String> physicalConditionsIn = searchQuery.getPhysicalConditions();
         if(!physicalConditionsIn.isEmpty()) {
             queryFilters.append(" AND ai.physicalcondition IN (''");
             physicalConditionsIn.forEach((physicalCondition) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
             objects.addAll(physicalConditionsIn);
         }
-
+        final String search = searchQuery.getSearch();
         if(!search.equals("")) {
             String[] searchParsed = search.split(" ", 0);
             queryFilters.append(" AND ( ");

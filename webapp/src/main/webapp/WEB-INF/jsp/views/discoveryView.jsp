@@ -39,29 +39,6 @@
 
     <div class="container-row">
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
-
-
-                <h5><spring:message code="discovery.filters.author"/></h5>
-                <ul>
-                    <c:choose>
-                        <c:when test="${authorsFiltered.size() <= 0}">
-                            <ul style="max-height: 200px; overflow-y: scroll">
-                                <c:forEach var="author" items="${authors}" varStatus="status">
-                                    <input class="form-check-input" type="checkbox" value="" id="author-${status.index}">
-                                    <label class="form-check-label authorLabel" for="author-${status.index}" id="author-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></label>
-                                    <br>
-                                </c:forEach>
-                            </ul>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
-                                <ul class="list-group">
-                                    <li class="list-group-item author-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${author}"/></span></li>
-                                </ul>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
                 <h5><spring:message code="discovery.filters.language"/></h5>
                 <ul>
                     <c:choose>
@@ -108,10 +85,6 @@
             <c:url	value="/discovery"	var="discoveryPageUrl"	/>
             <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
                 <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
-
-                <c:forEach var="author" items="${authorsFiltered}" varStatus="status">
-                    <input type ="hidden" name="authors[${status.index}]" value="${author}"/>
-                </c:forEach>
 
                 <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
                     <input type ="hidden" name="languages[${status.index}]" value="${language}"/>

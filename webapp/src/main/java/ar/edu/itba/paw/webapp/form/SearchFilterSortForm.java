@@ -14,8 +14,6 @@ public class SearchFilterSortForm {
     @Size(min = 1)
     private String search;
 
-    private List<String> authors;
-
     private List<String> physicalConditions;
 
     private List<String> languages;
