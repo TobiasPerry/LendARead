@@ -173,13 +173,24 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             queryFilters.append(" )");
         }
 
+        String querySort = "";
+        if(searchQuery.getSort() != null){
+            // TODO -> Check how can we use placeholders
+//            querySort = " ORDER BY ? ?";
+            querySort = " ORDER BY " + searchQuery.getSort().getPostgresString() + " " + searchQuery.getSortDirection().getPostgresString() + " ";
+//            objects.add(searchQuery.getSort().getPostgresString());
+//            objects.add(searchQuery.getSortDirection().getPostgresString());
+        }
+
         String pagination = " LIMIT ? OFFSET ?";
 
-        query = query + queryFilters + pagination ;
-
+        query = query + queryFilters + querySort + pagination ;
 
         objects.add(limit);
         objects.add(offset);
+
+        System.out.println(query);
+        System.out.println(objects);
 
         List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
 

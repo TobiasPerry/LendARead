@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
@@ -44,7 +46,9 @@ public class IndexViewController {
 
     @RequestMapping( "/")
     public ModelAndView indexView(){
-        Page page = assetInstanceService.getAllAssetsInstances(1,4);
+        Page page = assetInstanceService.getAllAssetsInstances(
+                1,4, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(),"", Sort.RECENT, SortDirection.DESCENDING)
+        );
 
         ModelAndView mav = new ModelAndView("/views/index");
         mav.addObject("books", page.getBooks());
@@ -69,7 +73,9 @@ public class IndexViewController {
                 new SearchQueryImpl(
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
                         ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
-                        ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : ""
+                        ( searchFilterSortForm.getSearch() != null ) ? searchFilterSortForm.getSearch() : "",
+                        Sort.RECENT,
+                        SortDirection.DESCENDING
                 )
         );
 
