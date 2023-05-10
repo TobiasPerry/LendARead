@@ -75,6 +75,7 @@ button {
     margin: 0 10px 20px;
     text-align: center;
     background-color: #D1E9C3;
+    min-width: 800px;
 }
 
 .promo-box h2 {
@@ -109,6 +110,10 @@ button {
 .content {
     flex: 1;
     margin-top: 10px;
+}
+.sidebar {
+    min-width: 180px;
+    max-width: 180px;
 }
 
 .table-selector {
