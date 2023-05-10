@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -28,35 +30,35 @@ public class UserAssetDetailsController {
         return new ModelAndView("redirect:/userHome");
     }
     @RequestMapping(value = "/userBookDetails/{assetId}", method = RequestMethod.GET)
-    public ModelAndView userAssetDetails(@PathVariable(name = "assetId") int assetId, @RequestParam("table") String table) {
+    public ModelAndView userAssetDetails(@PathVariable(name = "assetId") int assetId, @RequestParam("table") String table) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
-                    .addObject("asset", assetInstanceService.getAssetInstance(assetId).get())
+                    .addObject("asset", assetInstanceService.getAssetInstance(assetId))
                 .addObject("table", table);
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
-    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) {
+    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
         return userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
                 .addObject("modalType", "changeBookVisibility")
                 .addObject("assetId", assetId);
     }
 
     @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
-    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) {
+    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
         return  userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
                 .addObject("modalType", "deleteBook")
                 .addObject("assetId", assetId);
     }
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView deleteAsset(@PathVariable("id") int id) {
+    public ModelAndView deleteAsset(@PathVariable("id") int id) throws AssetInstanceNotFoundException{
         assetInstanceService.removeAssetInstance(id);
         return new ModelAndView("redirect:/userHome");
     }
 
     @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
-    public ModelAndView changeMyBookStatus(@RequestParam("id") int id) {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id).get();
+    public ModelAndView changeMyBookStatus(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);
 
         if(assetInstance.getAssetState().isPublic())
             assetAvailabilityService.setAssetPrivate(id);

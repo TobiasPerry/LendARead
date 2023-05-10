@@ -50,7 +50,7 @@ public class UserHomeViewController {
         return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()));
     }
 
-    private ModelAndView initWith(UserAssets userAssets) {
+    private ModelAndView initWith(UserAssets userAssets) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", userAssets);
@@ -63,14 +63,14 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
-    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) {
+    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) throws UserNotFoundException {
         filters.put(table, filter);
         return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filter))
                 .addObject("filter", filter).addObject("table", table);
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
-    public ModelAndView changeTable(@RequestParam("type") String table) {
+    public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
         return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filters.getOrDefault(table, "all")))
                                     .addObject("table", table)
                                     .addObject("filter", filters.getOrDefault(table, "all"));
@@ -78,7 +78,7 @@ public class UserHomeViewController {
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
     public ModelAndView sortUserHomeAssets(@RequestParam("table") String table,
                                            @RequestParam("attribute") String attribute,
-                                           @RequestParam("direction") String direction) {
+                                           @RequestParam("direction") String direction) throws UserNotFoundException {
 
         ModelAndView modelAndView = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).sort(table, attribute, direction))
                 .addObject("table", table)
