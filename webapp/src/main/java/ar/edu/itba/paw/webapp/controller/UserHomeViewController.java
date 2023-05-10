@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import ar.edu.itba.paw.webapp.miscellaneous.SortFilterManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class UserHomeViewController {
@@ -40,7 +43,7 @@ public class UserHomeViewController {
     private ModelAndView initialiseModelViewWith(String table) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
-        model.addObject("userAssets", getUserAssets(table));
+        model.addObject("userAssets", getUserAssetsIn(table));
         model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).getName());
         model.addObject("table", table);
         return model;
@@ -61,8 +64,8 @@ public class UserHomeViewController {
         return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
     }
 
-    private UserAssets getUserAssets(String table) {
-        return userAssetInstanceService.getUserAssets(
+    private List<? extends AssetInstance> getUserAssetsIn(String table) {
+        return userAssetInstanceService.getUserAssetsOfTable(
                 userService.getCurrentUser(), table,
                 sortFilterManager.getFilterAttribuite(table), sortFilterManager.getFilterValue(table),
                 sortFilterManager.getSortAtribuite(table), sortFilterManager.getSortDirection(table));

@@ -1,20 +1,13 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
-import ar.edu.itba.paw.models.userContext.implementations.UserAssetsImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
-import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
@@ -28,12 +21,18 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     }
 
     @Override
-    public UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
-        return new UserAssetsImpl(
-                userAssetsDao.getLendedAssets(email,  filterAtribuite, matchFilterValue(filterValue),  matchSortAttribuite(sortAtribuite), direction),
-                userAssetsDao.getBorrowedAssets(email, filterAtribuite, matchFilterValue(filterValue),  sortAtribuite, direction),
-                userAssetsDao.getUsersAssets(email,  filterAtribuite, matchFilterValue(filterValue) , sortAtribuite, direction)
-        );
+    public List<? extends AssetInstance> getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+
+        switch (tableSelected) {
+            case "my_books":
+                return userAssetsDao.getUsersAssets(email, filterAtribuite, matchFilterValue(filterValue), matchSortAttribuite(sortAtribuite), direction);
+            case "borrowed_books":
+                return userAssetsDao.getBorrowedAssets(email, filterAtribuite, matchFilterValue(filterValue), matchSortAttribuite(sortAtribuite), direction);
+            case "lended_books":
+                return userAssetsDao.getLendedAssets(email, filterAtribuite, matchFilterValue(filterValue), matchSortAttribuite(sortAtribuite), direction);
+        }
+
+        return new ArrayList<>();
     }
 
     private String matchFilterValue(String filterAtribuite) {

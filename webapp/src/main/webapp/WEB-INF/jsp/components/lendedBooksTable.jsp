@@ -136,7 +136,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${userAssets.lendedBooks}" var="asset">
+                    <c:forEach items="${userAssets}" var="asset">
                         <spring:message var="lendedBooksName" code='lendedBooks' />
                         <c:url var="userUrl" value="/userBookDetails/${asset.id}?table=${lendedBooksName}"/>
                         <tr class="table-row-clickable" data-href="${userUrl}">

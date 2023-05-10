@@ -15,7 +15,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${userAssets.myBooks}" var="asset">
+            <c:forEach items="${userAssets}" var="asset">
                 <tr>
                     <td>
                         <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
