@@ -30,6 +30,8 @@ public class UserHomeViewController {
 
     private static final SortFilterManager sortFilterManager = new SortFilterManager();
 
+    private String currentTable = DEFAULT_TABLE_NAME;
+
     @Autowired
     public UserHomeViewController(UserAssetInstanceService userAssetInstanceService, UserService userService) {
         this.userAssetInstanceService = userAssetInstanceService;
@@ -38,7 +40,7 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() throws UserNotFoundException {
-        return sortFilterManager.appendTo(DEFAULT_TABLE_NAME, initialiseModelViewWith(DEFAULT_TABLE_NAME));
+        return sortFilterManager.appendTo(currentTable, initialiseModelViewWith(currentTable));
     }
     private ModelAndView initialiseModelViewWith(String table) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
@@ -61,6 +63,7 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
+        currentTable = table;
         return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
     }
 

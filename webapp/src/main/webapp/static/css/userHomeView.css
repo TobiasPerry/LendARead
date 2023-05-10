@@ -205,6 +205,10 @@ button {
     cursor: pointer;
     outline: inherit;
     color: inherit;
+    opacity: 0.7;
+}
+.sort-button-selected {
+    opacity: 1;
 }
 
 .sort-button:hover {

@@ -48,7 +48,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th><spring:message code="image"/></th>
+                        <th style="opacity: 0.7"><spring:message code="image"/></th>
                         <jsp:include page="sortButton.jsp">
                             <jsp:param name="table" value="lended_books"/>
                             <jsp:param name="attribute" value="book_name"/>
