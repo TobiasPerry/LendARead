@@ -14,14 +14,17 @@ import java.util.Optional;
 @Service
 public class ISBNCheckerServiceImpl implements ISBNCheckerService {
 
-    @Autowired
-    LibraryAPIService libraryAPIService;
+    private final LibraryAPIService libraryAPIService;
+    private final AssetDao assetDao;
 
     @Autowired
-    AssetDao assetDao;
+    public ISBNCheckerServiceImpl(final LibraryAPIService  libraryAPIService, final AssetDao assetDao) {
+        this.libraryAPIService = libraryAPIService;
+        this.assetDao = assetDao;
+    }
 
     @Override
-    public Optional<Book> getBookIfExistsByISBN(String isbn) {
+    public Optional<Book> getBookIfExistsByISBN(final String isbn) {
         Optional<Book> bookOpt = this.assetDao.getBook(isbn);
         if (bookOpt.isPresent()) {
             return bookOpt;

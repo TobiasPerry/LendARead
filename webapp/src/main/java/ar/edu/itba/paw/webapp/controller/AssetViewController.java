@@ -1,5 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
@@ -34,21 +38,18 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@PathVariable(name = "id") int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm) {
-        Optional<AssetInstance> assetInstanceOpt = assetInstanceService.getAssetInstance(id);
+    public ModelAndView assetInfoView(@PathVariable(name = "id") int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm) throws AssetInstanceNotFoundException{
+        AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
-        if (!assetInstanceOpt.isPresent()) {
-            return new ModelAndView("/views/notFoundView");
-        }
 
         final ModelAndView mav = new ModelAndView("/views/assetView");
-        mav.addObject("assetInstance", assetInstanceOpt.get());
+        mav.addObject("assetInstance", assetInstanceOpt);
 
         return mav;
     }
 
     @RequestMapping(value = "/requestAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView requestAsset(@PathVariable(name = "id") int id, @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,final BindingResult errors){
+    public ModelAndView requestAsset(@PathVariable(name = "id") int id, @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
         //TODO manejar el error de la fecha
         if (errors.hasErrors()){
             System.out.println(errors);
@@ -56,7 +57,12 @@ public class AssetViewController {
         ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        boolean borrowRequestSuccessful = assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(),LocalDate.parse(borrowAssetForm.getDate(),formatter));
+        try {
+            assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
+        }catch (DayOutOfRangeException ex){
+            assetInfoView.addObject("dayError",true);
+            return assetInfoView;
+        }
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
         return assetInfoView;

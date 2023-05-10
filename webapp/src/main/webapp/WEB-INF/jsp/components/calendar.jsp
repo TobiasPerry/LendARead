@@ -1,4 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!-- Tempus Dominus JavaScript -->
@@ -7,7 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-
+<small id="dateOutOfRange" class="text-danger small " hidden="true"><spring:message code="assetView.tiemerror"/></small>
 <div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
   <form:input path="date" name="date" id="datetimepicker1Input" type="text" class="form-control" data-td-target="#datetimepicker1" readonly="true"/>
   <form:errors path="date" cssClass="text-danger small" element="small"/>
@@ -17,6 +19,12 @@
 </div>
 
 <script>
+
+          const showError = '${dayError}' === 'true';
+          if (showError){
+            console.log("LLEGUE")
+            document.getElementById("dateOutOfRange").hidden = false
+          }
 
   new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
     display: {
@@ -48,7 +56,7 @@
     },
     restrictions: {
       minDate: new Date(),
-      maxDate: addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays)+1),
+      maxDate: addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays )+1),
       disabledDates: [addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays )+1)],
       enabledDates: [],
       daysOfWeekDisabled: [],

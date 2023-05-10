@@ -1,4 +1,5 @@
 package ar.edu.itba.paw.services;
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
@@ -31,14 +32,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     @Override
-    public Optional<AssetInstance> getAssetInstance(int id) {
+    public AssetInstance getAssetInstance(int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
-        if (!assetInstanceOpt.isPresent()) {
-            return null;
-        }
+        if (!assetInstanceOpt.isPresent())
+            throw new AssetInstanceNotFoundException("assetInstance not found");
+
 
         AssetInstance assetInstance = assetInstanceOpt.get();
-        return Optional.of(assetInstance);
+        return assetInstance;
     }
 
     @Override
@@ -80,14 +81,16 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     @Override
-    public boolean removeAssetInstance(int id) {
-        return assetDao.deleteAsset(id);
+    public void removeAssetInstance(int id) throws AssetInstanceNotFoundException {
+         boolean wasRemoved = assetDao.deleteAsset(id);
+         if(!wasRemoved)
+             throw new AssetInstanceNotFoundException("Asset instance no found");
     }
 
     @Override
-    public boolean isOwner(int id, String email) {
-        Optional<AssetInstance> assetInstance = getAssetInstance(id);
-        return assetInstance.map(instance -> instance.getOwner().getEmail().equals(email)).orElse(false);
+    public boolean isOwner(int id, String email) throws AssetInstanceNotFoundException {
+        AssetInstance assetInstance = getAssetInstance(id);
+        return assetInstance.getOwner().getEmail().equals(email);
     }
 
 }

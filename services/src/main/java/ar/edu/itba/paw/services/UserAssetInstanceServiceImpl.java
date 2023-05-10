@@ -22,12 +22,12 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
 
     @Autowired
-    public UserAssetInstanceServiceImpl(UserAssetsDao userAssetsDao) {
+    public UserAssetInstanceServiceImpl(final UserAssetsDao userAssetsDao) {
         this.userAssetsDao = userAssetsDao;
     }
 
     @Override
-    public UserAssets getUserAssets(String email) {
+    public UserAssets getUserAssets(final String email) {
         return new UserAssetsImpl(userAssetsDao.getLendedAssets(email), userAssetsDao.getBorrowedAssets(email), userAssetsDao.getUsersAssets(email));
     }
 

@@ -230,7 +230,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
         @Override
-    public Boolean changeStatus(int assetInstanceId, AssetState as) {
+        public Boolean changeStatus(int assetInstanceId, AssetState as) {
         String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
             jdbcTemplate.update(query,as.name(),assetInstanceId);

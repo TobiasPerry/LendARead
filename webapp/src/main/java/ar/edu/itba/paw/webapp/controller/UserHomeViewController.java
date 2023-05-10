@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -40,11 +42,11 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home() throws UserNotFoundException {
         return init().addObject("table", "my_books").addObject("filter", "all");
     }
 
-    private ModelAndView init() {
+    private ModelAndView init() throws UserNotFoundException {
         return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()));
     }
 
@@ -52,7 +54,7 @@ public class UserHomeViewController {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", userAssets);
-        model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).get().getName());
+        model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).getName());
         return model;
     }
 

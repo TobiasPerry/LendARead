@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,12 @@ public class PawUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        final User user = userService.getUser(s).orElseThrow(()->new UsernameNotFoundException("Not user for" + s));
+        final User user;
+        try {
+            user= userService.getUser(s);
+        }catch (UserNotFoundException e){
+            throw new UsernameNotFoundException("Not user for" + s);
+        }
         final Collection<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getBehavior().toString()));
 
