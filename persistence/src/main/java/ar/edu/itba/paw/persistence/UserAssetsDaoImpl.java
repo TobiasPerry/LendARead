@@ -44,7 +44,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public List<BorrowedAssetInstance> getLendedAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
+    public List<BorrowedAssetInstance> getLendedAssets(final String email, final String filterValue, final String filterAttribute, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
@@ -60,6 +60,15 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " WHERE" +
                 "    owner.mail = ?";
 
+        if (!filterAttribute.equals("all"))
+            query += " AND " + filterAttribute + " = ?";
+        if (!sortAttribute.equals("none"))
+            query += " ORDER BY " + sortAttribute;
+        if (!direction.equals("none"))
+            query += " " + direction;
+
+        System.out.println(query);
+
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
@@ -70,8 +79,13 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .orElse(null);
         };
 
+        System.out.println(filterValue);
+        if (!filterAttribute.equals("all"))
+            return jdbcTemplate.query(query, rowMapper, email, filterValue);
+
         return jdbcTemplate.query(query, rowMapper, email);
     }
+
 
     @Override
     public List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {

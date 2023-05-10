@@ -56,7 +56,7 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() throws UserNotFoundException {
-        return init().addObject("table", "my_books").addObject("filter", "all");
+        return appendSelectedSort("my_books", init().addObject("table", "my_books").addObject("filter", "all"));
     }
 
     private ModelAndView init() throws UserNotFoundException {

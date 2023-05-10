@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,12 +30,16 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     @Override
     public UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
         return new UserAssetsImpl(
-                userAssetsDao.getLendedAssets(email, tableSelected, filterAtribuite, sortAtribuite, direction),
-                userAssetsDao.getBorrowedAssets(email, tableSelected, filterAtribuite, sortAtribuite, direction),
-                userAssetsDao.getUsersAssets(email, tableSelected, filterAtribuite, sortAtribuite, direction)
+                userAssetsDao.getLendedAssets(email,  matchFilterValue(filterAtribuite), "status", sortAtribuite, direction),
+                userAssetsDao.getBorrowedAssets(email,  filterAtribuite, "status", sortAtribuite, direction),
+                userAssetsDao.getUsersAssets(email,  filterAtribuite ,"status",sortAtribuite, direction)
         );
     }
 
+    private String matchFilterValue(String filterAtribuite) {
+        if(!Objects.equals(filterAtribuite, "all")) return filterAtribuite.toUpperCase();
+        return filterAtribuite;
+    }
 
     @Override
     public List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String atribuite) {
