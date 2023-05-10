@@ -65,8 +65,7 @@ public class UserHomeViewController {
     }
 
     private List<? extends AssetInstance> getUserAssetsIn(String table) {
-        return userAssetInstanceService.getUserAssetsOfTable(
-                userService.getCurrentUser(), table,
+        return userAssetInstanceService.getUserAssetsOfTable( userService.getCurrentUser(), table,
                 sortFilterManager.getFilterAttribuite(table), sortFilterManager.getFilterValue(table),
                 sortFilterManager.getSortAtribuite(table), sortFilterManager.getSortDirection(table));
     }

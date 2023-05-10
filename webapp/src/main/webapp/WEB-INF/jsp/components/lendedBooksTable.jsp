@@ -1,98 +1,47 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<style>
-    .filter-button {
-        background-color: #2B3B2B;
-        margin-right: 10px;
-        border-radius: 20px;
-    }
-    .filter-button-selected {
-        opacity: 1;
-    }
-
-    .filter-button:not(.filter-button-selected) {
-        opacity: 0.6;
-    }
-
-    .table-row-clickable {
-        cursor: pointer;
-        margin-bottom: 10px;
-        opacity: 0.8;
-    }
-    .table-row-clickable:hover {
-        opacity: 1;
-    }
-    .sort-form {
-        display: inline;
-    }
-
-    .sort-button {
-        background: none;
-        border: none;
-        padding: 0;
-        font: inherit;
-        cursor: pointer;
-        outline: inherit;
-        color: inherit;
-    }
-
-    .sort-button:hover {
-        color: #2B3B2B;
-        opacity: 0.7;
-    }
-
-</style>
 <c:choose>
     <c:when test="${isLender}">
         <div class="table-title">
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <h2><spring:message code="lended_books"/></h2>
                 <div>
-                    <div class="d-inline-flex">
-                        <c:url var="filterUrl" value="/applyFilter"/>
-                        <form action="${filterUrl}" method="get">
-                            <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filterValue" value="none">
-                            <input type="hidden" name="filterAtribuite" value="none">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.all'/>" class="btn btn-primary filter-button ${filter == 'none' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
-                                <spring:message code="userHomeView.all" />
-                            </button>
-                        </form>
-                    </div>
-                    <div class="d-inline-flex">
-                        <c:url var="filterUrl" value="/applyFilter"/>
-                        <form action="${filterUrl}" method="get">
-                            <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filterValue" value="pending">
-                            <input type="hidden" name="filterAtribuite" value="status">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.pending'/>" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
-                                <spring:message code="userHomeView.pending" />
-                            </button>
-                        </form>
-                    </div>
-                    <div class="d-inline-flex">
-                        <c:url var="filterUrl" value="/applyFilter"/>
-                        <form action="${filterUrl}" method="get">
-                            <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filterValue" value="confirmed">
-                            <input type="hidden" name="filterAtribuite" value="status">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.confirmed'/>" class="btn btn-primary filter-button ${filter == 'confirmed' && table == "lended_books" ? 'filter-button-selected' : ''}">
-                                <spring:message code="userHomeView.inProgress" />
-                            </button>
-                        </form>
-                    </div>
-                    <div class="d-inline-flex">
-                        <c:url var="filterUrl" value="/applyFilter"/>
-                        <form action="${filterUrl}" method="get">
-                            <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filterValue" value="delayed">
-                            <input type="hidden" name="filterAtribuite" value="status">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.delayed'/>" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
-                                <spring:message code="userHomeView.delayed" />
-                            </button>
-                        </form>
-                    </div>
+                    <jsp:include page="filterButton.jsp">
+                        <jsp:param name="table" value="lended_books"/>
+                        <jsp:param name="filterValue" value="none"/>
+                        <jsp:param name="filterAtribuite" value="none"/>
+                        <jsp:param name="title" value="filterOption.all"/>
+                        <jsp:param name="buttonText" value="userHomeView.all"/>
+                        <jsp:param name="filter" value="${filter}"/>
+                    </jsp:include>
+
+                    <jsp:include page="filterButton.jsp">
+                        <jsp:param name="table" value="lended_books"/>
+                        <jsp:param name="filterValue" value="pending"/>
+                        <jsp:param name="filterAtribuite" value="status"/>
+                        <jsp:param name="title" value="filterOption.pending"/>
+                        <jsp:param name="buttonText" value="userHomeView.pending"/>
+                        <jsp:param name="filter" value="${filter}"/>
+                    </jsp:include>
+                    <jsp:include page="filterButton.jsp">
+                        <jsp:param name="table" value="lended_books"/>
+                        <jsp:param name="filterValue" value="confirmed"/>
+                        <jsp:param name="filterAtribuite" value="status"/>
+                        <jsp:param name="title" value="filterOption.confirmed"/>
+                        <jsp:param name="buttonText" value="userHomeView.inProgress"/>
+                        <jsp:param name="filter" value="${filter}"/>
+                    </jsp:include>
+
+                    <jsp:include page="filterButton.jsp">
+                        <jsp:param name="table" value="lended_books"/>
+                        <jsp:param name="filterValue" value="delayed"/>
+                        <jsp:param name="filterAtribuite" value="status"/>
+                        <jsp:param name="title" value="filterOption.delayed"/>
+                        <jsp:param name="buttonText" value="userHomeView.delayed"/>
+                        <jsp:param name="filter" value="${filter}"/>
+                    </jsp:include>
+
                 </div>
             </div>
             <div class="table-container">
