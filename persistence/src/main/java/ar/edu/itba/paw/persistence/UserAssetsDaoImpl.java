@@ -101,25 +101,39 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    assetinstance ai ON l.assetinstanceid = ai.id" +
                 " JOIN" +
+                "    book b ON ai.id = b.uid" +
+                " JOIN" +
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
                 "    u.mail = ?";
 
+
+
+        if (!filterAtribuite.equalsIgnoreCase("none"))
+            query += " AND " + filterAtribuite + " = ?";
+        if (!sortAtribuite.equalsIgnoreCase("none"))
+            query += " ORDER BY " + sortAtribuite;
+        if (!direction.equalsIgnoreCase("none"))
+            query += " " + direction;
+
+
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
-            String owner = rs.getString("owner_name");
+            String borrower = rs.getString("borrower_name");
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower))
                     .orElse(null);
         };
 
-        List<BorrowedAssetInstance> results = jdbcTemplate.query(query, rowMapper, email);
-        return results.stream().filter(Objects::nonNull).collect(Collectors.toList());
-    }
+
+        if (!filterAtribuite.equalsIgnoreCase("none"))
+            return jdbcTemplate.query(query, rowMapper, email, filterValue);
+
+        return jdbcTemplate.query(query, rowMapper, email);    }
 
     @Override
     public List<AssetInstance> getUsersAssets(final String email,final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
