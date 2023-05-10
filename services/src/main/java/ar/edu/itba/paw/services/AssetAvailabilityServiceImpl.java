@@ -18,6 +18,8 @@ import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,17 +34,19 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     private final UserDao userDao;
 
     private final EmailService emailService;
+    private final MessageSource messageSource;
 
     @Autowired
-    public AssetAvailabilityServiceImpl(AssetAvailabilityDao lendingDao, AssetInstanceDao assetInstanceDao, UserDao userDao,EmailService emailService) {
+    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao,final AssetInstanceDao assetInstanceDao,final UserDao userDao,final EmailService emailService,final MessageSource messageSource) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
         this.emailService = emailService;
+        this.messageSource = messageSource;
     }
 
     @Override
-    public void borrowAsset(int assetId, String borrower, LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
+    public void borrowAsset(final int assetId,final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
         if(!ai.isPresent())
@@ -66,14 +70,14 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     }
 
     @Override
-    public void setAssetPrivate(int assetId) throws AssetInstanceNotFoundException {
-        if(! assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
+    public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
     @Override
-    public void setAssetPublic(int assetId) throws AssetInstanceNotFoundException {
-        if( assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC))
+    public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC))
             throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
@@ -93,7 +97,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         return borrowedAssetInstances;
     }
 
-    private void sendLenderEmail(AssetInstance assetInstance, String borrower) {
+    private void sendLenderEmail(final AssetInstance assetInstance,final String borrower) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -107,11 +111,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         variables.put("location",location);
         String email = owner.getEmail();
         String bookName = book.getName();
-        String subject = String.format("Lendabook: Préstamo de tu libro %s", bookName);
+        String subject = String.format(messageSource.getMessage("email.lender.subject",null, LocaleContextHolder.getLocale()), bookName);
         emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
     }
 
-    private void sendBorrowerEmail(AssetInstance assetInstance, User borrower) {
+    private void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -124,7 +128,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         variables.put("borrower",borrower.getName());
         variables.put("owner",owner);
         variables.put("location",location);
+        String subject = String.format(messageSource.getMessage("email.borrower.subject",null, LocaleContextHolder.getLocale()), assetInstance.getBook().getName());
 
-        emailService.sendEmail(borrower.getEmail(), "Lendabook: Préstamo libro " + book.getName(), emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
+        emailService.sendEmail(borrower.getEmail(), subject, emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
     }
 }

@@ -34,7 +34,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     public AssetInstance getAssetInstance(int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
         if (!assetInstanceOpt.isPresent())
-            throw new AssetInstanceNotFoundException(" assetInstance not found");
+            throw new AssetInstanceNotFoundException("assetInstance not found");
 
 
         AssetInstance assetInstance = assetInstanceOpt.get();
@@ -68,7 +68,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         }
         return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
-
 
 
 
