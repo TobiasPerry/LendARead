@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class UserAssetDetailsController {
 
     private  String table = "";
 
+    @Autowired
     public UserAssetDetailsController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
@@ -56,8 +58,8 @@ public class UserAssetDetailsController {
         return new ModelAndView("redirect:/userHome");
     }
 
-    @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
-    public ModelAndView changeMyBookStatus(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+    @RequestMapping(value ="/changeStatus/{id}", method = RequestMethod.POST)
+    public ModelAndView changeMyBookStatus(@PathVariable("id") int id) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);
 
         if(assetInstance.getAssetState().isPublic())

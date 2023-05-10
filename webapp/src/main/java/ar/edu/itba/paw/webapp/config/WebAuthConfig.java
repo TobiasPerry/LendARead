@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.webapp.auth.ChangeAssetStatusVoter;
 import ar.edu.itba.paw.webapp.auth.DeleteAssetVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,9 +39,12 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private DeleteAssetVoter editListVoter;
+    private DeleteAssetVoter deleteAssetVoter;
+    @Autowired
+    private ChangeAssetStatusVoter changeAssetStatusVoter;
     @Autowired
     private Environment environment;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -65,7 +69,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 new WebExpressionVoter(),
                 new RoleVoter(),
                 new AuthenticatedVoter(),
-                editListVoter
+                deleteAssetVoter,
+                changeAssetStatusVoter
         );
         return new UnanimousBased(decisionVoters);
     }

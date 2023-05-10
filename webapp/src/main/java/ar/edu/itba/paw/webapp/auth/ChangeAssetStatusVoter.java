@@ -15,11 +15,11 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class DeleteAssetVoter implements AccessDecisionVoter<FilterInvocation> {
+public class ChangeAssetStatusVoter implements AccessDecisionVoter<FilterInvocation> {
     private final AssetInstanceService assetInstanceService;
 
     @Autowired
-    public DeleteAssetVoter(AssetInstanceService assetInstanceService) {
+    public ChangeAssetStatusVoter(AssetInstanceService assetInstanceService) {
         this.assetInstanceService = assetInstanceService;
     }
 
@@ -39,7 +39,7 @@ public class DeleteAssetVoter implements AccessDecisionVoter<FilterInvocation> {
     public int vote(Authentication authentication, FilterInvocation filterInvocation, Collection<ConfigAttribute> attributes) {
         AtomicInteger vote = new AtomicInteger();
         vote.set(ACCESS_ABSTAIN);
-        if(filterInvocation.getRequestUrl().toLowerCase().contains("/deleteasset/")) {
+        if(filterInvocation.getRequestUrl().toLowerCase().contains("/changestatus/")) {
 
             StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
             stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
