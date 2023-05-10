@@ -78,15 +78,24 @@ public class UserHomeViewController {
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) throws UserNotFoundException {
         filters.put(table, filter);
-        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filter, sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
+        ModelAndView model = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filter, sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
                 .addObject("filter", filter).addObject("table", table);
+
+        return appendSelectedSort(table, model);
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
-        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filters.getOrDefault(table, "all"), sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
+        ModelAndView model = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filters.getOrDefault(table, "all"), sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
                                     .addObject("table", table)
-                                    .addObject("filter", filters.getOrDefault(table, "all"));
+                                    .addObject("filter", filters.getOrDefault(table, "all"))
+                                    .addObject("table", table);
+
+        return appendSelectedSort(table, model);
+    }
+
+    private ModelAndView appendSelectedSort(String table, ModelAndView model) {
+        return model.addObject("sort_" + sorts.getOrDefault(table, EmptySortOption).attribuite, "asc".equals(sorts.getOrDefault(table, EmptySortOption).direction));
     }
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
     public ModelAndView sortUserHomeAssets(@RequestParam("table") String table,
