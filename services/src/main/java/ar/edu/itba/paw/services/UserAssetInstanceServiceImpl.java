@@ -30,14 +30,19 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     @Override
     public UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
         return new UserAssetsImpl(
-                userAssetsDao.getLendedAssets(email,  filterAtribuite, matchFilterValue(filterValue),  sortAtribuite, direction),
-                userAssetsDao.getBorrowedAssets(email, filterAtribuite, filterValue,  sortAtribuite, direction),
-                userAssetsDao.getUsersAssets(email,  filterAtribuite, filterValue , sortAtribuite, direction)
+                userAssetsDao.getLendedAssets(email,  filterAtribuite, matchFilterValue(filterValue),  matchSortAttribuite(sortAtribuite), direction),
+                userAssetsDao.getBorrowedAssets(email, filterAtribuite, matchFilterValue(filterValue),  sortAtribuite, direction),
+                userAssetsDao.getUsersAssets(email,  filterAtribuite, matchFilterValue(filterValue) , sortAtribuite, direction)
         );
     }
 
     private String matchFilterValue(String filterAtribuite) {
         return filterAtribuite.toUpperCase();
+    }
+
+    private String matchSortAttribuite(String sortAtribuite) {
+        if(sortAtribuite.equals("book_name")) return "b.title";
+        return sortAtribuite;
     }
 
 

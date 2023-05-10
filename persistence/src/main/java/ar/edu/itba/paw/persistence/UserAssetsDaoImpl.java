@@ -54,6 +54,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    assetinstance ai ON l.assetinstanceid = ai.id" +
                 " JOIN" +
+                "    book b ON ai.id = b.uid" +
+                " JOIN" +
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
