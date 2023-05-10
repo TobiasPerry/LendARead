@@ -27,8 +27,12 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     }
 
     @Override
-    public UserAssets getUserAssets(final String email) {
-        return new UserAssetsImpl(userAssetsDao.getLendedAssets(email), userAssetsDao.getBorrowedAssets(email), userAssetsDao.getUsersAssets(email));
+    public UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
+        return new UserAssetsImpl(
+                userAssetsDao.getLendedAssets(email, tableSelected, filterAtribuite, sortAtribuite, direction),
+                userAssetsDao.getBorrowedAssets(email, tableSelected, filterAtribuite, sortAtribuite, direction),
+                userAssetsDao.getUsersAssets(email, tableSelected, filterAtribuite, sortAtribuite, direction)
+        );
     }
 
 

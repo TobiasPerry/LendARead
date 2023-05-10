@@ -32,6 +32,19 @@ public class UserHomeViewController {
     private static final String registerViewName = "/views/userHomeView";
 
     private final Map<String, String> filters = new HashMap<>();
+    private final Map<String, SortOption> sorts = new HashMap<>();
+
+    static class SortOption {
+       private final String attribuite;
+       private final String direction;
+
+        public SortOption(String attribuite, String direction) {
+            this.attribuite = attribuite;
+            this.direction = direction;
+        }
+    }
+
+    private final static SortOption EmptySortOption = new SortOption("none", "none");
 
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService, UserService userService) {
@@ -47,7 +60,7 @@ public class UserHomeViewController {
     }
 
     private ModelAndView init() throws UserNotFoundException {
-        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()));
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), "my_books", "all", "none", "none"));
     }
 
     private ModelAndView initWith(UserAssets userAssets) throws UserNotFoundException {
@@ -65,13 +78,13 @@ public class UserHomeViewController {
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) throws UserNotFoundException {
         filters.put(table, filter);
-        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filter))
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filter, sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
                 .addObject("filter", filter).addObject("table", table);
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
-        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).filter(table, filters.getOrDefault(table, "all")))
+        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filters.getOrDefault(table, "all"), sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
                                     .addObject("table", table)
                                     .addObject("filter", filters.getOrDefault(table, "all"));
     }
@@ -80,7 +93,8 @@ public class UserHomeViewController {
                                            @RequestParam("attribute") String attribute,
                                            @RequestParam("direction") String direction) throws UserNotFoundException {
 
-        ModelAndView modelAndView = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser()).sort(table, attribute, direction))
+        sorts.put(table, new SortOption(attribute, direction));
+        ModelAndView modelAndView =   initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filters.getOrDefault(table, "all"), sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
                 .addObject("table", table)
                 .addObject("filter", filters.getOrDefault(table, "all"));
 

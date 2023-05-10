@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserAssetInstanceService {
 
-    UserAssets getUserAssets(String email);
-    List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String attribuite);
+    UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction);
+    List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(final String email, final String attribuite);
 
 }

@@ -44,7 +44,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public List<BorrowedAssetInstance> getLendedAssets(String email) {
+    public List<BorrowedAssetInstance> getLendedAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
@@ -74,7 +74,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public List<BorrowedAssetInstance> getBorrowedAssets(String email) {
+    public List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -105,7 +105,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public List<AssetInstance> getUsersAssets(String email) {
+    public List<AssetInstance> getUsersAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
         String query = "SELECT " +
                         "    ai.id" +
                         " FROM" +

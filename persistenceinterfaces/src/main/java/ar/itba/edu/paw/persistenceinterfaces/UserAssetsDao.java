@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface UserAssetsDao {
 
-    List<BorrowedAssetInstance> getLendedAssets(String email);
+    List<BorrowedAssetInstance> getLendedAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction);
 
-    List<BorrowedAssetInstance> getBorrowedAssets(String email);
-    List<AssetInstance> getUsersAssets(String email);
+    List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction);
+    List<AssetInstance> getUsersAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction);
     List<BorrowedAssetInstance> getLendedAssetsFilteredBy(String email, String Attribuite);
 }
