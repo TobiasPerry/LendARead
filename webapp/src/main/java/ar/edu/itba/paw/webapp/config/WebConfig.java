@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.webapp.controller.CustomHandlerExceptionResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -35,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.formFactories"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
     @Bean
     public MessageSource messageSource(){
         final ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
@@ -95,6 +98,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //Datos de la base de datos.
         ds.setUsername("postgres");
         ds.setPassword("root");
+
+        LOGGER.debug("DATA SOURCE CREATED");
 
         return ds;
     }
