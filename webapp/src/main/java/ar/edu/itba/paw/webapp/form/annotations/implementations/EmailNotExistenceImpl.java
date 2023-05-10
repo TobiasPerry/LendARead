@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form.annotations.implementations;
 
 
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailNotExistence;
@@ -21,7 +22,11 @@ public class EmailNotExistenceImpl implements ConstraintValidator<EmailNotExiste
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        Optional<User> user = userService.getUser(s);
-        return !user.isPresent();
+        try {
+            User user = userService.getUser(s);
+            return false;
+        }catch (UserNotFoundException e){
+            return true;
+        }
     }
 }

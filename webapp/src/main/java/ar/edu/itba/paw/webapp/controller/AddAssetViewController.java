@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.webapp.formFactories.FormFactoryAddAssetView;
@@ -46,18 +47,17 @@ final public class AddAssetViewController {
                     .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
 
         String email = userService.getCurrentUser();
-
-        boolean addedBookSuccessfully = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm,email), handleImage(image));
-
-        if(addedBookSuccessfully) {
+        try {
+            assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, email), handleImage(image));
             ModelAndView addAssetView = addAssetView(addAssetForm);
-                SnackbarControl.displaySuccess(addAssetView,SUCESS_MSG);
+            SnackbarControl.displaySuccess(addAssetView, SUCESS_MSG);
             return addAssetView;
-        }
 
-        return  addAssetView(addAssetForm)
+        }catch (InternalErrorException e) {
+            return addAssetView(addAssetForm)
                     .addObject("showSnackbarInvalid", true)
-                    .addObject("snackBarInvalidTextTitle",  "Hubo un error guardando el libro");
+                    .addObject("snackBarInvalidTextTitle", "Hubo un error guardando el libro");
+        }
     }
 
     private static byte[] handleImage(MultipartFile file) {

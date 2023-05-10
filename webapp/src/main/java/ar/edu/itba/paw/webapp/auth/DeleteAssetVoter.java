@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -29,6 +30,7 @@ public class DeleteAssetVoter implements AccessDecisionVoter<FilterInvocation> {
     }
 
 
+    @SneakyThrows
     @Override
     public int vote(Authentication authentication, FilterInvocation filterInvocation, Collection<ConfigAttribute> attributes) {
         AtomicInteger vote = new AtomicInteger();

@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -34,15 +36,15 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView home() throws UserNotFoundException{
         return init().addObject("table", "my_books");
     }
 
-    private ModelAndView init() {
+    private ModelAndView init() throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", userAssetInstanceService.getUserAssets(currentUserEmail()));
-        model.addObject("userEmail", userService.getUser(currentUserEmail()).get().getName());
+        model.addObject("userEmail", userService.getUser(currentUserEmail()).getName());
         return model;
     }
 
@@ -56,8 +58,8 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value ="/changeStatus", method = RequestMethod.POST)
-    public ModelAndView changeMyBookStatus(@RequestParam("id") int id) {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id).get();
+    public ModelAndView changeMyBookStatus(@RequestParam("id") int id) throws AssetInstanceNotFoundException,UserNotFoundException {
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);
 
         if(assetInstance.getAssetState().isPublic())
             assetAvailabilityService.setAssetPrivate(id);
@@ -68,24 +70,24 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
-    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) {
+    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) throws UserNotFoundException{
         return home().addObject("showSnackbarSucess", "true")
                      .addObject("modalType", "changeBookVisibility").addObject("assetId", assetId);
     }
 
     @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
-    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) {
+    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) throws UserNotFoundException {
         return home().addObject("showSnackbarSucess", "true")
                 .addObject("modalType", "deleteBook").addObject("assetId", assetId);
     }
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView deleteAsset(@PathVariable("id") int id) {
+    public ModelAndView deleteAsset(@PathVariable("id") int id) throws AssetInstanceNotFoundException,UserNotFoundException {
         assetInstanceService.removeAssetInstance(id);
         return home();
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
-    public ModelAndView changeTable(@RequestParam("type") String table) {
+    public ModelAndView changeTable(@RequestParam("type") String table)throws UserNotFoundException {
         return init().addObject("table", table);
     }
 

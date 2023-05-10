@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.*;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
@@ -31,15 +32,15 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     }
 
     @Override
-    public boolean addAssetInstance(AssetInstance assetInstance, byte[] photo) {
+    public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException{
         Optional<Integer> assetId = bookDao.addAsset(assetInstance.getBook());
         Optional<User> user = userDao.getUser(assetInstance.getOwner().getEmail());
         Optional<Integer> locationId = locationDao.addLocation(assetInstance.getLocation());
         Optional<Integer> photoId =  photosDao.addPhoto(photo);
         if(assetId.isPresent() && user.isPresent() && locationId.isPresent() && photoId.isPresent()) {
             assetInstanceDao.addAssetInstance(assetId.get(), user.get().getId(),locationId.get(),photoId.get(),assetInstance);
-            return true;
+        }else {
+            throw new InternalErrorException("Cannot addAssetInstance");
         }
-        return false;
     }
 }

@@ -1,5 +1,9 @@
 package ar.edu.itba.paw.interfaces;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
@@ -10,11 +14,11 @@ import java.util.List;
 
 public interface AssetAvailabilityService {
 
-    boolean borrowAsset(int assetId, String borrower, LocalDate devolutionDate);
+    void borrowAsset(int assetId, String borrower, LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
-    boolean setAssetPrivate(int assetId);
+    void setAssetPrivate(int assetId) throws AssetInstanceNotFoundException;
 
-    boolean setAssetPublic(int assetId);
+    void setAssetPublic(int assetId) throws AssetInstanceNotFoundException;
 
     List<BorrowedAssetInstance> getAllBorrowedAssetsInstances();
 

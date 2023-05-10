@@ -5,8 +5,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>403 Error - Access Denied</title>
+    <title><spring:message code="403.title" /></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="<c:url value="/static/css/403View.css"/>">
 </head>
 <body>
@@ -15,8 +19,6 @@
     <p class="mb-4"><spring:message code="403.text" /></p>
     <a href="<c:url value="/"/>" class="btn btn-primary mt-3" style="background-color: #2B3B2B;border-color: #2B3B2B"><spring:message code="403.button" /></a>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </body>
 </html>

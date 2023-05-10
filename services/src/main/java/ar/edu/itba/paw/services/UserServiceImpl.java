@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
@@ -9,8 +10,10 @@ import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder,UserDao userDao,EmailService emailService) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder,final UserDao userDao,final EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
@@ -34,19 +37,29 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Optional<User> getUser(String email) {
-        return userDao.getUser(email);
+    public User getUser(final String email) throws UserNotFoundException {
+        Optional<User> user = userDao.getUser(email);
+        if (!user.isPresent())
+            throw new UserNotFoundException("The user was not found");
+        return user.get();
     }
 
     @Override
-    public int createUser(String email,String name,String telephone,String password) {
+    public void createUser(String email,String name,String telephone,String password) {
         userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
-        return 0;
     }
 
     @Override
-    public boolean changeRole(String email, Behaviour behaviour) {
-        return userDao.changeRole(email,behaviour);
+    public void changeRole(String email, Behaviour behaviour) throws UserNotFoundException {
+        boolean changed = userDao.changeRole(email,behaviour);
+        if(!changed)
+            throw new UserNotFoundException("The user was not founded");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
+        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ behaviour.toString()));
+        Authentication newAuth = new
+                UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
     @Override

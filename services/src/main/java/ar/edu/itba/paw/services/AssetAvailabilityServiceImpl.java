@@ -1,5 +1,9 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
@@ -38,32 +42,39 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     }
 
     @Override
-    public boolean borrowAsset(int assetId, String borrower, LocalDate devolutionDate) {
+    public void borrowAsset(int assetId, String borrower, LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
-        if(!ai.isPresent() || !user.isPresent())
-            return false;
+        if(!ai.isPresent())
+            throw  new AssetInstanceBorrowException("The assetInstance or the user not found");
+        if(!user.isPresent())
+            throw new UserNotFoundException("The user not found");
         if(!ai.get().getAssetState().isPublic())
-            return false;
+            throw  new AssetInstanceBorrowException("The assetInstance is not public");
         if (LocalDate.now().plusDays(ai.get().getMaxDays()).isBefore(devolutionDate) )
-            return false;
+            throw  new DayOutOfRangeException();
+
+
         assetInstanceDao.changeStatus(assetId, AssetState.BORROWED);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
             sendBorrowerEmail(ai.get(), user.get());
             sendLenderEmail(ai.get(), borrower);
+        }else{
+            throw new AssetInstanceBorrowException("Asset cant be lending");
         }
-        return saved;
     }
 
     @Override
-    public boolean setAssetPrivate(int assetId) {
-        return assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE);
+    public void setAssetPrivate(int assetId) throws AssetInstanceNotFoundException {
+        if(! assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
     @Override
-    public boolean setAssetPublic(int assetId) {
-        return assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC);
+    public void setAssetPublic(int assetId) throws AssetInstanceNotFoundException {
+        if( assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
     @Override

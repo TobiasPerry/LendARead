@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,8 +24,13 @@ public class ImagesController {
 
     @RequestMapping( "/getImage/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable String id, HttpServletRequest request){
-        byte[] array = imageService.getPhoto(Integer.parseInt(id));
+        byte[] array;
 
+        try {
+           array = imageService.getPhoto(Integer.parseInt(id));
+        }catch (ImageNotFoundException e){
+            array = new byte[0];
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-type", MediaType.IMAGE_JPEG_VALUE);
         headers.set("Content-Disposition","inline; filename=\"whaterver.jpg\"");

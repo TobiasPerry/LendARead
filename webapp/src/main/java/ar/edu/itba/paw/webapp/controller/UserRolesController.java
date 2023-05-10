@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.webapp.auth.PawUserDetails;
@@ -32,16 +33,10 @@ public class UserRolesController {
     }
 
     @RequestMapping(value = "/changeRole",method = RequestMethod.POST)
-    public ModelAndView changeRole(HttpServletRequest request){
+    public ModelAndView changeRole(HttpServletRequest request) throws UserNotFoundException {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        userService.changeRole(((UserDetails)auth.getPrincipal()).getUsername(),Behaviour.LENDER);
+        userService.changeRole(userService.getCurrentUser(),Behaviour.LENDER);
 
-        HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
-        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ Behaviour.LENDER));
-        Authentication newAuth = new
-                UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
         return new ModelAndView("redirect:" + request.getHeader("Referer"));
     }
 
