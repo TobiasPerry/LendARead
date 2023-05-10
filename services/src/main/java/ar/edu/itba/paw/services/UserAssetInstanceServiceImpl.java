@@ -28,22 +28,17 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     }
 
     @Override
-    public UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String sortAtribuite, final String direction) {
+    public UserAssets getUserAssets(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
         return new UserAssetsImpl(
-                userAssetsDao.getLendedAssets(email,  matchFilterValue(filterAtribuite), "status", sortAtribuite, direction),
-                userAssetsDao.getBorrowedAssets(email,  filterAtribuite, "status", sortAtribuite, direction),
-                userAssetsDao.getUsersAssets(email,  filterAtribuite ,"status",sortAtribuite, direction)
+                userAssetsDao.getLendedAssets(email,  filterAtribuite, matchFilterValue(filterValue),  sortAtribuite, direction),
+                userAssetsDao.getBorrowedAssets(email, filterAtribuite, filterValue,  sortAtribuite, direction),
+                userAssetsDao.getUsersAssets(email,  filterAtribuite, filterValue , sortAtribuite, direction)
         );
     }
 
     private String matchFilterValue(String filterAtribuite) {
-        if(!Objects.equals(filterAtribuite, "all")) return filterAtribuite.toUpperCase();
-        return filterAtribuite;
+        return filterAtribuite.toUpperCase();
     }
 
-    @Override
-    public List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String atribuite) {
-        return userAssetsDao.getLendedAssetsFilteredBy(email, atribuite);
-    }
 
 }

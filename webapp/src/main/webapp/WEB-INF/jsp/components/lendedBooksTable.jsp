@@ -53,8 +53,9 @@
                         <c:url var="filterUrl" value="/applyFilter"/>
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filter" value="all">
-                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.all'/>" class="btn btn-primary filter-button ${filter == 'all' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
+                            <input type="hidden" name="filterValue" value="none">
+                            <input type="hidden" name="filterAtribuite" value="none">
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.all'/>" class="btn btn-primary filter-button ${filter == 'none' && table == "lended_books" || filter == null ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.all" />
                             </button>
                         </form>
@@ -63,7 +64,8 @@
                         <c:url var="filterUrl" value="/applyFilter"/>
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filter" value="pending">
+                            <input type="hidden" name="filterValue" value="pending">
+                            <input type="hidden" name="filterAtribuite" value="status">
                             <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.pending'/>" class="btn btn-primary filter-button ${filter == 'pending' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.pending" />
                             </button>
@@ -73,7 +75,8 @@
                         <c:url var="filterUrl" value="/applyFilter"/>
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filter" value="confirmed">
+                            <input type="hidden" name="filterValue" value="confirmed">
+                            <input type="hidden" name="filterAtribuite" value="status">
                             <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.confirmed'/>" class="btn btn-primary filter-button ${filter == 'confirmed' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.inProgress" />
                             </button>
@@ -83,7 +86,8 @@
                         <c:url var="filterUrl" value="/applyFilter"/>
                         <form action="${filterUrl}" method="get">
                             <input type="hidden" name="table" value="lended_books">
-                            <input type="hidden" name="filter" value="delayed">
+                            <input type="hidden" name="filterValue" value="delayed">
+                            <input type="hidden" name="filterAtribuite" value="status">
                             <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='filterOption.delayed'/>" class="btn btn-primary filter-button ${filter == 'delayed' && table == "lended_books" ? 'filter-button-selected' : ''}">
                                 <spring:message code="userHomeView.delayed" />
                             </button>

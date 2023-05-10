@@ -31,7 +31,7 @@ public class UserHomeViewController {
 
     private static final String registerViewName = "/views/userHomeView";
 
-    private final Map<String, String> filters = new HashMap<>();
+    private final Map<String, FilterOption> filters = new HashMap<>();
     private final Map<String, SortOption> sorts = new HashMap<>();
 
     static class SortOption {
@@ -44,7 +44,19 @@ public class UserHomeViewController {
         }
     }
 
+    static class FilterOption {
+        private final String attribuite;
+
+        private final String value;
+
+        public FilterOption(String attribuite, String value) {
+            this.attribuite = attribuite;
+            this.value = value;
+        }
+    }
+
     private final static SortOption EmptySortOption = new SortOption("none", "none");
+    private final static FilterOption EmptyFilterOption = new FilterOption("none", "none");
 
     @Autowired
     public UserHomeViewController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService, UserService userService) {
@@ -56,11 +68,11 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() throws UserNotFoundException {
-        return appendSelectedSort("my_books", init().addObject("table", "my_books").addObject("filter", "all"));
+        return appendSelectedSort("my_books", init().addObject("table", "my_books").addObject("filter", "none"));
     }
 
     private ModelAndView init() throws UserNotFoundException {
-        return initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), "my_books", "all", "none", "none"));
+        return initWith(getUserAssets("my_books"));
     }
 
     private ModelAndView initWith(UserAssets userAssets) throws UserNotFoundException {
@@ -76,42 +88,57 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
-    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filter") String filter) throws UserNotFoundException {
-        filters.put(table, filter);
-        ModelAndView model = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filter, sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
-                .addObject("filter", filter).addObject("table", table);
+    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filterValue") String filterValue, @RequestParam("filterAtribuite") String filterAtribuite) throws UserNotFoundException {
+        updateSelectedFilter(table, filterAtribuite, filterValue);
+
+        ModelAndView model = initWith(getUserAssets(table)).addObject("filter", filterValue).addObject("table", table);
 
         return appendSelectedSort(table, model);
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
-        ModelAndView model = initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filters.getOrDefault(table, "all"), sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
+        ModelAndView model = initWith(getUserAssets(table))
                                     .addObject("table", table)
-                                    .addObject("filter", filters.getOrDefault(table, "all"))
+                                    .addObject("filter", filters.getOrDefault(table, EmptyFilterOption))
                                     .addObject("table", table);
 
         return appendSelectedSort(table, model);
     }
 
+    private void updateSelectedFilter(String table, String filterAtribuite, String filterValue) {
+        filters.put(table, new FilterOption(filterAtribuite, filterValue));
+    }
+
+    private ModelAndView appendSelectedFilter(String table, ModelAndView model) {
+        return model.addObject("filter", filters.getOrDefault(table, EmptyFilterOption).value);
+    }
     private ModelAndView appendSelectedSort(String table, ModelAndView model) {
         return model.addObject("sort_" + sorts.getOrDefault(table, EmptySortOption).attribuite, "asc".equals(sorts.getOrDefault(table, EmptySortOption).direction));
     }
+
+    private UserAssets getUserAssets(String table) {
+        return userAssetInstanceService.getUserAssets(
+                userService.getCurrentUser(),
+                table,
+                filters.getOrDefault(table, EmptyFilterOption).attribuite, filters.getOrDefault(table, EmptyFilterOption).value,
+                sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction);
+    }
+
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
     public ModelAndView sortUserHomeAssets(@RequestParam("table") String table,
                                            @RequestParam("attribute") String attribute,
                                            @RequestParam("direction") String direction) throws UserNotFoundException {
 
         sorts.put(table, new SortOption(attribute, direction));
-        ModelAndView modelAndView =   initWith(userAssetInstanceService.getUserAssets(userService.getCurrentUser(), table, filters.getOrDefault(table, "all"), sorts.getOrDefault(table, EmptySortOption).attribuite,  sorts.getOrDefault(table, EmptySortOption).direction))
-                .addObject("table", table)
-                .addObject("filter", filters.getOrDefault(table, "all"));
 
-        modelAndView.addObject("sort_book_name", "book_name".equals(attribute) && "asc".equals(direction));
-        modelAndView.addObject("sort_expected_retrieval_date", "expected_retrieval_date".equals(attribute) && "asc".equals(direction));
-        modelAndView.addObject("sort_borrower_name", "borrower_name".equals(attribute) && "asc".equals(direction));
+        ModelAndView modelAndView =   initWith(getUserAssets(table)).addObject("table", table);
+//
+//        modelAndView.addObject("sort_book_name", "book_name".equals(attribute) && "asc".equals(direction));
+//        modelAndView.addObject("sort_expected_retrieval_date", "expected_retrieval_date".equals(attribute) && "asc".equals(direction));
+//        modelAndView.addObject("sort_borrower_name", "borrower_name".equals(attribute) && "asc".equals(direction));
 
-        return modelAndView;
+        return appendSelectedSort(table, appendSelectedFilter(table, modelAndView));
     }
 
     @ModelAttribute
