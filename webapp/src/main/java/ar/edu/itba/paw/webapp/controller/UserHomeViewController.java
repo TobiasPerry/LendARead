@@ -1,24 +1,16 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import ar.edu.itba.paw.webapp.miscellaneous.SortFilterManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class UserHomeViewController {
@@ -28,6 +20,10 @@ public class UserHomeViewController {
     private final UserService userService;
 
     private static final String registerViewName = "/views/userHomeView";
+
+    private static final String DEFAULT_TABLE_NAME = "my_books";
+
+    private static final String NAV_BAR_PATH = "userHome";
 
     private static final SortFilterManager sortFilterManager = new SortFilterManager();
 
@@ -39,18 +35,14 @@ public class UserHomeViewController {
 
     @RequestMapping(value = "/userHome", method = RequestMethod.GET)
     public ModelAndView home() throws UserNotFoundException {
-        return sortFilterManager.appendSelectedSort("my_books", init().addObject("table", "my_books").addObject("filter", "none"));
+        return sortFilterManager.appendTo(DEFAULT_TABLE_NAME, initialiseModelViewWith(DEFAULT_TABLE_NAME));
     }
-
-    private ModelAndView init() throws UserNotFoundException {
-        return initWith(getUserAssets("my_books"));
-    }
-
-    private ModelAndView initWith(UserAssets userAssets) throws UserNotFoundException {
+    private ModelAndView initialiseModelViewWith(String table) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
-        model.addObject("userAssets", userAssets);
+        model.addObject("userAssets", getUserAssets(table));
         model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).getName());
+        model.addObject("table", table);
         return model;
     }
 
@@ -60,21 +52,13 @@ public class UserHomeViewController {
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filterValue") String filterValue, @RequestParam("filterAtribuite") String filterAtribuite) throws UserNotFoundException {
-
         sortFilterManager.updateSelectedFilter(table, filterAtribuite, filterValue);
-
-        ModelAndView model = initWith(getUserAssets(table)).addObject("filter", filterValue).addObject("table", table);
-
-        return sortFilterManager.appendSelectedSort(table, model);
+        return sortFilterManager.appendTo(table,  initialiseModelViewWith(table));
     }
 
     @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
-        ModelAndView model = initWith(getUserAssets(table))
-                                    .addObject("table", table)
-                                    .addObject("table", table);
-
-        return sortFilterManager.appendSelectedFilter(table, sortFilterManager.appendSelectedSort(table, model));
+        return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
     }
 
     private UserAssets getUserAssets(String table) {
@@ -90,19 +74,12 @@ public class UserHomeViewController {
                                            @RequestParam("direction") String direction) throws UserNotFoundException {
 
         sortFilterManager.updateSelectedSort(table, attribute, direction);
-
-        ModelAndView modelAndView =   initWith(getUserAssets(table)).addObject("table", table);
-//
-//        modelAndView.addObject("sort_book_name", "book_name".equals(attribute) && "asc".equals(direction));
-//        modelAndView.addObject("sort_expected_retrieval_date", "expected_retrieval_date".equals(attribute) && "asc".equals(direction));
-//        modelAndView.addObject("sort_borrower_name", "borrower_name".equals(attribute) && "asc".equals(direction));
-
-        return sortFilterManager.appendSelectedSort(table, sortFilterManager.appendSelectedFilter(table, modelAndView));
+        return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
     }
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("path", "userHome");
+        model.addAttribute("path", NAV_BAR_PATH);
     }
 
 }

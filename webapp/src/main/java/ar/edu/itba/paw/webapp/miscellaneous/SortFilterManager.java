@@ -44,6 +44,11 @@ final public class SortFilterManager {
     public ModelAndView appendSelectedFilter(String table, ModelAndView model) {
         return model.addObject("filter", filters.getOrDefault(table, EmptyFilterOption).value);
     }
+
+    public ModelAndView appendTo(String table, ModelAndView model) {
+        return appendSelectedSort(table, appendSelectedFilter(table, model));
+    }
+
     public ModelAndView appendSelectedSort(String table, ModelAndView model) {
         return model.addObject("sort_" + sorts.getOrDefault(table, EmptySortOption).attribuite, "asc".equals(sorts.getOrDefault(table, EmptySortOption).direction));
     }
