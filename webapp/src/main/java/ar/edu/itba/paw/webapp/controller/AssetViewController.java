@@ -50,9 +50,8 @@ public class AssetViewController {
 
     @RequestMapping(value = "/requestAsset/{id}", method = RequestMethod.POST)
     public ModelAndView requestAsset(@PathVariable(name = "id") int id, @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
-        //TODO manejar el error de la fecha
         if (errors.hasErrors()){
-            System.out.println(errors);
+            return assetInfoView(id,borrowAssetForm);
         }
         ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm);
 

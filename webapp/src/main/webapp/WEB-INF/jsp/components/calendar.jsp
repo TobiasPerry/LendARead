@@ -11,11 +11,11 @@
 
 <small id="dateOutOfRange" class="text-danger small " hidden="true"><spring:message code="assetView.tiemerror"/></small>
 <div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
-  <form:input path="date" name="date" id="datetimepicker1Input" type="text" class="form-control" data-td-target="#datetimepicker1" readonly="true"/>
-  <form:errors path="date" cssClass="text-danger small" element="small"/>
+  <form:input path="date" name="date" id="datetimepicker1Input" type="text" class="form-control" value="" data-td-target="#datetimepicker1" readonly="true"/>
   <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
     <i class="fas fa-calendar"></i>
   </span>
+  <form:errors path="date" cssClass="text-danger small" element="small"/>
 </div>
 
 <script>
