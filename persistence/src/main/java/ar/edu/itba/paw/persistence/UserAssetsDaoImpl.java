@@ -91,7 +91,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String filterAtribuite,  final String filterValue, final String sortAtribuite, final String direction) {
+    public List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -109,31 +109,33 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " WHERE" +
                 "    u.mail = ?";
 
-
-
-        if (!filterAtribuite.equalsIgnoreCase("none"))
-            query += " AND " + filterAtribuite + " = ?";
-        if (!sortAtribuite.equalsIgnoreCase("none"))
-            query += " ORDER BY " + sortAtribuite;
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            query += " AND " + filterAttribute + " = ?";
+        if (!sortAttribute.equalsIgnoreCase("none"))
+            query += " ORDER BY " + sortAttribute;
         if (!direction.equalsIgnoreCase("none"))
             query += " " + direction;
 
+        System.out.println(query);
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
-            String borrower = rs.getString("borrower_name");
+            String owner = rs.getString("owner_name");
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
                     .orElse(null);
         };
+        System.out.println(filterAttribute);
 
-
-        if (!filterAtribuite.equalsIgnoreCase("none"))
+        System.out.println(filterValue);
+        if (!filterAttribute.equalsIgnoreCase("none"))
             return jdbcTemplate.query(query, rowMapper, email, filterValue);
 
-        return jdbcTemplate.query(query, rowMapper, email);    }
+        return jdbcTemplate.query(query, rowMapper, email);
+    }
+
 
     @Override
     public List<AssetInstance> getUsersAssets(final String email,final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
