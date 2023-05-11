@@ -1,19 +1,9 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
 public enum SortDirection {
-    ASCENDING("ASC"),
-    DESCENDING("DESC"),
-    DEFAULT("DESC");;
-
-    private final String postgresString;
-
-    SortDirection(final String postgresString){
-        this.postgresString = postgresString;
-    }
-
-    public String getPostgresString() {
-        return postgresString;
-    }
+    ASCENDING(),
+    DESCENDING(),
+    DEFAULT();
 
     public static SortDirection fromString(String value) {
         if (value != null) {
