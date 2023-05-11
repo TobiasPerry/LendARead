@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Locale;
 
@@ -33,7 +34,8 @@ public class ErrorsController {
     @ExceptionHandler({
             UserNotFoundException.class,
             AssetInstanceNotFoundException.class,
-            ImageNotFoundException.class
+            ImageNotFoundException.class,
+            NoHandlerFoundException.class
     })
     public ModelAndView notFoundException() {
         ModelAndView mav = new ModelAndView("views/error");

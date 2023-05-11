@@ -13,9 +13,7 @@ public class LoginLogOutViewController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login( ) {
-        ModelAndView mv = new ModelAndView(viewName);
-
-        return mv;
+       return new ModelAndView(viewName);
     }
 
 
