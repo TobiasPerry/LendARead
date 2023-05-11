@@ -42,19 +42,16 @@ final public class AddAssetViewController {
         response.setContentType("text/html; charset=UTF-8");
 
         if(errors.hasErrors() || image.isEmpty())
-            return addAssetView(addAssetForm)
+            return addAssetView(addAssetForm,false)
                     .addObject("showSnackbarInvalid", true)
                     .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
 
         String email = userService.getCurrentUser();
         try {
             assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, email), handleImage(image));
-            ModelAndView addAssetView = addAssetView(addAssetForm);
-            SnackbarControl.displaySuccess(addAssetView, SUCESS_MSG);
-            return addAssetView;
-
+            return new ModelAndView("redirect:/addAssetView?succes=true");
         }catch (InternalErrorException e) {
-            return addAssetView(addAssetForm)
+            return addAssetView(addAssetForm,false)
                     .addObject("showSnackbarInvalid", true)
                     .addObject("snackBarInvalidTextTitle", "Hubo un error guardando el libro");
         }
@@ -82,9 +79,11 @@ final public class AddAssetViewController {
         model.addAttribute("path", "addAsset");
     }
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
-    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm){
+    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success){
 
         final ModelAndView mav = new ModelAndView(viewName);
+        if(success)
+            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
         Collection<? extends GrantedAuthority> auth =  userService.getCurrentRoles();
         if(auth.contains(new SimpleGrantedAuthority("ROLE_BORROWER"))){
             mav.addObject("borrowerUser","true");

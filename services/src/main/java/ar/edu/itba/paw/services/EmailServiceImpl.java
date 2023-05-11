@@ -44,6 +44,7 @@ class EmailServiceImpl implements EmailService {
             msj.setContent( message,"text/html");
             javaMailSender.send(msj);
         } catch (MessagingException e) {
+            //TODO NO PUEDE ESTAR
             System.out.println("ERROR: Couldn't send email");
             System.err.println(e.getMessage());
         }

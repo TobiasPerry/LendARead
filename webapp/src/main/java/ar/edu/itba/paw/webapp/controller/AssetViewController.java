@@ -38,11 +38,13 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@PathVariable(name = "id") int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm) throws AssetInstanceNotFoundException{
+    public ModelAndView assetInfoView(@PathVariable(name = "id") int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,@RequestParam(required = false,name = "success") final boolean success) throws AssetInstanceNotFoundException{
         AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
 
         final ModelAndView mav = new ModelAndView("/views/assetView");
+        if(success)
+            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
         mav.addObject("assetInstance", assetInstanceOpt);
 
         return mav;
@@ -51,21 +53,20 @@ public class AssetViewController {
     @RequestMapping(value = "/requestAsset/{id}", method = RequestMethod.POST)
     public ModelAndView requestAsset(@PathVariable(name = "id") int id, @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
         if (errors.hasErrors()){
-            return assetInfoView(id,borrowAssetForm);
+            return assetInfoView(id,borrowAssetForm,false);
         }
-        ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         try {
             assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
         }catch (DayOutOfRangeException ex){
+            ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm,false);
+
             assetInfoView.addObject("dayError",true);
             return assetInfoView;
         }
-        SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
-        SnackbarControl.displaySuccess(assetInfoView,SUCESS_MSG);
-        return assetInfoView;
 
+        return new ModelAndView(String.format("redirect:/info/%d?success=%s",id,"true"));
     }
 
     private String getCurrentUserEmail() {
