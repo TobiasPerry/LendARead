@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -34,17 +35,16 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     private final UserDao userDao;
 
     private final EmailService emailService;
-    private final MessageSource messageSource;
 
     @Autowired
-    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao,final AssetInstanceDao assetInstanceDao,final UserDao userDao,final EmailService emailService,final MessageSource messageSource) {
+    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao,final AssetInstanceDao assetInstanceDao,final UserDao userDao,final EmailService emailService) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
         this.emailService = emailService;
-        this.messageSource = messageSource;
     }
 
+    @Transactional
     @Override
     public void borrowAsset(final int assetId,final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
@@ -62,25 +62,28 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
         if (saved) {
-            sendBorrowerEmail(ai.get(), user.get());
-            sendLenderEmail(ai.get(), borrower);
+            emailService.sendBorrowerEmail(ai.get(), user.get());
+            emailService.sendLenderEmail(ai.get(), borrower);
         }else{
             throw new AssetInstanceBorrowException("Asset cant be lending");
         }
     }
 
+    @Transactional
     @Override
     public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
         if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
+    @Transactional
     @Override
     public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
         if(!assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC))
             throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<BorrowedAssetInstance> getAllBorrowedAssetsInstances() {
         List<LendingDetails> lendingDetails =  lendingDao.getAllLendings();
@@ -95,41 +98,5 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
 
         return borrowedAssetInstances;
-    }
-
-    private void sendLenderEmail(final AssetInstance assetInstance,final String borrower) {
-        if (assetInstance == null || borrower == null) {
-            return;
-        }
-        Map<String,Object> variables = new HashMap<>();
-        User owner = assetInstance.getOwner();
-        Location location = assetInstance.getLocation();
-        Book book = assetInstance.getBook();
-        variables.put("book",book);
-        variables.put("borrower",borrower);
-        variables.put("owner",owner);
-        variables.put("location",location);
-        String email = owner.getEmail();
-        String bookName = book.getName();
-        String subject = String.format(messageSource.getMessage("email.lender.subject",null, LocaleContextHolder.getLocale()), bookName);
-        emailService.sendEmail(email, subject, emailService.lenderMailFormat(variables,"lenderEmailTemplate.html"));
-    }
-
-    private void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower) {
-        if (assetInstance == null || borrower == null) {
-            return;
-        }
-
-        Book book = assetInstance.getBook();
-        User owner = assetInstance.getOwner();
-        Location location = assetInstance.getLocation();
-        Map<String,Object> variables = new HashMap<>();
-        variables.put("book",book);
-        variables.put("borrower",borrower.getName());
-        variables.put("owner",owner);
-        variables.put("location",location);
-        String subject = String.format(messageSource.getMessage("email.borrower.subject",null, LocaleContextHolder.getLocale()), assetInstance.getBook().getName());
-
-        emailService.sendEmail(borrower.getEmail(), subject, emailService.lenderMailFormat(variables,"borrowerEmailTemplate.html"));
     }
 }

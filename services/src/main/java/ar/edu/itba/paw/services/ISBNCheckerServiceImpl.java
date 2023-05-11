@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class ISBNCheckerServiceImpl implements ISBNCheckerService {
         this.assetDao = assetDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Book> getBookIfExistsByISBN(final String isbn) {
         Optional<Book> bookOpt = this.assetDao.getBook(isbn);

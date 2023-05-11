@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,12 +27,14 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         this.userAssetsDao = userAssetsDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserAssets getUserAssets(final String email) {
         return new UserAssetsImpl(userAssetsDao.getLendedAssets(email), userAssetsDao.getBorrowedAssets(email), userAssetsDao.getUsersAssets(email));
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String atribuite) {
         return userAssetsDao.getLendedAssetsFilteredBy(email, atribuite);
