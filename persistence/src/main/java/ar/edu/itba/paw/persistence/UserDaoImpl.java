@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
     @Override
-    public Optional<Integer> addUser(Behaviour behavior,String email,String name,String telephone,String password) {
+    public User addUser(Behaviour behavior,String email,String name,String telephone,String password) {
         String query = "INSERT INTO users(behavior,mail,telephone,name,password) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING RETURNING id";
 
 
@@ -51,10 +51,10 @@ public class UserDaoImpl implements UserDao {
             return pstmt;
         }, keyHolder);
         if(keyHolder.getKeys() == null){
-            return getUid(email);
+            return new UserImpl(getUid(email).orElse(-1),email,name,telephone,password,behavior);
         }else {
             int generatedId =(int) keyHolder.getKeys().get("id");
-            return Optional.of(generatedId);
+            return new UserImpl(generatedId,email,name,telephone,password,behavior);
         }
     }
     private Optional<Integer> getUid(String email){

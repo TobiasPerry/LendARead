@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(String email,String name,String telephone,String password) {
-        userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
+    public User createUser(String email,String name,String telephone,String password) {
+      return  userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
     }
 
     @Override

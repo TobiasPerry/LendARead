@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserService {
     User getUser(String email) throws UserNotFoundException;
-     void createUser(String email,String name,String telephone,String password);
+     User createUser(String email,String name,String telephone,String password);
 
     void changeRole(String email,Behaviour behaviour) throws UserNotFoundException;
 

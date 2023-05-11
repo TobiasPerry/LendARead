@@ -143,6 +143,7 @@
       <groupId>org.logback-extensions</groupId>
       <artifactId>logback-ext-spring</artifactId>
     </dependency>
+
   </dependencies>
 
   <build>
