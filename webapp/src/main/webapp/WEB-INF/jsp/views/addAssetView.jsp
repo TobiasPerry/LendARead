@@ -169,6 +169,8 @@
                             <text class="form-subtitle">
                                 <spring:message code="addAssetView.steps.TIME_NOTE"/>
                             </text>
+                            <form:errors cssClass="text-danger small" element="p"/>
+
                             <div class="field-group">
                                 <div class="field">
                                     <spring:message code="addAssetView.maxWeeksLending" var="timeLabel"/>
