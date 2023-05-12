@@ -54,7 +54,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    assetinstance ai ON l.assetinstanceid = ai.id" +
                 " JOIN" +
-                "    book b ON ai.id = b.uid" +
+                "    book b ON ai.assetid = b.uid" +
                 " JOIN" +
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
@@ -101,7 +101,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    assetinstance ai ON l.assetinstanceid = ai.id" +
                 " JOIN" +
-                "    book b ON ai.id = b.uid" +
+                "    book b ON ai.assetid = b.uid" +
                 " JOIN" +
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
@@ -138,25 +138,41 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public List<AssetInstance> getUsersAssets(final String email,final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+    public List<AssetInstance> getUsersAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
-                        "    ai.id" +
-                        " FROM" +
-                        "    assetinstance ai" +
-                        " JOIN" +
-                        "    users u ON ai.owner = u.id" +
-                        " WHERE" +
-                        "    u.mail = ?" +
-                        " AND NOT EXISTS (" +
-                        "     SELECT *" +
-                        "     FROM" +
-                        "         lendings l" +
-                        "     WHERE" +
-                        "         l.assetinstanceid = ai.id" +
-                        " )";
+                "    ai.id" +
+                " FROM" +
+                "    assetinstance ai" +
+                " JOIN" +
+                "    users u ON ai.owner = u.id" +
+                " JOIN" +
+                "    book b ON ai.assetid = b.uid" +
+                " WHERE" +
+                "    u.mail = ?" +
+                " AND NOT EXISTS (" +
+                "     SELECT *" +
+                "     FROM" +
+                "         lendings l" +
+                "     WHERE" +
+                "         l.assetinstanceid = ai.id" +
+                " )";
+
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            query += " AND " + filterAttribute + " = ?";
+        if (!sortAttribute.equalsIgnoreCase("none"))
+            query += " ORDER BY " + sortAttribute;
+        if (!direction.equalsIgnoreCase("none"))
+            query += " " + direction;
+
+        System.out.println(query);
 
         RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
-        List<Integer> assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
+
+        List<Integer> assetIds;
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            assetIds = jdbcTemplate.query(query, assetIdRowMapper, email, filterValue);
+        else
+            assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
 
         return assetIds.stream()
                 .map(assetInstanceDao::getAssetInstance)
@@ -164,5 +180,6 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 .map(Optional::get)
                 .collect(Collectors.toList());
     }
+
 
 }

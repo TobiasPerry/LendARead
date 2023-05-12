@@ -43,7 +43,9 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         if(sortAtribuite.equals("book_name")) return "b.title";
         if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
         if(sortAtribuite.equals("borrower_name")) return "u.name";
-        return sortAtribuite;
+        if(sortAtribuite.equals("author")) return "b.author";
+        if(sortAtribuite.equals("language")) return "b.language";
+        return "none";
     }
 
 
