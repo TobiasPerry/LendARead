@@ -61,11 +61,21 @@
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
                 <c:choose>
-                <c:when test="${table == 'my_books'}">
-                    <jsp:include page="../components/myBookOptions.jsp" >
-                        <jsp:param name="asset" value="${asset}"/>
-                    </jsp:include>
-                </c:when>
+                    <c:when test="${table == 'my_books'}">
+                        <jsp:include page="../components/myBookOptions.jsp" >
+                            <jsp:param name="asset" value="${asset}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'lended_books'}">
+                        <jsp:include page="../components/lendedBookOptions.jsp">
+                            <jsp:param name="asset" value="${asset}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'borrowed_books'}">
+                        <jsp:include page="../components/borrowedBookOptions.jsp">
+                            <jsp:param name="asset" value="${asset}"/>
+                        </jsp:include>
+                    </c:when>
                 </c:choose>
             </div>
         </div>
