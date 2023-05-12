@@ -30,27 +30,40 @@ public class UserAssetDetailsController {
     public ModelAndView returnUserHome() {
         return new ModelAndView("redirect:/userHome");
     }
-    @RequestMapping(value = "/userBookDetails/{assetId}", method = RequestMethod.GET)
-    public ModelAndView userAssetDetails(@PathVariable(name = "assetId") int assetId, @RequestParam("table") String table) throws AssetInstanceNotFoundException {
+    @RequestMapping(value = "/lentBookDetails", method = RequestMethod.GET)
+    public ModelAndView lentBookDetail(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
-                    .addObject("asset", assetInstanceService.getAssetInstance(assetId))
-                .addObject("table", table);
+                    .addObject("asset", assetInstanceService.getAssetInstance(id))
+                    .addObject("table", "lended_book");
     }
-
-    @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
-    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
-        return userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
-                .addObject("modalType", "changeBookVisibility")
-                .addObject("assetId", assetId);
+    @RequestMapping(value = "/myBookDetails", method = RequestMethod.GET)
+    public ModelAndView myBookDetails(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+        this.table = table;
+        return new ModelAndView("/views/userBookDetails")
+                .addObject("asset", assetInstanceService.getAssetInstance(id))
+                .addObject("table", "my_books");
     }
-
-    @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
-    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
-        return  userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
-                .addObject("modalType", "deleteBook")
-                .addObject("assetId", assetId);
+    @RequestMapping(value = "/borrowedBookDetails", method = RequestMethod.GET)
+    public ModelAndView borrowedBookDetails(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+        this.table = table;
+        return new ModelAndView("/views/userBookDetails")
+                .addObject("asset", assetInstanceService.getAssetInstance(id))
+                .addObject("table", "borrowed_book");
     }
+//    @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
+//    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
+//        return userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
+//                .addObject("modalType", "changeBookVisibility")
+//                .addObject("assetId", assetId);
+//    }
+//
+//    @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
+//    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
+//        return  userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
+//                .addObject("modalType", "deleteBook")
+//                .addObject("assetId", assetId);
+//    }
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
     public ModelAndView deleteAsset(@PathVariable("id") int id) throws AssetInstanceNotFoundException{
         assetInstanceService.removeAssetInstance(id);
@@ -66,7 +79,7 @@ public class UserAssetDetailsController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return userAssetDetails(id, this.table);
+        return myBookDetails(id);
     }
 
     @ModelAttribute

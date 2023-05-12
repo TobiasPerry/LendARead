@@ -39,19 +39,19 @@
             <div class="sidebar table-selector">
                 <div class="list-group">
                     <div class="list-group">
-                        <form action="<c:url value="/changeTable" />" method="get">
+                        <form action="<c:url value="/userHomeTab" />" method="get">
                             <input type="hidden" name="type" value="my_books">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "my_books"}'>button-select-active</c:if>">
                                 <spring:message code="my_books"/></button>
                         </form>
-                        <form action="<c:url value="/changeTable" />" method="get">
+                        <form action="<c:url value="/userHomeTab" />" method="get">
                             <input type="hidden" name="type" value="lended_books">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "lended_books"}'>button-select-active</c:if>">
                                 <spring:message code="lended_books"/></button>
                         </form>
-                        <form action="<c:url value="/changeTable" />" method="get">
+                        <form action="<c:url value="/userHomeTab" />" method="get">
                             <input type="hidden" name="type" value="borrowed_books">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "borrowed_books"}'>button-select-active</c:if>">
