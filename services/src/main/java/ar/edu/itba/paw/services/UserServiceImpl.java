@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public User getUser(final String email) throws UserNotFoundException {
         Optional<User> user = userDao.getUser(email);
@@ -44,13 +46,15 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
+    @Transactional
     @Override
-    public void createUser(String email,String name,String telephone,String password) {
+    public void createUser(final String email,final String name,final String telephone,final String password) {
         userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
     }
 
+    @Transactional
     @Override
-    public void changeRole(String email, Behaviour behaviour) throws UserNotFoundException {
+    public void changeRole(final String email,final Behaviour behaviour) throws UserNotFoundException {
         boolean changed = userDao.changeRole(email,behaviour);
         if(!changed)
             throw new UserNotFoundException("The user was not founded");
@@ -62,26 +66,28 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public String getCurrentUser() {
         return ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<? extends GrantedAuthority> getCurrentRoles() {
         return  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 
+    @Transactional
     @Override
     public boolean createChangePasswordToken(String email){
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token,email, LocalDate.now().plusDays(1));
-        Map<String,Object> variables = new HashMap<>();
-        variables.put("token",passwordResetToken.getToken());
-        emailService.sendEmail(email,"Change password",emailService.lenderMailFormat(variables,"ForgotPasswordEmailTemplate.html"));
+        emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
         return userDao.setForgotPasswordToken(passwordResetToken);
     }
 
+    @Transactional
     @Override
     public boolean changePassword(String token,String password){
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
@@ -92,6 +98,7 @@ public class UserServiceImpl implements UserService {
         userDao.deletePasswordRestToken(token);
         return userDao.changePassword(passwordResetToken.get().getUser(),passwordEncoder.encode(password));
     }
+    @Transactional(readOnly = true)
     @Override
     public boolean isTokenValid(String token){
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);

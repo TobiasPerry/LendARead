@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AssetInstanceService {
-    AssetInstance getAssetInstance(int id) throws AssetInstanceNotFoundException;
+    AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException;
 
-    Page getAllAssetsInstances(int pageNum,int itemsPerPage);
+    Page getAllAssetsInstances(final int pageNum,int itemsPerPage);
 
     List<AssetInstance> getAllAssetsInstances();
-    Page getAllAssetsInstances(int pageNum, int itemPerPage, SearchQuery searchQuery);
-    void removeAssetInstance(int id) throws AssetInstanceNotFoundException;
-    boolean isOwner(int id, String email) throws AssetInstanceNotFoundException;
+    Page getAllAssetsInstances(final int pageNum,final int itemPerPage,final SearchQuery searchQuery);
+    void removeAssetInstance(final int id) throws AssetInstanceNotFoundException;
+    boolean isOwner(final int id,final String email) throws AssetInstanceNotFoundException;
 }
