@@ -13,6 +13,8 @@ import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
@@ -176,11 +178,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         String querySort = "";
         if(searchQuery.getSort() != null){
-            // TODO -> Check how can we use placeholders
-//            querySort = " ORDER BY ? ?";
-            querySort = " ORDER BY " + searchQuery.getSort().getPostgresString() + " " + searchQuery.getSortDirection().getPostgresString() + " ";
-//            objects.add(searchQuery.getSort().getPostgresString());
-//            objects.add(searchQuery.getSortDirection().getPostgresString());
+            querySort = " ORDER BY " + getPostgresFromSort(searchQuery.getSort()) + " " + getPostgresFromSortDirection(searchQuery.getSortDirection()) + " ";
         }
 
         String pagination = " LIMIT ? OFFSET ?";
@@ -229,8 +227,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
 
-        @Override
-        public Boolean changeStatus(int assetInstanceId, AssetState as) {
+    @Override
+    public Boolean changeStatus(int assetInstanceId, AssetState as) {
         String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
             jdbcTemplate.update(query,as.name(),assetInstanceId);
@@ -238,5 +236,28 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         }catch (Exception e){
             return false;
         }
+    }
+
+    private String getPostgresFromSort(Sort sort){
+
+        switch (sort){
+            case TITLE_NAME:
+                return "b.title";
+            case AUTHOR_NAME:
+                return "b.author";
+            case RECENT:
+                return "ai.id";
+        }
+        return "ai.id";
+    }
+
+    private String getPostgresFromSortDirection(SortDirection sortDirection){
+        switch (sortDirection){
+            case ASCENDING:
+                return "ASC";
+            case DESCENDING:
+                return "DESC";
+        }
+        return "ASC";
     }
 }

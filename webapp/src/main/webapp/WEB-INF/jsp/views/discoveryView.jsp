@@ -50,8 +50,8 @@
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
 
             <div class="btn-group mx-2 mb-4 mt-2" role="group">
-                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <spring:message code="discovery.sort.title"/>
+                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgba(255, 255, 255, 0.3)">
+                    <spring:message code="discovery.sort.title"/> : <spring:message code="enum.${sort.name()}.${sortDirection.name()}"/>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" id="mostRecent"><spring:message code="discovery.sort.mostRecent"/></a></li>
@@ -91,7 +91,11 @@
                             <ul style="max-height: 200px; overflow-y: scroll">
                                 <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
                                     <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
-                                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></label>
+                                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label" data-physicalcondition="<c:out value="${physicalCondition}"/>">
+                                        <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                                        <spring:message code="enum.${physicalCondition}"/>
+                                        </span>
+                                    </label>
                                     <br>
                                 </c:forEach>
                             </ul>
@@ -99,7 +103,11 @@
                         <c:otherwise>
                             <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item physicalCondition-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
+                                    <li class="list-group-item physicalCondition-filtered-item filtered-item">
+                                        <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                                            <spring:message code="enum.${physicalCondition}"/>
+                                        </span>
+                                    </li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -126,7 +134,7 @@
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
                 <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="margin:10px; width: 100px"/>
                 <a href="<c:url value="/discovery"/>">
-                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
+                    <input type="button" class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
                 </a>
             </div>
         </div>
