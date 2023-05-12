@@ -101,8 +101,9 @@ public class IndexViewController {
 
         mav.addObject("search", (searchFilterSortForm.getSearch() != null) ? searchFilterSortForm.getSearch() : "");
 
-        mav.addObject("sort", ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.DEFAULT);
-        mav.addObject("sortDirection", ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DEFAULT);
+        // Recent and descending is the default
+        mav.addObject("sort", ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.RECENT);
+        mav.addObject("sortDirection", ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING);
 
         return mav;
     }

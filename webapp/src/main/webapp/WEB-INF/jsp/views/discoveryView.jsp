@@ -134,7 +134,7 @@
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
                 <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="margin:10px; width: 100px"/>
                 <a href="<c:url value="/discovery"/>">
-                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
+                    <input type="button" class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
                 </a>
             </div>
         </div>
