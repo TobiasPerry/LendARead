@@ -60,9 +60,11 @@
 
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
-                <c:when test="${table} == 'Lended Books'">
-                    <jsp:include page="../components/myBookOptions.jsp" />
-                </c:when>
+<%--                <c:when test="${table} == 'Lended Books'">--%>
+                    <jsp:include page="../components/myBookOptions.jsp" >
+                        <jsp:param name="asset" value="${asset}"/>
+                    </jsp:include>
+<%--                </c:when>--%>
             </div>
         </div>
 
@@ -74,10 +76,5 @@
 </div>
 </div>
 </body>
-<% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../components/userHomeModal.jsp">
-    <jsp:param name="modalType" value="${modalType}"/>
-    <jsp:param name="assetId" value="${assetId}"/>
-</jsp:include>
 
 </html>

@@ -87,7 +87,7 @@
 </div>
 
 <% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../components/userHomeModal.jsp">
+<jsp:include page="../components/deleteBookModal.jsp">
     <jsp:param name="modalType" value="${modalType}"/>
     <jsp:param name="assetId" value="${assetId}"/>
 </jsp:include>
