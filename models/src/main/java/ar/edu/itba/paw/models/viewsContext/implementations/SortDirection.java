@@ -2,8 +2,7 @@ package ar.edu.itba.paw.models.viewsContext.implementations;
 
 public enum SortDirection {
     ASCENDING(),
-    DESCENDING(),
-    DEFAULT();
+    DESCENDING();
 
     public static SortDirection fromString(String value) {
         if (value != null) {

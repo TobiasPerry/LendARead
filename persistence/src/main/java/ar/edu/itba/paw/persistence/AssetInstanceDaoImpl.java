@@ -247,8 +247,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 return "b.author";
             case RECENT:
                 return "ai.id";
-            case DEFAULT:
-                return "ai.id";
         }
         return "ai.id";
     }
@@ -259,8 +257,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 return "ASC";
             case DESCENDING:
                 return "DESC";
-            case DEFAULT:
-                return "ASC";
         }
         return "ASC";
     }

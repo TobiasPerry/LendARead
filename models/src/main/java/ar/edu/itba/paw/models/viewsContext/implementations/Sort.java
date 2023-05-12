@@ -4,8 +4,7 @@ public enum Sort {
 
     AUTHOR_NAME(),
     TITLE_NAME(),
-    RECENT(),
-    DEFAULT();
+    RECENT();
 
     public static Sort fromString(String value) {
         if (value != null) {
