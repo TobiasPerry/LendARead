@@ -34,3 +34,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  const publicPrivateBtnHandler = document.getElementById('privatePublicBtn');
+  publicPrivateBtnHandler.addEventListener('click', function() {
+    new bootstrap.Modal($('#changeStatusModal')).show();
+  });
+</script>

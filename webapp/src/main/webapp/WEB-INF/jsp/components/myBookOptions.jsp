@@ -27,18 +27,5 @@
     <jsp:param name="asset" value="${asset}"/>
 </jsp:include>
 
-<script>
-    const publicPrivateBtnHandler = document.getElementById('privatePublicBtn');
-    publicPrivateBtnHandler.addEventListener('click', function() {
-        new bootstrap.Modal($('#changeStatusModal')).show();
-    });
-
-    const deleteBtnHandler = document.getElementById('deleteBtn');
-    const changeStatusModal = document.getElementById('deleteBookModal');
-    const myModal = new bootstrap.Modal(changeStatusModal);
-    deleteBtnHandler.addEventListener('click', function() {
-        new bootstrap.Modal($('#deleteBookModal')).show();
-    });
-</script>
 
 
