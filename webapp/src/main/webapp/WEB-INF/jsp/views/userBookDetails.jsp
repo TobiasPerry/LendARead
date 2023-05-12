@@ -30,7 +30,7 @@
 
 <jsp:include page="../components/navBar.jsp"/>
 <div>
-<div class="back-button" style="display: flex; flex-direction: row; justify-content: l">
+<div class="back-button" style="display: flex; flex-direction: row; ">
     <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
         <i class="fas fa-arrow-left"></i>
     </a>
@@ -60,29 +60,23 @@
 
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
-
-<%--                <c:when test="${asset.assetState.isPublic() or asset.assetState.isPrivate()}">--%>
-                <form action="<c:url value="/showChangeVisibilityModal?assetId=${asset.id}"/>"
-                      method="post">
-                    <button class="btn-green" type="submit">
-                        <c:choose>
-                            <c:when test="${asset.assetState.isPublic()}">
-                                <spring:message code="public"/>
-                            </c:when>
-                            <c:otherwise>
-                                <spring:message code="private"/>
-                            </c:otherwise>
-                        </c:choose>
-                    </button>
-                </form>
-
-                <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
-                      method="post" style="display:inline;">
-                    <button class="btn-green " type="submit">
-                        <spring:message code="delete" />
-                    </button>
-                </form>
-<%--                </c:when>--%>
+                <c:choose>
+                    <c:when test="${table == 'my_books'}">
+                        <jsp:include page="../components/myBookOptions.jsp" >
+                            <jsp:param name="asset" value="${asset}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'lended_books'}">
+                        <jsp:include page="../components/lendedBookOptions.jsp">
+                            <jsp:param name="asset" value="${asset}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'borrowed_books'}">
+                        <jsp:include page="../components/borrowedBookOptions.jsp">
+                            <jsp:param name="asset" value="${asset}"/>
+                        </jsp:include>
+                    </c:when>
+                </c:choose>
             </div>
         </div>
 
@@ -94,10 +88,5 @@
 </div>
 </div>
 </body>
-<% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../components/userHomeModal.jsp">
-    <jsp:param name="modalType" value="${modalType}"/>
-    <jsp:param name="assetId" value="${assetId}"/>
-</jsp:include>
 
 </html>

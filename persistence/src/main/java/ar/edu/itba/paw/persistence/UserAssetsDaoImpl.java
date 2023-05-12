@@ -43,6 +43,19 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         this.assetInstanceDao = assetInstanceDao;
     }
 
+    private String matchFilterValue(String filterAtribuite) {
+        return filterAtribuite.toUpperCase();
+    }
+
+    private String matchSortAttribuite(String sortAtribuite) {
+        if(sortAtribuite.equals("book_name")) return "b.title";
+        if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
+        if(sortAtribuite.equals("borrower_name")) return "u.name";
+        if(sortAtribuite.equals("author")) return "b.author";
+        if(sortAtribuite.equals("language")) return "b.language";
+        return "none";
+    }
+
     @Override
     public List<BorrowedAssetInstance> getLendedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
@@ -64,12 +77,10 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
-        if (!sortAttribute.equalsIgnoreCase("none"))
-            query += " ORDER BY " + sortAttribute;
+        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
+            query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
             query += " " + direction;
-
-        System.out.println(query);
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
@@ -80,11 +91,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower))
                     .orElse(null);
         };
-        System.out.println(filterAttribute);
-
-        System.out.println(filterValue);
         if (!filterAttribute.equalsIgnoreCase("none"))
-            return jdbcTemplate.query(query, rowMapper, email, filterValue);
+            return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
 
         return jdbcTemplate.query(query, rowMapper, email);
     }
@@ -111,12 +119,11 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
-        if (!sortAttribute.equalsIgnoreCase("none"))
-            query += " ORDER BY " + sortAttribute;
+        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
+            query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
             query += " " + direction;
 
-        System.out.println(query);
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
@@ -127,11 +134,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
                     .orElse(null);
         };
-        System.out.println(filterAttribute);
-
-        System.out.println(filterValue);
         if (!filterAttribute.equalsIgnoreCase("none"))
-            return jdbcTemplate.query(query, rowMapper, email, filterValue);
+            return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
 
         return jdbcTemplate.query(query, rowMapper, email);
     }
@@ -159,8 +163,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
-        if (!sortAttribute.equalsIgnoreCase("none"))
-            query += " ORDER BY " + sortAttribute;
+        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
+            query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
             query += " " + direction;
 
@@ -170,7 +174,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         List<Integer> assetIds;
         if (!filterAttribute.equalsIgnoreCase("none"))
-            assetIds = jdbcTemplate.query(query, assetIdRowMapper, email, filterValue);
+            assetIds = jdbcTemplate.query(query, assetIdRowMapper, email, matchFilterValue(filterValue));
         else
             assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
 

@@ -27,28 +27,28 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
         switch (tableSelected) {
             case "my_books":
-                return userAssetsDao.getUsersAssets(email, filterAtribuite, matchFilterValue(filterValue), matchSortAttribuite(sortAtribuite), direction);
+                return userAssetsDao.getUsersAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
             case "borrowed_books":
-                return userAssetsDao.getBorrowedAssets(email, filterAtribuite, matchFilterValue(filterValue), matchSortAttribuite(sortAtribuite), direction);
+                return userAssetsDao.getBorrowedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
             case "lended_books":
-                return userAssetsDao.getLendedAssets(email, filterAtribuite, matchFilterValue(filterValue), matchSortAttribuite(sortAtribuite), direction);
+                return userAssetsDao.getLendedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
         }
 
         return new ArrayList<>();
     }
-
 
     private String matchFilterValue(String filterAtribuite) {
         return filterAtribuite.toUpperCase();
     }
 
     private String matchSortAttribuite(String sortAtribuite) {
-        if (sortAtribuite.equals("book_name")) return "b.title";
-        if (sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
-        if (sortAtribuite.equals("borrower_name")) return "u.name";
-        if (sortAtribuite.equals("author")) return "b.author";
-        if (sortAtribuite.equals("language")) return "b.language";
+        if(sortAtribuite.equals("book_name")) return "b.title";
+        if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
+        if(sortAtribuite.equals("borrower_name")) return "u.name";
+        if(sortAtribuite.equals("author")) return "b.author";
+        if(sortAtribuite.equals("language")) return "b.language";
         return "none";
     }
+
 
 }
