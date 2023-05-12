@@ -61,7 +61,7 @@ public class UserHomeViewController {
         return sortFilterManager.appendTo(table,  initialiseModelViewWith(table));
     }
 
-    @RequestMapping(value = "/changeTable", method = RequestMethod.GET)
+    @RequestMapping(value = "/userHomeTab", method = RequestMethod.GET)
     public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
         currentTable = table;
         return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
