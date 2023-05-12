@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded",()=> {
         for (const language of document.getElementsByClassName("languageLabel")) {
             if (document.getElementById("language-" + i).checked) {
                 const value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
+                console.log(value)
                 document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + j + `]" id="languageId-` + j + `" value="` + value +  `">`
                 j++
             }
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded",()=> {
         i = 0
         j = 0
         for (const physicalCondition of document.getElementsByClassName("physicalConditionLabel")) {
-            const value = document.getElementById("physicalCondition-" + i + "-label").childNodes[0].textContent
+            const value = document.getElementById("physicalCondition-" + i + "-label").dataset.physicalcondition
             if (document.getElementById("physicalCondition-" + i).checked) {
                 document.getElementById("springForm").innerHTML += `<input type ="hidden" name="physicalConditions[` + j + `]" id="physicalConditionId-` + j + `" value="` + value + `">`
                 j++

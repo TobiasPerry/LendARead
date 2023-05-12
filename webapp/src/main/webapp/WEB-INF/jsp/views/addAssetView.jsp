@@ -115,23 +115,23 @@
                                     <form:select path="physicalCondition" id="physicalCondition" class="form-control"
                                                  accept-charset="utf-9">
                                         <form:option value="asnew"><spring:message
-                                                code="addAssetForm.condition.asnew"/></form:option>
+                                                code="enum.ASNEW"/></form:option>
                                         <form:option value="fine"><spring:message
-                                                code="addAssetForm.condition.fine"/></form:option>
+                                                code="enum.FINE"/></form:option>
                                         <form:option value="verygood"><spring:message
-                                                code="addAssetForm.condition.verygood"/></form:option>
+                                                code="enum.VERYGOOD"/></form:option>
                                         <form:option value="good"><spring:message
-                                                code="addAssetForm.condition.good"/></form:option>
+                                                code="enum.GOOD"/></form:option>
                                         <form:option value="fair"><spring:message
-                                                code="addAssetForm.condition.fair"/></form:option>
+                                                code="enum.FAIR"/></form:option>
                                         <form:option value="poor"><spring:message
-                                                code="addAssetForm.condition.poor"/></form:option>
+                                                code="enum.POOR"/></form:option>
                                         <form:option value="exlibrary"><spring:message
-                                                code="addAssetForm.condition.exlibrary"/></form:option>
+                                                code="enum.EXLIBRARY"/></form:option>
                                         <form:option value="bookclub"><spring:message
-                                                code="addAssetForm.condition.bookclub"/></form:option>
+                                                code="enum.BOOKCLUB"/></form:option>
                                         <form:option value="bindingcopy"><spring:message
-                                                code="addAssetForm.condition.bindingcopy"/></form:option>
+                                                code="enum.BINDINGCOPY"/></form:option>
 
                                     </form:select>
                                 </div>
