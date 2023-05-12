@@ -30,7 +30,7 @@
 
 <jsp:include page="../components/navBar.jsp"/>
 <div>
-<div class="back-button" style="display: flex; flex-direction: row; justify-content: l">
+<div class="back-button" style="display: flex; flex-direction: row; ">
     <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
         <i class="fas fa-arrow-left"></i>
     </a>
@@ -61,7 +61,6 @@
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
 
-<%--                <c:when test="${asset.assetState.isPublic() or asset.assetState.isPrivate()}">--%>
                 <form action="<c:url value="/showChangeVisibilityModal?assetId=${asset.id}"/>"
                       method="post">
                     <button class="btn-green" type="submit">

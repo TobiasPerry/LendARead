@@ -35,21 +35,21 @@ public class UserAssetDetailsController {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
                     .addObject("asset", assetInstanceService.getAssetInstance(id))
-                    .addObject("table", "lended_book");
+                    .addObject("table", "Lended Books");
     }
     @RequestMapping(value = "/myBookDetails", method = RequestMethod.GET)
     public ModelAndView myBookDetails(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
-                .addObject("table", "my_books");
+                .addObject("table", "My Books");
     }
     @RequestMapping(value = "/borrowedBookDetails", method = RequestMethod.GET)
     public ModelAndView borrowedBookDetails(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
-                .addObject("table", "borrowed_book");
+                .addObject("table", "Borrowed Books");
     }
 //    @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
 //    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
