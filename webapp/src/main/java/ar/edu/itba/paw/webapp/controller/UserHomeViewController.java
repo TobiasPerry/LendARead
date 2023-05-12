@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-public class UserHomeViewController {
+final public class UserHomeViewController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
@@ -33,7 +33,7 @@ public class UserHomeViewController {
     private String currentTable = DEFAULT_TABLE_NAME;
 
     @Autowired
-    public UserHomeViewController(UserAssetInstanceService userAssetInstanceService, UserService userService) {
+    public UserHomeViewController(final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
         this.userAssetInstanceService = userAssetInstanceService;
         this.userService = userService;
     }
@@ -42,7 +42,7 @@ public class UserHomeViewController {
     public ModelAndView home() throws UserNotFoundException {
         return sortFilterManager.appendTo(currentTable, initialiseModelViewWith(currentTable));
     }
-    private ModelAndView initialiseModelViewWith(String table) throws UserNotFoundException {
+    private ModelAndView initialiseModelViewWith(final String table) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         model.addObject("isLender", !currentUserIsBorrower());
         model.addObject("userAssets", getUserAssetsIn(table));
@@ -56,34 +56,34 @@ public class UserHomeViewController {
     }
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
-    public ModelAndView changeTab(@RequestParam("table") String table, @RequestParam("filterValue") String filterValue, @RequestParam("filterAtribuite") String filterAtribuite) throws UserNotFoundException {
+    public ModelAndView changeTab(@RequestParam("table") final String table, @RequestParam("filterValue") final String filterValue, @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {
         sortFilterManager.updateSelectedFilter(table, filterAtribuite, filterValue);
         return sortFilterManager.appendTo(table,  initialiseModelViewWith(table));
     }
 
     @RequestMapping(value = "/userHomeTab", method = RequestMethod.GET)
-    public ModelAndView changeTable(@RequestParam("type") String table) throws UserNotFoundException {
+    public ModelAndView changeTable(@RequestParam("type") final String table) throws UserNotFoundException {
         currentTable = table;
         return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
     }
 
-    private List<? extends AssetInstance> getUserAssetsIn(String table) {
+    private List<? extends AssetInstance> getUserAssetsIn(final String table) {
         return userAssetInstanceService.getUserAssetsOfTable( userService.getCurrentUser(), table,
                 sortFilterManager.getFilterAttribuite(table), sortFilterManager.getFilterValue(table),
                 sortFilterManager.getSortAtribuite(table), sortFilterManager.getSortDirection(table));
     }
 
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
-    public ModelAndView sortUserHomeAssets(@RequestParam("table") String table,
-                                           @RequestParam("attribute") String attribute,
-                                           @RequestParam("direction") String direction) throws UserNotFoundException {
+    public ModelAndView sortUserHomeAssets(@RequestParam("table") final String table,
+                                           @RequestParam("attribute") final String attribute,
+                                           @RequestParam("direction") final String direction) throws UserNotFoundException {
 
         sortFilterManager.updateSelectedSort(table, attribute, direction);
         return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
     }
 
     @ModelAttribute
-    public void addAttributes(Model model) {
+    public void addAttributes(final Model model) {
         model.addAttribute("path", NAV_BAR_PATH);
     }
 

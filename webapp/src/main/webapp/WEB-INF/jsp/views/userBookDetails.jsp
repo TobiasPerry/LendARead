@@ -60,11 +60,13 @@
 
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
-<%--                <c:when test="${table} == 'Lended Books'">--%>
+                <c:choose>
+                <c:when test="${table == 'my_books'}">
                     <jsp:include page="../components/myBookOptions.jsp" >
                         <jsp:param name="asset" value="${asset}"/>
                     </jsp:include>
-<%--                </c:when>--%>
+                </c:when>
+                </c:choose>
             </div>
         </div>
 

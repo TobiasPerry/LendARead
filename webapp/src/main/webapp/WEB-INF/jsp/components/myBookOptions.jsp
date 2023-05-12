@@ -26,6 +26,7 @@
 <jsp:include page="changeStatusModal.jsp">
     <jsp:param name="asset" value="${asset}"/>
 </jsp:include>
+
 <script>
     const publicPrivateBtnHandler = document.getElementById('privatePublicBtn');
     publicPrivateBtnHandler.addEventListener('click', function() {

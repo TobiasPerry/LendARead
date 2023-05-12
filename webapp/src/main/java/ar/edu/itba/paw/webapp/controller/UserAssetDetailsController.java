@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 
 @Controller
-public class UserAssetDetailsController {
+final public class UserAssetDetailsController {
 
     private final AssetInstanceService assetInstanceService;
     private final AssetAvailabilityService assetAvailabilityService;
@@ -21,7 +21,7 @@ public class UserAssetDetailsController {
     private  String table = "";
 
     @Autowired
-    public UserAssetDetailsController(AssetInstanceService assetInstanceService, AssetAvailabilityService assetAvailabilityService) {
+    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
     }
@@ -31,47 +31,35 @@ public class UserAssetDetailsController {
         return new ModelAndView("redirect:/userHome");
     }
     @RequestMapping(value = "/lentBookDetails", method = RequestMethod.GET)
-    public ModelAndView lentBookDetail(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+    public ModelAndView lentBookDetail(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
                     .addObject("asset", assetInstanceService.getAssetInstance(id))
-                    .addObject("table", "Lended Books");
+                    .addObject("table", "lended_books");
     }
     @RequestMapping(value = "/myBookDetails", method = RequestMethod.GET)
-    public ModelAndView myBookDetails(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+    public ModelAndView myBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
-                .addObject("table", "My Books");
+                .addObject("table", "my_books");
     }
     @RequestMapping(value = "/borrowedBookDetails", method = RequestMethod.GET)
-    public ModelAndView borrowedBookDetails(@RequestParam("id") int id) throws AssetInstanceNotFoundException {
+    public ModelAndView borrowedBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
         this.table = table;
         return new ModelAndView("/views/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
-                .addObject("table", "Borrowed Books");
+                .addObject("table", "borrowed_books");
     }
-//    @RequestMapping(value ="/showChangeVisibilityModal", method = RequestMethod.POST)
-//    public ModelAndView showVisibilityModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
-//        return userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
-//                .addObject("modalType", "changeBookVisibility")
-//                .addObject("assetId", assetId);
-//    }
-//
-//    @RequestMapping(value ="/deleteAssetModal", method = RequestMethod.POST)
-//    public ModelAndView showDeleteAssetModal(@RequestParam("assetId") int assetId) throws AssetInstanceNotFoundException {
-//        return  userAssetDetails(assetId, this.table).addObject("showSnackbarSucess", "true")
-//                .addObject("modalType", "deleteBook")
-//                .addObject("assetId", assetId);
-//    }
+
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView deleteAsset(@PathVariable("id") int id) throws AssetInstanceNotFoundException{
+    public ModelAndView deleteAsset(@PathVariable("id") final int id) throws AssetInstanceNotFoundException{
         assetInstanceService.removeAssetInstance(id);
         return new ModelAndView("redirect:/userHome");
     }
 
     @RequestMapping(value ="/changeStatus/{id}", method = RequestMethod.POST)
-    public ModelAndView changeMyBookStatus(@PathVariable("id") int id) throws AssetInstanceNotFoundException {
+    public ModelAndView changeMyBookStatus(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);
 
         if(assetInstance.getAssetState().isPublic())
@@ -83,7 +71,7 @@ public class UserAssetDetailsController {
     }
 
     @ModelAttribute
-    public void addAttributes(Model model) {
+    public void addAttributes(final Model model) {
         model.addAttribute("path", "userHome");
     }
 
