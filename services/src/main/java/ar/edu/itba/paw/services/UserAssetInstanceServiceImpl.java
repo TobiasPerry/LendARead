@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
-    private final UserAssetsDao   userAssetsDao;
+    private final UserAssetsDao userAssetsDao;
 
 
     @Autowired
@@ -37,22 +37,18 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         return new ArrayList<>();
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String atribuite) {
-        return userAssetsDao.getLendedAssetsFilteredBy(email, atribuite);
+
     private String matchFilterValue(String filterAtribuite) {
         return filterAtribuite.toUpperCase();
     }
 
     private String matchSortAttribuite(String sortAtribuite) {
-        if(sortAtribuite.equals("book_name")) return "b.title";
-        if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
-        if(sortAtribuite.equals("borrower_name")) return "u.name";
-        if(sortAtribuite.equals("author")) return "b.author";
-        if(sortAtribuite.equals("language")) return "b.language";
+        if (sortAtribuite.equals("book_name")) return "b.title";
+        if (sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
+        if (sortAtribuite.equals("borrower_name")) return "u.name";
+        if (sortAtribuite.equals("author")) return "b.author";
+        if (sortAtribuite.equals("language")) return "b.language";
         return "none";
     }
-
 
 }
