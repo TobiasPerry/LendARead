@@ -79,7 +79,7 @@ public class UserAssetDetailsController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return myBookDetails(id);
+        return new ModelAndView("redirect:/myBookDetails?id=" + id);
     }
 
     @ModelAttribute

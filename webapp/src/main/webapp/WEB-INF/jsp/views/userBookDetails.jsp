@@ -60,28 +60,9 @@
 
             <div>
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
-
-                <form action="<c:url value="/showChangeVisibilityModal?assetId=${asset.id}"/>"
-                      method="post">
-                    <button class="btn-green" type="submit">
-                        <c:choose>
-                            <c:when test="${asset.assetState.isPublic()}">
-                                <spring:message code="public"/>
-                            </c:when>
-                            <c:otherwise>
-                                <spring:message code="private"/>
-                            </c:otherwise>
-                        </c:choose>
-                    </button>
-                </form>
-
-                <form action="<c:url value="/deleteAssetModal?assetId=${asset.id}"/>"
-                      method="post" style="display:inline;">
-                    <button class="btn-green " type="submit">
-                        <spring:message code="delete" />
-                    </button>
-                </form>
-<%--                </c:when>--%>
+                <c:when test="${table} == 'Lended Books'">
+                    <jsp:include page="../components/myBookOptions.jsp" />
+                </c:when>
             </div>
         </div>
 
