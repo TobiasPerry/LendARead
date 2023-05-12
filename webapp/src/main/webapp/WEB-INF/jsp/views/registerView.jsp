@@ -53,7 +53,12 @@
                             <br><spring:message code="auth.passwordLength" />
                         </small>
                     </div>
-
+                    <div class="form-outline mb-4">
+                       <label for="password" style="width: 100%"><spring:message code="auth.repeatPassword" />
+                          <form:password class="form-control" path="repeatPassword"  name="repeatPassword" required="true"/>
+                           <form:errors cssClass="text-danger small" element="p"/>
+                       </label>
+                    </div>
                     <div class="form-outline mb-4 text-center">
                         <input class="btn btn-light" type="submit" value="<spring:message code="auth.registerBtn"/>">
                     </div>

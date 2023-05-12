@@ -42,6 +42,12 @@
                 <form:errors path="password" cssClass="text-danger small" element="small"/>
               </label>
             </div>
+            <div class="form-outline mb-4" style="width: 100%">
+              <label style="width: 100%"><spring:message code="auth.repeatPassword" />
+                <form:input class="form-control" path="repeatPassword" id="repeatPassword" placeholder="repeatPassword" type="password" />
+                <form:errors cssClass="text-danger small" element="p"/>
+              </label>
+            </div>
             <div class="pt-1 mb-4 text-center">
               <input class="btn btn-light" type="submit" value="Change password" />
             </div>
