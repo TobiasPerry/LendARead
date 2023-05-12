@@ -26,7 +26,7 @@
                     </jsp:include>
                     <jsp:include page="filterButton.jsp">
                         <jsp:param name="table" value="lended_books"/>
-                        <jsp:param name="filterValue" value="confirmed"/>
+                        <jsp:param name="filterValue" value="borrowed"/>
                         <jsp:param name="filterAtribuite" value="status"/>
                         <jsp:param name="title" value="filterOption.confirmed"/>
                         <jsp:param name="buttonText" value="userHomeView.inProgress"/>
