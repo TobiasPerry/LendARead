@@ -7,10 +7,6 @@ import java.util.List;
 
 public interface UserAssets {
 
-    UserAssets filter(String table, String attribuite);
-
-    UserAssets sort(String table, String attribuite, String direction);
-
     List<BorrowedAssetInstance> getLendedBooks();
     List<BorrowedAssetInstance> getBorrowedBooks();
     List<AssetInstance> getMyBooks();

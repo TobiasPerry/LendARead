@@ -26,15 +26,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
 
 @EnableWebMvc
 @EnableAsync
 @PropertySource("classpath:/application.properties")
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.formFactories"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.miscellaneous"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);

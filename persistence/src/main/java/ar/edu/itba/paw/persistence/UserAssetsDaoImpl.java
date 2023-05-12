@@ -44,7 +44,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public List<BorrowedAssetInstance> getLendedAssets(String email) {
+    public List<BorrowedAssetInstance> getLendedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
@@ -54,11 +54,22 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    assetinstance ai ON l.assetinstanceid = ai.id" +
                 " JOIN" +
+                "    book b ON ai.assetid = b.uid" +
+                " JOIN" +
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
                 "    owner.mail = ?";
+
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            query += " AND " + filterAttribute + " = ?";
+        if (!sortAttribute.equalsIgnoreCase("none"))
+            query += " ORDER BY " + sortAttribute;
+        if (!direction.equalsIgnoreCase("none"))
+            query += " " + direction;
+
+        System.out.println(query);
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
@@ -69,12 +80,18 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower))
                     .orElse(null);
         };
+        System.out.println(filterAttribute);
+
+        System.out.println(filterValue);
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            return jdbcTemplate.query(query, rowMapper, email, filterValue);
 
         return jdbcTemplate.query(query, rowMapper, email);
     }
 
+
     @Override
-    public List<BorrowedAssetInstance> getBorrowedAssets(String email) {
+    public List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -84,11 +101,22 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    assetinstance ai ON l.assetinstanceid = ai.id" +
                 " JOIN" +
+                "    book b ON ai.assetid = b.uid" +
+                " JOIN" +
                 "    users u ON l.borrowerid = u.id" +
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
                 "    u.mail = ?";
+
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            query += " AND " + filterAttribute + " = ?";
+        if (!sortAttribute.equalsIgnoreCase("none"))
+            query += " ORDER BY " + sortAttribute;
+        if (!direction.equalsIgnoreCase("none"))
+            query += " " + direction;
+
+        System.out.println(query);
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
@@ -99,42 +127,58 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
                     .orElse(null);
         };
+        System.out.println(filterAttribute);
 
-        List<BorrowedAssetInstance> results = jdbcTemplate.query(query, rowMapper, email);
-        return results.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        System.out.println(filterValue);
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            return jdbcTemplate.query(query, rowMapper, email, filterValue);
+
+        return jdbcTemplate.query(query, rowMapper, email);
     }
 
+
     @Override
-    public List<AssetInstance> getUsersAssets(String email) {
+    public List<AssetInstance> getUsersAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
-                        "    ai.id" +
-                        " FROM" +
-                        "    assetinstance ai" +
-                        " JOIN" +
-                        "    users u ON ai.owner = u.id" +
-                        " WHERE" +
-                        "    u.mail = ?" +
-                        " AND NOT EXISTS (" +
-                        "     SELECT *" +
-                        "     FROM" +
-                        "         lendings l" +
-                        "     WHERE" +
-                        "         l.assetinstanceid = ai.id" +
-                        " )";
+                "    ai.id" +
+                " FROM" +
+                "    assetinstance ai" +
+                " JOIN" +
+                "    users u ON ai.owner = u.id" +
+                " JOIN" +
+                "    book b ON ai.assetid = b.uid" +
+                " WHERE" +
+                "    u.mail = ?" +
+                " AND NOT EXISTS (" +
+                "     SELECT *" +
+                "     FROM" +
+                "         lendings l" +
+                "     WHERE" +
+                "         l.assetinstanceid = ai.id" +
+                " )";
+
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            query += " AND " + filterAttribute + " = ?";
+        if (!sortAttribute.equalsIgnoreCase("none"))
+            query += " ORDER BY " + sortAttribute;
+        if (!direction.equalsIgnoreCase("none"))
+            query += " " + direction;
+
+        System.out.println(query);
 
         RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
-        List<Integer> assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
+
+        List<Integer> assetIds;
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            assetIds = jdbcTemplate.query(query, assetIdRowMapper, email, filterValue);
+        else
+            assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
 
         return assetIds.stream()
                 .map(assetInstanceDao::getAssetInstance)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<BorrowedAssetInstance> getLendedAssetsFilteredBy(String email, String atribuite) {
-        return null;
     }
 
 
