@@ -1,0 +1,1 @@
+INSERT INTO users(behavior, mail, name, telephone, password) VALUES ('BORROWER', 'EMAIL', 'NAME', 'TELEPHONE', 'PASSWORD_NOT_ENCODED');

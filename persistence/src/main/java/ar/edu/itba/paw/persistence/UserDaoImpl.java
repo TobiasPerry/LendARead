@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
     }
     @Override
     public User addUser(Behaviour behavior,String email,String name,String telephone,String password) {
-        String query = "INSERT INTO users(behavior,mail,telephone,name,password) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING RETURNING id";
+        String query = "INSERT INTO users(behavior,mail,telephone,name,password) VALUES(?,?,?,?,?)";
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
