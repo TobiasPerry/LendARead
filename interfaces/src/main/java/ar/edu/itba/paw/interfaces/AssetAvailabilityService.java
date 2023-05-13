@@ -20,7 +20,5 @@ public interface AssetAvailabilityService {
 
     void setAssetPublic(int assetId) throws AssetInstanceNotFoundException;
 
-    List<BorrowedAssetInstance> getAllBorrowedAssetsInstances();
-
     void returnAsset(int assetId) throws AssetInstanceNotFoundException;
 }

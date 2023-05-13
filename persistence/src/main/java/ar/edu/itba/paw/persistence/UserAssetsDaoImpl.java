@@ -18,6 +18,7 @@ import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -185,5 +186,40 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Optional<BorrowedAssetInstance> getBorrowedAsset(int id) {
+            String query = "SELECT " +
+                    "    l.assetinstanceid," +
+                    "    owner.name AS owner_name," +
+                    "    l.devolutiondate" +
+                    " FROM" +
+                    "    lendings l" +
+                    " JOIN" +
+                    "    assetinstance ai ON l.assetinstanceid = ai.id" +
+                    " JOIN" +
+                    "    book b ON ai.assetid = b.uid" +
+                    " JOIN" +
+                    "    users u ON l.borrowerid = u.id" +
+                    " JOIN" +
+                    "    users owner ON ai.owner = owner.id" +
+                    " WHERE" +
+                    "    ai.id = ?";
 
-}
+            RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
+                int assetId = rs.getInt("assetinstanceid");
+                String dueDate = rs.getTimestamp("devolutiondate").toString();
+                String owner = rs.getString("owner_name");
+
+                return assetInstanceDao.getAssetInstance(assetId)
+                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
+                        .orElse(null);
+            };
+
+            try {
+                return Optional.of(jdbcTemplate.queryForObject(query, rowMapper, id));
+            } catch (EmptyResultDataAccessException e) {
+                return Optional.empty();
+            }
+        }
+
+    }

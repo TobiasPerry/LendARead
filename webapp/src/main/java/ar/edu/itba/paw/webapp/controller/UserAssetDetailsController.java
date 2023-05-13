@@ -3,13 +3,13 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 
 @Controller
@@ -18,12 +18,13 @@ final public class UserAssetDetailsController {
     private final AssetInstanceService assetInstanceService;
     private final AssetAvailabilityService assetAvailabilityService;
 
-    private  String table = "";
+    private final UserAssetInstanceService userAssetInstanceService;
 
     @Autowired
-    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService) {
+    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
+        this.userAssetInstanceService = userAssetInstanceService;
     }
 
     @RequestMapping(value = "/userHomeReturn", method = RequestMethod.GET)
@@ -32,23 +33,20 @@ final public class UserAssetDetailsController {
     }
     @RequestMapping(value = "/lentBookDetails", method = RequestMethod.GET)
     public ModelAndView lentBookDetail(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
-        this.table = table;
         return new ModelAndView("/views/userBookDetails")
-                    .addObject("asset", assetInstanceService.getAssetInstance(id))
+                    .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(id))
                     .addObject("table", "lended_books");
     }
     @RequestMapping(value = "/myBookDetails", method = RequestMethod.GET)
     public ModelAndView myBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
-        this.table = table;
         return new ModelAndView("/views/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
                 .addObject("table", "my_books");
     }
     @RequestMapping(value = "/borrowedBookDetails", method = RequestMethod.GET)
     public ModelAndView borrowedBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
-        this.table = table;
         return new ModelAndView("/views/userBookDetails")
-                .addObject("asset", assetInstanceService.getAssetInstance(id))
+                .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(id))
                 .addObject("table", "borrowed_books");
     }
 
