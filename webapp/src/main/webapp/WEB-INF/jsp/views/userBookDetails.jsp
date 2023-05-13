@@ -36,9 +36,9 @@
         </a>
         <h2 class="textOverflow"> <spring:message code="userAssetDetailView.${table}"/> </h2>
     </div>
-    <div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
+    <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
         <div class="container-row-wrapped">
-            <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; min-width: 50%;">
+            <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content;">
                 <div class="container-row-wrapped">
                     <img src="<c:url value="/getImage/${asset.imageId}"/>" class="mx-3" alt="Book cover"
                          style="height: 500px; width: 300px; object-fit: cover">

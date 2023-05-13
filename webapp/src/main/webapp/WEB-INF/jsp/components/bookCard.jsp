@@ -18,10 +18,10 @@
             </c:choose>
 
             <div class="card-title title-text text-center my-3">
-                <h2 class="card-title placeholder-glow">
+                <h2 class="card-title placeholder-glow text-truncate mx-2">
                     <span class="placeholder col-6"><c:out value="${param.bookTitle}"/></span>
                 </h2>
-                <h5 class="card-text title-text placeholder-glow">
+                <h5 class="card-text title-text placeholder-glow text-truncate mx-2">
                     <span class="placeholder col-9"><c:out value="${param.bookAuthor}"/></span>
                 </h5>
             </div>
