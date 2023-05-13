@@ -1,12 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<button id="privatePublicBtn" class="btn-green" type="submit">
-  <c:choose>
-    <c:when test="${asset.assetState.isBorrowed()}">
-      <spring:message code="userHomeView.return"/>
-    </c:when>
-    <c:otherwise>
+  <c:if test="${asset.assetState.isBorrowed()}">
+    <button id="returnAssetBtn" class="btn-green" type="submit">
       <spring:message code="userHomeView.inProgress"/>
-    </c:otherwise>
-  </c:choose>
-</button>
+    </button>
+  </c:if>
+<jsp:include page="returnModal.jsp">
+  <jsp:param name="asset" value="${asset}"/>
+</jsp:include>
