@@ -35,7 +35,6 @@
 <jsp:include page="../components/navBar.jsp"/>
 
 <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
-<%--    <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; width: 50%">--%>
     <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px; width: 50%">
         <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
             <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" alt="Book cover"
