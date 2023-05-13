@@ -15,4 +15,5 @@ public interface AssetAvailabilityService {
     void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 
     void confirmAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void rejectAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 }

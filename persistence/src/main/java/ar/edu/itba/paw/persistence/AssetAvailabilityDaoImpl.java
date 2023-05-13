@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     }
 
     @Override
-        public boolean setLendingFinished(final int assetInstanceId) {
+        public boolean changeLendingStatus(final int assetInstanceId, final LendingState lendingState) {
             String query = "UPDATE lendings SET active = 'INACTIVE' WHERE assetinstanceid = ? AND active = 'ACTIVE'";
 
             int updatedRows = jdbcTemplate.update(query, assetInstanceId);

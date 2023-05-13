@@ -6,28 +6,27 @@
         <div class="modal-content rounded-3 border-0 shadow">
             <div class="modal-header border-0" style="text-align: center">
                 <div class="icon-box">
-                    <i class="fas fa-eye-slash fa-lg"></i>
-
+                    <i class="fas fa-check-circle fa-lg"></i>
                 </div>
                 <h3 class="modal-title w-100 mt-2">
-                    <spring:message code="userHomeView.changeVisibilityTitle" />
+                    <spring:message code="userHomeView.confirmAssetTitle" />
                 </h3>
             </div>
             <div class="modal-body text-center py-0 border-0">
                 <p class="mb-4">
-                    <spring:message code="userHomeView.changeVisibilityText" />
+                    <spring:message code="userHomeView.confirmAssetText" />
             </div>
             <div class="modal-footer border-0">
-                <c:url var="changeStatusUrl" value="/changeStatus/${asset.id}"/>
-                <form action="${changeStatusUrl}" method="post">
+                <c:url var="confirmAssetUrl" value="/confirmAsset/${asset.id}"/>
+                <form action="${confirmAssetUrl}" method="post">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
-                        <spring:message code="yes" />
+                        <spring:message code="confirm" />
                     </button>
                 </form>
-                <c:url var="userHomeUrl" value="/userHome"/>
-                <form action="${userHomeUrl}" method="get">
+                <c:url var="rejectAssetUrl" value="/rejectAsset/${asset.id}"/>
+                <form action="${rejectAssetUrl}" method="post">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
-                        <spring:message code="no" />
+                        <spring:message code="reject" />
                     </button>
                 </form>
             </div>

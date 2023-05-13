@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
@@ -82,13 +83,22 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     public void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
-        if(!lendingDao.setLendingFinished(assetId))
+        if(!lendingDao.changeLendingStatus(assetId, LendingState.FINISHED))
             throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
     }
 
     @Override
     public void confirmAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.BORROWED))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
+    }
 
+    @Override
+    public void rejectAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!lendingDao.changeLendingStatus(assetId, LendingState.REJECTED))
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
     }
 
 }

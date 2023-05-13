@@ -1,19 +1,10 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
-public enum LoanState {
-    PENDING() {
-
-    },
-    CONFIRMED() {
-
-    },
-    DELAYED() {
-
-    };
-
-    public static LoanState fromString(String value) {
+public enum LendingState {
+    ACTIVE, FINISHED, REJECTED;
+    public static LendingState fromString(String value) {
         if (value != null) {
-            for (LoanState condition : LoanState.values()) {
+            for (LendingState condition : LendingState.values()) {
                 if (value.equalsIgnoreCase(condition.toString())) {
                     return condition;
                 }

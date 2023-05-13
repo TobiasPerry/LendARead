@@ -65,8 +65,15 @@ final public class UserAssetDetailsController {
     @RequestMapping(value ="/confirmAsset/{id}", method = RequestMethod.POST)
     public ModelAndView confirmAsset(@PathVariable("id") final int id) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         assetAvailabilityService.confirmAsset(id);
-        return new ModelAndView("redirect:/userHome");
+        return new ModelAndView("redirect:/lentBookDetails?id=" + id);
     }
+
+    @RequestMapping(value ="/rejectAsset/{id}", method = RequestMethod.POST)
+    public ModelAndView rejectAsset(@PathVariable("id") final int id) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        assetAvailabilityService.rejectAsset(id);
+        return new ModelAndView("redirect:/lentBookDetails?id=" + id);
+    }
+
     @RequestMapping(value ="/changeStatus/{id}", method = RequestMethod.POST)
     public ModelAndView changeMyBookStatus(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);
