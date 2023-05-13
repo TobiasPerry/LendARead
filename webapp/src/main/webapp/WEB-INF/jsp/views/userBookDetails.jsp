@@ -34,7 +34,7 @@
     <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
         <i class="fas fa-arrow-left"></i>
     </a>
-    <h2 class="textOverflow"> <c:out value="${table}" /> </h2>
+    <h2 class="textOverflow"> <spring:message code="userAssetDetailView.${table}"/> </h2>
 </div>
     <div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
 

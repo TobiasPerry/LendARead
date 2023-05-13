@@ -78,7 +78,7 @@
                         <c:otherwise>
                             <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
+                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px; margin-right: 10px"><c:out value="${language}"/></span></li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>

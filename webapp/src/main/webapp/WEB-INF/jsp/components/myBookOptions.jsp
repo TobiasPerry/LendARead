@@ -15,7 +15,7 @@
         </c:choose>
     </button>
 
-    <button id="deleteBtn" class="btn-green " type="submit">
+    <button id="deleteBtn" class="btn-red-outline" type="submit">
         <spring:message code="delete" />
     </button>
 </div>
