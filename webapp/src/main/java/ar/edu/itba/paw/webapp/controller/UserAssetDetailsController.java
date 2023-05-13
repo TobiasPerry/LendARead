@@ -58,6 +58,12 @@ final public class UserAssetDetailsController {
         return new ModelAndView("redirect:/userHome");
     }
 
+    @RequestMapping(value ="/returnAsset/{id}", method = RequestMethod.POST)
+    public ModelAndView returnAsset(@PathVariable("id") final int id) throws AssetInstanceNotFoundException{
+        assetAvailabilityService.returnAsset(id);
+        return new ModelAndView("redirect:/userHome");
+    }
+
     @RequestMapping(value ="/changeStatus/{id}", method = RequestMethod.POST)
     public ModelAndView changeMyBookStatus(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);

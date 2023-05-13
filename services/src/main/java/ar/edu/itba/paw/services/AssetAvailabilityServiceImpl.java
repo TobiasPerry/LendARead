@@ -99,4 +99,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
         return borrowedAssetInstances;
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public void returnAsset(int assetId) throws AssetInstanceNotFoundException {
+
+    }
 }

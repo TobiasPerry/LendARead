@@ -22,4 +22,5 @@ public interface AssetAvailabilityService {
 
     List<BorrowedAssetInstance> getAllBorrowedAssetsInstances();
 
+    void returnAsset(int assetId) throws AssetInstanceNotFoundException;
 }
