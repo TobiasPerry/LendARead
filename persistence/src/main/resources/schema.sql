@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS lendings(
     assetInstanceId INT references AssetInstance(id) ON DELETE CASCADE ,
     borrowerId INT references users(id)ON DELETE CASCADE ,
     lendDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    devolutionDate TIMESTAMP NOT NULL
+    devolutionDate TIMESTAMP NOT NULL,
+    active TEXT NOT NULL default 'ACTIVE'
 );
 CREATE TABLE IF NOT EXISTS resetpasswordinfo(
     id SERIAL primary key,

@@ -4,12 +4,7 @@ import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
@@ -17,8 +12,6 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,11 +79,16 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional()
     @Override
-    public void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessful {
+    public void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
         if(!lendingDao.setLendingFinished(assetId))
-            throw new LendingCompletionUnsuccessful("Failed to mark lending as finished");
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
+    }
+
+    @Override
+    public void confirmAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+
     }
 
 }

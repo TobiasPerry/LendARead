@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.controller.CustomHandlerExceptionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +50,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment environment;
-    @Bean
-    public CustomHandlerExceptionResolver customHandlerExceptionResolver() {
-        return new CustomHandlerExceptionResolver();
-    }
     @Bean(name = "baseUrl")
     public String basePath() {
         return environment.getProperty("base_url");
