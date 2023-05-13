@@ -10,7 +10,7 @@ let currentFS;
 nextButtons = document.querySelectorAll('.next-button')
 prevButtons = document.querySelectorAll('.prev-button')
 
-
+//Set up nextButtons behaviour
 nextButtons.forEach(button => {
     button.addEventListener('click', async e => {
         const nextFS = currentFS.nextElementSibling;
@@ -33,6 +33,7 @@ nextButtons.forEach(button => {
     })
 })
 
+//Set up prevButtons behaviour
 prevButtons.forEach(button => {
     button.addEventListener('click', e => {
         const prevFS = currentFS.previousElementSibling
@@ -48,14 +49,15 @@ prevButtons.forEach(button => {
     })
 })
 
+//Function to check if an extra validation needs to be done before going to the next step
 async function checkNext(current, next) {
     if (current.id === 'isbn-fs') {
         return checkAndFetchFromISBN()
     }
-
     return true
 }
 
+//Extra Validation for the ISBN step
 async function checkAndFetchFromISBN() {
     const isbnInput = document.getElementById('isbn')
     const isbn = cleanISBN(isbnInput.value)
@@ -133,6 +135,20 @@ function isValidISBN(isbn) {
     return false;
 }
 
+//Before submitting
+function beforeSubmit() {
+    const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
+    const borrowTimeType = document.getElementById('borrow-time-type')
+    const timeInDays = document.getElementById('maxDays')
+
+    const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
+    console.log("Total Days: " + totalTimeInDays)
+
+    timeInDays.value = totalTimeInDays
+    return true
+}
+
+//Once all loaded
 document.addEventListener("DOMContentLoaded", e => {
 
     const stepsInputs = []

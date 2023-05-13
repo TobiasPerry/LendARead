@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     function loader() {
-        let cards = document.querySelectorAll('.placeholder');
-        cards.forEach(checkCard => {
-            checkCard.classList.remove('placeholder');
+        window.addEventListener('load', function () {
+            const placeholderGroup = document.querySelector('.placeholder-group');
+            placeholderGroup.style.display = 'none';
         });
     }
     loader();
