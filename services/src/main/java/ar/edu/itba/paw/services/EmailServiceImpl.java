@@ -1,8 +1,13 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.EmailService;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.interfaces.Location;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -15,7 +20,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+
 @Service
 class EmailServiceImpl implements EmailService {
 
@@ -25,16 +30,19 @@ class EmailServiceImpl implements EmailService {
 
 
     private final String baseUrl;
+
+    private final MessageSource messageSource;
+
     @Autowired
-    public EmailServiceImpl(final JavaMailSender javaMailSender, final SpringTemplateEngine templateEngine,final @Qualifier("baseUrl") String baseUrl) {
+    public EmailServiceImpl(final JavaMailSender javaMailSender, final SpringTemplateEngine templateEngine,final @Qualifier("baseUrl") String baseUrl,final MessageSource messageSource) {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
         this.baseUrl = baseUrl;
+        this.messageSource = messageSource;
+
     }
 
-    @Override
-    @Async
-    public void sendEmail(final String addressTo, final String subject, final String message) {
+    private void sendEmail(final String addressTo, final String subject, final String message) {
 
         MimeMessage msj = javaMailSender.createMimeMessage();
         try {
@@ -49,8 +57,53 @@ class EmailServiceImpl implements EmailService {
             System.err.println(e.getMessage());
         }
     }
+    @Async
     @Override
-    public String lenderMailFormat(final Map<String,Object> variables,final String mailTemplate){
+    public void sendLenderEmail(final AssetInstance assetInstance, final String borrower) {
+        if (assetInstance == null || borrower == null) {
+            return;
+        }
+        Map<String,Object> variables = new HashMap<>();
+        User owner = assetInstance.getOwner();
+        Location location = assetInstance.getLocation();
+        Book book = assetInstance.getBook();
+        variables.put("book",book);
+        variables.put("borrower",borrower);
+        variables.put("owner",owner);
+        variables.put("location",location);
+        String email = owner.getEmail();
+        String bookName = book.getName();
+        String subject = String.format(messageSource.getMessage("email.lender.subject",null, LocaleContextHolder.getLocale()), bookName);
+        this.sendEmail(email, subject, this.mailFormat(variables,"lenderEmailTemplate.html"));
+    }
+
+    @Async
+    @Override
+    public void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower) {
+        if (assetInstance == null || borrower == null) {
+            return;
+        }
+        Book book = assetInstance.getBook();
+        User owner = assetInstance.getOwner();
+        Location location = assetInstance.getLocation();
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("book",book);
+        variables.put("borrower",borrower.getName());
+        variables.put("owner",owner);
+        variables.put("location",location);
+        String subject = String.format(messageSource.getMessage("email.borrower.subject",null, LocaleContextHolder.getLocale()), assetInstance.getBook().getName());
+
+        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables,"borrowerEmailTemplate.html"));
+    }
+
+    @Async
+    @Override
+    public void sendForgotPasswordEmail(final String email,final String token){
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("token",token);
+        this.sendEmail(email,messageSource.getMessage("email.verificationcode.title",null,LocaleContextHolder.getLocale()),this.mailFormat(variables,"ForgotPasswordEmailTemplate.html"));
+    }
+    private String mailFormat(final Map<String,Object> variables, final String mailTemplate){
         Context thymeleafContext =   new Context(LocaleContextHolder.getLocale());;
         variables.put("path",baseUrl);
         thymeleafContext.setVariables(variables);

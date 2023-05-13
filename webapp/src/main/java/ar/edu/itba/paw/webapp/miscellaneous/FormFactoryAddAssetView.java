@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.formFactories;
+package ar.edu.itba.paw.webapp.miscellaneous;
 
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;

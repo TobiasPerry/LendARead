@@ -1,24 +1,25 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
-import ar.edu.itba.paw.models.userContext.implementations.UserAssetsImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
-import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
-    private final UserAssetsDao   userAssetsDao;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserAssetInstanceService.class);
+    private final UserAssetsDao userAssetsDao;
 
 
     @Autowired
@@ -26,15 +27,30 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         this.userAssetsDao = userAssetsDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public UserAssets getUserAssets(final String email) {
-        return new UserAssetsImpl(userAssetsDao.getLendedAssets(email), userAssetsDao.getBorrowedAssets(email), userAssetsDao.getUsersAssets(email));
+    public List<? extends AssetInstance> getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+
+        switch (tableSelected) {
+            case "my_books":
+                return userAssetsDao.getUsersAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
+            case "borrowed_books":
+                return userAssetsDao.getBorrowedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
+            case "lended_books":
+                return userAssetsDao.getLendedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
+        }
+
+        return new ArrayList<>();
     }
 
-
+    @Transactional(readOnly = true)
     @Override
-    public List<BorrowedAssetInstance> getUserLendedAssetsFilteredBy(String email, String atribuite) {
-        return userAssetsDao.getLendedAssetsFilteredBy(email, atribuite);
+    public BorrowedAssetInstance getBorrowedAssetInstance(final int id) throws AssetInstanceNotFoundException {
+      Optional<BorrowedAssetInstance> borrowedAssetInstance = userAssetsDao.getBorrowedAsset(id);
+      if (!borrowedAssetInstance.isPresent()) {
+          LOGGER.error("Not found borrowed asset instance with the lending id: {}", id);
+          throw new AssetInstanceNotFoundException("Not found BorrowedAssetInstance");
+      }
+      return borrowedAssetInstance.get();
     }
-
 }

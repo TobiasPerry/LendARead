@@ -4,12 +4,14 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserAssetsDao {
 
-    List<BorrowedAssetInstance> getLendedAssets(String email);
+    List<BorrowedAssetInstance> getLendedAssets(final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
-    List<BorrowedAssetInstance> getBorrowedAssets(String email);
-    List<AssetInstance> getUsersAssets(String email);
-    List<BorrowedAssetInstance> getLendedAssetsFilteredBy(String email, String Attribuite);
+    List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
+    List<AssetInstance> getUsersAssets(final String email, final String filterAtribuite,  final String filterValue, final String sortAtribuite, final String direction);
+
+    Optional<BorrowedAssetInstance> getBorrowedAsset(final int lendingId);
 }
