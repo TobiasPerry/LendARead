@@ -29,9 +29,8 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     public boolean borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate,LocalDate devolutionDate) {
         String query = "INSERT INTO lendings(assetinstanceid,borrowerId,lendDate,devolutionDate) VALUES(?,?,?,?)";
 
-        jdbcTemplate.update(query,assetInstanceId,userId, borrowDate,devolutionDate);
+        return jdbcTemplate.update(query,assetInstanceId,userId, borrowDate,devolutionDate) > 0;
 
-        return true;
     }
 
     @Override

@@ -46,6 +46,7 @@ public class UserJdbcDaoTest {
 
 
         User userGet = userDao.getUser(1).get();
+
         boolean changePasswordReturnValue = userDao.changePassword(EMAIL, PASSWORD);
         User user = userDao.addUser(Behaviour.BORROWER, "a", "b", "c", "d");
 

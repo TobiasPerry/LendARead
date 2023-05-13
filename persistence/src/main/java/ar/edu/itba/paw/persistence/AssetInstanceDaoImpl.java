@@ -42,8 +42,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String author = rs.getString("author");
             String title = rs.getString("title");
             String language = rs.getString("language");
-            Integer bookId = rs.getInt("book_id");
-            Book book = new BookImpl(isbn, author, title, language);
+            int bookId = rs.getInt("book_id");
+            Book book = new BookImpl(bookId,isbn, author, title, language);
 
             String zipcode = rs.getString("zipcode");
             String locality = rs.getString("locality");
@@ -74,7 +74,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
-                    new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
+                    new BookImpl(rs.getInt("book_id"),rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
                     new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X","",Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
