@@ -80,24 +80,26 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional()
     @Override
-    public void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
+    public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
-        if(!lendingDao.changeLendingStatus(assetId, LendingState.FINISHED))
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.FINISHED))
             throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
     }
 
     @Override
-    public void confirmAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if(!assetInstanceDao.changeStatus(assetId, AssetState.BORROWED))
+    public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.BORROWED))
             throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.DELIVERED))
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
     }
 
     @Override
-    public void rejectAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
+    public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
-        if(!lendingDao.changeLendingStatus(assetId, LendingState.REJECTED))
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.REJECTED))
             throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
     }
 

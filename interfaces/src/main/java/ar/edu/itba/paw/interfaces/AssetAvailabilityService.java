@@ -6,14 +6,14 @@ import java.time.LocalDate;
 
 public interface AssetAvailabilityService {
 
-    void borrowAsset(int assetId, String borrower, LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
+    void borrowAsset(final int assetId, final String borrower, final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
-    void setAssetPrivate(int assetId) throws AssetInstanceNotFoundException;
+    void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException;
 
-    void setAssetPublic(int assetId) throws AssetInstanceNotFoundException;
+    void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException;
 
-    void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 
-    void confirmAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
-    void rejectAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 }

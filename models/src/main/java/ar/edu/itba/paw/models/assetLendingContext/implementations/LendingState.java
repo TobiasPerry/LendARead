@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
 public enum LendingState {
-    ACTIVE, FINISHED, REJECTED;
+    DELIVERED, ACTIVE, FINISHED, REJECTED;
     public static LendingState fromString(String value) {
         if (value != null) {
             for (LendingState condition : LendingState.values()) {

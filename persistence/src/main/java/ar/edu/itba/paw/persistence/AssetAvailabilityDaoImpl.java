@@ -38,24 +38,10 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     }
 
     @Override
-        public boolean changeLendingStatus(final int assetInstanceId, final LendingState lendingState) {
-            String query = "UPDATE lendings SET active = 'INACTIVE' WHERE assetinstanceid = ? AND active = 'ACTIVE'";
-
-            int updatedRows = jdbcTemplate.update(query, assetInstanceId);
-
+        public boolean changeLendingStatus(final int lendingId, final LendingState lendingState) {
+            String query = "UPDATE lendings SET active = ? WHERE id = ? ";
+            int updatedRows = jdbcTemplate.update(query, lendingState.toString(),lendingId);
             return updatedRows == 1;
         }
 
     }
-
-    /*
-    *  id | lendingstate
-    *   1    REJECTED
-    *   1    ACTIVE
-    *   1    FINISHED
-    *
-    *
-    *  BorrowedAssetInstance
-    *   id | ai.id | lending.id
-    *
-    * */
