@@ -177,6 +177,12 @@ button {
     margin-right: 10px;
     border-radius: 20px;
 }
+.filter-button-gray {
+    background-color: rgba(133, 131, 131, 0.65);
+    margin-right: 10px;
+    border-radius: 20px;
+    border-color: #2B3B2B;
+}
 .filter-button-selected {
     opacity: 1;
 }

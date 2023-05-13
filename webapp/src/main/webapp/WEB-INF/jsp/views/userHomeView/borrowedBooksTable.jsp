@@ -41,6 +41,23 @@
                     <jsp:param name="filter" value="${filter}"/>
                 </jsp:include>
 
+                <jsp:include page="filterButton.jsp">
+                    <jsp:param name="table" value="borrowed_books"/>
+                    <jsp:param name="filterValue" value="rejected"/>
+                    <jsp:param name="filterAtribuite" value="lendingStatus"/>
+                    <jsp:param name="title" value="filterOption.rejected"/>
+                    <jsp:param name="buttonText" value="userHomeView.rejected"/>
+                    <jsp:param name="filter" value="${filter}"/>
+                </jsp:include>
+
+                <jsp:include page="filterButton.jsp">
+                    <jsp:param name="table" value="borrowed_books"/>
+                    <jsp:param name="filterValue" value="finished"/>
+                    <jsp:param name="filterAtribuite" value="lendingStatus"/>
+                    <jsp:param name="title" value="filterOption.finished"/>
+                    <jsp:param name="buttonText" value="userHomeView.finished"/>
+                    <jsp:param name="filter" value="${filter}"/>
+                </jsp:include>
             </div>
         </div>
         <div class="table-container">

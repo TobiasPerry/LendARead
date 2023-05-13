@@ -75,10 +75,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    owner.mail = ? AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE')  ";
+                "    owner.mail = ? ";
 
-        if (!filterAttribute.equalsIgnoreCase("none"))
-            query += " AND " + filterAttribute + " = ?";
+        if (filterAttribute.equalsIgnoreCase("status"))
+            query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
+        if(filterAttribute.equalsIgnoreCase("lendingStatus"))
+            query += "AND l.active = ?";
         if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
@@ -95,6 +97,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId))
                     .orElse(null);
         };
+
         if (!filterAttribute.equalsIgnoreCase("none"))
             return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
 
@@ -120,10 +123,13 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    u.mail = ? AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE')";
+                "    u.mail = ? ";
 
-        if (!filterAttribute.equalsIgnoreCase("none"))
-            query += " AND " + filterAttribute + " = ?";
+
+        if (filterAttribute.equalsIgnoreCase("status"))
+            query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
+        if(filterAttribute.equalsIgnoreCase("lendingStatus"))
+            query += "AND l.active = ?";
         if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
