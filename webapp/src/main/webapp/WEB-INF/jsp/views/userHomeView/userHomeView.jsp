@@ -31,7 +31,7 @@
 
 <body data-path="${path}" class="body-class">
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../../components/navBar.jsp"/>
 <div class="container">
     <div class="container-flex">
         <h1><spring:message code="greeting" arguments="${userEmail}"/></h1>
@@ -64,20 +64,20 @@
                 <c:choose>
                 <c:when test="${table == 'my_books'}">
                     <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/myBooksTable.jsp">
+                    <jsp:include page="myBooksTable.jsp">
                         <jsp:param name="userAssets" value="${userAssets}"/>
                     </jsp:include>
                 </c:when>
                 <c:when test="${table == 'lended_books'}">
                     <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/lendedBooksTable.jsp">
+                    <jsp:include page="lendedBooksTable.jsp">
                         <jsp:param name="isLender" value="${isLender}"/>
                         <jsp:param name="userAssets" value="${userAssets}"/>
                     </jsp:include>
                 </c:when>
                 <c:when test="${table == 'borrowed_books'}">
                 <% request.setCharacterEncoding("utf-8"); %>
-                <jsp:include page="../components/borrowedBooksTable.jsp">
+                <jsp:include page="borrowedBooksTable.jsp">
                     <jsp:param name="userAssets" value="${userAssets}"/>
                 </jsp:include>
             </c:when>
@@ -87,7 +87,7 @@
 </div>
 
 <% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../components/deleteBookModal.jsp">
+<jsp:include page="../userHomeAssetDetail/deleteBookModal.jsp">
     <jsp:param name="modalType" value="${modalType}"/>
     <jsp:param name="assetId" value="${assetId}"/>
 </jsp:include>

@@ -34,19 +34,19 @@ final public class UserAssetDetailsController {
     }
     @RequestMapping(value = "/lentBookDetails", method = RequestMethod.GET)
     public ModelAndView lentBookDetail(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
-        return new ModelAndView("/views/userBookDetails")
+        return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
                     .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(id))
                     .addObject("table", "lended_books");
     }
     @RequestMapping(value = "/myBookDetails", method = RequestMethod.GET)
     public ModelAndView myBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
-        return new ModelAndView("/views/userBookDetails")
+        return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
                 .addObject("table", "my_books");
     }
     @RequestMapping(value = "/borrowedBookDetails", method = RequestMethod.GET)
     public ModelAndView borrowedBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
-        return new ModelAndView("/views/userBookDetails")
+        return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
                 .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(id))
                 .addObject("table", "borrowed_books");
     }

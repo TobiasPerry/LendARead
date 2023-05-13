@@ -28,7 +28,7 @@
 </head>
 <body data-path="${path}" class="body-class">
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../../components/navBar.jsp"/>
 <div>
 <div class="back-button" style="display: flex; flex-direction: row; ">
     <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
@@ -74,17 +74,17 @@
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
                 <c:choose>
                     <c:when test="${table == 'my_books'}">
-                        <jsp:include page="../components/myBookOptions.jsp" >
+                        <jsp:include page="myBookOptions.jsp" >
                             <jsp:param name="asset" value="${asset}"/>
                         </jsp:include>
                     </c:when>
                     <c:when test="${table == 'lended_books'}">
-                        <jsp:include page="../components/lendedBookOptions.jsp">
+                        <jsp:include page="lendedBookOptions.jsp">
                             <jsp:param name="asset" value="${asset}"/>
                         </jsp:include>
                     </c:when>
                     <c:when test="${table == 'borrowed_books'}">
-                        <jsp:include page="../components/borrowedBookOptions.jsp">
+                        <jsp:include page="borrowedBookOptions.jsp">
                             <jsp:param name="asset" value="${asset}"/>
                         </jsp:include>
                     </c:when>
