@@ -45,10 +45,10 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public BorrowedAssetInstance getBorrowedAssetInstance(final int id) throws AssetInstanceNotFoundException {
-      Optional<BorrowedAssetInstance> borrowedAssetInstance = userAssetsDao.getBorrowedAsset(id);
+    public BorrowedAssetInstance getBorrowedAssetInstance(final int lendingId) throws AssetInstanceNotFoundException {
+      Optional<BorrowedAssetInstance> borrowedAssetInstance = userAssetsDao.getBorrowedAsset(lendingId);
       if (!borrowedAssetInstance.isPresent()) {
-          LOGGER.error("Not found borrowed asset instance with the lending id: {}", id);
+          LOGGER.error("Not found borrowed asset instance with the lending lendingId: {}", lendingId);
           throw new AssetInstanceNotFoundException("Not found BorrowedAssetInstance");
       }
       return borrowedAssetInstance.get();

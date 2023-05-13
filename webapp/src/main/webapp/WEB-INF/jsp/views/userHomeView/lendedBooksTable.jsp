@@ -73,7 +73,7 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${userAssets}" var="asset">
-                        <c:url var="userUrl" value="/lentBookDetails?id=${asset.id}"/>
+                        <c:url var="userUrl" value="/lentBookDetails?lendingId=${asset.lendingId}"/>
                         <tr class="table-row-clickable" data-href="${userUrl}">
                             <td>
                                 <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>

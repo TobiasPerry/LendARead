@@ -17,13 +17,13 @@
                     <spring:message code="userHomeView.confirmAssetText" />
             </div>
             <div class="modal-footer border-0">
-                <c:url var="confirmAssetUrl" value="/confirmAsset/${asset.id}"/>
+                <c:url var="confirmAssetUrl" value="/confirmAsset/${asset.lendingId}"/>
                 <form action="${confirmAssetUrl}" method="post">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                         <spring:message code="confirm" />
                     </button>
                 </form>
-                <c:url var="rejectAssetUrl" value="/rejectAsset/${asset.id}"/>
+                <c:url var="rejectAssetUrl" value="/rejectAsset/${asset.lendingId}"/>
                 <form action="${rejectAssetUrl}" method="post">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                         <spring:message code="reject" />
