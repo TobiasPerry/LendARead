@@ -70,9 +70,10 @@ public class IndexViewController {
             return new ModelAndView("/views/discoveryView");
 
         int pageNum = searchFilterSortForm.getCurrentPage();
+        final int itemsPerPage = 15;
 
         Page page = assetInstanceService.getAllAssetsInstances(
-                pageNum,15,
+                pageNum,itemsPerPage,
                 new SearchQueryImpl(
                         ( searchFilterSortForm.getLanguages() != null ) ? searchFilterSortForm.getLanguages() :  new ArrayList<>(),
                         ( searchFilterSortForm.getPhysicalConditions() != null ) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
@@ -104,6 +105,8 @@ public class IndexViewController {
         // Recent and descending is the default
         mav.addObject("sort", ( searchFilterSortForm.getSort() != null ) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.RECENT);
         mav.addObject("sortDirection", ( searchFilterSortForm.getSortDirection() != null ) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING);
+
+        mav.addObject("itemsPerPage", itemsPerPage);
 
         return mav;
     }

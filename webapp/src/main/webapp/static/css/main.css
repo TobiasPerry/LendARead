@@ -41,6 +41,13 @@
     justify-content: space-between;
 }
 
+.container-row-center{
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    justify-content: center;
+}
+
 .container-column{
     display: flex;
     flex-flow: column;
