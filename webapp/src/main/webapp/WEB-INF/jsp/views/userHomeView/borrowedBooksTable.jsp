@@ -73,7 +73,7 @@
                 <tbody>
                 <c:forEach items="${userAssets}" var="asset">
                     <spring:message var="lendedBooksName" code='borrowed_books' />
-                    <c:url var="userUrl" value="/borrowedBookDetails?id=${asset.id}"/>
+                    <c:url var="userUrl" value="/borrowedBookDetails?lendingId=${asset.lendingId}"/>
                     <tr class="table-row-clickable" data-href="${userUrl}">
                         <td>
                             <img style="height: 250px; width: 150px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>

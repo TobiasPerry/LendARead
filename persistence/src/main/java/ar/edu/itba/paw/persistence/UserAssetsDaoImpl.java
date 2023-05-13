@@ -62,7 +62,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
-                "    l.devolutiondate" +
+                "    l.devolutiondate," +
+                "    l.id AS lendingId" +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -74,7 +75,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    owner.mail = ?";
+                "    owner.mail = ? AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE')  ";
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
@@ -87,9 +88,11 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String borrower = rs.getString("borrower_name");
+            int lendingId = rs.getInt("lendingId");
+
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId))
                     .orElse(null);
         };
         if (!filterAttribute.equalsIgnoreCase("none"))
@@ -104,7 +107,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
-                "    l.devolutiondate" +
+                "    l.devolutiondate," +
+                "    l.id AS lendingId" +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -116,7 +120,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    u.mail = ?";
+                "    u.mail = ? AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE')";
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
@@ -130,9 +134,11 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String owner = rs.getString("owner_name");
+            int lendingId = rs.getInt("lendingId");
+
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId))
                     .orElse(null);
         };
         if (!filterAttribute.equalsIgnoreCase("none"))
@@ -159,7 +165,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "     FROM" +
                 "         lendings l" +
                 "     WHERE" +
-                "         l.assetinstanceid = ai.id" +
+                "         l.assetinstanceid = ai.id AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') " +
                 " )";
 
         if (!filterAttribute.equalsIgnoreCase("none"))
@@ -187,11 +193,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public Optional<BorrowedAssetInstance> getBorrowedAsset(int id) {
+    public Optional<BorrowedAssetInstance> getBorrowedAsset(int lendingId) {
             String query = "SELECT " +
                     "    l.assetinstanceid," +
                     "    owner.name AS owner_name," +
-                    "    l.devolutiondate" +
+                    "    l.devolutiondate," +
+                    "    l.id AS lendingId" +
                     " FROM" +
                     "    lendings l" +
                     " JOIN" +
@@ -203,7 +210,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     " JOIN" +
                     "    users owner ON ai.owner = owner.id" +
                     " WHERE" +
-                    "    ai.id = ?";
+                    "    l.id = ?";
 
             RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
                 int assetId = rs.getInt("assetinstanceid");
@@ -211,12 +218,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 String owner = rs.getString("owner_name");
 
                 return assetInstanceDao.getAssetInstance(assetId)
-                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner))
+                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId))
                         .orElse(null);
             };
 
             try {
-                return Optional.of(jdbcTemplate.queryForObject(query, rowMapper, id));
+                return Optional.of(jdbcTemplate.queryForObject(query, rowMapper, lendingId));
             } catch (EmptyResultDataAccessException e) {
                 return Optional.empty();
             }

@@ -228,16 +228,28 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
     @Override
-    public Boolean changeStatus(int assetInstanceId, AssetState as) {
+    public Boolean changeStatus(final int id, final AssetState as) {
         String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
-            jdbcTemplate.update(query,as.name(),assetInstanceId);
+            jdbcTemplate.update(query,as.name(), id);
             return true;
         }catch (Exception e){
             return false;
         }
     }
-
+    @Override
+    public Boolean changeStatusByLendingId(final int lendingId, final AssetState as) {
+        String query = "UPDATE assetInstance AS ai " +
+                "SET status = ? " +
+                "FROM lendings AS l " +
+                "WHERE ai.id = l.assetinstanceid AND l.id = ?";
+        try {
+            jdbcTemplate.update(query,as.name(), lendingId);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
     private String getPostgresFromSort(Sort sort){
 
         switch (sort){

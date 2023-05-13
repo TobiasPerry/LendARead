@@ -1,25 +1,18 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +21,8 @@ import java.util.*;
 
 @Service
 public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssetAvailabilityServiceImpl.class);
     private final AssetAvailabilityDao lendingDao;
 
     private final AssetInstanceDao assetInstanceDao;
@@ -50,7 +45,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
         if(!ai.isPresent())
-            throw  new AssetInstanceBorrowException("The assetInstance or the user not found");
+            throw new AssetInstanceBorrowException("The assetInstance or the user not found");
         if(!user.isPresent())
             throw new UserNotFoundException("The user not found");
         if(!ai.get().getAssetState().isPublic())
@@ -81,6 +76,31 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
         if(!assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC))
             throw new AssetInstanceNotFoundException("Asset instance not found");
+    }
+
+    @Transactional()
+    @Override
+    public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.FINISHED))
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
+    }
+
+    @Override
+    public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.BORROWED))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.DELIVERED))
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as delivered");
+    }
+
+    @Override
+    public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.REJECTED))
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as rejected");
     }
 
 }

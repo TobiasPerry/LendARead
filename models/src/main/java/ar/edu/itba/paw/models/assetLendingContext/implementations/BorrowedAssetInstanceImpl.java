@@ -9,11 +9,16 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
     private final String dueDate;
 
     private final String borrower;
-    public BorrowedAssetInstanceImpl(AssetInstance assetInstance, String dueDate, String borrower) {
+    private final int lendingId;
+
+    public BorrowedAssetInstanceImpl(final AssetInstance assetInstance, final String dueDate, final String borrower, final int lendingId) {
         super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImageId(), assetInstance.getAssetState(),assetInstance.getMaxDays());
         this.dueDate = dueDate;
         this.borrower = borrower;
+        this.lendingId = lendingId;
     }
+
+
 
     @Override
     public String getDueDate() {
@@ -23,5 +28,10 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
     @Override
     public String getBorrower() {
         return borrower;
+    }
+
+    @Override
+    public int getLendingId() {
+        return this.lendingId;
     }
 }

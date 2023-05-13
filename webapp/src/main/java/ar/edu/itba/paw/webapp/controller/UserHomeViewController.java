@@ -4,7 +4,6 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.userContext.interfaces.UserAssets;
 import ar.edu.itba.paw.webapp.miscellaneous.SortFilterManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +21,7 @@ final public class UserHomeViewController {
 
     private final UserService userService;
 
-    private static final String registerViewName = "/views/userHomeView";
+    private static final String registerViewName = "views/userHomeView/userHomeView";
 
     private static final String DEFAULT_TABLE_NAME = "my_books";
 

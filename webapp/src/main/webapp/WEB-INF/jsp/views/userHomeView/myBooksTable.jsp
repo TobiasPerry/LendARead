@@ -4,7 +4,7 @@
 
 <div class="table-title">
     <div style="display: flex; align-items: center; justify-content: space-between;">
-        <h2><spring:message code="borrowed_books"/></h2>
+        <h2><spring:message code="my_books"/></h2>
             <div>
                 <jsp:include page="filterButton.jsp">
                     <jsp:param name="table" value="my_books"/>
