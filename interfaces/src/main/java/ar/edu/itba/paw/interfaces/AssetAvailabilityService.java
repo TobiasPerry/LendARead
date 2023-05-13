@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.interfaces;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
@@ -20,5 +17,5 @@ public interface AssetAvailabilityService {
 
     void setAssetPublic(int assetId) throws AssetInstanceNotFoundException;
 
-    void returnAsset(int assetId) throws AssetInstanceNotFoundException;
+    void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessful;
 }

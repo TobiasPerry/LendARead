@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.LendingCompletionUnsuccessful;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -57,7 +58,7 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value ="/returnAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView returnAsset(@PathVariable("id") final int id) throws AssetInstanceNotFoundException{
+    public ModelAndView returnAsset(@PathVariable("id") final int id) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessful {
         assetAvailabilityService.returnAsset(id);
         return new ModelAndView("redirect:/userHome");
     }

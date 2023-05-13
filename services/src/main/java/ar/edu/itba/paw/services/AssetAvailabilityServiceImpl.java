@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
@@ -17,6 +14,8 @@ import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -28,6 +27,8 @@ import java.util.*;
 
 @Service
 public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssetAvailabilityServiceImpl.class);
     private final AssetAvailabilityDao lendingDao;
 
     private final AssetInstanceDao assetInstanceDao;
@@ -83,9 +84,13 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
-    @Transactional(readOnly = true)
+    @Transactional()
     @Override
-    public void returnAsset(int assetId) throws AssetInstanceNotFoundException {
-
+    public void returnAsset(int assetId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessful {
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
+            throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!lendingDao.setLendingFinished(assetId))
+            throw new LendingCompletionUnsuccessful("Failed to mark lending as finished");
     }
+
 }

@@ -9,5 +9,5 @@ public interface AssetAvailabilityDao {
 
     boolean borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate,LocalDate devolutionDate);
 
-    List<LendingDetails> getAllLendings();
+    boolean setLendingFinished(int assetInstanceId);
 }
