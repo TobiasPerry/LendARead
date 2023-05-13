@@ -8,5 +8,7 @@ public interface BorrowedAssetInstance extends AssetInstance {
 
     String getBorrower();
 
+    int getLendingId();
+
 }
 

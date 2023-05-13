@@ -47,3 +47,15 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
         }
 
     }
+
+    /*
+    *  id | lendingstate
+    *   1    REJECTED
+    *   1    ACTIVE
+    *   1    FINISHED
+    *
+    *
+    *  BorrowedAssetInstance
+    *   id | ai.id | lending.id
+    *
+    * */
