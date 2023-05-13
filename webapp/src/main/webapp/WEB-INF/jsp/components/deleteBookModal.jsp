@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content rounded-3 border-0 shadow">
             <div class="modal-header border-0" style="text-align: center">
-                <div class="icon-box">
+                <div class="icon-box" style="background: #D45235;">
                     <i class="fas fa-trash fa-lg"></i>
                 </div>
                 <h3 class="modal-title w-100 mt-2">
@@ -17,7 +17,7 @@
                     <spring:message code="userHomeView.deleteBookText" />
             </div>
             <div class="modal-footer border-0">
-                <c:url var="deleteAssetUrl" value="/deleteAsset/${assetId}"/>
+                <c:url var="deleteAssetUrl" value="/deleteAsset/${asset.id}"/>
                 <form action="${deleteAssetUrl}" method="post">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                         <spring:message code="yes" />

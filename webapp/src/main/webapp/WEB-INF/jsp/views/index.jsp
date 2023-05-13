@@ -40,23 +40,24 @@
     </div>
 </section>
 
-<section style="background-color: #FFFFFF; margin-top: 100px">
-    <div class="container-row-wrapped">
-        <h1>Recently add books</h1>
-    </div>
-    <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: #FFFFFF; border-radius: 20px; width: 90%">
-        <c:forEach var="book" items="${books}">
-            <% request.setCharacterEncoding("utf-8"); %>
-            <jsp:include page="../components/bookCard.jsp">
-                <jsp:param name="id" value="${book.id}"/>
-                <jsp:param name="bookTitle" value="${book.book.name}"/>
-                <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                <jsp:param name="imageId" value="${book.imageId}"/>
-            </jsp:include>
-        </c:forEach>
-    </div>
-</section>
-
+<c:if test="${books.size() > 0}">
+    <section style="background-color: #FFFFFF; margin-top: 100px">
+        <div class="container-row-wrapped">
+            <h1>Recently add books</h1>
+        </div>
+        <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: #FFFFFF; border-radius: 20px; width: 90%">
+            <c:forEach var="book" items="${books}">
+                <% request.setCharacterEncoding("utf-8"); %>
+                <jsp:include page="../components/bookCard.jsp">
+                    <jsp:param name="id" value="${book.id}"/>
+                    <jsp:param name="bookTitle" value="${book.book.name}"/>
+                    <jsp:param name="bookAuthor" value="${book.book.author}"/>
+                    <jsp:param name="imageId" value="${book.imageId}"/>
+                </jsp:include>
+            </c:forEach>
+        </div>
+    </section>
+</c:if>
 </body>
 
 </html>

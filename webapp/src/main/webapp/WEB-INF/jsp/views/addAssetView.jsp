@@ -50,7 +50,7 @@
 
                 <div class="form-wrapper">
                     <c:url var="addAssetUrl" value="/addAsset"/>
-                    <form:form modelAttribute="addAssetForm" method="post"
+                    <form:form modelAttribute="addAssetForm" method="post" onsubmit="return beforeSubmit()"
                                action="${addAssetUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
                         <div class="stepper-wrapper">
                             <div class="stepper-item" data-step-count="1">
@@ -166,25 +166,17 @@
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="3">
                             <h2><spring:message code="addAssetView.steps.TIME.title"/></h2>
-                            <text class="form-subtitle">
-                                <spring:message code="addAssetView.steps.TIME_NOTE"/>
-                            </text>
-                            <div class="field-group">
-                                <div class="field">
-                                    <spring:message code="addAssetView.maxWeeksLending" var="timeLabel"/>
-                                    <label for="time" class="form-label">${timeLabel}</label>
-                                    <form:input path="maxWeeks" id="time" placeholder="${timeLabel}"
-                                                class="form-control onlyNumber-input"/>
-                                    <form:errors path="maxWeeks" cssClass="text-danger small" element="small"/>
-                                </div>
-                                <div class="field">
-                                    <spring:message code="addAssetView.maxDays" var="timeDaysLabel"/>
-                                    <label for="timeDays" class="form-label">${timeDaysLabel}</label>
-                                    <form:input path="maxDays" id="timeDays" placeholder="${timeDaysLabel}"
-                                                class="form-control onlyNumber-input"/>
-                                    <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
-                                </div>
+                            <div class="d-flex justify-content-center">
+                                <label class="align-baseline mx-1">Borrow for:</label>
+                                <input type="number" id="borrow-time-quantity" name="borrow-time-quantity" value="1"  class="w-25 mx-1 form-control mr-2"/>
+                                <select class="w-25 mx-1 form-select" id="borrow-time-type">
+                                    <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
+                                    <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
+                                    <option value="31"><spring:message code="addAssetView.steps.TIME.months"/>/option>
+                                </select>
+                                <form:input path="maxDays" id="maxDays" class="d-none"/>
                             </div>
+                            <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
 
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"

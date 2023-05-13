@@ -27,6 +27,8 @@
     <!-- Bootstrap JS library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
 
+    <!--    Book card JavaScript -->
+    <script src="<c:url value="/static/javaScript/bookCard.js"/>"></script>
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -78,7 +80,7 @@
                         <c:otherwise>
                             <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
+                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px; margin-right: 10px"><c:out value="${language}"/></span></li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -141,7 +143,14 @@
 
         <div class="container-column" style="flex: 0 1 85%;">
             <c:if test="${books.size() > 0}">
+                <div class="container-row-wrapped placeholder-group" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
+                    <jsp:include page="../components/bookCardPlaceholders.jsp">
+                        <jsp:param name="repeatCount" value="9"/>
+                    </jsp:include>
+                </div>
+
                 <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
+
                     <c:forEach var="book" items="${books}">
                         <% request.setCharacterEncoding("utf-8"); %>
                         <jsp:include page="../components/bookCard.jsp">

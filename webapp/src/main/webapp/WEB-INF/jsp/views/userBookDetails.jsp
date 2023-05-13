@@ -25,52 +25,59 @@
     <link href="<c:url value="/static/css/userHomeView.css"/>" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Overpass:400,700|Roboto:400,700" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
+
+
+
+
 </head>
 <body data-path="${path}" class="body-class">
 
 <jsp:include page="../components/navBar.jsp"/>
 <div>
-<div class="back-button" style="display: flex; flex-direction: row; ">
-    <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
-        <i class="fas fa-arrow-left"></i>
-    </a>
-    <h2 class="textOverflow"> <c:out value="${table}" /> </h2>
-</div>
-    <div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
-
-    <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; min-width: 50%">
+    <div class="back-button" style="display: flex; flex-direction: row; ">
+        <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h2 class="textOverflow"> <spring:message code="userAssetDetailView.${table}"/> </h2>
+    </div>
+    <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
         <div class="container-row-wrapped">
-            <img src="<c:url value="/getImage/${asset.imageId}"/>" class="mx-3" alt="Book cover"
-                 style="height: 500px; width: 300px; object-fit: cover">
-            <div class="w-25 h-25 mx-5">
-                <h1 class="textOverflow"><c:out value="${asset.book.name} "/></h1>
-                <h3 class="textOverflow"><spring:message code="assetView.by"/> <c:out
-                        value="${asset.book.author}"/></h3>
-                <h6>
-                    <i>
-                        <u><c:out value="${asset.physicalCondition}"/></u>
-                    </i>
-                </h6>
-                <h6 style="color: #7d7c7c"><spring:message code="assetView.language"/>: <c:out
-                        value="${asset.book.language}"/></h6>
-                <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
-                        value="${asset.book.isbn}"/></h6>
+            <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; flex: 0 0 50%">
+                <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
+                    <img src="<c:url value="/getImage/${asset.imageId}"/>" class="mx-3" alt="Book cover"
+                         style="height: 500px; width: 300px; object-fit: cover">
+                    <div class="mx-2">
+                        <h1 class="textOverflow"><c:out value="${asset.book.name} "/></h1>
+                        <h3 class="textOverflow"><spring:message code="assetView.by"/> <c:out
+                                value="${asset.book.author}"/></h3>
+                        <h6>
+                            <i>
+                                <u><spring:message code="enum.${asset.physicalCondition}"/></u>
+                            </i>
+                        </h6>
+                        <h6 style="color: #7d7c7c"><spring:message code="assetView.language"/>: <c:out
+                                value="${asset.book.language}"/></h6>
+                        <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
+                                value="${asset.book.isbn}"/></h6>
 
-                <c:choose>
-                    <c:when test="${table == 'lended_books'}">
-                        <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out value="${asset.dueDate}"/></h6>
-                        <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out value="${asset.borrower}"/></h6>
-                    </c:when>
-                    <c:when test="${table == 'borrowed_books'}">
-                        <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out value="${asset.dueDate}"/></h6>
-                        <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out value="${asset.borrower}"/></h6>
-                    </c:when>
-                </c:choose>
+                        <c:choose>
+                            <c:when test="${table == 'lended_books'}">
+                                <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out value="${asset.dueDate}"/></h6>
+                                <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out value="${asset.borrower}"/></h6>
+                            </c:when>
+                            <c:when test="${table == 'borrowed_books'}">
+                                <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out value="${asset.dueDate}"/></h6>
+                                <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out value="${asset.borrower}"/></h6>
+                            </c:when>
+                        </c:choose>
 
+
+                    </div>
+
+                </div>
 
             </div>
-
-            <div>
+            <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px;width:fit-content; flex: 0 0 10%">
                 <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
                 <c:choose>
                     <c:when test="${table == 'my_books'}">
@@ -91,13 +98,11 @@
                 </c:choose>
             </div>
         </div>
+        <div class="container-row-space-between" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
 
+
+        </div>
     </div>
-    <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
-
-
-    </div>
-</div>
 </div>
 </body>
 

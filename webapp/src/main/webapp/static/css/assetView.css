@@ -1,3 +1,7 @@
+.textOverflow-container {
+    width: 100%;
+}
+
 .textOverflow{
     overflow: hidden;
     text-overflow: ellipsis;
