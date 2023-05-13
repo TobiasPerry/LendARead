@@ -45,7 +45,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
         if(!ai.isPresent())
-            throw  new AssetInstanceBorrowException("The assetInstance or the user not found");
+            throw new AssetInstanceBorrowException("The assetInstance or the user not found");
         if(!user.isPresent())
             throw new UserNotFoundException("The user not found");
         if(!ai.get().getAssetState().isPublic())
@@ -92,7 +92,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.BORROWED))
             throw new AssetInstanceNotFoundException("Asset instance not found");
         if(!lendingDao.changeLendingStatus(lendingId, LendingState.DELIVERED))
-            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as delivered");
     }
 
     @Override
@@ -100,7 +100,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
             throw new AssetInstanceNotFoundException("Asset instance not found");
         if(!lendingDao.changeLendingStatus(lendingId, LendingState.REJECTED))
-            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as rejected");
     }
 
 }
