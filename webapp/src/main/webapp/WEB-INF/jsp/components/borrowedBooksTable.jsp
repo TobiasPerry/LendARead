@@ -76,7 +76,7 @@
                     <c:url var="userUrl" value="/borrowedBookDetails?id=${asset.id}"/>
                     <tr class="table-row-clickable" data-href="${userUrl}">
                         <td>
-                            <img class="responsive-image" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
+                            <img style="height: 250px; width: 150px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
                         </td>
                         <td><c:out value="${asset.book.name}"/></td>
                         <td><c:out value="${asset.dueDate}"/></td>
