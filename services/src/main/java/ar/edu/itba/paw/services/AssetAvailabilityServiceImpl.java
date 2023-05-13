@@ -83,20 +83,4 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             throw new AssetInstanceNotFoundException("Asset instance not found");
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<BorrowedAssetInstance> getAllBorrowedAssetsInstances() {
-        List<LendingDetails> lendingDetails =  lendingDao.getAllLendings();
-        List<BorrowedAssetInstance> borrowedAssetInstances = new ArrayList<>();
-
-        for (LendingDetails lendingDetail : lendingDetails) {
-            Optional<AssetInstance> assetInstance = assetInstanceDao.getAssetInstance(lendingDetail.getAssetInstanceId());
-            if (assetInstance.isPresent()) {
-                String borrower = userDao.getUser(lendingDetail.getBorrowerId()).get().getName();
-                borrowedAssetInstances.add(new BorrowedAssetInstanceImpl(assetInstance.get(), lendingDetail.getReturnDate().toString(), borrower));
-            }
-        }
-
-        return borrowedAssetInstances;
-    }
 }
