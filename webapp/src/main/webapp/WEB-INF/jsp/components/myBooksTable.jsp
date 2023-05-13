@@ -69,6 +69,7 @@
                     <td><c:out value="${asset.book.name}"/></td>
                     <td><c:out value="${asset.book.author}"/></td>
                     <td><c:out value="${asset.book.language}"/></td>
+
                 </tr>
             </c:forEach>
             </tbody>

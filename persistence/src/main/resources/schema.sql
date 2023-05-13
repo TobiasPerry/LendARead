@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS book(
     isbn varchar(100) not null unique,
     author varchar(100) not null,
     title text not null,
-    "language" varchar(100) not null
+    lang varchar(100) not null
 );
 CREATE TABLE IF NOT EXISTS users(
     behavior varchar(100),

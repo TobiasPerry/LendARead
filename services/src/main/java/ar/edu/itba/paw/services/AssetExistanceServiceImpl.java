@@ -34,7 +34,6 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         this.photosDao = photosDao;
     }
 
-    @Transactional
     @Override
     public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException{
 

@@ -53,7 +53,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
         if(sortAtribuite.equals("borrower_name")) return "u.name";
         if(sortAtribuite.equals("author")) return "b.author";
-        if(sortAtribuite.equals("language")) return "b.language";
+        if(sortAtribuite.equals("lang")) return "b.lang";
         return "none";
     }
 

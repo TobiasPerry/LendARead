@@ -31,7 +31,7 @@ public class AssetDaoImpl implements AssetDao {
     private final SimpleJdbcInsert jdbcInsert;
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<Book>ROW_MAPPER = (rs,rownum)-> new BookImpl(rs.getInt("uid"),rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("language"));
+    private static final RowMapper<Book>ROW_MAPPER = (rs,rownum)-> new BookImpl(rs.getInt("uid"),rs.getString("isbn"),rs.getString("author"),rs.getString("title"),rs.getString("lang"));
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs,rownum) -> rs.getInt("uid");
     @Autowired
     public AssetDaoImpl(final DataSource	ds) {
@@ -43,7 +43,7 @@ public class AssetDaoImpl implements AssetDao {
 
     @Override
     public Optional<List<Book>> getAssets() {
-        final List<Book> bookList = jdbcTemplate.query("SELECT * FROM bookinstance",ROW_MAPPER);
+        final List<Book> bookList = jdbcTemplate.query("SELECT * FROM assetinstance",ROW_MAPPER);
         if(bookList.isEmpty())
             return Optional.empty();
         return Optional.of(bookList);
@@ -57,7 +57,7 @@ public class AssetDaoImpl implements AssetDao {
         args.put("isbn",ai.getIsbn());
         args.put("title",ai.getName());
         args.put("author",ai.getAuthor());
-        args.put("language",ai.getLanguage());
+        args.put("lang",ai.getLanguage());
         int id ;
         try {
             id = jdbcInsert.executeAndReturnKey(args).intValue();
@@ -72,7 +72,7 @@ public class AssetDaoImpl implements AssetDao {
         Object[] params = new Object[] {isbn};
         Book book;
         try {
-            book = jdbcTemplate.queryForObject("SELECT uid,isbn, author, title, language FROM book where isbn = ?", params, ROW_MAPPER);
+            book = jdbcTemplate.queryForObject("SELECT uid,isbn, author, title, lang FROM book where isbn = ?", params, ROW_MAPPER);
         } catch (EmptyResultDataAccessException ex) {
             return Optional.empty();
         }

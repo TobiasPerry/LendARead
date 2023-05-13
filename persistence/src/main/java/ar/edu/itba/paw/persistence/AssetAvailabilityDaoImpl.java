@@ -25,11 +25,12 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     public AssetAvailabilityDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
+
     @Override
     public boolean borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate,LocalDate devolutionDate) {
         String query = "INSERT INTO lendings(assetinstanceid,borrowerId,lendDate,devolutionDate) VALUES(?,?,?,?)";
 
-        return jdbcTemplate.update(query,assetInstanceId,userId, borrowDate,devolutionDate) > 0;
+        return jdbcTemplate.update(query,assetInstanceId,userId, java.sql.Date.valueOf(borrowDate),java.sql.Date.valueOf(devolutionDate)) > 0;
 
     }
 
