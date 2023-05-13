@@ -52,7 +52,7 @@
                                 value="${asset.book.author}"/></h3>
                         <h6>
                             <i>
-                                <u><c:out value="${asset.physicalCondition}"/></u>
+                                <u><spring:message code="enum.${asset.physicalCondition}"/></u>
                             </i>
                         </h6>
                         <h6 style="color: #7d7c7c"><spring:message code="assetView.language"/>: <c:out
