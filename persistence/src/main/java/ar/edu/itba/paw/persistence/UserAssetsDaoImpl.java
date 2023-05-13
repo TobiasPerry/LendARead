@@ -75,7 +75,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    owner.mail = ?";
+                "    owner.mail = ? AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE')  ";
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
@@ -120,7 +120,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    u.mail = ?";
+                "    u.mail = ? AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE')";
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
@@ -165,7 +165,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "     FROM" +
                 "         lendings l" +
                 "     WHERE" +
-                "         l.assetinstanceid = ai.id" +
+                "         l.assetinstanceid = ai.id AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') " +
                 " )";
 
         if (!filterAttribute.equalsIgnoreCase("none"))
