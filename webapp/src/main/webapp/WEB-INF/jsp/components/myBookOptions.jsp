@@ -7,14 +7,14 @@
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">
-                <spring:message code="public"/>
+                <i class="fas fa-eye fa-lg"></i> <spring:message code="public"/>
             </c:when>
             <c:otherwise>
-                <spring:message code="private"/>
+                <i class="fas fa-eye-slash fa-lg"></i> <spring:message code="private"/>
             </c:otherwise>
         </c:choose>
     </button>
-
+    <br>
     <button id="deleteBtn" class="btn-red-outline" type="submit">
         <spring:message code="delete" />
     </button>
