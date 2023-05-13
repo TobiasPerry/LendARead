@@ -12,6 +12,6 @@ public interface UserAssetInstanceService {
 
     List<? extends AssetInstance> getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
-    BorrowedAssetInstance getBorrowedAssetInstance(final int lendingId) throws AssetInstanceNotFoundException;
+    BorrowedAssetInstance getBorrowedAssetInstance(final int id) throws AssetInstanceNotFoundException;
 
 }

@@ -56,6 +56,13 @@
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                         value="${asset.book.isbn}"/></h6>
 
+                <c:choose>
+                    <c:when test="${table == 'lended_books' || table == 'borrowed_books'}">
+                        <h6 style="color: #7d7c7c"><spring:message code="return_date"/>: <c:out
+                                value="${asset.dueDate}"/></h6>
+                    </c:when>
+                </c:choose>
+
             </div>
 
             <div>

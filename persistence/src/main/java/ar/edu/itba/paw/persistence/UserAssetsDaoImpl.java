@@ -187,7 +187,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
     @Override
-    public Optional<BorrowedAssetInstance> getBorrowedAsset(int lendingId) {
+    public Optional<BorrowedAssetInstance> getBorrowedAsset(int id) {
             String query = "SELECT " +
                     "    l.assetinstanceid," +
                     "    owner.name AS owner_name," +
@@ -203,7 +203,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     " JOIN" +
                     "    users owner ON ai.owner = owner.id" +
                     " WHERE" +
-                    "    l.id = ?";
+                    "    ai.id = ?";
 
             RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
                 int assetId = rs.getInt("assetinstanceid");
@@ -216,7 +216,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             };
 
             try {
-                return Optional.of(jdbcTemplate.queryForObject(query, rowMapper, lendingId));
+                return Optional.of(jdbcTemplate.queryForObject(query, rowMapper, id));
             } catch (EmptyResultDataAccessException e) {
                 return Optional.empty();
             }
