@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
@@ -10,5 +11,7 @@ import java.util.List;
 public interface UserAssetInstanceService {
 
     List<? extends AssetInstance> getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
+
+    BorrowedAssetInstance getBorrowedAssetInstance(final int id) throws AssetInstanceNotFoundException;
 
 }

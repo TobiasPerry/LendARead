@@ -1,18 +1,24 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserAssetInstanceService.class);
     private final UserAssetsDao userAssetsDao;
 
 
@@ -37,18 +43,14 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         return new ArrayList<>();
     }
 
-    private String matchFilterValue(String filterAtribuite) {
-        return filterAtribuite.toUpperCase();
+    @Transactional(readOnly = true)
+    @Override
+    public BorrowedAssetInstance getBorrowedAssetInstance(final int id) throws AssetInstanceNotFoundException {
+      Optional<BorrowedAssetInstance> borrowedAssetInstance = userAssetsDao.getBorrowedAsset(id);
+      if (!borrowedAssetInstance.isPresent()) {
+          LOGGER.error("Not found borrowed asset instance with the lending id: {}", id);
+          throw new AssetInstanceNotFoundException("Not found BorrowedAssetInstance");
+      }
+      return borrowedAssetInstance.get();
     }
-
-    private String matchSortAttribuite(String sortAtribuite) {
-        if(sortAtribuite.equals("book_name")) return "b.title";
-        if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
-        if(sortAtribuite.equals("borrower_name")) return "u.name";
-        if(sortAtribuite.equals("author")) return "b.author";
-        if(sortAtribuite.equals("language")) return "b.language";
-        return "none";
-    }
-
-
 }
