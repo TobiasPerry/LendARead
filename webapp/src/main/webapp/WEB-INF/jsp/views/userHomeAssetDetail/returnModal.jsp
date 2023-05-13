@@ -37,8 +37,8 @@
 </div>
 
 <script>
-    const publicPrivateBtnHandler = document.getElementById('returnAssetBtn');
-    publicPrivateBtnHandler.addEventListener('click', function() {
+    const returnBtnHandler = document.getElementById('returnAssetBtn');
+    returnBtnHandler.addEventListener('click', function() {
         new bootstrap.Modal($('#returnAssetModal')).show();
     });
 </script>

@@ -84,9 +84,7 @@
                         </jsp:include>
                     </c:when>
                     <c:when test="${table == 'borrowed_books'}">
-                        <jsp:include page="borrowedBookOptions.jsp">
-                            <jsp:param name="asset" value="${asset}"/>
-                        </jsp:include>
+
                     </c:when>
                 </c:choose>
             </div>
