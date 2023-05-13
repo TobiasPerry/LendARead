@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
     private static final RowMapper<Integer> ROW_MAPPER_ID = (rs, rownum) -> rs.getInt("id");
     private static final RowMapper<User> ROW_MAPPER_USER =  (rs,rownum)->new UserImpl(rs.getInt("id"),rs.getString("mail"),rs.getString("name"), rs.getString("telephone"),rs.getString("password"), Behaviour.fromString(rs.getString("behavior")) );
 
-    private static final RowMapper<PasswordResetToken> ROW_MAPPER_PASSWORD_TOKEN = (rs,rownum) ->new PasswordResetTokenImpl(rs.getString("token"),rs.getString("mail"),rs.getObject("expiration", LocalDate.class));
+    private static final RowMapper<PasswordResetToken> ROW_MAPPER_PASSWORD_TOKEN = (rs,rownum) ->new PasswordResetTokenImpl(rs.getString("token"),rs.getString("mail"),rs.getTimestamp("expiration").toLocalDateTime().toLocalDate());
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
@@ -50,22 +50,16 @@ public class UserDaoImpl implements UserDao {
         return new UserImpl(userId,email,name,telephone,password,behavior);
 
     }
-    private Optional<Integer> getUid(String email){
-        String query = "SELECT id FROM users WHERE mail = ?";
-        final List<Integer> ids = jdbcTemplate.query(query,new Object[]{email},ROW_MAPPER_ID);
-        if(ids.isEmpty())
-            return Optional.empty();
-        return Optional.of(ids.get(0));
-    }
+
     @Override
-    public Optional<User> getUser(String email){
+    public Optional<User> getUser(final String email){
         String query = "SELECT * FROM users WHERE mail = ?";
         final List<User> user = jdbcTemplate.query(query,ROW_MAPPER_USER,email);
         return user.stream().findFirst();
     }
 
     @Override
-    public boolean changeRole(String email, Behaviour behaviour) {
+    public boolean changeRole(final String email,final Behaviour behaviour) {
         String query = "UPDATE users SET behavior = ? WHERE mail = ?";
         final int updates = jdbcTemplate.update(query,behaviour.toString(),email);
         return updates != 0;
@@ -91,7 +85,7 @@ public class UserDaoImpl implements UserDao {
         Optional<User> user = getUser(passwordResetToken.getUser());
         if (!user.isPresent())
             return false;
-        final int insert = jdbcTemplate.update(query,passwordResetToken.getToken(),user.get().getId(),passwordResetToken.getExpiryDate());
+        final int insert = jdbcTemplate.update(query,passwordResetToken.getToken(),user.get().getId(),java.sql.Date.valueOf(passwordResetToken.getExpiryDate()));
         return insert != 0;
     }
 
@@ -102,6 +96,7 @@ public class UserDaoImpl implements UserDao {
         return passwordResetToken.stream().findFirst();
     }
 
+    @Override
     public int deletePasswordRestToken(String token){
         String query = "DELETE FROM resetpasswordinfo where token = ?";
         final int delete = jdbcTemplate.update(query,token);
