@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
@@ -33,6 +34,7 @@ public class AssetAvailabilityDaoTest {
     private final static LocalDate devolutionDate = LocalDate.now().plusDays(7);
     private JdbcTemplate jdbcTemplate;
 
+    @Rollback
     @Before
     public void setUp(){
         jdbcTemplate = new JdbcTemplate(ds);

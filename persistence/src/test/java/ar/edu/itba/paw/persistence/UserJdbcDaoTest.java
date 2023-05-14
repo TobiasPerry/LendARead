@@ -32,8 +32,8 @@ public class UserJdbcDaoTest {
     private static final String TELEPHONE = "TELEPHONE";
     private static final String ALREADY_EXISTS_EMAIL = "EMAIL";
 
-    private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetTokenImpl("TOKEN",EMAIL, LocalDate.now());
-    private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetTokenImpl("TOKEN",ALREADY_EXISTS_EMAIL, LocalDate.now());
+    private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetTokenImpl("TOKEN2",EMAIL, LocalDate.now());
+    private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetTokenImpl("TOKEN2",ALREADY_EXISTS_EMAIL, LocalDate.now());
 
     private static final String TOKEN_ALREADY_EXISTS = "TOKEN";
     private static final int TOKEN_ID_ALREADY_EXISTS = 1;
@@ -48,6 +48,7 @@ public class UserJdbcDaoTest {
 
     private JdbcTemplate jdbcTemplate;
 
+    @Rollback
     @Before
     public void setUp(){
         jdbcTemplate = new JdbcTemplate(ds);
@@ -57,7 +58,7 @@ public class UserJdbcDaoTest {
     @Test
     public void getUser(){
         //2
-        final Optional<User> user = userDao.getUser(EMAIL);
+        final Optional<User> user = userDao.getUser(ALREADY_EXISTS_EMAIL);
 
         //3 - Asserts
         Assert.assertTrue(user.isPresent());

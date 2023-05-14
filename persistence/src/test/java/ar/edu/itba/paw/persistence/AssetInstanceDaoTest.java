@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@Rollback
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
@@ -33,6 +34,7 @@ public class AssetInstanceDaoTest {
 
     private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(),new ArrayList<>(),"");
     private JdbcTemplate jdbcTemplate;
+    @Rollback
     @Before
     public void setUp(){
         jdbcTemplate = new JdbcTemplate(ds);

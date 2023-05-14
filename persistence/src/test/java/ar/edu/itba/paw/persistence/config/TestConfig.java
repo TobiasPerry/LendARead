@@ -41,11 +41,7 @@ public class TestConfig {
         return ds;
     }
 
-    @Bean
-    public PlatformTransactionManager transactionManager(final DataSource ds) {
 
-        return new DataSourceTransactionManager(ds);
-    }
     @Bean
     public DataSourceInitializer dataSourceInitializer(final  DataSource ds){
         final DataSourceInitializer dsi = new DataSourceInitializer();
@@ -63,5 +59,9 @@ public class TestConfig {
 
         return dbp;
     }
+    @Bean
+    public PlatformTransactionManager transactionManager(final DataSource ds) {
 
+        return new DataSourceTransactionManager(ds);
+    }
 }
