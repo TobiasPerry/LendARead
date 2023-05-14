@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfaces.UserService;
+
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
@@ -9,14 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.Assert;
-
-
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +38,7 @@ public class UserServiceImplTest {
         when(passwordEncoder.encode(anyString())).thenReturn(PASSWORD);
         when(userDao.addUser( any(), anyString(),  anyString(),  anyString(), anyString())).thenReturn(new UserImpl(FIRST_ID,EMAIL,NAME,TELEPHONE,PASSWORD,Behaviour.BORROWER));
 
-        // 2 - Ejercitacion
+        // 2 - Ejercitación
         User user = us.createUser(EMAIL,NAME, TELEPHONE, PASSWORD);
 
         // 3 - Assertions
