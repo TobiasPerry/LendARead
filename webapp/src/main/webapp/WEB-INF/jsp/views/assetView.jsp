@@ -34,18 +34,19 @@
 <body data-path="${path}" class=" body-class" data-maxDays="${assetInstance.maxDays}">
 <jsp:include page="../components/navBar.jsp"/>
 
-<div class="main-class" style="   display: flex; justify-content: center;align-items: center;flex-direction: column;">
-    <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px;width:fit-content; min-width: 50%">
-        <div class="container-row-wrapped">
-            <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" class="mx-3" alt="Book cover"
-                 style="height: 500px; width: 300px; object-fit: cover">
-            <div class="w-25 h-25 mx-5">
+<div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
+    <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px; width: 50%">
+        <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
+            <img src="<c:url value="/getImage/${assetInstance.imageId}"/>" alt="Book cover"
+                 style="margin-left: 0; margin-right: 50px; height: 500px; width: 300px; object-fit: cover">
+            <div class="mx-2">
+
                 <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>
-                <h3 class="textOverflow"><spring:message code="assetView.by"/> <c:out
-                        value="${assetInstance.book.author}"/></h3>
+
+                <h3 class="textOverflow"><spring:message code="assetView.by"/> <c:out value="${assetInstance.book.author}"/></h3>
                 <h6>
                     <i>
-                        <u><c:out value="${assetInstance.physicalCondition}"/></u>
+                        <u><spring:message code="enum.${assetInstance.physicalCondition}"/> </u>
                     </i>
                 </h6>
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.language"/>: <c:out
@@ -53,12 +54,12 @@
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                         value="${assetInstance.book.isbn}"/></h6>
 
-            <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
-            <form:form modelAttribute="borrowAssetForm" method="post"
-             action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
-                <h5><spring:message code="assetView.return"/></h5>
-                <jsp:include page="../components/calendar.jsp"/>
-                <input class="btn btn-green" type="submit" value="<spring:message code="assetView.borrowButton"/>">
+                <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
+                <form:form modelAttribute="borrowAssetForm" method="post"
+                 action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
+                    <h5><spring:message code="assetView.return"/></h5>
+                    <jsp:include page="../components/calendar.jsp"/>
+                    <input class="btn btn-green" type="submit" value="<spring:message code="assetView.borrowButton"/>">
                 </form:form>
             </div>
 

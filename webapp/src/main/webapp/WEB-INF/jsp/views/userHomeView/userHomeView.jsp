@@ -31,7 +31,7 @@
 
 <body data-path="${path}" class="body-class">
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../../components/navBar.jsp"/>
 <div class="container">
     <div class="container-flex">
         <h1><spring:message code="greeting" arguments="${userEmail}"/></h1>
@@ -39,19 +39,19 @@
             <div class="sidebar table-selector">
                 <div class="list-group">
                     <div class="list-group">
-                        <form action="<c:url value="/changeTable" />" method="get">
+                        <form action="<c:url value="/userHomeTab" />" method="get">
                             <input type="hidden" name="type" value="my_books">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "my_books"}'>button-select-active</c:if>">
                                 <spring:message code="my_books"/></button>
                         </form>
-                        <form action="<c:url value="/changeTable" />" method="get">
+                        <form action="<c:url value="/userHomeTab" />" method="get">
                             <input type="hidden" name="type" value="lended_books">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "lended_books"}'>button-select-active</c:if>">
                                 <spring:message code="lended_books"/></button>
                         </form>
-                        <form action="<c:url value="/changeTable" />" method="get">
+                        <form action="<c:url value="/userHomeTab" />" method="get">
                             <input type="hidden" name="type" value="borrowed_books">
                             <button type="submit"
                                     class="list-group-item list-group-item-action button-select <c:if test='${table == "borrowed_books"}'>button-select-active</c:if>">
@@ -64,20 +64,20 @@
                 <c:choose>
                 <c:when test="${table == 'my_books'}">
                     <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/myBooksTable.jsp">
+                    <jsp:include page="myBooksTable.jsp">
                         <jsp:param name="userAssets" value="${userAssets}"/>
                     </jsp:include>
                 </c:when>
                 <c:when test="${table == 'lended_books'}">
                     <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="../components/lendedBooksTable.jsp">
+                    <jsp:include page="lendedBooksTable.jsp">
                         <jsp:param name="isLender" value="${isLender}"/>
                         <jsp:param name="userAssets" value="${userAssets}"/>
                     </jsp:include>
                 </c:when>
                 <c:when test="${table == 'borrowed_books'}">
                 <% request.setCharacterEncoding("utf-8"); %>
-                <jsp:include page="../components/borrowedBooksTable.jsp">
+                <jsp:include page="borrowedBooksTable.jsp">
                     <jsp:param name="userAssets" value="${userAssets}"/>
                 </jsp:include>
             </c:when>
@@ -87,7 +87,7 @@
 </div>
 
 <% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../components/userHomeModal.jsp">
+<jsp:include page="../userHomeAssetDetail/deleteBookModal.jsp">
     <jsp:param name="modalType" value="${modalType}"/>
     <jsp:param name="assetId" value="${assetId}"/>
 </jsp:include>

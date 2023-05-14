@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +21,27 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final static RowMapper<LendingDetails> rowMapper = (rs, rownum) -> new LendingDetailsImpl(rs.getInt("borrowerId"), rs.getInt("assetinstanceid"),  rs.getObject("lendDate", LocalDate.class), rs.getObject("devolutionDate", LocalDate.class));
+    private final static RowMapper<LendingDetails> rowMapper = (rs, rownum) -> new LendingDetailsImpl(rs.getInt("borrowerId"), rs.getInt("assetinstanceid"), rs.getObject("lendDate", LocalDate.class), rs.getObject("devolutionDate", LocalDate.class));
+
     @Autowired
     public AssetAvailabilityDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
+
     @Override
-    public boolean borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate,LocalDate devolutionDate) {
+    public boolean borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate, LocalDate devolutionDate) {
         String query = "INSERT INTO lendings(assetinstanceid,borrowerId,lendDate,devolutionDate) VALUES(?,?,?,?)";
 
-        jdbcTemplate.update(query,assetInstanceId,userId, borrowDate,devolutionDate);
+        jdbcTemplate.update(query, assetInstanceId, userId, borrowDate, devolutionDate);
 
         return true;
     }
 
     @Override
-    public List<LendingDetails> getAllLendings() {
-        String query = "SELECT * FROM lendings";
-        List<LendingDetails> assets = jdbcTemplate.query(query, rowMapper);
-        return assets;
+        public boolean changeLendingStatus(final int lendingId, final LendingState lendingState) {
+            String query = "UPDATE lendings SET active = ? WHERE id = ? ";
+            int updatedRows = jdbcTemplate.update(query, lendingState.toString(),lendingId);
+            return updatedRows == 1;
+        }
+
     }
-}

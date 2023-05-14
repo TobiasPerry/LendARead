@@ -50,7 +50,7 @@ public class ErrorsController {
         mav.addObject("errorSubtitle",messageSource.getMessage("error.borrowAsset.Subtitle",null,LocaleContextHolder.getLocale()));
         return mav;
     }
-    @ExceptionHandler({InternalErrorException.class})
+    @ExceptionHandler({InternalErrorException.class, LendingCompletionUnsuccessfulException.class})
     public ModelAndView internalErrorException(){
         ModelAndView mav = new ModelAndView("views/error");
         mav.addObject("errorTitle",messageSource.getMessage("error.internalError.Title",null,LocaleContextHolder.getLocale()));

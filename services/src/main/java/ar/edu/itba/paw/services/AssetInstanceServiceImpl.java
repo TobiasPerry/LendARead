@@ -12,6 +12,7 @@ import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,13 +27,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     private final AssetInstanceDao assetInstanceDao;
 
     @Autowired
-    public AssetInstanceServiceImpl(AssetDao assetDao, AssetInstanceDao assetInstanceDao) {
+    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao) {
         this.assetDao = assetDao;
         this.assetInstanceDao = assetInstanceDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public AssetInstance getAssetInstance(int id) throws AssetInstanceNotFoundException {
+    public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
         if (!assetInstanceOpt.isPresent())
             throw new AssetInstanceNotFoundException("assetInstance not found");
@@ -42,12 +44,15 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return assetInstance;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Page getAllAssetsInstances(int pageNum,int itemsPerPage){
+    public Page getAllAssetsInstances(final int pageNum,final int itemsPerPage){
         return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), ""));
     }
 
-    public Page getAllAssetsInstances(int pageNum,int itemsPerPage, SearchQuery searchQuery){
+    @Transactional(readOnly = true)
+    @Override
+    public Page getAllAssetsInstances(final int pageNum,final int itemsPerPage, SearchQuery searchQuery){
 
         if(searchQuery == null)
             searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
@@ -64,6 +69,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AssetInstance> getAllAssetsInstances() {
         int pageNumber = 1;
@@ -79,16 +85,17 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
        return combinedBooks;
     }
-
+    @Transactional
     @Override
-    public void removeAssetInstance(int id) throws AssetInstanceNotFoundException {
+    public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
          boolean wasRemoved = assetDao.deleteAsset(id);
          if(!wasRemoved)
              throw new AssetInstanceNotFoundException("Asset instance no found");
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public boolean isOwner(int id, String email) throws AssetInstanceNotFoundException {
+    public boolean isOwner(final int id,final String email) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);
     }

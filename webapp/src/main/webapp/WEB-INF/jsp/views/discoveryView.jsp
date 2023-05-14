@@ -27,6 +27,8 @@
     <!-- Bootstrap JS library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
 
+    <!--    Book card JavaScript -->
+    <script src="<c:url value="/static/javaScript/bookCard.js"/>"></script>
 </head>
 <body data-path="${path}" class = "body-class" >
 <!-- Esto va a cambiar es un mockUp -->
@@ -50,8 +52,8 @@
         <div class="container-column" style="flex: 0 0 15%; margin: 10px;">
 
             <div class="btn-group mx-2 mb-4 mt-2" role="group">
-                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <spring:message code="discovery.sort.title"/>
+                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgba(255, 255, 255, 0.3)">
+                    <spring:message code="discovery.sort.title"/> : <spring:message code="enum.${sort.name()}.${sortDirection.name()}"/>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" id="mostRecent"><spring:message code="discovery.sort.mostRecent"/></a></li>
@@ -78,7 +80,7 @@
                         <c:otherwise>
                             <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${language}"/></span></li>
+                                    <li class="list-group-item language-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px; margin-right: 10px"><c:out value="${language}"/></span></li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -91,7 +93,11 @@
                             <ul style="max-height: 200px; overflow-y: scroll">
                                 <c:forEach var="physicalCondition" items="${physicalConditions}" varStatus="status">
                                     <input class="form-check-input" type="checkbox" value="" id="physicalCondition-${status.index}">
-                                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></label>
+                                    <label class="form-check-label physicalConditionLabel" for="physicalCondition-${status.index}" id="physicalCondition-${status.index}-label" data-physicalcondition="<c:out value="${physicalCondition}"/>">
+                                        <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                                        <spring:message code="enum.${physicalCondition}"/>
+                                        </span>
+                                    </label>
                                     <br>
                                 </c:forEach>
                             </ul>
@@ -99,7 +105,11 @@
                         <c:otherwise>
                             <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
                                 <ul class="list-group">
-                                    <li class="list-group-item physicalCondition-filtered-item filtered-item"><span class="d-inline-block text-truncate" style="max-width: 150px;"><c:out value="${physicalCondition}"/></span></li>
+                                    <li class="list-group-item physicalCondition-filtered-item filtered-item">
+                                        <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                                            <spring:message code="enum.${physicalCondition}"/>
+                                        </span>
+                                    </li>
                                 </ul>
                             </c:forEach>
                         </c:otherwise>
@@ -126,14 +136,21 @@
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
                 <input class="btn btn-light mx-2" type="submit" value="<spring:message code="discovery.filters.apply"/>" id="submit-filter" style="margin:10px; width: 100px"/>
                 <a href="<c:url value="/discovery"/>">
-                    <input class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
+                    <input type="button" class="btn btn-outline-dark mx-2" value="<spring:message code="discovery.filters.clear"/>" style="margin: 10px; width: 100px"/>
                 </a>
             </div>
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
             <c:if test="${books.size() > 0}">
+                <div class="container-row-wrapped placeholder-group" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
+                    <jsp:include page="../components/bookCardPlaceholders.jsp">
+                        <jsp:param name="repeatCount" value="9"/>
+                    </jsp:include>
+                </div>
+
                 <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
+
                     <c:forEach var="book" items="${books}">
                         <% request.setCharacterEncoding("utf-8"); %>
                         <jsp:include page="../components/bookCard.jsp">

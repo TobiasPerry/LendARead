@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 public interface AssetInstance {
+
     Book getBook();
 
     User getOwner();
@@ -22,4 +23,5 @@ public interface AssetInstance {
 
     int getImageId();
 
+    boolean getIsBorrowedInstance();
 }

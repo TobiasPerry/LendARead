@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Isbn;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.SumDate;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
@@ -11,7 +12,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@SumDate
 @Getter @Setter
 public class AddAssetForm {
 
@@ -40,11 +40,6 @@ public class AddAssetForm {
     @Size(min = 3,max = 100)
     private String country;
 
-    @Min(value = 0)
-    @Max(value = 10)
-    private int maxWeeks;
-
-    @Min(value = 0)
-    @Max(value = 10)
+    @Min(value = 1)
     private int maxDays;
 }

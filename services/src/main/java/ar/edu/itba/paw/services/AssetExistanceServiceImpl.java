@@ -7,6 +7,7 @@ import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         this.photosDao = photosDao;
     }
 
+    @Transactional
     @Override
     public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException{
         Optional<Integer> assetId = bookDao.addAsset(assetInstance.getBook());

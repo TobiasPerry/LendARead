@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.formFactories;
+package ar.edu.itba.paw.webapp.miscellaneous;
 
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
@@ -43,6 +43,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location,ID_DEFAULT_VALUE, AssetState.PUBLIC,(request.getMaxWeeks() * 7) + request.getMaxDays());
+        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location,ID_DEFAULT_VALUE, AssetState.PUBLIC,request.getMaxDays());
     }
 }

@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.controller.CustomHandlerExceptionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +8,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -26,15 +28,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
 
 @EnableWebMvc
 @EnableAsync
+@EnableTransactionManagement
 @PropertySource("classpath:/application.properties")
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.formFactories"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form","ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.miscellaneous"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
@@ -49,10 +50,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private Environment environment;
-    @Bean
-    public CustomHandlerExceptionResolver customHandlerExceptionResolver() {
-        return new CustomHandlerExceptionResolver();
-    }
     @Bean(name = "baseUrl")
     public String basePath() {
         return environment.getProperty("base_url");
@@ -64,7 +61,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         filter.setForceEncoding(true);
         return filter;
     }
-
+    @Bean
+    public PlatformTransactionManager transactionManager(final DataSource ds){
+        return new DataSourceTransactionManager(ds);
+    }
     @Value("classpath:schema.sql")
     private Resource schemaSql;
 

@@ -25,11 +25,6 @@ public enum AssetState {
         public boolean isPending() {return true; }
 
     },
-//    CONFIRMED() {
-//        @Override
-//        public boolean isConfirmed() {return true;}
-//
-//    },
     DELAYED() {
         @Override
         public boolean isDelayed() { return true;}
@@ -42,8 +37,6 @@ public enum AssetState {
     public boolean isPrivate() { return false; }
 
     public boolean isPending() {return false; }
-
-//    public boolean isConfirmed() {return false;}
 
     public boolean isDelayed() { return false;}
 
