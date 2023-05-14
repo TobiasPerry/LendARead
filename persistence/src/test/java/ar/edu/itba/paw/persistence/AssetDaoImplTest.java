@@ -68,6 +68,7 @@ public class AssetDaoImplTest {
             assetDao.addAsset(DUPLICATED_BOOK);
         });
     }
+
     @Rollback
     @Test
     public void getAssetTest(){
