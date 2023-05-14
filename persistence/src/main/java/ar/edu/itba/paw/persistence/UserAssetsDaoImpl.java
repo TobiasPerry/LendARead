@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
@@ -63,7 +64,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
                 "    l.devolutiondate," +
-                "    l.id AS lendingId" +
+                "    l.id AS lendingId," +
+                "    l.active AS lendingState" +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -91,10 +93,11 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String borrower = rs.getString("borrower_name");
             int lendingId = rs.getInt("lendingId");
+            String lendingState = rs.getString("lendingState");
 
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId, LendingState.fromString(lendingState)))
                     .orElse(null);
         };
 
@@ -111,7 +114,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
                 "    l.devolutiondate," +
-                "    l.id AS lendingId" +
+                "    l.id AS lendingId," +
+                "    l.active AS lendingState" +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -141,10 +145,11 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String owner = rs.getString("owner_name");
             int lendingId = rs.getInt("lendingId");
+            String lendingState = rs.getString("lendingState");
 
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId, LendingState.fromString(lendingState)))
                     .orElse(null);
         };
         if (!filterAttribute.equalsIgnoreCase("none"))
@@ -204,7 +209,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     "    l.assetinstanceid," +
                     "    owner.name AS owner_name," +
                     "    l.devolutiondate," +
-                    "    l.id AS lendingId" +
+                    "    l.id AS lendingId," +
+                    "    l.active AS lendingState" +
                     " FROM" +
                     "    lendings l" +
                     " JOIN" +
@@ -222,9 +228,10 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 int assetId = rs.getInt("assetinstanceid");
                 String dueDate = rs.getTimestamp("devolutiondate").toString();
                 String owner = rs.getString("owner_name");
+                String lendingState = rs.getString("lendingState");
 
                 return assetInstanceDao.getAssetInstance(assetId)
-                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId))
+                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId, LendingState.fromString(lendingState)))
                         .orElse(null);
             };
 
