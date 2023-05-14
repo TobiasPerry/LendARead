@@ -45,10 +45,10 @@
             <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"  data-bs-toggle="tooltip" data-bs-placement="top"  title="This loan is archived">
                 <c:choose>
                     <c:when test="${asset.lendingState.isRejected}">
-                        Rejected
+                       <spring:message code="userHomeView.rejected" />
                     </c:when>
                     <c:when test="${asset.lendingState.isFinished}">
-                        Finished
+                        <spring:message code="userHomeView.finished" />
                     </c:when>
                 </c:choose>
             </div>
@@ -103,7 +103,7 @@
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out value="${asset.borrower}"/></h6>
                         </c:when>
                         <c:when test="${table == 'my_books'}">
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="addAssetView.locationInfo"/>: <c:out value="${asset.location}"/></h6>
+                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="addAssetView.locationInfo"/> <c:out value="${asset.location}"/></h6>
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="addAssetView.maxDays"/>: <c:out value="${asset.maxDays}"/></h6>
                         </c:when>
                     </c:choose>
@@ -129,8 +129,6 @@
             </div>
         </div>
     </div>
-
 </div>
 </body>
-
 </html>
