@@ -26,11 +26,7 @@ public class ErrorsController {
         this.messageSource = messageSource;
     }
 
-    @RequestMapping("/errors/403")
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    public ModelAndView error403(){
-        return new ModelAndView("/views/403View");
-    }
+
     @ExceptionHandler({
             UserNotFoundException.class,
             AssetInstanceNotFoundException.class,

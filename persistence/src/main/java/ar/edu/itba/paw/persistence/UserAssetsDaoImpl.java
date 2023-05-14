@@ -242,4 +242,5 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             }
         }
 
+
     }

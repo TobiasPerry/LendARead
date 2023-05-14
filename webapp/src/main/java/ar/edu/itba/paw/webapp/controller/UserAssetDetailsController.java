@@ -32,20 +32,20 @@ final public class UserAssetDetailsController {
     public ModelAndView returnUserHome() {
         return new ModelAndView("redirect:/userHome");
     }
-    @RequestMapping(value = "/lentBookDetails", method = RequestMethod.GET)
-    public ModelAndView lentBookDetail(@RequestParam("lendingId") final int lendingId) throws AssetInstanceNotFoundException {
+    @RequestMapping(value = "/lentBookDetails/{lendingId}", method = RequestMethod.GET)
+    public ModelAndView lentBookDetail(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
         return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
                     .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(lendingId))
                     .addObject("table", "lended_books");
     }
-    @RequestMapping(value = "/myBookDetails", method = RequestMethod.GET)
-    public ModelAndView myBookDetails(@RequestParam("id") final int id) throws AssetInstanceNotFoundException {
+    @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
+    public ModelAndView myBookDetails(@PathVariable final int id) throws AssetInstanceNotFoundException {
         return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
                 .addObject("asset", assetInstanceService.getAssetInstance(id))
                 .addObject("table", "my_books");
     }
-    @RequestMapping(value = "/borrowedBookDetails", method = RequestMethod.GET)
-    public ModelAndView borrowedBookDetails(@RequestParam("lendingId") final int lendingId) throws AssetInstanceNotFoundException {
+    @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)
+    public ModelAndView borrowedBookDetails(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
         return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
                 .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(lendingId))
                 .addObject("table", "borrowed_books");
@@ -65,13 +65,13 @@ final public class UserAssetDetailsController {
     @RequestMapping(value ="/confirmAsset/{lendingId}", method = RequestMethod.POST)
     public ModelAndView confirmAsset(@PathVariable("lendingId") final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         assetAvailabilityService.confirmAsset(lendingId);
-        return new ModelAndView("redirect:/lentBookDetails?lendingId=" + lendingId);
+        return new ModelAndView("redirect:/lentBookDetails/lendingId=" + lendingId);
     }
 
     @RequestMapping(value ="/rejectAsset/{lendingId}", method = RequestMethod.POST)
     public ModelAndView rejectAsset(@PathVariable("lendingId") final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         assetAvailabilityService.rejectAsset(lendingId);
-        return new ModelAndView("redirect:/lentBookDetails?lendingId=" + lendingId);
+        return new ModelAndView("redirect:/lentBookDetails/lendingId=" + lendingId);
     }
 
     @RequestMapping(value ="/changeStatus/{id}", method = RequestMethod.POST)
@@ -83,7 +83,7 @@ final public class UserAssetDetailsController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return new ModelAndView("redirect:/myBookDetails?id=" + id);
+        return new ModelAndView("redirect:/myBookDetails/id=" + id);
     }
 
     @ModelAttribute

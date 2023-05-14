@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.webapp.auth.BorrowerViewVoter;
 import ar.edu.itba.paw.webapp.auth.ChangeAssetStatusVoter;
 import ar.edu.itba.paw.webapp.auth.DeleteAssetVoter;
+import ar.edu.itba.paw.webapp.auth.LenderViewOwnerVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,6 +47,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    LenderViewOwnerVoter lenderViewOwnerVoter;
+    @Autowired
+    BorrowerViewVoter borrowerViewVoter;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -70,19 +77,23 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 new RoleVoter(),
                 new AuthenticatedVoter(),
                 deleteAssetVoter,
-                changeAssetStatusVoter
+                changeAssetStatusVoter,
+                lenderViewOwnerVoter,
+                borrowerViewVoter
+
         );
         return new UnanimousBased(decisionVoters);
     }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
         http.sessionManagement().invalidSessionUrl("/")
-                .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
+                .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler()).accessDecisionManager(accessDecisionManager())
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
-                .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
-                .antMatchers("/addAsset").hasRole("LENDER")
-                .antMatchers(HttpMethod.POST,"/deleteAsset/**").hasRole("LENDER").accessDecisionManager(accessDecisionManager())
+                .antMatchers("/borrowAssetView","borrowAsset","/borrowedBookDetails").hasRole("BORROWER")
+                .antMatchers("/addAsset","/lentBookDetails/**").hasRole("LENDER")
+                .antMatchers(HttpMethod.POST,"/deleteAsset/**","/confirmAsset","/returnAsset","/rejectAsset").hasRole("LENDER")
                 .antMatchers("/userHome","/changeStatus","/changeRole","/requestAsset/**","/addAssetView/**").authenticated()
+                .antMatchers("/**").permitAll()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
                 .defaultSuccessUrl("/discovery",false)

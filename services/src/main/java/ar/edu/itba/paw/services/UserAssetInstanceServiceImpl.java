@@ -4,6 +4,7 @@ import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,4 +54,5 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
       }
       return borrowedAssetInstance.get();
     }
+
 }
