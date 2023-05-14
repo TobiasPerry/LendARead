@@ -19,12 +19,7 @@ final public class LocationImpl implements Location {
 
     @Override
     public String toString() {
-        return "LocationImpl{" +
-                "zipcode='" + zipcode + '\'' +
-                ", locality='" + locality + '\'' +
-                ", province='" + province + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return String.format("%s, %s, %s, %s", zipcode, locality, province, country) ;
     }
 
     @Override

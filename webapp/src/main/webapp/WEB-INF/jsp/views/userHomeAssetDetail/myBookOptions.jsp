@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
 
-<div>
+<div style="display: flex; ">
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">

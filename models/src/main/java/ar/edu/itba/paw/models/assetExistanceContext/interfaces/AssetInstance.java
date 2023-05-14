@@ -23,4 +23,5 @@ public interface AssetInstance {
 
     int getImageId();
 
+    boolean getIsBorrowedInstance();
 }

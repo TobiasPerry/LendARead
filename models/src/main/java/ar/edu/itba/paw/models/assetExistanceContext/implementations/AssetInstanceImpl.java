@@ -74,6 +74,11 @@ public class AssetInstanceImpl implements AssetInstance {
     }
 
     @Override
+    public boolean getIsBorrowedInstance() {
+        return false;
+    }
+
+    @Override
     public int getId() {
         return id;
     }
