@@ -33,9 +33,9 @@ public class RegisterViewController {
             return register(registerForm);
         }
         userService.createUser(registerForm.getEmail(),registerForm.getName(),"",registerForm.getPassword());
+        userService.logInUser(registerForm.getEmail(),registerForm.getPassword());
 
-
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value = "/registerVerify", method = RequestMethod.GET)

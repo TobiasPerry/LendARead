@@ -10,17 +10,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 public interface UserService {
-    User getUser(String email) throws UserNotFoundException;
-     void createUser(String email,String name,String telephone,String password);
+    User getUser(final String email) throws UserNotFoundException;
+     void createUser(final String email,final String name,final String telephone,final String password);
 
-    void changeRole(String email,Behaviour behaviour) throws UserNotFoundException;
+    void changeRole(final String email,final Behaviour behaviour) throws UserNotFoundException;
 
      String getCurrentUser();
 
 
     Collection
             <? extends GrantedAuthority> getCurrentRoles();
-    boolean createChangePasswordToken(String email);
-    boolean changePassword(String token,String password);
-    boolean isTokenValid(String token);
+    boolean createChangePasswordToken(final String email);
+    boolean changePassword(final String token,final String password);
+    boolean isTokenValid(final String token);
+    void logInUser(final String email, final String password);
 }

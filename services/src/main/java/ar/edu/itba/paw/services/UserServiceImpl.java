@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,11 +30,14 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     private final EmailService emailService;
+
+    private final AuthenticationManager authenticationManager;
     @Autowired
-    public UserServiceImpl(final PasswordEncoder passwordEncoder,final UserDao userDao,final EmailService emailService) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder,final UserDao userDao,final EmailService emailService, final AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -80,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean createChangePasswordToken(String email){
+    public boolean createChangePasswordToken(final String email){
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token,email, LocalDate.now().plusDays(1));
         emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
@@ -89,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean changePassword(String token,String password){
+    public boolean changePassword(final String token,final String password){
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
         if(!passwordResetToken.isPresent())
             return false;
@@ -100,8 +104,15 @@ public class UserServiceImpl implements UserService {
     }
     @Transactional(readOnly = true)
     @Override
-    public boolean isTokenValid(String token){
+    public boolean isTokenValid(final String token){
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
         return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
+    }
+
+    @Override
+    public void logInUser(final String email, final String password){
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(email,password);
+        Authentication auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }
