@@ -25,10 +25,9 @@
     <link href="<c:url value="/static/css/userHomeView.css"/>" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Overpass:400,700|Roboto:400,700" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
-
-
-
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body data-path="${path}" class="body-class">
 
@@ -36,26 +35,24 @@
 <div style="<c:if test="${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}">
         background-color: #d5d5d5;
         </c:if>">
-    <div class="back-button" style="display: flex; flex-direction: row; ">
-        <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb" >
+    <div class="back-button d-flex align-items-center">
+        <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb">
             <i class="fas fa-arrow-left"></i>
         </a>
-        <h2 class="textOverflow"> <spring:message code="userAssetDetailView.${table}"/> </h2>
+        <h2 class="textOverflow mb-0 ml-2 mr-2"> <spring:message code="userAssetDetailView.${table}" /> </h2>
         <c:if test="${asset.isBorrowedInstance}">
-            <c:choose>
-                <c:when test="${asset.lendingState.isRejected}">
-                    <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase;" title="This loan is archived">
-                        Rejected
-                    </div>
-                </c:when>
-                <c:when test="${asset.lendingState.isFinished}">
-                    <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase;" title="This loan is archived">
-                        Finished
-                    </div>
-                </c:when>
-            </c:choose>
-        </c:if>
 
+            <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"  data-bs-toggle="tooltip" data-bs-placement="top"  title="This loan is archived">
+                <c:choose>
+                    <c:when test="${asset.lendingState.isRejected}">
+                        Rejected
+                    </c:when>
+                    <c:when test="${asset.lendingState.isFinished}">
+                        Finished
+                    </c:when>
+                </c:choose>
+            </div>
+        </c:if>
     </div>
     <div class="main-class"
          style="
