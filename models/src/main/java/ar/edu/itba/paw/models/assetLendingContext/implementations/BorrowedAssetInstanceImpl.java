@@ -50,4 +50,9 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
     public LendingState getLendingState() {
         return this.lendingState;
     }
+
+    @Override
+    public boolean getIsBorrowedInstance() {
+        return true;
+    }
 }

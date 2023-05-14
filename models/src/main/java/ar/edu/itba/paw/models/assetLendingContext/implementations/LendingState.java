@@ -1,7 +1,34 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
 public enum LendingState {
-    DELIVERED, ACTIVE, FINISHED, REJECTED;
+    DELIVERED(){
+        @Override
+        public boolean getIsDelivered() {
+            return true;
+        }
+    }, ACTIVE() {
+        @Override
+        public boolean getIsActive() {
+            return true;
+        }
+    }, FINISHED() {
+        @Override
+        public boolean getIsFinished() {
+            return true;
+        }
+    }, REJECTED() {
+        @Override
+        public boolean getIsRejected() {
+            return true;
+        }
+    };
+
+    public boolean getIsDelivered() { return false; }
+    public boolean getIsActive() { return false; }
+
+    public boolean getIsFinished() { return false; }
+
+    public boolean getIsRejected() { return false; }
     public static LendingState fromString(String value) {
         if (value != null) {
             for (LendingState condition : LendingState.values()) {
