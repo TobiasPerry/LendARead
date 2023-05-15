@@ -6,6 +6,8 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,6 +20,8 @@ import java.util.Map;
 
 @Service
 public class LibraryAPIServiceImpl implements LibraryAPIService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryAPIServiceImpl.class);
 
     @Override
     public Book getBookByISBN(final String isbn) throws IOException {
@@ -115,20 +119,13 @@ public class LibraryAPIServiceImpl implements LibraryAPIService {
             return "";
         }
 
+
         StringBuilder languages = new StringBuilder();
         for (int i = 0; i < languagesArray.length(); i++) {
             JSONObject languageObject = languagesArray.optJSONObject(i);
             String languageKey = languageObject.optString("key", "");
-            String languageName = null;
-            try {
-                languageName = getLanguageName(languageKey);
-            } catch (IOException | JSONException e) {
-                System.out.println("Error retrieving info about: " + languageKey);
-            }
-
-            if (languageName != null && !languageName.isEmpty()) {
-                languages.append(languageName).append(", ");
-            }
+            String languageName = languageKey.replace("/languages/", "");
+            languages.append(languageName).append(", ");
         }
         if (languages.length() > 0) {
             languages.delete(languages.length() - 2, languages.length()); // Remove trailing comma and space

@@ -68,6 +68,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Value("classpath:schema.sql")
     private Resource schemaSql;
 
+    @Value("classpath:languages.sql")
+    private Resource languagesSql;
+
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
@@ -114,6 +117,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 
         populator.addScript(schemaSql);
+//        populator.addScript(languagesSql);
 
         return populator;
     }
