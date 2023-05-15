@@ -28,44 +28,31 @@ final public class AddAssetViewController {
     private final AssetExistanceService assetExistanceService;
     private final static String viewName = "views/addAssetView";
 
-    private final static String NAV_BAR_PATH = "addAsset";
+    private final static String NAV_BAR_PATH = "addAsset", INVALID_SNACKBAR = "showSnackbarInvalid";
+
+
+    @Autowired
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService){
+        this.userService = userService;
+        this.assetExistanceService = assetExistanceService;
+    }
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name ="file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
                                  final BindingResult errors, HttpServletResponse response) throws InternalErrorException{
 
-        response.setContentType("text/html; charset=UTF-8");
+        byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
-        if(errors.hasErrors() || image.isEmpty())
-            return addAssetView(addAssetForm,false).addObject("showSnackbarInvalid", true);
+        if(errors.hasErrors() || parsedImage == null)
+            return addAssetView(addAssetForm,false).addObject(INVALID_SNACKBAR, true);
 
         try {
-            assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), handleImage(image));
+            assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true");
         } catch (InternalErrorException e) {
-            return addAssetView(addAssetForm,false)
-                    .addObject("showSnackbarInvalid", true)
-                    .addObject("snackBarInvalidTextTitle", "Hubo un error guardando el libro");
+            return addAssetView(addAssetForm,false).addObject(INVALID_SNACKBAR, true);
         }
-    }
-
-    //FIXME
-    private static byte[] handleImage(MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                return file.getBytes();
-            } catch (Exception e) {
-                //
-            }
-        }
-        return null;
-    }
-
-    @Autowired
-    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService){
-        this.userService = userService;
-        this.assetExistanceService = assetExistanceService;
     }
 
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)

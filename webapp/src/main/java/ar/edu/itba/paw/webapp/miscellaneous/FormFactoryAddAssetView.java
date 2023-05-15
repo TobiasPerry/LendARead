@@ -12,12 +12,24 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
+import org.springframework.web.multipart.MultipartFile;
 
 final public class FormFactoryAddAssetView {
 
     private final static String DEFAULT_STRING_VALUE = "";
 
     private final static int ID_DEFAULT_VALUE = -1;
+
+    public static byte[] getByteArray(MultipartFile file) {
+            if (!file.isEmpty()) {
+                try {
+                    return file.getBytes();
+                } catch (Exception e) {
+                    //
+                }
+            }
+            return null;
+    }
 
     public static AssetInstance createAssetInstance(AddAssetForm request,String email) {
 
