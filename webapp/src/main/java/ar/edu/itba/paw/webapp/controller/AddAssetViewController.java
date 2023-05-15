@@ -33,18 +33,15 @@ final public class AddAssetViewController {
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name ="file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
-                                 final BindingResult errors, HttpServletResponse response) {
+                                 final BindingResult errors, HttpServletResponse response) throws InternalErrorException{
 
         response.setContentType("text/html; charset=UTF-8");
 
         if(errors.hasErrors() || image.isEmpty())
-            return addAssetView(addAssetForm,false)
-                    .addObject("showSnackbarInvalid", true)
-                    .addObject("snackBarInvalidTextTitle",  image.isEmpty() ? "Falta la imagen \n" : "");
+            return addAssetView(addAssetForm,false).addObject("showSnackbarInvalid", true);
 
-        String email = userService.getCurrentUser();
         try {
-            assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, email), handleImage(image));
+            assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), handleImage(image));
             return new ModelAndView("redirect:/addAssetView?succes=true");
         } catch (InternalErrorException e) {
             return addAssetView(addAssetForm,false)
