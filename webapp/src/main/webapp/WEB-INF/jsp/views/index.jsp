@@ -43,7 +43,7 @@
 <c:if test="${books.size() > 0}">
     <section style="background-color: #FFFFFF; margin-top: 100px">
         <div class="container-row-wrapped">
-            <h1>Recently add books</h1>
+            <h1><spring:message code="index.recentlyAddBooks"/></h1>
         </div>
         <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: #FFFFFF; border-radius: 20px; width: 90%">
             <c:forEach var="book" items="${books}">
