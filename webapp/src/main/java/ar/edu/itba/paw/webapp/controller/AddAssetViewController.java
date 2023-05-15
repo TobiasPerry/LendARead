@@ -19,8 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.TreeMap;
+
 
 @Controller
 final public class AddAssetViewController {
@@ -30,6 +30,7 @@ final public class AddAssetViewController {
     private final AssetExistanceService assetExistanceService;
     private final LanguagesService languagesService;
     private final static String viewName = "views/addAssetView";
+    private final static String SUCESS_MSG = "Libro agregado exitosamente!";
 
     private final static String NAV_BAR_PATH = "addAsset", INVALID_SNACKBAR = "showSnackbarInvalid";
 
@@ -63,6 +64,8 @@ final public class AddAssetViewController {
         TreeMap<String, String> orderedMap = new TreeMap<>(languagesService.getLanguages());
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         mav.addObject("languages", orderedMap);
+        if(success)
+            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
         return mav;
     }
 
