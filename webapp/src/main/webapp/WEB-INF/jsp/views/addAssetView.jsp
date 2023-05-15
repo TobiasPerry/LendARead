@@ -172,7 +172,7 @@
                                 <select class="w-25 mx-1 form-select" id="borrow-time-type">
                                     <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
                                     <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
-                                    <option value="31"><spring:message code="addAssetView.steps.TIME.months"/>/option>
+                                    <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
                                 </select>
                                 <form:input path="maxDays" id="maxDays" class="d-none"/>
                             </div>
