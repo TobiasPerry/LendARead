@@ -44,63 +44,89 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     public void borrowAsset(final int assetId,final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
-        if(!ai.isPresent())
-            throw new AssetInstanceBorrowException("The assetInstance or the user not found");
-        if(!user.isPresent())
-            throw new UserNotFoundException("The user not found");
-        if(!ai.get().getAssetState().isPublic())
-            throw  new AssetInstanceBorrowException("The assetInstance is not public");
-        if (LocalDate.now().plusDays(ai.get().getMaxDays()).isBefore(devolutionDate) )
-            throw  new DayOutOfRangeException();
 
+        if(!ai.isPresent()) {
+            LOGGER.error("AssetInstance not found with id {}", assetId);
+            throw new AssetInstanceBorrowException("The assetInstance or the user not found");
+        }
+        if(!user.isPresent()) {
+            LOGGER.error("User not found: {}", borrower);
+            throw new UserNotFoundException("The user not found");
+        }
+        if(!ai.get().getAssetState().isPublic()) {
+            LOGGER.error("AssetInstance is not public with id {}", assetId);
+            throw new AssetInstanceBorrowException("The assetInstance is not public");
+        }
+        if (LocalDate.now().plusDays(ai.get().getMaxDays()).isBefore(devolutionDate) ) {
+            LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
+            throw new DayOutOfRangeException();
+        }
 
         assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
         boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
+
         if (saved) {
             emailService.sendBorrowerEmail(ai.get(), user.get());
             emailService.sendLenderEmail(ai.get(), borrower);
-        }else{
-            throw new AssetInstanceBorrowException("Asset cant be lending");
+        } else {
+            LOGGER.error("Failed to borrow asset with id {}", ai.get().getId());
+            throw new AssetInstanceBorrowException("Asset can't be lent");
+        }
+    }
+    @Transactional
+    @Override
+    public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE)) {
+            LOGGER.error("Failed to update status to PRIVATE for asset instance with assetId: {}", assetId);
+            throw new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId);
         }
     }
 
     @Transactional
     @Override
-    public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
-        if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE))
-            throw new AssetInstanceNotFoundException("Asset instance not found");
-    }
-
-    @Transactional
-    @Override
     public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
-        if(!assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC))
-            throw new AssetInstanceNotFoundException("Asset instance not found");
+        if(!assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC)) {
+            LOGGER.error("Failed to update status to PUBLIC for asset instance with assetId: {}", assetId);
+            throw new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId);
+        }
     }
 
     @Transactional()
     @Override
     public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
-            throw new AssetInstanceNotFoundException("Asset instance not found");
-        if(!lendingDao.changeLendingStatus(lendingId, LendingState.FINISHED))
-            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished");
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE)) {
+            LOGGER.error("Failed to update status to PRIVATE for asset instance with lendingId: {}", lendingId);
+            throw new AssetInstanceNotFoundException("Asset instance not found for lendingId: " + lendingId);
+        }
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.FINISHED)) {
+            LOGGER.error("Failed to update lending status to FINISHED for lending with lendingId: {}", lendingId);
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as finished for lendingId: " + lendingId);
+        }
     }
 
     @Override
     public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.BORROWED))
-            throw new AssetInstanceNotFoundException("Asset instance not found");
-        if(!lendingDao.changeLendingStatus(lendingId, LendingState.DELIVERED))
-            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as delivered");
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.BORROWED)) {
+            LOGGER.error("Failed to update status to BORROWED for asset instance with lendingId: {}", lendingId);
+            throw new AssetInstanceNotFoundException("Asset instance not found for lendingId: " + lendingId);
+        }
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.DELIVERED)) {
+            LOGGER.error("Failed to update lending status to DELIVERED for lending with lendingId: {}", lendingId);
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as delivered for lendingId: " + lendingId);
+        }
     }
 
     @Override
     public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE))
-            throw new AssetInstanceNotFoundException("Asset instance not found");
-        if(!lendingDao.changeLendingStatus(lendingId, LendingState.REJECTED))
-            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as rejected");
+        if(!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE)) {
+            LOGGER.error("Failed to update status to PRIVATE for asset instance with lendingId: {}", lendingId);
+            throw new AssetInstanceNotFoundException("Asset instance not found for lendingId: " + lendingId);
+        }
+        if(!lendingDao.changeLendingStatus(lendingId, LendingState.REJECTED)) {
+            LOGGER.error("Failed to update lending status to REJECTED for lending with lendingId: {}", lendingId);
+            throw new LendingCompletionUnsuccessfulException("Failed to mark lending as rejected for lendingId: " + lendingId);
+        }
     }
+
 
 }
