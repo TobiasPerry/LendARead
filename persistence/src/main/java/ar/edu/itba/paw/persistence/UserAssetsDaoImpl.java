@@ -50,13 +50,21 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         return filterAtribuite.toUpperCase();
     }
 
-    private String matchSortAttribuite(String sortAtribuite) {
-        if(sortAtribuite.equals("book_name")) return "b.title";
-        if(sortAtribuite.equals("expected_retrieval_date")) return "l.devolutiondate";
-        if(sortAtribuite.equals("borrower_name")) return "u.name";
-        if(sortAtribuite.equals("author")) return "b.author";
-        if(sortAtribuite.equals("language")) return "b.language";
-        return "none";
+    private String matchSortAttribuite(String sortAttribute) {
+        switch (sortAttribute) {
+            case "book_name":
+                return "b.title";
+            case "expected_retrieval_date":
+                return "l.devolutiondate";
+            case "borrower_name":
+                return "u.name";
+            case "author":
+                return "b.author";
+            case "language":
+                return "b.language";
+            default:
+                return "none";
+        }
     }
 
     @Override
