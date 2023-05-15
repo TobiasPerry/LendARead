@@ -77,7 +77,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    owner.mail = ? ";
+                "  owner.mail = ? ";
 
         if (filterAttribute.equalsIgnoreCase("status"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
@@ -128,7 +128,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    users owner ON ai.owner = owner.id" +
                 " WHERE" +
-                "    u.mail = ? ";
+                "  u.mail = ? ";
 
 
         if (filterAttribute.equalsIgnoreCase("status"))
@@ -173,7 +173,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " JOIN" +
                 "    book b ON ai.assetid = b.uid" +
                 " WHERE" +
-                "    u.mail = ?" +
+                "  ai.status != 'DELETED' AND   u.mail = ?" +
                 " AND NOT EXISTS (" +
                 "     SELECT *" +
                 "     FROM" +
