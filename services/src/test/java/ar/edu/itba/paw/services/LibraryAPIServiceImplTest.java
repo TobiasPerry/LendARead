@@ -31,7 +31,7 @@ public class LibraryAPIServiceImplTest {
     public void validISBNTest() throws IOException {
         // 1 - Preconditions
 
-        // 2 - Ejercitacion
+        // 2 - Ejercitación
         Book book = libraryAPIService.getBookByISBN(BOOK_ISBN_VALID);
 
         // 3 - Assertions
@@ -45,7 +45,7 @@ public class LibraryAPIServiceImplTest {
         // 1 - Preconditions
 
         // 2 - Ejercitación
-        Book book = libraryAPIService.getBookByISBN(BOOK_ISBN_INVALID);
+        libraryAPIService.getBookByISBN(BOOK_ISBN_INVALID);
 
         // 3 - Assertions
         Assert.fail();
