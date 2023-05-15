@@ -43,16 +43,13 @@ final public class UserHomeViewController {
     }
     private ModelAndView initialiseModelViewWith(final String table) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
-        model.addObject("isLender", !currentUserIsBorrower());
+        model.addObject("isLender", !userService.getCurrentUserIsBorrower());
         model.addObject("userAssets", getUserAssetsIn(table));
         model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).getName());
         model.addObject("table", table);
         return model;
     }
 
-    private boolean currentUserIsBorrower() {
-        return  userService.getCurrentRoles().contains(new SimpleGrantedAuthority("ROLE_BORROWER"));
-    }
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
     public ModelAndView changeTab(@RequestParam("table") final String table, @RequestParam("filterValue") final String filterValue, @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {

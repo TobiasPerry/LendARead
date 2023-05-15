@@ -21,6 +21,13 @@ final public class UserAssetDetailsController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
+    private final static String VIEW_NAME = "views/userHomeAssetDetail/userBookDetails";
+
+    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome";
+
+    private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
+
+
     @Autowired
     public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
         this.assetInstanceService = assetInstanceService;
@@ -34,21 +41,21 @@ final public class UserAssetDetailsController {
     }
     @RequestMapping(value = "/lentBookDetails/{lendingId}", method = RequestMethod.GET)
     public ModelAndView lentBookDetail(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
-        return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
-                    .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(lendingId))
-                    .addObject("table", "lended_books");
+        return new ModelAndView(VIEW_NAME)
+                    .addObject(ASSET, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
+                    .addObject(TABLE, LENDED_BOOKS);
     }
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
     public ModelAndView myBookDetails(@PathVariable final int id) throws AssetInstanceNotFoundException {
-        return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
-                .addObject("asset", assetInstanceService.getAssetInstance(id))
-                .addObject("table", "my_books");
+        return new ModelAndView(VIEW_NAME)
+                .addObject(ASSET, assetInstanceService.getAssetInstance(id))
+                .addObject(TABLE, MY_BOOKS);
     }
     @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)
     public ModelAndView borrowedBookDetails(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
-        return new ModelAndView("views/userHomeAssetDetail/userBookDetails")
-                .addObject("asset", userAssetInstanceService.getBorrowedAssetInstance(lendingId))
-                .addObject("table", "borrowed_books");
+        return new ModelAndView(VIEW_NAME)
+                .addObject(ASSET, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
+                .addObject(TABLE, BORROWED_BOOKS);
     }
 
     @RequestMapping(value ="/deleteAsset/{id}", method = RequestMethod.POST)
@@ -88,7 +95,7 @@ final public class UserAssetDetailsController {
 
     @ModelAttribute
     public void addAttributes(final Model model) {
-        model.addAttribute("path", "userHome");
+        model.addAttribute("path", NAV_BAR_PATH);
     }
 
 }

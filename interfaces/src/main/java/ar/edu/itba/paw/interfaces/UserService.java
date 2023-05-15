@@ -15,8 +15,9 @@ public interface UserService {
 
     void changeRole(final String email,final Behaviour behaviour) throws UserNotFoundException;
 
-     String getCurrentUser();
+    boolean getCurrentUserIsBorrower();
 
+     String getCurrentUser();
 
     Collection
             <? extends GrantedAuthority> getCurrentRoles();

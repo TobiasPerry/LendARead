@@ -32,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
 
     private final AuthenticationManager authenticationManager;
+
+    private static final String BORROWER_ROLE = "ROLE_BORROWER";
     @Autowired
     public UserServiceImpl(final PasswordEncoder passwordEncoder,final UserDao userDao,final EmailService emailService, final AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
@@ -68,6 +70,12 @@ public class UserServiceImpl implements UserService {
         Authentication newAuth = new
                 UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
         SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean getCurrentUserIsBorrower() {
+        return getCurrentRoles().contains(new SimpleGrantedAuthority(BORROWER_ROLE));
     }
 
     @Transactional(readOnly = true)
