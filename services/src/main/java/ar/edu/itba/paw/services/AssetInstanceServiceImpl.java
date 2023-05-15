@@ -54,6 +54,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public Page getAllAssetsInstances(final int pageNum,final int itemsPerPage, SearchQuery searchQuery){
 
+        if(pageNum < 0 || itemsPerPage <= 0)
+            return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
         if(searchQuery == null)
             searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
 
