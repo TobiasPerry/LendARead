@@ -32,8 +32,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//La mayoria de la logica se puede encapsular, reutilizar, y mejorar. Sin embargo como se va a pasar a una ORM
+//no lo consideramos que lo valia.
 @Repository
-
 public class UserAssetsDaoImpl implements UserAssetsDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -83,6 +84,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
         if(filterAttribute.equalsIgnoreCase("lendingStatus"))
             query += "AND l.active = ?";
+        if(filterAttribute.equalsIgnoreCase("delayed"))
+            query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
         if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
@@ -101,7 +104,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .orElse(null);
         };
 
-        if (!filterAttribute.equalsIgnoreCase("none"))
+        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
             return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
 
         return jdbcTemplate.query(query, rowMapper, email);
@@ -135,6 +138,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
         if(filterAttribute.equalsIgnoreCase("lendingStatus"))
             query += "AND l.active = ?";
+        if(filterAttribute.equalsIgnoreCase("delayed"))
+            query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
         if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
         if (!direction.equalsIgnoreCase("none"))
@@ -155,7 +160,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId, LendingState.fromString(lendingState)))
                     .orElse(null);
         };
-        if (!filterAttribute.equalsIgnoreCase("none"))
+        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
             return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
 
         return jdbcTemplate.query(query, rowMapper, email);
