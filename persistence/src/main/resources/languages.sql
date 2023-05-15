@@ -465,6 +465,5 @@ INSERT INTO languages(id, name) VALUES
 ('osa', 'Osage'),
 ('ter', 'Terena'),
 ('tvl', 'Tuvaluan'),
-('yap', 'Yapese')
-WHERE NOT EXISTS ();
+('yap', 'Yapese');
 
