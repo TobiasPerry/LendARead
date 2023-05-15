@@ -123,11 +123,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage){
-        return getAllAssetInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), ""));
-    }
-
-    @Override
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
         int offset = (pageNum - 1) * itemsPerPage;
@@ -141,7 +136,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
                 " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior, ai.maxLendingDays as maxLendingDays FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? ";
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status != 'DELETED' AND status=? ";
         objects.add(AssetState.PUBLIC.name());
 
 
