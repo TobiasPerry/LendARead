@@ -1,7 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<c:choose>
+    <c:when test="${isLender}">
 <div class="table-title">
     <div style="display: flex; align-items: center; justify-content: space-between;">
         <h2><spring:message code="my_books"/></h2>
@@ -74,7 +75,18 @@
             </tbody>
         </table>
     </div>
-
+    </c:when>
+    <c:otherwise>
+        <div class="promo-box">
+            <h2><spring:message code="become_lender.title"/></h2>
+            <p><spring:message code="become_lender.subtitle"/></p>
+            <form action="<c:url value="/changeRole"/>" method="post">
+                <button type="submit" class="button-status"><spring:message
+                        code="become_lender.button"/></button>
+            </form>
+        </div>
+    </c:otherwise>
+</c:choose>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
