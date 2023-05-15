@@ -65,13 +65,13 @@ final public class UserAssetDetailsController {
     @RequestMapping(value ="/confirmAsset/{lendingId}", method = RequestMethod.POST)
     public ModelAndView confirmAsset(@PathVariable("lendingId") final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         assetAvailabilityService.confirmAsset(lendingId);
-        return new ModelAndView("redirect:/lentBookDetails/lendingId=" + lendingId);
+        return new ModelAndView("redirect:/lentBookDetails/" + lendingId);
     }
 
     @RequestMapping(value ="/rejectAsset/{lendingId}", method = RequestMethod.POST)
     public ModelAndView rejectAsset(@PathVariable("lendingId") final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         assetAvailabilityService.rejectAsset(lendingId);
-        return new ModelAndView("redirect:/lentBookDetails/lendingId=" + lendingId);
+        return new ModelAndView("redirect:/lentBookDetails/" + lendingId);
     }
 
     @RequestMapping(value ="/changeStatus/{id}", method = RequestMethod.POST)
@@ -83,7 +83,7 @@ final public class UserAssetDetailsController {
         else if(assetInstance.getAssetState().isPrivate())
             assetAvailabilityService.setAssetPublic(id);
 
-        return new ModelAndView("redirect:/myBookDetails/id=" + id);
+        return new ModelAndView("redirect:/myBookDetails/" + id);
     }
 
     @ModelAttribute

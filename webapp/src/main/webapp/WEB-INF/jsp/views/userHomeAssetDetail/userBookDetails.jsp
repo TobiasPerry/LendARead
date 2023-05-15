@@ -32,9 +32,7 @@
 <body data-path="${path}" class="body-class">
 
 <jsp:include page="../../components/navBar.jsp"/>
-<div style="<c:if test="${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}">
-        background-color: #d5d5d5;
-        </c:if>">
+<div >
     <div class="back-button d-flex align-items-center">
         <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb">
             <i class="fas fa-arrow-left"></i>
@@ -42,24 +40,22 @@
         <h2 class="textOverflow mb-0 ml-2 mr-2"> <spring:message code="userAssetDetailView.${table}" /> </h2>
         <c:if test="${asset.isBorrowedInstance}">
 
-            <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"  data-bs-toggle="tooltip" data-bs-placement="top"  title="This loan is archived">
                 <c:choose>
                     <c:when test="${asset.lendingState.isRejected}">
-                       <spring:message code="userHomeView.rejected" />
+                        <div style="background-color: darkred; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"  data-bs-toggle="tooltip" data-bs-placement="top"  title="This loan is archived">
+                        <spring:message code="userHomeView.rejected" />
+                        </div>
                     </c:when>
                     <c:when test="${asset.lendingState.isFinished}">
-                        <spring:message code="userHomeView.finished" />
+                         <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"  data-bs-toggle="tooltip" data-bs-placement="top"  title="This loan is archived">
+                             <spring:message code="userHomeView.finished" />
+                         </div>
                     </c:when>
                 </c:choose>
-            </div>
         </c:if>
     </div>
     <div class="main-class"
-         style="
-         <c:if test="${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}">
-                 background-color: #d5d5d5;
-         </c:if>
-                 display: flex; justify-content: center;align-items: center;flex-direction: column;">
+         style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
         <div class="container-row-wrapped" style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-around;">
             <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; max-width: 600px">
                 <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
@@ -108,6 +104,7 @@
                         </c:when>
                     </c:choose>
                 </div>
+                <c:if test="${!(table == 'borrowed_books' || (table == 'lended_books' &&  asset.lendingState.getIsFinished()))}">
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; width: 300px;">
                     <h1 class="textOverflow"><spring:message code="userAssetDetailView.options" /></h1>
                     <c:choose>
@@ -117,15 +114,14 @@
                             </jsp:include>
                         </c:when>
                         <c:when test="${table == 'lended_books'}">
-                            <jsp:include page="lendedBookOptions.jsp">
+                                <jsp:include page="lendedBookOptions.jsp">
                                 <jsp:param name="asset" value="${asset}"/>
                             </jsp:include>
                         </c:when>
-                        <c:when test="${table == 'borrowed_books'}">
 
-                        </c:when>
                     </c:choose>
                 </div>
+                </c:if>
             </div>
         </div>
     </div>
