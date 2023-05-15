@@ -35,7 +35,7 @@
                 <jsp:include page="filterButton.jsp">
                     <jsp:param name="table" value="borrowed_books"/>
                     <jsp:param name="filterValue" value="delayed"/>
-                    <jsp:param name="filterAtribuite" value="status"/>
+                    <jsp:param name="filterAtribuite" value="delayed"/>
                     <jsp:param name="title" value="filterOption.delayed"/>
                     <jsp:param name="buttonText" value="userHomeView.delayed"/>
                     <jsp:param name="filter" value="${filter}"/>
