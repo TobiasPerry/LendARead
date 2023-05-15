@@ -1,9 +1,9 @@
 INSERT INTO languages(id, name) VALUES
 ('eng', 'English'),
-('ger', 'German / Deutsch'),
-('fre', 'French / français'),
-('spa', 'Spanish / español'),
-('rus', 'Russian / Русский язык'),
+('ger', 'Deutsch'),
+('fre', 'Français'),
+('spa', 'Español'),
+('rus', 'Русский язык'),
 ('chi', 'Chinese'),
 ('ita', 'Italian'),
 ('jpn', 'Japanese'),
