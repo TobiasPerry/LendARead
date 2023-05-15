@@ -97,7 +97,7 @@
                         </td>
                         <td><c:out value="${asset.book.name}"/></td>
                         <td><c:out value="${asset.dueDate}"/></td>
-                        <td><c:out value="${asset.borrower}"/></td>
+                        <td><c:out value="${asset.owner.name}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>

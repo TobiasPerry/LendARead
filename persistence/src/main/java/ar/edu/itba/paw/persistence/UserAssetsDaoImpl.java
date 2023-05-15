@@ -115,7 +115,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "    owner.name AS owner_name," +
                 "    l.devolutiondate," +
                 "    l.id AS lendingId," +
-                "    l.active AS lendingState" +
+                "    l.active AS lendingState," +
+                "u.mail AS borrower_mail"+
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -144,12 +145,14 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String owner = rs.getString("owner_name");
+            String borrower = rs.getString("borrower_mail");
+
             int lendingId = rs.getInt("lendingId");
             String lendingState = rs.getString("lendingState");
 
 
             return assetInstanceDao.getAssetInstance(assetId)
-                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId, LendingState.fromString(lendingState)))
+                    .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId, LendingState.fromString(lendingState)))
                     .orElse(null);
         };
         if (!filterAttribute.equalsIgnoreCase("none"))
@@ -210,7 +213,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     "    owner.name AS owner_name," +
                     "    l.devolutiondate," +
                     "    l.id AS lendingId," +
-                    "    l.active AS lendingState" +
+                    "    l.active AS lendingState," +
+                    "u.mail AS borrower_name "+
                     " FROM" +
                     "    lendings l" +
                     " JOIN" +
@@ -228,10 +232,11 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 int assetId = rs.getInt("assetinstanceid");
                 String dueDate = rs.getTimestamp("devolutiondate").toString();
                 String owner = rs.getString("owner_name");
+                String borrower = rs.getString("borrower_name");
                 String lendingState = rs.getString("lendingState");
 
                 return assetInstanceDao.getAssetInstance(assetId)
-                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, owner, lendingId, LendingState.fromString(lendingState)))
+                        .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId, LendingState.fromString(lendingState)))
                         .orElse(null);
             };
 

@@ -90,7 +90,7 @@
                     <c:choose>
                         <c:when test="${table == 'lended_books'}">
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out value="${asset.dueDate}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out value="${asset.borrower}"/></h6>
+                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out value="${asset.owner.name}"/></h6>
                             <c:if test="${asset.lendingState.isRejected}">
                                 <h6 style="color: #7d7c7c; font-weight: bolder"><spring:message code="userHomeView.rejected"/></h6>
                             </c:if>
@@ -100,7 +100,7 @@
                         </c:when>
                         <c:when test="${table == 'borrowed_books'}">
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out value="${asset.dueDate}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out value="${asset.borrower}"/></h6>
+                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out value="${asset.owner.name}"/></h6>
                         </c:when>
                         <c:when test="${table == 'my_books'}">
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="addAssetView.locationInfo"/> <c:out value="${asset.location}"/></h6>
