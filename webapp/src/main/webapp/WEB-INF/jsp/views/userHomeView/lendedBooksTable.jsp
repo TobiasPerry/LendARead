@@ -11,15 +11,21 @@
                         <jsp:param name="table" value="lended_books"/>
                         <jsp:param name="filterValue" value="none"/>
                         <jsp:param name="filterAtribuite" value="none"/>
+                        <jsp:param name="attribute" value="${attribute}"/>
+                        <jsp:param name="sortAttribute" value="${sortAttribute}"/>
                         <jsp:param name="title" value="filterOption.all"/>
                         <jsp:param name="buttonText" value="userHomeView.all"/>
                         <jsp:param name="filter" value="${filter}"/>
                     </jsp:include>
 
+
+
                     <jsp:include page="filterButton.jsp">
                         <jsp:param name="table" value="lended_books"/>
                         <jsp:param name="filterValue" value="pending"/>
                         <jsp:param name="filterAtribuite" value="status"/>
+                        <jsp:param name="attribute" value="${attribute}"/>
+                        <jsp:param name="sortAttribute" value="${sortAttribute}"/>
                         <jsp:param name="title" value="filterOption.pending"/>
                         <jsp:param name="buttonText" value="userHomeView.pending"/>
                         <jsp:param name="filter" value="${filter}"/>
@@ -28,6 +34,8 @@
                         <jsp:param name="table" value="lended_books"/>
                         <jsp:param name="filterValue" value="borrowed"/>
                         <jsp:param name="filterAtribuite" value="status"/>
+                        <jsp:param name="attribute" value="${attribute}"/>
+                        <jsp:param name="sortAttribute" value="${sortAttribute}"/>
                         <jsp:param name="title" value="filterOption.confirmed"/>
                         <jsp:param name="buttonText" value="userHomeView.inProgress"/>
                         <jsp:param name="filter" value="${filter}"/>
@@ -37,6 +45,8 @@
                         <jsp:param name="table" value="lended_books"/>
                         <jsp:param name="filterValue" value="delayed"/>
                         <jsp:param name="filterAtribuite" value="delayed"/>
+                        <jsp:param name="attribute" value="${attribute}"/>
+                        <jsp:param name="sortAttribute" value="${sortAttribute}"/>
                         <jsp:param name="title" value="filterOption.delayed"/>
                         <jsp:param name="buttonText" value="userHomeView.delayed"/>
                         <jsp:param name="filter" value="${filter}"/>
@@ -65,10 +75,14 @@
                 <table class="table">
                     <thead>
                     <tr>
+
+
                         <th style="opacity: 0.7"><spring:message code="image"/></th>
                         <jsp:include page="sortButton.jsp">
                             <jsp:param name="table" value="lended_books"/>
                             <jsp:param name="attribute" value="book_name"/>
+                            <jsp:param name="filterValue" value="${filterValue}"/>
+                            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
                             <jsp:param name="sortAttribute" value="${sort_book_name}"/>
                             <jsp:param name="title" value="book_name"/>
                         </jsp:include>
@@ -76,6 +90,8 @@
                         <jsp:include page="sortButton.jsp">
                             <jsp:param name="table" value="lended_books"/>
                             <jsp:param name="attribute" value="expected_retrieval_date"/>
+                            <jsp:param name="filterValue" value="${filterValue}"/>
+                            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
                             <jsp:param name="sortAttribute" value="${sort_expected_retrieval_date}"/>
                             <jsp:param name="title" value="expected_retrieval_date"/>
                         </jsp:include>
@@ -83,6 +99,8 @@
                         <jsp:include page="sortButton.jsp">
                             <jsp:param name="table" value="lended_books"/>
                             <jsp:param name="attribute" value="borrower_name"/>
+                            <jsp:param name="filterValue" value="${filterValue}"/>
+                            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
                             <jsp:param name="sortAttribute" value="${sort_borrower_name}"/>
                             <jsp:param name="title" value="borrower_name"/>
                         </jsp:include>

@@ -6,6 +6,8 @@
     <form action="/sortUserHomeAssets" method="get" class="sort-form">
         <input type="hidden" name="table" value="${param.table}" />
         <input type="hidden" name="attribute" value="${param.attribute}" />
+        <input type="hidden" name="filterValue" value="${param.filterValue}">
+        <input type="hidden" name="filterAtribuite" value="${param.filterAtribuite}">
         <input type="hidden" name="direction" value="${param.sortAttribute ? 'desc' : 'asc'}" />
         <button type="submit" class="sort-button<c:if test='${param.sortAttribute}'> sort-button-selected</c:if>">
             <spring:message code="${param.title}"/>

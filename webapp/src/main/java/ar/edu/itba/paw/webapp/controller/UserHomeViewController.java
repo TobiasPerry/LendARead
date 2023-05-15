@@ -49,12 +49,19 @@ final public class UserHomeViewController {
         model.addObject(USER_ASSETS, getUserAssetsIn(table));
         model.addObject(USER_EMAIL, userService.getUser(userService.getCurrentUser()).getName());
         model.addObject(TABLE, table);
+
+
         return model;
     }
 
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
-    public ModelAndView changeTab(@RequestParam("table") final String table, @RequestParam("filterValue") final String filterValue, @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {
+    public ModelAndView changeTab(@RequestParam("table") final String table,
+                                  @RequestParam("attribute") final String attribute,
+                                  @RequestParam("direction") final String direction,
+                                  @RequestParam("filterValue") final String filterValue,
+                                  @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {
+
         sortFilterManager.updateSelectedFilter(table, filterAtribuite, filterValue);
         return sortFilterManager.appendTo(table,  initialiseModelViewWith(table));
     }
@@ -74,7 +81,9 @@ final public class UserHomeViewController {
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
     public ModelAndView sortUserHomeAssets(@RequestParam("table") final String table,
                                            @RequestParam("attribute") final String attribute,
-                                           @RequestParam("direction") final String direction) throws UserNotFoundException {
+                                           @RequestParam("direction") final String direction,
+                                           @RequestParam("filterValue") final String filterValue,
+                                           @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {
 
         sortFilterManager.updateSelectedSort(table, attribute, direction);
         return sortFilterManager.appendTo(table, initialiseModelViewWith(table));
