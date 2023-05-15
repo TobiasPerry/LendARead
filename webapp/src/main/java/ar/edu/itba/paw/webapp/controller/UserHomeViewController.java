@@ -27,6 +27,8 @@ final public class UserHomeViewController {
 
     private static final String NAV_BAR_PATH = "userHome";
 
+    private static final String IS_LENDER = "isLender", USER_ASSETS = "userAssets", USER_EMAIL = "userEmail", TABLE = "table";
+
     private static final SortFilterManager sortFilterManager = new SortFilterManager();
 
     private String currentTable = DEFAULT_TABLE_NAME;
@@ -43,10 +45,10 @@ final public class UserHomeViewController {
     }
     private ModelAndView initialiseModelViewWith(final String table) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
-        model.addObject("isLender", !userService.getCurrentUserIsBorrower());
-        model.addObject("userAssets", getUserAssetsIn(table));
-        model.addObject("userEmail", userService.getUser(userService.getCurrentUser()).getName());
-        model.addObject("table", table);
+        model.addObject(IS_LENDER, !userService.getCurrentUserIsBorrower());
+        model.addObject(USER_ASSETS, getUserAssetsIn(table));
+        model.addObject(USER_EMAIL, userService.getUser(userService.getCurrentUser()).getName());
+        model.addObject(TABLE, table);
         return model;
     }
 

@@ -28,13 +28,12 @@ final public class AddAssetViewController {
     private final AssetExistanceService assetExistanceService;
     private final static String viewName = "views/addAssetView";
 
-    private final static String SUCESS_MSG = "Libro agregado exitosamente!";
+    private final static String NAV_BAR_PATH = "addAsset";
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
-    public ModelAndView addAsset(@RequestParam(name ="file") MultipartFile image,
+    public ModelAndView addAsset(@RequestParam(name ="file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
-                                 final BindingResult errors,
-                                 Model model, HttpServletResponse response) {
+                                 final BindingResult errors, HttpServletResponse response) {
 
         response.setContentType("text/html; charset=UTF-8");
 
@@ -47,7 +46,7 @@ final public class AddAssetViewController {
         try {
             assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, email), handleImage(image));
             return new ModelAndView("redirect:/addAssetView?succes=true");
-        }catch (InternalErrorException e) {
+        } catch (InternalErrorException e) {
             return addAssetView(addAssetForm,false)
                     .addObject("showSnackbarInvalid", true)
                     .addObject("snackBarInvalidTextTitle", "Hubo un error guardando el libro");
@@ -71,23 +70,14 @@ final public class AddAssetViewController {
         this.userService = userService;
         this.assetExistanceService = assetExistanceService;
     }
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("path", "addAsset");
-    }
+
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success){
-
-        final ModelAndView mav = new ModelAndView(viewName);
-        if(success)
-            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
-        Collection<? extends GrantedAuthority> auth =  userService.getCurrentRoles();
-        if(auth.contains(new SimpleGrantedAuthority("ROLE_BORROWER"))){
-            mav.addObject("borrowerUser","true");
-        }else {
-            mav.addObject("borrowerUser","false");
-        }
-        return  mav;
+        return  new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
     }
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("path", NAV_BAR_PATH);
+    }
 }
