@@ -35,13 +35,19 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     }
 
     @Override
-    public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException{
+    @Transactional
+    public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
 
+        Optional<Book> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
         Book book;
-        try {
-            book = bookDao.addAsset(assetInstance.getBook());
-        }catch (BookAlreadyExistException ex){
-            book = bookDao.getBook(assetInstance.getBook().getIsbn()).orElseThrow(()-> new InternalErrorException("Error adding book"));
+        if (!bookOptional.isPresent()) {
+            try {
+                book = bookDao.addAsset(assetInstance.getBook());
+            }catch (BookAlreadyExistException exception){
+                throw new InternalErrorException("Internal error");
+            }
+        }else {
+            book = bookOptional.get();
         }
         Optional<User> user = userDao.getUser(assetInstance.getOwner().getEmail());
         Optional<Integer> locationId = locationDao.addLocation(assetInstance.getLocation());
@@ -49,7 +55,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
         if( user.isPresent() && locationId.isPresent() && photoId.isPresent()) {
             assetInstanceDao.addAssetInstance(book.getId(), user.get().getId(),locationId.get(),photoId.get(),assetInstance);
-        }else {
+        } else {
             throw new InternalErrorException("Cannot addAssetInstance");
         }
     }
