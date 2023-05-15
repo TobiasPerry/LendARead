@@ -55,6 +55,9 @@ public class AssetViewController {
         if (errors.hasErrors()){
             return assetInfoView(id,borrowAssetForm,false);
         }
+        //TODO PREGUNTAR
+        if(borrowAssetForm.getDate() == null)
+            System.out.println("ENTRE");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         try {

@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter @Setter
 public class BorrowAssetForm {
 
-    @NotEmpty
-    @DateTimeFormat
+
     String date;
 }

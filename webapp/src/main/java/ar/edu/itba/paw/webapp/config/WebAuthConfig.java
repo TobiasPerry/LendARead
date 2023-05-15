@@ -81,7 +81,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 changeAssetStatusVoter,
                 lenderViewOwnerVoter,
                 borrowerViewVoter
-
         );
         return new UnanimousBased(decisionVoters);
     }
