@@ -38,4 +38,6 @@ public class AddAssetForm {
 
     @Min(value = 1)
     private int maxDays;
+
+    private String languageSelect;
 }

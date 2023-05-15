@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
+import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.TreeMap;
 
 @Controller
 final public class AddAssetViewController {
@@ -26,6 +28,7 @@ final public class AddAssetViewController {
 
     private final UserService userService;
     private final AssetExistanceService assetExistanceService;
+    private final LanguagesService languagesService;
     private final static String viewName = "views/addAssetView";
 
     private final static String SUCESS_MSG = "Libro agregado exitosamente!";
@@ -67,9 +70,10 @@ final public class AddAssetViewController {
     }
 
     @Autowired
-    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService){
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService){
         this.userService = userService;
         this.assetExistanceService = assetExistanceService;
+        this.languagesService = languagesService;
     }
     @ModelAttribute
     public void addAttributes(Model model) {
@@ -87,7 +91,8 @@ final public class AddAssetViewController {
         }else {
             mav.addObject("borrowerUser","false");
         }
+        TreeMap<String, String> orderedMap = new TreeMap<>(languagesService.getLanguages());
+        mav.addObject("languages", orderedMap);
         return  mav;
     }
-
 }
