@@ -3,6 +3,7 @@ import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
@@ -69,26 +70,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<AssetInstance> getAllAssetsInstances() {
-        int pageNumber = 1;
-        int itemPerPage = 15;
-        Page allAssetInstances = getAllAssetsInstances(pageNumber,itemPerPage);
-
-        List<AssetInstance> combinedBooks = new ArrayList<>(allAssetInstances.getBooks());
-        while (allAssetInstances.getCurrentPage() < allAssetInstances.getTotalPages()) {
-            pageNumber++;
-            allAssetInstances = getAllAssetsInstances(pageNumber,itemPerPage);
-            combinedBooks.addAll(allAssetInstances.getBooks());
-        }
-
-       return combinedBooks;
-    }
     @Transactional
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
-         boolean wasRemoved = assetDao.deleteAsset(id);
+         boolean wasRemoved = assetInstanceDao.changeStatus(id, AssetState.DELETED);
          if(!wasRemoved)
              throw new AssetInstanceNotFoundException("Asset instance no found");
     }
