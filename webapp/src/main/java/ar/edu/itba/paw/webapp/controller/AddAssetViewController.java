@@ -72,7 +72,6 @@ final public class AddAssetViewController {
         List<Language> languages = languagesService.getLanguages();
         LOGGER.debug("LANGUAGES SIZE: {}", languages.size());
         mav.addObject("langs", languages);
-        mav.addObject("languages", orderedMap);
         if(id != null)
             mav.addObject("assetId",id);
         if(success)
