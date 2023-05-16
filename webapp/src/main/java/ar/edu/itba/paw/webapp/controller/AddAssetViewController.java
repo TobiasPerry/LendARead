@@ -4,10 +4,13 @@ import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Language;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,11 +23,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 import java.util.TreeMap;
 
 
 @Controller
 final public class AddAssetViewController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
 
     private final UserService userService;
@@ -62,8 +68,10 @@ final public class AddAssetViewController {
 
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success,@RequestParam(required = false,name = "id") Integer id){
-        TreeMap<String, String> orderedMap = new TreeMap<>(languagesService.getLanguages());
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
+        List<Language> languages = languagesService.getLanguages();
+        LOGGER.debug("LANGUAGES SIZE: {}", languages.size());
+        mav.addObject("langs", languages);
         mav.addObject("languages", orderedMap);
         if(id != null)
             mav.addObject("assetId",id);
