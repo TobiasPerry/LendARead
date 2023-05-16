@@ -76,6 +76,15 @@
                             <jsp:param name="currentPage" value="${currentPage}"/>
                             <jsp:param name="title" value="language"/>
                         </jsp:include>
+                        <jsp:include page="sortButton.jsp">
+                            <jsp:param name="table" value="my_books"/>
+                            <jsp:param name="attribute" value="asset_state"/>
+                            <jsp:param name="sortAttribute" value="${sort_asset_state}"/>
+                            <jsp:param name="filterValue" value="${filterValue}"/>
+                            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                            <jsp:param name="currentPage" value="${currentPage}"/>
+                            <jsp:param name="title" value="userDetailView.state"/>
+                        </jsp:include>
                     </tr>
                     </thead>
                     <tbody>
@@ -89,6 +98,7 @@
                             <td><c:out value="${asset.book.name}"/></td>
                             <td><c:out value="${asset.book.author}"/></td>
                             <td><c:out value="${asset.book.language}"/></td>
+                            <td><spring:message code="enum.${asset.assetState}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>

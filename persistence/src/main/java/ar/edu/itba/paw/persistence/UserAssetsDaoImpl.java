@@ -64,8 +64,10 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 return "u.name";
             case "author":
                 return "b.author";
-            case "lang":
-                return "b.lang";
+            case "language":
+                return "b.language";
+            case "asset_state":
+                return "ai.status";
             default:
                 return "none";
         }

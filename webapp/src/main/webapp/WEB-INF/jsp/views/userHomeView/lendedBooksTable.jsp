@@ -77,6 +77,8 @@
                         <jsp:param name="filter" value="${filter}"/>
                         <jsp:param name="currentPage" value="${currentPage}"/>
                     </jsp:include>
+
+
                 </div>
             </div>
             <div class="table-container">
@@ -115,7 +117,7 @@
                         </jsp:include>
 
                         <jsp:include page="sortButton.jsp">
-                            <jsp:param name="table" value="borrowed_books"/>
+                            <jsp:param name="table" value="lended_books"/>
                             <jsp:param name="attribute" value="asset_state"/>
                             <jsp:param name="sortAttribute" value="${sort_asset_state}"/>
                             <jsp:param name="filterValue" value="${filterValue}"/>
