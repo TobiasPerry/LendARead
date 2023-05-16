@@ -166,7 +166,9 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public PageUserAssets getBorrowedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getBorrowedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
+        int offset = (pageNumber - 1) * itemsPerPage;
+
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -187,7 +189,6 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " WHERE" +
                 "  u.mail = ? ";
 
-
         if (filterAttribute.equalsIgnoreCase("status"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
         if(filterAttribute.equalsIgnoreCase("lendingStatus"))
@@ -201,29 +202,64 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             }
         }
 
+        query += " LIMIT ? OFFSET ?";
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String owner = rs.getString("owner_name");
             String borrower = rs.getString("borrower_mail");
-
             int lendingId = rs.getInt("lendingId");
             String lendingState = rs.getString("lendingState");
-
 
             return assetInstanceDao.getAssetInstance(assetId)
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId, LendingState.fromString(lendingState)))
                     .orElse(null);
         };
-        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
-            return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue)));
 
-        return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email));
+        List<BorrowedAssetInstance> borrowedAssets;
+        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
+            borrowedAssets = jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue), itemsPerPage, offset);
+        else
+            borrowedAssets = jdbcTemplate.query(query, rowMapper, email, itemsPerPage, offset);
+
+        return new PageUserAssetsImpl(
+                borrowedAssets,
+                pageNumber,
+                getTotalPagesBorrowedAssets(itemsPerPage, email, filterAttribute, filterValue));
     }
 
+    private int getTotalPagesBorrowedAssets(int itemsPerPage, String email, String filterAttribute, String filterValue) {
+        String countQuery = "SELECT COUNT(*)" +
+                " FROM" +
+                "    lendings l" +
+                " JOIN" +
+                "    assetinstance ai ON l.assetinstanceid = ai.id" +
+                " JOIN" +
+                "    book b ON ai.assetid = b.uid" +
+                " JOIN" +
+                "    users u ON l.borrowerid = u.id" +
+                " JOIN" +
+                " users owner ON ai.owner = owner.id" +
+                " WHERE" +
+                " u.mail = ? ";
+        if (filterAttribute.equalsIgnoreCase("status"))
+            countQuery += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
+        if (filterAttribute.equalsIgnoreCase("lendingStatus"))
+            countQuery += "AND l.active = ?";
+        if (filterAttribute.equalsIgnoreCase("delayed"))
+            countQuery += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
 
-    @Override
+        int rowCount;
+        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
+            rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email, matchFilterValue(filterValue)}, Integer.class);
+        else
+            rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email}, Integer.class);
+
+        return (rowCount / itemsPerPage) + ((rowCount % itemsPerPage > 0) ? 1 : 0);
+    }
+
+        @Override
     public PageUserAssets getUsersAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         int offset = (pageNumber - 1) * itemsPerPage;
 
