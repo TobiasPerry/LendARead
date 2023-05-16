@@ -41,9 +41,9 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String isbn = rs.getString("isbn");
             String author = rs.getString("author");
             String title = rs.getString("title");
-            String language = rs.getString("language");
-            Integer bookId = rs.getInt("book_id");
-            Book book = new BookImpl(isbn, author, title, language);
+            String language = rs.getString("lang");
+            int bookId = rs.getInt("book_id");
+            Book book = new BookImpl(bookId,isbn, author, title, language);
 
             String zipcode = rs.getString("zipcode");
             String locality = rs.getString("locality");
@@ -74,7 +74,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
-                    new BookImpl(rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("language")),
+                    new BookImpl(rs.getInt("book_id"),rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
                     new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X","",Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
@@ -85,7 +85,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     private static final RowMapper<String> ROW_MAPPER_AUTHORS = (rs, rownum) -> rs.getString("author");
 
-    private static final RowMapper<String> ROW_MAPPER_LANGUAGES = (rs, rownum) -> rs.getString("language");
+    private static final RowMapper<String> ROW_MAPPER_LANGUAGES = (rs, rownum) -> rs.getString("lang");
 
     private static final RowMapper<String> ROW_MAPPER_PHYSICAL_CONDITIONS = (rs, rownum) -> rs.getString("physicalcondition");
 
@@ -110,7 +110,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             Object[] params = new Object[] {assetId};
             String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
                     " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
-                    " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
+                    " b.lang AS lang, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                     " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id ," +
                     " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior, ai.maxLendingDays as maxLendingDays FROM assetinstance ai JOIN book b ON ai.assetid = b.uid" +
                     " JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id " +
@@ -133,7 +133,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
                 " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
-                " b.language AS language, b.author AS author, l.id AS loc_id, l.locality AS locality," +
+                " b.lang AS lang, b.author AS author, l.id AS loc_id, l.locality AS locality," +
                 " l.zipcode AS zipcode, l.province AS province, l.country AS country, u.id AS user_id," +
                 " u.mail AS email, u.telephone,u.name as user_name, u.behavior as behavior, ai.maxLendingDays as maxLendingDays FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status != 'DELETED' AND status=? ";
@@ -142,7 +142,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         final List<String> languagesIn = searchQuery.getLanguages();
         if(!languagesIn.isEmpty()) {
-            queryFilters.append(" AND b.language IN (''");
+            queryFilters.append(" AND b.lang IN (''");
             languagesIn.forEach((language) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
             objects.addAll(languagesIn);
@@ -191,7 +191,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         String queryAuthors = "SELECT distinct b.author as author FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status =? " + queryFilters ;
 
-        String queryLanguages = "SELECT distinct b.language as language FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
+        String queryLanguages = "SELECT distinct b.lang as lang FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
                 "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters  ;
 
         String queryPhysicalConditions = "SELECT distinct ai.physicalcondition as physicalcondition  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
@@ -205,8 +205,12 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         objects.add(0,itemsPerPage);
 
-        String queryCant = "SELECT CEIL(COUNT(*) OVER ()::float / ?) as pageCount FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status = ? " + queryFilters;
+        String queryCant = "SELECT CEIL(COUNT(*) / CAST(? AS FLOAT)) as pageCount \n" +
+                "FROM assetinstance ai \n" +
+                "JOIN book b ON ai.assetid = b.uid \n" +
+                "JOIN location l ON ai.locationid = l.id \n" +
+                "LEFT JOIN users u ON ai.owner = u.id \n" +
+                "WHERE status = ?" + queryFilters;
         List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT,objects.toArray());
 
         int totalPages;

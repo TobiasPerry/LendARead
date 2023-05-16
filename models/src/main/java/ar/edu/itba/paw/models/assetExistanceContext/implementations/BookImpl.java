@@ -16,11 +16,14 @@ public class BookImpl implements Book {
 
     private final String type = "Book";
 
-    public BookImpl(String isbn, String author, String title, String language) {
+    private final int id;
+
+    public BookImpl(final int id,final String isbn,final String author,final String title,final String language) {
         this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
         this.language = language;
+        this.id = id;
     }
 
     private static String convertToISBN13(String isbn) {
@@ -72,6 +75,11 @@ public class BookImpl implements Book {
     @Override
     public String getAuthor() {
         return this.author;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override

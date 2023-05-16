@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +40,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             throw new AssetInstanceNotFoundException("assetInstance not found");
 
 
-        AssetInstance assetInstance = assetInstanceOpt.get();
-        return assetInstance;
+        return assetInstanceOpt.get();
     }
 
     @Transactional(readOnly = true)
@@ -54,6 +52,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional(readOnly = true)
     @Override
     public Page getAllAssetsInstances(final int pageNum,final int itemsPerPage, SearchQuery searchQuery){
+
+        if(pageNum < 0 || itemsPerPage <= 0)
+            return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         if(searchQuery == null)
             searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -19,28 +22,21 @@ public class ImagesDaoImpl implements ImagesDao {
 
 
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
+
 
     @Autowired
     public ImagesDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
+        this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("photos").usingGeneratedKeyColumns("id");
     }
     @Override
     public Optional<Integer> addPhoto(byte[] photo) {
-        String query = "INSERT INTO photos(photo)VALUES(?)";
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(conexion -> {
-            PreparedStatement pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setBytes(1, photo);
-            return pstmt;
-        }, keyHolder);
+        final Map<String, Object> args = new HashMap<>();
+        args.put("photo",photo);
 
-        if(keyHolder.getKeys() == null){
-            return Optional.empty();
-        }else {
-            int generatedId =(int) keyHolder.getKeys().get("id");
-            return Optional.of(generatedId);
-        }
+       return Optional.of(jdbcInsert.executeAndReturnKey(args).intValue());
     }
 
     @Override

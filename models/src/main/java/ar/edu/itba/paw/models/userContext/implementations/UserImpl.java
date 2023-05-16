@@ -5,14 +5,14 @@ import ar.edu.itba.paw.models.userContext.interfaces.User;
 final public class UserImpl implements User {
     private final String email;
     private final String name;
-    private final String message;
+    private final String telephone;
     private final Behaviour behavior;
     private final String password;
     private final  int id;
-    public UserImpl(int id,String email, String name, String message,String password,Behaviour behaviour) {
+    public UserImpl(int id,String email, String name, String telephone,String password,Behaviour behaviour) {
         this.email = email;
         this.name = name;
-        this.message = message;
+        this.telephone = telephone;
         this.id = id;
         this.behavior = behaviour;
         this.password = password;
@@ -23,7 +23,7 @@ final public class UserImpl implements User {
         return "UserImpl{" +
                 "email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", message='" + message + '\'' +
+                ", message='" + telephone + '\'' +
                 '}';
     }
 
@@ -49,7 +49,7 @@ final public class UserImpl implements User {
 
     @Override
     public String getTelephone() {
-        return "Phone";
+        return telephone;
     }
 
     @Override
