@@ -131,7 +131,7 @@
                     </td>
                     <td><c:out value="${asset.book.name}"/></td>
                     <td class="date-column no-hidden-of"
-                        data-asset-status="<c:out value="${asset.assetState}"/>"><c:out
+                        data-asset-status="<c:out value="${asset.lendingState}"/>"><c:out
                             value="${asset.dueDate}"/></td>
                     <td><c:out value="${asset.owner.name}"/></td>
                 </tr>

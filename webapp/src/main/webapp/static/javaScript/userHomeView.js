@@ -1,7 +1,7 @@
 const dates = [...document.querySelectorAll('td.date-column')];
 
 dates.forEach((date) => {
-    if (date.dataset.assetStatus === 'REJECTED' || date.dataset.assetStatus === 'PRIVATE') {
+    if (date.dataset.assetStatus === 'REJECTED' || date.dataset.assetStatus === 'FINISHED') {
         return;
     }
     const today = new Date()

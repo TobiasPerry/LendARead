@@ -20,8 +20,8 @@
             <div class="modal-footer border-0">
                 <c:url var="deleteAssetUrl" value="/deleteAsset/${asset.id}"/>
                 <form action="${deleteAssetUrl}" method="post">
-                    <button type="submit" class="btn-red-outline" >
-                        <spring:message code="userHomeView.remove.button" />
+                    <button type="submit" class="btn-red-outline">
+                        <spring:message code="userHomeView.remove.button"/>
                     </button>
                 </form>
             </div>
@@ -30,11 +30,15 @@
 </div>
 <script>
     const deleteBtnHandler = document.getElementById('deleteBtn');
-    deleteBtnHandler.addEventListener('click', function() {
-        new bootstrap.Modal($('#deleteBookModal')).show();
-    });
+    if (deleteBtnHandler !== null) {
+        deleteBtnHandler.addEventListener('click', function () {
+            new bootstrap.Modal($('#deleteBookModal')).show();
+        });
+    }
     const noButton2 = document.getElementById('no_button1');
-    noButton2.addEventListener('click', function () {
-        $('#deleteBookModal').modal('hide')
-    });
+    if (noButton2 !== null) {
+        noButton2.addEventListener('click', function () {
+            $('#deleteBookModal').modal('hide')
+        });
+    }
 </script>
