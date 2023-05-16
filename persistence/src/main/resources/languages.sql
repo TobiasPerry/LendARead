@@ -1,3 +1,8 @@
+CREATE TABLE IF NOT EXISTS languages(
+    id VARCHAR(3) PRIMARY KEY,
+    name varchar(100)
+);
+
 INSERT INTO languages(id, name) VALUES
 ('eng', 'English'),
 ('ger', 'Deutsch'),
