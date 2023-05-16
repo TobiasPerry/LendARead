@@ -27,6 +27,8 @@ final public class UserHomeViewController {
 
     private static final String IS_LENDER = "isLender", USER_ASSETS = "userAssets", USER_EMAIL = "userEmail", TABLE = "table";
 
+    private static final String FILTER_ATRIBUITE = "filterAtribuite", SORT_ATRIBUITE = "attribute", SORT_VALUE ="direction", FILTER_VALUE = "filterValue";
+
     @Autowired
     public UserHomeViewController(final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
         this.userAssetInstanceService = userAssetInstanceService;
@@ -47,20 +49,20 @@ final public class UserHomeViewController {
         model.addObject("filter", filterValue);
         model.addObject("sort_" + sortAtribuite, "asc".equals(sortValue));
 
-        model.addObject("attribute", sortAtribuite);
-        model.addObject("direction", sortValue);
-        model.addObject("filterValue", filterValue);
-        model.addObject("filterAtribuite", filterAtribuite);
+        model.addObject(SORT_ATRIBUITE, sortAtribuite);
+        model.addObject(SORT_VALUE, sortValue);
+        model.addObject(FILTER_VALUE, filterValue);
+        model.addObject(FILTER_ATRIBUITE, filterAtribuite);
 
         return model;
     }
 
     @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
-    public ModelAndView changeTab(@RequestParam("table") final String table,
-                                  @RequestParam("attribute") final String attribute,
-                                  @RequestParam("direction") final String direction,
-                                  @RequestParam("filterValue") final String filterValue,
-                                  @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {
+    public ModelAndView changeTab(@RequestParam(TABLE) final String table,
+                                  @RequestParam(SORT_ATRIBUITE) final String attribute,
+                                  @RequestParam(SORT_VALUE) final String direction,
+                                  @RequestParam(FILTER_VALUE) final String filterValue,
+                                  @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
 
         return initialiseModelViewWith(table, attribute, direction, filterAtribuite, filterValue);
     }
@@ -75,11 +77,11 @@ final public class UserHomeViewController {
     }
 
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
-    public ModelAndView sortUserHomeAssets(@RequestParam("table") final String table,
-                                           @RequestParam("attribute") final String attribute,
-                                           @RequestParam("direction") final String direction,
-                                           @RequestParam("filterValue") final String filterValue,
-                                           @RequestParam("filterAtribuite") final String filterAtribuite) throws UserNotFoundException {
+    public ModelAndView sortUserHomeAssets(@RequestParam(TABLE) final String table,
+                                           @RequestParam(SORT_ATRIBUITE) final String attribute,
+                                           @RequestParam(SORT_VALUE) final String direction,
+                                           @RequestParam(FILTER_VALUE) final String filterValue,
+                                           @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
         return initialiseModelViewWith(table, attribute, direction, filterAtribuite, filterValue);
     }
 
