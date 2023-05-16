@@ -52,8 +52,10 @@ public class AssetViewController {
                                       final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
                                       @RequestParam(required = false,name = "success") final boolean success) throws AssetInstanceNotFoundException{
         AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
-        if(assetInstanceService.isOwner(assetInstanceOpt,userService.getCurrentUser()))
-            return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());
+
+            if (assetInstanceService.isOwner(assetInstanceOpt, userService.getCurrentUser()))
+                return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());
+
 
         final ModelAndView mav = new ModelAndView("/views/assetView");
         if(success)

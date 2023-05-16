@@ -83,13 +83,15 @@ public class UserServiceImpl implements UserService {
         return getCurrentRoles().contains(new SimpleGrantedAuthority(BORROWER_ROLE));
     }
 
-    @Transactional(readOnly = true)
     @Override
     public String getCurrentUser() {
-        return ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
+            org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return userDetails.getUsername();
+        }
+        return "";
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Collection<? extends GrantedAuthority> getCurrentRoles() {
         return  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
