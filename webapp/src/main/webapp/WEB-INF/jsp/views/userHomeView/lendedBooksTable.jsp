@@ -146,7 +146,17 @@
         </div>
     </c:otherwise>
 </c:choose>
-
+<jsp:include page="paginationButtons.jsp" >
+    <jsp:param name="table" value="${table}"/>
+    <jsp:param name="direction" value="${direction}"/>
+    <jsp:param name="attribute" value="${attribute}"/>
+    <jsp:param name="filterValue" value="${filterValue}"/>
+    <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+    <jsp:param name="currentPage" value="${currentPage}"/>
+    <jsp:param name="previousPage" value="${previousPage}"/>
+    <jsp:param name="totalPages" value="${totalPages}"/>
+    <jsp:param name="nextPage" value="${nextPage}"/>
+</jsp:include>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
