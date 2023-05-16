@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
 final public class UserAssetDetailsController {
@@ -25,6 +27,7 @@ final public class UserAssetDetailsController {
 
     private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome";
 
+    private final static String BACKURL = "backUrl";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
 
 
@@ -46,7 +49,7 @@ final public class UserAssetDetailsController {
                     .addObject(TABLE, LENDED_BOOKS);
     }
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
-    public ModelAndView myBookDetails(@PathVariable final int id) throws AssetInstanceNotFoundException {
+    public ModelAndView myBookDetails(HttpServletRequest request,@PathVariable final int id) throws AssetInstanceNotFoundException {
         return new ModelAndView(VIEW_NAME)
                 .addObject(ASSET, assetInstanceService.getAssetInstance(id))
                 .addObject(TABLE, MY_BOOKS);

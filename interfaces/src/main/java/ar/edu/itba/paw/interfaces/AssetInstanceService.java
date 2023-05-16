@@ -18,4 +18,5 @@ public interface AssetInstanceService {
     Page getAllAssetsInstances(final int pageNum,final int itemPerPage,final SearchQuery searchQuery);
     void removeAssetInstance(final int id) throws AssetInstanceNotFoundException;
     boolean isOwner(final int id,final String email) throws AssetInstanceNotFoundException;
+    boolean isOwner(final AssetInstance assetInstance,final String email);
 }
