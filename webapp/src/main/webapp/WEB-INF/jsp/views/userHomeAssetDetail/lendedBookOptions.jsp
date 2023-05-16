@@ -16,7 +16,7 @@
             <spring:message code="userHomeView.inProgress"/>
         </h6>
         <button id="returnAssetBtn" class="btn-green" type="submit">
-            <spring:message code="userHomeView.return"/>
+            <spring:message code="userHomeView.confirmReturn"/>
         </button>
     </c:if>
 </div>

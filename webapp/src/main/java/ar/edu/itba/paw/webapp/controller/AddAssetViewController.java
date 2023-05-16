@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
+import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
@@ -18,7 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Collection;
+import java.util.TreeMap;
+
 
 @Controller
 final public class AddAssetViewController {
@@ -26,15 +28,17 @@ final public class AddAssetViewController {
 
     private final UserService userService;
     private final AssetExistanceService assetExistanceService;
+    private final LanguagesService languagesService;
     private final static String viewName = "views/addAssetView";
+    private final static String SUCESS_MSG = "Libro agregado exitosamente!";
 
     private final static String NAV_BAR_PATH = "addAsset", INVALID_SNACKBAR = "showSnackbarInvalid";
 
-
     @Autowired
-    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService){
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService){
         this.userService = userService;
         this.assetExistanceService = assetExistanceService;
+        this.languagesService = languagesService;
     }
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
@@ -57,8 +61,14 @@ final public class AddAssetViewController {
 
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success){
-        return  new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
+        TreeMap<String, String> orderedMap = new TreeMap<>(languagesService.getLanguages());
+        ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
+        mav.addObject("languages", orderedMap);
+        if(success)
+            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
+        return mav;
     }
+
 
     @ModelAttribute
     public void addAttributes(Model model) {

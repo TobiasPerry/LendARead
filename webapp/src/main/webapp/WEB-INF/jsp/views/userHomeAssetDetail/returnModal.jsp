@@ -25,12 +25,9 @@
                         <spring:message code="yes" />
                     </button>
                 </form>
-                <c:url var="userHomeUrl" value="/userHome"/>
-                <form action="${userHomeUrl}" method="get">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+                <button id="no_button" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                         <spring:message code="no" />
-                    </button>
-                </form>
+                </button>
             </div>
         </div>
     </div>
@@ -40,5 +37,9 @@
     const returnBtnHandler = document.getElementById('returnAssetBtn');
     returnBtnHandler.addEventListener('click', function() {
         new bootstrap.Modal($('#returnAssetModal')).show();
+    });
+    const noButton = document.getElementById('no_button');
+    noButton.addEventListener('click', function() {
+        $('#returnAssetModal').modal('hide')
     });
 </script>

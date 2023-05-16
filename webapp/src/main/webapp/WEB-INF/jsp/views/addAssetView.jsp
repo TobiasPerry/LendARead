@@ -150,8 +150,13 @@
                                     <spring:message code="addAssetView.languageLabel" var="languageLabel"/>
                                     <spring:message code="addAssetView.placeholders.language" var="languagePH"/>
                                     <label for="language" class="form-label">${languageLabel}</label>
+                                    <form:select class="form-control round" id="languageSelect" path="languageSelect" disabled="true">
+                                        <c:forEach var="lang" items="${languages}">
+                                            <form:option value="${lang.key}"><c:out value="${lang.value}"/></form:option>
+                                        </c:forEach>
+                                    </form:select>
                                     <form:input path="language" id="language" placeholder="${languagePH}"
-                                                class="form-control" readonly="true"/>
+                                                class="form-control d-none" readonly="true"/>
                                     <form:errors path="language" cssClass="text-danger small" element="small"/>
                                 </div>
                             </div>
@@ -172,7 +177,7 @@
                                 <select class="w-25 mx-1 form-select" id="borrow-time-type">
                                     <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
                                     <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
-                                    <option value="31"><spring:message code="addAssetView.steps.TIME.months"/>/option>
+                                    <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
                                 </select>
                                 <form:input path="maxDays" id="maxDays" class="d-none"/>
                             </div>
@@ -239,6 +244,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <spring:message code="addAssetView.addBookModal.title" var="modalTitle"/>

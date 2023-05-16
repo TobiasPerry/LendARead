@@ -49,4 +49,9 @@ CREATE TABLE IF NOT EXISTS resetpasswordinfo(
     token text UNIQUE NOT NULL,
     userId INT references users(id) ON DELETE CASCADE,
     expiration TIMESTAMP NOT  NULL
-)
+);
+
+CREATE TABLE IF NOT EXISTS languages(
+    id VARCHAR(3) PRIMARY KEY,
+    name varchar(100)
+);

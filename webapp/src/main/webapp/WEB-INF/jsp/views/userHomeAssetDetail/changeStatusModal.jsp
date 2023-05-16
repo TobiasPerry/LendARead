@@ -15,7 +15,12 @@
       </div>
       <div class="modal-body text-center py-0 border-0">
         <p class="mb-4">
-          <spring:message code="userHomeView.changeVisibilityText" />
+          <c:if test="${asset.assetState.isPrivate()}">
+          <spring:message code="userHomeView.changeVisibilityTextPublic" />
+            </c:if>
+            <c:if test="${asset.assetState.isPublic()}">
+              <spring:message code="userHomeView.changeVisibilityTextPrivate" />
+            </c:if>
       </div>
       <div class="modal-footer border-0">
         <c:url var="changeStatusUrl" value="/changeStatus/${asset.id}"/>
@@ -24,12 +29,9 @@
             <spring:message code="yes" />
           </button>
         </form>
-        <c:url var="userHomeUrl" value="/userHome"/>
-        <form action="${userHomeUrl}" method="get">
-          <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+          <button id="no_button2" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
             <spring:message code="no" />
           </button>
-        </form>
       </div>
     </div>
   </div>
@@ -39,5 +41,9 @@
   const publicPrivateBtnHandler = document.getElementById('privatePublicBtn');
   publicPrivateBtnHandler.addEventListener('click', function() {
     new bootstrap.Modal($('#changeStatusModal')).show();
+  });
+  const noButton1 = document.getElementById('no_button2');
+  noButton1.addEventListener('click', function() {
+    $('#changeStatusModal').modal('hide')
   });
 </script>

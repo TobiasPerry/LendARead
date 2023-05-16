@@ -93,10 +93,17 @@
     padding-right: 8px;
 }
 
+/*
+    Defaults fonts
+*/
+
 h1 h2 h3 h4 h5 h6{
     font-family: 'Overpass', sans-serif;
 }
 
+p{
+    font-family: 'Overpass', sans-serif;
+}
 
 
 /*Scrollbar styling*/
@@ -123,6 +130,7 @@ h1 h2 h3 h4 h5 h6{
     background-color: #111711;
 }
 .btn-green {
+    min-width: 200px;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-size: 16px;
@@ -143,6 +151,7 @@ h1 h2 h3 h4 h5 h6{
 }
 
 .btn-red-outline {
+    min-width: 200px;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-size: 16px;
@@ -165,6 +174,7 @@ h1 h2 h3 h4 h5 h6{
 }
 
 .btn-green-outline {
+    min-width: 200px;
     font-family: "Roboto", sans-serif;
     font-weight: 500;
     font-size: 16px;

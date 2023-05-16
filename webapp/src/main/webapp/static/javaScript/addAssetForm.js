@@ -6,6 +6,12 @@ const stepCounters = [...multiStepForm.querySelectorAll('.stepper-item')]
 let currentStep;
 let currentFS;
 
+const titleInput = document.getElementById('title');
+const authorInput = document.getElementById('author');
+const languageInput = document.getElementById('language');
+const languageSelect = document.getElementById('languageSelect')
+const form = document.getElementById('form')
+
 
 nextButtons = document.querySelectorAll('.next-button')
 prevButtons = document.querySelectorAll('.prev-button')
@@ -75,9 +81,30 @@ async function checkAndFetchFromISBN() {
     const response = await fetch(url + isbn);
     const book = await response.json();
 
-    const titleInput = document.getElementById('title');
-    const authorInput = document.getElementById('author');
-    const languageInput = document.getElementById('language');
+    if (book.language.length > 0) {
+        if (book.language.length !== 3) {
+            for (let opt in languageSelect.options) {
+                const langText = languageSelect.options[opt].innerText
+                if (book.language === langText) {
+                    languageInput.value = langText
+                    languageSelect.value = languageSelect.options[opt].value
+                    break
+                }
+            }
+        } else {
+            for (let opt in languageSelect.options) {
+                const langCode = languageSelect.options[opt].value
+                if (book.language.includes(langCode)) {
+                    languageInput.value = languageSelect[opt].innerText
+                    languageSelect.value = languageSelect.options[opt].value
+                    break
+                }
+            }
+        }
+    } else {
+        languageSelect.disabled = false
+    }
+
 
     titleInput.value = book.name || '';
     authorInput.value = book.author || '';
@@ -93,6 +120,8 @@ async function checkAndFetchFromISBN() {
     isbnInput.value = isbn
     return true
 }
+
+
 
 function cleanISBN(isbn) {
     return isbn.replace(/[-\s]/g, '');
@@ -145,8 +174,18 @@ function beforeSubmit() {
     console.log("Total Days: " + totalTimeInDays)
 
     timeInDays.value = totalTimeInDays
+
+    languageInput.value = languageSelect.options[languageSelect.selectedIndex].innerText
+
     return true
 }
+
+//Precent the Enter to submit the form
+form.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+    }
+})
 
 //Once all loaded
 document.addEventListener("DOMContentLoaded", e => {

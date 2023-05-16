@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
 
-<div style="display: flex; ">
+<div style=" ">
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">
@@ -14,8 +14,8 @@
             </c:otherwise>
         </c:choose>
     </button>
-    <br>
-    <button id="deleteBtn" class="btn-red-outline" type="submit">
+    <button id="deleteBtn" class="btn-red-outline" style="margin-top: 5px" type="submit">
+        <i class="fas fa-trash" ></i>
         <spring:message code="delete" />
     </button>
 </div>

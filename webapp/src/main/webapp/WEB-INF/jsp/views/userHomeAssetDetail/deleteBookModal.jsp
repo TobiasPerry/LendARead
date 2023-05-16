@@ -23,12 +23,9 @@
                         <spring:message code="yes" />
                     </button>
                 </form>
-                <c:url var="userHomeUrl" value="/userHome"/>
-                <form action="${userHomeUrl}" method="get">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
+                <button id="no_button1" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                         <spring:message code="no" />
-                    </button>
-                </form>
+                </button>
             </div>
         </div>
     </div>
@@ -37,5 +34,9 @@
     const deleteBtnHandler = document.getElementById('deleteBtn');
     deleteBtnHandler.addEventListener('click', function() {
         new bootstrap.Modal($('#deleteBookModal')).show();
+    });
+    const noButton2 = document.getElementById('no_button1');
+    noButton2.addEventListener('click', function() {
+        $('#deleteBookModal').modal('hide')
     });
 </script>
