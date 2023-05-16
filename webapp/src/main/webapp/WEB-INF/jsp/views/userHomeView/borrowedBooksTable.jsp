@@ -130,7 +130,9 @@
                         </div>
                     </td>
                     <td><c:out value="${asset.book.name}"/></td>
-                    <td><c:out value="${asset.dueDate}"/></td>
+                    <td class="date-column no-hidden-of"
+                        data-asset-status="<c:out value="${asset.assetState}"/>"><c:out
+                            value="${asset.dueDate}"/></td>
                     <td><c:out value="${asset.owner.name}"/></td>
                 </tr>
             </c:forEach>
@@ -138,17 +140,19 @@
         </table>
     </div>
 </div>
-<jsp:include page="paginationButtons.jsp">
-    <jsp:param name="table" value="${table}"/>
-    <jsp:param name="direction" value="${direction}"/>
-    <jsp:param name="attribute" value="${attribute}"/>
-    <jsp:param name="filterValue" value="${filterValue}"/>
-    <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
-    <jsp:param name="currentPage" value="${currentPage}"/>
-    <jsp:param name="previousPage" value="${previousPage}"/>
-    <jsp:param name="totalPages" value="${totalPages}"/>
-    <jsp:param name="nextPage" value="${nextPage}"/>
-</jsp:include>
+<c:if test="${totalPages > 0}">
+    <jsp:include page="paginationButtons.jsp">
+        <jsp:param name="table" value="${table}"/>
+        <jsp:param name="direction" value="${direction}"/>
+        <jsp:param name="attribute" value="${attribute}"/>
+        <jsp:param name="filterValue" value="${filterValue}"/>
+        <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+        <jsp:param name="currentPage" value="${currentPage}"/>
+        <jsp:param name="previousPage" value="${previousPage}"/>
+        <jsp:param name="totalPages" value="${totalPages}"/>
+        <jsp:param name="nextPage" value="${nextPage}"/>
+    </jsp:include>
+</c:if>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -165,5 +169,8 @@
             });
         });
     });
+
+    const warningFewDays = `<spring:message code="userHomeView.warning.fewDays"/>`
+    const warningReturnDate = `<spring:message code="userHomeView.warning.deadLinePassed"/>`
 
 </script>

@@ -24,7 +24,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -55,7 +56,7 @@ public class AssetAvailabilityServiceImplTest {
             new BookImpl(0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
-            new LocationImpl(0,"", "", "", ""),
+            new LocationImpl(0, "", "", "", ""),
             0,
             AssetState.PUBLIC,
             10
@@ -63,7 +64,7 @@ public class AssetAvailabilityServiceImplTest {
 
 
     @Test(expected = AssetInstanceBorrowException.class)
-    public void borrowAssetNotPresentTest() throws Exception{
+    public void borrowAssetNotPresentTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.empty());
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
@@ -76,7 +77,7 @@ public class AssetAvailabilityServiceImplTest {
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void borrowAssetFromUserNotPresentTest() throws Exception{
+    public void borrowAssetFromUserNotPresentTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
         when(userDao.getUser(anyString())).thenReturn(Optional.empty());
@@ -89,7 +90,7 @@ public class AssetAvailabilityServiceImplTest {
     }
 
     @Test(expected = AssetInstanceBorrowException.class)
-    public void borrowAssetNotPublicTest() throws Exception{
+    public void borrowAssetNotPublicTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
@@ -102,7 +103,7 @@ public class AssetAvailabilityServiceImplTest {
     }
 
     @Test(expected = DayOutOfRangeException.class)
-    public void borrowAssetInvalidDateTest() throws Exception{
+    public void borrowAssetInvalidDateTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));

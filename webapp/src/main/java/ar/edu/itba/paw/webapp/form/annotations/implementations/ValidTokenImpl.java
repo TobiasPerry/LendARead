@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.form.annotations.implementations;
 
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.ValidToken;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +17,6 @@ public class ValidTokenImpl implements ConstraintValidator<ValidToken, String> {
 
     @Override
     public boolean isValid(String token, ConstraintValidatorContext constraintValidatorContext) {
-       return userService.isTokenValid(token);
+        return userService.isTokenValid(token);
     }
 }

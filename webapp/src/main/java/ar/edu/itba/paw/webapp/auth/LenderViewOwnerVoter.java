@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth;
 
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +41,15 @@ public class LenderViewOwnerVoter implements AccessDecisionVoter<FilterInvocatio
         String url = filterInvocation.getRequestUrl().toLowerCase();
         vote.set(ACCESS_ABSTAIN);
         try {
-        if(url.contains("/lentbookdetails/") || url.contains("/returnasset") || url.contains("/rejectasset") || url.contains("/confirmasset")) {
-            StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
-            stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
-            if(userAssetInstanceService.getBorrowedAssetInstance(Integer.parseInt(stringBuilder.toString())).getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
-                vote.set(ACCESS_GRANTED);
-            else {
-                vote.set(ACCESS_DENIED);
+            if (url.contains("/lentbookdetails/") || url.contains("/returnasset") || url.contains("/rejectasset") || url.contains("/confirmasset")) {
+                StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
+                stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
+                if (userAssetInstanceService.getBorrowedAssetInstance(Integer.parseInt(stringBuilder.toString())).getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
+                    vote.set(ACCESS_GRANTED);
+                else {
+                    vote.set(ACCESS_DENIED);
+                }
             }
-        }
         } catch (NumberFormatException e) {
             vote.set(ACCESS_ABSTAIN);
         }

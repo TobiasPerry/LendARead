@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.form.annotations.interfaces;
 
-import ar.edu.itba.paw.webapp.form.annotations.implementations.IsbnImpl;
 import ar.edu.itba.paw.webapp.form.annotations.implementations.NotEmptyImpl;
 
 import javax.validation.Constraint;
@@ -12,10 +11,11 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy= NotEmptyImpl.class)
+@Constraint(validatedBy = NotEmptyImpl.class)
 public @interface NotEmpty {
     String message() default "The field cannot be empty";
 
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

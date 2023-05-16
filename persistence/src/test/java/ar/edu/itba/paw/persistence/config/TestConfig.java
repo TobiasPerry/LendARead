@@ -14,7 +14,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 import javax.sql.DataSource;
 
 @ComponentScan({"ar.edu.itba.paw.persistence"})
@@ -31,7 +30,7 @@ public class TestConfig {
     private Resource inserts;
 
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         ds.setDriverClass(JDBCDriver.class);
         ds.setUrl("jdbc:hsqldb:mem:paw;sql.syntax_pgs=true");
@@ -43,14 +42,14 @@ public class TestConfig {
 
 
     @Bean
-    public DataSourceInitializer dataSourceInitializer(final  DataSource ds){
+    public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
         final DataSourceInitializer dsi = new DataSourceInitializer();
         dsi.setDataSource(ds);
         dsi.setDatabasePopulator(databasePopulator());
         return dsi;
     }
 
-    private DatabasePopulator databasePopulator(){
+    private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 
         dbp.addScript(hsqldb);
@@ -59,6 +58,7 @@ public class TestConfig {
 
         return dbp;
     }
+
     @Bean
     public PlatformTransactionManager transactionManager(final DataSource ds) {
 

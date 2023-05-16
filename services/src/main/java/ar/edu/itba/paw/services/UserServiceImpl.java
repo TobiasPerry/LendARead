@@ -23,7 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,8 +39,9 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
+
     @Autowired
-    public UserServiceImpl(final PasswordEncoder passwordEncoder,final UserDao userDao,final EmailService emailService, final AuthenticationManager authenticationManager) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
@@ -50,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public User getUser(final String email) throws UserNotFoundException {
         Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
-            LOGGER.error("Failed to get user {}",email);
+            LOGGER.error("Failed to get user {}", email);
             throw new UserNotFoundException("The user was not found");
         }
         return user.get();
@@ -58,20 +62,20 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User createUser(String email,String name,String telephone,String password) {
+    public User createUser(String email, String name, String telephone, String password) {
 
-        return userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
+        return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
 
     @Transactional
     @Override
-    public void changeRole(final String email,final Behaviour behaviour) throws UserNotFoundException {
-        boolean changed = userDao.changeRole(email,behaviour);
-        if(!changed)
+    public void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException {
+        boolean changed = userDao.changeRole(email, behaviour);
+        if (!changed)
             throw new UserNotFoundException("The user was not founded");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
-        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ behaviour.toString()));
+        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_" + behaviour.toString()));
         Authentication newAuth = new
                 UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
         SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -86,45 +90,46 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public String getCurrentUser() {
-        return ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Collection<? extends GrantedAuthority> getCurrentRoles() {
-        return  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 
     @Transactional
     @Override
-    public boolean createChangePasswordToken(final String email){
+    public boolean createChangePasswordToken(final String email) {
         String token = UUID.randomUUID().toString();
-        PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token,email, LocalDate.now().plusDays(1));
-        emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
+        PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token, email, LocalDate.now().plusDays(1));
+        emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken());
         return userDao.setForgotPasswordToken(passwordResetToken);
     }
 
     @Transactional
     @Override
-    public boolean changePassword(final String token,final String password){
+    public boolean changePassword(final String token, final String password) {
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
-        if(!passwordResetToken.isPresent())
+        if (!passwordResetToken.isPresent())
             return false;
-        if(!isTokenValid(token))
-           return false;
+        if (!isTokenValid(token))
+            return false;
         userDao.deletePasswordRestToken(token);
-        return userDao.changePassword(passwordResetToken.get().getUser(),passwordEncoder.encode(password));
+        return userDao.changePassword(passwordResetToken.get().getUser(), passwordEncoder.encode(password));
     }
+
     @Transactional(readOnly = true)
     @Override
-    public boolean isTokenValid(final String token){
+    public boolean isTokenValid(final String token) {
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
         return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
     }
 
     @Override
-    public void logInUser(final String email, final String password){
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(email,password);
+    public void logInUser(final String email, final String password) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         Authentication auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }

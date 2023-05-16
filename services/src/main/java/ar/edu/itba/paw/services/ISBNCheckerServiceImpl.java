@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ public class ISBNCheckerServiceImpl implements ISBNCheckerService {
     private final AssetDao assetDao;
 
     @Autowired
-    public ISBNCheckerServiceImpl(final LibraryAPIService  libraryAPIService, final AssetDao assetDao) {
+    public ISBNCheckerServiceImpl(final LibraryAPIService libraryAPIService, final AssetDao assetDao) {
         this.libraryAPIService = libraryAPIService;
         this.assetDao = assetDao;
     }

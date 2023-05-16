@@ -5,17 +5,16 @@ import ar.edu.itba.paw.webapp.form.annotations.interfaces.RepeatPassword;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.ValidToken;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @RepeatPassword
-@Getter @Setter
+@Getter
+@Setter
 public class ChangePasswordForm {
 
-    @Size(min = 3,max = 500)
+    @Size(min = 3, max = 500)
     @ValidToken
     private String token;
 

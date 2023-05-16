@@ -14,9 +14,6 @@ import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 
 @Controller
@@ -50,14 +46,14 @@ public class AssetViewController {
     public ModelAndView assetInfoView(@PathVariable(name = "id") int id,
                                       @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,
                                       final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
-                                      @RequestParam(required = false,name = "success") final boolean success) throws AssetInstanceNotFoundException{
+                                      @RequestParam(required = false, name = "success") final boolean success) throws AssetInstanceNotFoundException {
         AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
-        if(assetInstanceService.isOwner(assetInstanceOpt,userService.getCurrentUser()))
+        if (assetInstanceService.isOwner(assetInstanceOpt, userService.getCurrentUser()))
             return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());
 
         final ModelAndView mav = new ModelAndView("/views/assetView");
-        if(success)
-            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
+        if (success)
+            SnackbarControl.displaySuccess(mav, SUCESS_MSG);
         mav.addObject("assetInstance", assetInstanceOpt);
 
         return mav;
@@ -68,8 +64,8 @@ public class AssetViewController {
                                      @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
                                      final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
                                      final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
-        if (errors.hasErrors()){
-            return assetInfoView(id,borrowAssetForm,searchFilterSortForm, false );
+        if (errors.hasErrors()) {
+            return assetInfoView(id, borrowAssetForm, searchFilterSortForm, false);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -77,16 +73,15 @@ public class AssetViewController {
             assetAvailabilityService.borrowAsset(id, userService.getCurrentUser(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
             LOGGER.debug("Borrow asset correct");
 
-        }catch (DayOutOfRangeException ex){
+        } catch (DayOutOfRangeException ex) {
             LOGGER.warn("Cannot borrow asset because the de dayFormat");
-            ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm, searchFilterSortForm, false);
-            assetInfoView.addObject("dayError",true);
+            ModelAndView assetInfoView = assetInfoView(id, borrowAssetForm, searchFilterSortForm, false);
+            assetInfoView.addObject("dayError", true);
             return assetInfoView;
         }
 
-        return new ModelAndView(String.format("redirect:/info/%d?success=%s",id,"true"));
+        return new ModelAndView(String.format("redirect:/info/%d?success=%s", id, "true"));
     }
-
 
 
 }
