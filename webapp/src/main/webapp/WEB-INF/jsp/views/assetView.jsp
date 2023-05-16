@@ -102,6 +102,7 @@
 <jsp:include page="../components/modal.jsp">
     <jsp:param name="modalTitle" value="${modalTitle}"/>
     <jsp:param name="text" value="${modalText}"/>
+    <jsp:param name="redirectionUrl" value="/discovery"/>
 </jsp:include>
 <script>
 

@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.*;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
@@ -32,16 +35,28 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         this.photosDao = photosDao;
     }
 
-    @Transactional
     @Override
-    public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException{
-        Optional<Integer> assetId = bookDao.addAsset(assetInstance.getBook());
-        Optional<User> user = userDao.getUser(assetInstance.getOwner().getEmail());
-        Optional<Integer> locationId = locationDao.addLocation(assetInstance.getLocation());
-        Optional<Integer> photoId =  photosDao.addPhoto(photo);
-        if(assetId.isPresent() && user.isPresent() && locationId.isPresent() && photoId.isPresent()) {
-            assetInstanceDao.addAssetInstance(assetId.get(), user.get().getId(),locationId.get(),photoId.get(),assetInstance);
+    @Transactional
+    public AssetInstance addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
+
+        Optional<Book> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
+        Book book;
+        if (!bookOptional.isPresent()) {
+            try {
+                book = bookDao.addAsset(assetInstance.getBook());
+            }catch (BookAlreadyExistException exception){
+                throw new InternalErrorException("Internal error");
+            }
         }else {
+            book = bookOptional.get();
+        }
+        Optional<User> user = userDao.getUser(assetInstance.getOwner().getEmail());
+        Location locationId = locationDao.addLocation(assetInstance.getLocation());
+        Optional<Integer> photoId =  photosDao.addPhoto(photo);
+
+        if( user.isPresent()  && photoId.isPresent()) {
+            return assetInstanceDao.addAssetInstance(book, user.get(),locationId,photoId.get(),assetInstance);
+        } else {
             throw new InternalErrorException("Cannot addAssetInstance");
         }
     }

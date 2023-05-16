@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
@@ -54,8 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createUser(final String email,final String name,final String telephone,final String password) {
-        userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
+    public User createUser(String email,String name,String telephone,String password) {
+
+        return userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
     }
 
     @Transactional

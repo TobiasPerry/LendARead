@@ -50,7 +50,7 @@ final public class FormFactoryAddAssetView {
         );
 
 
-        Book book = BookFactory.createBook(request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
+        Book book = BookFactory.createBook(ID_DEFAULT_VALUE,request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
 
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());

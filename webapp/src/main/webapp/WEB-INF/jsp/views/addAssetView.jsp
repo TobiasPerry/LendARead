@@ -254,6 +254,7 @@
 <jsp:include page="../components/modal.jsp">
     <jsp:param name="modalTitle" value="${modalTitle}"/>
     <jsp:param name="text" value="${modalText}"/>
+    <jsp:param name="redirectionUrl" value="/myBookDetails/${assetId}"/>
 </jsp:include>
 
 <spring:message code="addAssetView.changeRole.title" var="title"/>

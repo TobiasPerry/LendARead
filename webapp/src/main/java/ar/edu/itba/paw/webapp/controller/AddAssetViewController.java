@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Language;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
@@ -55,22 +56,24 @@ final public class AddAssetViewController {
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
         if(errors.hasErrors() || parsedImage == null)
-            return addAssetView(addAssetForm,false).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm,false,-1).addObject(INVALID_SNACKBAR, true);
 
         try {
-            assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
-            return new ModelAndView("redirect:/addAssetView?succes=true");
+            AssetInstance assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
+            return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
-            return addAssetView(addAssetForm,false).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm,false,-1).addObject(INVALID_SNACKBAR, true);
         }
     }
 
     @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
-    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success){
+    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success,@RequestParam(required = false,name = "id") Integer id){
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<Language> languages = languagesService.getLanguages();
         LOGGER.debug("LANGUAGES SIZE: {}", languages.size());
         mav.addObject("langs", languages);
+        if(id != null)
+            mav.addObject("assetId",id);
         if(success)
             SnackbarControl.displaySuccess(mav,SUCESS_MSG);
         return mav;

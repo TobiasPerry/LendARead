@@ -17,7 +17,7 @@
         <p class="mb-4"><c:out value="${param.text}" /></p>
       </div>
       <div class="modal-footer border-0">
-        <a type="button"  class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;" href="<c:url value="/discovery"/>"><spring:message code="exploringModal.continue" /></a>
+        <a type="button"  class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;" href="<c:url value="${param.redirectionUrl}"/>"><spring:message code="exploringModal.continue" /></a>
       </div>
     </div>
   </div>
