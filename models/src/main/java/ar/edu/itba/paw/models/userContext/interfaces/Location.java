@@ -12,4 +12,5 @@ public interface Location {
     String getCountry();
 
     String getAddress();
+    int getId();
 }

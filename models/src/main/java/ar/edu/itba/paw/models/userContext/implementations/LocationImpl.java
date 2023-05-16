@@ -18,6 +18,11 @@ final public class LocationImpl implements Location {
     }
 
     @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
     public String toString() {
         return String.format("%s, %s, %s, %s", zipcode, locality, province, country) ;
     }

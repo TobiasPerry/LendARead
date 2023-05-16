@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class LocationDaoImpl implements LocationDao {
 
 
     @Override
-    public Optional<Integer> addLocation(Location lc) {
+    public Location addLocation(Location lc) {
         final Map<String, Object> args = new HashMap<>();
 
         args.put("zipcode",lc.getZipcode());
@@ -41,8 +42,8 @@ public class LocationDaoImpl implements LocationDao {
         args.put("province",lc.getProvince());
         args.put("country",lc.getCountry());
         args.put("address",lc.getAddress());
-
-        return Optional.of(jdbcInsert.executeAndReturnKey(args).intValue());
+        int id = jdbcInsert.executeAndReturnKey(args).intValue();
+        return new LocationImpl(id,lc.getZipcode(),lc.getLocality(),lc.getProvince(),lc.getCountry());
     }
 
 

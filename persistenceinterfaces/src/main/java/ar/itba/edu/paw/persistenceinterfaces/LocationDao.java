@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface LocationDao {
 
-    Optional<Integer> addLocation(Location lc);
+    Location addLocation(Location lc);
 
 }

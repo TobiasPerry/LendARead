@@ -23,18 +23,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Repository
 public class AssetInstanceDaoImpl implements AssetInstanceDao {
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
+
     private static final RowMapper<AssetInstance> ROW_MAPPER_AI = new RowMapper<AssetInstance>() {
         @Override
         public AssetInstance mapRow(ResultSet rs, int i) throws SQLException {
@@ -92,15 +94,23 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     @Autowired
     public AssetInstanceDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
+        this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("assetinstance").usingGeneratedKeyColumns("id");
+
     }
     @Override
-    public Optional<Integer> addAssetInstance(int assetId,int ownerId,int locationId,int photoId, AssetInstance ai) {
-        String query = "INSERT INTO assetinstance(assetid,owner,locationid,physicalcondition,status,photoid,maxLendingDays) VALUES(?,?,?,?,?,?,?)";
+    public AssetInstance addAssetInstance(final Book book, final User owner, final Location location, final int photoId,final AssetInstance ai) {
+        final Map<String, Object> args = new HashMap<>();
+        args.put("assetid",book.getId());
+        args.put("owner",owner.getId());
+        args.put("locationid",location.getId());
+        args.put("photoid",photoId);
+        args.put("physicalcondition",ai.getPhysicalCondition());
+        args.put("status",ai.getAssetState());
+        args.put("maxLendingDays",ai.getMaxDays());
 
+        int id = jdbcInsert.executeAndReturnKey(args).intValue();
 
-        jdbcTemplate.update(query,assetId,ownerId,locationId,ai.getPhysicalCondition().toString(),ai.getAssetState().name(),photoId,ai.getMaxDays());
-
-        return Optional.empty();
+        return new AssetInstanceImpl(id,book,ai.getPhysicalCondition(),owner,location,photoId,ai.getAssetState(),ai.getMaxDays());
     }
 
     @Override

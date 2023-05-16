@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.*;
@@ -36,7 +37,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
     @Override
     @Transactional
-    public void addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
+    public AssetInstance addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
 
         Optional<Book> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
         Book book;
@@ -50,11 +51,11 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
             book = bookOptional.get();
         }
         Optional<User> user = userDao.getUser(assetInstance.getOwner().getEmail());
-        Optional<Integer> locationId = locationDao.addLocation(assetInstance.getLocation());
+        Location locationId = locationDao.addLocation(assetInstance.getLocation());
         Optional<Integer> photoId =  photosDao.addPhoto(photo);
 
-        if( user.isPresent() && locationId.isPresent() && photoId.isPresent()) {
-            assetInstanceDao.addAssetInstance(book.getId(), user.get().getId(),locationId.get(),photoId.get(),assetInstance);
+        if( user.isPresent()  && photoId.isPresent()) {
+            return assetInstanceDao.addAssetInstance(book, user.get(),locationId,photoId.get(),assetInstance);
         } else {
             throw new InternalErrorException("Cannot addAssetInstance");
         }
