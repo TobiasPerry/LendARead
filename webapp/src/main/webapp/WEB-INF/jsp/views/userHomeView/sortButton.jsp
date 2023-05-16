@@ -10,7 +10,6 @@
         <input type="hidden" name="direction" value="${param.sortAttribute ? 'desc' : 'asc'}" />
         <input type="hidden" name="filterValue" value="${param.filterValue}">
         <input type="hidden" name="filterAtribuite" value="${param.filterAtribuite}">
-
         <button type="submit" class="sort-button<c:if test='${param.sortAttribute}'> sort-button-selected</c:if>">
             <spring:message code="${param.title}"/>
             <i class="fas fa-arrow-<c:out value='${param.sortAttribute ? "up" : "down"}' />"></i>
