@@ -118,7 +118,7 @@
 
             <c:url	value="/discovery"	var="discoveryPageUrl"	/>
             <form:form method="get" action="${discoveryPageUrl}" modelAttribute="searchFilterSortForm" id="springForm">
-                <input type ="hidden" name="currentPage" id="currentPageID" value="${page}"/>
+                <input type ="hidden" name="currentPage" id="currentPageID" value="${currentPage}"/>
 
                 <input type ="hidden" name="sort" id="sort" value="${sort}"/>
                 <input type ="hidden" name="sortDirection" id="sortDirection" value="${sortDirection}"/>

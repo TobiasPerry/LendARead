@@ -90,7 +90,6 @@ public class IndexViewController {
         mav.addObject("previousPage", page.getCurrentPage() != 1);
         mav.addObject("currentPage", page.getCurrentPage());
         mav.addObject("totalPages", page.getTotalPages());
-        mav.addObject("page", page.getCurrentPage());
 
         List<String> languages = page.getLanguages();
         mav.addObject("languages", languages != null ? languages : new ArrayList<>());
