@@ -7,16 +7,16 @@
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">
-                <i class="fas fa-eye fa-lg"></i> <spring:message code="public"/>
+                <i class="fas fa-eye-slash fa-lg"></i> <spring:message code="userBookDetails.makePrivate"/>
             </c:when>
             <c:otherwise>
-                <i class="fas fa-eye-slash fa-lg"></i> <spring:message code="private"/>
+                <i class="fas fa-eye fa-lg"></i> <spring:message code="userBookDetails.makePublic"/>
             </c:otherwise>
         </c:choose>
     </button>
     <button id="deleteBtn" class="btn-red-outline" style="margin-top: 5px" type="submit">
-        <i class="fas fa-trash" ></i>
-        <spring:message code="delete" />
+        <i class="fas fa-trash"></i>
+        <spring:message code="delete"/>
     </button>
 </div>
 
