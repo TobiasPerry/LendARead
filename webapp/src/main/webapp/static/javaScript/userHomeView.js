@@ -1,6 +1,9 @@
 const dates = [...document.querySelectorAll('td.date-column')];
 
 dates.forEach((date) => {
+    if (date.dataset.assetStatus === 'REJECTED' || date.dataset.assetStatus === 'PRIVATE') {
+        return;
+    }
     const today = new Date()
     let diff = new Date(date.textContent) - today
     diff = Math.ceil(diff / (1000 * 3600 * 24))

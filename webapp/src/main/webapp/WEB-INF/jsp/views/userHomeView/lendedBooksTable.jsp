@@ -142,7 +142,9 @@
                                 </div>
                             </td>
                             <td><c:out value="${asset.book.name}"/></td>
-                            <td class="date-column no-hidden-of"><c:out value="${asset.dueDate}"/></td>
+                            <td class="date-column no-hidden-of"
+                                data-asset-status="<c:out value="${asset.assetState}"/>"><c:out
+                                    value="${asset.dueDate}"/></td>
                             <td><c:out value="${asset.borrower}"/></td>
                             <td><spring:message code="enum.${asset.assetState}"/></td>
                         </tr>
