@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.webapp.form.ChangePasswordForm;
 import ar.edu.itba.paw.webapp.form.EmailForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 public class ForgotPasswordController {
 
     private final UserService userService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
     @Autowired
     public ForgotPasswordController(UserService userService) {
@@ -32,9 +35,11 @@ public class ForgotPasswordController {
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
     public ModelAndView forgotPasswordPost(@Valid @ModelAttribute("emailForm") final EmailForm emailForm, final BindingResult errors) {
         if (errors.hasErrors()) {
+            LOGGER.warn("Forgot password form erros");
             return forgotPassword(emailForm);
         }
         userService.createChangePasswordToken(emailForm.getEmail());
+        LOGGER.debug("The token for forgot password has been created");
         return new ModelAndView("redirect:/changePassword");
     }
 
@@ -49,6 +54,7 @@ public class ForgotPasswordController {
             return changePassword(changePasswordForm);
         }
         userService.changePassword(changePasswordForm.getToken(), changePasswordForm.getPassword());
+        LOGGER.debug("The password has been changed");
         return new ModelAndView("redirect:/login");
     }
 }

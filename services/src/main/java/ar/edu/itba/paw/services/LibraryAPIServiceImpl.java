@@ -77,7 +77,7 @@ public class LibraryAPIServiceImpl implements LibraryAPIService {
             try {
                 authorName = getAuthorName(authorKey);
             } catch (IOException | JSONException e) {
-                System.out.println("Error retrieving info about: " + authorKey);
+                LOGGER.error("Error retrieving info about: {}",authorKey);
             }
 
             if (authorName != null && !authorName.isEmpty()) {

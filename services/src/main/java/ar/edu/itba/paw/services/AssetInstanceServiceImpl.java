@@ -11,6 +11,8 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import java.util.Optional;
 
 @Service
 public class AssetInstanceServiceImpl implements AssetInstanceService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private final AssetDao assetDao;
 
@@ -36,10 +39,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
-        if (!assetInstanceOpt.isPresent())
+        if (!assetInstanceOpt.isPresent()) {
+            LOGGER.error("Failed to find the asset instance");
             throw new AssetInstanceNotFoundException("assetInstance not found");
-
-
+        }
         return assetInstanceOpt.get();
     }
 
@@ -75,8 +78,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
          boolean wasRemoved = assetInstanceDao.changeStatus(id, AssetState.DELETED);
-         if(!wasRemoved)
+         if(!wasRemoved) {
+             LOGGER.error("Failed to remove the asset instance");
              throw new AssetInstanceNotFoundException("Asset instance no found");
+         }
     }
     @Override
     public boolean isOwner(final AssetInstance assetInstance,final String email){

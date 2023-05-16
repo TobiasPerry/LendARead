@@ -11,6 +11,8 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -34,6 +36,7 @@ public class AssetViewController {
     private final AssetAvailabilityService assetAvailabilityService;
 
     private final UserService userService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
 
     @Autowired
@@ -71,10 +74,12 @@ public class AssetViewController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         try {
-            assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
-        }catch (DayOutOfRangeException ex){
-            ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm, searchFilterSortForm, false);
+            assetAvailabilityService.borrowAsset(id, userService.getCurrentUser(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
+            LOGGER.debug("Borrow asset correct");
 
+        }catch (DayOutOfRangeException ex){
+            LOGGER.warn("Cannot borrow asset because the de dayFormat");
+            ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm, searchFilterSortForm, false);
             assetInfoView.addObject("dayError",true);
             return assetInfoView;
         }
@@ -82,8 +87,6 @@ public class AssetViewController {
         return new ModelAndView(String.format("redirect:/info/%d?success=%s",id,"true"));
     }
 
-    private String getCurrentUserEmail() {
-        return ((UserDetails )SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-    }
+
 
 }

@@ -8,6 +8,8 @@ import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.*;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 @Service
 final public class AssetExistanceServiceImpl implements AssetExistanceService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
+
     private final AssetDao bookDao;
 
     private final UserDao userDao;
@@ -45,6 +49,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
             try {
                 book = bookDao.addAsset(assetInstance.getBook());
             }catch (BookAlreadyExistException exception){
+                LOGGER.error("Failed to add  a new book");
                 throw new InternalErrorException("Internal error");
             }
         }else {
@@ -55,8 +60,10 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         Optional<Integer> photoId =  photosDao.addPhoto(photo);
 
         if( user.isPresent()  && photoId.isPresent()) {
+            LOGGER.debug("Add a new asset intance");
             return assetInstanceDao.addAssetInstance(book, user.get(),locationId,photoId.get(),assetInstance);
         } else {
+            LOGGER.error("Failed to add  a new book instance");
             throw new InternalErrorException("Cannot addAssetInstance");
         }
     }

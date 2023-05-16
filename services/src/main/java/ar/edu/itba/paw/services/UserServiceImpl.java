@@ -8,6 +8,8 @@ import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl
 import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
 
     private final AuthenticationManager authenticationManager;
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
     @Autowired
@@ -46,8 +49,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(final String email) throws UserNotFoundException {
         Optional<User> user = userDao.getUser(email);
-        if (!user.isPresent())
+        if (!user.isPresent()) {
+            LOGGER.error("Failed to get user {}",email);
             throw new UserNotFoundException("The user was not found");
+        }
         return user.get();
     }
 

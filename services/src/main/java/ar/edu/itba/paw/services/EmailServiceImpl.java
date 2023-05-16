@@ -5,6 +5,8 @@ import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -32,6 +34,7 @@ class EmailServiceImpl implements EmailService {
     private final String baseUrl;
 
     private final MessageSource messageSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     @Autowired
     public EmailServiceImpl(final JavaMailSender javaMailSender, final SpringTemplateEngine templateEngine,final @Qualifier("baseUrl") String baseUrl,final MessageSource messageSource) {
@@ -43,7 +46,7 @@ class EmailServiceImpl implements EmailService {
     }
 
     private void sendEmail(final String addressTo, final String subject, final String message) {
-
+        LOGGER.debug("Sending email to {}",addressTo);
         MimeMessage msj = javaMailSender.createMimeMessage();
         try {
             msj.setFrom(new InternetAddress("lendabookservice@gmail.com"));
@@ -52,9 +55,7 @@ class EmailServiceImpl implements EmailService {
             msj.setContent( message,"text/html");
             javaMailSender.send(msj);
         } catch (MessagingException e) {
-            //TODO NO PUEDE ESTAR
-            System.out.println("ERROR: Couldn't send email");
-            System.err.println(e.getMessage());
+            LOGGER.error("Failed to send email to {}",addressTo);
         }
     }
     @Async
