@@ -29,6 +29,10 @@
     </div>
 </div>
 <script>
+    const deleteBtnHandler = document.getElementById('deleteBtn');
+    deleteBtnHandler.addEventListener('click', function() {
+        new bootstrap.Modal($('#deleteBookModal')).show();
+    });
     const noButton2 = document.getElementById('no_button1');
     noButton2.addEventListener('click', function () {
         $('#deleteBookModal').modal('hide')
