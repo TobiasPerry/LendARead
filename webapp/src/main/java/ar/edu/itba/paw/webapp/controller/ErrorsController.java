@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.*;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -31,6 +32,7 @@ public class ErrorsController {
             UserNotFoundException.class,
             AssetInstanceNotFoundException.class,
             ImageNotFoundException.class,
+            NoHandlerFoundException.class
     })
     public ModelAndView notFoundException() {
         ModelAndView mav = new ModelAndView("views/error");
