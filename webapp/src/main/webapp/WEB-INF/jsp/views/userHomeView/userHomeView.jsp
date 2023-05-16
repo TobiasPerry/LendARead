@@ -62,35 +62,58 @@
             </div>
             <div class="content">
                 <c:choose>
-                <c:when test="${table == 'my_books'}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="myBooksTable.jsp">
-                        <jsp:param name="userAssets" value="${userAssets}"/>
-                    </jsp:include>
-                </c:when>
-                <c:when test="${table == 'lended_books'}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="lendedBooksTable.jsp">
-                        <jsp:param name="isLender" value="${isLender}"/>
-                        <jsp:param name="userAssets" value="${userAssets}"/>
-                    </jsp:include>
-                </c:when>
-                <c:when test="${table == 'borrowed_books'}">
-                <% request.setCharacterEncoding("utf-8"); %>
-                <jsp:include page="borrowedBooksTable.jsp">
-                    <jsp:param name="userAssets" value="${userAssets}"/>
-                </jsp:include>
-            </c:when>
-            </c:choose>
+                    <c:when test="${table == 'my_books'}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="myBooksTable.jsp">
+                            <jsp:param name="userAssets" value="${userAssets}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'lended_books'}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="lendedBooksTable.jsp">
+                            <jsp:param name="isLender" value="${isLender}"/>
+                            <jsp:param name="userAssets" value="${userAssets}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'borrowed_books'}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="borrowedBooksTable.jsp">
+                            <jsp:param name="userAssets" value="${userAssets}"/>
+                        </jsp:include>
+                    </c:when>
+                </c:choose>
+                <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center align-items-center">
+                                <li class="page-item">
+                                    <button type="button" class="btn mx-5 pagination-button ${previousPage ? "" : "disabled"}" id="previousPageButton" style="border-color: rgba(255, 255, 255, 0)">
+                                        <i class="bi bi-chevron-left"></i>  <spring:message code="paginationButton.previous"/>
+                                    </button>
+                                </li>
+
+                                <li>
+                                    <c:out value="${currentPage}"/> / <c:out value="${totalPages}"/>
+                                </li>
+
+                                <li class="page-item">
+                                    <button type="button" class="btn mx-5 pagination-button ${nextPage ? "" : "disabled"}" id="nextPageButton" style="border-color: rgba(255, 255, 255, 0)">
+                                        <spring:message code="paginationButton.next"/> <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../userHomeAssetDetail/deleteBookModal.jsp">
-    <jsp:param name="modalType" value="${modalType}"/>
-    <jsp:param name="assetId" value="${assetId}"/>
-</jsp:include>
+        <% request.setCharacterEncoding("utf-8"); %>
+    <jsp:include page="../userHomeAssetDetail/deleteBookModal.jsp">
+        <jsp:param name="modalType" value="${modalType}"/>
+        <jsp:param name="assetId" value="${assetId}"/>
+    </jsp:include>
 
 </body>
 </html>

@@ -3,15 +3,12 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 final public class UserHomeViewController {
@@ -30,7 +27,7 @@ final public class UserHomeViewController {
 
     private static final String FILTER_ATRIBUITE = "filterAtribuite", SORT_ATRIBUITE = "attribute", SORT_VALUE ="direction", FILTER_VALUE = "filterValue";
 
-    private static final int PAGE_NUMBER = 5, DEFAULT_PAGE_NUMBER = 1;
+    private static final int ITEMS_PER_PAGE = 2, DEFAULT_PAGE_NUMBER = 1;
 
     @Autowired
     public UserHomeViewController(final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
@@ -86,7 +83,7 @@ final public class UserHomeViewController {
     }
 
     private PageUserAssets getUserAssetsIn(final int currentPage, final String table, final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) {
-        return userAssetInstanceService.getUserAssetsOfTable(PAGE_NUMBER, currentPage, userService.getCurrentUser(), table, filterAtribuite, filterValue, sortAtribuite, sortValue);
+        return userAssetInstanceService.getUserAssetsOfTable(currentPage, ITEMS_PER_PAGE, userService.getCurrentUser(), table, filterAtribuite, filterValue, sortAtribuite, sortValue);
     }
 
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)

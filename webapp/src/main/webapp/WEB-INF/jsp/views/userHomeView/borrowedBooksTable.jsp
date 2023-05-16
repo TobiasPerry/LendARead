@@ -133,29 +133,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
-            <div>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center align-items-center">
-                        <li class="page-item">
-                            <button type="button" class="btn mx-5 pagination-button ${previousPage ? "" : "disabled"}" id="previousPageButton" style="border-color: rgba(255, 255, 255, 0)">
-                                <i class="bi bi-chevron-left"></i>  <spring:message code="paginationButton.previous"/>
-                            </button>
-                        </li>
-
-                        <li>
-                            <c:out value="${currentPage}"/> / <c:out value="${totalPages}"/>
-                        </li>
-
-                        <li class="page-item">
-                            <button type="button" class="btn mx-5 pagination-button ${nextPage ? "" : "disabled"}" id="nextPageButton" style="border-color: rgba(255, 255, 255, 0)">
-                                <spring:message code="paginationButton.next"/> <i class="bi bi-chevron-right"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
