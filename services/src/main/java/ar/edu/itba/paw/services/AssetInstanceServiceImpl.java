@@ -78,6 +78,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
          if(!wasRemoved)
              throw new AssetInstanceNotFoundException("Asset instance no found");
     }
+    @Override
+    public boolean isOwner(final AssetInstance assetInstance,final String email){
+       return assetInstance.getOwner().getEmail().equals(email);
+    }
 
     @Transactional(readOnly = true)
     @Override

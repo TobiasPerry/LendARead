@@ -6,12 +6,14 @@ import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,11 +33,14 @@ public class AssetViewController {
     private final AssetInstanceService assetInstanceService;
     private final AssetAvailabilityService assetAvailabilityService;
 
+    private final UserService userService;
+
 
     @Autowired
-    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService) {
+    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
@@ -44,7 +49,8 @@ public class AssetViewController {
                                       final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
                                       @RequestParam(required = false,name = "success") final boolean success) throws AssetInstanceNotFoundException{
         AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
-
+        if(assetInstanceService.isOwner(assetInstanceOpt,userService.getCurrentUser()))
+            return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());
 
         final ModelAndView mav = new ModelAndView("/views/assetView");
         if(success)
@@ -62,9 +68,6 @@ public class AssetViewController {
         if (errors.hasErrors()){
             return assetInfoView(id,borrowAssetForm,searchFilterSortForm, false );
         }
-        //TODO PREGUNTAR
-        if(borrowAssetForm.getDate() == null)
-            System.out.println("ENTRE");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         try {
