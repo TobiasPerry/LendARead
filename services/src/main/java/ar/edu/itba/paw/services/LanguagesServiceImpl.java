@@ -32,7 +32,6 @@ public class LanguagesServiceImpl implements LanguagesService {
         }
 
         List<Language> languages = langsOpt.get();
-        LOGGER.debug("LANGUAGES SIZE: {}", languages.size());
         languages.sort(Comparator.comparing(Language::getName));
         return languages;
     }

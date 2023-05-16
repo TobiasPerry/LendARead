@@ -68,7 +68,6 @@ final public class AddAssetViewController {
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm, @RequestParam(required = false, name = "succes") boolean success, @RequestParam(required = false, name = "id") Integer id) {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<Language> languages = languagesService.getLanguages();
-        LOGGER.debug("LANGUAGES SIZE: {}", languages.size());
         mav.addObject("langs", languages);
         if (id != null)
             mav.addObject("assetId", id);
