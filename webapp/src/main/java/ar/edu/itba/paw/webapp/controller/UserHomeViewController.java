@@ -4,6 +4,7 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,8 +42,9 @@ final public class UserHomeViewController {
     }
     private ModelAndView initialiseModelViewWith(final String table,  final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
+        PageUserAssets page = getUserAssetsIn(table, sortAtribuite, sortValue, filterAtribuite, filterValue);
         model.addObject(IS_LENDER, !userService.getCurrentUserIsBorrower());
-        model.addObject(USER_ASSETS, getUserAssetsIn(table, sortAtribuite, sortValue, filterAtribuite, filterValue));
+        model.addObject(USER_ASSETS, page.getUserAssets());
         model.addObject(USER_EMAIL, userService.getUser(userService.getCurrentUser()).getName());
         model.addObject(TABLE, table);
 
@@ -53,6 +55,13 @@ final public class UserHomeViewController {
         model.addObject(SORT_VALUE, sortValue);
         model.addObject(FILTER_VALUE, filterValue);
         model.addObject(FILTER_ATRIBUITE, filterAtribuite);
+
+
+        model.addObject("nextPage", page.nextPage());
+        model.addObject("previousPage", page.previousPage());
+        model.addObject("currentPage", page.getCurrentPage());
+        model.addObject("totalPages", page.getTotalPages());
+        model.addObject("page", page.getCurrentPage());
 
         return model;
     }
@@ -72,7 +81,7 @@ final public class UserHomeViewController {
         return initialiseModelViewWith(table, NONE, NONE, NONE, NONE);
     }
 
-    private List<? extends AssetInstance> getUserAssetsIn(final String table, final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) {
+    private PageUserAssets getUserAssetsIn(final String table, final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) {
         return userAssetInstanceService.getUserAssetsOfTable( userService.getCurrentUser(), table, filterAtribuite, filterValue, sortAtribuite, sortValue);
     }
 

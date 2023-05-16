@@ -5,6 +5,8 @@ import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.viewsContext.implementations.PageUserAssetsImpl;
+import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<? extends AssetInstance> getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+    public PageUserAssets getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
 
         switch (tableSelected) {
             case "my_books":
@@ -41,7 +43,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
                 return userAssetsDao.getLendedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
         }
 
-        return new ArrayList<>();
+        return new PageUserAssetsImpl(new ArrayList<>());
     }
 
     @Transactional(readOnly = true)

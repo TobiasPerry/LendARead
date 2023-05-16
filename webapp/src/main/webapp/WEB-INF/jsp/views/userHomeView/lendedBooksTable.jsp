@@ -125,7 +125,6 @@
                 </table>
             </div>
         </div>
-
     </c:when>
     <c:otherwise>
         <div class="promo-box">

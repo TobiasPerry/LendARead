@@ -16,6 +16,8 @@ import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.viewsContext.implementations.PageUserAssetsImpl;
+import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
 
-    public List<BorrowedAssetInstance> getLendedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getLendedAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
@@ -117,15 +119,15 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         };
 
         if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
-            return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
+            return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue)));
 
-        return jdbcTemplate.query(query, rowMapper, email);
+        return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email));
     }
 
 
 
     @Override
-    public List<BorrowedAssetInstance> getBorrowedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getBorrowedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -176,14 +178,14 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .orElse(null);
         };
         if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
-            return jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue));
+            return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue)));
 
-        return jdbcTemplate.query(query, rowMapper, email);
+        return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email));
     }
 
 
     @Override
-    public List<AssetInstance> getUsersAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getUsersAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    ai.id" +
                 " FROM" +
@@ -221,11 +223,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         else
             assetIds = jdbcTemplate.query(query, assetIdRowMapper, email);
 
-        return assetIds.stream()
+        return new PageUserAssetsImpl(
+                assetIds.stream()
                 .map(assetInstanceDao::getAssetInstance)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @Override
