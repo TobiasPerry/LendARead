@@ -113,6 +113,16 @@
                             <jsp:param name="currentPage" value="${currentPage}"/>
                             <jsp:param name="title" value="borrower_name"/>
                         </jsp:include>
+
+                        <jsp:include page="sortButton.jsp">
+                            <jsp:param name="table" value="borrowed_books"/>
+                            <jsp:param name="attribute" value="asset_state"/>
+                            <jsp:param name="sortAttribute" value="${sort_asset_state}"/>
+                            <jsp:param name="filterValue" value="${filterValue}"/>
+                            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                            <jsp:param name="currentPage" value="${currentPage}"/>
+                            <jsp:param name="title" value="userDetailView.state"/>
+                        </jsp:include>
                     </tr>
                     </thead>
                     <tbody>
@@ -128,6 +138,7 @@
                             <td><c:out value="${asset.book.name}"/></td>
                             <td><c:out value="${asset.dueDate}"/></td>
                             <td><c:out value="${asset.borrower}"/></td>
+                            <td><spring:message code="enum.${asset.assetState}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -146,17 +157,19 @@
         </div>
     </c:otherwise>
 </c:choose>
-<jsp:include page="paginationButtons.jsp" >
-    <jsp:param name="table" value="${table}"/>
-    <jsp:param name="direction" value="${direction}"/>
-    <jsp:param name="attribute" value="${attribute}"/>
-    <jsp:param name="filterValue" value="${filterValue}"/>
-    <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
-    <jsp:param name="currentPage" value="${currentPage}"/>
-    <jsp:param name="previousPage" value="${previousPage}"/>
-    <jsp:param name="totalPages" value="${totalPages}"/>
-    <jsp:param name="nextPage" value="${nextPage}"/>
-</jsp:include>
+<c:if test="${totalPages > 0}">
+    <jsp:include page="paginationButtons.jsp" >
+        <jsp:param name="table" value="${table}"/>
+        <jsp:param name="direction" value="${direction}"/>
+        <jsp:param name="attribute" value="${attribute}"/>
+        <jsp:param name="filterValue" value="${filterValue}"/>
+        <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+        <jsp:param name="currentPage" value="${currentPage}"/>
+        <jsp:param name="previousPage" value="${previousPage}"/>
+        <jsp:param name="totalPages" value="${totalPages}"/>
+        <jsp:param name="nextPage" value="${nextPage}"/>
+    </jsp:include>
+</c:if>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
