@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.auth.BorrowerViewVoter;
-import ar.edu.itba.paw.webapp.auth.ChangeAssetStatusVoter;
-import ar.edu.itba.paw.webapp.auth.DeleteAssetVoter;
-import ar.edu.itba.paw.webapp.auth.LenderViewOwnerVoter;
+import ar.edu.itba.paw.webapp.auth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -43,6 +40,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private DeleteAssetVoter deleteAssetVoter;
+    @Autowired
+    private AuthSuccessHandler authSuccessHandler;
+
     @Autowired
     private ChangeAssetStatusVoter changeAssetStatusVoter;
     @Autowired
@@ -97,6 +97,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
                 .defaultSuccessUrl("/discovery",false)
+                .successHandler(authSuccessHandler)
                 .and().rememberMe().rememberMeParameter("rememberme")
                 .userDetailsService(userDetailsService)
                 .key(environment.getProperty("persistence.salt"))
@@ -105,6 +106,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 logoutSuccessUrl("/login").
                 and().exceptionHandling().accessDeniedPage("/errors/403")
                 .and().csrf().disable();
+    }
+    @Bean
+    public AuthSuccessHandler authSuccessHandler() {
+        return new AuthSuccessHandler();
     }
 
     @Override

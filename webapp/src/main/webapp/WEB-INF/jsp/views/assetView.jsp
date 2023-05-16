@@ -8,6 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -53,6 +54,7 @@
                         value="${assetInstance.book.language}"/></h6>
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                         value="${assetInstance.book.isbn}"/></h6>
+                <security:authorize access="isAuthenticated()">
 
                 <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
                 <form:form modelAttribute="borrowAssetForm" method="post"
@@ -61,10 +63,12 @@
                     <jsp:include page="../components/calendar.jsp"/>
                     <input class="btn btn-green" type="submit" value="<spring:message code="assetView.borrowButton"/>">
                 </form:form>
+                </security:authorize>
+                <security:authorize access="!isAuthenticated()">
+                    <a class="btn-green" href="<c:url value="/login"/>" style="text-decoration: none; text-align: center" ><spring:message code="auth.login"/></a>
+                </security:authorize>
             </div>
-
         </div>
-
     </div>
 
     <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
