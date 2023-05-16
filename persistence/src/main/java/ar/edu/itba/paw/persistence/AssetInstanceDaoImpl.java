@@ -154,7 +154,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             queryFilters.append(")");
             objects.addAll(physicalConditionsIn);
         }
-        final String search = searchQuery.getSearch();
+        final String search = searchQuery.getSearch().replace("%", "\\%");
         if(!search.equals("")) {
             String[] searchParsed = search.split(" ", 0);
             queryFilters.append(" AND ( ");
