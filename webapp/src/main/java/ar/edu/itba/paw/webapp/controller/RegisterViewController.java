@@ -27,7 +27,6 @@ public class RegisterViewController {
     }
 
     private final static String registerViewName = "views/registerView";
-    private final static String registerVerificationViewName = "views/registerVerifyView";
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -41,11 +40,6 @@ public class RegisterViewController {
         LOGGER.debug("User has been created okay");
 
         return new ModelAndView("redirect:/");
-    }
-
-    @RequestMapping(value = "/registerVerify", method = RequestMethod.GET)
-    public ModelAndView registerVerification() {
-        return new ModelAndView(registerVerificationViewName);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

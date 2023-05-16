@@ -64,17 +64,19 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
         assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
         int id = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
-
         emailService.sendBorrowerEmail(ai.get(), user.get(),id);
         emailService.sendLenderEmail(ai.get(), borrower,id);
+        LOGGER.info("Asset {} has been borrow",assetId);
     }
     @Transactional
     @Override
     public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
+
         if(!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE)) {
             LOGGER.error("Failed to update status to PRIVATE for asset instance with assetId: {}", assetId);
             throw new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId);
         }
+        LOGGER.info("Asset {} has been set private",assetId);
     }
 
     @Transactional
@@ -84,6 +86,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("Failed to update status to PUBLIC for asset instance with assetId: {}", assetId);
             throw new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId);
         }
+        LOGGER.info("Asset {} has been set public",assetId);
     }
 
     @Transactional()

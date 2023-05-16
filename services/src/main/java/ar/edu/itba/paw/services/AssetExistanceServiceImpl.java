@@ -60,7 +60,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         Optional<Integer> photoId =  photosDao.addPhoto(photo);
 
         if( user.isPresent()  && photoId.isPresent()) {
-            LOGGER.debug("Add a new asset intance");
+            LOGGER.info("Add a new asset intance");
             return assetInstanceDao.addAssetInstance(book, user.get(),locationId,photoId.get(),assetInstance);
         } else {
             LOGGER.error("Failed to add  a new book instance");
