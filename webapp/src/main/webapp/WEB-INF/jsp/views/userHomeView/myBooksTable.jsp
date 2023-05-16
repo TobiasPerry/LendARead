@@ -16,6 +16,7 @@
                     <jsp:param name="title" value="filterOption.all"/>
                     <jsp:param name="buttonText" value="userHomeView.all"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
 
                 <jsp:include page="filterButton.jsp">
@@ -27,6 +28,7 @@
                     <jsp:param name="title" value="filterOption.public"/>
                     <jsp:param name="buttonText" value="userHomeView.public"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
                 <jsp:include page="filterButton.jsp">
                     <jsp:param name="table" value="my_books"/>
@@ -37,6 +39,7 @@
                     <jsp:param name="title" value="filterOption.private"/>
                     <jsp:param name="buttonText" value="userHomeView.private"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
 
             </div>
@@ -51,6 +54,7 @@
                     <jsp:param name="sortAttribute" value="${sort_book_name}"/>
                     <jsp:param name="filterValue" value="${filterValue}"/>
                     <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                     <jsp:param name="title" value="book_name"/>
                 </jsp:include>
                 <jsp:include page="sortButton.jsp">
@@ -59,6 +63,7 @@
                     <jsp:param name="sortAttribute" value="${sort_author}"/>
                     <jsp:param name="filterValue" value="${filterValue}"/>
                     <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                     <jsp:param name="title" value="author"/>
                 </jsp:include>
                 <jsp:include page="sortButton.jsp">
@@ -67,6 +72,7 @@
                     <jsp:param name="sortAttribute" value="${sort_language}"/>
                     <jsp:param name="filterValue" value="${filterValue}"/>
                     <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                     <jsp:param name="title" value="language"/>
                 </jsp:include>
             </tr>

@@ -32,8 +32,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageUserAssets getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
-
+    public PageUserAssets getUserAssetsOfTable(final int pageNumber, final int itemsPerPage, final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
         switch (tableSelected) {
             case "my_books":
                 return userAssetsDao.getUsersAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);

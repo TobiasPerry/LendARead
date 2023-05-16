@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserAssetInstanceService {
 
-    PageUserAssets getUserAssetsOfTable(final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
+    PageUserAssets getUserAssetsOfTable(final int pageNumber, final int itemsPerPage, final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
     BorrowedAssetInstance getBorrowedAssetInstance(final int lendingId) throws AssetInstanceNotFoundException;
 
