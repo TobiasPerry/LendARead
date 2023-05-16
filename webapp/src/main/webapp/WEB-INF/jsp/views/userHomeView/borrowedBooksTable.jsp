@@ -15,6 +15,7 @@
                     <jsp:param name="title" value="filterOption.all"/>
                     <jsp:param name="buttonText" value="userHomeView.all"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
 
                 <jsp:include page="filterButton.jsp">
@@ -26,6 +27,7 @@
                     <jsp:param name="title" value="filterOption.pending"/>
                     <jsp:param name="buttonText" value="userHomeView.pending"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
                 <jsp:include page="filterButton.jsp">
                     <jsp:param name="table" value="borrowed_books"/>
@@ -36,6 +38,7 @@
                     <jsp:param name="title" value="filterOption.confirmed"/>
                     <jsp:param name="buttonText" value="userHomeView.inProgress"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
 
                 <jsp:include page="filterButton.jsp">
@@ -47,6 +50,7 @@
                     <jsp:param name="title" value="filterOption.delayed"/>
                     <jsp:param name="buttonText" value="userHomeView.delayed"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
 
                 <jsp:include page="filterButton.jsp">
@@ -58,6 +62,7 @@
                     <jsp:param name="title" value="filterOption.rejected"/>
                     <jsp:param name="buttonText" value="userHomeView.rejected"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
 
                 <jsp:include page="filterButton.jsp">
@@ -69,6 +74,7 @@
                     <jsp:param name="title" value="filterOption.finished"/>
                     <jsp:param name="buttonText" value="userHomeView.finished"/>
                     <jsp:param name="filter" value="${filter}"/>
+                    <jsp:param name="currentPage" value="${currentPage}"/>
                 </jsp:include>
             </div>
         </div>
@@ -83,6 +89,7 @@
                         <jsp:param name="sortAttribute" value="${sort_book_name}"/>
                         <jsp:param name="filterValue" value="${filterValue}"/>
                         <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                        <jsp:param name="currentPage" value="${currentPage}"/>
                         <jsp:param name="title" value="book_name"/>
                     </jsp:include>
 
@@ -92,6 +99,7 @@
                         <jsp:param name="sortAttribute" value="${sort_expected_retrieval_date}"/>
                         <jsp:param name="filterValue" value="${filterValue}"/>
                         <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                        <jsp:param name="currentPage" value="${currentPage}"/>
                         <jsp:param name="title" value="expected_retrieval_date"/>
                     </jsp:include>
 
@@ -101,6 +109,7 @@
                         <jsp:param name="sortAttribute" value="${sort_borrower_name}"/>
                         <jsp:param name="filterValue" value="${filterValue}"/>
                         <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                        <jsp:param name="currentPage" value="${currentPage}"/>
                         <jsp:param name="title" value="borrower_name"/>
                     </jsp:include>
                 </tr>
@@ -124,7 +133,19 @@
                 </tbody>
             </table>
         </div>
-</div>
+    </div>
+        <jsp:include page="paginationButtons.jsp" >
+            <jsp:param name="table" value="${table}"/>
+            <jsp:param name="direction" value="${direction}"/>
+            <jsp:param name="attribute" value="${attribute}"/>
+            <jsp:param name="filterValue" value="${filterValue}"/>
+            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+            <jsp:param name="currentPage" value="${currentPage}"/>
+            <jsp:param name="previousPage" value="${previousPage}"/>
+            <jsp:param name="totalPages" value="${totalPages}"/>
+            <jsp:param name="nextPage" value="${nextPage}"/>
+        </jsp:include>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

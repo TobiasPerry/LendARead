@@ -62,35 +62,35 @@
             </div>
             <div class="content">
                 <c:choose>
-                <c:when test="${table == 'my_books'}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="myBooksTable.jsp">
-                        <jsp:param name="userAssets" value="${userAssets}"/>
-                    </jsp:include>
-                </c:when>
-                <c:when test="${table == 'lended_books'}">
-                    <% request.setCharacterEncoding("utf-8"); %>
-                    <jsp:include page="lendedBooksTable.jsp">
-                        <jsp:param name="isLender" value="${isLender}"/>
-                        <jsp:param name="userAssets" value="${userAssets}"/>
-                    </jsp:include>
-                </c:when>
-                <c:when test="${table == 'borrowed_books'}">
-                <% request.setCharacterEncoding("utf-8"); %>
-                <jsp:include page="borrowedBooksTable.jsp">
-                    <jsp:param name="userAssets" value="${userAssets}"/>
-                </jsp:include>
-            </c:when>
-            </c:choose>
+                    <c:when test="${table == 'my_books'}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="myBooksTable.jsp">
+                            <jsp:param name="userAssets" value="${userAssets}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'lended_books'}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="lendedBooksTable.jsp">
+                            <jsp:param name="isLender" value="${isLender}"/>
+                            <jsp:param name="userAssets" value="${userAssets}"/>
+                        </jsp:include>
+                    </c:when>
+                    <c:when test="${table == 'borrowed_books'}">
+                        <% request.setCharacterEncoding("utf-8"); %>
+                        <jsp:include page="borrowedBooksTable.jsp">
+                            <jsp:param name="userAssets" value="${userAssets}"/>
+                        </jsp:include>
+                    </c:when>
+                </c:choose>
+            </div>
         </div>
     </div>
-</div>
 
-<% request.setCharacterEncoding("utf-8"); %>
-<jsp:include page="../userHomeAssetDetail/deleteBookModal.jsp">
-    <jsp:param name="modalType" value="${modalType}"/>
-    <jsp:param name="assetId" value="${assetId}"/>
-</jsp:include>
+        <% request.setCharacterEncoding("utf-8"); %>
+    <jsp:include page="../userHomeAssetDetail/deleteBookModal.jsp">
+        <jsp:param name="modalType" value="${modalType}"/>
+        <jsp:param name="assetId" value="${assetId}"/>
+    </jsp:include>
 
 </body>
 </html>
