@@ -74,7 +74,7 @@ final public class UserHomeViewController {
                                    @RequestParam(FILTER_VALUE) final String filterValue,
                                    @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
 
-        return initialiseModelViewWith(currentPage, table, attribute, direction, filterAtribuite, filterValue);
+        return initialiseModelViewWith(DEFAULT_PAGE_NUMBER, table, attribute, direction, filterAtribuite, filterValue);
     }
 
     @RequestMapping(value = "/userHomeTab", method = RequestMethod.GET)
@@ -95,7 +95,15 @@ final public class UserHomeViewController {
                                             @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
         return initialiseModelViewWith(currentPage, table, attribute, direction, filterAtribuite, filterValue);
     }
-
+    @RequestMapping(value = "/nextUserHomePage", method = RequestMethod.GET)
+    public ModelAndView nextUserHomePage( @RequestParam(CURRENT_PAGE) final int currentPage,
+                                            @RequestParam(TABLE) final String table,
+                                            @RequestParam(SORT_ATRIBUITE) final String attribute,
+                                            @RequestParam(SORT_VALUE) final String direction,
+                                            @RequestParam(FILTER_VALUE) final String filterValue,
+                                            @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
+        return initialiseModelViewWith(currentPage, table, attribute, direction, filterAtribuite, filterValue);
+    }
     @ModelAttribute
     public void addAttributes(final Model model) {
         model.addAttribute("path", NAV_BAR_PATH);

@@ -71,8 +71,9 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         }
     }
 
-
     public PageUserAssets getLendedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
+        int offset = (pageNumber - 1) * itemsPerPage;
+
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
@@ -105,6 +106,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             }
         }
 
+        query += " LIMIT ? OFFSET ?";
+
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
@@ -112,17 +115,53 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             int lendingId = rs.getInt("lendingId");
             String lendingState = rs.getString("lendingState");
 
-
             return assetInstanceDao.getAssetInstance(assetId)
                     .map(assetInstance -> new BorrowedAssetInstanceImpl(assetInstance, dueDate, borrower, lendingId, LendingState.fromString(lendingState)))
                     .orElse(null);
         };
 
-        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
-            return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue)));
+        List<BorrowedAssetInstance> lendedAssets;
 
-        return new PageUserAssetsImpl(jdbcTemplate.query(query, rowMapper, email));
+        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
+            lendedAssets = jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue), itemsPerPage, offset);
+        else
+            lendedAssets = jdbcTemplate.query(query, rowMapper, email, itemsPerPage, offset);
+
+        return new PageUserAssetsImpl(lendedAssets, pageNumber, getTotalPagesLentAssets(itemsPerPage, email, filterAttribute, filterValue));
     }
+
+    private int getTotalPagesLentAssets(int itemsPerPage, String email, String filterAttribute, String filterValue) {
+        String countQuery = "SELECT COUNT(*)" +
+                " FROM" +
+                "    lendings l" +
+                " JOIN" +
+                "    assetinstance ai ON l.assetinstanceid = ai.id" +
+                " JOIN" +
+                "    book b ON ai.assetid = b.uid" +
+                " JOIN" +
+                "    users u ON l.borrowerid = u.id" +
+                " JOIN" +
+                "    users owner ON ai.owner = owner.id" +
+                " WHERE" +
+                "  owner.mail = ? ";
+
+        if (filterAttribute.equalsIgnoreCase("status"))
+            countQuery += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
+        if(filterAttribute.equalsIgnoreCase("lendingStatus"))
+            countQuery += "AND l.active = ?";
+        if(filterAttribute.equalsIgnoreCase("delayed"))
+            countQuery += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
+
+        int rowCount;
+
+        if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
+            rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email, matchFilterValue(filterValue)}, Integer.class);
+        else
+            rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email}, Integer.class);
+
+        return (rowCount / itemsPerPage) + ((rowCount % itemsPerPage > 0) ? 1 : 0);
+    }
+
 
 
 
@@ -234,10 +273,10 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                         .map(Optional::get)
                         .collect(Collectors.toList()),
                 pageNumber,
-                getTotalPagesUserAssets(itemsPerPage, email));
+                getTotalPagesUserAssets(itemsPerPage, email, filterAttribute, filterValue));
     }
 
-    private int getTotalPagesUserAssets(int itemsPerPage, String email) {
+    private int getTotalPagesUserAssets(int itemsPerPage, String email, String filterAttribute, String filterValue) {
         String countQuery = "SELECT COUNT(*)" +
                 " FROM" +
                 "    assetinstance ai" +
@@ -255,10 +294,18 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "         l.assetinstanceid = ai.id AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') " +
                 " )";
 
-        int rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email}, Integer.class);
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            countQuery += " AND " + filterAttribute + " = ?";
+
+        int rowCount;
+        if (!filterAttribute.equalsIgnoreCase("none"))
+            rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email, matchFilterValue(filterValue)}, Integer.class);
+        else
+            rowCount = jdbcTemplate.queryForObject(countQuery, new Object[]{email}, Integer.class);
 
         return (rowCount / itemsPerPage) + ((rowCount % itemsPerPage > 0) ? 1 : 0);
     }
+
 
 
     @Override

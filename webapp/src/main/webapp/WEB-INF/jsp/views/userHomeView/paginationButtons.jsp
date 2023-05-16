@@ -5,8 +5,8 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center align-items-center">
                 <li class="page-item">
-                    <c:url var="filterUrl" value="/applyFilter"/>
-                    <form action="${filterUrl}" method="get">
+                    <c:url var="nextUserHomePageUrl" value="/nextUserHomePage"/>
+                    <form action="${nextUserHomePageUrl}" method="get">
                         <input type="hidden" name="table" value="${table}">
                         <input type="hidden" name="direction" value="${direction}" />
                         <input type="hidden" name="attribute" value="${attribute}" />
@@ -24,8 +24,8 @@
                 </li>
 
                 <li class="page-item">
-                    <c:url var="filterUrl" value="/applyFilter"/>
-                    <form action="${filterUrl}" method="get">
+                    <c:url var="nextUserHomePageUrl" value="/nextUserHomePage"/>
+                    <form action="${nextUserHomePageUrl}" method="get">
                         <input type="hidden" name="table" value="${table}">
                         <input type="hidden" name="direction" value="${direction}" />
                         <input type="hidden" name="attribute" value="${attribute}" />
