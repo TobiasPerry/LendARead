@@ -1,17 +1,18 @@
 package ar.edu.itba.paw.webapp.form;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailNotExistence;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.RepeatPassword;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-@Getter @Setter
+
+@Getter
+@Setter
 @RepeatPassword
 public class RegisterForm {
 

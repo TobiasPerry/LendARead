@@ -23,7 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,8 +39,9 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
+
     @Autowired
-    public UserServiceImpl(final PasswordEncoder passwordEncoder,final UserDao userDao,final EmailService emailService, final AuthenticationManager authenticationManager) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
@@ -50,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public User getUser(final String email) throws UserNotFoundException {
         Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
-            LOGGER.error("Failed to get user {}",email);
+            LOGGER.error("Failed to get user {}", email);
             throw new UserNotFoundException("The user was not found");
         }
         return user.get();
@@ -58,9 +62,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User createUser(String email,String name,String telephone,String password) {
+    public User createUser(final String email, String name, final String telephone,final String password) {
 
-        return userDao.addUser(Behaviour.BORROWER,email,name,telephone,passwordEncoder.encode(password));
+        return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
 
     @Transactional
@@ -117,6 +121,7 @@ public class UserServiceImpl implements UserService {
         userDao.deletePasswordRestToken(token);
         return userDao.changePassword(passwordResetToken.get().getUser(),passwordEncoder.encode(password));
     }
+
     @Transactional(readOnly = true)
     @Override
     public boolean isTokenValid(final String token){

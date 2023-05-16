@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.util.Optional;
 
 @Service
@@ -28,8 +26,8 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public byte[] getPhoto(final int id) throws ImageNotFoundException {
         Optional<byte[]> image = imagesDao.getPhoto(id);
-        if(!image.isPresent()) {
-            LOGGER.error("Could not found image with id = {}",id);
+        if (!image.isPresent()) {
+            LOGGER.error("Could not found image with id = {}", id);
             throw new ImageNotFoundException("Image not found");
         }
         return image.get();

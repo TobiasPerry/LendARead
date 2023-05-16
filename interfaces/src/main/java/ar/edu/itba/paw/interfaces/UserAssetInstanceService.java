@@ -1,11 +1,8 @@
 package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
-
-import java.util.List;
 
 public interface UserAssetInstanceService {
 

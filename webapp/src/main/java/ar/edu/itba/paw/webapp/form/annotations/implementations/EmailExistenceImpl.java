@@ -4,12 +4,10 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailExistence;
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailNotExistence;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Optional;
 
 public class EmailExistenceImpl implements ConstraintValidator<EmailExistence, String> {
 
@@ -25,7 +23,7 @@ public class EmailExistenceImpl implements ConstraintValidator<EmailExistence, S
         try {
             User user = userService.getUser(s);
             return true;
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             return false;
         }
     }

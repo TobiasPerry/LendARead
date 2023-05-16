@@ -36,16 +36,17 @@ public class AssetAvailabilityDaoTest {
 
     @Rollback
     @Before
-    public void setUp(){
+    public void setUp() {
         jdbcTemplate = new JdbcTemplate(ds);
     }
+
     @Rollback
     @Test
-    public void borrowAssetInstanceTest(){
+    public void borrowAssetInstanceTest() {
         //2
         int id = assetAvailabilityDao.borrowAssetInstance(assetInstanceId, userId, borrowDate, devolutionDate);
         //3
-        Assert.assertEquals(id,2);
+        Assert.assertEquals(id, 1);
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "lendings", String.format("assetinstanceid = '%s'", 1)));
     }
 

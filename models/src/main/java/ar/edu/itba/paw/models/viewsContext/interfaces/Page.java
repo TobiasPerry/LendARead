@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.models.viewsContext.interfaces;
+
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+
 import java.util.List;
 
-public interface Page extends AbstractPage{
+public interface Page extends AbstractPage {
 
     List<AssetInstance> getBooks();
 

@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.services;
+
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,18 +46,18 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page getAllAssetsInstances(final int pageNum,final int itemsPerPage){
+    public Page getAllAssetsInstances(final int pageNum, final int itemsPerPage) {
         return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), ""));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page getAllAssetsInstances(final int pageNum,final int itemsPerPage, SearchQuery searchQuery){
+    public Page getAllAssetsInstances(final int pageNum, final int itemsPerPage, SearchQuery searchQuery) {
 
-        if(pageNum < 0 || itemsPerPage <= 0)
+        if (pageNum < 0 || itemsPerPage <= 0)
             return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        if(searchQuery == null)
+        if (searchQuery == null)
             searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
 
 
@@ -67,7 +65,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
         Page page;
 
-        if(optionalPage.isPresent()) {
+        if (optionalPage.isPresent()) {
             page = optionalPage.get();
             return page;
         }
@@ -77,20 +75,21 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
-         boolean wasRemoved = assetInstanceDao.changeStatus(id, AssetState.DELETED);
-         if(!wasRemoved) {
-             LOGGER.error("Failed to remove the asset instance");
-             throw new AssetInstanceNotFoundException("Asset instance no found");
-         }
+        boolean wasRemoved = assetInstanceDao.changeStatus(id, AssetState.DELETED);
+        if (!wasRemoved) {
+            LOGGER.error("Failed to remove the asset instance");
+            throw new AssetInstanceNotFoundException("Asset instance no found");
+        }
     }
+
     @Override
-    public boolean isOwner(final AssetInstance assetInstance,final String email){
-       return assetInstance.getOwner().getEmail().equals(email);
+    public boolean isOwner(final AssetInstance assetInstance, final String email) {
+        return assetInstance.getOwner().getEmail().equals(email);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isOwner(final int id,final String email) throws AssetInstanceNotFoundException {
+    public boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);
     }

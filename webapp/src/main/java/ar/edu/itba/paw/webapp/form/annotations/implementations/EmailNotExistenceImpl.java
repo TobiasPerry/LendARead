@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Optional;
 
 public class EmailNotExistenceImpl implements ConstraintValidator<EmailNotExistence, String> {
 
@@ -25,7 +24,7 @@ public class EmailNotExistenceImpl implements ConstraintValidator<EmailNotExiste
         try {
             User user = userService.getUser(s);
             return false;
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             return true;
         }
     }

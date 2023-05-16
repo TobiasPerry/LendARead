@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.form.annotations.implementations;
 
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Email;
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.NotEmpty;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

@@ -7,15 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.EnableAsync;
-
-import java.util.Properties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import java.util.Properties;
 
 @EnableAsync
 @ComponentScan({"ar.edu.itba.paw.services"})
@@ -29,6 +28,7 @@ public class EmailConfig {
 
     @Autowired
     private Environment environment;
+
     @Bean
     public JavaMailSender javaMailSender() {
         final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
@@ -47,6 +47,7 @@ public class EmailConfig {
 
         return javaMailSender;
     }
+
     @Bean
     public ITemplateResolver thymeleafTemplateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();

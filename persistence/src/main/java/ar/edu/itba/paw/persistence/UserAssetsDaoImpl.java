@@ -1,21 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageUserAssetsImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
@@ -24,15 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -97,9 +79,9 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (filterAttribute.equalsIgnoreCase("status"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
-        if(filterAttribute.equalsIgnoreCase("lendingStatus"))
+        if (filterAttribute.equalsIgnoreCase("lendingStatus"))
             query += "AND l.active = ?";
-        if(filterAttribute.equalsIgnoreCase("delayed"))
+        if (filterAttribute.equalsIgnoreCase("delayed"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
         if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
@@ -149,9 +131,9 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (filterAttribute.equalsIgnoreCase("status"))
             countQuery += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
-        if(filterAttribute.equalsIgnoreCase("lendingStatus"))
+        if (filterAttribute.equalsIgnoreCase("lendingStatus"))
             countQuery += "AND l.active = ?";
-        if(filterAttribute.equalsIgnoreCase("delayed"))
+        if (filterAttribute.equalsIgnoreCase("delayed"))
             countQuery += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
 
         int rowCount;
@@ -165,8 +147,6 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
 
-
-
     @Override
     public PageUserAssets getBorrowedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         int offset = (pageNumber - 1) * itemsPerPage;
@@ -177,7 +157,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "    l.devolutiondate," +
                 "    l.id AS lendingId," +
                 "    l.active AS lendingState," +
-                "u.mail AS borrower_mail"+
+                "u.mail AS borrower_mail" +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +
@@ -193,9 +173,9 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (filterAttribute.equalsIgnoreCase("status"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND status = ?";
-        if(filterAttribute.equalsIgnoreCase("lendingStatus"))
+        if (filterAttribute.equalsIgnoreCase("lendingStatus"))
             query += "AND l.active = ?";
-        if(filterAttribute.equalsIgnoreCase("delayed"))
+        if (filterAttribute.equalsIgnoreCase("delayed"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
         if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
@@ -261,7 +241,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         return (rowCount / itemsPerPage) + ((rowCount % itemsPerPage > 0) ? 1 : 0);
     }
 
-        @Override
+    @Override
     public PageUserAssets getUsersAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         int offset = (pageNumber - 1) * itemsPerPage;
 
@@ -345,7 +325,6 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
 
-
     @Override
     public Optional<BorrowedAssetInstance> getBorrowedAsset(int lendingId) {
         String query = "SELECT " +
@@ -354,7 +333,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 "    l.devolutiondate," +
                 "    l.id AS lendingId," +
                 "    l.active AS lendingState," +
-                "u.mail AS borrower_name "+
+                "u.mail AS borrower_name " +
                 " FROM" +
                 "    lendings l" +
                 " JOIN" +

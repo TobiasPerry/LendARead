@@ -7,7 +7,10 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -25,7 +28,7 @@ final public class UserHomeViewController {
 
     private static final String IS_LENDER = "isLender", USER_ASSETS = "userAssets", USER_EMAIL = "userEmail", TABLE = "table", CURRENT_PAGE = "currentPage";
 
-    private static final String FILTER_ATRIBUITE = "filterAtribuite", SORT_ATRIBUITE = "attribute", SORT_VALUE ="direction", FILTER_VALUE = "filterValue";
+    private static final String FILTER_ATRIBUITE = "filterAtribuite", SORT_ATRIBUITE = "attribute", SORT_VALUE = "direction", FILTER_VALUE = "filterValue";
 
     private static final int ITEMS_PER_PAGE = 2, DEFAULT_PAGE_NUMBER = 1;
 
@@ -39,7 +42,8 @@ final public class UserHomeViewController {
     public ModelAndView home() throws UserNotFoundException {
         return initialiseModelViewWith(DEFAULT_PAGE_NUMBER, DEFAULT_TABLE_NAME, NONE, NONE, NONE, NONE);
     }
-    private ModelAndView initialiseModelViewWith(final int currentPage, final String table,  final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) throws UserNotFoundException {
+
+    private ModelAndView initialiseModelViewWith(final int currentPage, final String table, final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         PageUserAssets page = getUserAssetsIn(currentPage, table, sortAtribuite, sortValue, filterAtribuite, filterValue);
 
@@ -66,13 +70,13 @@ final public class UserHomeViewController {
         return model;
     }
 
-    @RequestMapping(value ="/applyFilter", method = RequestMethod.GET)
-    public ModelAndView changeTab( @RequestParam(CURRENT_PAGE) final int currentPage,
-                                   @RequestParam(TABLE) final String table,
-                                   @RequestParam(SORT_ATRIBUITE) final String attribute,
-                                   @RequestParam(SORT_VALUE) final String direction,
-                                   @RequestParam(FILTER_VALUE) final String filterValue,
-                                   @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
+    @RequestMapping(value = "/applyFilter", method = RequestMethod.GET)
+    public ModelAndView changeTab(@RequestParam(CURRENT_PAGE) final int currentPage,
+                                  @RequestParam(TABLE) final String table,
+                                  @RequestParam(SORT_ATRIBUITE) final String attribute,
+                                  @RequestParam(SORT_VALUE) final String direction,
+                                  @RequestParam(FILTER_VALUE) final String filterValue,
+                                  @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
 
         return initialiseModelViewWith(DEFAULT_PAGE_NUMBER, table, attribute, direction, filterAtribuite, filterValue);
     }
@@ -87,23 +91,25 @@ final public class UserHomeViewController {
     }
 
     @RequestMapping(value = "/sortUserHomeAssets", method = RequestMethod.GET)
-    public ModelAndView sortUserHomeAssets( @RequestParam(CURRENT_PAGE) final int currentPage,
-                                            @RequestParam(TABLE) final String table,
-                                            @RequestParam(SORT_ATRIBUITE) final String attribute,
-                                            @RequestParam(SORT_VALUE) final String direction,
-                                            @RequestParam(FILTER_VALUE) final String filterValue,
-                                            @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
+    public ModelAndView sortUserHomeAssets(@RequestParam(CURRENT_PAGE) final int currentPage,
+                                           @RequestParam(TABLE) final String table,
+                                           @RequestParam(SORT_ATRIBUITE) final String attribute,
+                                           @RequestParam(SORT_VALUE) final String direction,
+                                           @RequestParam(FILTER_VALUE) final String filterValue,
+                                           @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
         return initialiseModelViewWith(currentPage, table, attribute, direction, filterAtribuite, filterValue);
     }
+
     @RequestMapping(value = "/nextUserHomePage", method = RequestMethod.GET)
-    public ModelAndView nextUserHomePage( @RequestParam(CURRENT_PAGE) final int currentPage,
-                                            @RequestParam(TABLE) final String table,
-                                            @RequestParam(SORT_ATRIBUITE) final String attribute,
-                                            @RequestParam(SORT_VALUE) final String direction,
-                                            @RequestParam(FILTER_VALUE) final String filterValue,
-                                            @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
+    public ModelAndView nextUserHomePage(@RequestParam(CURRENT_PAGE) final int currentPage,
+                                         @RequestParam(TABLE) final String table,
+                                         @RequestParam(SORT_ATRIBUITE) final String attribute,
+                                         @RequestParam(SORT_VALUE) final String direction,
+                                         @RequestParam(FILTER_VALUE) final String filterValue,
+                                         @RequestParam(FILTER_ATRIBUITE) final String filterAtribuite) throws UserNotFoundException {
         return initialiseModelViewWith(currentPage, table, attribute, direction, filterAtribuite, filterValue);
     }
+
     @ModelAttribute
     public void addAttributes(final Model model) {
         model.addAttribute("path", NAV_BAR_PATH);

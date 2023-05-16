@@ -12,12 +12,10 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
-import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -29,7 +27,6 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 
 @Repository
@@ -45,7 +42,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String title = rs.getString("title");
             String language = rs.getString("lang");
             int bookId = rs.getInt("book_id");
-            Book book = new BookImpl(bookId,isbn, author, title, language);
+            Book book = new BookImpl(bookId, isbn, author, title, language);
 
             String zipcode = rs.getString("zipcode");
             String locality = rs.getString("locality");
@@ -58,7 +55,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String email = rs.getString("email");
             Integer userId = rs.getInt("user_id");
             String ownerName = rs.getString("user_name");
-            User user = new UserImpl(userId, email, ownerName, "","", Behaviour.fromString(rs.getString("behavior")));
+            User user = new UserImpl(userId, email, ownerName, "", "", Behaviour.fromString(rs.getString("behavior")));
 
             int id = rs.getInt("id");
             int imgId = rs.getInt("photo_id");
@@ -66,24 +63,24 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             PhysicalCondition physicalcondition = PhysicalCondition.fromString(rs.getString("physicalcondition"));
             AssetState aState = AssetState.fromString(rs.getString("status"));
 
-            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState,maxWeeks);
+            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState, maxWeeks);
         }
     };
     private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
 
-    private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) ->  rs.getInt("pageCount");
+    private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) -> rs.getInt("pageCount");
 
     private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
-                    new BookImpl(rs.getInt("book_id"),rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang")),
+                    new BookImpl(rs.getInt("book_id"), rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
-                    new UserImpl(rs.getInt("user_id"),rs.getString("email"), rs.getString("user_name"), "X","",Behaviour.fromString(rs.getString("behavior"))),
-                    new LocationImpl(rs.getInt("loc_id"),rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
+                    new UserImpl(rs.getInt("user_id"), rs.getString("email"), rs.getString("user_name"), "X", "", Behaviour.fromString(rs.getString("behavior"))),
+                    new LocationImpl(rs.getInt("loc_id"), rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
                     rs.getInt("photo_id"),
                     AssetState.fromString(rs.getString("status")),
                     rs.getInt("maxLendingDays")
-                    );
+            );
 
     private static final RowMapper<String> ROW_MAPPER_AUTHORS = (rs, rownum) -> rs.getString("author");
 
@@ -97,27 +94,28 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("assetinstance").usingGeneratedKeyColumns("id");
 
     }
+
     @Override
-    public AssetInstance addAssetInstance(final Book book, final User owner, final Location location, final int photoId,final AssetInstance ai) {
+    public AssetInstance addAssetInstance(final Book book, final User owner, final Location location, final int photoId, final AssetInstance ai) {
         final Map<String, Object> args = new HashMap<>();
-        args.put("assetid",book.getId());
-        args.put("owner",owner.getId());
-        args.put("locationid",location.getId());
-        args.put("photoid",photoId);
-        args.put("physicalcondition",ai.getPhysicalCondition());
-        args.put("status",ai.getAssetState());
-        args.put("maxLendingDays",ai.getMaxDays());
+        args.put("assetid", book.getId());
+        args.put("owner", owner.getId());
+        args.put("locationid", location.getId());
+        args.put("photoid", photoId);
+        args.put("physicalcondition", ai.getPhysicalCondition());
+        args.put("status", ai.getAssetState());
+        args.put("maxLendingDays", ai.getMaxDays());
 
         int id = jdbcInsert.executeAndReturnKey(args).intValue();
 
-        return new AssetInstanceImpl(id,book,ai.getPhysicalCondition(),owner,location,photoId,ai.getAssetState(),ai.getMaxDays());
+        return new AssetInstanceImpl(id, book, ai.getPhysicalCondition(), owner, location, photoId, ai.getAssetState(), ai.getMaxDays());
     }
 
     @Override
     public Optional<AssetInstance> getAssetInstance(int assetId) {
         AssetInstance assetInstance;
         try {
-            Object[] params = new Object[] {assetId};
+            Object[] params = new Object[]{assetId};
             String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
                     " ai.physicalcondition, b.uid AS book_id, b.title AS title, b.isbn AS isbn," +
                     " b.lang AS lang, b.author AS author, l.id AS loc_id, l.locality AS locality," +
@@ -151,30 +149,30 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
         final List<String> languagesIn = searchQuery.getLanguages();
-        if(!languagesIn.isEmpty()) {
+        if (!languagesIn.isEmpty()) {
             queryFilters.append(" AND b.lang IN (''");
             languagesIn.forEach((language) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
             objects.addAll(languagesIn);
         }
         final List<String> physicalConditionsIn = searchQuery.getPhysicalConditions();
-        if(!physicalConditionsIn.isEmpty()) {
+        if (!physicalConditionsIn.isEmpty()) {
             queryFilters.append(" AND ai.physicalcondition IN (''");
             physicalConditionsIn.forEach((physicalCondition) -> queryFilters.append(",").append("?"));
             queryFilters.append(")");
             objects.addAll(physicalConditionsIn);
         }
         final String search = searchQuery.getSearch().replace("%", "\\%");
-        if(!search.equals("")) {
+        if (!search.equals("")) {
             String[] searchParsed = search.split(" ", 0);
             queryFilters.append(" AND ( ");
-            for(String searchItem : searchParsed){
+            for (String searchItem : searchParsed) {
                 queryFilters.append(" UPPER(b.author) LIKE UPPER(").append("?").append(") ");
-                objects.add("%" + searchItem +"%");
+                objects.add("%" + searchItem + "%");
                 queryFilters.append("OR");
                 queryFilters.append(" UPPER(b.title) LIKE UPPER(").append("?").append(") ");
                 queryFilters.append("OR");
-                objects.add("%" + searchItem +"%");
+                objects.add("%" + searchItem + "%");
             }
             queryFilters.deleteCharAt(queryFilters.length() - 1);
             queryFilters.deleteCharAt(queryFilters.length() - 1);
@@ -182,13 +180,13 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         }
 
         String querySort = "";
-        if(searchQuery.getSort() != null){
+        if (searchQuery.getSort() != null) {
             querySort = " ORDER BY " + getPostgresFromSort(searchQuery.getSort()) + " " + getPostgresFromSortDirection(searchQuery.getSortDirection()) + " ";
         }
 
         String pagination = " LIMIT ? OFFSET ?";
 
-        query = query + queryFilters + querySort + pagination ;
+        query = query + queryFilters + querySort + pagination;
 
         objects.add(limit);
         objects.add(offset);
@@ -199,21 +197,21 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         objects.remove(objects.size() - 1);
 
         String queryAuthors = "SELECT distinct b.author as author FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status =? " + queryFilters ;
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status =? " + queryFilters;
 
         String queryLanguages = "SELECT distinct b.lang as lang FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters  ;
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters;
 
         String queryPhysicalConditions = "SELECT distinct ai.physicalcondition as physicalcondition  FROM assetinstance ai JOIN book b ON ai.assetid = b.uid " +
-                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters ;
+                "JOIN location l ON ai.locationid = l.id LEFT JOIN users u ON ai.owner = u.id WHERE status=? " + queryFilters;
 
-        List<String> authors = jdbcTemplate.query(queryAuthors, ROW_MAPPER_AUTHORS,objects.toArray());
+        List<String> authors = jdbcTemplate.query(queryAuthors, ROW_MAPPER_AUTHORS, objects.toArray());
 
-        List<String> physicalConditions = jdbcTemplate.query(queryPhysicalConditions, ROW_MAPPER_PHYSICAL_CONDITIONS,objects.toArray());
+        List<String> physicalConditions = jdbcTemplate.query(queryPhysicalConditions, ROW_MAPPER_PHYSICAL_CONDITIONS, objects.toArray());
 
         List<String> languages = jdbcTemplate.query(queryLanguages, ROW_MAPPER_LANGUAGES, objects.toArray());
 
-        objects.add(0,itemsPerPage);
+        objects.add(0, itemsPerPage);
 
         String queryCant = "SELECT CEIL(COUNT(*) / CAST(? AS FLOAT)) as pageCount \n" +
                 "FROM assetinstance ai \n" +
@@ -221,11 +219,11 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 "JOIN location l ON ai.locationid = l.id \n" +
                 "LEFT JOIN users u ON ai.owner = u.id \n" +
                 "WHERE status = ?" + queryFilters;
-        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT,objects.toArray());
+        List<Integer> queryOutput = jdbcTemplate.query(queryCant, ROW_MAPPER_ROW_CANT, objects.toArray());
 
         int totalPages;
 
-        if(!queryOutput.isEmpty())
+        if (!queryOutput.isEmpty())
             totalPages = queryOutput.get(0);
         else
             totalPages = 0;
@@ -240,12 +238,13 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     public Boolean changeStatus(final int id, final AssetState as) {
         String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
-            jdbcTemplate.update(query,as.name(), id);
+            jdbcTemplate.update(query, as.name(), id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
+
     @Override
     public Boolean changeStatusByLendingId(final int lendingId, final AssetState as) {
         String query = "UPDATE assetInstance AS ai " +
@@ -253,15 +252,16 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
                 "FROM lendings AS l " +
                 "WHERE ai.id = l.assetinstanceid AND l.id = ?";
         try {
-            jdbcTemplate.update(query,as.name(), lendingId);
+            jdbcTemplate.update(query, as.name(), lendingId);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
-    private String getPostgresFromSort(Sort sort){
 
-        switch (sort){
+    private String getPostgresFromSort(Sort sort) {
+
+        switch (sort) {
             case TITLE_NAME:
                 return "b.title";
             case AUTHOR_NAME:
@@ -272,8 +272,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         return "ai.id";
     }
 
-    private String getPostgresFromSortDirection(SortDirection sortDirection){
-        switch (sortDirection){
+    private String getPostgresFromSortDirection(SortDirection sortDirection) {
+        switch (sortDirection) {
             case ASCENDING:
                 return "ASC";
             case DESCENDING:

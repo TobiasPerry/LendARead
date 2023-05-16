@@ -1,10 +1,9 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-
 public enum Behaviour {
     LENDER(),
     BORROWER();
+
     public static Behaviour fromString(String value) {
         if (value != null) {
             value = value.toUpperCase();

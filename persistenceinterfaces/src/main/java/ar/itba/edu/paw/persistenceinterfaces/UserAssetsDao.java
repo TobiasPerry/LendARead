@@ -1,10 +1,8 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserAssetsDao {

@@ -4,7 +4,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfaces.ISBNCheckerService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ public class ISBNCheckerController {
         this.isbnCheckerService = isbnCheckerService;
     }
 
-    @RequestMapping(value="/book", method= RequestMethod.GET)
+    @RequestMapping(value = "/book", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> myEndpoint(@RequestParam("isbn") String isbn) {
         Optional<Book> bookOpt = this.isbnCheckerService.getBookIfExistsByISBN(isbn);

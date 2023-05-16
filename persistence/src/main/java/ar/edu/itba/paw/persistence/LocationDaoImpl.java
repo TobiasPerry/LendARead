@@ -1,24 +1,16 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
+import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class LocationDaoImpl implements LocationDao {
@@ -37,16 +29,14 @@ public class LocationDaoImpl implements LocationDao {
     public Location addLocation(Location lc) {
         final Map<String, Object> args = new HashMap<>();
 
-        args.put("zipcode",lc.getZipcode());
-        args.put("locality",lc.getLocality());
-        args.put("province",lc.getProvince());
-        args.put("country",lc.getCountry());
-        args.put("address",lc.getAddress());
+        args.put("zipcode", lc.getZipcode());
+        args.put("locality", lc.getLocality());
+        args.put("province", lc.getProvince());
+        args.put("country", lc.getCountry());
+        args.put("address", lc.getAddress());
         int id = jdbcInsert.executeAndReturnKey(args).intValue();
-        return new LocationImpl(id,lc.getZipcode(),lc.getLocality(),lc.getProvince(),lc.getCountry());
+        return new LocationImpl(id, lc.getZipcode(), lc.getLocality(), lc.getProvince(), lc.getCountry());
     }
-
-
 
 
 }
