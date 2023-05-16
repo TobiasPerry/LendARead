@@ -152,8 +152,8 @@
                                     <spring:message code="addAssetView.placeholders.language" var="languagePH"/>
                                     <label for="language" class="form-label">${languageLabel}</label>
                                     <form:select class="form-control round" id="languageSelect" path="languageSelect" disabled="true">
-                                        <c:forEach var="lang" items="${languages}">
-                                            <form:option value="${lang.key}"><c:out value="${lang.value}"/></form:option>
+                                        <c:forEach var="lang" items="${langs}">
+                                            <form:option value="${lang.code}"><c:out value="${lang.name}"/></form:option>
                                         </c:forEach>
                                     </form:select>
                                     <form:input path="language" id="language" placeholder="${languagePH}"
@@ -246,7 +246,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <spring:message code="addAssetView.addBookModal.title" var="modalTitle"/>
