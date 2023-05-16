@@ -1,5 +1,9 @@
 package ar.edu.itba.paw.persistence;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Language;
 import ar.itba.edu.paw.persistenceinterfaces.LanguageDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -7,13 +11,15 @@ import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class LanguagesDaoImpl implements LanguageDao {
-    private static final RowMapper<String> ROW_MAPPER_LANG = (rs, rownum)-> new StringBuilder(rs.getString("id")).append('#').append(rs.getString("name")).toString();
+    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesDaoImpl.class);
+    private static final RowMapper<Language> ROW_MAPPER_LANG = (rs, rownum)-> new LanguageImpl(rs.getString("id"), rs.getString("name"));
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -22,19 +28,15 @@ public class LanguagesDaoImpl implements LanguageDao {
     }
 
     @Override
-    public Optional<HashMap<String, String>> getLanguages() {
+    public Optional<List<Language>> getLanguages() {
         String query = "SELECT id, name FROM languages";
-        final List<String> langs = jdbcTemplate.query(query, ROW_MAPPER_LANG);
+        final List<Language> langs = jdbcTemplate.query(query, ROW_MAPPER_LANG);
         if (langs.isEmpty()) {
             return Optional.empty();
         }
 
-        HashMap<String, String> resultMap = new HashMap<>();
-        for (String row : langs) {
-            String[] values = row.split("#");
-            resultMap.put(values[0].trim(), values[1].trim());
-        }
+        List<Language> langList = new ArrayList<>(langs);
 
-        return Optional.of(resultMap);
+        return Optional.of(langList);
     }
 }

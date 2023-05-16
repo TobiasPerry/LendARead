@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
+<c:if test="${!asset.lendingState.getIsRejected() && !asset.lendingState.getIsFinished()}">
 <div>
     <c:if test="${asset.assetState.isPending()}">
         <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="userHomeView.minText"/>
@@ -20,6 +21,7 @@
         </button>
     </c:if>
 </div>
+</c:if>
 
 <jsp:include page="returnModal.jsp">
     <jsp:param name="asset" value="${asset}"/>

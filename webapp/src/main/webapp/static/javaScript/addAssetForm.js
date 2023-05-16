@@ -34,6 +34,8 @@ nextButtons.forEach(button => {
         nextFS.classList.remove('next')
         nextFS.classList.add('active')
         nextStepCounter.classList.add('active-step')
+        nextStepCounter.classList.add('current-step')
+        currentStep.classList.remove('current-step')
         currentFS = nextFS
         currentStep = nextStepCounter
     })
@@ -49,7 +51,9 @@ prevButtons.forEach(button => {
         currentFS.classList.add('next')
         prevFS.classList.remove('previous')
         prevFS.classList.add('active')
+        currentStep.classList.remove('current-step')
         currentStep.classList.remove('active-step')
+        prevStepCounter.classList.add('current-step')
         currentStep = prevStepCounter
         currentFS = prevFS
     })
@@ -57,10 +61,11 @@ prevButtons.forEach(button => {
 
 //Function to check if an extra validation needs to be done before going to the next step
 async function checkNext(current, next) {
-    if (current.id === 'isbn-fs') {
-        return checkAndFetchFromISBN()
+    switch (current.id) {
+        case 'isbn-fs': return checkAndFetchFromISBN();
+        case 'duration-fs': return checkDuration();
+        default: return true;
     }
-    return true
 }
 
 //Extra Validation for the ISBN step
@@ -81,7 +86,7 @@ async function checkAndFetchFromISBN() {
     const response = await fetch(url + isbn);
     const book = await response.json();
 
-    if (book.language.length > 0) {
+    if (book.language !== undefined && book.language.length > 0) {
         if (book.language.length !== 3) {
             for (let opt in languageSelect.options) {
                 const langText = languageSelect.options[opt].innerText
@@ -121,48 +126,17 @@ async function checkAndFetchFromISBN() {
     return true
 }
 
-
-
-function cleanISBN(isbn) {
-    return isbn.replace(/[-\s]/g, '');
+async function checkDuration() {
+    const durationInput = parseInt(document.getElementById('borrow-time-quantity').value)
+    const durationErrorMsg = document.getElementById('durationError')
+    if (durationInput < 1) {
+        durationErrorMsg.classList.remove('d-none')
+        return false
+    }
+    durationErrorMsg.classList.add('d-none')
+    return true
 }
 
-function isValidISBN(isbn) {
-    if (isbn.length !== 10 && isbn.length !== 13) {
-        return false; // ISBN must be 10 or 13 digits long
-    }
-
-    const weights = [1, 3];
-    let checksum = 0;
-
-    // Compute the checksum for ISBN-10
-    if (isbn.length === 10) {
-        let checksum = 0
-
-        for (let i = 0; i < 9; i++) {
-            checksum += parseInt(isbn.charAt(i)) * (i + 1)
-        }
-        let lastChar = isbn.charAt(9)
-        let lastDigit = 0
-        if (lastChar === 'X') {
-            lastDigit = 10
-        } else {
-            lastDigit = parseInt(lastChar)
-        }
-
-        return checksum % 11 === lastDigit;
-    }
-
-    // Compute the checksum for ISBN-13
-    if (isbn.length === 13) {
-        for (let i = 0; i < 12; i++) {
-            checksum += parseInt(isbn.charAt(i)) * weights[i % 2];
-        }
-        return (10 - (checksum % 10)) % 10 === parseInt(isbn.charAt(12));
-    }
-
-    return false;
-}
 
 //Before submitting
 function beforeSubmit() {
@@ -180,7 +154,7 @@ function beforeSubmit() {
     return true
 }
 
-//Precent the Enter to submit the form
+//Prevent the Enter to submit the form
 form.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
         e.preventDefault();
@@ -249,6 +223,9 @@ document.addEventListener("DOMContentLoaded", e => {
         let index = parseInt(step.dataset.stepCount)
         if (index <= stepCounterIndex) {
             step.classList.add('active-step')
+        }
+        if (index === stepCounterIndex) {
+            step.classList.add('current-step')
         }
     })
 

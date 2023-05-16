@@ -84,7 +84,7 @@
                         <c:url var="userUrl" value="/myBookDetails/${asset.id}"/>
                         <tr class="table-row-clickable" data-href="${userUrl}">
                             <td>
-                                <img style="height: 250px; width: 150px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
+                                <img style="height: 125px; width: 75px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
                             </td>
                             <td><c:out value="${asset.book.name}"/></td>
                             <td><c:out value="${asset.book.author}"/></td>
