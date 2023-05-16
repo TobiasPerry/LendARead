@@ -30,7 +30,6 @@ final public class UserHomeViewController {
 
     private static final String FILTER_ATRIBUITE = "filterAtribuite", SORT_ATRIBUITE = "attribute", SORT_VALUE ="direction", FILTER_VALUE = "filterValue";
 
-
     private static final int PAGE_NUMBER = 5, DEFAULT_PAGE_NUMBER = 1;
 
     @Autowired
@@ -46,6 +45,7 @@ final public class UserHomeViewController {
     private ModelAndView initialiseModelViewWith(final int currentPage, final String table,  final String sortAtribuite, final String sortValue, final String filterAtribuite, final String filterValue) throws UserNotFoundException {
         ModelAndView model = new ModelAndView(registerViewName);
         PageUserAssets page = getUserAssetsIn(currentPage, table, sortAtribuite, sortValue, filterAtribuite, filterValue);
+
         model.addObject(IS_LENDER, !userService.getCurrentUserIsBorrower());
         model.addObject(USER_ASSETS, page.getUserAssets());
         model.addObject(USER_EMAIL, userService.getUser(userService.getCurrentUser()).getName());

@@ -35,11 +35,11 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
     public PageUserAssets getUserAssetsOfTable(final int pageNumber, final int itemsPerPage, final String email, final String tableSelected, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
         switch (tableSelected) {
             case "my_books":
-                return userAssetsDao.getUsersAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
+                return userAssetsDao.getUsersAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
             case "borrowed_books":
-                return userAssetsDao.getBorrowedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
+                return userAssetsDao.getBorrowedAssets(pageNumber, itemsPerPage,  email, filterAtribuite, filterValue, sortAtribuite, direction);
             case "lended_books":
-                return userAssetsDao.getLendedAssets(email, filterAtribuite, filterValue, sortAtribuite, direction);
+                return userAssetsDao.getLendedAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
         }
 
         return new PageUserAssetsImpl(new ArrayList<>());

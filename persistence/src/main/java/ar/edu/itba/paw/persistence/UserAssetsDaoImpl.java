@@ -72,7 +72,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
 
-    public PageUserAssets getLendedAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getLendedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    u.name AS borrower_name," +
@@ -127,7 +127,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public PageUserAssets getBorrowedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getBorrowedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -185,7 +185,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public PageUserAssets getUsersAssets(final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
+    public PageUserAssets getUsersAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAttribute, final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    ai.id" +
                 " FROM" +

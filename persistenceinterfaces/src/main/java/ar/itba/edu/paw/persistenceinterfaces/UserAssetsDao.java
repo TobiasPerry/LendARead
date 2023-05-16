@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public interface UserAssetsDao {
 
-    PageUserAssets getLendedAssets(final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
+    PageUserAssets getLendedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
-    PageUserAssets getBorrowedAssets(final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
+    PageUserAssets getBorrowedAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
-    PageUserAssets getUsersAssets(final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
+    PageUserAssets getUsersAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
     Optional<BorrowedAssetInstance> getBorrowedAsset(final int lendingId);
 }
