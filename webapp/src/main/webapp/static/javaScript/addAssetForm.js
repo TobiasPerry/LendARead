@@ -81,7 +81,7 @@ async function checkAndFetchFromISBN() {
     const response = await fetch(url + isbn);
     const book = await response.json();
 
-    if (book.language.length > 0) {
+    if (book.language !== undefined && book.language.length > 0) {
         if (book.language.length !== 3) {
             for (let opt in languageSelect.options) {
                 const langText = languageSelect.options[opt].innerText
