@@ -63,15 +63,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
 
         assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
-        boolean saved = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
+        int id = lendingDao.borrowAssetInstance(ai.get().getId(),user.get().getId(),LocalDate.now(),devolutionDate);
 
-        if (saved) {
-            emailService.sendBorrowerEmail(ai.get(), user.get());
-            emailService.sendLenderEmail(ai.get(), borrower);
-        } else {
-            LOGGER.error("Failed to borrow asset with id {}", ai.get().getId());
-            throw new AssetInstanceBorrowException("Asset can't be lent");
-        }
+        emailService.sendBorrowerEmail(ai.get(), user.get(),id);
+        emailService.sendLenderEmail(ai.get(), borrower,id);
     }
     @Transactional
     @Override

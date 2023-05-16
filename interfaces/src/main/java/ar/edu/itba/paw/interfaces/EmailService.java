@@ -7,8 +7,8 @@ import java.util.Map;
 
 public interface EmailService {
 
-     void sendLenderEmail(final AssetInstance assetInstance, final String borrower);
-     void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower);
+     void sendLenderEmail(final AssetInstance assetInstance, final String borrower,final int lendingId);
+     void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower,final int lendingId);
      void sendForgotPasswordEmail(final String email,final String token);
 
 }

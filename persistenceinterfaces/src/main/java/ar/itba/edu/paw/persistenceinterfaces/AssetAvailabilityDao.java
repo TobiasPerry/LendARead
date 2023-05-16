@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public interface AssetAvailabilityDao {
 
-    boolean borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate,LocalDate devolutionDate);
+    int borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate,LocalDate devolutionDate);
 
     boolean changeLendingStatus(int assetInstanceId, LendingState lendingState);
 }

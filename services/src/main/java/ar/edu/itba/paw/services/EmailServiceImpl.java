@@ -60,7 +60,7 @@ class EmailServiceImpl implements EmailService {
     }
     @Async
     @Override
-    public void sendLenderEmail(final AssetInstance assetInstance, final String borrower) {
+    public void sendLenderEmail(final AssetInstance assetInstance, final String borrower,final int lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -72,6 +72,8 @@ class EmailServiceImpl implements EmailService {
         variables.put("borrower",borrower);
         variables.put("owner",owner);
         variables.put("location",location);
+        variables.put("path",baseUrl + "lentBookDetails/" + lendingId);
+
         String email = owner.getEmail();
         String bookName = book.getName();
         String subject = String.format(messageSource.getMessage("email.lender.subject",null, LocaleContextHolder.getLocale()), bookName);
@@ -80,7 +82,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower) {
+    public void sendBorrowerEmail(final AssetInstance assetInstance,final User borrower,final int lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -91,6 +93,7 @@ class EmailServiceImpl implements EmailService {
         variables.put("book",book);
         variables.put("borrower",borrower.getName());
         variables.put("owner",owner);
+        variables.put("path",baseUrl + "borrowedBookDetails/" + lendingId);
         variables.put("location",location);
         String subject = String.format(messageSource.getMessage("email.borrower.subject",null, LocaleContextHolder.getLocale()), assetInstance.getBook().getName());
 
@@ -106,7 +109,6 @@ class EmailServiceImpl implements EmailService {
     }
     private String mailFormat(final Map<String,Object> variables, final String mailTemplate){
         Context thymeleafContext =   new Context(LocaleContextHolder.getLocale());;
-        variables.put("path",baseUrl);
         thymeleafContext.setVariables(variables);
         return templateEngine.process(mailTemplate, thymeleafContext);
     }

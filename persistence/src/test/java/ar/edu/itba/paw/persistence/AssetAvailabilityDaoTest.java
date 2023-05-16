@@ -43,9 +43,9 @@ public class AssetAvailabilityDaoTest {
     @Test
     public void borrowAssetInstanceTest(){
         //2
-        boolean success = assetAvailabilityDao.borrowAssetInstance(assetInstanceId, userId, borrowDate, devolutionDate);
+        int id = assetAvailabilityDao.borrowAssetInstance(assetInstanceId, userId, borrowDate, devolutionDate);
         //3
-        Assert.assertTrue(success);
+        Assert.assertEquals(id,2);
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "lendings", String.format("assetinstanceid = '%s'", 1)));
     }
 

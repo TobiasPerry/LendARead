@@ -114,18 +114,5 @@ public class AssetAvailabilityServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = AssetInstanceBorrowException.class)
-    public void borrowAssetNotSavedTest() throws Exception{
-        // 1 - Precondiciones
-        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
-        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
-        when(lendingDao.borrowAssetInstance(anyInt(), anyInt(), any(), any())).thenReturn(false);
-
-        // 2 - Ejercitación
-        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK);
-
-        // 3 - Assertions
-        Assert.fail();
-    }
 
 }

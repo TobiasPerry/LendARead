@@ -37,7 +37,6 @@ public class AssetDaoImpl implements AssetDao {
     public AssetDaoImpl(final DataSource	ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("book").usingGeneratedKeyColumns("uid");
-
     }
 
 
@@ -79,12 +78,7 @@ public class AssetDaoImpl implements AssetDao {
         return Optional.of(book);
     }
 
-//    @Override
-//    public boolean deleteAsset(int id) {
-//        String sql = "DELETE FROM assetInstance WHERE id = ?";
-//        int numberOfRowsAffected = jdbcTemplate.update(sql, id);
-//        return numberOfRowsAffected > 0;
-//    }
+
 
     private Optional<Integer> getUid(final Book bi){
         final List<Integer> ids =  jdbcTemplate.query("SELECT uid FROM book WHERE isbn = ?",new Object[]{bi.getIsbn()},ROW_MAPPER_UID);
