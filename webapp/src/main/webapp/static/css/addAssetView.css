@@ -176,6 +176,10 @@ input[type="text"].loading {
     text-align: center;
 }
 
+.current-step div {
+    font-weight: bold;
+}
+
 .image-container {
     overflow: hidden;
     border-radius: 20px;
