@@ -37,45 +37,42 @@ final public class AddAssetViewController {
     private final AssetExistanceService assetExistanceService;
     private final LanguagesService languagesService;
     private final static String viewName = "views/addAssetView";
-    private final static String SUCESS_MSG = "Libro agregado exitosamente!";
-
     private final static String NAV_BAR_PATH = "addAsset", INVALID_SNACKBAR = "showSnackbarInvalid";
 
     @Autowired
-    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService){
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService) {
         this.userService = userService;
         this.assetExistanceService = assetExistanceService;
         this.languagesService = languagesService;
     }
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
-    public ModelAndView addAsset(@RequestParam(name ="file") final MultipartFile image,
+    public ModelAndView addAsset(@RequestParam(name = "file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
-                                 final BindingResult errors, HttpServletResponse response) throws InternalErrorException{
+                                 final BindingResult errors, HttpServletResponse response) throws InternalErrorException {
 
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
-        if(errors.hasErrors() || parsedImage == null)
-            return addAssetView(addAssetForm,false,-1).addObject(INVALID_SNACKBAR, true);
+        if (errors.hasErrors() || parsedImage == null)
+            return addAssetView(addAssetForm, false, -1).addObject(INVALID_SNACKBAR, true);
 
         try {
             AssetInstance assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
-            return addAssetView(addAssetForm,false,-1).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm, false, -1).addObject(INVALID_SNACKBAR, true);
         }
     }
 
-    @RequestMapping( value = "/addAssetView",  method = RequestMethod.GET)
-    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,@RequestParam(required = false,name = "succes") boolean success,@RequestParam(required = false,name = "id") Integer id){
+    @RequestMapping(value = "/addAssetView", method = RequestMethod.GET)
+    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm, @RequestParam(required = false, name = "succes") boolean success, @RequestParam(required = false, name = "id") Integer id) {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<Language> languages = languagesService.getLanguages();
-        LOGGER.debug("LANGUAGES SIZE: {}", languages.size());
         mav.addObject("langs", languages);
-        if(id != null)
-            mav.addObject("assetId",id);
-        if(success)
-            SnackbarControl.displaySuccess(mav,SUCESS_MSG);
+        if (id != null)
+            mav.addObject("assetId", id);
+        if (success)
+            SnackbarControl.displaySuccess(mav);
         return mav;
     }
 

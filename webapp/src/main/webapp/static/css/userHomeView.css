@@ -3,22 +3,26 @@ body {
     background-color: #D0DCD0;
     color: #2B3B2B;
 }
+
 h1, h2 {
     font-family: 'Overpass', sans-serif;
     font-weight: bold;
     color: #111711;
 }
+
 .container {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     margin-top: 50px;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
 }
-.table-title{
+
+.table-title {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 20px;
@@ -26,6 +30,7 @@ table {
     min-width: 800px;
     margin: 0 10px 20px;
 }
+
 th, td {
     padding: 10px;
     margin: 10px;
@@ -33,10 +38,12 @@ th, td {
     border-radius: 10px;
     background-color: #D0DCD0 !important;
 }
+
 th {
     color: #2B3B2B;
     border-style: none;
 }
+
 button {
     background-color: #2B3B2B;
     color: #D1E9C3;
@@ -45,11 +52,19 @@ button {
     padding: 6px;
 }
 
+td.date-column > a > svg {
+    transform: translate(50%, -12.5%);
+    filter: drop-shadow(1px 1px 1px rgb(0 0 0 / 0.4));
+}
+
 .button-status {
     border-radius: 10px;
     opacity: 0.7;
 }
-.button-status:hover {opacity: 1;}
+
+.button-status:hover {
+    opacity: 1;
+}
 
 .image {
     width: 150px;
@@ -59,14 +74,20 @@ button {
     color: #2B3B2B;
     opacity: 0.7;
 }
-.icon-style:hover {opacity: 1;}
+
+.icon-style:hover {
+    opacity: 1;
+}
+
 .dropdown-toggle::after {
     display: none;
 }
+
 .image-container {
     position: relative;
     display: inline-block;
 }
+
 .promo-box {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     border-radius: 20px;
@@ -87,16 +108,21 @@ button {
     font-size: 1.1em;
     margin: 1em 0;
 }
+
 .button-select {
     background-color: inherit;
     border: none;
     margin-top: 5px;
 }
+
 .button-select.list-group-item {
     border-radius: 20px;
 }
 
-.button-select:hover {opacity: 0.75;}
+.button-select:hover {
+    opacity: 0.75;
+}
+
 .button-select-active {
     background-color: #dfead9;
 }
@@ -111,6 +137,7 @@ button {
     flex: 1;
     margin-top: 10px;
 }
+
 .sidebar {
     min-width: 180px;
     max-width: 180px;
@@ -132,9 +159,13 @@ button {
 
 .table td {
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
     color: #2B3B2B;
+    overflow: hidden;
+}
+
+.table td.no-hidden-of {
+    overflow: visible !important;
 }
 
 .dropdown {
@@ -161,28 +192,34 @@ button {
     height: 100%;
     object-fit: contain;
 }
+
 .back-button {
-   margin-top: 30px;
-   margin-left: 30px;
+    margin-top: 30px;
+    margin-left: 30px;
 }
+
 .btn-breadcrumb {
     padding: 10px;
     color: #2B3B2B;
 }
+
 .btn-breadcrumb:hover {
     opacity: 0.7;
 }
+
 .filter-button {
     background-color: #2B3B2B;
     margin-right: 10px;
     border-radius: 20px;
 }
+
 .filter-button-gray {
     background-color: rgba(133, 131, 131, 0.65);
     margin-right: 10px;
     border-radius: 20px;
     border-color: #2B3B2B;
 }
+
 .filter-button-selected {
     opacity: 1;
 }
@@ -196,9 +233,11 @@ button {
     margin-bottom: 10px;
     opacity: 0.8;
 }
+
 .table-row-clickable:hover {
     opacity: 1;
 }
+
 .sort-form {
     display: inline;
 }
@@ -213,6 +252,7 @@ button {
     color: inherit;
     opacity: 0.7;
 }
+
 .sort-button-selected {
     opacity: 1;
 }
@@ -220,4 +260,28 @@ button {
 .sort-button:hover {
     color: #2B3B2B;
     opacity: 0.7;
+}
+
+.tooltip-container {
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    top: -25px; /* Adjust the distance as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    transition: visibility 0s, opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }

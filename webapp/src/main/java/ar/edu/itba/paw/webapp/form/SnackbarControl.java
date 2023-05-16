@@ -5,15 +5,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class SnackbarControl {
 
-     private SnackbarControl() {}
+    private SnackbarControl() {
+    }
 
     static public void displaySuccess(Model model, String msg) {
         model.addAttribute("showSnackbarSucess", true);
         model.addAttribute("snackbarSuccessMessage", msg);
     }
+
     static public void displaySuccess(ModelAndView model, String msg) {
         model.addObject("showSnackbarSucess", true);
         model.addObject("snackbarSuccessMessage", msg);
+    }
+
+    static public void displaySuccess(ModelAndView model) {
+        model.addObject("showSnackbarSucess", true);
     }
 
 }
