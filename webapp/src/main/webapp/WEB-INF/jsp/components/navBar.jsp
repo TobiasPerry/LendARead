@@ -31,7 +31,7 @@
                     <a class="nav-link navItem" id="home" aria-current="page" href="<c:url value="/discovery"/>"><spring:message code="navBar.home" /></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.borrow" /></a>
+                    <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.lend" /></a>
                 </li>
                 <security:authorize access="isAuthenticated()">
                     <li class="nav-item">
