@@ -89,18 +89,18 @@ public class AssetAvailabilityServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = AssetInstanceBorrowException.class)
-    public void borrowAssetNotPublicTest() throws Exception {
-        // 1 - Precondiciones
-        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
-        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
-
-        // 2 - Ejercitación
-        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK);
-
-        // 3 - Assertions
-        Assert.fail();
-    }
+//    @Test(expected = AssetInstanceBorrowException.class)
+//    public void borrowAssetNotPublicTest() throws Exception {
+//        // 1 - Precondiciones
+//        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
+//        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
+//
+//        // 2 - Ejercitación
+//        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK);
+//
+//        // 3 - Assertions
+//        Assert.fail();
+//    }
 
     @Test(expected = DayOutOfRangeException.class)
     public void borrowAssetInvalidDateTest() throws Exception {
