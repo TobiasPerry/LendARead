@@ -22,6 +22,7 @@
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
+    <script src="<c:url value="/static/javaScript/utils.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
 </head>
 
@@ -169,19 +170,20 @@
                                 />
                             </div>
                         </fieldset>
-                        <fieldset class="info-container d-none" data-step="3">
+                        <fieldset class="info-container d-none" data-step="3" id="duration-fs">
                             <h2><spring:message code="addAssetView.steps.TIME.title"/></h2>
                             <div class="d-flex justify-content-center">
                                 <label class="align-baseline mx-1">Borrow for:</label>
-                                <input type="number" id="borrow-time-quantity" name="borrow-time-quantity" value="1"  class="w-25 mx-1 form-control mr-2"/>
+                                <input type="number" id="borrow-time-quantity" name="borrow-time-quantity" value="1" min="1" class="w-25 mx-1 form-control mr-2"/>
                                 <select class="w-25 mx-1 form-select" id="borrow-time-type">
                                     <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
                                     <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
                                     <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
                                 </select>
-                                <form:input path="maxDays" id="maxDays" class="d-none"/>
+                                <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
                             </div>
                             <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
+                            <small id="durationError" class="text-danger small d-none"><spring:message code="Min.addAssetForm.maxDays"/></small>
 
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"
