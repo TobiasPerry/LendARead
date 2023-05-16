@@ -46,17 +46,12 @@
                 <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>
 
 
-                <h3 class="textOverflow" id="authorClick" data-author="${assetInstance.book.author}"><spring:message code="assetView.by"/> <c:out value="${assetInstance.book.author}"/></h3>
+                <h3 class="textOverflow" id="authorClick" data-author="${assetInstance.book.author}"><spring:message code="assetView.by"/> <span class="text-clickable"><c:out value="${assetInstance.book.author}"/></span></h3>
 
-                <h6 id="physicalConditionClick" data-physicalcondition="${assetInstance.physicalCondition}">
-                    <i>
-                        <u><spring:message code="enum.${assetInstance.physicalCondition}"/> </u>
-                    </i>
-                </h6>
+                <h6 id="physicalConditionClick" class="text-clickable" data-physicalcondition="${assetInstance.physicalCondition}"><spring:message code="enum.${assetInstance.physicalCondition}"/></h6>
 
                 <h6 id="languageClick" data-language="${assetInstance.book.language}" style="color: #7d7c7c">
-                    <spring:message code="assetView.language"/>: <c:out
-                        value="${assetInstance.book.language}"/>
+                    <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out value="${assetInstance.book.language}"/></span>
                 </h6>
 
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out

@@ -106,6 +106,13 @@ p{
 }
 
 
+.text-clickable:hover{
+    text-decoration: underline;
+    text-decoration-color: #16df7e;
+    color: #16df7e;
+    cursor: pointer;
+}
+
 /*Scrollbar styling*/
 ::-webkit-scrollbar {
     width: 10px;
