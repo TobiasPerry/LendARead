@@ -132,13 +132,17 @@
                         <c:url var="userUrl" value="/lentBookDetails/${asset.lendingId}"/>
                         <tr class="table-row-clickable" data-href="${userUrl}">
                             <td>
-                                <div style="<c:if test='${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}'>
+                                <div style="<c:if
+                                        test='${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}'>
                                         filter: grayscale(100%);
                                         </c:if>">
-                                    <img style="height: 125px; width: 75px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
-                                </div>                            </td>
+                                    <img style="height: 125px; width: 75px; object-fit: cover"
+                                         src="<c:url value='/getImage/${asset.imageId}'/>"
+                                         alt="<c:out value='${asset.book.name}'/>"/>
+                                </div>
+                            </td>
                             <td><c:out value="${asset.book.name}"/></td>
-                            <td><c:out value="${asset.dueDate}"/></td>
+                            <td class="date-column no-hidden-of"><c:out value="${asset.dueDate}"/></td>
                             <td><c:out value="${asset.borrower}"/></td>
                             <td><spring:message code="enum.${asset.assetState}"/></td>
                         </tr>
@@ -160,7 +164,7 @@
     </c:otherwise>
 </c:choose>
 <c:if test="${totalPages > 0}">
-    <jsp:include page="paginationButtons.jsp" >
+    <jsp:include page="paginationButtons.jsp">
         <jsp:param name="table" value="${table}"/>
         <jsp:param name="direction" value="${direction}"/>
         <jsp:param name="attribute" value="${attribute}"/>
@@ -187,5 +191,8 @@
             });
         });
     });
+
+    const warningFewDays = `<spring:message code="userHomeView.warning.fewDays"/>`
+    const warningReturnDate = `<spring:message code="userHomeView.warning.deadLinePassed"/>`
 
 </script>
