@@ -161,6 +161,11 @@ td.date-column > a > svg {
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #2B3B2B;
+    overflow: hidden;
+}
+
+.table td.no-hidden-of {
+    overflow: visible !important;
 }
 
 .dropdown {

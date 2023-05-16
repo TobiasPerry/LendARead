@@ -8,6 +8,7 @@ import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
+import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,10 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public ModelAndView assetInfoView(@PathVariable(name = "id") int id, @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,@RequestParam(required = false,name = "success") final boolean success) throws AssetInstanceNotFoundException{
+    public ModelAndView assetInfoView(@PathVariable(name = "id") int id,
+                                      @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,
+                                      final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
+                                      @RequestParam(required = false,name = "success") final boolean success) throws AssetInstanceNotFoundException{
         AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
 
@@ -51,9 +55,12 @@ public class AssetViewController {
     }
 
     @RequestMapping(value = "/requestAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView requestAsset(@PathVariable(name = "id") int id, @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
+    public ModelAndView requestAsset(@PathVariable(name = "id") int id,
+                                     @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
+                                     final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
+                                     final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
         if (errors.hasErrors()){
-            return assetInfoView(id,borrowAssetForm,false);
+            return assetInfoView(id,borrowAssetForm,searchFilterSortForm, false );
         }
         //TODO PREGUNTAR
         if(borrowAssetForm.getDate() == null)
@@ -63,7 +70,7 @@ public class AssetViewController {
         try {
             assetAvailabilityService.borrowAsset(id, getCurrentUserEmail(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
         }catch (DayOutOfRangeException ex){
-            ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm,false);
+            ModelAndView assetInfoView = assetInfoView(id,borrowAssetForm, searchFilterSortForm, false);
 
             assetInfoView.addObject("dayError",true);
             return assetInfoView;

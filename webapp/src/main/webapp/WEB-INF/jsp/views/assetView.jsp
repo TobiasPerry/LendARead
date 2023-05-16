@@ -28,6 +28,7 @@
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="<c:url value="/static/javaScript/map.js"/>"></script>
+    <script src="<c:url value="/static/javaScript/assetView.js"/>"></script>
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
 
@@ -44,18 +45,23 @@
 
                 <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>
 
-                <h3 class="textOverflow"><spring:message code="assetView.by"/> <c:out value="${assetInstance.book.author}"/></h3>
-                <h6>
-                    <i>
-                        <u><spring:message code="enum.${assetInstance.physicalCondition}"/> </u>
-                    </i>
+
+                <h3 class="textOverflow" id="authorClick" data-author="${assetInstance.book.author}"><spring:message code="assetView.by"/> <span class="text-clickable"><c:out value="${assetInstance.book.author}"/></span></h3>
+
+                <h6 id="physicalConditionClick" class="text-clickable" data-physicalcondition="${assetInstance.physicalCondition}"><spring:message code="enum.${assetInstance.physicalCondition}"/></h6>
+
+                <h6 id="languageClick" data-language="${assetInstance.book.language}" style="color: #7d7c7c">
+                    <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out value="${assetInstance.book.language}"/></span>
                 </h6>
-                <h6 style="color: #7d7c7c"><spring:message code="assetView.language"/>: <c:out
-                        value="${assetInstance.book.language}"/></h6>
+
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                         value="${assetInstance.book.isbn}"/></h6>
-                <security:authorize access="isAuthenticated()">
 
+                <c:url var="discovery" value="/discovery"/>
+                <form:form modelAttribute="searchFilterSortForm" method="get" action="${discovery}" id="formSearch">
+                </form:form>
+
+                <security:authorize access="isAuthenticated()">
                 <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
                 <form:form modelAttribute="borrowAssetForm" method="post"
                  action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
