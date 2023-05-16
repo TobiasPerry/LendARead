@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -67,7 +69,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
         }
     }
 
-    @Override
+
     public List<BorrowedAssetInstance> getLendedAssets(final String email, final String filterAttribute,  final String filterValue, final String sortAttribute, final String direction) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
@@ -94,10 +96,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             query += "AND l.active = ?";
         if(filterAttribute.equalsIgnoreCase("delayed"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
-        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
+        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
-        if (!direction.equalsIgnoreCase("none"))
-            query += " " + direction;
+            if (!direction.equalsIgnoreCase("none")) {
+                query += " " + direction;
+            }
+        }
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
@@ -117,6 +121,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         return jdbcTemplate.query(query, rowMapper, email);
     }
+
 
 
     @Override
@@ -148,10 +153,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
             query += "AND l.active = ?";
         if(filterAttribute.equalsIgnoreCase("delayed"))
             query += "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE";
-        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
+        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
-        if (!direction.equalsIgnoreCase("none"))
-            query += " " + direction;
+            if (!direction.equalsIgnoreCase("none")) {
+                query += " " + direction;
+            }
+        }
 
 
         RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
@@ -197,10 +204,12 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         if (!filterAttribute.equalsIgnoreCase("none"))
             query += " AND " + filterAttribute + " = ?";
-        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none"))
+        if (!matchSortAttribuite(sortAttribute).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuite(sortAttribute);
-        if (!direction.equalsIgnoreCase("none"))
-            query += " " + direction;
+            if (!direction.equalsIgnoreCase("none")) {
+                query += " " + direction;
+            }
+        }
 
         System.out.println(query);
 

@@ -7,6 +7,8 @@
     <c:url var="filterUrl" value="/applyFilter"/>
     <form action="${filterUrl}" method="get">
         <input type="hidden" name="table" value="${param.table}">
+        <input type="hidden" name="direction" value="${param.sortAttribute ? 'desc' : 'asc'}" />
+        <input type="hidden" name="attribute" value="${param.attribute}" />
         <input type="hidden" name="filterValue" value="${param.filterValue}">
         <input type="hidden" name="filterAtribuite" value="${param.filterAtribuite}">
         <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="<spring:message code='${param.title}'/>" class="btn ${param.filterAtribuite == 'lendingStatus' ? 'filter-button-gray' : 'filter-button'} btn-primary ${param.filter == param.filterValue && param.table == param.table ? 'filter-button-selected' : ''}">
