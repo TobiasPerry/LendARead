@@ -114,7 +114,7 @@
                             <div style="<c:if test='${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}'>
                                     filter: grayscale(100%);
                                     </c:if>">
-                                <img style="height: 250px; width: 150px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
+                                <img style="height: 125px; width: 75px; object-fit: cover" src="<c:url value='/getImage/${asset.imageId}'/>" alt="<c:out value='${asset.book.name}'/>"/>
                             </div>                                  </td>
                         <td><c:out value="${asset.book.name}"/></td>
                         <td><c:out value="${asset.dueDate}"/></td>
