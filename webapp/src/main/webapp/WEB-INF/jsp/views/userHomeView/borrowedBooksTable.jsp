@@ -112,6 +112,16 @@
                         <jsp:param name="currentPage" value="${currentPage}"/>
                         <jsp:param name="title" value="borrower_name"/>
                     </jsp:include>
+
+                    <jsp:include page="sortButton.jsp">
+                        <jsp:param name="table" value="status"/>
+                        <jsp:param name="attribute" value="borrower_name"/>
+                        <jsp:param name="sortAttribute" value="${sort_borrower_name}"/>
+                        <jsp:param name="filterValue" value="${filterValue}"/>
+                        <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                        <jsp:param name="currentPage" value="${currentPage}"/>
+                        <jsp:param name="title" value="borrower_name"/>
+                    </jsp:include>
                 </tr>
                 </thead>
                 <tbody>
@@ -128,6 +138,7 @@
                         <td><c:out value="${asset.book.name}"/></td>
                         <td><c:out value="${asset.dueDate}"/></td>
                         <td><c:out value="${asset.owner.name}"/></td>
+                        <td><c:out value="${asset.assetState}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>
