@@ -13,27 +13,27 @@ public class AddAssetForm {
 
     @Isbn
     private String isbn;
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String language;
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String author;
 
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String title;
 
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String physicalCondition;
 
-    @Pattern(regexp = "^\\d{4}$")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String zipcode;
 
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String locality;
 
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String province;
 
-    @Size(min = 3,max = 100)
+    @Size(min = 1, max = 100)
     private String country;
 
     @Min(value = 1)

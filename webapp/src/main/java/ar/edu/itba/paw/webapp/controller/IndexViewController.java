@@ -72,10 +72,6 @@ public class IndexViewController {
         int pageNum = searchFilterSortForm.getCurrentPage();
         final int itemsPerPage = 15;
 
-        System.out.println("phy " + searchFilterSortForm.getPhysicalConditions()); // TODO remove
-        System.out.println("lang " + searchFilterSortForm.getLanguages()); // TODO remove
-        System.out.println("ser " + searchFilterSortForm.getSearch()); // TODO remove
-
         Page page = assetInstanceService.getAllAssetsInstances(
                 pageNum,itemsPerPage,
                 new SearchQueryImpl(
