@@ -30,7 +30,7 @@ final public class UserHomeViewController {
 
     private static final String FILTER_ATRIBUITE = "filterAtribuite", SORT_ATRIBUITE = "attribute", SORT_VALUE = "direction", FILTER_VALUE = "filterValue";
 
-    private static final int ITEMS_PER_PAGE = 2, DEFAULT_PAGE_NUMBER = 1;
+    private static final int ITEMS_PER_PAGE = 5, DEFAULT_PAGE_NUMBER = 1;
 
     @Autowired
     public UserHomeViewController(final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
