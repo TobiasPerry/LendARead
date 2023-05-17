@@ -24,7 +24,6 @@ public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<Integer> ROW_MAPPER_ID = (rs, rownum) -> rs.getInt("id");
     private static final RowMapper<User> ROW_MAPPER_USER = (rs, rownum) -> new UserImpl(rs.getInt("id"), rs.getString("mail"), rs.getString("name"), rs.getString("telephone"), rs.getString("password"), Behaviour.fromString(rs.getString("behavior")));
 
     private static final RowMapper<PasswordResetToken> ROW_MAPPER_PASSWORD_TOKEN = (rs, rownum) -> new PasswordResetTokenImpl(rs.getString("token"), rs.getString("mail"), rs.getTimestamp("expiration").toLocalDateTime().toLocalDate());
