@@ -188,3 +188,14 @@ svg {
         padding: 0 20px;
     }
 }
+
+.service-icon {
+    background-color: #2B3B2B;
+    color: #D1E9C3;
+    height: 7rem;
+    width: 7rem;
+    display: block;
+    line-height: 7.5rem;
+    font-size: 2.25rem;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}

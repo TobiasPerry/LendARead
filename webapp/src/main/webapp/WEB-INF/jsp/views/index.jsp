@@ -15,6 +15,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <style>
 
     </style>
@@ -58,6 +60,40 @@
         </div>
     </section>
 </c:if>
+
+<section class="content-section text-white text-center pb-5" id="services" style="background-color: #D0DCD0">
+    <div class="container px-4 px-lg-5">
+        <div class="content-section-heading">
+            <h2 class="my-5" style="color: #3e4450"><spring:message code="index.section.title"/></h2>
+        </div>
+        <div class="row gx-4 gx-lg-5" style="display: flex; justify-content: space-between;">
+            <div class="service-item" style="flex: 0 0 25%; max-width: 25%;">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="bi bi-search"></i></span>
+                <h4 style="color: #2B3B2B"><strong><spring:message code="index.section.search"/></strong></h4>
+                <p class="mb-0" style="color: #3e4450"><spring:message code="index.section.search.subtitle"/></p>
+            </div>
+            <div class="service-item" style="flex: 0 0 25%; max-width: 25%;">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="bi bi-send"></i></span>
+                <h4 style="color: #2B3B2B"><strong><spring:message code="index.section.request"/></strong></h4>
+                <p class="mb-0" style="color: #3e4450"><spring:message code="index.section.request.subtitle"/></p>
+            </div>
+            <div class="service-item" style="flex: 0 0 25%; max-width: 25%;">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="bi bi-person-circle"></i></span>
+                <h4 style="color: #2B3B2B"><strong><spring:message code="index.section.contact"/></strong></h4>
+                <p class="mb-0" style="color: #3e4450">
+                    <spring:message code="index.section.contact.subtitle"/>
+                </p>
+            </div>
+            <div class="service-item" style="flex: 0 0 25%; max-width: 25%;">
+                <span class="service-icon rounded-circle mx-auto mb-3"><i class="bi bi-arrow-left-right"></i></span>
+                <h4 style="color: #2B3B2B"><strong><spring:message code="index.section.meet"/></strong></h4>
+                <p class="mb-0" style="color: #3e4450"><spring:message code="index.section.meet.subtitle"/></p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 </body>
 
 </html>
