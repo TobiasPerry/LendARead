@@ -22,8 +22,6 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     private final SimpleJdbcInsert jdbcInsert;
 
 
-    private final static RowMapper<LendingDetails> rowMapper = (rs, rownum) -> new LendingDetailsImpl(rs.getInt("borrowerId"), rs.getInt("assetinstanceid"), rs.getObject("lendDate", LocalDate.class), rs.getObject("devolutionDate", LocalDate.class));
-
     @Autowired
     public AssetAvailabilityDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
