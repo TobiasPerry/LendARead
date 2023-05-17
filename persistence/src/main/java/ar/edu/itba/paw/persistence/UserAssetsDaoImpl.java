@@ -274,8 +274,6 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         query += " LIMIT ? OFFSET ?";
 
-        System.out.println(query);
-
         RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
 
         List<Integer> assetIds;
