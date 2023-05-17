@@ -128,7 +128,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 
         populator.addScript(schemaSql);
-//        populator.addScript(languagesSql);
+        populator.addScript(languagesSql);
 
         return populator;
     }
