@@ -25,6 +25,8 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     private final JdbcTemplate jdbcTemplate;
 
     private final AssetInstanceDao assetInstanceDao;
+    private final static RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
+
 
     @Autowired
     public UserAssetsDaoImpl(final DataSource ds, AssetInstanceDao assetInstanceDao) {
@@ -274,9 +276,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         query += " LIMIT ? OFFSET ?";
 
-        System.out.println(query);
 
-        RowMapper<Integer> assetIdRowMapper = (rs, rowNum) -> rs.getInt("id");
 
         List<Integer> assetIds;
         if (!filterAttribute.equalsIgnoreCase("none"))

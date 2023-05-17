@@ -32,14 +32,13 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     }
 
     @Override
-    public int borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate, LocalDate devolutionDate) {
-        String query = "INSERT INTO lendings(assetinstanceid,borrowerId,lendDate,devolutionDate) VALUES(?,?,?,?)";
+    public int borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate, LocalDate devolutionDate,LendingState lendingState) {
         final Map<String, Object> args = new HashMap<>();
         args.put("assetinstanceid", assetInstanceId);
         args.put("borrowerId", userId);
         args.put("lendDate", java.sql.Date.valueOf(borrowDate));
         args.put("devolutionDate", java.sql.Date.valueOf(devolutionDate));
-        args.put("active", "ACTIVE");
+        args.put("active", lendingState);
         return jdbcInsert.executeAndReturnKey(args).intValue();
     }
 

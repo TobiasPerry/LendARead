@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.junit.Assert;
@@ -44,7 +45,7 @@ public class AssetAvailabilityDaoTest {
     @Test
     public void borrowAssetInstanceTest() {
         //2
-        int id = assetAvailabilityDao.borrowAssetInstance(assetInstanceId, userId, borrowDate, devolutionDate);
+        int id = assetAvailabilityDao.borrowAssetInstance(assetInstanceId, userId, borrowDate, devolutionDate, LendingState.ACTIVE);
         //3
         Assert.assertEquals(id, 1);
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "lendings", String.format("assetinstanceid = '%s'", 1)));

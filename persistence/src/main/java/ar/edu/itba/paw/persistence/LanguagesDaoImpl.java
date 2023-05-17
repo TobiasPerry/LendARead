@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Repository
 public class LanguagesDaoImpl implements LanguageDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesDaoImpl.class);
     private static final RowMapper<Language> ROW_MAPPER_LANG = (rs, rownum) -> new LanguageImpl(rs.getString("id"), rs.getString("name"));
     private final JdbcTemplate jdbcTemplate;
 
