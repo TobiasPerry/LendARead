@@ -43,15 +43,21 @@
                  style="margin-left: 0; margin-right: 50px; height: 500px; width: 300px; object-fit: cover">
             <div class="mx-2">
 
-                <h1 class="textOverflow"><c:out value="${assetInstance.book.name} "/></h1>
+                <h1 class="textOverflow" title="<c:out value="${assetInstance.book.name}"/>"><c:out
+                        value="${assetInstance.book.name} "/></h1>
 
 
-                <h3 class="textOverflow" id="authorClick" data-author="${assetInstance.book.author}"><spring:message code="assetView.by"/> <span class="text-clickable"><c:out value="${assetInstance.book.author}"/></span></h3>
+                <h3 class="textOverflow" id="authorClick" data-author="${assetInstance.book.author}"><spring:message
+                        code="assetView.by"/> <span class="text-clickable"><c:out
+                        value="${assetInstance.book.author}"/></span></h3>
 
-                <h6 id="physicalConditionClick" class="text-clickable" data-physicalcondition="${assetInstance.physicalCondition}"><spring:message code="enum.${assetInstance.physicalCondition}"/></h6>
+                <h6 id="physicalConditionClick" class="text-clickable"
+                    data-physicalcondition="${assetInstance.physicalCondition}"><spring:message
+                        code="enum.${assetInstance.physicalCondition}"/></h6>
 
                 <h6 id="languageClick" data-language="${assetInstance.book.language}" style="color: #7d7c7c">
-                    <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out value="${assetInstance.book.language}"/></span>
+                    <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out
+                        value="${assetInstance.book.language}"/></span>
                 </h6>
 
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
@@ -62,16 +68,18 @@
                 </form:form>
 
                 <security:authorize access="isAuthenticated()">
-                <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
-                <form:form modelAttribute="borrowAssetForm" method="post"
-                 action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
-                    <h5><spring:message code="assetView.return"/></h5>
-                    <jsp:include page="../components/calendar.jsp"/>
-                    <input class="btn btn-green" type="submit" value="<spring:message code="assetView.borrowButton"/>">
-                </form:form>
+                    <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
+                    <form:form modelAttribute="borrowAssetForm" method="post"
+                               action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
+                        <h5><spring:message code="assetView.return"/></h5>
+                        <jsp:include page="../components/calendar.jsp"/>
+                        <input class="btn btn-green" type="submit"
+                               value="<spring:message code="assetView.borrowButton"/>">
+                    </form:form>
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
-                    <a class="btn-green" href="<c:url value="/login"/>" style="text-decoration: none; text-align: center" ><spring:message code="auth.login"/></a>
+                    <a class="btn-green" href="<c:url value="/login"/>"
+                       style="text-decoration: none; text-align: center"><spring:message code="auth.login"/></a>
                 </security:authorize>
             </div>
         </div>
@@ -111,7 +119,6 @@
     <jsp:param name="redirectionUrl" value="/discovery"/>
 </jsp:include>
 <script>
-
 
 
 </script>

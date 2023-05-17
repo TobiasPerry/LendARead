@@ -8,22 +8,26 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Getter @Setter
+@Getter
+@Setter
 public class AddAssetForm {
 
     @Isbn
     private String isbn;
+
     @Size(min = 1, max = 100)
     private String language;
+
     @Size(min = 1, max = 100)
     private String author;
 
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 1000)
     private String title;
 
     @Size(min = 1, max = 100)
     private String physicalCondition;
 
+    @Size(min = 1, max = 100)
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String zipcode;
 

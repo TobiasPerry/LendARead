@@ -28,6 +28,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="<c:url value="/static/css/assetView.css"/>" rel="stylesheet"/>
 </head>
 <body data-path="${path}" class="body-class">
 
@@ -59,15 +60,21 @@
     <div class="main-class"
          style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
         <div class="container-row-wrapped"
-             style="display: flex; flex-direction: row; align-items: flex-start; justify-content: space-around;">
-            <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; max-width: 600px">
+             style="display: flex; flex-direction: row; align-items: flex-start; justify-content: center;">
+            <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; max-width: 50%; min-width: 650px">
                 <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
                     <img src="<c:url value="/getImage/${asset.imageId}"/>" class="mx-3" alt="Book cover"
                          style="height: 500px; width: 300px; object-fit: cover">
-                    <div class="mx-2">
-                        <h1 class="textOverflow"><c:out value="${asset.book.name} "/></h1>
-                        <h3 class="textOverflow"><spring:message code="assetView.by"/> <c:out
-                                value="${asset.book.author}"/></h3>
+                    <div class="mx-2" style="min-width: 400px">
+                        <h1 class="textOverflow" style="max-width: min-content " title="<c:out
+                                value="${asset.book.name} "/>"><c:out
+                                value="${asset.book.name} "/></h1>
+                        <h3 class="textOverflow"
+                            style="max-width: min-content;">
+                            <spring:message
+                                    code="assetView.by"/>
+                            <c:out
+                                    value="${asset.book.author}"/></h3>
                         <h6>
                             <i>
                                 <u><spring:message code="enum.${asset.physicalCondition}"/></u>
