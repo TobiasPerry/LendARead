@@ -1,26 +1,26 @@
-document.addEventListener("DOMContentLoaded",()=> {
+document.addEventListener("DOMContentLoaded", () => {
 
     const nextPageButton = document.getElementById("nextPageButton");
-    if(nextPageButton != null) {
+    if (nextPageButton != null) {
         nextPageButton.addEventListener("click", () => {
             document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
             document.getElementById("springForm").submit()
         });
-    }else{
+    } else {
         document.getElementById("currentPageID").value = 1;
     }
 
     const previousPageButton = document.getElementById("previousPageButton");
-    if(previousPageButton != null) {
+    if (previousPageButton != null) {
         previousPageButton.addEventListener("click", () => {
             document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) - 1
             document.getElementById("springForm").submit()
         });
-    }else{
+    } else {
         document.getElementById("currentPageID").value = 1;
     }
 
-    const submitFilters = (event) =>{
+    const submitFilters = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
         let i = 0
         let j = 0
@@ -28,8 +28,7 @@ document.addEventListener("DOMContentLoaded",()=> {
         for (const language of document.getElementsByClassName("languageLabel")) {
             if (document.getElementById("language-" + i).checked) {
                 const value = document.getElementById("language-" + i + "-label").childNodes[0].textContent
-                console.log(value)
-                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + j + `]" id="languageId-` + j + `" value="` + value +  `">`
+                document.getElementById("springForm").innerHTML += `<input type ="hidden" name="languages[` + j + `]" id="languageId-` + j + `" value="` + value + `">`
                 j++
             }
             i++
@@ -46,7 +45,7 @@ document.addEventListener("DOMContentLoaded",()=> {
         }
 
         const search = document.getElementById("search-bar").value
-        if(search !== "" && search != null) {
+        if (search !== "" && search != null) {
             document.getElementById("springForm").innerHTML += `<input type ="hidden" name="search" value="` + search + `">`
         }
 
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded",()=> {
     document.getElementById("submit-filter").addEventListener("click", submitFilters, true);
 
     document.getElementById("search-bar").addEventListener("keyup", (event) => {
-        if(event.key === "Enter" || event.code === "Enter") {
+        if (event.key === "Enter" || event.code === "Enter") {
             submitFilters(event)
         }
     })

@@ -63,7 +63,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
 
         assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
-        int id = lendingDao.borrowAssetInstance(ai.get().getId(), user.get().getId(), LocalDate.now(), devolutionDate);
+        int id = lendingDao.borrowAssetInstance(ai.get().getId(), user.get().getId(), LocalDate.now(), devolutionDate,LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), id);
         emailService.sendLenderEmail(ai.get(), borrower, id);
         LOGGER.info("Asset {} has been borrow", assetId);

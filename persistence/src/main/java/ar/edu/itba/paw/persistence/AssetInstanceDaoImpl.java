@@ -66,7 +66,6 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState, maxWeeks);
         }
     };
-    private static final RowMapper<Integer> ROW_MAPPER_UID = (rs, rownum) -> rs.getInt("uid");
 
     private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) -> rs.getInt("pageCount");
 

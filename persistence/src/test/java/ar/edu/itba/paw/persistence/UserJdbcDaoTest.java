@@ -94,7 +94,7 @@ public class UserJdbcDaoTest {
 
         //3
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(user.get().getEmail(),ALREADY_EXISTS_EMAIL);
+        Assert.assertEquals(ALREADY_EXISTS_EMAIL,user.get().getEmail());
     }
 
     @Rollback
@@ -135,9 +135,9 @@ public class UserJdbcDaoTest {
 
         //3
         Assert.assertTrue(passwordResetToken.isPresent());
-        Assert.assertEquals(passwordResetToken.get().getToken(),TOKEN_ALREADY_EXISTS);
-        Assert.assertEquals(passwordResetToken.get().getUser(),ALREADY_EXISTS_EMAIL);
-        Assert.assertEquals(passwordResetToken.get().getExpiryDate(),TOKEN_EXPIRATION_DATE_ALREADY_EXISTS);
+        Assert.assertEquals(TOKEN_ALREADY_EXISTS,passwordResetToken.get().getToken());
+        Assert.assertEquals(ALREADY_EXISTS_EMAIL,passwordResetToken.get().getUser());
+        Assert.assertEquals(TOKEN_EXPIRATION_DATE_ALREADY_EXISTS,passwordResetToken.get().getExpiryDate());
 
     }
 

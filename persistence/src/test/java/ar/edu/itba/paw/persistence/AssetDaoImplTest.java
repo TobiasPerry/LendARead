@@ -73,9 +73,9 @@ public class AssetDaoImplTest {
         Optional<Book> returnBook = assetDao.getBook(ISBN_ALREADY_EXIST);
         //3
         Assert.assertTrue(returnBook.isPresent());
-        Assert.assertEquals(returnBook.get().getName(), DUPLICATED_BOOK.getName());
-        Assert.assertEquals(returnBook.get().getAuthor(), DUPLICATED_BOOK.getAuthor());
-        Assert.assertEquals(returnBook.get().getLanguage(), DUPLICATED_BOOK.getLanguage());
+        Assert.assertEquals(DUPLICATED_BOOK.getName(),returnBook.get().getName());
+        Assert.assertEquals( DUPLICATED_BOOK.getAuthor(),returnBook.get().getAuthor());
+        Assert.assertEquals(DUPLICATED_BOOK.getLanguage(),returnBook.get().getLanguage());
     }
 
 }
