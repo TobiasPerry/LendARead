@@ -58,12 +58,21 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+    @Bean
+    public WebExpressionVoter webExpressionVoter() {
+        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+        webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
+        return  webExpressionVoter;
+    }
+
     @Bean
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
         expressionHandler.setRoleHierarchy(roleHierarchy());
         return expressionHandler;
     }
+
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -74,7 +83,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<?>> decisionVoters = Arrays.asList(
-                new WebExpressionVoter(),
+                webExpressionVoter(),
                 new RoleVoter(),
                 new AuthenticatedVoter(),
                 deleteAssetVoter,
@@ -87,12 +96,12 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
         http.sessionManagement().invalidSessionUrl("/")
-                .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler()).accessDecisionManager(accessDecisionManager())
+                .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
+                .accessDecisionManager(accessDecisionManager())
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
-                .antMatchers("/borrowAssetView","borrowAsset").hasRole("BORROWER")
-                .antMatchers("/addAsset","/lentBookDetails/**").hasRole("LENDER")
-                .antMatchers(HttpMethod.POST,"/deleteAsset/**","/confirmAsset","/returnAsset","/rejectAsset").hasRole("LENDER")
-                .antMatchers("/userHome","/changeStatus/**","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**").authenticated()
+                .antMatchers("/addAsset","/lentBookDetails/**","/myBookDetails/**").hasRole("LENDER")
+                .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**").hasRole("LENDER")
+                .antMatchers("/userHome","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**").authenticated()
                 .antMatchers("/**").permitAll()
                 .and().formLogin().loginPage("/login")
                 .usernameParameter("email").passwordParameter("password")
@@ -102,8 +111,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .key(environment.getProperty("persistence.salt"))
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)).
-                and().logout().logoutUrl("/logout").
-                logoutSuccessUrl("/login").
+                and().logout()
+                .deleteCookies("JSESSIONID")
+                .deleteCookies("remember-me")
+                .logoutUrl("/logout").
+                logoutSuccessUrl("/").
                 and().exceptionHandling().accessDeniedPage("/errors/403")
                 .and().csrf().disable();
     }

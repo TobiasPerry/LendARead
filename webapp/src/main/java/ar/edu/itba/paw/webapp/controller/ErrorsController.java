@@ -25,7 +25,6 @@ public class ErrorsController {
             UserNotFoundException.class,
             AssetInstanceNotFoundException.class,
             ImageNotFoundException.class,
-            NoHandlerFoundException.class
     })
     public ModelAndView notFoundException() {
         ModelAndView mav = new ModelAndView("views/error");

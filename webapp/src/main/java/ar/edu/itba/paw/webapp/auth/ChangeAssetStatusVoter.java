@@ -39,10 +39,14 @@ public class ChangeAssetStatusVoter implements AccessDecisionVoter<FilterInvocat
     public int vote(Authentication authentication, FilterInvocation filterInvocation, Collection<ConfigAttribute> attributes) {
         AtomicInteger vote = new AtomicInteger();
         vote.set(ACCESS_ABSTAIN);
-        if(filterInvocation.getRequestUrl().toLowerCase().contains("/changestatus/")) {
+        if(filterInvocation.getRequestUrl().toLowerCase().contains("/changestatus/") || filterInvocation.getRequestUrl().toLowerCase().contains("/mybookdetails/")  ) {
 
             StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
             stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
+            int variables = stringBuilder.indexOf("?");
+            if(variables != -1)
+               stringBuilder.delete(variables,stringBuilder.length()+1);
+
             if(assetInstanceService.isOwner(Integer.parseInt(stringBuilder.toString()),((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
                 vote.set(ACCESS_GRANTED);
             else {

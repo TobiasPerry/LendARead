@@ -40,7 +40,6 @@ public class DeleteAssetVoter implements AccessDecisionVoter<FilterInvocation> {
         AtomicInteger vote = new AtomicInteger();
         vote.set(ACCESS_ABSTAIN);
         if(filterInvocation.getRequestUrl().toLowerCase().contains("/deleteasset/")) {
-
             StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
             stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
             if(assetInstanceService.isOwner(Integer.parseInt(stringBuilder.toString()),((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))

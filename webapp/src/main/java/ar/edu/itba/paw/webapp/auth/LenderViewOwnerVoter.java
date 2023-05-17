@@ -40,19 +40,19 @@ public class LenderViewOwnerVoter implements AccessDecisionVoter<FilterInvocatio
         AtomicInteger vote = new AtomicInteger();
         String url = filterInvocation.getRequestUrl().toLowerCase();
         vote.set(ACCESS_ABSTAIN);
-        try {
             if (url.contains("/lentbookdetails/") || url.contains("/returnasset") || url.contains("/rejectasset") || url.contains("/confirmasset")) {
                 StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
                 stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
+                int variables = stringBuilder.indexOf("?");
+                if(variables != -1)
+                    stringBuilder.delete(variables,stringBuilder.length()+1);
                 if (userAssetInstanceService.getBorrowedAssetInstance(Integer.parseInt(stringBuilder.toString())).getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
                     vote.set(ACCESS_GRANTED);
                 else {
                     vote.set(ACCESS_DENIED);
                 }
             }
-        } catch (NumberFormatException e) {
-            vote.set(ACCESS_ABSTAIN);
-        }
+
 
         return vote.get();
     }
