@@ -62,9 +62,12 @@ prevButtons.forEach(button => {
 //Function to check if an extra validation needs to be done before going to the next step
 async function checkNext(current, next) {
     switch (current.id) {
-        case 'isbn-fs': return checkAndFetchFromISBN();
-        case 'duration-fs': return checkDuration();
-        default: return true;
+        case 'isbn-fs':
+            return checkAndFetchFromISBN();
+        case 'duration-fs':
+            return checkDuration();
+        default:
+            return true;
     }
 }
 
@@ -145,7 +148,6 @@ function beforeSubmit() {
     const timeInDays = document.getElementById('maxDays')
 
     const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
-    console.log("Total Days: " + totalTimeInDays)
 
     timeInDays.value = totalTimeInDays
 
@@ -235,8 +237,6 @@ document.addEventListener("DOMContentLoaded", e => {
         const titleInput = document.getElementById('title');
         const authorInput = document.getElementById('author');
         const languageInput = document.getElementById('language');
-
-        console.log(titleInput.value.length)
 
         if (titleInput.value === '') {
             titleInput.readOnly = false
