@@ -34,11 +34,11 @@ public class ForgotPasswordController {
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
     public ModelAndView forgotPasswordPost(@Valid @ModelAttribute("emailForm") final EmailForm emailForm, final BindingResult errors) {
         if (errors.hasErrors()) {
-            LOGGER.warn("Forgot password form erros");
+            LOGGER.warn("Forgot password form error");
             return forgotPassword(emailForm);
         }
         userService.createChangePasswordToken(emailForm.getEmail());
-        LOGGER.debug("The token for forgot password has been created");
+        LOGGER.info("Token for foggoten password has been created");
         return new ModelAndView("redirect:/changePassword");
     }
 
@@ -53,7 +53,7 @@ public class ForgotPasswordController {
             return changePassword(changePasswordForm);
         }
         userService.changePassword(changePasswordForm.getToken(), changePasswordForm.getPassword());
-        LOGGER.debug("The password has been changed");
+        LOGGER.info("Password changed successfully");
         return new ModelAndView("redirect:/login");
     }
 }

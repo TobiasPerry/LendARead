@@ -2,8 +2,7 @@ function initMap() {
     document.addEventListener("DOMContentLoaded", () => {
         const geocoder = new google.maps.Geocoder();
         const address = document.getElementById("address").value;
-        console.log(address);
-        geocoder.geocode( { 'address': address}, function(results, status) {
+        geocoder.geocode({'address': address}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 //Got result, center the map and put it out ther
                 const map = new google.maps.Map(document.getElementById("map"), {
@@ -65,4 +64,5 @@ function initMap() {
     });
 
 }
+
 window.initMap = initMap;

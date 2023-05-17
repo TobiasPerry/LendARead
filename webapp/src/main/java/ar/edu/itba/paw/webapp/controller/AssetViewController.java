@@ -49,8 +49,8 @@ public class AssetViewController {
                                       @RequestParam(required = false, name = "success") final boolean success) throws AssetInstanceNotFoundException {
         AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
-            if (assetInstanceService.isOwner(assetInstanceOpt, userService.getCurrentUser()))
-                return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());
+        if (assetInstanceService.isOwner(assetInstanceOpt, userService.getCurrentUser()))
+            return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());
 
 
         final ModelAndView mav = new ModelAndView("/views/assetView");
@@ -73,7 +73,7 @@ public class AssetViewController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         try {
             assetAvailabilityService.borrowAsset(id, userService.getCurrentUser(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
-            LOGGER.debug("Borrow asset correct");
+            LOGGER.info("Borrow asset correct");
 
         } catch (DayOutOfRangeException ex) {
             LOGGER.warn("Cannot borrow asset because the de dayFormat");

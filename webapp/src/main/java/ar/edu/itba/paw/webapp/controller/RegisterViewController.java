@@ -29,12 +29,12 @@ public class RegisterViewController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ModelAndView registerPost(@Valid @ModelAttribute final RegisterForm registerForm, final BindingResult errors) {
         if (errors.hasErrors()) {
-            LOGGER.warn("Coud not register a person because has form errors");
+            LOGGER.warn("Errors in registers form");
             return register(registerForm);
         }
         userService.createUser(registerForm.getEmail(), registerForm.getName(), "", registerForm.getPassword());
         userService.logInUser(registerForm.getEmail(), registerForm.getPassword());
-        LOGGER.debug("User has been created okay");
+        LOGGER.debug("User successfully created");
 
         return new ModelAndView("redirect:/");
     }
