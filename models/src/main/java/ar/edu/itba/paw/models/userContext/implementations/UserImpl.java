@@ -2,13 +2,20 @@ package ar.edu.itba.paw.models.userContext.implementations;
 
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 final public class UserImpl implements User {
-    private final String email;
-    private final String name;
-    private final String telephone;
-    private final Behaviour behavior;
-    private final String password;
-    private final  int id;
+    private String email;
+    private String name;
+    private String telephone;
+    private Behaviour behavior;
+    private String password;
+    @Id
+    private int id;
     public UserImpl(int id,String email, String name, String telephone,String password,Behaviour behaviour) {
         this.email = email;
         this.name = name;
@@ -16,6 +23,10 @@ final public class UserImpl implements User {
         this.id = id;
         this.behavior = behaviour;
         this.password = password;
+    }
+
+    public UserImpl() {
+
     }
 
     @Override
@@ -56,7 +67,6 @@ final public class UserImpl implements User {
     public String getName() {
         return this.name;
     }
-
 
 }
 
