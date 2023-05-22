@@ -199,8 +199,9 @@ document.addEventListener("DOMContentLoaded", e => {
                 fsIndex = parseInt(step)
                 break
             }
-            fsIndex = formSteps.length
         }
+    } else if (invalidImg === 'true') {
+        fsIndex = stepsInputs.length - 1
     }
 
     currentFS = formSteps.find(step => step.dataset.step === fsIndex.toString())
