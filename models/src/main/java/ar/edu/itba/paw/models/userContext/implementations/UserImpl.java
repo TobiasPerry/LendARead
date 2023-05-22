@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 final public class UserImpl implements User {
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 100, nullable = false, unique = true, name = "mail")
     private String email;
     @Column(length = 100, nullable = false)
     private String name;
@@ -23,7 +23,16 @@ final public class UserImpl implements User {
     @SequenceGenerator(sequenceName = "users_id_seq", name = "users_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
-    public UserImpl(int id,String email, String name, String telephone,String password,Behaviour behaviour) {
+
+    public UserImpl(String email, String name, String telephone, Behaviour behavior, String password) {
+        this.email = email;
+        this.name = name;
+        this.telephone = telephone;
+        this.behavior = behavior;
+        this.password = password;
+    }
+
+    public UserImpl(int id, String email, String name, String telephone, String password, Behaviour behaviour) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
