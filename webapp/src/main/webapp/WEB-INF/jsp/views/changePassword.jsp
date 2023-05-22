@@ -10,7 +10,7 @@
   <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
   <link href="<c:url value="/static/css/login.css"/>" rel="stylesheet"/>
   <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@700&display=swap" rel="stylesheet">
@@ -32,26 +32,31 @@
                      action="${changePasswordUrl}" enctype="multipart/form-data" id="form" accept-charset="utf-9" style="width: 23rem;">
             <h2 class=" mb-3 pb-3 text-center" style="letter-spacing: 1px;"><spring:message code="changepassword.title" /></h2>
 
+            <div class="m-3 text-center p-2" style="background-color: rgba(255, 255, 255, 0.3); border-radius: 10px; max-width: 100%">
+              <i class="bi bi-info-circle my-2"></i>
+              <p class="my-2"><spring:message code="changepassword.caption"/></p>
+            </div>
+
             <div class="form-outline mb-4" style="width: 100%">
               <label style="width: 100%"><spring:message code="changepassword.token" />
-                <form:input path="token" class="form-control" type="text"  id="token" placeholder="token" />
+                <form:input path="token" class="form-control" type="text"  id="token"/>
                 <form:errors path="token" cssClass="text-danger small" element="small"/>
               </label>
             </div>
             <div class="form-outline mb-4" style="width: 100%">
-              <label style="width: 100%"><spring:message code="auth.password" />
-                <form:input class="form-control" path="password" id="password" placeholder="password" type="password" />
+              <label style="width: 100%"><spring:message code="auth.changePassword" />
+                <form:input class="form-control" path="password" id="password" type="password" />
                 <form:errors path="password" cssClass="text-danger small" element="small"/>
               </label>
             </div>
             <div class="form-outline mb-4" style="width: 100%">
-              <label style="width: 100%"><spring:message code="auth.repeatPassword" />
-                <form:input class="form-control" path="repeatPassword" id="repeatPassword" placeholder="repeatPassword" type="password" />
+              <label style="width: 100%"><spring:message code="auth.repeatChangePassword" />
+                <form:input class="form-control" path="repeatPassword" id="repeatPassword" type="password" />
                 <form:errors cssClass="text-danger small" element="p"/>
               </label>
             </div>
             <div class="pt-1 mb-4 text-center">
-              <input class="btn btn-light" type="submit" value="Change password" />
+              <input class="btn btn-light" type="submit" value="<spring:message code="changepassword.btn"/>" />
             </div>
           </form:form>
         </div>
