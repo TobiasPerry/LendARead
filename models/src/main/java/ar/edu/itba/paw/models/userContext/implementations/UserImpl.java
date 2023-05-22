@@ -84,5 +84,15 @@ final public class UserImpl implements User {
         return this.name;
     }
 
+    @Override
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    @Override
+    public void setBehaviour(Behaviour behaviour) {
+        this.behavior = behaviour;
+    }
+
 }
 

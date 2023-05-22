@@ -14,4 +14,8 @@ public interface User {
     String getTelephone();
 
     String getName();
+
+    void setPassword(String newPassword);
+
+    void setBehaviour(Behaviour behaviour);
 }

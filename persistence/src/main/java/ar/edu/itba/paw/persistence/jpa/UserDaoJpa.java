@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 import java.util.Optional;
 @Repository
 public class UserDaoJpa implements UserDao {
@@ -17,29 +19,41 @@ public class UserDaoJpa implements UserDao {
 
     @Override
     public User addUser(Behaviour behavior, String email, String name, String telephone, String password) {
-        final UserImpl user = new UserImpl(email, name, telephone, behavior, password);
+        final User user = new UserImpl(email, name, telephone, behavior, password);
         em.persist(user);
         return user;
     }
 
     @Override
     public boolean changePassword(String email, String newPassword) {
-        return false;
+        User user = getUser(email).orElse(null);
+        if(user == null) return false;
+        user.setPassword(newPassword);
+        em.persist(user);
+        return true;
     }
 
     @Override
     public Optional<User> getUser(String email) {
-        return Optional.empty();
+        TypedQuery<UserImpl> query = em.createQuery("SELECT u FROM UserImpl u WHERE u.email = :email", UserImpl.class);
+        query.setParameter("email", email);
+        List<UserImpl> users = query.getResultList();
+        return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
 
     @Override
     public boolean changeRole(String email, Behaviour behaviour) {
-        return false;
+        User user = getUser(email).orElse(null);
+        if(user == null) return false;
+        user.setBehaviour(behaviour);
+        em.persist(user);
+        return true;
     }
 
     @Override
     public Optional<User> getUser(int id) {
-        return Optional.empty();
+        UserImpl user = em.find(UserImpl.class, (long) id);
+        return user != null ? Optional.of(user) : Optional.empty();
     }
 
     @Override
