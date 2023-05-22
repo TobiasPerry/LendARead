@@ -2,25 +2,32 @@ package ar.edu.itba.paw.models.userContext.implementations;
 
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 final public class UserImpl implements User {
+    @Column(length = 100, nullable = false, unique = true)
     private String email;
+    @Column(length = 100, nullable = false)
     private String name;
+    @Column(length = 100, nullable = false)
     private String telephone;
+    @Column(length = 100, nullable = false)
     private Behaviour behavior;
+    @Column(length = 100, nullable = false)
     private String password;
+
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
+    @SequenceGenerator(sequenceName = "users_id_seq", name = "users_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private Long id;
     public UserImpl(int id,String email, String name, String telephone,String password,Behaviour behaviour) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
-        this.id = id;
+        this.id = Long.valueOf(id);
         this.behavior = behaviour;
         this.password = password;
     }
@@ -40,7 +47,7 @@ final public class UserImpl implements User {
 
     @Override
     public int getId() {
-        return id;
+        return Math.toIntExact(id);
     }
 
     @Override
