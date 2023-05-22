@@ -2,20 +2,29 @@ package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 
+import javax.persistence.*;
+
 public class BookImpl implements Book {
 
-
+    @Column(length = 100, nullable = false, unique = true)
     private final String isbn;
 
+    @Column(length = 100, nullable = false)
     private String author;
 
+    @Column(length = 100, nullable = false)
     private final String title;
 
+    @Column(length = 100, nullable = false, name = "lang")
     private String language;
 
-
+    @Column(length = 100, nullable = false)
     private final String type = "Book";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_id_seq")
+    @SequenceGenerator(sequenceName = "books_id_seq", name = "books_id_seq", allocationSize = 1)
+    @Column(name = "uid")
     private final int id;
 
     public BookImpl(final int id,final String isbn,final String author,final String title,final String language) {
