@@ -274,5 +274,6 @@
 
 <script>
     let bindingResult = `<%= request.getAttribute("org.springframework.validation.BindingResult.addAssetForm") %>`;
+    const invalidImg = `<c:out value="${invalidImg}"/>`
 </script>
 </html>

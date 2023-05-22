@@ -53,7 +53,7 @@ final public class AddAssetViewController {
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
         if (errors.hasErrors() || parsedImage == null)
-            return addAssetView(addAssetForm, false, -1).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm, false, -1, true).addObject(INVALID_SNACKBAR, true);
 
         try {
             LOGGER.info("AssetInstance has ben created");
@@ -61,12 +61,12 @@ final public class AddAssetViewController {
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");
-            return addAssetView(addAssetForm, false, -1).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm, false, -1, false).addObject(INVALID_SNACKBAR, true);
         }
     }
 
     @RequestMapping(value = "/addAssetView", method = RequestMethod.GET)
-    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm, @RequestParam(required = false, name = "succes") boolean success, @RequestParam(required = false, name = "id") Integer id) {
+    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm, @RequestParam(required = false, name = "succes") boolean success, @RequestParam(required = false, name = "id") Integer id, @RequestParam(required = false, name = "invalidImg") boolean invalidImg) {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<Language> languages = languagesService.getLanguages();
         mav.addObject("langs", languages);
@@ -74,6 +74,9 @@ final public class AddAssetViewController {
             mav.addObject("assetId", id);
         if (success)
             SnackbarControl.displaySuccess(mav);
+        if (invalidImg) {
+            mav.addObject("invalidImg", true);
+        }
         return mav;
     }
 
