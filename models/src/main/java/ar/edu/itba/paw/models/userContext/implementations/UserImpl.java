@@ -9,13 +9,14 @@ import javax.persistence.*;
 final public class UserImpl implements User {
     @Column(length = 100, nullable = false, unique = true, name = "mail")
     private String email;
-    @Column(length = 100, nullable = false,name = "name")
+    @Column(length = 100, nullable = false)
     private String name;
-    @Column(length = 100, nullable = false, name = "telephone")
+    @Column(length = 100, nullable = false)
     private String telephone;
-    @Column(length = 100, nullable = false,name = "behavior")
+    @Column(length = 100, nullable = false)
+    @Enumerated(EnumType.STRING)
     private Behaviour behavior;
-    @Column(length = 100, nullable = false,name = "password")
+    @Column(length = 100, nullable = false)
     private String password;
 
     @Id

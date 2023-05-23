@@ -103,6 +103,11 @@
                     </c:forEach>
                     </tbody>
                 </table>
+                <c:if test="${userAssets.size() <= 0}">
+                    <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
+                        <h4><spring:message code="discovery.noBooks"/></h4>
+                    </div>
+                </c:if>
             </div>
         </c:when>
         <c:otherwise>

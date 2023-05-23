@@ -14,7 +14,7 @@
     <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/discovery.css"/>" rel="stylesheet"/>
-    <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro-bg.ico'/>" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
@@ -223,6 +223,11 @@
             <c:if test="${books.size() <= 0}">
                 <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
                     <h1><spring:message code="discovery.noBooks"/></h1>
+                </div>
+                <div class="container-row-wrapped" style="margin-top: 20px; width: 100%;">
+                    <a href="<c:url value="/discovery"/>">
+                        <button type="button" class="btn btn-outline-secondary btn-lg"><spring:message code="discovery.filters.clearSearch"/></button>
+                    </a>
                 </div>
             </c:if>
         </div>

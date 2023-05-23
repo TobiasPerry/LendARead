@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
-@Repository
+//@Repository
 public class UserDaoJpa implements UserDao {
     @PersistenceContext
     private EntityManager em;
