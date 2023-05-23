@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class AssetDaoImpl implements AssetDao {
 
     private final SimpleJdbcInsert jdbcInsert;
