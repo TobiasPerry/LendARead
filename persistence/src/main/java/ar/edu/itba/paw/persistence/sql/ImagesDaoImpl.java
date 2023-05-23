@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.sql;
 
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.springframework.beans.factory.annotation.Autowired;
