@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean createChangePasswordToken(final String email){
-        String token = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString().substring(0,6).toUpperCase();
         PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token,email, LocalDate.now().plusDays(1));
         emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
         return userDao.setForgotPasswordToken(passwordResetToken);
