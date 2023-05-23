@@ -30,7 +30,7 @@ public class LocationDaoTest {
     private static String LOCALITY = "LOCALITY";
     private static String PROVINCE = "PROVINCE";
     private static String COUNTRY = "COUNTRY";
-    private static Location LOCATION = new LocationImpl(-1, ZIPCODE, LOCALITY, PROVINCE, COUNTRY);
+    private static LocationImpl LOCATION = new LocationImpl(-1, ZIPCODE, LOCALITY, PROVINCE, COUNTRY);
 
     @Rollback
     @Test

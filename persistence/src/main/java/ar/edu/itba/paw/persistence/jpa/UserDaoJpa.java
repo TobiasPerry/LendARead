@@ -18,8 +18,8 @@ public class UserDaoJpa implements UserDao {
     private EntityManager em;
 
     @Override
-    public User addUser(Behaviour behavior, String email, String name, String telephone, String password) {
-        final User user = new UserImpl(email, name, telephone, behavior, password);
+    public UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password) {
+        final UserImpl user = new UserImpl(email, name, telephone, behavior, password);
         em.persist(user);
         return user;
     }
@@ -34,7 +34,7 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public Optional<User> getUser(String email) {
+    public Optional<UserImpl> getUser(String email) {
         TypedQuery<UserImpl> query = em.createQuery("SELECT u FROM UserImpl u WHERE u.email = :email", UserImpl.class);
         query.setParameter("email", email);
         List<UserImpl> users = query.getResultList();
@@ -51,7 +51,7 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public Optional<User> getUser(int id) {
+    public Optional<UserImpl> getUser(int id) {
         UserImpl user = em.find(UserImpl.class, (long) id);
         return user != null ? Optional.of(user) : Optional.empty();
     }

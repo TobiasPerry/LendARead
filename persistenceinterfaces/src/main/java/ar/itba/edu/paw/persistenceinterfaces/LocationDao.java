@@ -1,9 +1,10 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 
 public interface LocationDao {
 
-    Location addLocation(Location lc);
+    LocationImpl addLocation(LocationImpl lc);
 
 }

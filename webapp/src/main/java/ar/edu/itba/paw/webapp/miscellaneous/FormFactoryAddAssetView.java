@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.miscellaneous;
 
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
@@ -9,6 +10,8 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
@@ -33,7 +36,7 @@ final public class FormFactoryAddAssetView {
 
     public static AssetInstance createAssetInstance(AddAssetForm request,String email) {
 
-        User user = UserFactory.createUser(ID_DEFAULT_VALUE,
+        UserImpl user = UserFactory.createUser(ID_DEFAULT_VALUE,
                 email,
                 DEFAULT_STRING_VALUE,
                 DEFAULT_STRING_VALUE,
@@ -41,7 +44,7 @@ final public class FormFactoryAddAssetView {
                 Behaviour.LENDER
         );
 
-        Location location = LocationFactory.createLocation(
+        LocationImpl location = LocationFactory.createLocation(
                 ID_DEFAULT_VALUE,
                 request.getZipcode(),
                 request.getLocality(),
@@ -50,7 +53,7 @@ final public class FormFactoryAddAssetView {
         );
 
 
-        Book book = BookFactory.createBook(ID_DEFAULT_VALUE,request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
+        BookImpl book = BookFactory.createBook(ID_DEFAULT_VALUE,request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
 
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());

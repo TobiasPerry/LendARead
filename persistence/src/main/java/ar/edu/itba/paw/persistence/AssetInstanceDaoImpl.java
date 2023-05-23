@@ -42,7 +42,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String title = rs.getString("title");
             String language = rs.getString("lang");
             int bookId = rs.getInt("book_id");
-            Book book = new BookImpl(bookId, isbn, author, title, language);
+            BookImpl book = new BookImpl(bookId, isbn, author, title, language);
 
             String zipcode = rs.getString("zipcode");
             String locality = rs.getString("locality");
@@ -50,12 +50,12 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String country = rs.getString("country");
             Integer locId = rs.getInt("loc_id");
 
-            Location loc = new LocationImpl(locId, zipcode, locality, province, country);
+            LocationImpl loc = new LocationImpl(locId, zipcode, locality, province, country);
 
             String email = rs.getString("email");
             Integer userId = rs.getInt("user_id");
             String ownerName = rs.getString("user_name");
-            User user = new UserImpl(userId, email, ownerName, "", "", Behaviour.fromString(rs.getString("behavior")));
+            UserImpl user = new UserImpl(userId, email, ownerName, "", "", Behaviour.fromString(rs.getString("behavior")));
 
             int id = rs.getInt("id");
             int imgId = rs.getInt("photo_id");
@@ -95,7 +95,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public AssetInstance addAssetInstance(final Book book, final User owner, final Location location, final int photoId, final AssetInstance ai) {
+    public AssetInstance addAssetInstance(final BookImpl book, final UserImpl owner, final LocationImpl location, final int photoId, final AssetInstance ai) {
         final Map<String, Object> args = new HashMap<>();
         args.put("assetid", book.getId());
         args.put("owner", owner.getId());

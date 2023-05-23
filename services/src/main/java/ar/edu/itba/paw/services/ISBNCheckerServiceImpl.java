@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.ISBNCheckerService;
 import ar.edu.itba.paw.interfaces.LibraryAPIService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,13 @@ public class ISBNCheckerServiceImpl implements ISBNCheckerService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Book> getBookIfExistsByISBN(final String isbn) {
-        Optional<Book> bookOpt = this.assetDao.getBook(isbn);
+    public Optional<BookImpl> getBookIfExistsByISBN(final String isbn) {
+        Optional<BookImpl> bookOpt = this.assetDao.getBook(isbn);
         if (bookOpt.isPresent()) {
             return bookOpt;
         }
         try {
-            Book book = this.libraryAPIService.getBookByISBN(isbn);
+            BookImpl book = this.libraryAPIService.getBookByISBN(isbn);
             return Optional.of(book);
         } catch (IOException e) {
             return Optional.empty();

@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
@@ -17,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public User getUser(final String email) throws UserNotFoundException {
-        Optional<User> user = userDao.getUser(email);
+    public UserImpl getUser(final String email) throws UserNotFoundException {
+        Optional<UserImpl> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("Failed to get user {}", email);
             throw new UserNotFoundException("The user was not found");
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User createUser(final String email, String name, final String telephone,final String password) {
+    public UserImpl createUser(final String email, String name, final String telephone,final String password) {
 
         return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
@@ -103,23 +103,23 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean createChangePasswordToken(final String email){
+    public void createChangePasswordToken(final String email){
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token,email, LocalDate.now().plusDays(1));
         emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
-        return userDao.setForgotPasswordToken(passwordResetToken);
+        userDao.setForgotPasswordToken(passwordResetToken);
     }
 
     @Transactional
     @Override
-    public boolean changePassword(final String token,final String password){
+    public void changePassword(final String token, final String password){
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
         if(!passwordResetToken.isPresent())
-            return false;
+            return;
         if(!isTokenValid(token))
-           return false;
+           return;
         userDao.deletePasswordRestToken(token);
-        return userDao.changePassword(passwordResetToken.get().getUser(),passwordEncoder.encode(password));
+        userDao.changePassword(passwordResetToken.get().getUser(), passwordEncoder.encode(password));
     }
 
     @Transactional(readOnly = true)

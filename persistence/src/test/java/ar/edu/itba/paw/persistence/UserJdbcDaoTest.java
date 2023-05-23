@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
@@ -59,7 +60,7 @@ public class UserJdbcDaoTest {
     @Test
     public void getUser(){
         //2
-        final Optional<User> user = userDao.getUser(ALREADY_EXISTS_EMAIL);
+        final Optional<UserImpl> user = userDao.getUser(ALREADY_EXISTS_EMAIL);
 
         //3 - Asserts
         Assert.assertTrue(user.isPresent());
@@ -91,7 +92,7 @@ public class UserJdbcDaoTest {
     @Test
     public void getUserById(){
         //2
-        final Optional<User> user = userDao.getUser(1);
+        final Optional<UserImpl> user = userDao.getUser(1);
 
         //3
         Assert.assertTrue(user.isPresent());

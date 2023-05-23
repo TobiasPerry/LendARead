@@ -2,13 +2,25 @@ package ar.edu.itba.paw.models.userContext.implementations;
 
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 
-final public class LocationImpl implements Location {
-    private final String zipcode;
-    private final String locality;
-    private final String province;
-    private final String country;
+import javax.persistence.*;
 
-    private final int id;
+@Entity
+@Table(name = "location")
+final public class LocationImpl implements Location {
+    @Column(length = 100, nullable = false)
+    private String zipcode;
+    @Column(length = 100, nullable = false)
+    private String locality;
+    @Column(length = 100, nullable = false)
+    private String province;
+    @Column(length = 100, nullable = false)
+    private String country;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "location_id_seq")
+    @SequenceGenerator(sequenceName = "location_id_seq", name = "location_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private Integer id;
     public LocationImpl(int id,String zipcode, String locality, String province, String country) {
         this.zipcode = zipcode;
         this.locality = locality;
@@ -16,6 +28,7 @@ final public class LocationImpl implements Location {
         this.country = country;
         this.id = id;
     }
+    public LocationImpl(){}
 
     @Override
     public int getId() {

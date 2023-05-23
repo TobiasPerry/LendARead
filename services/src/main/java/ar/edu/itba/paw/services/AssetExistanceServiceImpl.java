@@ -2,8 +2,11 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
@@ -43,8 +46,8 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     @Transactional
     public AssetInstance addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
 
-        Optional<Book> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
-        Book book;
+        Optional<BookImpl> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
+        BookImpl book;
         if (!bookOptional.isPresent()) {
             try {
                 book = bookDao.addAsset(assetInstance.getBook());
@@ -55,8 +58,8 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         } else {
             book = bookOptional.get();
         }
-        Optional<User> user = userDao.getUser(assetInstance.getOwner().getEmail());
-        Location locationId = locationDao.addLocation(assetInstance.getLocation());
+        Optional<UserImpl> user = userDao.getUser(assetInstance.getOwner().getEmail());
+        LocationImpl locationId = locationDao.addLocation(assetInstance.getLocation());
         Optional<Integer> photoId = photosDao.addPhoto(photo);
 
         if (user.isPresent() && photoId.isPresent()) {

@@ -1,8 +1,11 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
@@ -12,8 +15,7 @@ import java.util.Optional;
 
 
 public interface AssetInstanceDao {
-    AssetInstance addAssetInstance(final Book book, final User owner, final Location location, final int photoId, final AssetInstance ai);
-
+    public AssetInstance addAssetInstance(final BookImpl book, final UserImpl owner, final LocationImpl location, final int photoId, final AssetInstance ai);
     Optional<AssetInstance> getAssetInstance(final int assetId);
 
     Boolean changeStatus(final int lendingId, final AssetState as);

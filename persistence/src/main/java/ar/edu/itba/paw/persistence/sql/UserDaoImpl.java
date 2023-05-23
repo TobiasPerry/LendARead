@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<User> ROW_MAPPER_USER = (rs, rownum) -> new UserImpl(rs.getInt("id"), rs.getString("mail"), rs.getString("name"), rs.getString("telephone"), rs.getString("password"), Behaviour.fromString(rs.getString("behavior")));
+    private static final RowMapper<UserImpl> ROW_MAPPER_USER = (rs, rownum) -> new UserImpl(rs.getInt("id"), rs.getString("mail"), rs.getString("name"), rs.getString("telephone"), rs.getString("password"), Behaviour.fromString(rs.getString("behavior")));
 
     private static final RowMapper<PasswordResetToken> ROW_MAPPER_PASSWORD_TOKEN = (rs, rownum) -> new PasswordResetTokenImpl(rs.getString("token"), rs.getString("mail"), rs.getTimestamp("expiration").toLocalDateTime().toLocalDate());
 
@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User addUser(Behaviour behavior, String email, String name, String telephone, String password) {
+    public UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password) {
         final Map<String, Object> args = new HashMap<>();
 
         args.put("behavior", behavior);
@@ -52,9 +52,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> getUser(final String email) {
+    public Optional<UserImpl> getUser(final String email) {
         String query = "SELECT * FROM users WHERE mail = ?";
-        final List<User> user = jdbcTemplate.query(query, ROW_MAPPER_USER, email);
+        final List<UserImpl> user = jdbcTemplate.query(query, ROW_MAPPER_USER, email);
         return user.stream().findFirst();
     }
 
@@ -67,9 +67,9 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public Optional<User> getUser(int id) {
+    public Optional<UserImpl> getUser(int id) {
         String query = "SELECT * FROM users WHERE id = ?";
-        final List<User> user = jdbcTemplate.query(query, ROW_MAPPER_USER, id);
+        final List<UserImpl> user = jdbcTemplate.query(query, ROW_MAPPER_USER, id);
         return user.stream().findFirst();
     }
 
@@ -83,7 +83,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean setForgotPasswordToken(PasswordResetToken passwordResetToken) {
         String query = "INSERT INTO resetpasswordinfo(token,userid,expiration) VALUES(?,?,?)";
-        Optional<User> user = getUser(passwordResetToken.getUser());
+        Optional<UserImpl> user = getUser(passwordResetToken.getUser());
         if (!user.isPresent())
             return false;
         final int insert = jdbcTemplate.update(query, passwordResetToken.getToken(), user.get().getId(), java.sql.Date.valueOf(passwordResetToken.getExpiryDate()));

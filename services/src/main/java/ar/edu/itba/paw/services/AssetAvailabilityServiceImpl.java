@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
@@ -43,7 +44,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void borrowAsset(final int assetId, final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
-        Optional<User> user = userDao.getUser(borrower);
+        Optional<UserImpl> user = userDao.getUser(borrower);
 
         if (!ai.isPresent()) {
             LOGGER.error("AssetInstance not found with id {}", assetId);

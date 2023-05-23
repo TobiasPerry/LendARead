@@ -19,16 +19,16 @@ public class AssetDaoJpa implements AssetDao {
     private EntityManager em;
 
     @Override
-    public Optional<List<Book>> getAssets() {
+    public Optional<List<BookImpl>> getAssets() {
         TypedQuery<BookImpl> query = em.createQuery("SELECT b FROM BookImpl b", BookImpl.class);
         List<BookImpl> books = query.getResultList();
         return books.isEmpty() ? Optional.empty() : Optional.of(new ArrayList<>(books));
     }
 
     @Override
-    public Book addAsset(Book bi) throws BookAlreadyExistException {
+    public BookImpl addAsset(Book bi) throws BookAlreadyExistException {
         final BookImpl book = new BookImpl(bi.getId(), bi.getIsbn(), bi.getAuthor(), bi.getName(), bi.getLanguage());
-        Optional<Book> existingBook = getBook(book.getIsbn());
+        Optional<BookImpl> existingBook = getBook(book.getIsbn());
         if(existingBook.isPresent()){
             throw new BookAlreadyExistException();
         }
@@ -37,7 +37,7 @@ public class AssetDaoJpa implements AssetDao {
     }
 
     @Override
-    public Optional<Book> getBook(String isbn) {
+    public Optional<BookImpl> getBook(String isbn) {
         TypedQuery<BookImpl> query = em.createQuery("SELECT b FROM BookImpl b WHERE b.isbn = :isbn", BookImpl.class);
         query.setParameter("isbn", isbn);
         List<BookImpl> books = query.getResultList();

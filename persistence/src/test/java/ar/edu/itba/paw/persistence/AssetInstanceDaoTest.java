@@ -50,9 +50,9 @@ public class AssetInstanceDaoTest {
     private final static String TITLE = "TITLE";
     private final static String LANGUAGE = "LANGUAGE";
     private final static String ISBN_ALREADY_EXIST = "ISBN";
-    private final static Book book = new BookImpl(1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
-    private final static Location location = new LocationImpl(1, "ZIPCODE","LOCALITY","PROVINCE","COUNTRY");
-    private final static User user = new UserImpl(1,"EMAIL","NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static BookImpl book = new BookImpl(1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
+    private final static LocationImpl location = new LocationImpl(1, "ZIPCODE","LOCALITY","PROVINCE","COUNTRY");
+    private final static UserImpl user = new UserImpl(1,"EMAIL","NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
      private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstanceImpl(-1,book, PhysicalCondition.ASNEW,user,location,1, AssetState.PUBLIC,10);
     private final static String BOOK_TITLE_ALREADY_EXIST = "TITLE";
     private JdbcTemplate jdbcTemplate;

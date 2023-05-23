@@ -3,12 +3,14 @@ package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 public class AssetInstanceImpl implements AssetInstance {
 
-    public AssetInstanceImpl(int id,Book book, PhysicalCondition physicalCondition, User userReference, Location location,int imageId,AssetState as,int maxDaysLending) {
+    public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, int imageId, AssetState as, int maxDaysLending) {
         this.id = id;
         this.book = book;
         this.physicalCondition = physicalCondition;
@@ -29,7 +31,7 @@ public class AssetInstanceImpl implements AssetInstance {
                 '}';
     }
 
-    private final Book book;
+    private final BookImpl book;
 
     private final int id;
 
@@ -39,23 +41,23 @@ public class AssetInstanceImpl implements AssetInstance {
     private final AssetState assetState;
 
 
-    private final User userReference;
+    private final UserImpl userReference;
 
-    private final Location location;
+    private final LocationImpl location;
 
     private final int imageId;
     @Override
-    public Book getBook() {
+    public BookImpl getBook() {
         return book;
     }
 
     @Override
-    public User getOwner() {
+    public UserImpl getOwner() {
         return userReference;
     }
 
     @Override
-    public Location getLocation() {
+    public LocationImpl getLocation() {
         return location;
     }
     @Override
@@ -81,10 +83,6 @@ public class AssetInstanceImpl implements AssetInstance {
     @Override
     public int getId() {
         return id;
-    }
-
-    public User getUserReference() {
-        return userReference;
     }
 
     @Override

@@ -12,12 +12,12 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class LocationDaoImpl implements LocationDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    @Autowired
+    //@Autowired
     public LocationDaoImpl(final DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("location").usingGeneratedKeyColumns("id");
@@ -26,7 +26,7 @@ public class LocationDaoImpl implements LocationDao {
 
 
     @Override
-    public Location addLocation(Location lc) {
+    public LocationImpl addLocation(LocationImpl lc) {
         final Map<String, Object> args = new HashMap<>();
 
         args.put("zipcode", lc.getZipcode());

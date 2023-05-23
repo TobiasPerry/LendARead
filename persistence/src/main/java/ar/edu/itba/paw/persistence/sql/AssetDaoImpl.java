@@ -24,7 +24,7 @@ public class AssetDaoImpl implements AssetDao {
     private final SimpleJdbcInsert jdbcInsert;
     private final JdbcTemplate jdbcTemplate;
 
-    private static final RowMapper<Book> ROW_MAPPER = (rs, rownum) -> new BookImpl(rs.getInt("uid"), rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang"));
+    private static final RowMapper<BookImpl> ROW_MAPPER = (rs, rownum) -> new BookImpl(rs.getInt("uid"), rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang"));
 
     @Autowired
     public AssetDaoImpl(final DataSource ds) {
@@ -34,8 +34,8 @@ public class AssetDaoImpl implements AssetDao {
 
 
     @Override
-    public Optional<List<Book>> getAssets() {
-        final List<Book> bookList = jdbcTemplate.query("SELECT * FROM assetinstance", ROW_MAPPER);
+    public Optional<List<BookImpl>> getAssets() {
+        final List<BookImpl> bookList = jdbcTemplate.query("SELECT * FROM assetinstance", ROW_MAPPER);
         if (bookList.isEmpty())
             return Optional.empty();
         return Optional.of(bookList);
@@ -43,7 +43,7 @@ public class AssetDaoImpl implements AssetDao {
 
 
     @Override
-    public Book addAsset(final Book ai) throws BookAlreadyExistException {
+    public BookImpl addAsset(final Book ai) throws BookAlreadyExistException {
 
         final Map<String, Object> args = new HashMap<>();
         args.put("isbn", ai.getIsbn());
@@ -60,9 +60,9 @@ public class AssetDaoImpl implements AssetDao {
     }
 
     @Override
-    public Optional<Book> getBook(String isbn) {
+    public Optional<BookImpl> getBook(String isbn) {
         Object[] params = new Object[]{isbn};
-        Book book;
+        BookImpl book;
         try {
             book = jdbcTemplate.queryForObject("SELECT uid,isbn, author, title, lang FROM book where isbn = ?", params, ROW_MAPPER);
         } catch (EmptyResultDataAccessException ex) {
