@@ -14,6 +14,7 @@ final public class UserImpl implements User {
     @Column(length = 100, nullable = false)
     private String telephone;
     @Column(length = 100, nullable = false)
+    @Enumerated(EnumType.STRING)
     private Behaviour behavior;
     @Column(length = 100, nullable = false)
     private String password;
