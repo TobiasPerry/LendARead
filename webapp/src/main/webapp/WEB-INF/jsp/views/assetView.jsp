@@ -82,7 +82,7 @@
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
                     <a class="btn-green" href="<c:url value="/login"/>"
-                       style="text-decoration: none; text-align: center"><spring:message code="auth.login"/></a>
+                       style="text-decoration: none; text-align: center"><spring:message code="assetView.borrowButtonNotLoggedIn"/></a>
                 </security:authorize>
             </div>
         </div>
