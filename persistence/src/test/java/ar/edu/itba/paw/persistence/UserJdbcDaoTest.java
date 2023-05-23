@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl
 import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
+import ar.edu.itba.paw.persistence.sql.UserDaoImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +44,7 @@ public class UserJdbcDaoTest {
     private DataSource ds;
 
     @Autowired
-    private	UserDaoImpl userDao;
+    private UserDaoImpl userDao;
 
 
     private JdbcTemplate jdbcTemplate;

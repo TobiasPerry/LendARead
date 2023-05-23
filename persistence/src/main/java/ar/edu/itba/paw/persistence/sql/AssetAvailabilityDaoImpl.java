@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.sql;
 
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
 
     private final JdbcTemplate jdbcTemplate;

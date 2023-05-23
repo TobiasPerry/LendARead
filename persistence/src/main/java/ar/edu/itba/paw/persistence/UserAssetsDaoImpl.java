@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-//La mayoria de la logica se puede encapsular, reutilizar, y mejorar. Sin embargo como se va a pasar a una ORM
-//no lo consideramos que lo valia.
 @Repository
 public class UserAssetsDaoImpl implements UserAssetsDao {
     private final JdbcTemplate jdbcTemplate;
