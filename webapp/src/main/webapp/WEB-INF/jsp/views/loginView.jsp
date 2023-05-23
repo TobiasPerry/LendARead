@@ -25,7 +25,9 @@
         <div class="row">
             <div class="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">
                 <div class="px-5 ms-xl-4 mt-10">
-                    <img src="<c:url value='/static/images/logo-oscuro.png' />" alt="Lend a read logo" style="width: 300px">
+                    <a href="<c:url value="/"/> ">
+                        <img src="<c:url value='/static/images/logo-oscuro.png' />" alt="Lend a read logo" style="width: 300px">
+                    </a>
                 </div>
 
                 <div class="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">

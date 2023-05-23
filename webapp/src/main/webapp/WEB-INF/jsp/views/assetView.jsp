@@ -13,7 +13,10 @@
 
 <html>
 <head>
-    <title><spring:message code="assetView.head.title"/></title>
+    <title><c:out value="${assetInstance.book.name}"/> <spring:message
+            code="assetView.by"/> <c:out
+            value="${assetInstance.book.author}"/>
+    </title>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro.ico'/>" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -79,7 +82,7 @@
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
                     <a class="btn-green" href="<c:url value="/login"/>"
-                       style="text-decoration: none; text-align: center"><spring:message code="auth.login"/></a>
+                       style="text-decoration: none; text-align: center"><spring:message code="assetView.borrowButtonNotLoggedIn"/></a>
                 </security:authorize>
             </div>
         </div>

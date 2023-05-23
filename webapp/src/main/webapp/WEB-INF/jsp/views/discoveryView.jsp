@@ -224,6 +224,11 @@
                 <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
                     <h1><spring:message code="discovery.noBooks"/></h1>
                 </div>
+                <div class="container-row-wrapped" style="margin-top: 20px; width: 100%;">
+                    <a href="<c:url value="/discovery"/>">
+                        <button type="button" class="btn btn-outline-secondary btn-lg"><spring:message code="discovery.filters.clearSearch"/></button>
+                    </a>
+                </div>
             </c:if>
         </div>
     </div>
