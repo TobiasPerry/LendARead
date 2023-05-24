@@ -16,6 +16,9 @@ final public class LocationImpl implements Location {
     @Column(length = 100, nullable = false)
     private String country;
 
+    @Column(length = 100)
+    private String address = "Address";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "location_id_seq")
     @SequenceGenerator(sequenceName = "location_id_seq", name = "location_id_seq", allocationSize = 1)
@@ -27,6 +30,12 @@ final public class LocationImpl implements Location {
         this.province = province;
         this.country = country;
         this.id = id;
+    }
+    public LocationImpl(String zipcode, String locality, String province, String country) {
+        this.zipcode = zipcode;
+        this.locality = locality;
+        this.province = province;
+        this.country = country;
     }
     public LocationImpl(){}
 

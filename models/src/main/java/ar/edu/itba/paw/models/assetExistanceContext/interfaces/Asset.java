@@ -8,5 +8,4 @@ public interface Asset {
 
     String display();
 
-    String getType();
 }

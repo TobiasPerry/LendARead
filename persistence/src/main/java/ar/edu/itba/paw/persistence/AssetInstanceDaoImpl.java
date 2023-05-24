@@ -48,12 +48,12 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             String locality = rs.getString("locality");
             String province = rs.getString("province");
             String country = rs.getString("country");
-            Integer locId = rs.getInt("loc_id");
+            int locId = rs.getInt("loc_id");
 
             LocationImpl loc = new LocationImpl(locId, zipcode, locality, province, country);
 
             String email = rs.getString("email");
-            Integer userId = rs.getInt("user_id");
+            int userId = rs.getInt("user_id");
             String ownerName = rs.getString("user_name");
             UserImpl user = new UserImpl(userId, email, ownerName, "", "", Behaviour.fromString(rs.getString("behavior")));
 

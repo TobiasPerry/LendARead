@@ -19,8 +19,6 @@ public class BookImpl implements Book {
     @Column(length = 100, nullable = false, name = "lang")
     private String language;
 
-    @Column(length = 100, nullable = false)
-    private  String type = "Book";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_uid_seq")
@@ -35,6 +33,13 @@ public class BookImpl implements Book {
         this.language = language;
         this.id = id;
     }
+    public BookImpl(final String isbn,final String author,final String title,final String language) {
+        this.isbn = convertToISBN13(isbn);
+        this.author = author;
+        this.title = title;
+        this.language = language;
+    }
+
 
     public BookImpl() {
 
@@ -71,10 +76,7 @@ public class BookImpl implements Book {
         return null;
     }
 
-    @Override
-    public String getType() {
-        return this.type;
-    }
+
 
     @Override
     public String getIsbn() {
@@ -114,7 +116,6 @@ public class BookImpl implements Book {
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", language='" + language + '\'' +
-                ", type='" + type + '\'' +
                 '}';
     }
 }

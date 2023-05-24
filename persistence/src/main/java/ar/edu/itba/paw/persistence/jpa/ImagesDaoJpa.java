@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence.jpa;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -20,8 +21,10 @@ public class ImagesDaoJpa implements ImagesDao {
 
     @Override
     public Optional<Integer> addPhoto(byte[] photo) {
+
         ImageImpl image = new ImageImpl(photo);
         entityManager.persist(image);
+        entityManager.flush();
         return Optional.of(image.getId());
     }
 

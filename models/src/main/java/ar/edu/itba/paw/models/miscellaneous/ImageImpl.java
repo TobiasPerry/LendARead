@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models.miscellaneous;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +14,7 @@ public class ImageImpl implements Image {
     @Column(name = "id")
     private int id;
 
-    @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     @Column(name = "photo")
     private byte[] photo;
 

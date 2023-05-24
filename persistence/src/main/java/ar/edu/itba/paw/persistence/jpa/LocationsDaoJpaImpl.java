@@ -15,6 +15,7 @@ public class LocationsDaoJpaImpl implements LocationDao {
     @Override
     public LocationImpl addLocation(LocationImpl lc) {
         entityManager.persist(lc);
+        entityManager.flush();
         return lc;
     }
 }

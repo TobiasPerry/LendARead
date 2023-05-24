@@ -45,7 +45,6 @@ final public class FormFactoryAddAssetView {
         );
 
         LocationImpl location = LocationFactory.createLocation(
-                ID_DEFAULT_VALUE,
                 request.getZipcode(),
                 request.getLocality(),
                 request.getProvince(),
@@ -53,7 +52,7 @@ final public class FormFactoryAddAssetView {
         );
 
 
-        BookImpl book = BookFactory.createBook(ID_DEFAULT_VALUE,request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
+        BookImpl book = BookFactory.createBook(request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
 
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
