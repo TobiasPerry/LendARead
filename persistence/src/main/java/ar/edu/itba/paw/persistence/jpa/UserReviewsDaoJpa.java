@@ -21,7 +21,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
     }
 
     @Override
-    public double getRating(int userId) {
+    public double getRating(final int userId) {
         try {
             String jql = "SELECT AVG(r.rating) FROM UserReview r WHERE r.recipientId = :userId";
             return (Double) em.createQuery(jql)
@@ -34,8 +34,15 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<UserReview> getUserReviews(int userId) {
+    public List<UserReview> getUserReviewsAsRecipient(final int recipientId) {
         String jql = "SELECT r FROM UserReview r WHERE r.recipientId = :userId";
-        return (List<UserReview>) em.createQuery(jql).setParameter("userId", userId).getResultList();
+        return (List<UserReview>) em.createQuery(jql).setParameter("userId", recipientId).getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<UserReview> getUserReviewsAsReviewer(final int reviewerId) {
+        String jql = "SELECT r FROM UserReview r WHERE r.reviewerId = :userId";
+        return (List<UserReview>) em.createQuery(jql).setParameter("userId", reviewerId).getResultList();
     }
 }

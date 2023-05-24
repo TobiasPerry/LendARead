@@ -10,6 +10,8 @@ public interface UserReviewsDao {
 
     double getRating(final int userId);
 
-    List<UserReview> getUserReviews(final int userId);
+    List<UserReview> getUserReviewsAsRecipient(final int recipientId);
+
+    List<UserReview> getUserReviewsAsReviewer(final int reviewerId);
 
 }
