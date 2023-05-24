@@ -72,9 +72,8 @@ public class UserDaoJpa implements UserDao {
 
     @Override
     public int deletePasswordRestToken(String token) {
-        int isSuccessful = em.createQuery("delete from PasswordResetTokenImpl p where p.token=:token")
+        return em.createQuery("delete from PasswordResetTokenImpl p where p.token=:token")
                 .setParameter("token", token)
                 .executeUpdate();
-        return isSuccessful;
     }
 }
