@@ -8,7 +8,7 @@ public interface UserReviewsDao {
 
     void addReview(final String review, final int rating, final int lendingId, final int reviewerId, final int recipientId);
 
-    boolean getRating(final int userId);
+    double getRating(final int userId);
 
     List<UserReview> getUserReviews(final int userId);
 

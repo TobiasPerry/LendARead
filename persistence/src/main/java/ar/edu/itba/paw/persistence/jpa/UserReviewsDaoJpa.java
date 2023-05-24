@@ -5,6 +5,7 @@ import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 @Repository
@@ -20,12 +21,21 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
     }
 
     @Override
-    public boolean getRating(int userId) {
-        return false;
+    public double getRating(int userId) {
+        try {
+            String jql = "SELECT AVG(r.rating) FROM UserReview r WHERE r.recipientId = :userId";
+            return (Double) em.createQuery(jql)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return 0.0;
+        }
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<UserReview> getUserReviews(int userId) {
-        return null;
+        String jql = "SELECT r FROM UserReview r WHERE r.recipientId = :userId";
+        return (List<UserReview>) em.createQuery(jql).setParameter("userId", userId).getResultList();
     }
 }
