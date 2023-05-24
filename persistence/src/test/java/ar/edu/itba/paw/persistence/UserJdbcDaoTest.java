@@ -3,10 +3,9 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
-import ar.edu.itba.paw.persistence.sql.UserDaoImpl;
+import ar.edu.itba.paw.persistence.jpa.UserDaoJpa;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +33,8 @@ public class UserJdbcDaoTest {
     private static final String TELEPHONE = "TELEPHONE";
     private static final String ALREADY_EXISTS_EMAIL = "EMAIL";
 
-    private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetTokenImpl("TOKEN2",EMAIL, LocalDate.now());
-    private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetTokenImpl("TOKEN2",ALREADY_EXISTS_EMAIL, LocalDate.now());
+    private static final PasswordResetTokenImpl PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetTokenImpl("TOKEN2",3, LocalDate.now());
+    private static final PasswordResetTokenImpl PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetTokenImpl("TOKEN2",1, LocalDate.now());
 
     private static final String TOKEN_ALREADY_EXISTS = "TOKEN";
     private static final int TOKEN_ID_ALREADY_EXISTS = 1;
@@ -45,7 +44,7 @@ public class UserJdbcDaoTest {
     private DataSource ds;
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDaoJpa userDao;
 
 
     private JdbcTemplate jdbcTemplate;
@@ -105,7 +104,7 @@ public class UserJdbcDaoTest {
         //1
         final String newPassword = "NewPassword";
         //2
-        final boolean hasChange = userDao.changePassword(ALREADY_EXISTS_EMAIL,newPassword);
+        final boolean hasChange = userDao.changePassword(PASSWORD_RESET_TOKEN_USER_EXISTS,newPassword);
         //3
         Assert.assertTrue(hasChange);
     }
@@ -133,12 +132,12 @@ public class UserJdbcDaoTest {
     @Test
     public void getPasswordRestToken(){
         //2
-        final Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(TOKEN_ALREADY_EXISTS);
+        final Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(TOKEN_ALREADY_EXISTS);
 
         //3
         Assert.assertTrue(passwordResetToken.isPresent());
         Assert.assertEquals(TOKEN_ALREADY_EXISTS,passwordResetToken.get().getToken());
-        Assert.assertEquals(ALREADY_EXISTS_EMAIL,passwordResetToken.get().getUser());
+        Assert.assertEquals(1,passwordResetToken.get().getUserId());
         Assert.assertEquals(TOKEN_EXPIRATION_DATE_ALREADY_EXISTS,passwordResetToken.get().getExpiryDate());
 
     }

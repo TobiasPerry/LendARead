@@ -3,14 +3,11 @@ package ar.edu.itba.paw.persistence.sql;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 
 import javax.sql.DataSource;
@@ -19,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -27,7 +24,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final RowMapper<UserImpl> ROW_MAPPER_USER = (rs, rownum) -> new UserImpl(rs.getInt("id"), rs.getString("mail"), rs.getString("name"), rs.getString("telephone"), rs.getString("password"), Behaviour.fromString(rs.getString("behavior")));
 
-    private static final RowMapper<PasswordResetToken> ROW_MAPPER_PASSWORD_TOKEN = (rs, rownum) -> new PasswordResetTokenImpl(rs.getString("token"), rs.getString("mail"), rs.getTimestamp("expiration").toLocalDateTime().toLocalDate());
+    private static final RowMapper<PasswordResetTokenImpl> ROW_MAPPER_PASSWORD_TOKEN = (rs, rownum) -> new PasswordResetTokenImpl(rs.getString("token"), rs.getInt("userid"), rs.getTimestamp("expiration").toLocalDateTime().toLocalDate());
 
     @Autowired
     public UserDaoImpl(final DataSource ds) {
@@ -75,26 +72,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean changePassword(String email, String newPassword) {
-        String query = "UPDATE users SET password = ? WHERE mail = ?";
-        final int updates = jdbcTemplate.update(query, newPassword, email);
+    public boolean changePassword(PasswordResetTokenImpl passwordResetToken, String newPassword) {
+        String query = "UPDATE users SET password = ? WHERE id = ?";
+        final int updates = jdbcTemplate.update(query, newPassword, passwordResetToken.getUserId());
         return updates != 0;
     }
 
     @Override
-    public boolean setForgotPasswordToken(PasswordResetToken passwordResetToken) {
+    public boolean setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken) {
         String query = "INSERT INTO resetpasswordinfo(token,userid,expiration) VALUES(?,?,?)";
-        Optional<UserImpl> user = getUser(passwordResetToken.getUser());
-        if (!user.isPresent())
-            return false;
-        final int insert = jdbcTemplate.update(query, passwordResetToken.getToken(), user.get().getId(), java.sql.Date.valueOf(passwordResetToken.getExpiryDate()));
+        final int insert = jdbcTemplate.update(query, passwordResetToken.getToken(), passwordResetToken.getUserId(), java.sql.Date.valueOf(passwordResetToken.getExpiryDate()));
         return insert != 0;
     }
 
     @Override
-    public Optional<PasswordResetToken> getPasswordRestToken(String token) {
+    public Optional<PasswordResetTokenImpl> getPasswordRestToken(String token) {
         String query = "SELECT * FROM resetpasswordinfo as s join users as u on s.userid = u.id WHERE s.token = ?";
-        List<PasswordResetToken> passwordResetToken = jdbcTemplate.query(query, ROW_MAPPER_PASSWORD_TOKEN, token);
+        List<PasswordResetTokenImpl> passwordResetToken = jdbcTemplate.query(query, ROW_MAPPER_PASSWORD_TOKEN, token);
         return passwordResetToken.stream().findFirst();
     }
 

@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
+import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
-//@Repository
+@Repository
 public class UserDaoJpa implements UserDao {
     @PersistenceContext
     private EntityManager em;
@@ -25,8 +25,8 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public boolean changePassword(String email, String newPassword) {
-        User user = getUser(email).orElse(null);
+    public boolean changePassword(PasswordResetTokenImpl passwordResetToken, String newPassword) {
+        User user = getUser(passwordResetToken.getUserId()).orElse(null);
         if(user == null) return false;
         user.setPassword(newPassword);
         em.persist(user);
@@ -57,17 +57,24 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public boolean setForgotPasswordToken(PasswordResetToken passwordResetToken) {
-        return false;
+    public boolean setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken) {
+        em.persist(passwordResetToken);
+        return true;
     }
 
     @Override
-    public Optional<PasswordResetToken> getPasswordRestToken(String token) {
-        return Optional.empty();
+    public Optional<PasswordResetTokenImpl> getPasswordRestToken(String token) {
+        TypedQuery<PasswordResetTokenImpl> query = em.createQuery("SELECT p FROM PasswordResetTokenImpl p WHERE p.token = :token", PasswordResetTokenImpl.class);
+        query.setParameter("token",token);
+        List<PasswordResetTokenImpl> passwordResetTokenList = query.getResultList();
+        return passwordResetTokenList.stream().findFirst();
     }
 
     @Override
     public int deletePasswordRestToken(String token) {
-        return 0;
+        int isSuccessful = em.createQuery("delete from PasswordResetTokenImpl p where p.token=:token")
+                .setParameter("token", token)
+                .executeUpdate();
+        return isSuccessful;
     }
 }

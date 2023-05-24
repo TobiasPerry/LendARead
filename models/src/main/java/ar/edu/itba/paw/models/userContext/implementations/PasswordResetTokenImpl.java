@@ -1,36 +1,46 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
-public class PasswordResetTokenImpl implements ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken {
+@Entity
+@Table(name = "resetpasswordinfo")
+public class PasswordResetTokenImpl{
 
-        private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION = 60 * 24;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resetpasswordinfo_id_seq")
+    @SequenceGenerator(sequenceName = "resetpasswordinfo_id_seq", name = "resetpasswordinfo_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private int id;
 
+    @Column(length = 100,unique = true)
+    private String token;
 
-        private final String token;
+    @Column(length = 100,name = "userid")
+    private int user;
 
+    @Column(name = "expiration")
+    private LocalDate expiryDate;
 
-        private final String user;
-
-        private final LocalDate expiryDate;
-
-    public PasswordResetTokenImpl(String token, String user, LocalDate expiryDate) {
+    public PasswordResetTokenImpl(String token, int user, LocalDate expiryDate) {
         this.token = token;
         this.user = user;
         this.expiryDate = expiryDate;
     }
+    public PasswordResetTokenImpl(){
 
-    @Override
+    }
+
     public String getToken() {
         return token;
     }
-    @Override
-    public String getUser() {
+
+    public int getUserId() {
         return user;
     }
-    @Override
     public LocalDate getExpiryDate() {
         return expiryDate;
     }

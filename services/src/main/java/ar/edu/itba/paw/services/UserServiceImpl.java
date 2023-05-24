@@ -6,8 +6,6 @@ import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.PasswordResetToken;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +103,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createChangePasswordToken(final String email){
         String token = UUID.randomUUID().toString().substring(0,6).toUpperCase();
-        PasswordResetToken passwordResetToken = new PasswordResetTokenImpl(token,email, LocalDate.now().plusDays(1));
+        Optional<UserImpl> user = userDao.getUser(email);
+        if (!user.isPresent()){
+            LOGGER.error("User not found");
+            return;
+        }
+        PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token,user.get().getId(), LocalDate.now().plusDays(1));
         emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
         userDao.setForgotPasswordToken(passwordResetToken);
     }
@@ -113,19 +116,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void changePassword(final String token, final String password){
-        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
+        Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
         if(!passwordResetToken.isPresent())
             return;
         if(!isTokenValid(token))
            return;
         userDao.deletePasswordRestToken(token);
-        userDao.changePassword(passwordResetToken.get().getUser(), passwordEncoder.encode(password));
+        userDao.changePassword(passwordResetToken.get(), passwordEncoder.encode(password));
     }
 
     @Transactional(readOnly = true)
     @Override
     public boolean isTokenValid(final String token){
-        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
+        Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
         return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
     }
 
