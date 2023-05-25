@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.springframework.stereotype.Repository;
 
@@ -15,17 +16,16 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
     private EntityManager em;
 
     @Override
-    public void addReview(final String review, final int rating, final int lendingId, final int reviewerId, final int recipientId) {
-        UserReview newReview = new UserReview(review, rating, lendingId, reviewerId, recipientId);
+    public void addReview(final UserReview newReview) {
         em.persist(newReview);
     }
 
     @Override
-    public double getRating(final int userId) {
+    public double getRating(final User user) {
         try {
             String jql = "SELECT AVG(r.rating) FROM UserReview r WHERE r.recipientId = :userId";
             return (Double) em.createQuery(jql)
-                    .setParameter("userId", userId)
+                    .setParameter("userId", user.getId())
                     .getSingleResult();
         } catch (NoResultException e) {
             return 0.0;
@@ -34,15 +34,15 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<UserReview> getUserReviewsAsRecipient(final int recipientId) {
+    public List<UserReview> getUserReviewsAsRecipient(final User recipient) {
         String jql = "SELECT r FROM UserReview r WHERE r.recipientId = :userId";
-        return (List<UserReview>) em.createQuery(jql).setParameter("userId", recipientId).getResultList();
+        return (List<UserReview>) em.createQuery(jql).setParameter("userId", recipient.getId()).getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<UserReview> getUserReviewsAsReviewer(final int reviewerId) {
+    public List<UserReview> getUserReviewsAsReviewer(final User reviewer) {
         String jql = "SELECT r FROM UserReview r WHERE r.reviewerId = :userId";
-        return (List<UserReview>) em.createQuery(jql).setParameter("userId", reviewerId).getResultList();
+        return (List<UserReview>) em.createQuery(jql).setParameter("userId", reviewer.getId()).getResultList();
     }
 }

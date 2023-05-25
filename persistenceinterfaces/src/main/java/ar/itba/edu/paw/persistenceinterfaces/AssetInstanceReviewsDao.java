@@ -1,14 +1,15 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 
 import java.util.List;
 
 public interface AssetInstanceReviewsDao {
 
-    void addReview(final int lendingId, final String message, final int reviewerId, final int rating);
+    void addReview(final AssetInstanceReview assetInstanceReview);
 
-    double getRating(final int assetInstanceId);
+    double getRating(final AssetInstance assetInstance);
 
-    List<AssetInstanceReview> getAssetInstanceReviews(final int assetInstanceId);
+    List<AssetInstanceReview> getAssetInstanceReviews(final AssetInstance assetInstance);
 }

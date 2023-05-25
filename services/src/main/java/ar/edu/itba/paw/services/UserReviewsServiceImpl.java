@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,23 +22,24 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         this.userReviewsDao = userReviewsDao;
     }
 
+
     @Override
-    public void addReview(final String review, final int rating, final int lendingId, final int reviewerId, final int recipientId) {
-        userReviewsDao.addReview(review, rating, lendingId, reviewerId, recipientId);
+    public void addReview(UserReview userReview) {
+        userReviewsDao.addReview(userReview);
     }
 
     @Override
-    public double getRating(int userId) {
-        return userReviewsDao.getRating(userId);
+    public double getRating(User user) {
+        return userReviewsDao.getRating(user);
     }
 
     @Override
-    public List<UserReview> getUserReviewsAsRecipient(final int recipientId) {
-        return userReviewsDao.getUserReviewsAsRecipient(recipientId);
+    public List<UserReview> getUserReviewsAsRecipient(User recipient) {
+        return userReviewsDao.getUserReviewsAsRecipient(recipient);
     }
 
     @Override
-    public List<UserReview> getUserReviewsAsReviewer(final int reviewerId) {
-        return userReviewsDao.getUserReviewsAsReviewer(reviewerId);
+    public List<UserReview> getUserReviewsAsReviewer(User reviewer) {
+        return userReviewsDao.getUserReviewsAsReviewer(reviewer);
     }
 }

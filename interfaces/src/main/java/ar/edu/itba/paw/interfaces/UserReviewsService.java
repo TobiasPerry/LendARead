@@ -1,15 +1,16 @@
 package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 import java.util.List;
 
 public interface UserReviewsService {
-    void addReview(final String review, final int rating, final int lendingId, final int reviewerId, final int recipientId);
+    void addReview(final UserReview userReview);
 
-    double getRating(final int userId);
+    double getRating(final User user);
 
-    List<UserReview> getUserReviewsAsRecipient(final int recipientId);
+    List<UserReview> getUserReviewsAsRecipient(final User recipient);
 
-    List<UserReview> getUserReviewsAsReviewer(final int reviewerId);
+    List<UserReview> getUserReviewsAsReviewer(final User reviewer);
 }
