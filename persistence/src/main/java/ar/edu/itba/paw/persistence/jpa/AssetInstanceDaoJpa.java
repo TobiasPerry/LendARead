@@ -112,6 +112,9 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
 
+        if(list.isEmpty())
+            return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+
         String orderByORM = " ORDER BY " +
                 getOrmFromSort(searchQuery.getSort()) +
                 " " +
