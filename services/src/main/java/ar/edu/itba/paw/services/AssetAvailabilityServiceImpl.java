@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
@@ -42,7 +43,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Transactional
     @Override
     public void borrowAsset(final int assetId, final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
-        Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
+        Optional<AssetInstanceImpl> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<UserImpl> user = userDao.getUser(borrower);
 
         if (!ai.isPresent()) {

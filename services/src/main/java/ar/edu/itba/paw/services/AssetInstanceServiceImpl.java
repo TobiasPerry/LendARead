@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
@@ -35,8 +36,8 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
-        Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
+    public AssetInstanceImpl getAssetInstance(final int id) throws AssetInstanceNotFoundException {
+        Optional<AssetInstanceImpl> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
         if (!assetInstanceOpt.isPresent()) {
             LOGGER.error("Failed to find the asset instance");
             throw new AssetInstanceNotFoundException("assetInstance not found");
@@ -83,14 +84,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
 
     @Override
-    public boolean isOwner(final AssetInstance assetInstance, final String email) {
+    public boolean isOwner(final AssetInstanceImpl assetInstance, final String email) {
         return assetInstance.getOwner().getEmail().equals(email);
     }
 
     @Transactional(readOnly = true)
     @Override
     public boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = getAssetInstance(id);
+        AssetInstanceImpl assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);
     }
 

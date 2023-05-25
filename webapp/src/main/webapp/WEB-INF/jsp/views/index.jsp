@@ -54,7 +54,7 @@
                     <jsp:param name="id" value="${book.id}"/>
                     <jsp:param name="bookTitle" value="${book.book.name}"/>
                     <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                    <jsp:param name="imageId" value="${book.image}"/>
+                    <jsp:param name="imageId" value="${book.image.id}"/>
                 </jsp:include>
             </c:forEach>
         </div>

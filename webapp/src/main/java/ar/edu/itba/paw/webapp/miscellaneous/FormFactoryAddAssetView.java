@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
@@ -54,6 +55,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location,ID_DEFAULT_VALUE, AssetState.PUBLIC,request.getMaxDays());
+        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays());
     }
 }

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
@@ -62,7 +63,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendLenderEmail(final AssetInstance assetInstance, final String borrower, final int lendingId) {
+    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final int lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }

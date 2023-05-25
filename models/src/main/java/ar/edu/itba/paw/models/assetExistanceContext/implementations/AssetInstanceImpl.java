@@ -88,7 +88,7 @@ public class AssetInstanceImpl{
         return this.maxLendingDays;
     }
 
-    public int getImage() {
+    public ImageImpl getImage() {
         return image;
     }
 
