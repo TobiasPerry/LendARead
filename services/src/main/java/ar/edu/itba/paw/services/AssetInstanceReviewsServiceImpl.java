@@ -25,8 +25,6 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
         this.assetInstanceService = assetInstanceService;
     }
 
-
-
     @Override
     public void addReview(AssetInstanceReview assetInstanceReview) {
        assetInstanceReviewsDao.addReview(assetInstanceReview);
