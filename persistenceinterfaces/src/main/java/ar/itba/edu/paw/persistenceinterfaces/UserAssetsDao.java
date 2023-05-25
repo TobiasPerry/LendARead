@@ -1,5 +1,6 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
+import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 
@@ -13,5 +14,5 @@ public interface UserAssetsDao {
 
     PageUserAssets getUsersAssets(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction);
 
-    Optional<BorrowedAssetInstance> getBorrowedAsset(final int lendingId);
+    Optional<BorrowedAssetInstanceImpl> getBorrowedAsset(final int lendingId);
 }

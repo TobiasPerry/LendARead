@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 
@@ -7,11 +8,11 @@ import java.util.List;
 
 public class PageImpl implements Page {
 
-    private final List<AssetInstance> books;
+    private final List<AssetInstanceImpl> books;
     private final  List<String> authors, languages, physicalConditions;
     private final int currentPage, totalPages;
 
-    public PageImpl(List<AssetInstance> books, int currentPage, int totalPages, List<String> authors, List<String> languages, List<String> physicalConditions){
+    public PageImpl(List<AssetInstanceImpl> books, int currentPage, int totalPages, List<String> authors, List<String> languages, List<String> physicalConditions){
         this.books = books;
         this.currentPage = currentPage;
         this.totalPages = totalPages;
@@ -21,7 +22,7 @@ public class PageImpl implements Page {
     }
 
     @Override
-    public List<AssetInstance> getBooks() {
+    public List<AssetInstanceImpl> getBooks() {
         return books;
     }
 

@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCond
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
@@ -28,15 +29,15 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-
-@Repository
+@SuppressWarnings("unchecked")
+//@Repository
 public class AssetInstanceDaoImpl implements AssetInstanceDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<AssetInstance> ROW_MAPPER_AI = new RowMapper<AssetInstance>() {
+    private static final RowMapper<AssetInstanceImpl> ROW_MAPPER_AI = new RowMapper<AssetInstanceImpl>() {
         @Override
-        public AssetInstance mapRow(ResultSet rs, int i) throws SQLException {
+        public AssetInstanceImpl mapRow(ResultSet rs, int i) throws SQLException {
             String isbn = rs.getString("isbn");
             String author = rs.getString("author");
             String title = rs.getString("title");
@@ -63,20 +64,21 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             PhysicalCondition physicalcondition = PhysicalCondition.fromString(rs.getString("physicalcondition"));
             AssetState aState = AssetState.fromString(rs.getString("status"));
 
-            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState, maxWeeks);
+            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, new ImageImpl(), aState, maxWeeks);
         }
     };
 
     private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) -> rs.getInt("pageCount");
 
-    private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
+    private static final RowMapper<AssetInstanceImpl> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
                     new BookImpl(rs.getInt("book_id"), rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
                     new UserImpl(rs.getInt("user_id"), rs.getString("email"), rs.getString("user_name"), "X", "", Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"), rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
-                    rs.getInt("photo_id"),
+//                    rs.getInt("photo_id"),
+                    new ImageImpl(),
                     AssetState.fromString(rs.getString("status")),
                     rs.getInt("maxLendingDays")
             );
@@ -95,7 +97,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public AssetInstance addAssetInstance(final BookImpl book, final UserImpl owner, final LocationImpl location, final int photoId, final AssetInstance ai) {
+    public AssetInstanceImpl addAssetInstance(final BookImpl book, final UserImpl owner, final LocationImpl location, final int photoId, final AssetInstanceImpl ai) {
         final Map<String, Object> args = new HashMap<>();
         args.put("assetid", book.getId());
         args.put("owner", owner.getId());
@@ -107,12 +109,12 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
         int id = jdbcInsert.executeAndReturnKey(args).intValue();
 
-        return new AssetInstanceImpl(id, book, ai.getPhysicalCondition(), owner, location, photoId, ai.getAssetState(), ai.getMaxDays());
+        return new AssetInstanceImpl(id, book, ai.getPhysicalCondition(), owner, location, new ImageImpl(), ai.getAssetState(), ai.getMaxDays());
     }
 
     @Override
-    public Optional<AssetInstance> getAssetInstance(int assetId) {
-        AssetInstance assetInstance;
+    public Optional<AssetInstanceImpl> getAssetInstance(int assetId) {
+        AssetInstanceImpl assetInstance;
         try {
             Object[] params = new Object[]{assetId};
             String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
@@ -190,7 +192,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         objects.add(limit);
         objects.add(offset);
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
+        List<AssetInstanceImpl> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
 
         objects.remove(objects.size() - 1);
         objects.remove(objects.size() - 1);

@@ -31,24 +31,24 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     }
 
     @Override
-    public double getRating(AssetInstance assetInstance) {
+    public double getRating(AssetInstanceImpl assetInstance) {
         return assetInstanceReviewsDao.getRating(assetInstance);
     }
 
     @Override
     public double getRatingById(int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
         return assetInstanceReviewsDao.getRating(assetInstance);
     }
 
     @Override
-    public List<AssetInstanceReview> getAssetInstanceReviews(AssetInstance assetInstance) {
+    public List<AssetInstanceReview> getAssetInstanceReviews(AssetInstanceImpl assetInstance) {
         return assetInstanceReviewsDao.getAssetInstanceReviews(assetInstance);
     }
 
     @Override
     public List<AssetInstanceReview> getAssetInstanceReviewsById(int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
         return assetInstanceReviewsDao.getAssetInstanceReviews(assetInstance);
     }
 }

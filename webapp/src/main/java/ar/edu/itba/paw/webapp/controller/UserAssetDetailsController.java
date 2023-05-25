@@ -5,6 +5,7 @@ import ar.edu.itba.paw.exceptions.LendingCompletionUnsuccessfulException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,7 +94,7 @@ final public class UserAssetDetailsController {
 
     @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.POST)
     public ModelAndView changeMyBookStatus(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(id);
+        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);
 
         if (assetInstance.getAssetState().isPublic())
             assetAvailabilityService.setAssetPrivate(id);

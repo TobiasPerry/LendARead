@@ -92,7 +92,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         query += " LIMIT ? OFFSET ?";
 
-        RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
+        RowMapper<BorrowedAssetInstanceImpl> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String borrower = rs.getString("borrower_name");
@@ -104,7 +104,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .orElse(null);
         };
 
-        List<BorrowedAssetInstance> lendedAssets;
+        List<BorrowedAssetInstanceImpl> lendedAssets;
 
         if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
             lendedAssets = jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue), itemsPerPage, offset);
@@ -186,7 +186,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
         query += " LIMIT ? OFFSET ?";
 
-        RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
+        RowMapper<BorrowedAssetInstanceImpl> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String owner = rs.getString("owner_name");
@@ -199,7 +199,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                     .orElse(null);
         };
 
-        List<BorrowedAssetInstance> borrowedAssets;
+        List<BorrowedAssetInstanceImpl> borrowedAssets;
         if (!filterAttribute.equalsIgnoreCase("none") && !filterAttribute.equalsIgnoreCase("delayed"))
             borrowedAssets = jdbcTemplate.query(query, rowMapper, email, matchFilterValue(filterValue), itemsPerPage, offset);
         else
@@ -324,7 +324,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public Optional<BorrowedAssetInstance> getBorrowedAsset(int lendingId) {
+    public Optional<BorrowedAssetInstanceImpl> getBorrowedAsset(int lendingId) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -345,7 +345,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
                 " WHERE" +
                 "    l.id = ?";
 
-        RowMapper<BorrowedAssetInstance> rowMapper = (rs, rowNum) -> {
+        RowMapper<BorrowedAssetInstanceImpl> rowMapper = (rs, rowNum) -> {
             int assetId = rs.getInt("assetinstanceid");
             String dueDate = rs.getTimestamp("devolutiondate").toString();
             String owner = rs.getString("owner_name");

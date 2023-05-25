@@ -3,12 +3,13 @@ package ar.edu.itba.paw.interfaces;
 //import models.assetExistanceContext.interfaces.Book;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 
 public interface AssetInstanceService {
-    AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException;
+    AssetInstanceImpl getAssetInstance(final int id) throws AssetInstanceNotFoundException;
 
     Page getAllAssetsInstances(final int pageNum, int itemsPerPage);
 
@@ -18,5 +19,5 @@ public interface AssetInstanceService {
 
     boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException;
 
-    boolean isOwner(final AssetInstance assetInstance, final String email);
+    boolean isOwner(final AssetInstanceImpl assetInstance, final String email);
 }

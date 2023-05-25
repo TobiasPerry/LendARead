@@ -4,6 +4,7 @@ import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Language;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
@@ -57,7 +58,7 @@ final public class AddAssetViewController {
 
         try {
             LOGGER.info("AssetInstance has ben created");
-            AssetInstance assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
+            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");

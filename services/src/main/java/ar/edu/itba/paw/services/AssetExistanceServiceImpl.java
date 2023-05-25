@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
@@ -44,7 +45,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
     @Override
     @Transactional
-    public AssetInstance addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
+    public AssetInstanceImpl addAssetInstance(AssetInstanceImpl assetInstance, byte[] photo) throws InternalErrorException {
 
         Optional<BookImpl> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
         BookImpl book;

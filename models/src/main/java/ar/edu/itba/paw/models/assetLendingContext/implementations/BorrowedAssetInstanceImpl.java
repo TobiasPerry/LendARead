@@ -7,7 +7,7 @@ import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstan
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implements BorrowedAssetInstance {
+final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl {
 
     private final String dueDate;
     private final String borrower;
@@ -15,7 +15,7 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
 
     private final LendingState lendingState;
 
-    public BorrowedAssetInstanceImpl(final AssetInstance assetInstance, final String dueDate, final String borrower, final int lendingId, final LendingState lendingState) {
+    public BorrowedAssetInstanceImpl(final AssetInstanceImpl assetInstance, final String dueDate, final String borrower, final int lendingId, final LendingState lendingState) {
         super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImageId(), assetInstance.getAssetState(),assetInstance.getMaxDays());
         this.dueDate = formatDate(dueDate);
         this.borrower = borrower;
@@ -30,22 +30,22 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
     }
 
 
-    @Override
+
     public String getDueDate() {
         return dueDate;
     }
 
-    @Override
+
     public String getBorrower() {
         return borrower;
     }
 
-    @Override
+
     public int getLendingId() {
         return this.lendingId;
     }
 
-    @Override
+
     public LendingState getLendingState() {
         return this.lendingState;
     }

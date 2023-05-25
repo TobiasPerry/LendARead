@@ -14,7 +14,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "AssetInstance")
-public class AssetInstanceImpl implements AssetInstance {
+public class AssetInstanceImpl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_instance_id_seq")
@@ -48,7 +48,7 @@ public class AssetInstanceImpl implements AssetInstance {
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
     private ImageImpl imageId;
 
-    public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, int imageId, AssetState as, int maxDaysLending) {
+    public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending) {
         this.id = (long) id;
         this.book = book;
         this.physicalCondition = physicalCondition;
@@ -59,7 +59,7 @@ public class AssetInstanceImpl implements AssetInstance {
         this.maxLendingDays = maxDaysLending;
     }
 
-    AssetInstanceImpl() {
+     AssetInstanceImpl() {
 
     }
     @Override
@@ -72,46 +72,46 @@ public class AssetInstanceImpl implements AssetInstance {
                 '}';
     }
 
-    @Override
+
     public BookImpl getBook() {
         return book;
     }
 
-    @Override
+
     public UserImpl getOwner() {
         return userReference;
     }
 
-    @Override
+
     public LocationImpl getLocation() {
         return location;
     }
-    @Override
+
     public AssetState getAssetState() {
         return assetState;
     }
 
-    @Override
+
     public int getMaxDays() {
         return this.maxLendingDays;
     }
 
-    @Override
-    public int getImageId() {
+
+    public ImageImpl getImageId() {
         return imageId;
     }
 
-    @Override
+
     public boolean getIsBorrowedInstance() {
         return false;
     }
 
-    @Override
+
     public int getId() {
         return Math.toIntExact(id);
     }
 
-    @Override
+
     public PhysicalCondition getPhysicalCondition() {
         return physicalCondition;
     }

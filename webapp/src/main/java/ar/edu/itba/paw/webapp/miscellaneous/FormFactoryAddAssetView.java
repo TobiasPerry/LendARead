@@ -2,11 +2,13 @@ package ar.edu.itba.paw.webapp.miscellaneous;
 
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
@@ -34,7 +36,7 @@ final public class FormFactoryAddAssetView {
             return null;
     }
 
-    public static AssetInstance createAssetInstance(AddAssetForm request,String email) {
+    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, String email) {
 
         UserImpl user = UserFactory.createUser(ID_DEFAULT_VALUE,
                 email,
@@ -57,6 +59,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location,ID_DEFAULT_VALUE, AssetState.PUBLIC,request.getMaxDays());
+        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays());
     }
 }
