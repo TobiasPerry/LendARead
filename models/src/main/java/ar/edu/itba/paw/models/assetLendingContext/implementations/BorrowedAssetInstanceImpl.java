@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implements BorrowedAssetInstance {
 
     private final String dueDate;
-
     private final String borrower;
     private final int lendingId;
 
