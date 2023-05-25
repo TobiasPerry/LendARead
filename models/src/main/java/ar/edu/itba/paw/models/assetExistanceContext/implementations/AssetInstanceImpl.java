@@ -3,6 +3,8 @@ package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
@@ -42,8 +44,9 @@ public class AssetInstanceImpl implements AssetInstance {
     @Column(name = "maxLendingDays", nullable = false)
     private  int maxLendingDays;
 
-    @Column(name = "photoId")
-    private  int imageId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
+    private ImageImpl imageId;
 
     public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, int imageId, AssetState as, int maxDaysLending) {
         this.id = (long) id;
