@@ -8,10 +8,45 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "AssetInstance")
 public class AssetInstanceImpl implements AssetInstance {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_instance_id_seq")
+    @SequenceGenerator(sequenceName = "asset_instance_id_seq", name = "asset_instance_id_seq", allocationSize = 1)
+    private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "assetId", referencedColumnName = "uid", nullable = false)
+    private  BookImpl book;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
+    private  UserImpl userReference;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "locationId", referencedColumnName = "id")
+    private  LocationImpl location;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "physicalCondition", length = 100)
+    private  PhysicalCondition physicalCondition;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 100)
+    private  AssetState assetState;
+
+    @Column(name = "maxLendingDays", nullable = false)
+    private  int maxLendingDays;
+
+    @Column(name = "photoId")
+    private  int imageId;
+
     public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, int imageId, AssetState as, int maxDaysLending) {
-        this.id = id;
+        this.id = (long) id;
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
@@ -21,6 +56,9 @@ public class AssetInstanceImpl implements AssetInstance {
         this.maxLendingDays = maxDaysLending;
     }
 
+    AssetInstanceImpl() {
+
+    }
     @Override
     public String toString() {
         return "AssetInstanceImpl{" +
@@ -31,21 +69,6 @@ public class AssetInstanceImpl implements AssetInstance {
                 '}';
     }
 
-    private final BookImpl book;
-
-    private final int id;
-
-    private final int maxLendingDays;
-    private final PhysicalCondition physicalCondition;
-
-    private final AssetState assetState;
-
-
-    private final UserImpl userReference;
-
-    private final LocationImpl location;
-
-    private final int imageId;
     @Override
     public BookImpl getBook() {
         return book;
@@ -82,7 +105,7 @@ public class AssetInstanceImpl implements AssetInstance {
 
     @Override
     public int getId() {
-        return id;
+        return Math.toIntExact(id);
     }
 
     @Override
