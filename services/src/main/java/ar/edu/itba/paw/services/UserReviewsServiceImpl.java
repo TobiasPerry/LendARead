@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
@@ -39,8 +40,8 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         return userReviewsDao.getRating(user);
     }
 
-    private User getUser(int userId) throws UserNotFoundException {
-        Optional<User> user = userDao.getUser(userId);
+    private UserImpl getUser(int userId) throws UserNotFoundException {
+        Optional<UserImpl> user = userDao.getUser(userId);
         if(!user.isPresent())
             throw new UserNotFoundException("not found user to get the rating");
         return user.get();
