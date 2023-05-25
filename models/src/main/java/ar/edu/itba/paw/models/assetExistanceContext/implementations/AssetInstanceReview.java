@@ -1,15 +1,21 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
+import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+
 import javax.persistence.*;
 
 @Entity
 public class AssetInstanceReview {
     @Column(nullable = false)
-    private int lendingId;
+    private int assetInstanceId;
+    //TODO: change to model
+
     @Column(length = 500, nullable = false)
     private String review;
-    @Column(nullable = false)
-    private int reviewerId;
+    @ManyToOne
+    @JoinColumn(name = "reviewerId", referencedColumnName = "id", nullable = false)
+    private UserImpl reviewer;
     @Column(nullable = false)
     private int rating;
 
@@ -18,10 +24,10 @@ public class AssetInstanceReview {
     @SequenceGenerator(sequenceName = "asset_instance_id_seq", name = "asset_instance_id_seq", allocationSize = 1)
     private Long id;
 
-    public AssetInstanceReview(int lendingId, String message, int reviewerId, int rating) {
-        this.lendingId = lendingId;
+    public AssetInstanceReview(final int assetInstanceId, String message, final UserImpl reviewer, int rating) {
+        this.assetInstanceId = assetInstanceId;
         this.review = message;
-        this.reviewerId = reviewerId;
+        this.reviewer = reviewer;
         this.rating = rating;
     }
 

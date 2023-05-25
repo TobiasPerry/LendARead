@@ -5,13 +5,12 @@ import ar.edu.itba.paw.models.userContext.interfaces.User;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_reviews")
 public class UserReview {
-    public UserReview(final String review, final int rating, final int reviewerId, final int recipientId) {
+    public UserReview(final String review, final int rating, final UserImpl reviewer, final UserImpl recipient) {
         this.review = review;
         this.rating = rating;
-        this.reviewerId = reviewerId;
-        this.recipientId = recipientId;
+        this.recipient = recipient;
+        this.reviewer = reviewer;
     }
 
     @Id
@@ -25,14 +24,13 @@ public class UserReview {
     @Column(length = 1, nullable = false)
     private int rating;
 
-    @Column(nullable = false)
-    private int reviewerId;
+    @ManyToOne
+    @JoinColumn(name = "reviewerId", referencedColumnName = "id", nullable = false)
+    private UserImpl reviewer;
 
-//    @ManyToOne()
-//    private User reviewer;
-
-    @Column(nullable = false)
-    private int recipientId;
+    @ManyToOne
+    @JoinColumn(name = "recipientId", referencedColumnName = "id", nullable = false)
+    private UserImpl recipient;
 
     UserReview() {
 
