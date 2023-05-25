@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence;
 
 
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.junit.Assert;
@@ -36,7 +35,7 @@ public class LocationDaoTest {
     @Test
     public void addLocationTest() {
         //2
-        Location added = locationDao.addLocation(LOCATION);
+        LocationImpl added = locationDao.addLocation(LOCATION);
 
         //3
         Assert.assertTrue(added.getId() == 2);

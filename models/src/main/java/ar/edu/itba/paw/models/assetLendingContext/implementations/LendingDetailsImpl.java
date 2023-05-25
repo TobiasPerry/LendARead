@@ -1,31 +1,26 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
-
 import java.time.LocalDate;
 
-public class LendingDetailsImpl implements LendingDetails {
+public class LendingDetailsImpl {
     private final int borrowerId;
     private final int assetInstanceId;
     private final LocalDate borrowDate;
     private final LocalDate returnDate;
 
-    @Override
     public int getBorrowerId() {
         return borrowerId;
     }
 
-    @Override
+
     public int getAssetInstanceId() {
         return assetInstanceId;
     }
 
-    @Override
     public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
-    @Override
     public LocalDate getReturnDate() {
         return returnDate;
     }

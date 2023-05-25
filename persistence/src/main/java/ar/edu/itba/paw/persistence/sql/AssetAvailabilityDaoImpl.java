@@ -1,14 +1,10 @@
 package ar.edu.itba.paw.persistence.sql;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingDetailsImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.LendingDetails;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;

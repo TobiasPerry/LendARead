@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "location")
-final public class LocationImpl implements Location {
+final public class LocationImpl{
     @Column(length = 100, nullable = false)
     private String zipcode;
     @Column(length = 100, nullable = false)
@@ -39,37 +37,30 @@ final public class LocationImpl implements Location {
     }
     public LocationImpl(){}
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public String toString() {
         return String.format("%s, %s, %s, %s", zipcode, locality, province, country) ;
     }
 
-    @Override
     public String getZipcode() {
         return zipcode;
     }
 
-    @Override
     public String getLocality() {
         return locality;
     }
 
-    @Override
     public String getProvince() {
         return province;
     }
 
-    @Override
     public String getCountry() {
         return country;
     }
 
-    @Override
     public String getAddress() {
         return null;
     }

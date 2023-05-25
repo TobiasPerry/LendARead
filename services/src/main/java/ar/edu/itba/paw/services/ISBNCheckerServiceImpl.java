@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.ISBNCheckerService;
 import ar.edu.itba.paw.interfaces.LibraryAPIService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

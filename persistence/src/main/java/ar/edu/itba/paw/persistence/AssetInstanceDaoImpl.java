@@ -4,13 +4,10 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
@@ -95,8 +92,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public AssetInstance addAssetInstance(final BookImpl book, final UserImpl owner, final LocationImpl location, final int photoId, final AssetInstance ai) {
-        final Map<String, Object> args = new HashMap<>();
+    public AssetInstanceImpl addAssetInstance( final AssetInstanceImpl ai) {
+/*        final Map<String, Object> args = new HashMap<>();
         args.put("assetid", book.getId());
         args.put("owner", owner.getId());
         args.put("locationid", location.getId());
@@ -105,9 +102,9 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         args.put("status", ai.getAssetState());
         args.put("maxLendingDays", ai.getMaxDays());
 
-        int id = jdbcInsert.executeAndReturnKey(args).intValue();
+        int id = jdbcInsert.executeAndReturnKey(args).intValue();*/
 
-        return new AssetInstanceImpl(id, book, ai.getPhysicalCondition(), owner, location, photoId, ai.getAssetState(), ai.getMaxDays());
+        return ai;
     }
 
     @Override

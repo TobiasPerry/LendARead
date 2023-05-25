@@ -2,13 +2,11 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.*;
 import org.slf4j.Logger;
@@ -44,7 +42,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
     @Override
     @Transactional
-    public AssetInstance addAssetInstance(AssetInstance assetInstance, byte[] photo) throws InternalErrorException {
+    public AssetInstanceImpl addAssetInstance(AssetInstanceImpl assetInstance, byte[] photo) throws InternalErrorException {
 
         Optional<BookImpl> bookOptional = bookDao.getBook(assetInstance.getBook().getIsbn());
         BookImpl book;
@@ -59,12 +57,16 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
             book = bookOptional.get();
         }
         Optional<UserImpl> user = userDao.getUser(assetInstance.getOwner().getEmail());
-        LocationImpl locationId = locationDao.addLocation(assetInstance.getLocation());
-        Optional<Integer> photoId = photosDao.addPhoto(photo);
+        LocationImpl location = locationDao.addLocation(assetInstance.getLocation());
+        ImageImpl image = photosDao.addPhoto(photo);
+        assetInstance.setBook(book);
+        assetInstance.setLocation(location);
+        assetInstance.setImage(image);
+        assetInstance.setUserReference(user.get());
 
         if (user.isPresent() && photoId.isPresent()) {
             LOGGER.info("Add a new asset intance");
-            return assetInstanceDao.addAssetInstance(book, user.get(), locationId, photoId.get(), assetInstance);
+            return assetInstanceDao.addAssetInstance(assetInstance);
         } else {
             LOGGER.error("Failed to add  a new book instance");
             throw new InternalErrorException("Cannot addAssetInstance");

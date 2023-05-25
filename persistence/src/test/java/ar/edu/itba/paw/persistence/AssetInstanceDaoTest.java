@@ -5,13 +5,10 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
@@ -53,7 +50,7 @@ public class AssetInstanceDaoTest {
     private final static BookImpl book = new BookImpl(1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
     private final static LocationImpl location = new LocationImpl(1, "ZIPCODE","LOCALITY","PROVINCE","COUNTRY");
     private final static UserImpl user = new UserImpl(1,"EMAIL","NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
-     private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstanceImpl(-1,book, PhysicalCondition.ASNEW,user,location,1, AssetState.PUBLIC,10);
+     private final static AssetInstanceImpl ASSET_INSTANCE_TO_CREATE = new AssetInstanceImpl(-1,book, PhysicalCondition.ASNEW,user,location,1, AssetState.PUBLIC,10);
     private final static String BOOK_TITLE_ALREADY_EXIST = "TITLE";
     private JdbcTemplate jdbcTemplate;
 
@@ -77,7 +74,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void addAssetInstanceTest(){
         //2
-        AssetInstance assetInstance = assetInstanceDao.addAssetInstance(book,user,location,1,ASSET_INSTANCE_TO_CREATE);
+        AssetInstanceImpl assetInstance = assetInstanceDao.addAssetInstance(ASSET_INSTANCE_TO_CREATE);
         //3
         Assert.assertEquals(2,assetInstance.getId());
     }

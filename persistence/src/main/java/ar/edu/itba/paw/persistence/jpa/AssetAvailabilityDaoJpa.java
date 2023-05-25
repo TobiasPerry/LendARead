@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.Lending;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +24,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
 
     @Override
     public boolean changeLendingStatus(int lendingId, LendingState lendingState) {
-        Lending lending = em.find(Lending.class, lendingId);
+        LendingImpl lending = em.find(LendingImpl.class, lendingId);
         if (lending == null) return false;
 
         lending.setActive(lendingState);

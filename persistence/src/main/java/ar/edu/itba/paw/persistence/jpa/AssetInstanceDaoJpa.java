@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.persistence.jpa;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
@@ -19,8 +21,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     private EntityManager em;
 
     @Override
-    public AssetInstance addAssetInstance(BookImpl book, UserImpl owner, LocationImpl location, int photoId, AssetInstance ai) {
-        return null;
+    public AssetInstanceImpl addAssetInstance(AssetInstanceImpl ai) {
+        em.persist(ai);
+        em.flush();
+        return ai;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.EmailService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +67,9 @@ class EmailServiceImpl implements EmailService {
             return;
         }
         Map<String, Object> variables = new HashMap<>();
-        User owner = assetInstance.getOwner();
-        Location location = assetInstance.getLocation();
-        Book book = assetInstance.getBook();
+        UserImpl owner = assetInstance.getOwner();
+        LocationImpl location = assetInstance.getLocation();
+        BookImpl book = assetInstance.getBook();
         variables.put("book", book);
         variables.put("borrower", borrower);
         variables.put("owner", owner);
@@ -84,13 +84,13 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstance assetInstance, final User borrower, final int lendingId) {
+    public void sendBorrowerEmail(final AssetInstance assetInstance, final UserImpl borrower, final int lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }
-        Book book = assetInstance.getBook();
-        User owner = assetInstance.getOwner();
-        Location location = assetInstance.getLocation();
+        BookImpl book = assetInstance.getBook();
+        UserImpl owner = assetInstance.getOwner();
+        LocationImpl location = assetInstance.getLocation();
         Map<String, Object> variables = new HashMap<>();
         variables.put("book", book);
         variables.put("borrower", borrower.getName());

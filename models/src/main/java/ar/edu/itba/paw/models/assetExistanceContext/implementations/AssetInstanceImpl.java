@@ -1,20 +1,16 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "AssetInstance")
-public class AssetInstanceImpl implements AssetInstance {
+public class AssetInstanceImpl{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_instance_id_seq")
@@ -46,20 +42,20 @@ public class AssetInstanceImpl implements AssetInstance {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
-    private ImageImpl imageId;
+    private ImageImpl image;
 
-    public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, int imageId, AssetState as, int maxDaysLending) {
+    public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending) {
         this.id = (long) id;
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
         this.location = location;
-        this.imageId = imageId;
+        this.image = imageId;
         this.assetState = as;
         this.maxLendingDays = maxDaysLending;
     }
 
-    AssetInstanceImpl() {
+    public AssetInstanceImpl() {
 
     }
     @Override
@@ -72,47 +68,67 @@ public class AssetInstanceImpl implements AssetInstance {
                 '}';
     }
 
-    @Override
     public BookImpl getBook() {
         return book;
     }
 
-    @Override
     public UserImpl getOwner() {
         return userReference;
     }
 
-    @Override
     public LocationImpl getLocation() {
         return location;
     }
-    @Override
+
     public AssetState getAssetState() {
         return assetState;
     }
 
-    @Override
     public int getMaxDays() {
         return this.maxLendingDays;
     }
 
-    @Override
-    public int getImageId() {
-        return imageId;
+    public int getImage() {
+        return image;
     }
 
-    @Override
     public boolean getIsBorrowedInstance() {
         return false;
     }
 
-    @Override
     public int getId() {
         return Math.toIntExact(id);
     }
 
-    @Override
     public PhysicalCondition getPhysicalCondition() {
         return physicalCondition;
+    }
+
+    public void setBook(BookImpl book) {
+        this.book = book;
+    }
+
+    public void setUserReference(UserImpl userReference) {
+        this.userReference = userReference;
+    }
+
+    public void setLocation(LocationImpl location) {
+        this.location = location;
+    }
+
+    public void setPhysicalCondition(PhysicalCondition physicalCondition) {
+        this.physicalCondition = physicalCondition;
+    }
+
+    public void setAssetState(AssetState assetState) {
+        this.assetState = assetState;
+    }
+
+    public void setMaxLendingDays(int maxLendingDays) {
+        this.maxLendingDays = maxLendingDays;
+    }
+
+    public void setImage(ImageImpl image) {
+        this.image = image;
     }
 }

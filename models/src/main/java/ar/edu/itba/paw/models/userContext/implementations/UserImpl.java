@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.userContext.interfaces.User;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-final public class UserImpl implements User {
+final public class UserImpl{
     @Column(length = 100, nullable = false, unique = true, name = "mail")
     private String email;
     @Column(length = 100, nullable = false)
@@ -55,42 +53,34 @@ final public class UserImpl implements User {
                 '}';
     }
 
-    @Override
     public int getId() {
         return Math.toIntExact(id);
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
     public Behaviour getBehavior() {
         return behavior;
     }
 
-    @Override
     public String getTelephone() {
         return telephone;
     }
 
-    @Override
     public String getName() {
         return this.name;
     }
 
-    @Override
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
 
-    @Override
     public void setBehaviour(Behaviour behaviour) {
         this.behavior = behaviour;
     }

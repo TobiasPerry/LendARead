@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence.sql;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -43,20 +41,20 @@ public class AssetDaoImpl implements AssetDao {
 
 
     @Override
-    public BookImpl addAsset(final Book ai) throws BookAlreadyExistException {
+    public BookImpl addAsset(final BookImpl book) throws BookAlreadyExistException {
 
         final Map<String, Object> args = new HashMap<>();
-        args.put("isbn", ai.getIsbn());
-        args.put("title", ai.getName());
-        args.put("author", ai.getAuthor());
-        args.put("lang", ai.getLanguage());
+        args.put("isbn", book.getIsbn());
+        args.put("title", book.getName());
+        args.put("author", book.getAuthor());
+        args.put("lang", book.getLanguage());
         int id;
         try {
             id = jdbcInsert.executeAndReturnKey(args).intValue();
         } catch (DuplicateKeyException e) {
             throw new BookAlreadyExistException();
         }
-        return new BookImpl(id, ai.getIsbn(), ai.getAuthor(), ai.getName(), ai.getLanguage());
+        return new BookImpl(id, book.getIsbn(), book.getAuthor(), book.getName(), book.getLanguage());
     }
 
     @Override

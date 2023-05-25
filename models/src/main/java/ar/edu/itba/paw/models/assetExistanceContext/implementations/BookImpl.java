@@ -1,11 +1,9 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
-
 import javax.persistence.*;
 @Entity
 @Table(name = "book")
-public class BookImpl implements Book {
+public class BookImpl{
 
     @Column(length = 100, nullable = false, unique = true)
     private  String isbn;
@@ -65,51 +63,42 @@ public class BookImpl implements Book {
         return isbn;
     }
 
-    @Override
     public String getName() {
         return this.title;
     }
 
 
-    @Override
     public String display() {
         return null;
     }
 
 
 
-    @Override
     public String getIsbn() {
         return this.isbn;
     }
 
-    @Override
     public String getLanguage() {
         return this.language;
     }
 
-    @Override
     public String getAuthor() {
         return this.author;
     }
 
-    @Override
     public int getId() {
         return this.id;
     }
 
-    @Override
     public void setAuthor(String author) {
         this.author = author;
     }
 
-    @Override
     public void setLanguage(String language) {
         this.language = language;
     }
 
 
-    @Override
     public String toString() {
         return "BookImpl{" +
                 ", isbn='" + isbn + '\'' +

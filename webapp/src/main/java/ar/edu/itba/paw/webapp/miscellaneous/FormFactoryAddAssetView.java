@@ -2,18 +2,15 @@ package ar.edu.itba.paw.webapp.miscellaneous;
 
 import ar.edu.itba.paw.models.assetExistanceContext.factories.AssetInstanceFactory;
 import ar.edu.itba.paw.models.assetExistanceContext.factories.BookFactory;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.factories.UserFactory;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +31,7 @@ final public class FormFactoryAddAssetView {
             return null;
     }
 
-    public static AssetInstance createAssetInstance(AddAssetForm request,String email) {
+    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, String email) {
 
         UserImpl user = UserFactory.createUser(ID_DEFAULT_VALUE,
                 email,

@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.userContext.interfaces.User;
-
 import javax.persistence.*;
 
 @Entity

@@ -16,7 +16,7 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl implement
     private final LendingState lendingState;
 
     public BorrowedAssetInstanceImpl(final AssetInstance assetInstance, final String dueDate, final String borrower, final int lendingId, final LendingState lendingState) {
-        super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImageId(), assetInstance.getAssetState(),assetInstance.getMaxDays());
+        super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImage(), assetInstance.getAssetState(),assetInstance.getMaxDays());
         this.dueDate = formatDate(dueDate);
         this.borrower = borrower;
         this.lendingId = lendingId;

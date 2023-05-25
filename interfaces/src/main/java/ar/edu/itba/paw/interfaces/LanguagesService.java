@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.interfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
 
 import java.util.List;
 
 public interface LanguagesService {
-    public List<Language> getLanguages();
+    public List<LanguageImpl> getLanguages();
 }

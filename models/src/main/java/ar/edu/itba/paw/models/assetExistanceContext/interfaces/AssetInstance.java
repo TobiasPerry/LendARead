@@ -5,8 +5,6 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCond
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 
 public interface AssetInstance {
 
@@ -24,7 +22,7 @@ public interface AssetInstance {
 
     PhysicalCondition getPhysicalCondition();
 
-    int getImageId();
+    int getImage();
 
     boolean getIsBorrowedInstance();
 }

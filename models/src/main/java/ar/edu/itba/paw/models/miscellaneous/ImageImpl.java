@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "photos")
-public class ImageImpl implements Image {
+public class ImageImpl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "photos_id_seq")
@@ -26,17 +26,14 @@ public class ImageImpl implements Image {
         this.photo = photo;
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public byte[] getPhoto() {
         return photo;
     }
 
-    @Override
     public void setPhoto(byte[] photo) {
         this.photo = photo;
     }

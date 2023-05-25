@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 import javax.persistence.*;
@@ -31,5 +30,5 @@ public class AssetInstanceReview {
         this.rating = rating;
     }
 
-    AssetInstanceReview() {}
+    public AssetInstanceReview() {}
 }

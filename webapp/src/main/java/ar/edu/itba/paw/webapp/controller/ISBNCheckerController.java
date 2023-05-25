@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfaces.ISBNCheckerService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ public class ISBNCheckerController {
         if (!bookOpt.isPresent()) {
             response.put("error", "Not Found");
         } else {
-            Book book = bookOpt.get();
+            BookImpl book = bookOpt.get();
             response.put("author", book.getAuthor());
             response.put("language", book.getLanguage());
             response.put("isbn", book.getIsbn());

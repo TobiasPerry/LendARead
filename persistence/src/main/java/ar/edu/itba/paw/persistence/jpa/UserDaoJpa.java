@@ -3,7 +3,6 @@ package ar.edu.itba.paw.persistence.jpa;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +25,7 @@ public class UserDaoJpa implements UserDao {
 
     @Override
     public boolean changePassword(PasswordResetTokenImpl passwordResetToken, String newPassword) {
-        User user = getUser(passwordResetToken.getUserId()).orElse(null);
+        UserImpl user = getUser(passwordResetToken.getUserId()).orElse(null);
         if(user == null) return false;
         user.setPassword(newPassword);
         em.persist(user);
@@ -43,7 +42,7 @@ public class UserDaoJpa implements UserDao {
 
     @Override
     public boolean changeRole(String email, Behaviour behaviour) {
-        User user = getUser(email).orElse(null);
+        UserImpl user = getUser(email).orElse(null);
         if(user == null) return false;
         user.setBehaviour(behaviour);
         em.persist(user);

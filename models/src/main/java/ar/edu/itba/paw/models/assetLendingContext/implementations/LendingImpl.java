@@ -1,8 +1,5 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.Lending;
-import jdk.nashorn.internal.objects.annotations.Getter;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -10,7 +7,7 @@ import java.time.LocalDate;
 //logic deals with borrowed asset instances.
 @Entity
 @Table(name = "lendings")
-public class LendingImpl implements Lending {
+public class LendingImpl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lendings_id_seq")
@@ -45,62 +42,50 @@ public class LendingImpl implements Lending {
         this.active = active;
     }
 
-    @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Override
     public Integer getAssetInstanceId() {
         return assetInstanceId;
     }
 
-    @Override
     public void setAssetInstanceId(Integer assetInstanceId) {
         this.assetInstanceId = assetInstanceId;
     }
 
-    @Override
     public Integer getBorrowerId() {
         return borrowerId;
     }
 
-    @Override
     public void setBorrowerId(Integer borrowerId) {
         this.borrowerId = borrowerId;
     }
 
-    @Override
     public LocalDate getLendDate() {
         return lendDate;
     }
 
-    @Override
     public void setLendDate(LocalDate lendDate) {
         this.lendDate = lendDate;
     }
 
-    @Override
     public LocalDate getDevolutionDate() {
         return devolutionDate;
     }
 
-    @Override
     public void setDevolutionDate(LocalDate devolutionDate) {
         this.devolutionDate = devolutionDate;
     }
 
-    @Override
     public LendingState getActive() {
         return active;
     }
 
-    @Override
     public void setActive(LendingState active) {
         this.active = active;
     }

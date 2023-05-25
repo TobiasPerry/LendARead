@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,7 @@ public class AssetDaoJpa implements AssetDao {
     }
 
     @Override
-    public BookImpl addAsset(Book bi) throws BookAlreadyExistException {
+    public BookImpl addAsset(BookImpl bi) throws BookAlreadyExistException {
         final BookImpl book = new BookImpl(bi.getId(), bi.getIsbn(), bi.getAuthor(), bi.getName(), bi.getLanguage());
         Optional<BookImpl> existingBook = getBook(book.getIsbn());
         if(existingBook.isPresent()){
