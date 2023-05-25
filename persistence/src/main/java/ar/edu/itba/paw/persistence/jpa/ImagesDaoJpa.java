@@ -19,7 +19,7 @@ public class ImagesDaoJpa implements ImagesDao {
         ImageImpl image = new ImageImpl(photo);
         entityManager.persist(image);
         entityManager.flush();
-        return Optional.of(image.getId());
+        return image;
     }
 
     @Override

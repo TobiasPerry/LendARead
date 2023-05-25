@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
@@ -13,8 +12,8 @@ import javax.persistence.*;
 public class AssetInstanceImpl{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_instance_id_seq")
-    @SequenceGenerator(sequenceName = "asset_instance_id_seq", name = "asset_instance_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assetinstance_id_seq")
+    @SequenceGenerator(sequenceName = "assetinstance_id_seq", name = "assetinstance_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -54,6 +53,16 @@ public class AssetInstanceImpl{
         this.assetState = as;
         this.maxLendingDays = maxDaysLending;
     }
+    public AssetInstanceImpl( BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending) {
+        this.book = book;
+        this.physicalCondition = physicalCondition;
+        this.userReference = userReference;
+        this.location = location;
+        this.image = imageId;
+        this.assetState = as;
+        this.maxLendingDays = maxDaysLending;
+    }
+
 
     public AssetInstanceImpl() {
 

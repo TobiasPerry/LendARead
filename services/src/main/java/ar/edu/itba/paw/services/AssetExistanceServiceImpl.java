@@ -64,7 +64,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         assetInstance.setImage(image);
         assetInstance.setUserReference(user.get());
 
-        if (user.isPresent() && photoId.isPresent()) {
+        if (user.isPresent() ) {
             LOGGER.info("Add a new asset intance");
             return assetInstanceDao.addAssetInstance(assetInstance);
         } else {

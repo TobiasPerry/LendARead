@@ -4,7 +4,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
@@ -15,7 +14,6 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.edu.itba.paw.persistence.jpa.AssetInstanceDaoJpa;
-import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +74,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void addAssetInstanceTest(){
         //2
-        AssetInstanceImpl assetInstance = assetInstanceDao.addAssetInstance(ASSET_INSTANCE_TO_CREATE);
+        AssetInstanceImpl assetInstance = assetInstanceDaoJpa.addAssetInstance(ASSET_INSTANCE_TO_CREATE);
         //3
         Assert.assertEquals(2,assetInstance.getId());
     }

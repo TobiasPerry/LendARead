@@ -12,4 +12,7 @@ public class AssetInstanceFactory {
     public static AssetInstanceImpl createAssetInstance(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl user, LocationImpl location, ImageImpl photoId, AssetState state, int maxDaysLending) {
         return new AssetInstanceImpl(id,book, physicalCondition, user, location,photoId,state, maxDaysLending);
     }
+    public static AssetInstanceImpl createAssetInstance( BookImpl book, PhysicalCondition physicalCondition, UserImpl user, LocationImpl location, ImageImpl photoId, AssetState state, int maxDaysLending) {
+        return new AssetInstanceImpl(book, physicalCondition, user, location,photoId,state, maxDaysLending);
+    }
 }

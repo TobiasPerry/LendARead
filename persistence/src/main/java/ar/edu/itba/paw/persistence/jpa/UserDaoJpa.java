@@ -18,7 +18,7 @@ public class UserDaoJpa implements UserDao {
 
     @Override
     public UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password) {
-        final UserImpl user = new UserImpl(email, name, telephone, behavior, password);
+        final UserImpl user = new UserImpl(email, name, telephone,  password,behavior);
         em.persist(user);
         return user;
     }

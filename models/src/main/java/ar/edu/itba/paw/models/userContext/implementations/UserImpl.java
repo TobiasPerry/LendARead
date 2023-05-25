@@ -23,11 +23,11 @@ final public class UserImpl{
     @Column(name = "id")
     private Long id;
 
-    public UserImpl(String email, String name, String telephone, Behaviour behavior, String password) {
+    public UserImpl(String email, String name, String telephone, String password, Behaviour behaviour) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
-        this.behavior = behavior;
+        this.behavior = behaviour;
         this.password = password;
     }
 

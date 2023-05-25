@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.EmailService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.slf4j.Logger;
@@ -85,7 +84,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstance assetInstance, final UserImpl borrower, final int lendingId) {
+    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final int lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }

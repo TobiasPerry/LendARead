@@ -34,7 +34,7 @@ final public class FormFactoryAddAssetView {
 
     public static AssetInstanceImpl createAssetInstance(AddAssetForm request, String email) {
 
-        UserImpl user = UserFactory.createUser(ID_DEFAULT_VALUE,
+        UserImpl user = UserFactory.createUser(
                 email,
                 DEFAULT_STRING_VALUE,
                 DEFAULT_STRING_VALUE,
@@ -55,6 +55,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return AssetInstanceFactory.createAssetInstance(ID_DEFAULT_VALUE, book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays());
+        return AssetInstanceFactory.createAssetInstance( book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays());
     }
 }
