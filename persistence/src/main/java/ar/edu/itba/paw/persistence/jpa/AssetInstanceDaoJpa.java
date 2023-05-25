@@ -44,7 +44,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         AssetInstanceImpl assetInstance;
         try{
             TypedQuery<AssetInstanceImpl> query = em.createQuery(queryString, AssetInstanceImpl.class);
-            query.setParameter("id", assetId);
+            query.setParameter("id", (long) assetId);
             List<AssetInstanceImpl> list = query.getResultList();
             assetInstance = list.get(0);
         }catch (Exception e){
