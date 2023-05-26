@@ -6,7 +6,6 @@ import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +27,9 @@ final public class UserAssetDetailsController {
     private final UserAssetInstanceService userAssetInstanceService;
 
     private final static String VIEW_NAME = "views/userHomeAssetDetail/userBookDetails";
+    private final static String VIEW_NAME_LENDING_VIEW = "views/userHomeAssetDetail/lendingBookDetails";
 
-    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome";
+    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome",LENDING = "lending";
 
     private final static String BACKURL = "backUrl";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
@@ -49,8 +49,8 @@ final public class UserAssetDetailsController {
 
     @RequestMapping(value = "/lentBookDetails/{lendingId}", method = RequestMethod.GET)
     public ModelAndView lentBookDetail(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
-        return new ModelAndView(VIEW_NAME)
-                .addObject(ASSET, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
+        return new ModelAndView(VIEW_NAME_LENDING_VIEW)
+                .addObject(LENDING, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
                 .addObject(TABLE, LENDED_BOOKS);
     }
 
@@ -63,8 +63,8 @@ final public class UserAssetDetailsController {
 
     @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)
     public ModelAndView borrowedBookDetails(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
-        return new ModelAndView(VIEW_NAME)
-                .addObject(ASSET, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
+        return new ModelAndView(VIEW_NAME_LENDING_VIEW)
+                .addObject(LENDING, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
                 .addObject(TABLE, BORROWED_BOOKS);
     }
 

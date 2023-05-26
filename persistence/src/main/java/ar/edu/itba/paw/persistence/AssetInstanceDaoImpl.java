@@ -244,8 +244,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public Boolean changeStatusByLendingId(final int lendingId, final AssetState as) {
-        String query = "UPDATE assetInstance AS ai " +
+    public Boolean changeStatusByLendingId(final AssetInstanceImpl ai, final AssetState as) {
+       /* String query = "UPDATE assetInstance AS ai " +
                 "SET status = ? " +
                 "FROM lendings AS l " +
                 "WHERE ai.id = l.assetinstanceid AND l.id = ?";
@@ -254,7 +254,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             return true;
         } catch (Exception e) {
             return false;
-        }
+        }*/
+        return true;
     }
 
     private String getPostgresFromSort(Sort sort) {

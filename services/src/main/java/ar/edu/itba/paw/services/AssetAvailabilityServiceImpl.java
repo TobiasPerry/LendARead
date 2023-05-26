@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
+import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,15 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     private final EmailService emailService;
 
+    private UserAssetsDao userAssetsDao;
+
     @Autowired
-    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService) {
+    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService,final UserAssetsDao userAssetsDao) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
         this.emailService = emailService;
+        this.userAssetsDao = userAssetsDao;
     }
 
     @Transactional
@@ -95,7 +99,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Transactional()
     @Override
     public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if (!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE)) {
+        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+        lending.getAssetInstance().setAssetState(AssetState.PRIVATE);
+        if (!assetInstanceDao.changeStatusByLendingId(lending.getAssetInstance(), AssetState.PRIVATE)) {
             LOGGER.error("Failed to update status to PRIVATE for asset instance with lendingId: {}", lendingId);
             throw new AssetInstanceNotFoundException("Asset instance not found for lendingId: " + lendingId);
         }
@@ -105,9 +111,12 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
     }
 
+    @Transactional
     @Override
     public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if (!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.BORROWED)) {
+        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+        lending.getAssetInstance().setAssetState(AssetState.BORROWED);
+        if (!assetInstanceDao.changeStatusByLendingId(lending.getAssetInstance(), AssetState.BORROWED)) {
             LOGGER.error("Failed to update status to BORROWED for asset instance with lendingId: {}", lendingId);
             throw new AssetInstanceNotFoundException("Asset instance not found for lendingId: " + lendingId);
         }
@@ -117,9 +126,12 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
     }
 
+    @Transactional
     @Override
     public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        if (!assetInstanceDao.changeStatusByLendingId(lendingId, AssetState.PRIVATE)) {
+        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+        lending.getAssetInstance().setAssetState(AssetState.PRIVATE);
+        if (!assetInstanceDao.changeStatusByLendingId(lending.getAssetInstance(), AssetState.PRIVATE)) {
             LOGGER.error("Failed to update status to PRIVATE for asset instance with lendingId: {}", lendingId);
             throw new AssetInstanceNotFoundException("Asset instance not found for lendingId: " + lendingId);
         }

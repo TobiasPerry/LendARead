@@ -19,7 +19,7 @@
                     <spring:message code="userHomeView.returnAssetText" />
             </div>
             <div class="modal-footer border-0">
-                <c:url var="changeStatusUrl" value="/returnAsset/${asset.lendingId}"/>
+                <c:url var="changeStatusUrl" value="/returnAsset/${lending.id}"/>
                 <form action="${changeStatusUrl}" method="post">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
                         <spring:message code="userHomeView.returnAssetTextButton" />

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
@@ -73,19 +74,11 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
-    public Boolean changeStatusByLendingId(int lendingId, AssetState as) {
-        String queryString = "UPDATE AssetInstanceImpl ai " +
-                "SET ai.assetState = :status " +
-                "WHERE ai.id IN (SELECT l.assetInstanceId FROM LendingImpl l WHERE l.id = :lendingId)";
-        try{
-            Query query = em.createQuery(queryString);
-            query.setParameter("status", as);
-            query.setParameter("lendingId", lendingId);
-            int count = query.executeUpdate();
-            return count > 0;
-        }catch (Exception e){
-            return false;
-        }
+    public Boolean changeStatusByLendingId(AssetInstanceImpl ai, AssetState as) {
+
+        em.merge(ai);
+        return true;
+
     }
 
     @Override

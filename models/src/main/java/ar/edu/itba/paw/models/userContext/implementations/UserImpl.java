@@ -85,5 +85,24 @@ final public class UserImpl{
         this.behavior = behaviour;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public void setBehavior(Behaviour behavior) {
+        this.behavior = behavior;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
 

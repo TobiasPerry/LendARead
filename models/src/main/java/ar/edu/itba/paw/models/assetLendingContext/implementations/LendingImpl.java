@@ -19,7 +19,7 @@ public class LendingImpl {
     private Long id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assetInstanceId", referencedColumnName = "id")
     private AssetInstanceImpl assetInstance;
 

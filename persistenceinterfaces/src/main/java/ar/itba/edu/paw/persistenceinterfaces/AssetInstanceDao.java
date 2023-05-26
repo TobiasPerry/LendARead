@@ -14,7 +14,7 @@ public interface AssetInstanceDao {
 
     Boolean changeStatus(final int lendingId,final AssetState as);
 
-    Boolean changeStatusByLendingId(final int lendingId, final AssetState as);
+    Boolean changeStatusByLendingId(AssetInstanceImpl ai, final AssetState as);
 
 
     Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery);
