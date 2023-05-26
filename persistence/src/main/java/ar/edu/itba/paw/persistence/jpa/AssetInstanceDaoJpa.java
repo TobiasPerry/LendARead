@@ -93,15 +93,18 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         final String search = searchQuery.getSearch().replace("%", "\\%");
 
-        String orderBy = "ORDER BY " +
+        String orderByPostgres = " ORDER BY " +
                 getPostgresFromSort(searchQuery.getSort()) +
-                getPostgresFromSortDirection(searchQuery.getSortDirection());
+                " " +
+                getPostgresFromSortDirection(searchQuery.getSortDirection()) + " ";
 
         StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
         if(!searchQuery.getSearch().equals("")) {
-            queryNativeString.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') )");
+            queryNativeString.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
         }
 
+        queryNativeString.append(orderByPostgres);
+        System.out.println(queryNativeString);
         final Query queryNative = em.createNativeQuery(queryNativeString.toString());
 
         if(!searchQuery.getSearch().equals(""))
@@ -112,7 +115,15 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
 
-        final TypedQuery<AssetInstanceImpl> query = em.createQuery("FROM AssetInstanceImpl WHERE id IN :ids", AssetInstanceImpl.class);
+        if(list.isEmpty())
+            return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+
+        String orderByORM = " ORDER BY " +
+                getOrmFromSort(searchQuery.getSort()) +
+                " " +
+                getOrmFromSortDirection(searchQuery.getSortDirection()) + " ";
+
+        final TypedQuery<AssetInstanceImpl> query = em.createQuery("FROM AssetInstanceImpl AS ai WHERE id IN (:ids) " + orderByORM, AssetInstanceImpl.class);
         //TODO check when list is empty
         query.setParameter("ids", list);
 
@@ -136,6 +147,19 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return "ai.id";
     }
 
+    private String getOrmFromSort(Sort sort) {
+
+        switch (sort) {
+            case TITLE_NAME:
+                return "ai.book.title";
+            case AUTHOR_NAME:
+                return "ai.book.author";
+            case RECENT:
+                return "ai.id";
+        }
+        return "ai.id";
+    }
+
     private String getPostgresFromSortDirection(SortDirection sortDirection) {
         switch (sortDirection) {
             case ASCENDING:
@@ -144,6 +168,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
                 return "DESC";
         }
         return "ASC";
+    }
+
+    private String getOrmFromSortDirection(SortDirection sortDirection) {
+        return getPostgresFromSortDirection(sortDirection);
     }
 
 }
