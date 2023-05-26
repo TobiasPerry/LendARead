@@ -55,7 +55,7 @@ public class IndexViewController {
             return new ModelAndView("/views/discoveryView");
 
         int pageNum = searchFilterSortForm.getCurrentPage();
-        final int itemsPerPage = 15;
+        final int itemsPerPage = 1;
 
         Page page = assetInstanceService.getAllAssetsInstances(
                 pageNum, itemsPerPage,

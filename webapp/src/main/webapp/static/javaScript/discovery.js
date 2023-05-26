@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nextPageButton != null) {
         nextPageButton.addEventListener("click", () => {
             document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) + 1
-            document.getElementById("springForm").submit()
+            submitFilters(event);
         });
     } else {
         document.getElementById("currentPageID").value = 1;
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (previousPageButton != null) {
         previousPageButton.addEventListener("click", () => {
             document.getElementById("currentPageID").value = parseInt(document.getElementById("currentPageID").value) - 1
-            document.getElementById("springForm").submit()
+            submitFilters(event);
         });
     } else {
         document.getElementById("currentPageID").value = 1;
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("springForm").innerHTML += `<input type ="hidden" name="search" value="` + search + `">`
         }
 
-        document.getElementById("currentPageID").value = "1";
+        //document.getElementById("currentPageID").value = "1";
 
         document.getElementById("springForm").submit();
     }
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("search-bar").addEventListener("keyup", (event) => {
         if (event.key === "Enter" || event.code === "Enter") {
-            submitFilters(event)
+            submitFilters(event);
         }
     })
 
@@ -66,37 +66,37 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("leastRecent").addEventListener("click", () => {
         document.getElementById("sort").value = "RECENT";
         document.getElementById("sortDirection").value = "ASCENDING";
-        document.getElementById("springForm").submit();
+        submitFilters(event);
     });
 
     document.getElementById("mostRecent").addEventListener("click", () => {
         document.getElementById("sort").value = "RECENT";
         document.getElementById("sortDirection").value = "DESCENDING";
-        document.getElementById("springForm").submit();
+        submitFilters(event);
     });
 
     document.getElementById("authorAscending").addEventListener("click", () => {
         document.getElementById("sort").value = "AUTHOR_NAME";
         document.getElementById("sortDirection").value = "ASCENDING";
-        document.getElementById("springForm").submit();
+        submitFilters(event);
     });
 
     document.getElementById("authorDescending").addEventListener("click", () => {
         document.getElementById("sort").value = "AUTHOR_NAME";
         document.getElementById("sortDirection").value = "DESCENDING";
-        document.getElementById("springForm").submit();
+        submitFilters(event);
     });
 
     document.getElementById("titleAscending").addEventListener("click", () => {
         document.getElementById("sort").value = "TITLE_NAME";
         document.getElementById("sortDirection").value = "ASCENDING";
-        document.getElementById("springForm").submit();
+        submitFilters(event);
     });
 
     document.getElementById("titleDescending").addEventListener("click", () => {
         document.getElementById("sort").value = "TITLE_NAME";
         document.getElementById("sortDirection").value = "DESCENDING";
-        document.getElementById("springForm").submit();
+        submitFilters(event);
     });
 
 })
