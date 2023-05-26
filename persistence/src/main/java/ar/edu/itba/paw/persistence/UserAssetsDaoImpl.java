@@ -1,6 +1,8 @@
+/*
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetLendingContext.implementations.BorrowedAssetInstanceImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageUserAssetsImpl;
@@ -324,7 +326,7 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
 
 
     @Override
-    public Optional<BorrowedAssetInstanceImpl> getBorrowedAsset(int lendingId) {
+    public Optional<LendingImpl> getBorrowedAsset(int lendingId) {
         String query = "SELECT " +
                 "    l.assetinstanceid," +
                 "    owner.name AS owner_name," +
@@ -365,4 +367,4 @@ public class UserAssetsDaoImpl implements UserAssetsDao {
     }
 
 
-}
+}*/

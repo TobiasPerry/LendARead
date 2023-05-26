@@ -5,9 +5,9 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 public interface EmailService {
 
-    void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final int lendingId);
+    void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId);
 
-    void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final int lendingId);
+    void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId);
 
     void sendForgotPasswordEmail(final String email, final String token);
 

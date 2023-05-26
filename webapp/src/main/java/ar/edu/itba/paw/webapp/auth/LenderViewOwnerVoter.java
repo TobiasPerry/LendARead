@@ -46,7 +46,7 @@ public class LenderViewOwnerVoter implements AccessDecisionVoter<FilterInvocatio
                 int variables = stringBuilder.indexOf("?");
                 if(variables != -1)
                     stringBuilder.delete(variables,stringBuilder.length()+1);
-                if (userAssetInstanceService.getBorrowedAssetInstance(Integer.parseInt(stringBuilder.toString())).getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
+                if (userAssetInstanceService.getBorrowedAssetInstance(Integer.parseInt(stringBuilder.toString())).getAssetInstance().getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
                     vote.set(ACCESS_GRANTED);
                 else {
                     vote.set(ACCESS_DENIED);

@@ -62,7 +62,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final int lendingId) {
+    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -84,7 +84,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final int lendingId) {
+    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId) {
         if (assetInstance == null || borrower == null) {
             return;
         }

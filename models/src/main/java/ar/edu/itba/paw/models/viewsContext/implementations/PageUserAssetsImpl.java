@@ -1,22 +1,20 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 
 import java.util.List;
 
-public class PageUserAssetsImpl implements PageUserAssets {
+public class PageUserAssetsImpl<T> implements PageUserAssets<T> {
 
-    private final List<? extends AssetInstanceImpl> userAssets;
+    private final List<T> userAssets;
     private  int currentPage;
     private  int totalPages;
 
-    public PageUserAssetsImpl(List<? extends AssetInstanceImpl> userAssets) {
+    public PageUserAssetsImpl(List<T> userAssets) {
         this.userAssets = userAssets;
     }
 
-    public PageUserAssetsImpl(List<? extends AssetInstanceImpl> userAssets, int currentPage, int totalPages) {
+    public PageUserAssetsImpl(List<T> userAssets, int currentPage, int totalPages) {
         this.userAssets = userAssets;
         this.currentPage = currentPage;
         this.totalPages = totalPages;
@@ -33,7 +31,7 @@ public class PageUserAssetsImpl implements PageUserAssets {
     }
 
     @Override
-    public List<? extends AssetInstanceImpl> getUserAssets() {
+    public List<T> getUserAssets() {
         return userAssets;
     }
 }

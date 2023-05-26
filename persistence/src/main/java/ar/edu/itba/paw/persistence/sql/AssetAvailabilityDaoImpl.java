@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.persistence.sql;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,14 +29,14 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     }
 
     @Override
-    public int borrowAssetInstance(int assetInstanceId, int userId, LocalDate borrowDate, LocalDate devolutionDate,LendingState lendingState) {
+    public LendingImpl borrowAssetInstance(AssetInstanceImpl assetInstance, UserImpl user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState) {
         final Map<String, Object> args = new HashMap<>();
-        args.put("assetinstanceid", assetInstanceId);
-        args.put("borrowerId", userId);
+        args.put("assetinstanceid", assetInstance);
+        args.put("borrowerId", user);
         args.put("lendDate", java.sql.Date.valueOf(borrowDate));
         args.put("devolutionDate", java.sql.Date.valueOf(devolutionDate));
         args.put("active", lendingState);
-        return jdbcInsert.executeAndReturnKey(args).intValue();
+        return new LendingImpl(assetInstance, user, borrowDate, devolutionDate, lendingState);
     }
 
     @Override

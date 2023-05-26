@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
@@ -64,9 +65,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
 
         assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
-        int id = lendingDao.borrowAssetInstance(ai.get().getId(), user.get().getId(), LocalDate.now(), devolutionDate,LendingState.ACTIVE);
-        emailService.sendBorrowerEmail(ai.get(), user.get(), id);
-        emailService.sendLenderEmail(ai.get(), borrower, id);
+        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate,LendingState.ACTIVE);
+        emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId());
+        emailService.sendLenderEmail(ai.get(), borrower, lending.getId());
         LOGGER.info("Asset {} has been borrow", assetId);
     }
 

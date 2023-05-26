@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -16,11 +19,13 @@ public class LendingImpl {
     private Long id;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "assetInstanceId")
-    private Integer assetInstanceId;
+    private AssetInstanceImpl assetInstance;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "borrowerId")
-    private Integer borrowerId;
+    private UserImpl userReference;
 
     @Column(name = "lendDate")
     private LocalDate lendDate;
@@ -32,11 +37,11 @@ public class LendingImpl {
     @Column(name = "active")
     private LendingState active;
 
-    LendingImpl() {}
+    public LendingImpl() {}
 
-    public LendingImpl(Integer assetInstanceId, Integer borrowerId, LocalDate lendDate, LocalDate devolutionDate, LendingState active) {
-        this.assetInstanceId = assetInstanceId;
-        this.borrowerId = borrowerId;
+    public LendingImpl(AssetInstanceImpl assetInstance, UserImpl userReference, LocalDate lendDate, LocalDate devolutionDate, LendingState active) {
+        this.assetInstance = assetInstance;
+        this.userReference = userReference;
         this.lendDate = lendDate;
         this.devolutionDate = devolutionDate;
         this.active = active;
@@ -50,20 +55,20 @@ public class LendingImpl {
         this.id = id;
     }
 
-    public Integer getAssetInstanceId() {
-        return assetInstanceId;
+    public AssetInstanceImpl getAssetInstance() {
+        return assetInstance;
     }
 
-    public void setAssetInstanceId(Integer assetInstanceId) {
-        this.assetInstanceId = assetInstanceId;
+    public void setAssetInstance(AssetInstanceImpl assetInstance) {
+        this.assetInstance = assetInstance;
     }
 
-    public Integer getBorrowerId() {
-        return borrowerId;
+    public UserImpl getBorrower() {
+        return userReference;
     }
 
-    public void setBorrowerId(Integer borrowerId) {
-        this.borrowerId = borrowerId;
+    public void setBorrower(UserImpl borrower) {
+        this.userReference = borrower;
     }
 
     public LocalDate getLendDate() {
