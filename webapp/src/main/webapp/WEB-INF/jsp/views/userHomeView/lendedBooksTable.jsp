@@ -128,8 +128,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${userAssets}" var="asset">
-                        <c:url var="userUrl" value="/lentBookDetails/${asset.lendingId}"/>
+                    <c:forEach items="${userAssets}" var="lending">
+                        <c:url var="userUrl" value="/lentBookDetails/${lending.id}"/>
                         <tr class="table-row-clickable" data-href="${userUrl}">
                             <td>
                                 <div style="<c:if
@@ -137,16 +137,16 @@
                                         filter: grayscale(100%);
                                         </c:if>">
                                     <img style="height: 125px; width: 75px; object-fit: cover"
-                                         src="<c:url value='/getImage/${asset.imageId}'/>"
-                                         alt="<c:out value='${asset.book.name}'/>"/>
+                                         src="<c:url value='/getImage/${lending.assetInstance.image.id}'/>"
+                                         alt="<c:out value='${lending.assetInstance.book.name}'/>"/>
                                 </div>
                             </td>
-                            <td><c:out value="${asset.book.name}"/></td>
+                            <td><c:out value="${lending.assetInstance.book.name}"/></td>
                             <td class="date-column no-hidden-of"
-                                data-asset-status="<c:out value="${asset.lendingState}"/>"><c:out
-                                    value="${asset.dueDate}"/></td>
-                            <td><c:out value="${asset.borrower}"/></td>
-                            <td><spring:message code="enum.${asset.assetState}"/></td>
+                                data-asset-status="<c:out value="${lending.active}"/>"><c:out
+                                    value="${lending.devolutionDate}"/></td>
+                            <td><c:out value="${lending.userReference.name}"/></td>
+                            <td><spring:message code="enum.${lending.assetInstance.assetState}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>

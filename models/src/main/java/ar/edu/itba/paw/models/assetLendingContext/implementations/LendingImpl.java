@@ -20,11 +20,11 @@ public class LendingImpl {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "assetInstanceId")
+    @JoinColumn(name = "assetInstanceId", referencedColumnName = "id")
     private AssetInstanceImpl assetInstance;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "borrowerId")
+    @JoinColumn(name = "borrowerId", referencedColumnName = "id")
     private UserImpl userReference;
 
     @Column(name = "lendDate")
@@ -63,11 +63,11 @@ public class LendingImpl {
         this.assetInstance = assetInstance;
     }
 
-    public UserImpl getBorrower() {
+    public UserImpl getUserReference() {
         return userReference;
     }
 
-    public void setBorrower(UserImpl borrower) {
+    public void setUserReference(UserImpl borrower) {
         this.userReference = borrower;
     }
 
