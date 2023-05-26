@@ -90,10 +90,20 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         final String search = searchQuery.getSearch().replace("%", "\\%");
 
+        final int offset = (pageNum - 1) * itemsPerPage;
+        final int limit = itemsPerPage;
+
         String orderByPostgres = " ORDER BY " +
                 getPostgresFromSort(searchQuery.getSort()) +
                 " " +
                 getPostgresFromSortDirection(searchQuery.getSortDirection()) + " ";
+
+        String orderByORM = " ORDER BY " +
+                getOrmFromSort(searchQuery.getSort()) +
+                " " +
+                getOrmFromSortDirection(searchQuery.getSortDirection()) + " ";
+
+        String pagination = " LIMIT :limit OFFSET :offset ";
 
         StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
         if(!searchQuery.getSearch().equals("")) {
@@ -101,12 +111,16 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         }
 
         queryNativeString.append(orderByPostgres);
+        queryNativeString.append(pagination);
+
         System.out.println(queryNativeString);
         final Query queryNative = em.createNativeQuery(queryNativeString.toString());
 
         if(!searchQuery.getSearch().equals(""))
             queryNative.setParameter("search", searchQuery.getSearch());
         queryNative.setParameter("state", "PUBLIC");
+        queryNative.setParameter("limit", limit);
+        queryNative.setParameter("offset", offset);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
@@ -115,10 +129,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if(list.isEmpty())
             return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
-        String orderByORM = " ORDER BY " +
-                getOrmFromSort(searchQuery.getSort()) +
-                " " +
-                getOrmFromSortDirection(searchQuery.getSortDirection()) + " ";
+
 
         final TypedQuery<AssetInstanceImpl> query = em.createQuery("FROM AssetInstanceImpl AS ai WHERE id IN (:ids) " + orderByORM, AssetInstanceImpl.class);
         //TODO check when list is empty
@@ -126,8 +137,14 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         List<AssetInstanceImpl> assetInstances = query.getResultList();
 
+        // Count pages
+        String queryCountString = "SELECT COUNT(ai.id) FROM AssetInstanceImpl ai WHERE ai.assetState = :state";
+        final Query queryCount = em.createQuery(queryCountString);
+        queryCount.setParameter("state", AssetState.PUBLIC);
+        final long count = ((Number) queryCount.getSingleResult()).longValue();
+        final int totalPages = (int) Math.ceil((double) count / itemsPerPage);
 
-        return Optional.of(new PageImpl(assetInstances, 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
     }
 
 
