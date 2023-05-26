@@ -88,61 +88,68 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     @Override
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
-        final String search = searchQuery.getSearch().replace("%", "\\%");
+        // Base query for getting the assets IDs for a given page
+        StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
+        // Base query for getting the total amount of assetsInstances
+        StringBuilder queryCountString = new StringBuilder("SELECT COUNT(ai.id) FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
 
-        final int offset = (pageNum - 1) * itemsPerPage;
-        final int limit = itemsPerPage;
-
+        // Order by (Postgres and ORM)
         String orderByPostgres = " ORDER BY " +
                 getPostgresFromSort(searchQuery.getSort()) +
                 " " +
                 getPostgresFromSortDirection(searchQuery.getSortDirection()) + " ";
-
         String orderByORM = " ORDER BY " +
                 getOrmFromSort(searchQuery.getSort()) +
                 " " +
                 getOrmFromSortDirection(searchQuery.getSortDirection()) + " ";
 
+        // Pagination
+        final int offset = (pageNum - 1) * itemsPerPage;
+        final int limit = itemsPerPage;
         String pagination = " LIMIT :limit OFFSET :offset ";
 
-        StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
+        // If there's a search parameter
         if(!searchQuery.getSearch().equals("")) {
             queryNativeString.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
+            queryCountString.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
         }
 
         queryNativeString.append(orderByPostgres);
         queryNativeString.append(pagination);
 
-        System.out.println(queryNativeString);
+        // Get IDs for given page
         final Query queryNative = em.createNativeQuery(queryNativeString.toString());
 
-        if(!searchQuery.getSearch().equals(""))
-            queryNative.setParameter("search", searchQuery.getSearch());
+        // Count pages
+        final Query queryCount = em.createNativeQuery(queryCountString.toString());
+
+        final String search = searchQuery.getSearch().replace("%", "\\%");
+        if(!searchQuery.getSearch().equals("")) {
+            queryNative.setParameter("search", search);
+            queryCount.setParameter("search", search);
+        }
+
         queryNative.setParameter("state", "PUBLIC");
+        queryCount.setParameter("state", "PUBLIC");
+
         queryNative.setParameter("limit", limit);
         queryNative.setParameter("offset", offset);
+
+        // Get the total assetInstances and calculate the number of pages
+        final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
 
+        // In case of empty result -> Return a Page with empty lists
         if(list.isEmpty())
             return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
-
-
+        // Get the AssetInstances that match those IDs for given page
         final TypedQuery<AssetInstanceImpl> query = em.createQuery("FROM AssetInstanceImpl AS ai WHERE id IN (:ids) " + orderByORM, AssetInstanceImpl.class);
-        //TODO check when list is empty
         query.setParameter("ids", list);
-
         List<AssetInstanceImpl> assetInstances = query.getResultList();
-
-        // Count pages
-        String queryCountString = "SELECT COUNT(ai.id) FROM AssetInstanceImpl ai WHERE ai.assetState = :state";
-        final Query queryCount = em.createQuery(queryCountString);
-        queryCount.setParameter("state", AssetState.PUBLIC);
-        final long count = ((Number) queryCount.getSingleResult()).longValue();
-        final int totalPages = (int) Math.ceil((double) count / itemsPerPage);
 
         return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
     }
