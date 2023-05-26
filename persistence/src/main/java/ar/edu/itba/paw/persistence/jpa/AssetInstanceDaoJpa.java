@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
@@ -89,6 +90,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         // Base query for getting the total amount of assetsInstances
         StringBuilder queryCountString = new StringBuilder("SELECT COUNT(ai.id) FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
 
+        // Query filters based on the search filters
+        StringBuilder queryFilters = new StringBuilder();
+        StringBuilder queryFiltersORM = new StringBuilder();
+
         // Order by (Postgres and ORM)
         String orderByPostgres = " ORDER BY " +
                 getPostgresFromSort(searchQuery.getSort()) +
@@ -106,10 +111,27 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         // If there's a search parameter
         if(!searchQuery.getSearch().equals("")) {
-            queryNativeString.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
-            queryCountString.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
+            queryFilters.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
+            queryFiltersORM.append(" AND ( ai.book.title ILIKE CONCAT('%', :search, '%') OR ai.book.author ILIKE CONCAT('%', :search, '%') ) ");
         }
 
+        // If the search is filtered bt languages
+        if(!searchQuery.getLanguages().isEmpty()){
+            queryFilters.append(" AND b.lang IN (:languages) ");
+            queryFiltersORM.append(" AND ai.book.lang IN (:languages) ");
+        }
+
+        // If the search is filtered by physicalConditions
+        if(!searchQuery.getPhysicalConditions().isEmpty()){
+            queryFilters.append(" AND ai.physicalCondition IN (:physicalConditions) ");
+            queryFiltersORM.append(" AND ai.physicalCondition IN (:physicalConditions) ");
+        }
+
+        // Append the filters
+        queryCountString.append(queryFilters);
+        queryNativeString.append(queryFilters);
+
+        // Order by and pagination for the native queries
         queryNativeString.append(orderByPostgres);
         queryNativeString.append(pagination);
 
@@ -123,6 +145,18 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if(!searchQuery.getSearch().equals("")) {
             queryNative.setParameter("search", search);
             queryCount.setParameter("search", search);
+        }
+
+        // If the search is filtered bt languages
+        if(!searchQuery.getLanguages().isEmpty()){
+            queryNative.setParameter("languages", searchQuery.getLanguages());
+            queryCount.setParameter("languages", searchQuery.getLanguages());
+        }
+
+        // If the search is filtered by physicalConditions
+        if(!searchQuery.getPhysicalConditions().isEmpty()){
+            queryNative.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
+            queryCount.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
         }
 
         queryNative.setParameter("state", "PUBLIC");
@@ -147,9 +181,33 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         query.setParameter("ids", list);
         List<AssetInstanceImpl> assetInstances = query.getResultList();
 
-        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(searchQuery, queryFiltersORM.toString()), getPhysicalConditions(searchQuery, queryFiltersORM.toString())));
     }
 
+    private List<String> getLanguages(SearchQuery searchQuery, String queryFilters){
+        String queryString = "SELECT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
+
+        TypedQuery<String> query = em.createQuery(queryString, String.class);
+
+        query.setParameter("state", AssetState.PUBLIC);
+
+        if(!searchQuery.getSearch().equals(""))
+            query.setParameter("search", searchQuery.getSearch());
+
+        if(!searchQuery.getLanguages().isEmpty())
+            query.setParameter("languages", searchQuery.getLanguages());
+
+        if(!searchQuery.getPhysicalConditions().isEmpty())
+            query.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
+
+        List<String> list = query.getResultList();
+
+        return list;
+    }
+
+    private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters){
+        return new ArrayList<>();
+    }
 
     private String getPostgresFromSort(Sort sort) {
 
