@@ -67,8 +67,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
             throw new DayOutOfRangeException();
         }
-
-        assetInstanceDao.changeStatus(assetId, AssetState.PENDING);
+        ai.get().setAssetState(AssetState.PENDING);
+        assetInstanceDao.changeStatus(ai.get());
         LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate,LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId());
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId());
@@ -78,21 +78,18 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Transactional
     @Override
     public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
-
-        if (!assetInstanceDao.changeStatus(assetId, AssetState.PRIVATE)) {
-            LOGGER.error("Failed to update status to PRIVATE for asset instance with assetId: {}", assetId);
-            throw new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId);
-        }
+        AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
+        assetInstance.setAssetState(AssetState.PRIVATE);
+        assetInstanceDao.changeStatus(assetInstance);
         LOGGER.info("Asset {} has been set private", assetId);
     }
 
     @Transactional
     @Override
     public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
-        if (!assetInstanceDao.changeStatus(assetId, AssetState.PUBLIC)) {
-            LOGGER.error("Failed to update status to PUBLIC for asset instance with assetId: {}", assetId);
-            throw new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId);
-        }
+        AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
+        assetInstance.setAssetState(AssetState.PUBLIC);
+        assetInstanceDao.changeStatus(assetInstance);
         LOGGER.info("Asset {} has been set public", assetId);
     }
 

@@ -146,7 +146,7 @@
                                 data-asset-status="<c:out value="${lending.active}"/>"><c:out
                                     value="${lending.devolutionDate}"/></td>
                             <td><c:out value="${lending.userReference.name}"/></td>
-                            <td><spring:message code="enum.${lending.assetInstance.assetState}"/></td>
+                            <td><spring:message code="enum.${lending.active}"/></td>
                         </tr>
                     </c:forEach>
                     </tbody>

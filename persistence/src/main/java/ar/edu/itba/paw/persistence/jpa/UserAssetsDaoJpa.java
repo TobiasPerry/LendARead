@@ -9,8 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserAssetsDaoJpa implements UserAssetsDao {
@@ -20,34 +23,175 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
 
 
 
-
+    private String matchSortAttribuite(String sortAttribute) {
+        switch (sortAttribute) {
+            case "book_name":
+                return "b.title";
+            case "expected_retrieval_date":
+                return "l.devolutiondate";
+            case "borrower_name":
+                return "u.name";
+            case "author":
+                return "b.author";
+            case "language":
+                return "b.lang";
+            case "asset_state":
+                return "ai.status";
+            default:
+                return "none";
+        }
+    }
 
     @Override
     public PageUserAssets<LendingImpl> getLendedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
-        //TODO DEBEMOS HACER LO DE LAS PAGINAS PERO NO LLEGUE
-        String query = "SELECT l FROM LendingImpl l WHERE l.assetInstance.userReference.email = :email";
-        List<LendingImpl> list =  em.createQuery(query, LendingImpl.class).setParameter("email", email).getResultList();
+        StringBuilder queryIds = new StringBuilder("SELECT  l.id FROM lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN  book b ON ai.assetid = b.uid JOIN    users u ON l.borrowerid = u.id JOIN users owner ON ai.owner = owner.id WHERE owner.mail = :email ");
+        StringBuilder queryCount = new StringBuilder("SELECT count(l.id) FROM lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN    book b ON ai.assetid = b.uid JOIN    users u ON l.borrowerid = u.id JOIN users owner ON ai.owner = owner.id WHERE owner.mail = :email ");
 
-        return new PageUserAssetsImpl<>(list, 1, 1);
+
+        setQueryAttributes(filterAtribuite, sortAtribuite, direction, queryIds, queryCount);
+        final int offset = (pageNumber - 1) * itemsPerPage;
+        final int limit = itemsPerPage;
+        String pagination = " LIMIT :limit OFFSET :offset ";
+        queryIds.append(pagination);
+        final Query queryNative = em.createNativeQuery(queryIds.toString());
+        final Query queryCountNative = em.createNativeQuery(queryCount.toString());
+
+
+        queryCountNative.setParameter("email", email);
+        queryNative.setParameter("email", email);
+
+        if(filterAtribuite.equalsIgnoreCase("status") || filterAtribuite.equalsIgnoreCase("lendingStatus")) {
+            queryNative.setParameter("filterValue", filterValue.toUpperCase());
+            queryCountNative.setParameter("filterValue", filterValue.toUpperCase());
+        }
+        queryNative.setParameter("limit", limit);
+        queryNative.setParameter("offset", offset);
+
+        @SuppressWarnings("unchecked")
+        List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        if (list.isEmpty())
+            return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
+
+
+        String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
+        List<LendingImpl> list2 =  em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
+
+
+        final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
+
+        return new PageUserAssetsImpl<>(list2, pageNumber, totalPages);
     }
 
     @Override
     public PageUserAssets<LendingImpl> getBorrowedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
-        //TODO DEBEMOS HACER LO DE LAS PAGINAS PERO NO LLEGUE
 
-        String query = "SELECT l FROM LendingImpl l WHERE l.userReference.email = :email";
-        List<LendingImpl> list =  em.createQuery(query, LendingImpl.class).setParameter("email", email).getResultList();
+        StringBuilder queryIds = new StringBuilder("SELECT l.id FROM    lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN  book b ON ai.assetid = b.uid JOIN users u ON l.borrowerid = u.id JOIN  users owner ON ai.owner = owner.id WHERE  u.mail = :email ");
+        StringBuilder queryCount = new StringBuilder("SELECT count(l.id) FROM    lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN  book b ON ai.assetid = b.uid JOIN users u ON l.borrowerid = u.id JOIN  users owner ON ai.owner = owner.id WHERE  u.mail = :email ");
 
-        return new PageUserAssetsImpl<>(list, 1, 1);
+        setQueryAttributes(filterAtribuite, sortAtribuite, direction, queryIds, queryCount);
+
+        final int offset = (pageNumber - 1) * itemsPerPage;
+        final int limit = itemsPerPage;
+        String pagination = " LIMIT :limit OFFSET :offset ";
+        queryIds.append(pagination);
+
+        final Query queryNative = em.createNativeQuery(queryIds.toString());
+        final Query queryCountNative = em.createNativeQuery(queryCount.toString());
+
+        queryCountNative.setParameter("email", email);
+        queryNative.setParameter("email", email);
+
+        if(filterAtribuite.equalsIgnoreCase("status") || filterAtribuite.equalsIgnoreCase("lendingStatus")) {
+            queryNative.setParameter("filterValue", filterValue.toUpperCase());
+            queryCountNative.setParameter("filterValue", filterValue.toUpperCase());
+        }
+        queryNative.setParameter("limit", limit);
+        queryNative.setParameter("offset", offset);
+
+        @SuppressWarnings("unchecked")
+        List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        if (list.isEmpty())
+            return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
+
+
+        String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
+        List<LendingImpl> list2 =  em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
+
+
+        final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
+
+        return new PageUserAssetsImpl<>(list2, pageNumber, totalPages);
+    }
+
+    private void setQueryAttributes(String filterAtribuite, String sortAtribuite, String direction, StringBuilder queryIds, StringBuilder queryCount) {
+        if (filterAtribuite.equalsIgnoreCase("status")) {
+            queryIds.append( "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND ai.status = :filterValue");
+            queryCount.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND ai.status = :filterValue");
+        }
+        if (filterAtribuite.equalsIgnoreCase("lendingStatus")) {
+            queryIds.append("AND l.active = :filterValue");
+            queryCount.append("AND l.active = :filterValue");
+        }
+        if (filterAtribuite.equalsIgnoreCase("delayed")) {
+            queryIds.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE");
+            queryCount.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE");
+        }
+        if (!matchSortAttribuite(sortAtribuite).equalsIgnoreCase("none")) {
+            queryIds.append(" ORDER BY ").append(matchSortAttribuite(sortAtribuite));
+            if (!direction.equalsIgnoreCase("none")) {
+                queryIds.append(" ").append(direction);
+            }
+        }
     }
 
     @Override
     public PageUserAssets<AssetInstanceImpl> getUsersAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
-        //TODO DEBEMOS HACER LO DE LAS PAGINAS PERO NO LLEGUE
+        StringBuilder queryIds = new StringBuilder("SELECT ai.id FROM assetinstance ai join users u on ai.owner = u.id JOIN book b ON ai.assetid = b.uid WHERE u.mail = :email AND ai.status IN ('PUBLIC', 'PRIVATE')");
 
-        String query = "SELECT a FROM AssetInstanceImpl a WHERE a.userReference.email = :email";
-        List<AssetInstanceImpl> list =  em.createQuery(query, AssetInstanceImpl.class).setParameter("email", email).getResultList();
-        return new PageUserAssetsImpl<>(list, 1, 1);
+        StringBuilder queryCount = new StringBuilder("SELECT count(ai.id) FROM assetinstance ai join users u on ai.owner = u.id WHERE u.mail = :email AND ai.status IN ('PUBLIC', 'PRIVATE')");
+
+        if (!filterAtribuite.equalsIgnoreCase("none")) {
+            queryIds.append(" AND ").append(filterAtribuite).append(" = :filterValue");
+            queryCount.append(" AND ").append(filterAtribuite).append(" = :filterValue");
+        }
+        if (!matchSortAttribuite(sortAtribuite).equalsIgnoreCase("none")) {
+            queryIds.append(" ORDER BY ").append(matchSortAttribuite(sortAtribuite));
+            if (!direction.equalsIgnoreCase("none")) {
+                queryIds.append(" ").append(direction);
+            }
+        }
+
+        queryIds.append(" LIMIT :limit OFFSET :offset");
+        final Query queryNative = em.createNativeQuery(queryIds.toString());
+        final Query queryCountNative = em.createNativeQuery(queryCount.toString());
+        queryNative.setParameter("email", email);
+        queryCountNative.setParameter("email", email);
+
+
+        final int offset = (pageNumber - 1) * itemsPerPage;
+        final int limit = itemsPerPage;
+
+        queryNative.setParameter("limit", limit);
+        queryNative.setParameter("offset", offset);
+
+        if (!filterAtribuite.equalsIgnoreCase("none")) {
+            queryNative.setParameter("filterValue", filterValue.toUpperCase());
+            queryCountNative.setParameter("filterValue", filterValue.toUpperCase());
+        }
+
+        @SuppressWarnings("unchecked")
+        List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        if (list.isEmpty())
+            return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
+
+        String query = "SELECT a FROM AssetInstanceImpl a WHERE a.id in :ids";
+        List<AssetInstanceImpl> assetInstanceList=  em.createQuery(query, AssetInstanceImpl.class).setParameter("ids", list).getResultList();
+        final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
+
+        return new PageUserAssetsImpl<>(assetInstanceList, pageNumber, totalPages);
     }
 
     @Override

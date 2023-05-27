@@ -233,14 +233,15 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
     @Override
-    public Boolean changeStatus(final int id, final AssetState as) {
-        String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
+    public Boolean changeStatus(final AssetInstanceImpl ai) {
+       /* String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
             jdbcTemplate.update(query, as.name(), id);
             return true;
         } catch (Exception e) {
             return false;
-        }
+        }*/
+        return true;
     }
 
     @Override

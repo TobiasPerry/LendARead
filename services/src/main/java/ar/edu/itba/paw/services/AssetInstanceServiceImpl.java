@@ -76,11 +76,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
-        boolean wasRemoved = assetInstanceDao.changeStatus(id, AssetState.DELETED);
-        if (!wasRemoved) {
-            LOGGER.error("Failed to remove the asset instance");
-            throw new AssetInstanceNotFoundException("Asset instance no found");
-        }
+        AssetInstanceImpl assetInstance = getAssetInstance(id);
+        assetInstance.setAssetState(AssetState.DELETED);
+        assetInstanceDao.changeStatus(assetInstance);
     }
 
     @Override

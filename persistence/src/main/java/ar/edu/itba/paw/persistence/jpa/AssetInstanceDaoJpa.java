@@ -56,30 +56,15 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
-    public Boolean changeStatus(int id, AssetState as) {
-
-        String queryString = "UPDATE AssetInstanceImpl " +
-                "SET assetState = :status " +
-                "WHERE id = :id";
-
-        try {
-            Query query = em.createQuery(queryString);
-            query.setParameter("status", as);
-            query.setParameter("id", id);
-            int count = query.executeUpdate();
-            return count > 0;
-        }catch (Exception e){
-            return false;
-        }
-
+    public Boolean changeStatus(AssetInstanceImpl assetInstance) {
+        em.merge(assetInstance);
+        return true;
     }
 
     @Override
     public Boolean changeStatusByLendingId(AssetInstanceImpl ai, AssetState as) {
-
         em.merge(ai);
         return true;
-
     }
 
     @Override
