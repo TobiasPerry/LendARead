@@ -41,6 +41,38 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
                 return "none";
         }
     }
+    private String matchSortAttribuiteJpa(String sortAttribute) {
+        switch (sortAttribute) {
+            case "book_name":
+                return "l.assetInstance.book.title";
+            case "expected_retrieval_date":
+                return "l.devolutionDate";
+            case "borrower_name":
+                return "l.userReference.name";
+            case "author":
+                return "l.assetInstance.book.author";
+            case "language":
+                return "l.assetInstance.book.languages";
+            case "asset_state":
+                return "l.assetInstance.assetState";
+            default:
+                return "none";
+        }
+    }
+    private String matchSortAttribuiteUserAssetJpa(String sortAttribute) {
+        switch (sortAttribute) {
+            case "book_name":
+                return "a.book.title";
+            case "author":
+                return "a.book.author";
+            case "language":
+                return "a.book.language";
+            case "asset_state":
+                return "a.assetState";
+            default:
+                return "none";
+        }
+    }
 
     @Override
     public PageUserAssets<LendingImpl> getLendedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
@@ -74,7 +106,15 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
             return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
 
 
-        String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
+        String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids ";
+
+        if (!matchSortAttribuiteJpa(sortAtribuite).equalsIgnoreCase("none")) {
+            query   +=" ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
+            if (!direction.equalsIgnoreCase("none")) {
+                query+= " "+ direction;
+            }
+        }
+
         List<LendingImpl> list2 =  em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
 
 
@@ -117,7 +157,15 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
 
 
         String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
+
+        if (!matchSortAttribuiteJpa(sortAtribuite).equalsIgnoreCase("none")) {
+            query   +=" ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
+            if (!direction.equalsIgnoreCase("none")) {
+                query+= " "+ direction;
+            }
+        }
         List<LendingImpl> list2 =  em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
+
 
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
@@ -187,7 +235,15 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         if (list.isEmpty())
             return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
 
-        String query = "SELECT a FROM AssetInstanceImpl a WHERE a.id in :ids";
+        String query = "SELECT a FROM AssetInstanceImpl a WHERE a.id in :ids ";
+
+        if (!matchSortAttribuiteUserAssetJpa(sortAtribuite).equalsIgnoreCase("none")) {
+            query   +=" ORDER BY " + matchSortAttribuiteUserAssetJpa(sortAtribuite);
+            if (!direction.equalsIgnoreCase("none")) {
+                query+= " "+ direction;
+            }
+        }
+
         List<AssetInstanceImpl> assetInstanceList=  em.createQuery(query, AssetInstanceImpl.class).setParameter("ids", list).getResultList();
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
 
