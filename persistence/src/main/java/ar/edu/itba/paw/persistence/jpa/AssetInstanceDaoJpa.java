@@ -190,21 +190,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
 
-        query.setParameter("state", AssetState.PUBLIC);
-
-        final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
-        if(!searchQuery.getSearch().equals(""))
-            query.setParameter("search", search);
-
-        if(!searchQuery.getLanguages().isEmpty())
-            query.setParameter("languages", searchQuery.getLanguages());
-
-        if(!searchQuery.getPhysicalConditions().isEmpty())
-            query.setParameter("physicalConditions", getPhysicalConditionsList(searchQuery.getPhysicalConditions()));
-
-        List<String> list = query.getResultList();
-
-        return list;
+        return getResults(query, searchQuery, queryString);
     }
 
     private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters){
@@ -212,6 +198,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         TypedQuery<PhysicalCondition> query = em.createQuery(queryString, PhysicalCondition.class);
 
+        return getResults(query, searchQuery, queryString).stream().map(Enum::name).collect(Collectors.toList());
+    }
+
+    private <T> List<T> getResults(TypedQuery<T> query, SearchQuery searchQuery, String queryString){
         query.setParameter("state", AssetState.PUBLIC);
 
         final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
@@ -224,10 +214,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if(!searchQuery.getPhysicalConditions().isEmpty())
             query.setParameter("physicalConditions", getPhysicalConditionsList(searchQuery.getPhysicalConditions()));
 
-
-        List<PhysicalCondition> list = query.getResultList();
-
-        return list.stream().map(Enum::name).collect(Collectors.toList());
+        return query.getResultList();
     }
 
     private List<PhysicalCondition> getPhysicalConditionsList(List<String> list){
