@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence.jpa;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
@@ -97,13 +98,13 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         // If there's a search parameter
         if(!searchQuery.getSearch().equals("")) {
             queryFilters.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
-            queryFiltersORM.append(" AND ( ai.book.title ILIKE CONCAT('%', :search, '%') OR ai.book.author ILIKE CONCAT('%', :search, '%') ) ");
+            queryFiltersORM.append(" AND ( UPPER(ai.book.title) LIKE CONCAT('%', :search, '%') OR UPPER(ai.book.author) LIKE CONCAT('%', :search, '%') ) ");
         }
 
         // If the search is filtered bt languages
         if(!searchQuery.getLanguages().isEmpty()){
             queryFilters.append(" AND b.lang IN (:languages) ");
-            queryFiltersORM.append(" AND ai.book.lang IN (:languages) ");
+            queryFiltersORM.append(" AND ai.book.language IN (:languages) ");
         }
 
         // If the search is filtered by physicalConditions
@@ -126,7 +127,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         // Count pages
         final Query queryCount = em.createNativeQuery(queryCountString.toString());
 
-        final String search = searchQuery.getSearch().replace("%", "\\%");
+        final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
         if(!searchQuery.getSearch().equals("")) {
             queryNative.setParameter("search", search);
             queryCount.setParameter("search", search);
@@ -170,28 +171,39 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private List<String> getLanguages(SearchQuery searchQuery, String queryFilters){
-        String queryString = "SELECT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
+        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
 
+        return getResults(query, searchQuery, queryString);
+    }
+
+    private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters){
+        String queryString = "SELECT DISTINCT ai.physicalCondition FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
+
+        TypedQuery<PhysicalCondition> query = em.createQuery(queryString, PhysicalCondition.class);
+
+        return getResults(query, searchQuery, queryString).stream().map(Enum::name).collect(Collectors.toList());
+    }
+
+    private <T> List<T> getResults(TypedQuery<T> query, SearchQuery searchQuery, String queryString){
         query.setParameter("state", AssetState.PUBLIC);
 
+        final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
         if(!searchQuery.getSearch().equals(""))
-            query.setParameter("search", searchQuery.getSearch());
+            query.setParameter("search", search);
 
         if(!searchQuery.getLanguages().isEmpty())
             query.setParameter("languages", searchQuery.getLanguages());
 
         if(!searchQuery.getPhysicalConditions().isEmpty())
-            query.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
+            query.setParameter("physicalConditions", getPhysicalConditionsList(searchQuery.getPhysicalConditions()));
 
-        List<String> list = query.getResultList();
-
-        return list;
+        return query.getResultList();
     }
 
-    private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters){
-        return new ArrayList<>();
+    private List<PhysicalCondition> getPhysicalConditionsList(List<String> list){
+        return list.stream().map(PhysicalCondition::fromString).collect(Collectors.toList());
     }
 
     private String getPostgresFromSort(Sort sort) {
