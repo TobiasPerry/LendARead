@@ -183,8 +183,8 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
             queryCount.append("AND l.active = :filterValue");
         }
         if (filterAtribuite.equalsIgnoreCase("delayed")) {
-            queryIds.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE");
-            queryCount.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND date(l.devolutiondate) < CURRENT_DATE");
+            queryIds.append("AND l.active = 'DELIVERED' AND date(l.devolutiondate) < CURRENT_DATE");
+            queryCount.append("AND l.active = 'DELIVERED' AND date(l.devolutiondate) < CURRENT_DATE");
         }
         if (!matchSortAttribuite(sortAtribuite).equalsIgnoreCase("none")) {
             queryIds.append(" ORDER BY ").append(matchSortAttribuite(sortAtribuite));
