@@ -25,13 +25,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public boolean changeLendingStatus(int lendingId, LendingState lendingState) {
-        LendingImpl lending = em.find(LendingImpl.class, new Long(lendingId));
-        if (lending == null) return false;
-
+    public void changeLendingStatus(LendingImpl lending, LendingState lendingState) {
         lending.setActive(lendingState);
         em.persist(lending);
-        return true;
     }
 }
 

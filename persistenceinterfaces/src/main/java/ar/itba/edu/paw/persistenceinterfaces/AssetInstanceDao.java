@@ -12,9 +12,9 @@ public interface AssetInstanceDao {
      AssetInstanceImpl addAssetInstance(final AssetInstanceImpl ai);
      Optional<AssetInstanceImpl> getAssetInstance(final int assetId);
 
-    Boolean changeStatus(final AssetInstanceImpl ai);
+    void changeStatus(final AssetInstanceImpl ai,final AssetState as);
 
-    Boolean changeStatusByLendingId(AssetInstanceImpl ai, final AssetState as);
+    void changeStatusByLendingId(AssetInstanceImpl ai, final AssetState as);
 
 
     Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery);

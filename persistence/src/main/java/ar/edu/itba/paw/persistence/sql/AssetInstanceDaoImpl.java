@@ -1,4 +1,5 @@
-package ar.edu.itba.paw.persistence;
+/*
+package ar.edu.itba.paw.persistence.sql;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
@@ -95,6 +96,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
     @Override
     public AssetInstanceImpl addAssetInstance( final AssetInstanceImpl ai) {
+*/
 /*        final Map<String, Object> args = new HashMap<>();
         args.put("assetid", book.getId());
         args.put("owner", owner.getId());
@@ -104,7 +106,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         args.put("status", ai.getAssetState());
         args.put("maxLendingDays", ai.getMaxDays());
 
-        int id = jdbcInsert.executeAndReturnKey(args).intValue();*/
+        int id = jdbcInsert.executeAndReturnKey(args).intValue();*//*
+
 
         return ai;
     }
@@ -233,20 +236,22 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
     @Override
-    public Boolean changeStatus(final AssetInstanceImpl ai) {
-       /* String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
+    public void changeStatus(final AssetInstanceImpl ai) {
+       */
+/* String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
             jdbcTemplate.update(query, as.name(), id);
             return true;
         } catch (Exception e) {
             return false;
-        }*/
-        return true;
+        }*//*
+
     }
 
     @Override
-    public Boolean changeStatusByLendingId(final AssetInstanceImpl ai, final AssetState as) {
-       /* String query = "UPDATE assetInstance AS ai " +
+    public void changeStatusByLendingId(final AssetInstanceImpl ai, final AssetState as) {
+       */
+/* String query = "UPDATE assetInstance AS ai " +
                 "SET status = ? " +
                 "FROM lendings AS l " +
                 "WHERE ai.id = l.assetinstanceid AND l.id = ?";
@@ -255,8 +260,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             return true;
         } catch (Exception e) {
             return false;
-        }*/
-        return true;
+        }*//*
+
     }
 
     private String getPostgresFromSort(Sort sort) {
@@ -282,3 +287,4 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         return "ASC";
     }
 }
+*/

@@ -36,36 +36,28 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     @Override
     public AssetInstanceImpl addAssetInstance(AssetInstanceImpl ai) {
         em.persist(ai);
-        em.flush();
         return ai;
     }
 
     @Override
     public Optional<AssetInstanceImpl> getAssetInstance(int assetId) {
         String queryString = "FROM AssetInstanceImpl as ai WHERE ai.id = :id";
-
-        AssetInstanceImpl assetInstance;
-        try{
-            TypedQuery<AssetInstanceImpl> query = em.createQuery(queryString, AssetInstanceImpl.class);
-            query.setParameter("id", (long) assetId);
-            List<AssetInstanceImpl> list = query.getResultList();
-            assetInstance = list.get(0);
-        }catch (Exception e){
-            return Optional.empty();
-        }
-        return Optional.of(assetInstance);
+        TypedQuery<AssetInstanceImpl> query = em.createQuery(queryString, AssetInstanceImpl.class);
+        query.setParameter("id", (long) assetId);
+        List<AssetInstanceImpl> list = query.getResultList();
+        return list.stream().findFirst();
     }
 
     @Override
-    public Boolean changeStatus(AssetInstanceImpl assetInstance) {
-        em.merge(assetInstance);
-        return true;
+    public void changeStatus(AssetInstanceImpl assetInstance, AssetState as) {
+        assetInstance.setAssetState(as);
+        em.persist(assetInstance);
     }
 
     @Override
-    public Boolean changeStatusByLendingId(AssetInstanceImpl ai, AssetState as) {
-        em.merge(ai);
-        return true;
+    public void changeStatusByLendingId(AssetInstanceImpl ai, AssetState as) {
+        ai.setAssetState(as);
+        em.persist(ai);
     }
 
     @Override

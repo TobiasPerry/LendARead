@@ -19,8 +19,8 @@ public class BookImpl{
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "books_uid_seq")
-    @SequenceGenerator(sequenceName = "books_uid_seq", name = "books_uid_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_uid_seq")
+    @SequenceGenerator(sequenceName = "book_uid_seq", name = "book_uid_seq", allocationSize = 1)
     @Column(name = "uid")
     private  int id;
 

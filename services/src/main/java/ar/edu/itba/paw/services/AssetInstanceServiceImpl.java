@@ -77,8 +77,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstance = getAssetInstance(id);
-        assetInstance.setAssetState(AssetState.DELETED);
-        assetInstanceDao.changeStatus(assetInstance);
+        assetInstanceDao.changeStatus(assetInstance,AssetState.DELETED);
     }
 
     @Override

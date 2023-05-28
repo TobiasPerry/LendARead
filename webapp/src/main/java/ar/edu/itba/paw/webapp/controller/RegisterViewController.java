@@ -33,7 +33,7 @@ public class RegisterViewController {
             return register(registerForm);
         }
         userService.createUser(registerForm.getEmail(), registerForm.getName(), "", registerForm.getPassword());
-        //userService.logInUser(registerForm.getEmail(), registerForm.getPassword());
+        userService.logInUser(registerForm.getEmail(), registerForm.getPassword());
         LOGGER.debug("User successfully created");
 
         return new ModelAndView("redirect:/");

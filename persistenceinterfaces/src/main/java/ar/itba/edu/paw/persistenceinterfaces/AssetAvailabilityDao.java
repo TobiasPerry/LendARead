@@ -12,5 +12,5 @@ public interface AssetAvailabilityDao {
     LendingImpl borrowAssetInstance(AssetInstanceImpl assetInstance, UserImpl user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState);
 
 
-    boolean changeLendingStatus(int assetInstanceId, LendingState lendingState);
+    void changeLendingStatus(LendingImpl lending,final LendingState lendingState);
 }
