@@ -10,6 +10,7 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
             return;
         }
         PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token,user.get().getId(), LocalDate.now().plusDays(1));
-        emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken());
+        emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken(), LocaleContextHolder.getLocale());
         userDao.setForgotPasswordToken(passwordResetToken);
     }
 

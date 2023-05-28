@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -62,7 +62,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId) {
+    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId,final Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -78,13 +78,13 @@ class EmailServiceImpl implements EmailService {
 
         String email = owner.getEmail();
         String bookName = book.getName();
-        String subject = String.format(messageSource.getMessage("email.lender.subject", null, LocaleContextHolder.getLocale()), bookName);
-        this.sendEmail(email, subject, this.mailFormat(variables, "lenderEmailTemplate.html"));
+        String subject = String.format(messageSource.getMessage("email.lender.subject", null, locale), bookName);
+        this.sendEmail(email, subject, this.mailFormat(variables, "lenderEmailTemplate.html",locale));
     }
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId) {
+    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId,final Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -97,22 +97,21 @@ class EmailServiceImpl implements EmailService {
         variables.put("owner", owner);
         variables.put("path", baseUrl + "borrowedBookDetails/" + lendingId);
         variables.put("location", location);
-        String subject = String.format(messageSource.getMessage("email.borrower.subject", null, LocaleContextHolder.getLocale()), assetInstance.getBook().getName());
+        String subject = String.format(messageSource.getMessage("email.borrower.subject", null, locale), assetInstance.getBook().getName());
 
-        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "borrowerEmailTemplate.html"));
+        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "borrowerEmailTemplate.html",locale));
     }
 
     @Async
     @Override
-    public void sendForgotPasswordEmail(final String email, final String token) {
+    public void sendForgotPasswordEmail(final String email, final String token,final Locale locale) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("token", token);
-        this.sendEmail(email, messageSource.getMessage("email.verificationcode.title", null, LocaleContextHolder.getLocale()), this.mailFormat(variables, "ForgotPasswordEmailTemplate.html"));
+        this.sendEmail(email, messageSource.getMessage("email.verificationcode.title", null, locale), this.mailFormat(variables, "ForgotPasswordEmailTemplate.html",locale));
     }
 
-    private String mailFormat(final Map<String, Object> variables, final String mailTemplate) {
-        Context thymeleafContext = new Context(LocaleContextHolder.getLocale());
-        ;
+    private String mailFormat(final Map<String, Object> variables, final String mailTemplate,final Locale locale) {
+        Context thymeleafContext = new Context(locale);
         thymeleafContext.setVariables(variables);
         return templateEngine.process(mailTemplate, thymeleafContext);
     }

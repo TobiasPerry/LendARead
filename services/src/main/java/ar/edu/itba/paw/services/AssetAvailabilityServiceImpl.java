@@ -16,6 +16,7 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,8 +70,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
         assetInstanceDao.changeStatus(ai.get(),AssetState.PENDING);
         LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate,LendingState.ACTIVE);
-        emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId());
-        emailService.sendLenderEmail(ai.get(), borrower, lending.getId());
+        emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
+        emailService.sendLenderEmail(ai.get(), borrower, lending.getId(),LocaleContextHolder.getLocale());
         LOGGER.info("Asset {} has been borrow", assetId);
     }
 
