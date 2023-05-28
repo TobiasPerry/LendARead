@@ -31,7 +31,7 @@
             </jsp:include>
             <jsp:include page="filterButton.jsp">
                 <jsp:param name="table" value="borrowed_books"/>
-                <jsp:param name="filterValue" value="confirmed"/>
+                <jsp:param name="filterValue" value="borrowed"/>
                 <jsp:param name="filterAtribuite" value="status"/>
                 <jsp:param name="attribute" value="${attribute}"/>
                 <jsp:param name="sortAttribute" value="${sortAttribute}"/>
