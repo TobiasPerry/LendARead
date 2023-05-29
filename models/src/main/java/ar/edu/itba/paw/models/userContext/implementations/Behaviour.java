@@ -8,7 +8,8 @@ public enum Behaviour {
         if (value != null) {
             value = value.toUpperCase();
             for (Behaviour condition : Behaviour.values()) {
-                if (value.equalsIgnoreCase(condition.toString())) {
+                String upperValue = value.toUpperCase();
+                if (upperValue.equalsIgnoreCase(condition.toString())) {
                     return condition;
                 }
             }
