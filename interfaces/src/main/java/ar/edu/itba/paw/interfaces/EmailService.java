@@ -1,14 +1,18 @@
 package ar.edu.itba.paw.interfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+
+import java.util.Locale;
 
 public interface EmailService {
 
-    void sendLenderEmail(final AssetInstance assetInstance, final String borrower, final int lendingId);
+    void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId, final Locale locale);
 
-    void sendBorrowerEmail(final AssetInstance assetInstance, final User borrower, final int lendingId);
+    void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId, final Locale locale);
 
-    void sendForgotPasswordEmail(final String email, final String token);
+    void sendForgotPasswordEmail(final String email, final String token, final Locale locale);
+
+    void sendRejectedEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId, final Locale locale);
 
 }

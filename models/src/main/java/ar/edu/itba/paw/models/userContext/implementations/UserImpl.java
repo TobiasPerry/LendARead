@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.userContext.interfaces.User;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-final public class UserImpl implements User {
+final public class UserImpl{
     @Column(length = 100, nullable = false, unique = true, name = "mail")
     private String email;
     @Column(length = 100, nullable = false)
@@ -25,11 +23,11 @@ final public class UserImpl implements User {
     @Column(name = "id")
     private Long id;
 
-    public UserImpl(String email, String name, String telephone, Behaviour behavior, String password) {
+    public UserImpl(String email, String name, String telephone, String password, Behaviour behaviour) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
-        this.behavior = behavior;
+        this.behavior = behaviour;
         this.password = password;
     }
 
@@ -55,45 +53,56 @@ final public class UserImpl implements User {
                 '}';
     }
 
-    @Override
     public int getId() {
         return Math.toIntExact(id);
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
     public Behaviour getBehavior() {
         return behavior;
     }
 
-    @Override
     public String getTelephone() {
         return telephone;
     }
 
-    @Override
     public String getName() {
         return this.name;
     }
 
-    @Override
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
 
-    @Override
     public void setBehaviour(Behaviour behaviour) {
         this.behavior = behaviour;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public void setBehavior(Behaviour behavior) {
+        this.behavior = behavior;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
 

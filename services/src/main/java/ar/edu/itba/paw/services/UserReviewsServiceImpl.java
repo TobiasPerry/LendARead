@@ -2,8 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.slf4j.Logger;
@@ -35,12 +35,12 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     }
 
     @Override
-    public double getRating(User user) {
+    public double getRating(UserImpl user) {
         return userReviewsDao.getRating(user);
     }
 
-    private User getUser(int userId) throws UserNotFoundException {
-        Optional<User> user = userDao.getUser(userId);
+    private UserImpl getUser(int userId) throws UserNotFoundException {
+        Optional<UserImpl> user = userDao.getUser(userId);
         if(!user.isPresent())
             throw new UserNotFoundException("not found user to get the rating");
         return user.get();
@@ -52,7 +52,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     }
 
     @Override
-    public List<UserReview> getUserReviewsAsRecipient(User recipient) {
+    public List<UserReview> getUserReviewsAsRecipient(UserImpl recipient) {
         return userReviewsDao.getUserReviewsAsRecipient(recipient);
     }
 
@@ -62,7 +62,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     }
 
     @Override
-    public List<UserReview> getUserReviewsAsReviewer(User reviewer) {
+    public List<UserReview> getUserReviewsAsReviewer(UserImpl reviewer) {
         return userReviewsDao.getUserReviewsAsReviewer(reviewer);
     }
 

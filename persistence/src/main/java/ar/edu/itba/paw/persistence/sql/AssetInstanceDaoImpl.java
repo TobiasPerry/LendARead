@@ -1,16 +1,15 @@
-package ar.edu.itba.paw.persistence;
+/*
+package ar.edu.itba.paw.persistence.sql;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
@@ -28,34 +27,34 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-
-@Repository
+@SuppressWarnings("unchecked")
+//@Repository
 public class AssetInstanceDaoImpl implements AssetInstanceDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
 
-    private static final RowMapper<AssetInstance> ROW_MAPPER_AI = new RowMapper<AssetInstance>() {
+    private static final RowMapper<AssetInstanceImpl> ROW_MAPPER_AI = new RowMapper<AssetInstanceImpl>() {
         @Override
-        public AssetInstance mapRow(ResultSet rs, int i) throws SQLException {
+        public AssetInstanceImpl mapRow(ResultSet rs, int i) throws SQLException {
             String isbn = rs.getString("isbn");
             String author = rs.getString("author");
             String title = rs.getString("title");
             String language = rs.getString("lang");
             int bookId = rs.getInt("book_id");
-            Book book = new BookImpl(bookId, isbn, author, title, language);
+            BookImpl book = new BookImpl(bookId, isbn, author, title, language);
 
             String zipcode = rs.getString("zipcode");
             String locality = rs.getString("locality");
             String province = rs.getString("province");
             String country = rs.getString("country");
-            Integer locId = rs.getInt("loc_id");
+            int locId = rs.getInt("loc_id");
 
-            Location loc = new LocationImpl(locId, zipcode, locality, province, country);
+            LocationImpl loc = new LocationImpl(locId, zipcode, locality, province, country);
 
             String email = rs.getString("email");
-            Integer userId = rs.getInt("user_id");
+            int userId = rs.getInt("user_id");
             String ownerName = rs.getString("user_name");
-            User user = new UserImpl(userId, email, ownerName, "", "", Behaviour.fromString(rs.getString("behavior")));
+            UserImpl user = new UserImpl(userId, email, ownerName, "", "", Behaviour.fromString(rs.getString("behavior")));
 
             int id = rs.getInt("id");
             int imgId = rs.getInt("photo_id");
@@ -63,20 +62,21 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             PhysicalCondition physicalcondition = PhysicalCondition.fromString(rs.getString("physicalcondition"));
             AssetState aState = AssetState.fromString(rs.getString("status"));
 
-            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, imgId, aState, maxWeeks);
+            return new AssetInstanceImpl(id, book, physicalcondition, user, loc, new ImageImpl(), aState, maxWeeks);
         }
     };
 
     private static final RowMapper<Integer> ROW_MAPPER_ROW_CANT = (rs, rownum) -> rs.getInt("pageCount");
 
-    private static final RowMapper<AssetInstance> ROW_MAPPER_BOOK = (rs, rownum) ->
+    private static final RowMapper<AssetInstanceImpl> ROW_MAPPER_BOOK = (rs, rownum) ->
             new AssetInstanceImpl(
                     rs.getInt("id"),
                     new BookImpl(rs.getInt("book_id"), rs.getString("isbn"), rs.getString("author"), rs.getString("title"), rs.getString("lang")),
                     PhysicalCondition.fromString(rs.getString("physicalcondition")),
                     new UserImpl(rs.getInt("user_id"), rs.getString("email"), rs.getString("user_name"), "X", "", Behaviour.fromString(rs.getString("behavior"))),
                     new LocationImpl(rs.getInt("loc_id"), rs.getString("zipcode"), rs.getString("locality"), rs.getString("province"), rs.getString("country")),
-                    rs.getInt("photo_id"),
+ //                rs.getInt("photo_id"),
+                    new ImageImpl(),
                     AssetState.fromString(rs.getString("status")),
                     rs.getInt("maxLendingDays")
             );
@@ -95,8 +95,9 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
     }
 
     @Override
-    public AssetInstance addAssetInstance(final Book book, final User owner, final Location location, final int photoId, final AssetInstance ai) {
-        final Map<String, Object> args = new HashMap<>();
+    public AssetInstanceImpl addAssetInstance( final AssetInstanceImpl ai) {
+*/
+/*        final Map<String, Object> args = new HashMap<>();
         args.put("assetid", book.getId());
         args.put("owner", owner.getId());
         args.put("locationid", location.getId());
@@ -105,14 +106,15 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         args.put("status", ai.getAssetState());
         args.put("maxLendingDays", ai.getMaxDays());
 
-        int id = jdbcInsert.executeAndReturnKey(args).intValue();
+        int id = jdbcInsert.executeAndReturnKey(args).intValue();*//*
 
-        return new AssetInstanceImpl(id, book, ai.getPhysicalCondition(), owner, location, photoId, ai.getAssetState(), ai.getMaxDays());
+
+        return ai;
     }
 
     @Override
-    public Optional<AssetInstance> getAssetInstance(int assetId) {
-        AssetInstance assetInstance;
+    public Optional<AssetInstanceImpl> getAssetInstance(int assetId) {
+        AssetInstanceImpl assetInstance;
         try {
             Object[] params = new Object[]{assetId};
             String query = "SELECT ai.id AS id, ai.photoid AS photo_id, ai.status AS status," +
@@ -190,7 +192,7 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         objects.add(limit);
         objects.add(offset);
 
-        List<AssetInstance> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
+        List<AssetInstanceImpl> assets = jdbcTemplate.query(query, ROW_MAPPER_BOOK, objects.toArray());
 
         objects.remove(objects.size() - 1);
         objects.remove(objects.size() - 1);
@@ -234,19 +236,22 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
 
 
     @Override
-    public Boolean changeStatus(final int id, final AssetState as) {
-        String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
+    public void changeStatus(final AssetInstanceImpl ai) {
+       */
+/* String query = "UPDATE assetInstance SET status = ? WHERE id = ?";
         try {
             jdbcTemplate.update(query, as.name(), id);
             return true;
         } catch (Exception e) {
             return false;
-        }
+        }*//*
+
     }
 
     @Override
-    public Boolean changeStatusByLendingId(final int lendingId, final AssetState as) {
-        String query = "UPDATE assetInstance AS ai " +
+    public void changeStatusByLendingId(final AssetInstanceImpl ai, final AssetState as) {
+       */
+/* String query = "UPDATE assetInstance AS ai " +
                 "SET status = ? " +
                 "FROM lendings AS l " +
                 "WHERE ai.id = l.assetinstanceid AND l.id = ?";
@@ -255,7 +260,8 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
             return true;
         } catch (Exception e) {
             return false;
-        }
+        }*//*
+
     }
 
     private String getPostgresFromSort(Sort sort) {
@@ -281,3 +287,4 @@ public class AssetInstanceDaoImpl implements AssetInstanceDao {
         return "ASC";
     }
 }
+*/

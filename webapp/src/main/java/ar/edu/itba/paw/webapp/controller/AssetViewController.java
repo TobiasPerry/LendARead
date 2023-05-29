@@ -7,6 +7,7 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
@@ -47,7 +48,7 @@ public class AssetViewController {
                                       @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,
                                       final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
                                       @RequestParam(required = false, name = "success") final boolean success) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstanceOpt = assetInstanceService.getAssetInstance(id);
+        AssetInstanceImpl assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
         if (assetInstanceService.isOwner(assetInstanceOpt, userService.getCurrentUser()))
             return new ModelAndView("redirect:/myBookDetails/" + assetInstanceOpt.getId());

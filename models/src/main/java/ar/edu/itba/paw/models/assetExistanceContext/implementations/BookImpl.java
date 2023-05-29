@@ -1,22 +1,28 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import javax.persistence.*;
+@Entity
+@Table(name = "book")
+public class BookImpl{
 
-public class BookImpl implements Book {
+    @Column(length = 100, nullable = false, unique = true)
+    private  String isbn;
 
-
-    private final String isbn;
-
+    @Column(length = 100, nullable = false)
     private String author;
 
-    private final String title;
+    @Column(length = 100, nullable = false)
+    private  String title;
 
+    @Column(length = 100, nullable = false, name = "lang")
     private String language;
 
 
-    private final String type = "Book";
-
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_uid_seq")
+    @SequenceGenerator(sequenceName = "book_uid_seq", name = "book_uid_seq", allocationSize = 1)
+    @Column(name = "uid")
+    private  int id;
 
     public BookImpl(final int id,final String isbn,final String author,final String title,final String language) {
         this.isbn = convertToISBN13(isbn);
@@ -24,6 +30,17 @@ public class BookImpl implements Book {
         this.title = title;
         this.language = language;
         this.id = id;
+    }
+    public BookImpl(final String isbn,final String author,final String title,final String language) {
+        this.isbn = convertToISBN13(isbn);
+        this.author = author;
+        this.title = title;
+        this.language = language;
+    }
+
+
+    public BookImpl() {
+
     }
 
     private static String convertToISBN13(String isbn) {
@@ -46,61 +63,48 @@ public class BookImpl implements Book {
         return isbn;
     }
 
-    @Override
     public String getName() {
         return this.title;
     }
 
 
-    @Override
     public String display() {
         return null;
     }
 
-    @Override
-    public String getType() {
-        return this.type;
-    }
 
-    @Override
+
     public String getIsbn() {
         return this.isbn;
     }
 
-    @Override
     public String getLanguage() {
         return this.language;
     }
 
-    @Override
     public String getAuthor() {
         return this.author;
     }
 
-    @Override
     public int getId() {
         return this.id;
     }
 
-    @Override
     public void setAuthor(String author) {
         this.author = author;
     }
 
-    @Override
     public void setLanguage(String language) {
         this.language = language;
     }
 
 
-    @Override
     public String toString() {
         return "BookImpl{" +
                 ", isbn='" + isbn + '\'' +
                 ", author='" + author + '\'' +
                 ", title='" + title + '\'' +
                 ", language='" + language + '\'' +
-                ", type='" + type + '\'' +
                 '}';
     }
 }

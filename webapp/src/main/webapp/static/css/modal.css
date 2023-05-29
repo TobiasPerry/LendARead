@@ -17,6 +17,11 @@
     align-items: center;
     justify-content: center;
 }
+
+.red-icon {
+    background: red;
+}
+
 .modal-footer {
     border: none;
     justify-content: center;
@@ -28,6 +33,7 @@
 .icon-box i {
     font-size: 3rem;
 }
-.btn:hover{
+
+.btn:hover {
     background-color: #2B3B2B;
 }

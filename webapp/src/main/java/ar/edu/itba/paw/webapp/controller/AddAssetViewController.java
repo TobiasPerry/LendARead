@@ -4,8 +4,8 @@ import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
@@ -57,7 +57,7 @@ final public class AddAssetViewController {
 
         try {
             LOGGER.info("AssetInstance has ben created");
-            AssetInstance assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
+            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");
@@ -68,7 +68,7 @@ final public class AddAssetViewController {
     @RequestMapping(value = "/addAssetView", method = RequestMethod.GET)
     public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm, @RequestParam(required = false, name = "succes") boolean success, @RequestParam(required = false, name = "id") Integer id, @RequestParam(required = false, name = "invalidImg") boolean invalidImg) {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
-        List<Language> languages = languagesService.getLanguages();
+        List<LanguageImpl> languages = languagesService.getLanguages();
         mav.addObject("langs", languages);
         if (id != null)
             mav.addObject("assetId", id);

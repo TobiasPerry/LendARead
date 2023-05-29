@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
@@ -51,13 +52,13 @@ public class AssetAvailabilityServiceImplTest {
     private static final LocalDate DEVOLUTION_DATE_OK = LocalDate.now().plusDays(5);
     private static final LocalDate DEVOLUTION_DATE_WRONG = LocalDate.now().plusDays(30);
     private static final UserImpl USER = new UserImpl(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
-    private static final AssetInstance ASSET_INSTANCE = new AssetInstanceImpl(
+    private static final AssetInstanceImpl ASSET_INSTANCE = new AssetInstanceImpl(
             ASSET_ID,
             new BookImpl(0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
             new LocationImpl(0, "", "", "", ""),
-            0,
+            new ImageImpl(),
             AssetState.PUBLIC,
             10
     );

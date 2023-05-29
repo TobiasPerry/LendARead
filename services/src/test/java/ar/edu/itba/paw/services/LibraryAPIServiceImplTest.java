@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,7 @@ public class LibraryAPIServiceImplTest {
         // 1 - Preconditions
 
         // 2 - Ejercitación
-        Book book = libraryAPIService.getBookByISBN(BOOK_ISBN_VALID);
+        BookImpl book = libraryAPIService.getBookByISBN(BOOK_ISBN_VALID);
 
         // 3 - Assertions
         Assert.assertEquals(book.getName(), BOOK_TITLE_VALID);

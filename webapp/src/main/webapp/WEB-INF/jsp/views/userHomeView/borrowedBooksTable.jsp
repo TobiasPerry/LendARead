@@ -31,7 +31,7 @@
             </jsp:include>
             <jsp:include page="filterButton.jsp">
                 <jsp:param name="table" value="borrowed_books"/>
-                <jsp:param name="filterValue" value="confirmed"/>
+                <jsp:param name="filterValue" value="borrowed"/>
                 <jsp:param name="filterAtribuite" value="status"/>
                 <jsp:param name="attribute" value="${attribute}"/>
                 <jsp:param name="sortAttribute" value="${sortAttribute}"/>
@@ -115,25 +115,25 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${userAssets}" var="asset">
+            <c:forEach items="${userAssets}" var="lending">
                 <spring:message var="lendedBooksName" code='borrowed_books'/>
-                <c:url var="userUrl" value="/borrowedBookDetails/${asset.lendingId}"/>
+                <c:url var="userUrl" value="/borrowedBookDetails/${lending.id}"/>
                 <tr class="table-row-clickable" data-href="${userUrl}">
                     <td>
                         <div style="<c:if
-                                test='${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}'>
+                                test='${lending.active.isRejected or lending.active.isFinished}'>
                                 filter: grayscale(100%);
                                 </c:if>">
                             <img style="height: 125px; width: 75px; object-fit: cover"
-                                 src="<c:url value='/getImage/${asset.imageId}'/>"
-                                 alt="<c:out value='${asset.book.name}'/>"/>
+                                 src="<c:url value='/getImage/${lending.assetInstance.image.id}'/>"
+                                 alt="<c:out value='${lending.assetInstance.book.name}'/>"/>
                         </div>
                     </td>
-                    <td><c:out value="${asset.book.name}"/></td>
+                    <td><c:out value="${lending.assetInstance.book.name}"/></td>
                     <td class="date-column no-hidden-of"
-                        data-asset-status="<c:out value="${asset.lendingState}"/>"><c:out
-                            value="${asset.dueDate}"/></td>
-                    <td><c:out value="${asset.owner.name}"/></td>
+                        data-asset-status="<c:out value="${lending.active}"/>"><c:out
+                            value="${lending.devolutionDate}"/></td>
+                    <td><c:out value="${lending.assetInstance.owner.name}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

@@ -1,10 +1,10 @@
-package ar.edu.itba.paw.persistence;
+package ar.edu.itba.paw.persistence.sql;
 
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class ImagesDaoImpl implements ImagesDao {
 
 
@@ -27,12 +27,12 @@ public class ImagesDaoImpl implements ImagesDao {
     }
 
     @Override
-    public Optional<Integer> addPhoto(byte[] photo) {
+    public ImageImpl addPhoto(byte[] photo) {
 
         final Map<String, Object> args = new HashMap<>();
         args.put("photo", photo);
 
-        return Optional.of(jdbcInsert.executeAndReturnKey(args).intValue());
+        return new ImageImpl(photo);
     }
 
     @Override

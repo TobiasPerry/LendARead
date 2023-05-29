@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence.jpa;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
@@ -22,7 +23,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     }
 
     @Override
-    public double getRating(AssetInstance assetInstance) {
+    public double getRating(AssetInstanceImpl assetInstance) {
         try {
             String hql = "SELECT AVG(r.rating) FROM AssetInstanceReview r WHERE r.assetInstanceId = :assetInstance";
             return (Double) em.createQuery(hql)
@@ -35,7 +36,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<AssetInstanceReview> getAssetInstanceReviews(AssetInstance assetInstance) {
+    public List<AssetInstanceReview> getAssetInstanceReviews(AssetInstanceImpl assetInstance) {
         String hql = "SELECT r FROM AssetInstanceReview r WHERE r.assetInstanceId = :assetInstance";
         return (List<AssetInstanceReview>) em.createQuery(hql).setParameter("assetInstance", assetInstance.getId()).getResultList();
     }

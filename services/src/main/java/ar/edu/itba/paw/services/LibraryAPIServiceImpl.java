@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.LibraryAPIService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +24,7 @@ public class LibraryAPIServiceImpl implements LibraryAPIService {
 
     private static final int DEFAULT_ID = -1;
     @Override
-    public Book getBookByISBN(final String isbn) throws IOException {
+    public BookImpl getBookByISBN(final String isbn) throws IOException {
         String apiUrl = "https://openlibrary.org/isbn/" + isbn + ".json";
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -57,7 +56,7 @@ public class LibraryAPIServiceImpl implements LibraryAPIService {
             bookInfo.put("author", getAuthorNames(authorsArray));
             bookInfo.put("language", getLanguages(languagesArray));
 
-            Book book = new BookImpl(DEFAULT_ID,bookInfo.get("ISBN"), bookInfo.get("author"), bookInfo.get("title"),bookInfo.get("language"));
+            BookImpl book = new BookImpl(DEFAULT_ID,bookInfo.get("ISBN"), bookInfo.get("author"), bookInfo.get("title"),bookInfo.get("language"));
             return book;
         } else {
             throw new IOException("Failed to get book information. Response Code: " + responseCode);

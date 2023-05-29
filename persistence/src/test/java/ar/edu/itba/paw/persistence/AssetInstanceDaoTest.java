@@ -4,19 +4,16 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.persistence.config.TestConfig;
-import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
+import ar.edu.itba.paw.persistence.jpa.AssetInstanceDaoJpa;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +38,7 @@ public class AssetInstanceDaoTest {
     private DataSource ds;
 
     @Autowired
-    private AssetInstanceDao assetInstanceDao;
+    private AssetInstanceDaoJpa assetInstanceDaoJpa;
 
     private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
     private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG");
@@ -50,10 +47,10 @@ public class AssetInstanceDaoTest {
     private final static String TITLE = "TITLE";
     private final static String LANGUAGE = "LANGUAGE";
     private final static String ISBN_ALREADY_EXIST = "ISBN";
-    private final static Book book = new BookImpl(1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
-    private final static Location location = new LocationImpl(1, "ZIPCODE","LOCALITY","PROVINCE","COUNTRY");
-    private final static User user = new UserImpl(1,"EMAIL","NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
-     private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstanceImpl(-1,book, PhysicalCondition.ASNEW,user,location,1, AssetState.PUBLIC,10);
+    private final static BookImpl book = new BookImpl(1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
+    private final static LocationImpl location = new LocationImpl(1, "ZIPCODE","LOCALITY","PROVINCE","COUNTRY");
+    private final static UserImpl user = new UserImpl(1,"EMAIL","NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+     private final static AssetInstanceImpl ASSET_INSTANCE_TO_CREATE = new AssetInstanceImpl(-1,book, PhysicalCondition.ASNEW,user,location,new ImageImpl(), AssetState.PUBLIC,10);
     private final static String BOOK_TITLE_ALREADY_EXIST = "TITLE";
     private JdbcTemplate jdbcTemplate;
 
@@ -67,7 +64,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAssetInstanceTest(){
         //2
-       Optional<AssetInstance> assetInstance = assetInstanceDao.getAssetInstance(1);
+       Optional<AssetInstanceImpl> assetInstance = assetInstanceDaoJpa.getAssetInstance(1);
        //3
         Assert.assertTrue(assetInstance.isPresent());
         Assert.assertEquals(1,assetInstance.get().getId());
@@ -77,7 +74,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void addAssetInstanceTest(){
         //2
-        AssetInstance assetInstance = assetInstanceDao.addAssetInstance(book,user,location,1,ASSET_INSTANCE_TO_CREATE);
+        AssetInstanceImpl assetInstance = assetInstanceDaoJpa.addAssetInstance(ASSET_INSTANCE_TO_CREATE);
         //3
         Assert.assertEquals(2,assetInstance.getId());
     }
@@ -85,7 +82,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAssetInstanceNotExistsTest(){
         //2
-        Optional<AssetInstance> assetInstance = assetInstanceDao.getAssetInstance(2);
+        Optional<AssetInstanceImpl> assetInstance = assetInstanceDaoJpa.getAssetInstance(2);
         //3
         Assert.assertFalse(assetInstance.isPresent());
     }
@@ -93,7 +90,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesTest() {
         //2
-        Optional<Page> page = assetInstanceDao.getAllAssetInstances(1, 1, searchQuery);
+        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
 
         //3
         Assert.assertTrue(page.isPresent());
@@ -109,7 +106,7 @@ public class AssetInstanceDaoTest {
         //1
         jdbcTemplate.update("DELETE FROM assetinstance WHERE id = 1");
         //2
-        Optional<Page> page = assetInstanceDao.getAllAssetInstances(1, 1, searchQuery);
+        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
         Assert.assertTrue(page.isPresent());
         Assert.assertEquals(1,page.get().getCurrentPage());
@@ -119,7 +116,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesSearchEmptyTest() {
         //2
-        Optional<Page> page = assetInstanceDao.getAllAssetInstances(1, 1, searchQueryWithAuthorText);
+        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQueryWithAuthorText);
         //3
         Assert.assertTrue(page.isPresent());
         Assert.assertEquals(1,page.get().getCurrentPage());

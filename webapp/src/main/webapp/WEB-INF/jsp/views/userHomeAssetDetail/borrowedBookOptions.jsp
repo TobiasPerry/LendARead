@@ -8,6 +8,6 @@
 <%--<jsp:include page="returnModal.jsp">--%>
 <%--  <jsp:param name="asset" value="${asset}"/>--%>
 <%--</jsp:include>--%>
-<c:if test="${asset.assetState.isPending()}">
+<c:if test="${lending.assetInstance.assetState.isPending()}">
     <spring:message code="borrowedBookOption.pendingInfo" />
 </c:if>

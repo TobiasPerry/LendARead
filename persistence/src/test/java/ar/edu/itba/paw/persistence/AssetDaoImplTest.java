@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.Book;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
@@ -32,15 +31,15 @@ public class AssetDaoImplTest {
     private final static String TITLE = "TITLE";
     private final static String LANGUAGE = "LANGUAGE";
     private final static String ISBN_ALREADY_EXIST = "ISBN";
-    private final static Book book = new BookImpl(-1, ISBN, AUTHOR, TITLE, LANGUAGE);
-    private final static Book DUPLICATED_BOOK = new BookImpl(-1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
+    private final static BookImpl book = new BookImpl(-1, ISBN, AUTHOR, TITLE, LANGUAGE);
+    private final static BookImpl DUPLICATED_BOOK = new BookImpl(-1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
 
 
     @Rollback
     @Test
     public void addAssetTest() {
         //2
-        final Book bookReturned;
+        final BookImpl bookReturned;
         try {
             bookReturned = assetDao.addAsset(book);
         } catch (BookAlreadyExistException e) {
@@ -59,7 +58,7 @@ public class AssetDaoImplTest {
     @Test
     public void addAssetTestDuplicated() {
         //3
-        final Book bookReturned;
+        final BookImpl bookReturned;
 
         BookAlreadyExistException exception = Assert.assertThrows(BookAlreadyExistException.class, () -> {
             assetDao.addAsset(DUPLICATED_BOOK);
@@ -70,7 +69,7 @@ public class AssetDaoImplTest {
     @Test
     public void getAssetTest() {
         //2
-        Optional<Book> returnBook = assetDao.getBook(ISBN_ALREADY_EXIST);
+        Optional<BookImpl> returnBook = assetDao.getBook(ISBN_ALREADY_EXIST);
         //3
         Assert.assertTrue(returnBook.isPresent());
         Assert.assertEquals(DUPLICATED_BOOK.getName(),returnBook.get().getName());

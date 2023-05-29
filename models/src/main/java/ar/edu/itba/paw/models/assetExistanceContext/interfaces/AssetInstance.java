@@ -1,17 +1,19 @@
 package ar.edu.itba.paw.models.assetExistanceContext.interfaces;
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.userContext.interfaces.Location;
-import ar.edu.itba.paw.models.userContext.interfaces.User;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 public interface AssetInstance {
 
-    Book getBook();
+    BookImpl getBook();
 
-    User getOwner();
+    UserImpl getOwner();
 
-    Location getLocation();
+    LocationImpl getLocation();
 
     AssetState getAssetState();
 
@@ -21,7 +23,7 @@ public interface AssetInstance {
 
     PhysicalCondition getPhysicalCondition();
 
-    int getImageId();
+    ImageImpl getImageId();
 
     boolean getIsBorrowedInstance();
 }
