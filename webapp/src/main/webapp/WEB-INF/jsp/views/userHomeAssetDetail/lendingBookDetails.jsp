@@ -115,7 +115,7 @@
                         </c:when>
                     </c:choose>
                 </div>
-                <c:if test="${!(table == 'borrowed_books' || (table == 'lended_books' &&  lending.active.getIsFinished()))}">
+                <c:if test="${!(table == 'borrowed_books' || (table == 'lended_books' && ( lending.active.getIsFinished() || lending.active.getIsRejected())))}">
                     <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; width: 300px;">
                         <h1 class="textOverflow"><spring:message code="userAssetDetailView.options"/></h1>
                         <c:choose>

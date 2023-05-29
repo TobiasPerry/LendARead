@@ -121,7 +121,7 @@
                 <tr class="table-row-clickable" data-href="${userUrl}">
                     <td>
                         <div style="<c:if
-                                test='${asset.isBorrowedInstance and (asset.lendingState.isRejected or asset.lendingState.isFinished)}'>
+                                test='${lending.active.isRejected or lending.active.isFinished}'>
                                 filter: grayscale(100%);
                                 </c:if>">
                             <img style="height: 125px; width: 75px; object-fit: cover"

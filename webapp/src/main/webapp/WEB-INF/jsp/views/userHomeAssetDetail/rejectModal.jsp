@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content rounded-3 border-0 shadow">
             <div class="modal-header border-0" style="text-align: center">
-                <div class="icon-box red-icon">
+                <div class="icon-box red-icon" style="background: #D45235;">
                     <i class="fas fa-times fa-lg"></i>
                 </div>
                 <h3 class="modal-title w-100 mt-2">
@@ -20,8 +20,7 @@
             <div class="modal-footer border-0">
                 <c:url var="rejectAssetUrl" value="/rejectAsset/${lending.id}"/>
                 <form action="${rejectAssetUrl}" method="post">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2"
-                            style="background-color: #2B3B2B; border-color: #00B4A0;">
+                    <button type="submit" class="btn-red-outline">
                         <spring:message code="reject"/>
                     </button>
                 </form>
