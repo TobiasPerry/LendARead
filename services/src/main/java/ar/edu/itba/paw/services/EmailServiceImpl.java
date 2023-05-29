@@ -62,7 +62,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId,final Locale locale) {
+    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId, final Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -79,12 +79,12 @@ class EmailServiceImpl implements EmailService {
         String email = owner.getEmail();
         String bookName = book.getName();
         String subject = String.format(messageSource.getMessage("email.lender.subject", null, locale), bookName);
-        this.sendEmail(email, subject, this.mailFormat(variables, "lenderEmailTemplate.html",locale));
+        this.sendEmail(email, subject, this.mailFormat(variables, "lenderEmailTemplate.html", locale));
     }
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId,final Locale locale) {
+    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId, final Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -99,18 +99,33 @@ class EmailServiceImpl implements EmailService {
         variables.put("location", location);
         String subject = String.format(messageSource.getMessage("email.borrower.subject", null, locale), assetInstance.getBook().getName());
 
-        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "borrowerEmailTemplate.html",locale));
+        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "borrowerEmailTemplate.html", locale));
     }
 
     @Async
     @Override
-    public void sendForgotPasswordEmail(final String email, final String token,final Locale locale) {
+    public void sendForgotPasswordEmail(final String email, final String token, final Locale locale) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("token", token);
-        this.sendEmail(email, messageSource.getMessage("email.verificationcode.title", null, locale), this.mailFormat(variables, "ForgotPasswordEmailTemplate.html",locale));
+        this.sendEmail(email, messageSource.getMessage("email.verificationcode.title", null, locale), this.mailFormat(variables, "ForgotPasswordEmailTemplate.html", locale));
     }
 
-    private String mailFormat(final Map<String, Object> variables, final String mailTemplate,final Locale locale) {
+    @Async
+    @Override
+    public void sendRejectedEmail(AssetInstanceImpl assetInstance, UserImpl borrower, Long lendingId, Locale locale) {
+        if (assetInstance == null || borrower == null) {
+            return;
+        }
+        BookImpl book = assetInstance.getBook();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("book", book);
+        variables.put("borrower", borrower);
+        variables.put("path", baseUrl);
+        String subject = messageSource.getMessage("email.rejected.subject", null, locale);
+        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "rejectedEmail.html", locale));
+    }
+
+    private String mailFormat(final Map<String, Object> variables, final String mailTemplate, final Locale locale) {
         Context thymeleafContext = new Context(locale);
         thymeleafContext.setVariables(variables);
         return templateEngine.process(mailTemplate, thymeleafContext);

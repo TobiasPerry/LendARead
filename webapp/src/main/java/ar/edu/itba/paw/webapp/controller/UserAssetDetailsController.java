@@ -29,7 +29,7 @@ final public class UserAssetDetailsController {
     private final static String VIEW_NAME = "views/userHomeAssetDetail/userBookDetails";
     private final static String VIEW_NAME_LENDING_VIEW = "views/userHomeAssetDetail/lendingBookDetails";
 
-    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome",LENDING = "lending";
+    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending";
 
     private final static String BACKURL = "backUrl";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";

@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -41,20 +40,20 @@
         </a>
         <h2 class="textOverflow mb-0 ml-2 mr-2"><spring:message code="userAssetDetailView.${table}"/></h2>
 
-            <c:choose>
-                <c:when test="${lending.active.isRejected}">
-                    <div style="background-color: darkred; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"
-                         data-bs-toggle="tooltip" data-bs-placement="top" title="This lending is archived">
-                        <spring:message code="userHomeView.rejected"/>
-                    </div>
-                </c:when>
-                <c:when test="${lending.active.isFinished}">
-                    <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"
-                         data-bs-toggle="tooltip" data-bs-placement="top" title="This lending is archived">
-                        <spring:message code="userHomeView.finished"/>
-                    </div>
-                </c:when>
-            </c:choose>
+        <c:choose>
+            <c:when test="${lending.active.isRejected}">
+                <div style="background-color: darkred; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"
+                     data-bs-toggle="tooltip" data-bs-placement="top" title="This lending is archived">
+                    <spring:message code="userHomeView.rejected"/>
+                </div>
+            </c:when>
+            <c:when test="${lending.active.isFinished}">
+                <div style="background-color: darkgray; color: white; border-radius: 25px; padding: 10px; display: inline-block; font-weight: bold; text-transform: uppercase; margin-left: 5px"
+                     data-bs-toggle="tooltip" data-bs-placement="top" title="This lending is archived">
+                    <spring:message code="userHomeView.finished"/>
+                </div>
+            </c:when>
+        </c:choose>
     </div>
     <div class="main-class"
          style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
@@ -62,7 +61,8 @@
              style="display: flex; flex-direction: row; align-items: flex-start; justify-content: center;">
             <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; max-width: 50%; min-width: 650px">
                 <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
-                    <img src="<c:url value="/getImage/${lending.assetInstance.image.id}"/>" class="mx-3" alt="Book cover"
+                    <img src="<c:url value="/getImage/${lending.assetInstance.image.id}"/>" class="mx-3"
+                         alt="Book cover"
                          style="height: 500px; width: 300px; object-fit: cover">
                     <div class="mx-2" style="min-width: 400px">
                         <h1 class="textOverflow" style="max-width: min-content " title="<c:out
@@ -97,7 +97,7 @@
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out
                                     value="${lending.devolutionDate}"/></h6>
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out
-                                    value="${lending.assetInstance.owner.name}"/></h6>
+                                    value="${lending.userReference.name}"/></h6>
                             <c:if test="${lending.active.isRejected}">
                                 <h6 style="color: #7d7c7c; font-weight: bolder"><spring:message
                                         code="userHomeView.rejected"/></h6>

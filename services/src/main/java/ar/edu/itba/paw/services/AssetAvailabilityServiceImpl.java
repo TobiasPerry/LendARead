@@ -38,7 +38,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     private UserAssetsDao userAssetsDao;
 
     @Autowired
-    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService,final UserAssetsDao userAssetsDao) {
+    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
@@ -68,10 +68,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
             throw new DayOutOfRangeException();
         }
-        assetInstanceDao.changeStatus(ai.get(),AssetState.PENDING);
-        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate,LendingState.ACTIVE);
+        assetInstanceDao.changeStatus(ai.get(), AssetState.PENDING);
+        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
-        emailService.sendLenderEmail(ai.get(), borrower, lending.getId(),LocaleContextHolder.getLocale());
+        emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), LocaleContextHolder.getLocale());
         LOGGER.info("Asset {} has been borrow", assetId);
     }
 
@@ -79,7 +79,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
-        assetInstanceDao.changeStatus(assetInstance,AssetState.PRIVATE);
+        assetInstanceDao.changeStatus(assetInstance, AssetState.PRIVATE);
         LOGGER.info("Asset {} has been set private", assetId);
     }
 
@@ -87,7 +87,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
-        assetInstanceDao.changeStatus(assetInstance,AssetState.PUBLIC);
+        assetInstanceDao.changeStatus(assetInstance, AssetState.PUBLIC);
         LOGGER.info("Asset {} has been set public", assetId);
     }
 
@@ -103,7 +103,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
-        assetInstanceDao.changeStatus(lending.getAssetInstance(),AssetState.BORROWED);
+        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.BORROWED);
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
     }
 
@@ -113,6 +113,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
+        emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());
     }
 
 
