@@ -14,7 +14,7 @@
             </c:otherwise>
         </c:choose>
     </button>
-    <button id="deleteBtn" class="btn-red-outline" style="margin-top: 5px" type="submit">
+    <button id="deleteBtn" class="btn-red" style="margin-top: 5px" type="submit">
         <i class="fas fa-trash"></i>
         <spring:message code="delete"/>
     </button>
