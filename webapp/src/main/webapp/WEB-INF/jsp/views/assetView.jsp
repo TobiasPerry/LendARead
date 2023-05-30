@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
 
 </head>
-<body data-path="${path}" class=" body-class" data-maxDays="${assetInstance.maxDays}">
+<body data-path="${path}" class=" body-class" data-maxDays="<c:out value="${assetInstance.maxDays}" /> ">
 <jsp:include page="../components/navBar.jsp"/>
 
 <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
@@ -50,15 +50,19 @@
                         value="${assetInstance.book.name} "/></h1>
 
 
-                <h3 class="textOverflow" id="authorClick" data-author="${assetInstance.book.author}"><spring:message
-                        code="assetView.by"/> <span class="text-clickable"><c:out
-                        value="${assetInstance.book.author}"/></span></h3>
+                <h3 class="textOverflow" id="authorClick" data-author="<c:out value="${assetInstance.book.author}"/>"><spring:message
+                        code="assetView.by"/>
+                    <span class="text-clickable">
+                        <c:out value="${assetInstance.book.author}"/>
+                    </span>
+                </h3>
 
                 <h6 id="physicalConditionClick" class="text-clickable"
-                    data-physicalcondition="${assetInstance.physicalCondition}"><spring:message
-                        code="enum.${assetInstance.physicalCondition}"/></h6>
+                    data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
+                    <i><u><spring:message code="enum.${assetInstance.physicalCondition}"/></u></i>
+                </h6>
 
-                <h6 id="languageClick" data-language="${assetInstance.book.language}" style="color: #7d7c7c">
+                <h6 id="languageClick" data-language="<c:out value="${assetInstance.book.language}"/>" style="color: #7d7c7c">
                     <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out
                         value="${assetInstance.book.language}"/></span>
                 </h6>
