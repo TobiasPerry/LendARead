@@ -39,7 +39,7 @@
             <div class="flex-container">
 
                 <div class="image-wrapper">
-                    <label for="uploadImage" class="image-container position-relative">
+                    <label for="uploadImage" class="image-container position-relative ${showSnackbarInvalid ? 'image-border-error' : ''}">
                         <img src="<c:url value="/static/images/no_image_placeholder.jpg"/>" alt="Book Cover"
                              class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
                         <div class="img-hover-text">

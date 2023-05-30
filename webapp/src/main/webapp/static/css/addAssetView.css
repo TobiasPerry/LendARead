@@ -199,6 +199,11 @@ input[type="text"].loading {
     filter: brightness(50%);
 }
 
+.image-border-error{
+    border: 3px solid red;
+    border-radius: 20px
+}
+
 .img-hover-text {
     position: absolute;
     top: 50%;
