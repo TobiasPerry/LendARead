@@ -180,6 +180,29 @@ p{
     box-shadow: 0 0 0 2px #D45235, 0 8px 28px rgba(212, 82, 53, 0.45);
 }
 
+.btn-red {
+    min-width: 200px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 8px 30px 10px 30px;
+    border-radius: 4px;
+    transition: 0.5s;
+    color: #ffffff;
+    background: rgba(223, 125, 104, 1);
+    border-width: 5px;
+    border-color: transparent;
+    box-shadow: 0 0 0 1px #D45235, 0 8px 28px rgba(212, 82, 53, 0.25);
+}
+
+.btn-red:hover {
+    background: #D45235;
+    color: #fff;
+    box-shadow: 0 0 0 2px #D45235, 0 8px 28px rgba(212, 82, 53, 0.45);
+}
+
 .btn-green-outline {
     min-width: 200px;
     font-family: "Roboto", sans-serif;

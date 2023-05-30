@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@700&display=swap" rel="stylesheet">
 
 </head>
-<body style="overflow-y: hidden;">
+<body style="overflow-y: auto;">
 <section class="vh-100">
   <div class="container-fluid">
     <div class="row">

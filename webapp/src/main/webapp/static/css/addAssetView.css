@@ -199,6 +199,43 @@ input[type="text"].loading {
     filter: brightness(50%);
 }
 
+/*.image-border-error{*/
+/*    border: 3px solid red;*/
+/*    border-radius: 20px*/
+/*}*/
+
+.image-border-error {
+    position: relative;
+}
+
+.image-border-error::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid red;
+    border-radius: 20px;
+    opacity: 1;
+    animation: border-glow 2s 3;
+}
+
+@keyframes border-glow {
+    0% {
+        opacity: 1;
+        box-shadow: 0 0 20px red;
+    }
+    50% {
+        opacity: 0;
+        box-shadow: 0 0 5px red;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 20px red;
+    }
+}
+
 .img-hover-text {
     position: absolute;
     top: 50%;

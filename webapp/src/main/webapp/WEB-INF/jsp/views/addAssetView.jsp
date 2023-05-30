@@ -39,7 +39,7 @@
             <div class="flex-container">
 
                 <div class="image-wrapper">
-                    <label for="uploadImage" class="image-container position-relative">
+                    <label for="uploadImage" class="image-container position-relative ${showSnackbarInvalid ? 'image-border-error' : ''}">
                         <img src="<c:url value="/static/images/no_image_placeholder.jpg"/>" alt="Book Cover"
                              class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
                         <div class="img-hover-text">
@@ -173,7 +173,7 @@
                         <fieldset class="info-container d-none" data-step="3" id="duration-fs">
                             <h2><spring:message code="addAssetView.steps.TIME.title"/></h2>
                             <div class="d-flex justify-content-center">
-                                <label class="align-baseline mx-1">Borrow for:</label>
+                                <label class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></label>
                                 <input type="number" id="borrow-time-quantity" name="borrow-time-quantity" value="1" min="1" class="w-25 mx-1 form-control mr-2"/>
                                 <select class="w-25 mx-1 form-select" id="borrow-time-type">
                                     <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>

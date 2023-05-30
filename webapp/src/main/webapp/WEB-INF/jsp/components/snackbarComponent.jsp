@@ -12,7 +12,7 @@
         document.getElementById('snackbarFailure').classList.remove('d-none');
         setTimeout(() => {
             document.getElementById('snackbarFailure').classList.add('d-none');
-        }, 2000);
+        }, 6000);
     }
 </script>
 
