@@ -28,12 +28,11 @@
   <script src="<c:url value="/static/javaScript/assetView.js"/>"></script>
   <script src="<c:url value="/static/javaScript/addAssetView.js"/>"></script>
   <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
-  <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
   <link rel="stylesheet" href="<c:url value="/static/css/changeAsset.css"/>">
 </head>
 <body data-path="${path}" class=" body-class" data-maxDays="<c:out value="${assetInstance.maxDays}" /> ">
 <jsp:include page="../components/navBar.jsp"/>
-<c:url var="changeAsset" value="/changeAsset/${assetInstance.id}"/>
+<c:url var="changeAsset" value="/editAsset/${assetInstance.id}"/>
 <form:form modelAttribute="assetInstanceForm" method="post"
            action="${changeAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-8" >
 <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
@@ -56,14 +55,14 @@
 
         <h3 class="textOverflow" id="authorClick" data-author="<c:out value="${assetInstance.book.author}"/>"><spring:message
                 code="assetView.by"/>
-          <span class="text-clickable">
+          <span class="textOverflow">
                         <c:out value="${assetInstance.book.author}"/>
           </span>
         </h3>
 
-        <form:input path="image" type="file" value="${assetInstance.image.photo}" accept="image/*" name="file" id="uploadImage" style="display:none;"
+        <form:input path="image" type="file" value="${image}" accept="image/*" name="file" id="uploadImage" style="display:none;"
           onchange="previewImage()"/>
-          <h6 id="physicalConditionClick" class="text-clickable"
+          <h6 id="physicalConditionClick"
             data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
           <form:select path="physicalCondition" id="physicalCondition" class="form-control"
                        accept-charset="utf-9" >
@@ -89,13 +88,14 @@
         </h6>
 
         <h6 id="languageClick" data-language="<c:out value="${assetInstance.book.language}"/>" style="color: #7d7c7c">
-          <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out
+          <spring:message code="assetView.language"/>: <span > <c:out
                 value="${assetInstance.book.language}"/></span>
         </h6>
 
         <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                 value="${assetInstance.book.isbn}"/>
         </h6>
+          <input class="btn btn-green" type="submit" value="<spring:message code="editAssetView.editButton"/>">
       </div>
     </div>
     </div>
@@ -109,20 +109,18 @@
 
           <h5 class="card-title"><spring:message code="assetView.locationTitle"/></h5>
             <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.zipcode"/></h6>
-          <form:input path="zipcode" class="card-text" style="margin-bottom: 5px" value="${assetInstance.location.zipcode}"/>
+          <form:input path="zipcode" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.zipcode}"/>
 
           <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.locality"/></h6>
-         <form:input path="locality" class="card-text" style="margin-bottom: 5px" value="${assetInstance.location.locality}"/>
+         <form:input path="locality" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.locality}"/>
 
           <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.province"/></h6>
-          <form:input path="province" class="card-text" style="margin-bottom: 5px" value="${assetInstance.location.province}"/>
+          <form:input path="province" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.province}"/>
 
 
           <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.country"/></h6>
-          <form:input path="country" class="card-text" style="margin-bottom: 5px" value="${assetInstance.location.country}"/>
-          <div class="form-outline mb-4 text-center">
-            <input class="btn btn-light" type="submit" value="EDIT">
-          </div>
+          <form:input path="country" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.country}"/>
+
         </div>
       </div>
     </div>

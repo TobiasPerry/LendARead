@@ -7,3 +7,20 @@
     opacity: .5;
     cursor: pointer;
 }
+.textOverflow-container {
+    width: 100%;
+}
+
+.textOverflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+
+
+
+

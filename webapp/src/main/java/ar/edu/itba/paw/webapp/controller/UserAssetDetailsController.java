@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCond
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
@@ -115,7 +117,7 @@ final public class UserAssetDetailsController {
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
 
-    @RequestMapping(value = "/changeAsset/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.POST)
     public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException {
         if (errors.hasErrors()) {
             return new ModelAndView("redirect:/myBookDetails/" + id);
@@ -134,10 +136,14 @@ final public class UserAssetDetailsController {
         assetInstanceService.changeAssetInstance(id,physicalCondition, maxLendingDays,location, Optional.of(assetInstanceForm.getImage().getBytes()));
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
-    @RequestMapping(value = "/changeAssetView/{id}", method = RequestMethod.GET)
-    public ModelAndView changeAsset(@PathVariable("id") final int id,@ModelAttribute("assetInstanceForm") final AssetInstanceForm assetInstanceForm) throws AssetInstanceNotFoundException {
-        return new ModelAndView(VIEW_NAME_ASSET_EDIT)
-                .addObject(ASSET_INSTANCE, assetInstanceService.getAssetInstance(id));
+    @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)
+    public ModelAndView changeAsset(@PathVariable("id") final int id,@ModelAttribute("assetInstanceForm") final AssetInstanceForm assetInstanceForm) throws AssetInstanceNotFoundException, IOException {
+        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);
+        File file = new File("temp");
+        FileUtils.writeByteArrayToFile(file, assetInstance.getImage().getPhoto());
+
+        return new ModelAndView(VIEW_NAME_ASSET_EDIT).addObject("image",file)
+                .addObject(ASSET_INSTANCE, assetInstance);
     }
 
     @ModelAttribute
