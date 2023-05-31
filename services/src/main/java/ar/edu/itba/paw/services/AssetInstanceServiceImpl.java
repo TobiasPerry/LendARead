@@ -3,14 +3,19 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
+import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
+import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +33,16 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     private final AssetInstanceDao assetInstanceDao;
 
+    private final LocationDao locationDao;
+
+    private final ImagesDao imagesDao;
+
     @Autowired
-    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao) {
+    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final LocationDao locationDao,final ImagesDao imagesDao) {
         this.assetDao = assetDao;
         this.assetInstanceDao = assetInstanceDao;
+        this.locationDao = locationDao;
+        this.imagesDao = imagesDao;
     }
 
     @Transactional(readOnly = true)
@@ -91,5 +102,20 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         AssetInstanceImpl assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);
     }
-
+    @Transactional
+    @Override
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<LocationImpl> location, final Optional<byte[]> photo) throws AssetInstanceNotFoundException{
+        AssetInstanceImpl assetInstance = getAssetInstance(id);
+        LocationImpl location1;
+        if(location.isPresent() && !assetInstance.getLocation().equals(location.get())) {
+            location1 = locationDao.addLocation(location.get());
+            assetInstanceDao.changeLocation(assetInstance, location1);
+        }
+        if (photo.isPresent() && !assetInstance.getImage().equals(new ImageImpl(photo.get()))) {
+            ImageImpl image = imagesDao.addPhoto(photo.get());
+           assetInstanceDao.changeImage(assetInstance,image);
+        }
+        physicalCondition.ifPresent(condition -> assetInstanceDao.changePhysicalCondition(assetInstance,condition));
+        maxLendingDays.ifPresent(integer -> assetInstanceDao.changeMaxLendingDays(assetInstance,integer));
+    }
 }

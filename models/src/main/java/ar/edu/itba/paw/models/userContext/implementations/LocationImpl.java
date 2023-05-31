@@ -64,4 +64,13 @@ final public class LocationImpl{
     public String getAddress() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocationImpl location = (LocationImpl) o;
+        return zipcode.equals(location.zipcode) && locality.equals(location.locality) && province.equals(location.province) && country.equals(location.country);
+    }
+
 }

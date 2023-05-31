@@ -13,6 +13,7 @@ public enum PhysicalCondition {
 
     public static PhysicalCondition fromString(String value) {
         if (value != null) {
+            value = value.toUpperCase();
             for (PhysicalCondition condition : PhysicalCondition.values()) {
                 if (value.equalsIgnoreCase(condition.toString())) {
                     return condition;

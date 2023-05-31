@@ -3,6 +3,7 @@ package ar.edu.itba.paw.models.miscellaneous;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "photos")
@@ -36,5 +37,13 @@ public class ImageImpl {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ImageImpl image = (ImageImpl) o;
+        return Arrays.equals(photo, image.photo);
     }
 }

@@ -1,0 +1,9 @@
+.image-div img {
+    opacity: 1;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+.image-div img:hover {
+    opacity: .5;
+    cursor: pointer;
+}
