@@ -56,22 +56,33 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
+    @Override
+    public UserImpl getUserById(int id) throws UserNotFoundException {
+        Optional<UserImpl> user = userDao.getUser(id);
+        if (!user.isPresent()) {
+            LOGGER.error("User with id {} not found", id);
+            throw new UserNotFoundException("The user with id " + id + " not found");
+        }
+
+        return user.get();
+    }
+
     @Transactional
     @Override
-    public UserImpl createUser(final String email, String name, final String telephone,final String password) {
+    public UserImpl createUser(final String email, String name, final String telephone, final String password) {
 
         return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
 
     @Transactional
     @Override
-    public void changeRole(final String email,final Behaviour behaviour) throws UserNotFoundException {
-        boolean changed = userDao.changeRole(email,behaviour);
-        if(!changed)
+    public void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException {
+        boolean changed = userDao.changeRole(email, behaviour);
+        if (!changed)
             throw new UserNotFoundException("The user was not founded");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
-        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_"+ behaviour.toString()));
+        actualAuthorities.add(new SimpleGrantedAuthority("ROLE_" + behaviour.toString()));
         Authentication newAuth = new
                 UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), actualAuthorities);
         SecurityContextHolder.getContext().setAuthentication(newAuth);
@@ -94,46 +105,46 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Collection<? extends GrantedAuthority> getCurrentRoles() {
-        return  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
     }
 
     @Transactional
     @Override
-    public void createChangePasswordToken(final String email){
-        String token = UUID.randomUUID().toString().substring(0,6).toUpperCase();
+    public void createChangePasswordToken(final String email) {
+        String token = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         Optional<UserImpl> user = userDao.getUser(email);
-        if (!user.isPresent()){
+        if (!user.isPresent()) {
             LOGGER.error("User not found");
             return;
         }
-        PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token,user.get().getId(), LocalDate.now().plusDays(1));
-        emailService.sendForgotPasswordEmail(email,passwordResetToken.getToken(), LocaleContextHolder.getLocale());
+        PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token, user.get().getId(), LocalDate.now().plusDays(1));
+        emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken(), LocaleContextHolder.getLocale());
         userDao.setForgotPasswordToken(passwordResetToken);
     }
 
     @Transactional
     @Override
-    public void changePassword(final String token, final String password){
+    public void changePassword(final String token, final String password) {
         Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
-        if(!passwordResetToken.isPresent())
+        if (!passwordResetToken.isPresent())
             return;
-        if(!isTokenValid(token))
-           return;
+        if (!isTokenValid(token))
+            return;
         userDao.deletePasswordRestToken(token);
         userDao.changePassword(passwordResetToken.get(), passwordEncoder.encode(password));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isTokenValid(final String token){
+    public boolean isTokenValid(final String token) {
         Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
         return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
     }
 
     @Override
-    public void logInUser(final String email, final String password){
+    public void logInUser(final String email, final String password) {
         Optional<UserImpl> user = userDao.getUser(email);
-        if (!user.isPresent()){
+        if (!user.isPresent()) {
             LOGGER.error("User not found");
             return;
         }
