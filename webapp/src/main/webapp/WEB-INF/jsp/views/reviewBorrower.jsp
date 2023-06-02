@@ -80,13 +80,13 @@
                         <label for="book-1-star-rating" class="star-rating star">
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
-
                     </div>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
                 </div>
 
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px">
                     <h2>How do you rate {user} as a book lender?</h2>
-
+                    <h2><spring:message code="review.borrower.userReview.title"/></h2>
                     <div class="rating-wrapper">
                         <!-- star 5 -->
                         <input type="radio" id="lender-5-star-rating" name="star-rating" value="5">
@@ -121,6 +121,14 @@
                     <textarea class="form-control" aria-label="With textarea"></textarea>
                 </div>
 
+                <c:url value="/review/borrower/${lendingId}" var="reviewsBorrowerUrl"/>
+                <form:form method="get" accept-charset="UTF-8" action="${reviewsBorrowerUrl}">
+                    <input type="submit" class="btn btn-green mx-1"
+                           value="<spring:message code="review.sendReview"/>"
+                    />
+                    <input type="hidden" name="rating" value="1"/>
+                    <input type="hidden" name="review" value="Hola"/>
+                </form:form>
             </div>
         </div>
 
