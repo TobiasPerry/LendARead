@@ -30,14 +30,40 @@
             <img class="user-profile-picture"
                  src="https://e0.pxfuel.com/wallpapers/383/587/desktop-wallpaper-anya-spyxfamily-waifu-cute.jpg"/>
         </div>
-        <div class="user-info">
+        <div class="user-info info-container">
             <div class="user-role">
-                <div>Borrower</div>
-                <div>&nbsp-&nbsp</div>
-                <div>Lender</div>
+                <div class="medium grey-text">Borrower</div>
+                <div class="medium grey-text">&nbsp-&nbsp</div>
+                <div class="medium grey-text">Lender</div>
             </div>
-            <div class="user-name">
-                <h1>PedroLender</h1>
+            <div class="user-name big">
+                PedroLender
+            </div>
+            <div class="user-ratings">
+                <div class="user-rating-title medium grey-text">
+                    Ratings
+                </div>
+                <div class="user-ratings-wrapper">
+                    <div class="user-rating-wrapper">
+                        <div class="small grey-text">Borrower</div>
+                        <div class="rating">
+                            <% for (int i = 0; i < 5; i++) { %>
+                            <i class="fas fa-star d-inline-block star"></i>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="user-rating-wrapper">
+                        <div class="small grey-text">Lender</div>
+                        <div class="rating">
+                            <% for (int i = 0; i < 5; i++) { %>
+                            <i class="fas fa-star d-inline-block star"></i>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="spacer">
+
+                    </div>
+                </div>
             </div>
         </div>
         <div class="user-locations">

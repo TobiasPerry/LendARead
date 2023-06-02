@@ -1,7 +1,27 @@
 .user-grid {
     display: grid;
-    grid-template-columns: 2fr 6fr;
+    grid-template-columns: 2fr 5fr;
     grid-template-rows: 4fr 6fr;
+}
+
+.big {
+    font-size: 10vh;
+}
+
+.medium {
+    font-size: 5vh;
+}
+
+.small {
+    font-size: 3vh;
+}
+
+.very-small {
+    font-size: 1vh;
+}
+
+.grey-text {
+    color: #9ca3af;
 }
 
 .user-profile-cell {
@@ -13,20 +33,23 @@
 .user-profile-picture {
     width: 75%;
     -webkit-box-shadow: 0 0 15px black;
-    box-shadow: 0 0 15px black;
+    box-shadow: 0 0 10px black;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;
 }
 
 .user-info {
-    padding-inline: 3%;
-    padding-block: 2%;
+    display: block;
+    align-items: center;
+    margin-block: 4vh;
+    padding-left: 5%;
 }
 
 .user-role {
     display: flex;
-    color: #5f687b;
+    margin-bottom: -2vh;
+    /*margin-top: 3vh;*/
 }
 
 .user-name {
@@ -34,6 +57,27 @@
     color: black;
 }
 
+.user-ratings-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1vh;
+}
+
+.user-ratings-wrapper .user-rating-wrapper:nth-child(2) {
+    margin-left: 10vh;
+}
+
+
+.spacer {
+    max-width: 100%;
+    min-width: 5%;
+}
+
 .user-grid > div {
-    border: red 2px solid;
+    /*border: red 2px solid;*/
+}
+
+
+.star {
+    font-size: 30px;
 }
