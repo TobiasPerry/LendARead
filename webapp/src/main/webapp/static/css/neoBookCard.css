@@ -39,11 +39,11 @@
     bottom: 0;
     left: 0;
     background: inherit;
-    -webkit-filter: grayscale(1);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
+    /*-webkit-filter: grayscale(1);*/
+    /*-moz-filter: grayscale(100%);*/
+    /*-ms-filter: grayscale(100%);*/
+    /*-o-filter: grayscale(100%);*/
+    /*filter: grayscale(100%);*/
 }
 
 .card-has-bg:hover {
@@ -84,7 +84,6 @@
     margin-top: 30px;
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
     cursor: pointer;
-    transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .card .card-img-overlay {
@@ -92,10 +91,20 @@
     background: rgb(35, 79, 109);
     background: linear-gradient(
             0deg,
-            rgba(35, 79, 109, 0.3785889355742297) 0%,
-            rgba(69, 95, 113, 1) 100%
+            rgba(17, 23, 17, 0.8),
+            rgba(17, 23, 17, 0.2),
+            rgba(17, 23, 17, 0.2),
+            rgba(17, 23, 17, 0.8)
     );
 }
+
+/*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=2b3b2b&c2=111711&gt=l&gd=dtl
+*/
+/*background: rgba(43, 59, 43, 1.0);*/
+/*background: linear-gradient(135deg, rgba(43, 59, 43, 1.0), rgba(17, 23, 17, 1.0));*/
+
 
 @media (max-width: 767px) {
     /* Additional styles for smaller screens */
