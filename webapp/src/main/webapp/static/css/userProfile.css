@@ -1,0 +1,39 @@
+.user-grid {
+    display: grid;
+    grid-template-columns: 2fr 6fr;
+    grid-template-rows: 4fr 6fr;
+}
+
+.user-profile-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-profile-picture {
+    width: 75%;
+    -webkit-box-shadow: 0 0 15px black;
+    box-shadow: 0 0 15px black;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-info {
+    padding-inline: 3%;
+    padding-block: 2%;
+}
+
+.user-role {
+    display: flex;
+    color: #5f687b;
+}
+
+.user-name {
+    display: flex;
+    color: black;
+}
+
+.user-grid > div {
+    border: red 2px solid;
+}
