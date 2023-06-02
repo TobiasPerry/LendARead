@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/neoBookCard.css"/>" rel="stylesheet"/>
+    <link href="<c:url value="/static/css/starRating.css"/>" rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro-bg.ico'/>" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,10 +49,76 @@
             <div style="display: flex; flex-direction: column; justify-content: space-between; max-width: 800px;">
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px">
                     <h2>What do you think about the book?</h2>
+                    <div class="rating-wrapper">
+
+                        <!-- star 5 -->
+                        <input type="radio" id="book-5-star-rating" name="star-rating" value="5">
+                        <label for="book-5-star-rating" class="star-rating">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 4 -->
+                        <input type="radio" id="book-4-star-rating" name="star-rating" value="4">
+                        <label for="book-4-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 3 -->
+                        <input type="radio" id="book-3-star-rating" name="star-rating" value="3">
+                        <label for="book-3-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 2 -->
+                        <input type="radio" id="book-2-star-rating" name="star-rating" value="2">
+                        <label for="book-2-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 1 -->
+                        <input type="radio" id="book-1-star-rating" name="star-rating" value="1">
+                        <label for="book-1-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                    </div>
                 </div>
 
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px">
                     <h2>How do you rate {user} as a book lender?</h2>
+
+                    <div class="rating-wrapper">
+                        <!-- star 5 -->
+                        <input type="radio" id="lender-5-star-rating" name="star-rating" value="5">
+                        <label for="lender-5-star-rating" class="star-rating">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 4 -->
+                        <input type="radio" id="lender-4-star-rating" name="star-rating" value="4">
+                        <label for="lender-4-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 3 -->
+                        <input type="radio" id="lender-3-star-rating" name="star-rating" value="3">
+                        <label for="lender-3-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 2 -->
+                        <input type="radio" id="lender-2-star-rating" name="star-rating" value="2">
+                        <label for="lender-2-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+
+                        <!-- star 1 -->
+                        <input type="radio" id="lender-1-star-rating" name="star-rating" value="1">
+                        <label for="lender-1-star-rating" class="star-rating star">
+                            <i class="fas fa-star d-inline-block star"></i>
+                        </label>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
                 </div>
 
             </div>
@@ -63,4 +130,3 @@
 
 </body>
 </html>
-
