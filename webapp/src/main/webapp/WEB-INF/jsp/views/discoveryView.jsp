@@ -11,7 +11,10 @@
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
     <script src="<c:url value="/static/javaScript/discovery.js"/>"></script>
-    <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>
+
+    <link href="<c:url value="/static/css/neoBookCard.css"/>" rel="stylesheet"/>
+<%--    <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>--%>
+
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/discovery.css"/>" rel="stylesheet"/>
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro-bg.ico'/>" type="image/x-icon">

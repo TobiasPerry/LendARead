@@ -4,11 +4,17 @@ import javax.persistence.*;
 
 @Entity
 public class UserReview {
+
+
     public UserReview(final String review, final int rating, final UserImpl reviewer, final UserImpl recipient) {
         this.review = review;
         this.rating = rating;
         this.recipient = recipient;
         this.reviewer = reviewer;
+    }
+
+    public UserReview(){
+
     }
 
     @Id
@@ -30,7 +36,4 @@ public class UserReview {
     @JoinColumn(name = "recipientId", referencedColumnName = "id", nullable = false)
     private UserImpl recipient;
 
-    UserReview() {
-
-    }
 }

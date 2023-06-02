@@ -31,7 +31,6 @@ public class AssetViewController {
 
     private final AssetInstanceService assetInstanceService;
     private final AssetAvailabilityService assetAvailabilityService;
-
     private final UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
