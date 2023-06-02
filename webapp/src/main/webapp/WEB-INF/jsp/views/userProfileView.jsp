@@ -32,34 +32,38 @@
         </div>
         <div class="user-info info-container">
             <div class="user-role">
-                <div class="medium grey-text">Borrower</div>
-                <div class="medium grey-text">&nbsp-&nbsp</div>
-                <div class="medium grey-text">Lender</div>
+                <div class="medium grey-text"><spring:message code="borrower"/></div>
+                <c:if test="${user.behavior == 'LENDER'}">
+                    <div class="medium grey-text">&nbsp-&nbsp</div>
+                    <div class="medium grey-text"><spring:message code="lender"/></div>
+                </c:if>
             </div>
             <div class="user-name big">
-                PedroLender
+                <c:out value="${user.name}"/>
             </div>
             <div class="user-ratings">
                 <div class="user-rating-title medium grey-text">
-                    Ratings
+                    <spring:message code="userProfile.ratings"/>
                 </div>
                 <div class="user-ratings-wrapper">
                     <div class="user-rating-wrapper">
-                        <div class="small grey-text">Borrower</div>
+                        <div class="small grey-text"><spring:message code="borrower"/></div>
                         <div class="rating">
                             <% for (int i = 0; i < 5; i++) { %>
                             <i class="fas fa-star d-inline-block star"></i>
                             <% } %>
                         </div>
                     </div>
+                    <c:if test="${user.behavior == 'LENDER'}">
                     <div class="user-rating-wrapper">
-                        <div class="small grey-text">Lender</div>
+                        <div class="small grey-text"><spring:message code="lender"/></div>
                         <div class="rating">
                             <% for (int i = 0; i < 5; i++) { %>
                             <i class="fas fa-star d-inline-block star"></i>
                             <% } %>
                         </div>
                     </div>
+                    </c:if>
                     <div class="spacer">
 
                     </div>
