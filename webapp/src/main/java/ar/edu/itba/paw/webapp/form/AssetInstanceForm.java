@@ -11,23 +11,23 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 public class AssetInstanceForm {
-    @Size(min = 0, max = 100)
+    @Size(min = 1, max = 100)
     private String physicalCondition;
 
-    @Size(min = 0, max = 100)
+    @Size(min = 1, max = 100)
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String zipcode;
 
-    @Size(min = 0, max = 100)
+    @Size(min = 1, max = 100)
     private String locality;
 
-    @Size(min = 0, max = 100)
+    @Size(min = 1, max = 100)
     private String province;
 
-    @Size(min = 0, max = 100)
+    @Size(min = 1, max = 100)
     private String country;
 
-    @Min(value = 0)
+    @Min(value = 1)
     private int maxDays;
 
     @Image

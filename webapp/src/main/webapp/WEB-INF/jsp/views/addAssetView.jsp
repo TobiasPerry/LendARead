@@ -24,6 +24,7 @@
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/utils.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
+    <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
 </head>
 
 <body data-path="${path}" class="body-class">

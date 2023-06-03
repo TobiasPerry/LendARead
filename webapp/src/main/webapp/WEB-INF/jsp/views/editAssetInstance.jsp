@@ -26,15 +26,15 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <script src="<c:url value="/static/javaScript/map.js"/>"></script>
   <script src="<c:url value="/static/javaScript/assetView.js"/>"></script>
-  <script src="<c:url value="/static/javaScript/addAssetView.js"/>"></script>
-  <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
+    <script src="<c:url value="/static/javaScript/addAssetView.js"/>"></script>
+    <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
   <link rel="stylesheet" href="<c:url value="/static/css/changeAsset.css"/>">
 </head>
 <body data-path="${path}" class=" body-class" data-maxDays="<c:out value="${assetInstance.maxDays}" /> ">
 <jsp:include page="../components/navBar.jsp"/>
 <c:url var="changeAsset" value="/editAsset/${assetInstance.id}"/>
 <form:form modelAttribute="assetInstanceForm" method="post"
-           action="${changeAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-8" >
+           action="${changeAsset}" enctype="multipart/form-data" onsubmit="return beforeSubmit()" id="form" accept-charset="utf-8" >
 <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
 
     <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px; width: 50%">
@@ -60,7 +60,7 @@
           </span>
         </h3>
 
-        <form:input path="image" type="file" value="${image}" accept="image/*" name="file" id="uploadImage" style="display:none;"
+        <form:input path="image" type="file"  accept="image/*" name="file" id="uploadImage" style="display:none;"
           onchange="previewImage()"/>
           <h6 id="physicalConditionClick"
             data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
@@ -95,7 +95,17 @@
         <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                 value="${assetInstance.book.isbn}"/>
         </h6>
-          <input class="btn btn-green" type="submit" value="<spring:message code="editAssetView.editButton"/>">
+          <div class="d-flex justify-content-center">
+              <label class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></label>
+              <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" value="1" min="1" class="w-25 mx-1 form-control mr-2"/>
+              <select class="w-25 mx-1 form-select" id="borrow-time-type">
+                  <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
+                  <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
+                  <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
+              </select>
+              <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
+          </div>
+          <input class="btn btn-green" type="submit"  value="<spring:message code="editAssetView.editButton"/>">
       </div>
     </div>
     </div>
@@ -140,4 +150,15 @@
       }
     }
   });
+  function beforeSubmit() {
+      const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
+      const borrowTimeType = document.getElementById('borrow-time-type')
+      const timeInDays = document.getElementById('maxDays')
+
+      const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
+
+      timeInDays.value = totalTimeInDays
+
+      return true
+  }
 </script>

@@ -8,9 +8,8 @@ import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
-import org.apache.commons.io.FileUtils;
+import ar.edu.itba.paw.webapp.miscellaneous.CustomMultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
 
 
 @Controller
@@ -122,27 +118,14 @@ final public class UserAssetDetailsController {
         if (errors.hasErrors()) {
             return new ModelAndView("redirect:/myBookDetails/" + id);
         }
-        Optional<LocationImpl> location =Optional.of(LocationFactory.createLocation(assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry()));
-        Optional<PhysicalCondition> physicalCondition;
-        Optional<Integer> maxLendingDays;
-        if (Objects.equals(assetInstanceForm.getPhysicalCondition(), ""))
-            physicalCondition = Optional.empty();
-        else
-            physicalCondition = Optional.of(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()));
-        if (assetInstanceForm.getMaxDays() < 0)
-            maxLendingDays = Optional.empty();
-        else
-            maxLendingDays = Optional.of(assetInstanceForm.getMaxDays());
-        assetInstanceService.changeAssetInstance(id,physicalCondition, maxLendingDays,location, Optional.of(assetInstanceForm.getImage().getBytes()));
+        assetInstanceService.changeAssetInstance(id,PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation(assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry()), assetInstanceForm.getImage().getBytes());
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)
     public ModelAndView changeAsset(@PathVariable("id") final int id,@ModelAttribute("assetInstanceForm") final AssetInstanceForm assetInstanceForm) throws AssetInstanceNotFoundException, IOException {
         AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);
-        File file = new File("temp");
-        FileUtils.writeByteArrayToFile(file, assetInstance.getImage().getPhoto());
-
-        return new ModelAndView(VIEW_NAME_ASSET_EDIT).addObject("image",file)
+        CustomMultipartFile file = new CustomMultipartFile(assetInstance.getImage().getPhoto());
+        return new ModelAndView(VIEW_NAME_ASSET_EDIT)
                 .addObject(ASSET_INSTANCE, assetInstance);
     }
 

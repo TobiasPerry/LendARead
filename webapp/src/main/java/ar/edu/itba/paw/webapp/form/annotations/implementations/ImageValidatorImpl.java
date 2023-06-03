@@ -18,6 +18,9 @@ public class ImageValidatorImpl implements ConstraintValidator<Image, MultipartF
 
     @Override
     public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext constraintValidatorContext) {
-        return !multipartFile.isEmpty() && multipartFile.getSize() < MAX_SIZE && multipartFile.getContentType().contains(ACCEPTED_MIME_TYPES);
+        if(multipartFile.isEmpty()) {
+            return true;
+        }
+        return  multipartFile.getSize() < MAX_SIZE && multipartFile.getContentType().contains(ACCEPTED_MIME_TYPES);
     }
 }

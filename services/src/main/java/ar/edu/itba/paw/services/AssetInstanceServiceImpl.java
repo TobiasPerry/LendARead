@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -104,18 +105,17 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<LocationImpl> location, final Optional<byte[]> photo) throws AssetInstanceNotFoundException{
+    public void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location, byte[] photo) throws AssetInstanceNotFoundException{
         AssetInstanceImpl assetInstance = getAssetInstance(id);
-        LocationImpl location1;
-        if(location.isPresent() && !assetInstance.getLocation().equals(location.get())) {
-            location1 = locationDao.addLocation(location.get());
-            assetInstanceDao.changeLocation(assetInstance, location1);
+
+        if (!assetInstance.getLocation().equals(location)) {
+            assetInstance.setLocation(location);
         }
-        if (photo.isPresent() && !assetInstance.getImage().equals(new ImageImpl(photo.get()))) {
-            ImageImpl image = imagesDao.addPhoto(photo.get());
-           assetInstanceDao.changeImage(assetInstance,image);
+        if (photo.length > 0 &&!Arrays.equals(assetInstance.getImage().getPhoto(), photo)){
+            ImageImpl image = imagesDao.addPhoto(photo);
+            assetInstance.setImage(image);
         }
-        physicalCondition.ifPresent(condition -> assetInstanceDao.changePhysicalCondition(assetInstance,condition));
-        maxLendingDays.ifPresent(integer -> assetInstanceDao.changeMaxLendingDays(assetInstance,integer));
+        assetInstance.setMaxLendingDays(maxLendingDays);
+        assetInstance.setPhysicalCondition(physicalCondition);
     }
 }
