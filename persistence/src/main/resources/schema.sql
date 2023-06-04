@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS users(
     mail varchar(100) unique,
     name varchar(100) not null,
     telephone varchar(100),
-    password varchar(200)
+    password varchar(200),
+    photo_id int references photos(id) on delete cascade
 );
 CREATE TABLE IF NOT EXISTS location(
     id SERIAL primary key,
