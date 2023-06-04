@@ -2,6 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -15,38 +16,56 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
 
 
+<link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
 
 <link href="<c:url value="/static/css/navBar.css"/>" rel="stylesheet"/>
 <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 <nav class="navbar navbar-expand-lg" style="background-color: #111711" data-bs-theme="dark">
     <div class="container-fluid">
         <a href="<c:url value="/"/>" class="nav-icon"><img src="<c:url value="/static/images/logo-claro.png"/>" alt="Lend a read logo" style="width: 200px"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-center" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item">
+
+                <c:if test="${param.showSearchbar}">
+
+                    <div class="form mx-3">
+                        <c:url var="discovery" value="/discovery"/>
+                        <form:form modelAttribute="searchFilterSortForm" method="get" action="${discovery}" id="form-search">
+                            <i class="fa fa-search fa-search-class"></i>
+                            <input type="text" class="form-control form-input" name="search"
+                                   placeholder="<spring:message code="discovery.search.placeholder"/>" id="nav-bar-search-bar"
+                                   >
+                        </form:form>
+                    </div>
+
+                </c:if>
+
+                <li class="nav-item  d-flex align-items-center">
                     <a class="nav-link navItem" id="home" aria-current="page" href="<c:url value="/discovery"/>"><spring:message code="navBar.home" /></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item  d-flex align-items-center">
                     <a class="nav-link navItem"  id="addAsset" aria-current="page" href="<c:url value="/addAssetView"/>"><spring:message code="navBar.lend" /></a>
                 </li>
                 <security:authorize access="isAuthenticated()">
-                    <li class="nav-item">
+                    <li class="nav-item d-flex align-items-center">
                     <a class="nav-link navItem" id="userHome"  aria-current="page" href="<c:url value='/userHome'/>">
                         <i class="fas fa-user"></i>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item d-flex align-items-center">
                     <a class="nav-link navItem" id="logout"  aria-current="page" href="<c:url value='/logout'/>">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </li>
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
-                <li class="nav-item">
+                <li class="nav-item d-flex align-items-center">
                     <a class="nav-link navItem" id="login"  aria-current="page" href="<c:url value='/login'/>">
                         <spring:message code="auth.login"/>
                     </a>
@@ -57,3 +76,12 @@
     </div>
 </nav>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("nav-bar-search-bar").addEventListener("keyup", (event) => {
+            if (event.key === "Enter" || event.code === "Enter") {
+                document.getElementById("form-search").submit();
+            }
+        })
+    })
+</script>

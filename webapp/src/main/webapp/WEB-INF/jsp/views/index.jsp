@@ -26,7 +26,9 @@
 </head>
 
 <body data-path="${path}" class = "body-class">
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 <jsp:include page="../components/snackbarComponent.jsp"/>
 
 <section id="hero" style="background-color: #D0DCD0; padding-bottom: 100px; ">

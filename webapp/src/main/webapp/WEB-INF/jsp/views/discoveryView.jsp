@@ -36,11 +36,13 @@
 </head>
 <body data-path="${path}" class="body-class">
 <!-- Esto va a cambiar es un mockUp -->
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="false"/>
+</jsp:include>
 <jsp:include page="../components/snackbarComponent.jsp"/>
 <div class="main-class">
 
-    <div class="container">
+    <div class="container my-4">
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="">
                 <div class="form">

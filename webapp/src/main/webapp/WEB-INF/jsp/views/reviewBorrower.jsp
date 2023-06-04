@@ -22,8 +22,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body class="body-class">
-<jsp:include page="../components/navBar.jsp"/>
-
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
 
 
