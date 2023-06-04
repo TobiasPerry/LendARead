@@ -38,18 +38,3 @@ function isValidISBN(isbn) {
 
     return false;
 }
-
-function previewImage() {
-    const fileInput = document.getElementById('uploadImage');
-    const file = fileInput.files[0];
-    const img = document.getElementById('bookImage');
-    const reader = new FileReader();
-
-    reader.addEventListener('load', function () {
-        img.src = reader.result;
-    }, false);
-
-    if (file) {
-        reader.readAsDataURL(file);
-    }
-}
