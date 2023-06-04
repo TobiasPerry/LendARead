@@ -40,6 +40,27 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
+    public void changePhysicalCondition(final AssetInstanceImpl ai, final PhysicalCondition physicalCondition){
+        ai.setPhysicalCondition(physicalCondition);
+        em.persist(ai);
+    }
+    @Override
+    public void changeLocation(final AssetInstanceImpl ai,final LocationImpl location){
+        ai.setLocation(location);
+        em.persist(ai);
+    }
+    @Override
+    public void changeImage(final AssetInstanceImpl ai,final ImageImpl image){
+        ai.setImage(image);
+        em.persist(ai);
+    }
+    @Override
+    public void changeMaxLendingDays(final AssetInstanceImpl ai, final int maxLendingDays){
+
+        ai.setMaxLendingDays(maxLendingDays);
+        em.persist(ai);
+    }
+    @Override
     public Optional<AssetInstanceImpl> getAssetInstance(int assetId) {
         String queryString = "FROM AssetInstanceImpl as ai WHERE ai.id = :id";
         TypedQuery<AssetInstanceImpl> query = em.createQuery(queryString, AssetInstanceImpl.class);
