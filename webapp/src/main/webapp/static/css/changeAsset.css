@@ -1,26 +1,36 @@
-.image-div img {
-    opacity: 1;
-    -webkit-transition: .3s ease-in-out;
-    transition: .3s ease-in-out;
+.image-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.image-div img:hover {
-    opacity: .5;
+.image-container {
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
     cursor: pointer;
 }
-.textOverflow-container {
+.image-container img {
+    display: block;
     width: 100%;
-}
-
-.textOverflow {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
+    height: auto;
+    filter: brightness(50%);
+    transition: all 0.3s ease-in-out;
 }
 
 
+.img-hover-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #D1E9C3;
+    text-align: center;
+    font-size: 1.2rem;
+    opacity: 1;
+    transition: opacity 0.3s, ease-in-out;
+}
 
 
 

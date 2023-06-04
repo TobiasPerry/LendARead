@@ -14,6 +14,10 @@
             </c:otherwise>
         </c:choose>
     </button>
+    <a class="btn-green" href="<c:url value="/editAsset/${asset.id}"/>" style="margin-top: 5px;text-decoration: none">
+        <i class="fas fa-pencil-alt"></i>
+        <spring:message code="edit"/>
+    </a>
     <button id="deleteBtn" class="btn-red" style="margin-top: 5px" type="submit">
         <i class="fas fa-trash"></i>
         <spring:message code="delete"/>

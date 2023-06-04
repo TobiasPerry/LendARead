@@ -24,11 +24,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-  <script src="<c:url value="/static/javaScript/map.js"/>"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css" integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="<c:url value="/static/javaScript/map.js"/>"></script>
   <script src="<c:url value="/static/javaScript/assetView.js"/>"></script>
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>"></script>
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
-  <link rel="stylesheet" href="<c:url value="/static/css/changeAsset.css"/>">
+    <link href="<c:url value="/static/css/changeAsset.css"/>" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="<c:url value="/static/css/changeAsset.css"/>">
 </head>
 <body data-path="${path}" class=" body-class" data-maxDays="<c:out value="${assetInstance.maxDays}" /> ">
 <jsp:include page="../components/navBar.jsp"/>
@@ -39,13 +42,16 @@
 
     <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px; width: 50%">
     <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
-
-      <div class="image-div image-wrapper">
-        <label for="uploadImage" class="image-container position-relative">
-            <img id="bookImage" src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book cover"
-               style="margin-left: 0; margin-right: 50px; height: 500px; width: 300px; object-fit: cover">
-        </label>
-      </div>
+        <div class="image-wrapper">
+            <label for="uploadImage" class="image-container position-relative ${showSnackbarInvalid ? 'image-border-error' : ''}">
+                <img src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book Cover"
+                     class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
+                <div class="img-hover-text">
+                    <i class="fas fa-pencil-alt" style="color: #D1E9C3"></i>
+                    <spring:message code="editAssetView.changeImage"/>
+                </div>
+            </label>
+        </div>
 
       <div class="mx-2">
 
@@ -64,7 +70,7 @@
           onchange="previewImage()"/>
           <h6 id="physicalConditionClick"
             data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
-          <form:select path="physicalCondition" id="physicalCondition" class="form-control"
+          <form:select path="physicalCondition" id="physicalCondition" class="form-control form-select"
                        accept-charset="utf-9" >
               <form:option  value="ASNEW"    ><spring:message
                       code="enum.ASNEW"/></form:option>
@@ -95,17 +101,17 @@
         <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                 value="${assetInstance.book.isbn}"/>
         </h6>
-          <div class="d-flex justify-content-center">
-              <label class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></label>
-              <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" value="1" min="1" class="w-25 mx-1 form-control mr-2"/>
-              <select class="w-25 mx-1 form-select" id="borrow-time-type">
+          <h6 class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></h6>
+          <div class="d-flex">
+              <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" min="1" style="margin-right: 5px" class="w-25 form-control"/>
+              <select class="w-26 ml-2 form-select" id="borrow-time-type">
                   <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
                   <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
                   <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
               </select>
               <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
           </div>
-          <input class="btn btn-green" type="submit"  value="<spring:message code="editAssetView.editButton"/>">
+          <input class="btn btn-green mt-2" type="submit"  value="<spring:message code="editAssetView.editButton"/>">
       </div>
     </div>
     </div>
@@ -115,8 +121,6 @@
     <div class="container-column" style="flex: 0 0 100%">
       <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
         <div class="card-body">
-
-
           <h5 class="card-title"><spring:message code="assetView.locationTitle"/></h5>
             <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.zipcode"/></h6>
           <form:input path="zipcode" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.zipcode}"/>
