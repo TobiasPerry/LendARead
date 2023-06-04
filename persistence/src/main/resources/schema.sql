@@ -55,3 +55,22 @@ CREATE TABLE IF NOT EXISTS languages(
     id VARCHAR(3) PRIMARY KEY,
     name varchar(100)
 );
+
+CREATE SEQUENCE IF NOT EXISTS user_reviews_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS  asset_instance_id_seq START 1;
+
+CREATE TABLE IF NOT EXISTS assetInstanceReview(
+    id SERIAL primary key,
+    assetInstanceId INT references AssetInstance(id) ON DELETE CASCADE,
+    review TEXT,
+    rating INT,
+    userId INT references users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS userReview(
+    id SERIAL primary key,
+    reviewer INT references users(id) ON DELETE CASCADE,
+    recipient INT references users(id) ON DELETE CASCADE,
+    review TEXT,
+    rating INT
+);

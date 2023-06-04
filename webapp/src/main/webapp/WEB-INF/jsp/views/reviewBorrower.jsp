@@ -29,16 +29,16 @@
             <img class="card-img d-none" src="<c:url value="/getImage/11"/>" alt="Goverment Lorem Ipsum Sit Amet Consectetur dipisi?">
             <div class="card-img-overlay d-flex flex-column">
                 <div class="card-body">
-                    <small class="card-meta mb-2">Phill H. Knight</small>
-                    <h3 class="card-title mt-0 ">Shoe Dog</h3>
-                    <small><i class="far fa-clock"></i> Good </small>
+                    <small class="card-meta mb-2"><c:out value="${book.author}"/></small>
+                    <h3 class="card-title mt-0 "><c:out value="${book.name}"/></h3>
+                    <small><i class="far fa-clock"></i> <c:out value="${assetInstance.physicalCondition}"/> </small>
                 </div>
                 <div class="card-footer">
                     <div class="media">
                         <img class="mr-3 rounded-circle" src="<c:url value="/getImage/11"/>" alt="Generic placeholder image" style="width:50px; height: 50px">
                         <div class="media-body">
-                            <h6 class="my-0 text-white d-block">ippo</h6>
-                            <small> Villa Martelli, Buenos Aires </small>
+                            <h6 class="my-0 text-white d-block"> <c:out value="${user.name}}"/> </h6>
+                            <small> <c:out value="${assetInstance.location.locality}"/>, <c:out value="${assetInstance.location.province}"/>, <c:out value="${assetInstance.location.country}"/> </small>
                         </div>
                     </div>
                 </div>
@@ -121,13 +121,14 @@
                     <textarea class="form-control" aria-label="With textarea"></textarea>
                 </div>
 
-                <c:url value="/review/borrower/${lendingId}" var="reviewsBorrowerUrl"/>
-                <form:form method="get" accept-charset="UTF-8" action="${reviewsBorrowerUrl}">
+                <c:url value="/review/borrowerAdd" var="reviewsBorrowerUrl"/>
+                <form:form method="post" accept-charset="UTF-8" action="${reviewsBorrowerUrl}">
                     <input type="submit" class="btn btn-green mx-1"
                            value="<spring:message code="review.sendReview"/>"
                     />
-                    <input type="hidden" name="rating" value="1"/>
-                    <input type="hidden" name="review" value="Hola"/>
+                    <input type="hidden" name="rating" value="4"/>
+                    <input type="hidden" name="review" value="Esto es una review 4 estrellas"/>
+                    <input type="hidden" name="lendingId" value="${lendingId}"/>
                 </form:form>
             </div>
         </div>

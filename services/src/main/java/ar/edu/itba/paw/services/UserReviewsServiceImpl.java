@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +30,13 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     }
 
 
+    @Transactional
     @Override
     public void addReview(UserReview userReview) {
         userReviewsDao.addReview(userReview);
     }
 
+    @Transactional
     @Override
     public double getRating(UserImpl user) {
         return userReviewsDao.getRating(user);
@@ -46,26 +49,31 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         return user.get();
     }
 
+    @Transactional
     @Override
     public double getRatingById(int userId) throws UserNotFoundException {
         return getRating(getUser(userId));
     }
 
+    @Transactional
     @Override
     public List<UserReview> getUserReviewsAsRecipient(UserImpl recipient) {
         return userReviewsDao.getUserReviewsAsRecipient(recipient);
     }
 
+    @Transactional
     @Override
     public List<UserReview> getUserReviewsAsRecipientById(int recipientId) throws UserNotFoundException{
         return getUserReviewsAsRecipient(getUser(recipientId));
     }
 
+    @Transactional
     @Override
     public List<UserReview> getUserReviewsAsReviewer(UserImpl reviewer) {
         return userReviewsDao.getUserReviewsAsReviewer(reviewer);
     }
 
+    @Transactional
     @Override
     public List<UserReview> getUserReviewsAsReviewerById(int reviewerId) throws UserNotFoundException {
         return getUserReviewsAsReviewer(getUser(reviewerId));

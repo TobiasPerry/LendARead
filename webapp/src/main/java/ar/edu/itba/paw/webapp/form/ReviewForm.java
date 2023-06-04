@@ -19,6 +19,8 @@ public class ReviewForm {
     @Max(5)
     private int rating;
 
+    private int lendingId;
+
     public ReviewForm(){
         this.rating = 1;
     }

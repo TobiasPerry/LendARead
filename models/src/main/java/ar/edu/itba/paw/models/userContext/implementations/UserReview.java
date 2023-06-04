@@ -29,11 +29,11 @@ public class UserReview {
     private int rating;
 
     @ManyToOne
-    @JoinColumn(name = "reviewerId", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "reviewer", referencedColumnName = "id", nullable = false)
     private UserImpl reviewer;
 
     @ManyToOne
-    @JoinColumn(name = "recipientId", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "recipient", referencedColumnName = "id", nullable = false)
     private UserImpl recipient;
 
 }
