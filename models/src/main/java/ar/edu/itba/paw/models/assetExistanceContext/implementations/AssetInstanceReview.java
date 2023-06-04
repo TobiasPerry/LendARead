@@ -10,20 +10,20 @@ public class AssetInstanceReview {
     //private int assetInstanceId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="assetInstance", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name="assetInstanceId", referencedColumnName = "id", nullable = false)
     private AssetInstanceImpl assetInstance;
 
     @Column(length = 500, nullable = false)
     private String review;
     @ManyToOne
-    @JoinColumn(name = "reviewerId", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private UserImpl reviewer;
     @Column(nullable = false)
     private int rating;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_instance_id_seq")
-    @SequenceGenerator(sequenceName = "asset_instance_id_seq", name = "asset_instance_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assetinstancereview_id_seq")
+    @SequenceGenerator(sequenceName = "assetinstancereview_id_seq", name = "assetinstancereview_id_seq", allocationSize = 1)
     private Long id;
 
     public AssetInstanceReview(final AssetInstanceImpl assetInstance, String message, final UserImpl reviewer, int rating) {

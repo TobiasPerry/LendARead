@@ -18,8 +18,8 @@ public class UserReview {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_reviews_id_seq")
-    @SequenceGenerator(sequenceName = "user_reviews_id_seq", name = "user_reviews_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userreview_id_seq")
+    @SequenceGenerator(sequenceName = "userreview_id_seq", name = "userreview_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(length = 500, nullable = false)

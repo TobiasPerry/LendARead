@@ -56,9 +56,6 @@ CREATE TABLE IF NOT EXISTS languages(
     name varchar(100)
 );
 
-CREATE SEQUENCE IF NOT EXISTS user_reviews_id_seq START 1;
-CREATE SEQUENCE IF NOT EXISTS  asset_instance_id_seq START 1;
-
 CREATE TABLE IF NOT EXISTS assetInstanceReview(
     id SERIAL primary key,
     assetInstanceId INT references AssetInstance(id) ON DELETE CASCADE,

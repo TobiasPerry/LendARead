@@ -126,9 +126,12 @@
                     <input type="submit" class="btn btn-green mx-1"
                            value="<spring:message code="review.sendReview"/>"
                     />
-                    <input type="hidden" name="rating" value="4"/>
-                    <input type="hidden" name="review" value="Esto es una review 4 estrellas"/>
+                    <input type="hidden" name="assetInstanceReview" value="DESDE JSP"/>
+                    <input type="hidden" name="userReview" value="DESDE JSP"/>
+                    <input type="hidden" name="userRating" value="4"/>
+                    <input type="hidden" name="assetInstanceRating" value="4"/>
                     <input type="hidden" name="lendingId" value="${lendingId}"/>
+
                 </form:form>
             </div>
         </div>

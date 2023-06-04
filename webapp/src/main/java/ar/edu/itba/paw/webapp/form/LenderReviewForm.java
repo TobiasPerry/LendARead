@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.form;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -10,7 +9,8 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class ReviewForm {
+public class LenderReviewForm {
+
 
     @Size(max = 200)
     private String review;
@@ -21,7 +21,7 @@ public class ReviewForm {
 
     private int lendingId;
 
-    public ReviewForm(){
+    public LenderReviewForm(){
         this.rating = 1;
     }
 
