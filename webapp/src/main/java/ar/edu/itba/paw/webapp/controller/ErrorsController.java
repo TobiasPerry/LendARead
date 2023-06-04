@@ -49,4 +49,9 @@ public class ErrorsController {
         mav.addObject("errorSubtitle", messageSource.getMessage("error.internalError.Subtitle", null, LocaleContextHolder.getLocale()));
         return mav;
     }
+
+    @ExceptionHandler({UnauthorizedUserException.class})
+    public ModelAndView unauthorizedUserException(){
+        return new ModelAndView("views/403View");
+    }
 }

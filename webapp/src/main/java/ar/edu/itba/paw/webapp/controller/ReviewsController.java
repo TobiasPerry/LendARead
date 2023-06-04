@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.UnauthorizedUserException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
@@ -72,12 +74,15 @@ public class ReviewsController {
     public ModelAndView reviewLenderView(
             @PathVariable int lendingId,
             final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm
-            ) throws AssetInstanceNotFoundException{
+            ) throws AssetInstanceNotFoundException, UnauthorizedUserException {
 
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         final AssetInstanceImpl assetInstance = lending.getAssetInstance();
         final UserImpl user = lending.getUserReference();
+
+        if(!assetInstanceService.isOwner(assetInstance, userService.getCurrentUser()))
+            throw new UnauthorizedUserException("Current user is not owner of the book");
 
         ModelAndView mav = new ModelAndView("views/reviewLender");
         mav.addObject("book", assetInstance.getBook());
@@ -108,12 +113,15 @@ public class ReviewsController {
     public ModelAndView reviewBorrowerView(
             @PathVariable int lendingId,
             final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm
-            ) throws AssetInstanceNotFoundException{
+            ) throws AssetInstanceNotFoundException, UnauthorizedUserException, UserNotFoundException {
 
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         final AssetInstanceImpl assetInstance = lending.getAssetInstance();
         final UserImpl user = lending.getUserReference();
+
+        if(!user.equals(userService.getUser(userService.getCurrentUser())))
+            throw new UnauthorizedUserException("User has not borrowed this book");
 
         ModelAndView mav = new ModelAndView("views/reviewBorrower");
         mav.addObject("book", assetInstance.getBook());
