@@ -56,31 +56,31 @@
                     <div class="rating-wrapper">
 
                         <!-- star 5 -->
-                        <input type="radio" id="book-5-star-rating" name="star-rating" value="5">
+                        <input type="radio" id="book-5-star-rating" name="star-rating-1" value="5">
                         <label for="book-5-star-rating" class="star-rating" id="star5-borrower-asset-instance">
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
 
                         <!-- star 4 -->
-                        <input type="radio" id="book-4-star-rating" name="star-rating" value="4">
+                        <input type="radio" id="book-4-star-rating" name="star-rating-1" value="4">
                         <label for="book-4-star-rating" class="star-rating star" id="star4-borrower-asset-instance">
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
 
                         <!-- star 3 -->
-                        <input type="radio" id="book-3-star-rating" name="star-rating" value="3">
+                        <input type="radio" id="book-3-star-rating" name="star-rating-1" value="3">
                         <label for="book-3-star-rating" class="star-rating star" id="star3-borrower-asset-instance">
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
 
                         <!-- star 2 -->
-                        <input type="radio" id="book-2-star-rating" name="star-rating" value="2">
+                        <input type="radio" id="book-2-star-rating" name="star-rating-1" value="2">
                         <label for="book-2-star-rating" class="star-rating star" id="star2-borrower-asset-instance">
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
 
                         <!-- star 1 -->
-                        <input type="radio" id="book-1-star-rating" name="star-rating" value="1">
+                        <input type="radio" id="book-1-star-rating" name="star-rating-1" value="1">
                         <label for="book-1-star-rating" class="star-rating star" id="star1-borrower-asset-instance">
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
