@@ -13,6 +13,9 @@ final public class LocationImpl{
     private String province;
     @Column(length = 100, nullable = false)
     private String country;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
+    private  UserImpl userReference;
 
     @Column(length = 100)
     private String address = "Address";
