@@ -2,7 +2,6 @@ package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
 import org.springframework.stereotype.Repository;
 
@@ -35,9 +34,20 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<AssetInstanceReview> getAssetInstanceReviews(AssetInstanceImpl assetInstance) {
+        return null;
+    }
+
+   /* @Override
+    @SuppressWarnings("unchecked")
+    public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstanceImpl assetInstance) {
+
+        final Query queryNative = em.createNativeQuery("SELECT id FROM AssetInstanceReview  WHERE r.assetInstanceId = :assetInstance");
+
+        final Query queryCount = em.createNativeQuery("SELECT count(id) FROM AssetInstanceReview  WHERE r.assetInstanceId = :assetInstance");
+
+
         String hql = "SELECT r FROM AssetInstanceReview r WHERE r.assetInstanceId = :assetInstance";
         return (List<AssetInstanceReview>) em.createQuery(hql).setParameter("assetInstance", assetInstance.getId()).getResultList();
-    }
+    }*/
 }

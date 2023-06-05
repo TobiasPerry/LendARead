@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 
@@ -41,15 +40,17 @@ public class LenderReviewVoter implements AccessDecisionVoter<FilterInvocation> 
             StringBuilder stringBuilder = new StringBuilder(filterInvocation.getRequestUrl());
             stringBuilder.delete(0, stringBuilder.lastIndexOf("/") + 1);
             try {
-                if (userReviewsService.lenderCanReview(Integer.parseInt(stringBuilder.toString())))
+                if (userReviewsService.lenderCanReview(Integer.parseInt(stringBuilder.toString()))) {
                     vote.set(ACCESS_GRANTED);
+                    return vote.get();
+                }
                 else {
-                    SecurityContextHolder.clearContext();
                     vote.set(ACCESS_DENIED);
+                    return vote.get();
                 }
             } catch (Exception e) {
-                SecurityContextHolder.clearContext();
                 vote.set(ACCESS_DENIED);
+                return vote.get();
             }
 
         }
