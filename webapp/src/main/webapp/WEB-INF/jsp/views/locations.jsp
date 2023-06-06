@@ -44,20 +44,20 @@
 <jsp:include page="../components/navBar.jsp"/>
 
 <body class="body-class">
-<div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
+<div class="main-class" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
   <div class="container">
-    <div class="d-flex flex-wrap">
-      <c:forEach var="location" items="${locations}">
-       <jsp:include page="../components/locationCard.jsp">
-         <jsp:param name="location" value="${location}"/>
-       </jsp:include>
+    <h2 style="padding: 20px;"><spring:message code="addAssetView.locationInfo"/></h2>
+    <div class="locations-grid d-flex flex-wrap" style="background-color: #D0DCD0; border-radius: 20px; padding: 20px;">
+      <c:forEach var="location" items="${locations}" >
+        <jsp:include page="../components/locationCard.jsp">
+          <jsp:param name="location" value="${location}"/>
+        </jsp:include>
       </c:forEach>
       <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 250px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
-          <i class="bi bi-plus-lg "></i>
+          <i class="bi bi-plus-lg"></i>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </div>

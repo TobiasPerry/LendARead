@@ -38,12 +38,13 @@ public class LocationsController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView editLocation(@RequestParam("id") int id,
-                               @RequestParam("locality") String locality,
-                               @RequestParam("province") String province,
-                               @RequestParam("country") String country,
-                               @RequestParam("zipcode") String zipcode) throws UserNotFoundException {
+                                     @RequestParam("name") String name,
+                                     @RequestParam("locality") String locality,
+                                     @RequestParam("province") String province,
+                                     @RequestParam("country") String country,
+                                     @RequestParam("zipcode") String zipcode) throws UserNotFoundException {
 
-        LocationImpl newLocation = new LocationImpl(id, zipcode, locality, province, country,userService.getUser(userService.getCurrentUser()) );
+        LocationImpl newLocation = new LocationImpl(id, name, zipcode, locality, province, country, userService.getUser(userService.getCurrentUser()));
         locationsService.editLocation(newLocation);
         return manageLocations();
     }

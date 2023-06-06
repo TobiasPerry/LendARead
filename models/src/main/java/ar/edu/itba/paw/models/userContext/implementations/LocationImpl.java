@@ -26,7 +26,7 @@ final public class LocationImpl{
     @SequenceGenerator(sequenceName = "location_id_seq", name = "location_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
-    public LocationImpl(int id,String zipcode, String locality, String province, String country, UserImpl user) {
+    public LocationImpl(int id,String name, String zipcode, String locality, String province, String country, UserImpl user) {
         this.zipcode = zipcode;
         this.locality = locality;
         this.province = province;
@@ -34,7 +34,7 @@ final public class LocationImpl{
         this.id = id;
         this.userReference = user;
     }
-    public LocationImpl(String zipcode, String locality, String province, String country) {
+    public LocationImpl(String name, String zipcode, String locality, String province, String country) {
         this.zipcode = zipcode;
         this.locality = locality;
         this.province = province;

@@ -35,6 +35,7 @@ final public class FormFactoryAddAssetView {
     public static AssetInstanceImpl createAssetInstance(AddAssetForm request, UserImpl user) {
 
         LocationImpl location = LocationFactory.createLocation(
+                "",
                 request.getZipcode(),
                 request.getLocality(),
                 request.getProvince(),

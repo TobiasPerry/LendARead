@@ -126,7 +126,7 @@ final public class UserAssetDetailsController {
         }
         UserImpl user = userService.getUser(userService.getCurrentUser());
 
-        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation(assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry(), user), assetInstanceForm.getImage().getBytes());
+        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation("", assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry(), user), assetInstanceForm.getImage().getBytes());
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)
