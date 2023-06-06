@@ -15,7 +15,10 @@ public interface LocationsService {
 
     LocationImpl editLocation(LocationImpl lc);
 
+    void deleteLocation(LocationImpl lc);
+
     public List<LocationImpl> getLocationsById(int userId) throws UserNotFoundException;
 
     LocationImpl editLocationById(int locationId);
+    void deleteLocationById(int locationId) throws UserNotFoundException;
 }

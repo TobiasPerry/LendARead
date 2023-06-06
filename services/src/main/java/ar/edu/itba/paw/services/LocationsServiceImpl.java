@@ -44,6 +44,11 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
+    public void deleteLocation(LocationImpl lc) {
+
+    }
+
+    @Override
     public List<LocationImpl> getLocationsById(int userId) throws UserNotFoundException {
         return locationsDao.getLocations(userService.getUserById(userId));
     }
@@ -51,5 +56,10 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     public LocationImpl editLocationById(int locationId) {
         return locationsDao.editLocation(locationsDao.getLocation(locationId));
+    }
+
+    @Override
+    public void deleteLocationById(int locationId) throws UserNotFoundException {
+
     }
 }
