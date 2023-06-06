@@ -10,13 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
-public class ErrorsController {
+public class ErrorsControllerAdvice {
 
 
     private final MessageSource messageSource;
 
     @Autowired
-    public ErrorsController(final MessageSource messageSource) {
+    public ErrorsControllerAdvice(final MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
