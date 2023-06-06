@@ -57,7 +57,7 @@
             </div>
             <c:url value="/deleteLocation" var="deleteUrl"/>
             <form:form action="${deleteUrl}" method="post">
-              <input type="hidden" name="id" value="${location.getId() == null ? -1 : location.id}">
+              <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
               <button type="submit" class="btn btn-danger delete-location">
                 <i class="fas fa-trash-alt"></i>
               </button>
@@ -71,30 +71,30 @@
                 <div class="field">
                   <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
                   <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
-                  <label for="locality${location.getId()}" class="form-label">${localityLabel}</label>
-                  <input type="text" name="locality" id="locality${location.getId()}" placeholder="${localityPH}"
+                  <label for="locality${location.id}" class="form-label">${localityLabel}</label>
+                  <input type="text" name="locality" id="locality${location.id}" placeholder="${localityPH}"
                          class="form-control" value="${location.locality}" disabled/>                </div>
                 <div class="field">
                   <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
                   <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
-                  <label for="province${location.getId()}" class="form-label">${provinceLabel}</label>
-                  <input type="text" name="province" id="province${location.getId()}" placeholder="${provincePH}"
-                         class="form-control" value="${location.getProvince()}" disabled/>
+                  <label for="province${location.id}" class="form-label">${provinceLabel}</label>
+                  <input type="text" name="province" id="province${location.id}" placeholder="${provincePH}"
+                         class="form-control" value="${location.province}" disabled/>
                 </div>
               </div>
               <div class="d-flex justify-content-between">
                 <div class="field">
                   <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
                   <spring:message code="addAssetView.placeholders.country" var="countryPH"/>
-                  <label for="country${location.getId()}" class="form-label">${countryLabel}</label>
-                  <input type="text" name="country" id="country${location.getId()}" placeholder="${countryPH}"
+                  <label for="country${location.id}" class="form-label">${countryLabel}</label>
+                  <input type="text" name="country" id="country${location.id}" placeholder="${countryPH}"
                          class="form-control" value="${location.country}" disabled/>
                 </div>
                 <div class="field">
                   <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
                   <spring:message code="addAssetView.placeholders.zipcode" var="zipcodePH"/>
-                  <label for="zipcode${location.getId()}" class="form-label">${zipcodeLabel}</label>
-                  <input type="text" name="zipcode" id="zipcode${location.getId()}" placeholder="${zipcodePH}"
+                  <label for="zipcode${location.id}" class="form-label">${zipcodeLabel}</label>
+                  <input type="text" name="zipcode" id="zipcode${location.id}" placeholder="${zipcodePH}"
                          class="form-control" value="${location.zipcode}" disabled/>
                 </div>
               </div>
