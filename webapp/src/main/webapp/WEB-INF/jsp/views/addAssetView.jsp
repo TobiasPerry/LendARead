@@ -22,7 +22,7 @@
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/utils.js"/>" defer></script>
-    <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
+    <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
 </head>
 
