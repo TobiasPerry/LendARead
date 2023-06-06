@@ -17,8 +17,8 @@ final public class LocationImpl{
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
     private  UserImpl userReference;
 
-//    @Column(length = 100, nullable = false, unique = true)
-//    private String name;
+    @Column(length = 100, nullable = false, unique = true)
+    private String name;
     @Column(length = 100)
     private String address = "Address";
 
@@ -34,6 +34,7 @@ final public class LocationImpl{
         this.country = country;
         this.id = id;
         this.userReference = user;
+        this.name = name;
     }
     public LocationImpl(String name, String zipcode, String locality, String province, String country, UserImpl user) {
         this.zipcode = zipcode;
@@ -41,6 +42,7 @@ final public class LocationImpl{
         this.province = province;
         this.country = country;
         this.userReference = user;
+        this.name = name;
     }
     public LocationImpl(){}
 
@@ -81,6 +83,6 @@ final public class LocationImpl{
     }
 
     public String getName() {
-        return "";
+        return name;
     }
 }

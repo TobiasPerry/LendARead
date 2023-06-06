@@ -52,8 +52,10 @@
         <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
           <div class="d-flex justify-content-between">
             <div>
-              <spring:message code="addAssetView.locationNameLabel" var="locationNameLabel"/>
-              <input type="text" name="name" id="name${location.id}" class="form-control" value="${location.name}" disabled/>
+              <div>
+                <h3 id="nameDisplay${location.id}">${location.name}</h3>
+                <input type="text" name="name" id="name${location.id}" class="form-control d-none" value="${location.name}"/>
+              </div>
             </div>
             <c:url value="/deleteLocation" var="deleteUrl"/>
             <form:form action="${deleteUrl}" method="post">
@@ -124,10 +126,18 @@
 <script>
   $(function() {
     $('body').on('click', '.edit-button', function() {
-      $(this).closest('form').find('input[type="text"]').removeAttr('disabled');
+      $(this).closest('form').find('input[type="text"]').prop('disabled', false).removeClass('d-none');
       $(this).addClass('d-none');
       $(this).siblings('.save-button').removeClass('d-none');
     });
+  });
+
+  $('body').on('click', '.edit-button', function() {
+    const form = $(this).closest('form');
+    form.find('input[type="text"]').removeAttr('disabled').removeClass('d-none');
+    form.find('h3').addClass('d-none');
+    $(this).addClass('d-none');
+    $(this).siblings('.save-button').removeClass('d-none');
   });
 
   $(document).ready(function() {

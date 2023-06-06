@@ -5,8 +5,8 @@
 <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
     <div class="d-flex justify-content-between">
         <div>
-            <spring:message code="addAssetView.locationNameLabel" var="locationNameLabel"/>
-            <input type="text" name="name" id="name${location.id}" class="form-control" value="${location.name}" disabled/>
+            <h3 id="nameDisplay${location.id}">${location.name}</h3>
+            <input type="text" name="name" id="name${location.id}" class="form-control d-none" value="${location.name}"/>
         </div>
         <c:url value="/deleteLocation" var="deleteUrl"/>
         <form:form action="${deleteUrl}" method="post">
