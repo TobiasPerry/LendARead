@@ -31,7 +31,6 @@ public class LocationsController {
     @RequestMapping(value = "/userLocations", method = RequestMethod.GET)
     public ModelAndView manageLocations() throws UserNotFoundException {
         List<LocationImpl> locations = locationsService.getLocations(userService.getUser(userService.getCurrentUser()));
-        System.out.println(locations);
         return new ModelAndView(VIEW_NAME).addObject("locations", locations);
     }
 
@@ -43,19 +42,21 @@ public class LocationsController {
                                      @RequestParam("country") String country,
                                      @RequestParam("zipcode") String zipcode) throws UserNotFoundException {
 
-//        LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, userService.getUser(userService.getCurrentUser()));
-//        if(id == -1) {
-//            locationsService.addLocation(newLocation);
-//        } else
-//            locationsService.editLocation(newLocation);
+        if(id == -1) {
+            LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, userService.getUser(userService.getCurrentUser()));
+            locationsService.addLocation(newLocation);
+        } else {
+            LocationImpl newLocation = new LocationImpl(id, name, zipcode, locality, province, country, userService.getUser(userService.getCurrentUser()));
+            locationsService.editLocation(newLocation);
+        }
 
-        return manageLocations();
+        return new ModelAndView("redirect:/" + VIEW_NAME);
     }
 
     @RequestMapping(value = "/deleteLocation", method = RequestMethod.POST)
     public ModelAndView deleteLocation(@RequestParam("id") int id) throws UserNotFoundException {
         locationsService.deleteLocationById(id);
-        return manageLocations();
+        return new ModelAndView("redirect:/" + VIEW_NAME);
     }
 
 }
