@@ -16,7 +16,8 @@ final public class LocationImpl{
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
     private  UserImpl userReference;
-
+    @Column(length = 100, nullable = false, unique = true)
+    private String name;
     @Column(length = 100)
     private String address = "Address";
 
