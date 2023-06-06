@@ -24,7 +24,22 @@
   <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
   <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
   <title><spring:message code="addAssetView.locationInfo"/></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <style>
+    .btn-icon {
+      color: #000000;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .btn-icon:hover {
+      box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.25);
+    }
+  </style>
 </head>
+
+
 
 <jsp:include page="../components/navBar.jsp"/>
 
@@ -33,59 +48,16 @@
   <div class="container">
     <div class="d-flex flex-wrap">
       <c:forEach var="location" items="${locations}">
-        <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 250px;">
-          <form action="location/edit" method="post">
-            <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-danger delete-location" data-location-id="${location.getId()}">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </div>
-            <div class="field-group">
-              <div class="d-flex justify-content-between">
-                <div class="field">
-                  <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
-                  <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
-                  <label for="locality${location.getId()}" class="form-label">${localityLabel}</label>
-                  <input type="text" name="locality" id="locality${location.getId()}" placeholder="${localityPH}"
-                         class="form-control" value="${location.locality}" disabled/>                </div>
-                <div class="field">
-                  <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
-                  <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
-                  <label for="province${location.getId()}" class="form-label">${provinceLabel}</label>
-                  <input type="text" name="province" id="province${location.getId()}" placeholder="${provincePH}"
-                         class="form-control" value="${location.province}" disabled/>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between">
-                <div class="field">
-                  <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
-                  <spring:message code="addAssetView.placeholders.country" var="countryPH"/>
-                  <label for="country${location.getId()}" class="form-label">${countryLabel}</label>
-                  <input type="text" name="country" id="country${location.getId()}" placeholder="${countryPH}"
-                         class="form-control" value="${location.country}" disabled/>
-                </div>
-                <div class="field">
-                  <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
-                  <spring:message code="addAssetView.placeholders.zipcode" var="zipcodePH"/>
-                  <label for="zipcode${location.getId()}" class="form-label">${zipcodeLabel}</label>
-                  <input type="text" name="zipcode" id="zipcode${location.getId()}" placeholder="${zipcodePH}"
-                         class="form-control" value="${location.zipcode}" disabled/>
-                </div>
-              </div>
-              <input type="hidden" name="id" value="${location.getId()}">
-            </div>
-            <div class="mt-3 form-button-container">
-              <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
-              <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
-            </div>
-          </form>
-        </div>
+       <jsp:include page="../components/locationCard.jsp">
+         <jsp:param name="location" value="${location}"/>
+       </jsp:include>
       </c:forEach>
-      <div class="info-container m-3 add-new-location" style="max-width: 300px; min-width: 300px; height: 250px;">
+      <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 250px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
-          <button type="button" class="btn btn-primary btn-lg">+</button>
+          <i class="bi bi-plus-lg "></i>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
@@ -94,70 +66,19 @@
 
 <script>
   $(function() {
-    $('.edit-button').on('click', function() {
+    $('body').on('click', '.edit-button', function() {
       $(this).closest('form').find('input[type="text"]').prop('disabled', false);
       $(this).addClass('d-none');
       $(this).siblings('.save-button').removeClass('d-none');
     });
-
-    $('.add-new-location button').on('click', function() {
-      // logic to add a new location
-    });
   });
 
-</script>
-
-<script>
   $(document).ready(function() {
     $(".add-new-location").click(function() {
       let newCard = `
-        <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 250px;">
-          <form action="location/edit" method="post">
-            <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-danger delete-location" data-location-id="${location.getId()}">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </div>
-            <div class="field-group">
-              <div class="d-flex justify-content-between">
-                <div class="field">
-                  <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
-                  <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
-                  <label for="locality${location.getId()}" class="form-label">${localityLabel}</label>
-                  <input type="text" name="locality" id="locality${location.getId()}" placeholder="${localityPH}"
-                         class="form-control" value="${location.locality}" disabled/>                </div>
-                <div class="field">
-                  <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
-                  <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
-                  <label for="province${location.getId()}" class="form-label">${provinceLabel}</label>
-                  <input type="text" name="province" id="province${location.getId()}" placeholder="${provincePH}"
-                         class="form-control" value="${location.province}" disabled/>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between">
-                <div class="field">
-                  <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
-                  <spring:message code="addAssetView.placeholders.country" var="countryPH"/>
-                  <label for="country${location.getId()}" class="form-label">${countryLabel}</label>
-                  <input type="text" name="country" id="country${location.getId()}" placeholder="${countryPH}"
-                         class="form-control" value="${location.country}" disabled/>
-                </div>
-                <div class="field">
-                  <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
-                  <spring:message code="addAssetView.placeholders.zipcode" var="zipcodePH"/>
-                  <label for="zipcode${location.getId()}" class="form-label">${zipcodeLabel}</label>
-                  <input type="text" name="zipcode" id="zipcode${location.getId()}" placeholder="${zipcodePH}"
-                         class="form-control" value="${location.zipcode}" disabled/>
-                </div>
-              </div>
-              <input type="hidden" name="id" value="${location.getId()}">
-            </div>
-            <div class="mt-3 form-button-container">
-              <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
-              <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
-            </div>
-          </form>
-        </div>`;
+        <jsp:include page="../components/locationCard.jsp">
+         <jsp:param name="location" value="${location}"/>
+       </jsp:include>`;
 
       $(this).before(newCard);
     });
