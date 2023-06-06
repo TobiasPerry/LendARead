@@ -34,11 +34,12 @@ final public class LocationImpl{
         this.id = id;
         this.userReference = user;
     }
-    public LocationImpl(String name, String zipcode, String locality, String province, String country) {
+    public LocationImpl(String name, String zipcode, String locality, String province, String country, UserImpl user) {
         this.zipcode = zipcode;
         this.locality = locality;
         this.province = province;
         this.country = country;
+        this.userReference = user;
     }
     public LocationImpl(){}
 

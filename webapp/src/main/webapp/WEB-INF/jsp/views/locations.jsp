@@ -67,7 +67,7 @@
 <script>
   $(function() {
     $('body').on('click', '.edit-button', function() {
-      $(this).closest('form').find('input[type="text"]').prop('disabled', false);
+      $(this).closest('form').find('input[type="text"]').removeAttr('disabled');
       $(this).addClass('d-none');
       $(this).siblings('.save-button').removeClass('d-none');
     });

@@ -1,25 +1,24 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
-    <c:url value="/editLocation" var="editUrl"/>
-    <form action="${editUrl}" method="post">
-
     <div class="d-flex justify-content-between">
         <div>
             <spring:message code="addAssetView.locationNameLabel" var="locationNameLabel"/>
             <input type="text" name="name" id="name${location.id}" class="form-control" value="${location.name}" disabled/>
         </div>
         <c:url value="/deleteLocation" var="deleteUrl"/>
-        <form action="${deleteUrl}" method="post">
-            <input type="hidden" name="id" value="${location.id}">
-            <button type="submit" class="btn btn-danger delete-location" data-location-id="${location.id}">
+        <form:form action="${deleteUrl}" method="post">
+            <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
+            <button type="submit" class="btn btn-danger delete-location">
                 <i class="fas fa-trash-alt"></i>
             </button>
-        </form>
+        </form:form>
     </div>
 
-
+    <c:url var="editUrl" value="/editLocation" />
+    <form:form action="${editUrl}" method="post">
         <div class="field-group">
             <div class="d-flex justify-content-between">
                 <div class="field">
@@ -52,12 +51,12 @@
                            class="form-control" value="${location.zipcode}" disabled/>
                 </div>
             </div>
-            <input type="hidden" name="id" value="${location.getId()}">
+            <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
         </div>
-        <input type="hidden" name="id" value="${location.getId()}">
+        <input type="hidden" name="name" id="name${location.id}" class="form-control" value="${location.name}" />
         <div class="mt-3 form-button-container">
             <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
             <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
         </div>
-    </form>
+    </form:form>
 </div>
