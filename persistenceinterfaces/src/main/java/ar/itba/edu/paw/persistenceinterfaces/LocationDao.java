@@ -14,4 +14,6 @@ public interface LocationDao {
     LocationImpl getLocation(int location);
 
     LocationImpl editLocation(LocationImpl lc);
+
+    void deleteLocation(LocationImpl lc);
 }

@@ -79,4 +79,7 @@ final public class LocationImpl{
         return zipcode.equals(location.zipcode) && locality.equals(location.locality) && province.equals(location.province) && country.equals(location.country);
     }
 
+    public String getName() {
+        return "";
+    }
 }

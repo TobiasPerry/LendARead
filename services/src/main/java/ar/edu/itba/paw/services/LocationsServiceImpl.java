@@ -26,49 +26,42 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-
     public LocationImpl addLocation(LocationImpl lc) {
         return locationsDao.addLocation(lc);
     }
 
     @Override
     @Transactional
-
     public LocationImpl getLocation(int locationId) {
         return locationsDao.getLocation(locationId);
     }
 
     @Override
     @Transactional
-
     public List<LocationImpl> getLocations(UserImpl user) {
         return locationsDao.getLocations(user);
     }
 
     @Override
     @Transactional
-
     public LocationImpl editLocation(LocationImpl lc) {
         return locationsDao.editLocation(lc);
     }
 
     @Override
     @Transactional
-
     public void deleteLocation(LocationImpl lc) {
-
+        locationsDao.deleteLocation(lc);
     }
 
     @Override
     @Transactional
-
     public List<LocationImpl> getLocationsById(int userId) throws UserNotFoundException {
         return locationsDao.getLocations(userService.getUserById(userId));
     }
 
     @Override
     @Transactional
-
     public LocationImpl editLocationById(int locationId) {
         return locationsDao.editLocation(locationsDao.getLocation(locationId));
     }
@@ -76,6 +69,6 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public void deleteLocationById(int locationId) throws UserNotFoundException {
-
+        deleteLocation(getLocation(locationId));
     }
 }

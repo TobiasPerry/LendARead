@@ -55,7 +55,8 @@ public class LocationsController {
 
     @RequestMapping(value = "/deleteLocation", method = RequestMethod.POST)
     public ModelAndView deleteLocation(@RequestParam("id") int id) throws UserNotFoundException {
-        locationsService.deleteLocationById(id);
+        if(id != -1)
+            locationsService.deleteLocationById(id);
         return new ModelAndView("redirect:/userLocations/");
     }
 

@@ -51,5 +51,10 @@ public class LocationDaoImpl implements LocationDao {
         return null;
     }
 
+    @Override
+    public void deleteLocation(LocationImpl lc) {
+
+    }
+
 
 }
