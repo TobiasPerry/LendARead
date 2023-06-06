@@ -57,7 +57,7 @@ public class AssetAvailabilityServiceImplTest {
             new BookImpl(0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
-            new LocationImpl(0, "", "", "", ""),
+            new LocationImpl(0, "", "", "", "", null),
             new ImageImpl(),
             AssetState.PUBLIC,
             10

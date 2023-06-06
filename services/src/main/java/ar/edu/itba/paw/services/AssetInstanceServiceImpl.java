@@ -34,15 +34,13 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     private final AssetInstanceDao assetInstanceDao;
 
-    private final LocationDao locationDao;
 
     private final ImagesDao imagesDao;
 
     @Autowired
-    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final LocationDao locationDao,final ImagesDao imagesDao) {
+    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao) {
         this.assetDao = assetDao;
         this.assetInstanceDao = assetInstanceDao;
-        this.locationDao = locationDao;
         this.imagesDao = imagesDao;
     }
 

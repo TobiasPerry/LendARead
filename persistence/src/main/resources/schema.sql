@@ -14,13 +14,15 @@ CREATE TABLE IF NOT EXISTS users(
     password varchar(200)
 );
 CREATE TABLE IF NOT EXISTS location(
-    id SERIAL primary key,
-    zipcode varchar(100) NOT NULL,
-    locality varchar(100) NOT NULL,
-    province varchar(100) NOT NULL,
-    country varchar(100) NOT NULL,
-    address varchar(100)
+   id SERIAL primary key,
+   zipcode varchar(100) NOT NULL,
+   locality varchar(100) NOT NULL,
+   province varchar(100) NOT NULL,
+   country varchar(100) NOT NULL,
+   address varchar(100),
+   owner INT references users(id) ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS photos(
     id SERIAL primary key,
     photo bytea
