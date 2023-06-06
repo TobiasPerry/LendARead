@@ -4,17 +4,17 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 
 import java.util.List;
 
-public class PageUserAssetsImpl<T> implements PageUserAssets<T> {
+public class PagingImpl<T> implements PageUserAssets<T> {
 
     private final List<T> userAssets;
     private  int currentPage;
     private  int totalPages;
 
-    public PageUserAssetsImpl(List<T> userAssets) {
+    public PagingImpl(List<T> userAssets) {
         this.userAssets = userAssets;
     }
 
-    public PageUserAssetsImpl(List<T> userAssets, int currentPage, int totalPages) {
+    public PagingImpl(List<T> userAssets, int currentPage, int totalPages) {
         this.userAssets = userAssets;
         this.currentPage = currentPage;
         this.totalPages = totalPages;

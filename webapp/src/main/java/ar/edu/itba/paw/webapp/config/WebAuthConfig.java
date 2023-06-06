@@ -53,6 +53,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     BorrowerViewVoter borrowerViewVoter;
 
+    @Autowired
+    LenderReviewVoter lenderReviewVoter;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -89,7 +91,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 deleteAssetVoter,
                 changeAssetStatusVoter,
                 lenderViewOwnerVoter,
-                borrowerViewVoter
+                borrowerViewVoter,
+                lenderReviewVoter
         );
         return new UnanimousBased(decisionVoters);
     }
@@ -99,12 +102,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .accessDecisionManager(accessDecisionManager())
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
-                .antMatchers("/addAsset","/lentBookDetails/**","/myBookDetails/**").hasRole("LENDER")
-                .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**").hasRole("LENDER")
-                .antMatchers("/review/lender/**").hasRole("LENDER")
-                .antMatchers("/review/lenderAdd").hasRole("LENDER")
+                .antMatchers("/addAsset","/lentBookDetails/**","/myBookDetails/**","/review/lender/**").hasRole("LENDER")
+                .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**","/review/lenderAdd").hasRole("LENDER")
                 .antMatchers("/review/borrower/**").hasRole("BORROWER")
-                .antMatchers("/review/lenderAdd").hasRole("LENDER")
+                .antMatchers(HttpMethod.POST,"/review/borrowerAdd").hasRole("BORROWER")
                 .antMatchers("/userHome","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**").authenticated()
                 .antMatchers("/**").permitAll()
                 .and().formLogin().loginPage("/login")
