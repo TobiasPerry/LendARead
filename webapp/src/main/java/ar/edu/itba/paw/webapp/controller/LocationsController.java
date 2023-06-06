@@ -50,13 +50,13 @@ public class LocationsController {
             locationsService.editLocation(newLocation);
         }
 
-        return new ModelAndView("redirect:/" + VIEW_NAME);
+        return new ModelAndView("redirect:/userLocations/");
     }
 
     @RequestMapping(value = "/deleteLocation", method = RequestMethod.POST)
     public ModelAndView deleteLocation(@RequestParam("id") int id) throws UserNotFoundException {
         locationsService.deleteLocationById(id);
-        return new ModelAndView("redirect:/" + VIEW_NAME);
+        return new ModelAndView("redirect:/userLocations/");
     }
 
 }

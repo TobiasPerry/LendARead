@@ -26,13 +26,13 @@
                     <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
                     <label for="locality${location.getId()}" class="form-label">${localityLabel}</label>
                     <input type="text" name="locality" id="locality${location.getId()}" placeholder="${localityPH}"
-                           class="form-control" value="${location.locality}" disabled/>                </div>
+                           class="form-control" value="${location.getLocality()}" disabled/>                </div>
                 <div class="field">
                     <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
                     <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
                     <label for="province${location.getId()}" class="form-label">${provinceLabel}</label>
                     <input type="text" name="province" id="province${location.getId()}" placeholder="${provincePH}"
-                           class="form-control" value="${location.province}" disabled/>
+                           class="form-control" value="${location.getProvince()}" disabled/>
                 </div>
             </div>
             <div class="d-flex justify-content-between">
