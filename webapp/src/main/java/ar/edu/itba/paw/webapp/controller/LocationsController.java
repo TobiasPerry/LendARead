@@ -19,9 +19,7 @@ import java.util.List;
 public class LocationsController {
 
     private final LocationsService locationsService;
-
     private final UserService userService;
-
     private final static String VIEW_NAME = "views/locations";
 
     @Autowired
@@ -36,7 +34,7 @@ public class LocationsController {
         return new ModelAndView(VIEW_NAME).addObject("locations", locations);
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/editLocation", method = RequestMethod.POST)
     public ModelAndView editLocation(@RequestParam("id") int id,
                                      @RequestParam("name") String name,
                                      @RequestParam("locality") String locality,
@@ -49,7 +47,7 @@ public class LocationsController {
         return manageLocations();
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteLocation", method = RequestMethod.POST)
     public ModelAndView deleteLocation(@RequestParam("id") int id) throws UserNotFoundException {
         locationsService.deleteLocationById(id);
         return manageLocations();
