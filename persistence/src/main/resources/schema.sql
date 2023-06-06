@@ -58,16 +58,17 @@ CREATE TABLE IF NOT EXISTS languages(
 
 CREATE TABLE IF NOT EXISTS assetInstanceReview(
     id SERIAL primary key,
-    assetInstanceId INT references AssetInstance(id) ON DELETE CASCADE,
     review TEXT,
     rating INT,
-    userId INT references users(id) ON DELETE CASCADE
+    userId INT references users(id) ON DELETE CASCADE,
+    lendId INT references lendings(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS userReview(
     id SERIAL primary key,
     reviewer INT references users(id) ON DELETE CASCADE,
     recipient INT references users(id) ON DELETE CASCADE,
+    lendId INT references lendings(id) ON DELETE CASCADE,
     review TEXT,
     rating INT
 );

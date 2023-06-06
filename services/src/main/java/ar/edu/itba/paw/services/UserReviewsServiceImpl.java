@@ -8,6 +8,7 @@ import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -77,25 +77,25 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public List<UserReview> getUserReviewsAsRecipient(UserImpl recipient) {
-        return userReviewsDao.getUserReviewsAsRecipient(recipient);
+    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage,UserImpl recipient) {
+        return userReviewsDao.getUserReviewsAsLender(pageNum,itemsPerPage,recipient);
     }
 
     @Transactional
     @Override
-    public List<UserReview> getUserReviewsAsRecipientById(int recipientId) throws UserNotFoundException{
-        return getUserReviewsAsRecipient(getUser(recipientId));
+    public PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage,int recipientId) throws UserNotFoundException{
+        return getUserReviewsAsLender(pageNum,itemsPerPage,getUser(recipientId));
     }
 
     @Transactional
     @Override
-    public List<UserReview> getUserReviewsAsReviewer(UserImpl reviewer) {
-        return userReviewsDao.getUserReviewsAsReviewer(reviewer);
+    public PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl reviewer) {
+        return userReviewsDao.getUserReviewsAsBorrower(pageNum,itemsPerPage,reviewer);
     }
 
     @Transactional
     @Override
-    public List<UserReview> getUserReviewsAsReviewerById(int reviewerId) throws UserNotFoundException {
-        return getUserReviewsAsReviewer(getUser(reviewerId));
+    public PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum,final int itemsPerPage,int reviewerId) throws UserNotFoundException {
+        return getUserReviewsBorrower(pageNum,itemsPerPage,getUser(reviewerId));
     }
 }

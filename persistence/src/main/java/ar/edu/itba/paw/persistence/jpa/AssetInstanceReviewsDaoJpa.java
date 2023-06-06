@@ -40,9 +40,9 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     @SuppressWarnings("unchecked")
     public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstanceImpl assetInstance) {
 
-        final Query queryNative = em.createNativeQuery("SELECT id FROM AssetInstanceReview as r WHERE r.assetInstanceId = :assetInstance ORDER BY r.id DESC LIMIT :limit OFFSET :offset");
+        final Query queryNative = em.createNativeQuery("SELECT r.id FROM AssetInstanceReview as r JOIN lendings l on r.lendid = l.id JOIN assetinstance a on a.id = l.assetinstanceid WHERE a.id = :assetInstance ORDER BY r.id DESC LIMIT :limit OFFSET :offset");
 
-        final Query queryCount = em.createNativeQuery("SELECT count(id) FROM AssetInstanceReview as r WHERE r.assetInstanceId = :assetInstance");
+        final Query queryCount = em.createNativeQuery("SELECT count(r.id) FROM AssetInstanceReview as r JOIN lendings l on r.lendid = l.id JOIN assetinstance a on a.id = l.assetinstanceid WHERE a.id = :assetInstance");
 
         final int offset = (pageNum - 1) * itemsPerPage;
 

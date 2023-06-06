@@ -4,8 +4,7 @@ import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
-
-import java.util.List;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface UserReviewsService {
     void addReview(final UserReview userReview);
@@ -16,9 +15,9 @@ public interface UserReviewsService {
     double getRating(final UserImpl user);
     double getRatingById(final int userId)  throws UserNotFoundException;
 
-    List<UserReview> getUserReviewsAsRecipient(final UserImpl recipient);
-    List<UserReview> getUserReviewsAsRecipientById(final int recipientId)  throws UserNotFoundException;
+    PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage,UserImpl recipient);
+    PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage,final int borrowerId)throws UserNotFoundException;
 
-    List<UserReview> getUserReviewsAsReviewer(final UserImpl reviewer);
-    List<UserReview> getUserReviewsAsReviewerById(final int reviewerId)  throws UserNotFoundException;
+    PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl reviewer);
+    PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum,final int itemsPerPage,int reviewerId) throws UserNotFoundException ;
 }

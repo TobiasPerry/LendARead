@@ -2,8 +2,7 @@ package ar.itba.edu.paw.persistenceinterfaces;
 
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
-
-import java.util.List;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface UserReviewsDao {
 
@@ -11,8 +10,7 @@ public interface UserReviewsDao {
 
     double getRating(final UserImpl user);
 
-    List<UserReview> getUserReviewsAsRecipient(final UserImpl recipient);
-
-    List<UserReview> getUserReviewsAsReviewer(final UserImpl reviewer);
+    PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage,final UserImpl recipient);
+    PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, final UserImpl reviewer);
 
 }

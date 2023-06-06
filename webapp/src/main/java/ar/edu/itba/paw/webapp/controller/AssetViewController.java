@@ -60,7 +60,9 @@ public class AssetViewController {
         final ModelAndView mav = new ModelAndView("/views/assetView");
         if (success)
             SnackbarControl.displaySuccess(mav, SUCESS_MSG);
+
         PagingImpl<AssetInstanceReview> assetInstanceReviewPage = assetInstanceReviewsService.getAssetInstanceReviews(1, 1, assetInstanceOpt);
+        mav.addObject("assetInstanceReviewPage", assetInstanceReviewPage);
         mav.addObject("assetInstance", assetInstanceOpt);
 
         return mav;

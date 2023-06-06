@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 import javax.persistence.*;
@@ -9,8 +10,8 @@ public class AssetInstanceReview {
 
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name="assetInstanceId", referencedColumnName = "id", nullable = false)
-    private AssetInstanceImpl assetInstance;
+    @JoinColumn(name="lendId", referencedColumnName = "id", nullable = false)
+    private LendingImpl lending;
 
     @Column(length = 500, nullable = false)
     private String review;
@@ -25,15 +26,15 @@ public class AssetInstanceReview {
     @SequenceGenerator(sequenceName = "assetinstancereview_id_seq", name = "assetinstancereview_id_seq", allocationSize = 1)
     private Long id;
 
-    public AssetInstanceReview(final AssetInstanceImpl assetInstance, String message, final UserImpl reviewer, int rating) {
-        this.assetInstance = assetInstance;
+    public AssetInstanceReview(final LendingImpl lending, String message, final UserImpl reviewer, int rating) {
+        this.lending = lending;
         this.review = message;
         this.reviewer = reviewer;
         this.rating = rating;
     }
 
-    public AssetInstanceImpl getAssetInstance() {
-        return assetInstance;
+    public LendingImpl getLending() {
+        return lending;
     }
 
     public String getReview() {
@@ -50,6 +51,26 @@ public class AssetInstanceReview {
 
     public Long getId() {
         return id;
+    }
+
+    public void setLending(LendingImpl lending) {
+        this.lending = lending;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    public void setReviewer(UserImpl reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public AssetInstanceReview() {}

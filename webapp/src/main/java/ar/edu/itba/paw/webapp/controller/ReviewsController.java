@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
-import javax.jws.WebParam;
 import javax.validation.Valid;
 
 @Controller
@@ -65,7 +64,7 @@ public class ReviewsController {
         final AssetInstanceImpl assetInstance = lending.getAssetInstance();
         final UserImpl user = lending.getUserReference();
 
-        userReviewsService.addReview(new UserReview(reviewForm.getReview(), reviewForm.getRating(), assetInstance.getOwner(), user));
+        userReviewsService.addReview(new UserReview(reviewForm.getReview(), reviewForm.getRating(), assetInstance.getOwner(), user,lending));
 
         return new ModelAndView("views/reviewSubmited");
     }
@@ -100,11 +99,10 @@ public class ReviewsController {
 
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(reviewForm.getLendingId());
 
-        final AssetInstanceImpl assetInstance = lending.getAssetInstance();
         final UserImpl user = lending.getUserReference();
 
-        assetInstanceReviewsService.addReview(new AssetInstanceReview(assetInstance, reviewForm.getAssetInstanceReview(), assetInstance.getOwner(), reviewForm.getAssetInstanceRating()));
-        userReviewsService.addReview(new UserReview(reviewForm.getUserReview(), reviewForm.getUserRating(), user, assetInstance.getOwner()));
+        assetInstanceReviewsService.addReview(new AssetInstanceReview(lending, reviewForm.getAssetInstanceReview(),user, reviewForm.getAssetInstanceRating()));
+        userReviewsService.addReview(new UserReview(reviewForm.getUserReview(), reviewForm.getUserRating(), user, lending.getAssetInstance().getOwner(),lending));
 
         return new ModelAndView("views/reviewSubmited");
     }
