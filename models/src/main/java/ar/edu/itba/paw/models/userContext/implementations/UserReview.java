@@ -28,12 +28,31 @@ public class UserReview {
     @Column(length = 1, nullable = false)
     private int rating;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewer", referencedColumnName = "id", nullable = false)
     private UserImpl reviewer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient", referencedColumnName = "id", nullable = false)
     private UserImpl recipient;
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public UserImpl getReviewer() {
+        return reviewer;
+    }
+
+    public UserImpl getRecipient() {
+        return recipient;
+    }
 }

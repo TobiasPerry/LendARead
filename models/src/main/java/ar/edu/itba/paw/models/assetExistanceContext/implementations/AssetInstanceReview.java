@@ -6,16 +6,15 @@ import javax.persistence.*;
 
 @Entity
 public class AssetInstanceReview {
-    //@Column(nullable = false)
-    //private int assetInstanceId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="assetInstanceId", referencedColumnName = "id", nullable = false)
     private AssetInstanceImpl assetInstance;
 
     @Column(length = 500, nullable = false)
     private String review;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private UserImpl reviewer;
     @Column(nullable = false)
@@ -31,6 +30,26 @@ public class AssetInstanceReview {
         this.review = message;
         this.reviewer = reviewer;
         this.rating = rating;
+    }
+
+    public AssetInstanceImpl getAssetInstance() {
+        return assetInstance;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public UserImpl getReviewer() {
+        return reviewer;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public AssetInstanceReview() {}
