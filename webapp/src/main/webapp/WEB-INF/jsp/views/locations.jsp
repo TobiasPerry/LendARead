@@ -36,6 +36,14 @@
     .btn-icon:hover {
       box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.25);
     }
+    .title-input {
+      font-size: 1.5em;
+      font-weight: bold;
+      border: none;
+      outline: none;
+      background-color: transparent;
+    }
+
   </style>
 </head>
 
@@ -49,25 +57,14 @@
     <h2 style="padding: 20px;"><spring:message code="addAssetView.locationInfo"/></h2>
     <div class="locations-grid d-flex flex-wrap" style="background-color: #D0DCD0; border-radius: 20px; padding: 20px;">
       <c:forEach var="location" items="${locations}" >
-        <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
-            <c:url value="/deleteLocation" var="deleteUrl"/>
-            <form:form action="${deleteUrl}" method="post">
-              <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
-              <button type="submit" class="btn btn-danger delete-location">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </form:form>
-
+        <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px">
           <c:url var="editUrl" value="/editLocation" />
           <form:form action="${editUrl}" method="post" modelAttribute="locationForm">
             <div class="field-group">
-              <spring:message code="book_name" var="titlePH"/>
-              <label for="name${location.id}" class="form-label">${titlePH}</label>
-              <form:input path="name" id="name${location.id}" class="form-control" disabled="true" value="${location.name}"/>
+              <form:input path="name" id="name${location.id}" class="form-control title-input" disabled="true" value="${location.name}"/>
               <c:if test="${location.id == locationIdError}">
                 <form:errors path="name" cssClass="text-danger small" element="small"/>
               </c:if>
-
 
               <div class="d-flex justify-content-between">
                 <div class="field">
@@ -110,9 +107,18 @@
               </div>
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
             </div>
-            <div class="mt-3 form-button-container">
-              <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
-              <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
+            <div class="mt-3 form-button-container d-flex justify-content-around">
+              <c:url value="/deleteLocation" var="deleteUrl"/>
+              <form:form action="${deleteUrl}" method="post" class="d-inline-block">
+                <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
+                <button type="submit" class="btn btn-danger delete-location">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form:form>
+              <div>
+                <button type="button" class="edit-button btn btn-green mx-1" style="opacity: 0.6">Edit</button>
+                <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
+              </div>
             </div>
           </form:form>
         </div>
@@ -124,7 +130,7 @@
         </jsp:include>
       </c:if>
       <c:if test="${locations.size() <= 5 && locationIdError != -1}">
-      <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 250px;">
+      <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 300px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
           <i class="bi bi-plus-lg"></i>
         </div>
