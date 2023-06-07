@@ -19,24 +19,17 @@
     margin-inline: 20vh;
 }
 
-.big {
-    font-size: 6vw;
-}
-
-.medium {
-    font-size: 3vw;
-}
-
-.small {
-    font-size: 1.75vw;
-}
-
-.very-small {
-    font-size: 1vh;
-}
 
 .grey-text {
     color: #9ca3af;
+}
+
+.black-text {
+    color: black;
+}
+
+.black-text:hover {
+    color: black;
 }
 
 .user-profile-cell {
@@ -48,6 +41,7 @@
     align-items: center;
     justify-content: center;
 }
+
 
 .user-profile-picture {
     width: 100%;

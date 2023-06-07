@@ -48,17 +48,20 @@
             <div class="tabs-container">
                 <ul class="nav nav-tabs" id="user-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                        <button class="nav-link active black-text" id="tab1-tab" data-bs-toggle="tab"
+                                data-bs-target="#tab1"
                                 type="button" role="tab" aria-controls="tab1" aria-selected="true">Borrower Reviews
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
+                        <button class="nav-link black-text" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                                type="button"
                                 role="tab" aria-controls="tab2" aria-selected="false">Lender Review
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
+                        <button class="nav-link black-text" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3"
+                                type="button"
                                 role="tab" aria-controls="tab3" aria-selected="false">Locations
                         </button>
                     </li>
