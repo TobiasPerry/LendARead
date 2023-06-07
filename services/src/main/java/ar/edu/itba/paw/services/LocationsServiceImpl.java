@@ -26,8 +26,20 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public LocationImpl addLocation(LocationImpl lc) {
-        return locationsDao.addLocation(lc);
+    public void addLocation(LocationImpl lc) {
+         locationsDao.addLocation(lc);
+    }
+
+    @Override
+    @Transactional
+    public void handleNewLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) {
+        if(id == -1) {
+            LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, user);
+            addLocation(newLocation);
+        } else {
+            LocationImpl newLocation = new LocationImpl(id, name, zipcode, locality, province, country, user);
+            editLocation(newLocation);
+        }
     }
 
     @Override
@@ -44,14 +56,14 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public LocationImpl editLocation(LocationImpl lc) {
-        return locationsDao.editLocation(lc);
+    public void editLocation(LocationImpl lc) {
+         locationsDao.editLocation(lc);
     }
 
     @Override
     @Transactional
     public void deleteLocation(LocationImpl lc) {
-        locationsDao.deleteLocation(lc);
+            locationsDao.deleteLocation(lc);
     }
 
     @Override
@@ -69,6 +81,7 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public void deleteLocationById(int locationId) throws UserNotFoundException {
-        deleteLocation(getLocation(locationId));
+        if(locationId != -1)
+            deleteLocation(getLocation(locationId));
     }
 }

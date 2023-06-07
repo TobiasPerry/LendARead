@@ -42,21 +42,13 @@ public class LocationsController {
                                      @RequestParam("country") String country,
                                      @RequestParam("zipcode") String zipcode) throws UserNotFoundException {
 
-        if(id == -1) {
-            LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, userService.getUser(userService.getCurrentUser()));
-            locationsService.addLocation(newLocation);
-        } else {
-            LocationImpl newLocation = new LocationImpl(id, name, zipcode, locality, province, country, userService.getUser(userService.getCurrentUser()));
-            locationsService.editLocation(newLocation);
-        }
-
+       locationsService.handleNewLocation(id, name, locality, province, country, zipcode, userService.getUser(userService.getCurrentUser()));
         return new ModelAndView("redirect:/userLocations/");
     }
 
     @RequestMapping(value = "/deleteLocation", method = RequestMethod.POST)
     public ModelAndView deleteLocation(@RequestParam("id") int id) throws UserNotFoundException {
-        if(id != -1)
-            locationsService.deleteLocationById(id);
+        locationsService.deleteLocationById(id);
         return new ModelAndView("redirect:/userLocations/");
     }
 

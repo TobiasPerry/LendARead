@@ -7,18 +7,19 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import java.util.List;
 
 public interface LocationsService {
-    LocationImpl addLocation(LocationImpl lc);
+    void addLocation(final LocationImpl lc);
 
-    LocationImpl getLocation(int locationId);
+    void handleNewLocation(final int id, final String name, final String locality, final String province, final String country, final String zipcode, final UserImpl user);
+    LocationImpl getLocation(final int locationId);
 
-    List<LocationImpl> getLocations(UserImpl user);
+    List<LocationImpl> getLocations(final UserImpl user);
 
-    LocationImpl editLocation(LocationImpl lc);
+    void editLocation(final LocationImpl lc);
 
-    void deleteLocation(LocationImpl lc);
+    void deleteLocation(final LocationImpl lc);
 
-    public List<LocationImpl> getLocationsById(int userId) throws UserNotFoundException;
+    public List<LocationImpl> getLocationsById(final int userId) throws UserNotFoundException;
 
-    LocationImpl editLocationById(int locationId);
-    void deleteLocationById(int locationId) throws UserNotFoundException;
+    LocationImpl editLocationById(final int locationId);
+    void deleteLocationById(final int locationId) throws UserNotFoundException;
 }
