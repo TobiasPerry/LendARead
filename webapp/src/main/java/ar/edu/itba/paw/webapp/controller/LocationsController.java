@@ -39,7 +39,7 @@ public class LocationsController {
     public ModelAndView editLocation(@Valid @ModelAttribute final LocationForm locationForm, final BindingResult errors) throws UserNotFoundException {
 
         if(errors.hasErrors())
-            return manageLocations(locationForm).addObject("locationIdError", locationForm.getId());
+            return manageLocations(locationForm).addObject("locationIdError", locationForm.getId()).addObject("hasErrors", true);
 
         locationsService.handleNewLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
         return new ModelAndView("redirect:/userLocations/");

@@ -3,20 +3,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
-    <c:url value="/deleteLocation" var="deleteUrl"/>
-    <form:form action="${deleteUrl}" method="post">
-        <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
-        <button type="submit" class="btn btn-danger delete-location">
-            <i class="fas fa-trash-alt"></i>
-        </button>
-    </form:form>
-
     <c:url var="editUrl" value="/editLocation" />
     <form:form action="${editUrl}" method="post" modelAttribute="locationForm">
         <div class="field-group">
-            <spring:message code="book_name" var="titlePH"/>
-            <label for="name${location.id}" class="form-label">${titlePH}</label>
-            <form:input path="name" id="name${location.id}" class="form-control" disabled="true" value="${location.name}"/>
+            <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
+            <label for="locality${location.id}" class="form-label">${localityLabel}</label>
+            <form:input path="locality" id="locality${location.id}" class="form-control" disabled="true" value="${location.locality}"/>
             <c:if test="${location.id == locationIdError || param.showError}">
                 <form:errors path="name" cssClass="text-danger small" element="small"/>
             </c:if>
@@ -63,9 +55,18 @@
             </div>
             <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
         </div>
-        <div class="mt-3 form-button-container">
-            <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
-            <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
+        <div class="mt-3 form-button-container d-flex justify-content-around">
+            <c:url value="/deleteLocation" var="deleteUrl"/>
+            <form:form action="${deleteUrl}" method="post" class="d-inline-block">
+                <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
+                <button type="submit" class="btn btn-danger delete-location">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form:form>
+            <div>
+                <button type="button" class="edit-button btn btn-green mx-1" style="opacity: 0.6">Edit</button>
+                <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
+            </div>
         </div>
     </form:form>
 </div>

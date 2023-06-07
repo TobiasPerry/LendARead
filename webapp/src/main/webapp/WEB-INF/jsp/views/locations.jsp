@@ -57,7 +57,7 @@
     <h2 style="padding: 20px;"><spring:message code="addAssetView.locationInfo"/></h2>
     <div class="locations-grid d-flex flex-wrap" style="background-color: #D0DCD0; border-radius: 20px; padding: 20px;">
       <c:forEach var="location" items="${locations}" >
-        <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px">
+        <div class="info-container m-3" style="max-width: 300px; min-width: 300px; min-height: 300px">
           <c:url var="editUrl" value="/editLocation" />
           <form:form action="${editUrl}" method="post" modelAttribute="locationForm">
             <div class="field-group">
@@ -129,8 +129,8 @@
           <jsp:param name="showError" value="${true}"/>
         </jsp:include>
       </c:if>
-      <c:if test="${locations.size() <= 5 && locationIdError != -1}">
-      <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 300px;">
+      <c:if test="${locations.size() <= 5 && locationIdError != -1 && hasErrors != true}">
+      <div class="info-container m-3 add-new-location btn-icon add-button" style="max-width: 300px; min-width: 300px; height: 300px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
           <i class="bi bi-plus-lg"></i>
         </div>
@@ -148,15 +148,19 @@
       $(this).closest('form').find('input[type="text"]').prop('disabled', false).removeClass('d-none');
       $(this).addClass('d-none');
       $(this).siblings('.save-button').removeClass('d-none');
+      $('.add-button').hide();
     });
-  });
 
-  $(document).ready(function() {
+    $('body').on('click', '.save-button', function() {
+      $('.add-button').show();
+    });
+  });  $(document).ready(function() {
     $(".add-new-location").click(function() {
       let newCard = `
         <jsp:include page="../components/locationCard.jsp">
          <jsp:param name="location" value="${location}"/>
          <jsp:param name="showError" value="${false}"/>
+         <jsp:param name="hasErrors" value="${false}"/>
        </jsp:include>`;
 
       $(this).before(newCard);
