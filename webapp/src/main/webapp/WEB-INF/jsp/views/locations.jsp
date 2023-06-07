@@ -117,6 +117,11 @@
           </form:form>
         </div>
       </c:forEach>
+      <c:if test="${locationIdError != null}">
+        <jsp:include page="../components/locationCard.jsp">
+          <jsp:param name="location" value="${location}"/>
+        </jsp:include>
+      </c:if>
       <c:if test="${locations.size() <= 5}">
       <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 250px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">

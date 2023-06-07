@@ -17,21 +17,29 @@
             <spring:message code="book_name" var="titlePH"/>
             <label for="name${location.id}" class="form-label">${titlePH}</label>
             <form:input path="name" id="name${location.id}" class="form-control" disabled="true" value="${location.name}"/>
-            <form:errors path="name" cssClass="text-danger small" element="small"/>
+            <c:if test="${location.id == locationIdError}">
+                <form:errors path="name" cssClass="text-danger small" element="small"/>
+            </c:if>
+
 
             <div class="d-flex justify-content-between">
                 <div class="field">
                     <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
                     <label for="locality${location.id}" class="form-label">${localityLabel}</label>
                     <form:input path="locality" id="locality${location.id}" class="form-control" disabled="true" value="${location.locality}"/>
-                    <form:errors path="locality" cssClass="text-danger small" element="small"/>
+                    <c:if test="${location.id == locationIdError}">
+                        <form:errors path="locality" cssClass="text-danger small" element="small"/>
+                    </c:if>
 
                 </div>
                 <div class="field">
                     <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
                     <label for="province${location.id}" class="form-label">${provinceLabel}</label>
                     <form:input path="province" id="province${location.id}" class="form-control" disabled="true" value="${location.province}"/>
-                    <form:errors path="province" cssClass="text-danger small" element="small"/>
+                    <c:if test="${location.id == locationIdError}">
+                        <form:errors path="province" cssClass="text-danger small" element="small"/>
+                    </c:if>
+
                 </div>
             </div>
             <div class="d-flex justify-content-between">
@@ -39,13 +47,18 @@
                     <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
                     <label for="country${location.id}" class="form-label">${countryLabel}</label>
                     <form:input path="country" id="country${location.id}" class="form-control" disabled="true" value="${location.country}"/>
-                    <form:errors path="country" cssClass="text-danger small" element="small"/>
+                    <c:if test="${location.id == locationIdError}">
+                        <form:errors path="country" cssClass="text-danger small" element="small"/>
+                    </c:if>
                 </div>
                 <div class="field">
                     <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
                     <label for="zipcode${location.id}" class="form-label">${zipcodeLabel}</label>
                     <form:input path="zipcode" id="zipcode${location.id}" class="form-control" disabled="true" value="${location.zipcode}"/>
-                    <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
+                    <c:if test="${location.id == locationIdError}">
+                        <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
+                    </c:if>
+
                 </div>
             </div>
             <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
