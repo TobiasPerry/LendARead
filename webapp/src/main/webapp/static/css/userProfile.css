@@ -1,3 +1,10 @@
+:root {
+    --photo-offset: 25px;
+    --text-offset: 20px;
+    --photo-width: 25%;
+    --min-photo-width: 25vh;
+}
+
 .user-grid {
     display: grid;
     grid-template-columns: 2fr 5fr;
@@ -8,7 +15,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-top: 50px;
+    margin-top: 10%;
 }
 
 .big {
@@ -32,14 +39,17 @@
 }
 
 .user-profile-cell {
-    position: relative;
+    width: min(var(--photo-width), var(--min-photo-width));
+    position: absolute;
+    top: 0;
+    transform: translate(var(--photo-offset), -50%);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .user-profile-picture {
-    width: 75%;
+    width: 100%;
     -webkit-box-shadow: 0 0 15px black;
     box-shadow: 0 0 10px black;
     aspect-ratio: 1/1;
@@ -48,11 +58,11 @@
 }
 
 .user-info {
-    position: relative;
-    display: flex;
+    margin-left: calc(min(var(--photo-width), var(--min-photo-width)) + var(--photo-offset) + var(--text-offset));
+    margin-bottom: calc(min(var(--photo-width), var(--min-photo-width)) / 4);
 }
 
-.user-info > .info-container{
+.user-info > .info-container {
     display: block;
     align-items: center;
     margin-block: 4vh;

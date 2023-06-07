@@ -32,20 +32,35 @@
 <div class="main-class">
     <div class="container">
         <div class="info-container w-100" id="user-info">
-            <div class="user-profile-cell">
-                <img class="user-profile-picture"
-                     src="https://e0.pxfuel.com/wallpapers/383/587/desktop-wallpaper-anya-spyxfamily-waifu-cute.jpg"/>
+            <div class="position-relative">
+                <div class="user-profile-cell">
+                    <img class="user-profile-picture"
+                         src="https://e0.pxfuel.com/wallpapers/383/587/desktop-wallpaper-anya-spyxfamily-waifu-cute.jpg"/>
+                </div>
             </div>
+            <div class="user-info">
+                <h1><c:out value="${user.name}"/></h1>
+                <p class="grey-text"><spring:message code="borrower"/><c:if test="${user.behavior == 'LENDER'}"> -
+                    <spring:message
+                            code="lender"/></c:if></p>
+            </div>
+            <hr/>
             <div class="tabs-container">
                 <ul class="nav nav-tabs" id="user-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Borrower Reviews</button>
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                                type="button" role="tab" aria-controls="tab1" aria-selected="true">Borrower Reviews
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Lender Review</button>
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
+                                role="tab" aria-controls="tab2" aria-selected="false">Lender Review
+                        </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Locations</button>
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
+                                role="tab" aria-controls="tab3" aria-selected="false">Locations
+                        </button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
