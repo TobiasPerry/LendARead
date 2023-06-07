@@ -13,6 +13,7 @@ public interface UserReviewsService {
     boolean borrowerCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException;
 
     double getRating(final UserImpl user);
+    boolean userHasReview(final int lendingId,final String user);
     double getRatingById(final int userId)  throws UserNotFoundException;
 
     PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage,UserImpl recipient);

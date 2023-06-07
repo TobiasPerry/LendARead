@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -32,6 +33,19 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         } catch (NoResultException e) {
             return 0.0;
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<UserReview> getUserReviewsByLendingIdAndUser(final int lendingId, final String user) {
+        final Query query = em.createQuery("SELECT r FROM UserReview r WHERE r.lending.id = :lendingId AND r.reviewer.email = :user");
+        query.setParameter("lendingId", (long) lendingId);
+        query.setParameter("user", user);
+        final List<UserReview> list = query.getResultList();
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(list.get(0));
     }
 
     @Override

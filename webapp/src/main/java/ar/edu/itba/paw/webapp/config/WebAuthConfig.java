@@ -54,6 +54,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     BorrowerViewVoter borrowerViewVoter;
 
     @Autowired
+    BorrowerReviewVoter borrowerReviewVoter;
+
+    @Autowired
     LenderReviewVoter lenderReviewVoter;
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -92,7 +95,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 changeAssetStatusVoter,
                 lenderViewOwnerVoter,
                 borrowerViewVoter,
-                lenderReviewVoter
+                lenderReviewVoter,
+                borrowerReviewVoter
         );
         return new UnanimousBased(decisionVoters);
     }

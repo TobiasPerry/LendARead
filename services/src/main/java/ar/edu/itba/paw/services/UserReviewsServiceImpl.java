@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
@@ -44,16 +45,21 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         userReviewsDao.addReview(userReview);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean lenderCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        return lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser()));
+        boolean hasReview = userHasReview(lendingId,userService.getCurrentUser());
+
+        return !hasReview &&lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean borrowerCanReview(int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        return lending.getUserReference().equals(userService.getUser(userService.getCurrentUser()));
+        boolean hasReview = userHasReview(lendingId,userService.getCurrentUser());
+        return  !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED) ;
     }
 
     @Transactional
@@ -68,7 +74,12 @@ public class UserReviewsServiceImpl implements UserReviewsService {
             throw new UserNotFoundException("not found user to get the rating");
         return user.get();
     }
-
+    @Transactional(readOnly = true)
+    @Override
+    public boolean userHasReview(int lendingId,String user){
+       Optional<UserReview> review = userReviewsDao.getUserReviewsByLendingIdAndUser(lendingId,user);
+       return  review.isPresent();
+    }
     @Transactional
     @Override
     public double getRatingById(int userId) throws UserNotFoundException {
