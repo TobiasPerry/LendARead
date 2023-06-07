@@ -59,43 +59,53 @@
             </form:form>
 
           <c:url var="editUrl" value="/editLocation" />
-          <form:form action="${editUrl}" method="post">
+          <form:form action="${editUrl}" method="post" modelAttribute="locationForm">
             <div class="field-group">
               <spring:message code="book_name" var="titlePH"/>
-              <spring:message code="book_name" var="titlePH"/>
-              <label for="locality${location.id}" class="form-label">${titlePH}</label>
-              <input  type="text" name="name" id="name${location.id}" placeholder="${titlePH}"
-                     class="form-control" value="${location.name}" disabled/>
+              <label for="name${location.id}" class="form-label">${titlePH}</label>
+              <form:input path="name" id="name${location.id}" class="form-control" disabled="true" value="${location.name}"/>
+              <c:if test="${location.id == locationIdError}">
+                <form:errors path="name" cssClass="text-danger small" element="small"/>
+              </c:if>
+
 
               <div class="d-flex justify-content-between">
                 <div class="field">
                   <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
-                  <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
                   <label for="locality${location.id}" class="form-label">${localityLabel}</label>
-                  <input type="text" name="locality" id="locality${location.id}" placeholder="${localityPH}"
-                         class="form-control" value="${location.locality}" disabled/>                </div>
-                <div class="field">
-                  <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
-                  <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
-                  <label for="province${location.id}" class="form-label">${provinceLabel}</label>
-                  <input type="text" name="province" id="province${location.id}" placeholder="${provincePH}"
-                         class="form-control" value="${location.province}" disabled/>
+                  <form:input path="locality" id="locality${location.id}" class="form-control" disabled="true" value="${location.locality}"/>
+                  <c:if test="${location.id == locationIdError}">
+                  <form:errors path="locality" cssClass="text-danger small" element="small"/>
+                  </c:if>
+
                 </div>
+                  <div class="field">
+                    <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
+                    <label for="province${location.id}" class="form-label">${provinceLabel}</label>
+                    <form:input path="province" id="province${location.id}" class="form-control" disabled="true" value="${location.province}"/>
+                    <c:if test="${location.id == locationIdError}">
+                    <form:errors path="province" cssClass="text-danger small" element="small"/>
+                    </c:if>
+
+                  </div>
               </div>
               <div class="d-flex justify-content-between">
                 <div class="field">
                   <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
-                  <spring:message code="addAssetView.placeholders.country" var="countryPH"/>
                   <label for="country${location.id}" class="form-label">${countryLabel}</label>
-                  <input type="text" name="country" id="country${location.id}" placeholder="${countryPH}"
-                         class="form-control" value="${location.country}" disabled/>
+                  <form:input path="country" id="country${location.id}" class="form-control" disabled="true" value="${location.country}"/>
+                  <c:if test="${location.id == locationIdError}">
+                  <form:errors path="country" cssClass="text-danger small" element="small"/>
+                  </c:if>
                 </div>
                 <div class="field">
                   <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
-                  <spring:message code="addAssetView.placeholders.zipcode" var="zipcodePH"/>
                   <label for="zipcode${location.id}" class="form-label">${zipcodeLabel}</label>
-                  <input type="text" name="zipcode" id="zipcode${location.id}" placeholder="${zipcodePH}"
-                         class="form-control" value="${location.zipcode}" disabled/>
+                  <form:input path="zipcode" id="zipcode${location.id}" class="form-control" disabled="true" value="${location.zipcode}"/>
+                  <c:if test="${location.id == locationIdError}">
+                  <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
+                  </c:if>
+
                 </div>
               </div>
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
