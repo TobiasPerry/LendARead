@@ -100,7 +100,6 @@
               </div>
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
             </div>
-            <input type="hidden" name="name" id="name${location.id}" class="form-control" value="${location.name}" />
             <div class="mt-3 form-button-container">
               <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
               <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
