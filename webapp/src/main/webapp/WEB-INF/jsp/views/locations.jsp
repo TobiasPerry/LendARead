@@ -117,9 +117,10 @@
           </form:form>
         </div>
       </c:forEach>
-      <c:if test="${locationIdError != null}">
+      <c:if test="${locationIdError == -1 }">
         <jsp:include page="../components/locationCard.jsp">
           <jsp:param name="location" value="${location}"/>
+          <jsp:param name="showError" value="${true}"/>
         </jsp:include>
       </c:if>
       <c:if test="${locations.size() <= 5}">
@@ -149,6 +150,7 @@
       let newCard = `
         <jsp:include page="../components/locationCard.jsp">
          <jsp:param name="location" value="${location}"/>
+         <jsp:param name="showError" value="${false}"/>
        </jsp:include>`;
 
       $(this).before(newCard);
