@@ -4,16 +4,23 @@
     grid-template-rows: 4fr 6fr;
 }
 
+.container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
 .big {
-    font-size: 10vh;
+    font-size: 6vw;
 }
 
 .medium {
-    font-size: 5vh;
+    font-size: 3vw;
 }
 
 .small {
-    font-size: 3vh;
+    font-size: 1.75vw;
 }
 
 .very-small {
@@ -25,6 +32,7 @@
 }
 
 .user-profile-cell {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,10 +48,16 @@
 }
 
 .user-info {
+    position: relative;
+    display: flex;
+}
+
+.user-info > .info-container{
     display: block;
     align-items: center;
     margin-block: 4vh;
     padding-left: 5%;
+    width: 100%;
 }
 
 .user-role {
@@ -79,5 +93,5 @@
 
 
 .star {
-    font-size: 30px;
+    font-size: 2vw;
 }

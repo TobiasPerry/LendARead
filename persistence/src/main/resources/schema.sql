@@ -5,6 +5,12 @@ CREATE TABLE IF NOT EXISTS book(
     title text not null,
     lang varchar(100) not null
 );
+
+CREATE TABLE IF NOT EXISTS photos(
+    id SERIAL primary key,
+    photo bytea
+);
+
 CREATE TABLE IF NOT EXISTS users(
     behavior varchar(100),
     id SERIAL primary key,
@@ -22,10 +28,7 @@ CREATE TABLE IF NOT EXISTS location(
     country varchar(100) NOT NULL,
     address varchar(100)
 );
-CREATE TABLE IF NOT EXISTS photos(
-    id SERIAL primary key,
-    photo bytea
-);
+
 
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,
