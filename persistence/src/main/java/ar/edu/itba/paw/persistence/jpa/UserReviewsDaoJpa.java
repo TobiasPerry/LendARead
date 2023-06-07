@@ -42,10 +42,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         query.setParameter("lendingId", (long) lendingId);
         query.setParameter("user", user);
         final List<UserReview> list = query.getResultList();
-        if (list.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(list.get(0));
+      return list.stream().findFirst();
     }
 
     @Override
