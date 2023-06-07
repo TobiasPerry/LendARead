@@ -55,3 +55,20 @@ CREATE TABLE IF NOT EXISTS languages(
     id VARCHAR(3) PRIMARY KEY,
     name varchar(100)
 );
+
+CREATE TABLE IF NOT EXISTS assetInstanceReview(
+    id SERIAL primary key,
+    review TEXT,
+    rating INT,
+    userId INT references users(id) ON DELETE CASCADE,
+    lendId INT references lendings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS userReview(
+    id SERIAL primary key,
+    reviewer INT references users(id) ON DELETE CASCADE,
+    recipient INT references users(id) ON DELETE CASCADE,
+    lendId INT references lendings(id) ON DELETE CASCADE,
+    review TEXT,
+    rating INT
+);

@@ -32,7 +32,10 @@
 </head>
 <body data-path="${path}" class="body-class">
 
-<jsp:include page="../../components/navBar.jsp"/>
+<jsp:include page="../../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
+
 <div>
     <div class="back-button d-flex align-items-center">
         <a href="<c:url value='/userHomeReturn' />" class="btn-breadcrumb">

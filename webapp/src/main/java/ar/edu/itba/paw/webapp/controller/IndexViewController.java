@@ -39,7 +39,7 @@ public class IndexViewController {
         );
 
         ModelAndView mav = new ModelAndView("/views/index");
-        mav.addObject("books", page.getBooks());
+        mav.addObject("assetInstances", page.getBooks());
 
         return mav;
     }
@@ -70,7 +70,7 @@ public class IndexViewController {
 
         final ModelAndView mav = new ModelAndView("/views/discoveryView");
         mav.addObject("path", "home");
-        mav.addObject("books", page.getBooks());
+        mav.addObject("assetInstances", page.getBooks());
         mav.addObject("nextPage", page.getCurrentPage() != page.getTotalPages());
         mav.addObject("previousPage", page.getCurrentPage() != 1);
         mav.addObject("currentPage", page.getCurrentPage());

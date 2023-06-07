@@ -36,11 +36,13 @@
 </head>
 <body data-path="${path}" class="body-class">
 <!-- Esto va a cambiar es un mockUp -->
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="false"/>
+</jsp:include>
 <jsp:include page="../components/snackbarComponent.jsp"/>
 <div class="main-class">
 
-    <div class="container">
+    <div class="container my-4">
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="">
                 <div class="form">
@@ -169,7 +171,7 @@
         </div>
 
         <div class="container-column" style="flex: 0 1 85%;">
-            <c:if test="${books.size() > 0}">
+            <c:if test="${assetInstances.size() > 0}">
                 <div class="container-row-wrapped placeholder-group"
                      style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
                     <jsp:include page="../components/bookCardPlaceholders.jsp">
@@ -180,13 +182,18 @@
                 <div class="container-row-wrapped"
                      style="margin: 20px auto; padding-top: 20px; background-color: rgba(255, 255, 255, 0.3); border-radius: 20px; width: 90%">
 
-                    <c:forEach var="book" items="${books}">
+                    <c:forEach var="assetInstance" items="${assetInstances}">
                         <% request.setCharacterEncoding("utf-8"); %>
                         <jsp:include page="../components/bookCard.jsp">
-                            <jsp:param name="id" value="${book.id}"/>
-                            <jsp:param name="bookTitle" value="${book.book.name}"/>
-                            <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                            <jsp:param name="imageId" value="${book.image.id}"/>
+                            <jsp:param name="id" value="${assetInstance.id}"/>
+                            <jsp:param name="bookTitle" value="${assetInstance.book.name}"/>
+                            <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>
+                            <jsp:param name="imageId" value="${assetInstance.image.id}"/>
+                            <jsp:param name="user" value="${assetInstance.owner.name}"/>
+                            <jsp:param name="locality" value="${assetInstance.location.locality}"/>
+                            <jsp:param name="province" value="${assetInstance.location.province}"/>
+                            <jsp:param name="country" value="${assetInstance.location.country}"/>
+                            <jsp:param name="physicalCondition" value="${assetInstance.physicalCondition}"/>
                         </jsp:include>
                     </c:forEach>
                 </div>
@@ -223,7 +230,7 @@
                 </div>
             </c:if>
 
-            <c:if test="${books.size() <= 0}">
+            <c:if test="${assetInstances.size() <= 0}">
                 <div class="container-row-wrapped" style="margin-top: 50px; width: 100%;">
                     <h1><spring:message code="discovery.noBooks"/></h1>
                 </div>

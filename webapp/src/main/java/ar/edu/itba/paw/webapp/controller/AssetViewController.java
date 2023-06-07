@@ -5,10 +5,12 @@ import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
@@ -30,16 +32,18 @@ public class AssetViewController {
     private final static String SUCESS_MSG = "Libro agregado exitosamente!";
 
     private final AssetInstanceService assetInstanceService;
+    private final AssetInstanceReviewsService assetInstanceReviewsService;
     private final AssetAvailabilityService assetAvailabilityService;
     private final UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
 
     @Autowired
-    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService) {
+    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService,final AssetInstanceReviewsService assetInstanceReviewsService){
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userService = userService;
+        this.assetInstanceReviewsService = assetInstanceReviewsService;
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
@@ -56,6 +60,9 @@ public class AssetViewController {
         final ModelAndView mav = new ModelAndView("/views/assetView");
         if (success)
             SnackbarControl.displaySuccess(mav, SUCESS_MSG);
+
+        PagingImpl<AssetInstanceReview> assetInstanceReviewPage = assetInstanceReviewsService.getAssetInstanceReviews(1, 1, assetInstanceOpt);
+        mav.addObject("assetInstanceReviewPage", assetInstanceReviewPage);
         mav.addObject("assetInstance", assetInstanceOpt);
 
         return mav;

@@ -3,7 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.PageUserAssetsImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
                 return userAssetsDao.getLendedAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
         }
 
-        return new PageUserAssetsImpl(new ArrayList<>());
+        return new PagingImpl(new ArrayList<>());
     }
 
     @Transactional(readOnly = true)

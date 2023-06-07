@@ -3,9 +3,7 @@ package ar.edu.itba.paw.interfaces;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-
-import java.util.List;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface AssetInstanceReviewsService {
 
@@ -15,7 +13,7 @@ public interface AssetInstanceReviewsService {
 
     double getRatingById(final int assetInstanceId) throws AssetInstanceNotFoundException;
 
-    List<AssetInstanceReview> getAssetInstanceReviews(final AssetInstanceImpl assetInstance);
+    PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage,AssetInstanceImpl assetInstance);
 
-    List<AssetInstanceReview> getAssetInstanceReviewsById(final int assetInstanceId) throws AssetInstanceNotFoundException;
+    PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage, int assetInstanceId) throws AssetInstanceNotFoundException;
 }

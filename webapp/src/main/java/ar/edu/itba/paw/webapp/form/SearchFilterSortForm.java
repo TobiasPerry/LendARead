@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class SearchFilterSortForm {
 
-    @Size(min = 1)
+    @Size(min = 1, max = 100)
     private String search;
 
     private List<String> physicalConditions;
