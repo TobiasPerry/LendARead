@@ -123,7 +123,7 @@
           <jsp:param name="showError" value="${true}"/>
         </jsp:include>
       </c:if>
-      <c:if test="${locations.size() <= 5}">
+      <c:if test="${locations.size() <= 5 && locationIdError != -1}">
       <div class="info-container m-3 add-new-location btn-icon" style="max-width: 300px; min-width: 300px; height: 250px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
           <i class="bi bi-plus-lg"></i>
@@ -154,6 +154,7 @@
        </jsp:include>`;
 
       $(this).before(newCard);
+      $(this).addClass('d-none');
     });
   });
 </script>
