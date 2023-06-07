@@ -30,7 +30,7 @@
 <body class="body-class">
 <jsp:include page="../components/navBar.jsp"/>
 <div class="main-class">
-    <div class="container">
+    <div class="user-container">
         <div class="info-container w-100" id="user-info">
             <div class="position-relative">
                 <div class="user-profile-cell">
