@@ -4,10 +4,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
     <div class="d-flex justify-content-between">
-        <div>
-            <h3 id="nameDisplay${location.id}">${location.name}</h3>
-            <input type="text" name="name" id="name${location.id}" class="form-control d-none" value="${location.name}"/>
-        </div>
         <c:url value="/deleteLocation" var="deleteUrl"/>
         <form:form action="${deleteUrl}" method="post">
             <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">

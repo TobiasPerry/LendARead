@@ -50,13 +50,6 @@
     <div class="locations-grid d-flex flex-wrap" style="background-color: #D0DCD0; border-radius: 20px; padding: 20px;">
       <c:forEach var="location" items="${locations}" >
         <div class="info-container m-3" style="max-width: 300px; min-width: 300px; height: 300px;">
-          <div class="d-flex justify-content-between">
-            <div>
-              <div>
-                <h3 id="nameDisplay${location.id}">${location.name}</h3>
-                <input type="text" name="name" id="name${location.id}" class="form-control d-none" value="${location.name}"/>
-              </div>
-            </div>
             <c:url value="/deleteLocation" var="deleteUrl"/>
             <form:form action="${deleteUrl}" method="post">
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
@@ -64,11 +57,16 @@
                 <i class="fas fa-trash-alt"></i>
               </button>
             </form:form>
-          </div>
 
           <c:url var="editUrl" value="/editLocation" />
           <form:form action="${editUrl}" method="post">
             <div class="field-group">
+              <spring:message code="book_name" var="titlePH"/>
+              <spring:message code="book_name" var="titlePH"/>
+              <label for="locality${location.id}" class="form-label">${titlePH}</label>
+              <input  type="text" name="name" id="name${location.id}" placeholder="${titlePH}"
+                     class="form-control" value="${location.name}" disabled/>
+
               <div class="d-flex justify-content-between">
                 <div class="field">
                   <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
@@ -130,14 +128,6 @@
       $(this).addClass('d-none');
       $(this).siblings('.save-button').removeClass('d-none');
     });
-  });
-
-  $('body').on('click', '.edit-button', function() {
-    const form = $(this).closest('form');
-    form.find('input[type="text"]').removeAttr('disabled').removeClass('d-none');
-    form.find('h3').addClass('d-none');
-    $(this).addClass('d-none');
-    $(this).siblings('.save-button').removeClass('d-none');
   });
 
   $(document).ready(function() {
