@@ -5,13 +5,20 @@ CREATE TABLE IF NOT EXISTS book(
     title text not null,
     lang varchar(100) not null
 );
+
+CREATE TABLE IF NOT EXISTS photos(
+    id SERIAL primary key,
+    photo bytea
+);
+
 CREATE TABLE IF NOT EXISTS users(
     behavior varchar(100),
     id SERIAL primary key,
     mail varchar(100) unique,
     name varchar(100) not null,
     telephone varchar(100),
-    password varchar(200)
+    password varchar(200),
+    photo_id int references photos(id) on delete cascade
 );
 CREATE TABLE IF NOT EXISTS location(
     id SERIAL primary key,
@@ -21,10 +28,7 @@ CREATE TABLE IF NOT EXISTS location(
     country varchar(100) NOT NULL,
     address varchar(100)
 );
-CREATE TABLE IF NOT EXISTS photos(
-    id SERIAL primary key,
-    photo bytea
-);
+
 
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,

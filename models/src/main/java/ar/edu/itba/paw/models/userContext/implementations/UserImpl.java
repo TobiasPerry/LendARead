@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+
 import javax.persistence.*;
+import java.awt.*;
 
 @Entity
 @Table(name = "users")
@@ -17,6 +20,10 @@ final public class UserImpl{
     @Column(length = 100, nullable = false)
     private String password;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = true)
+    private ImageImpl profilePhoto;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
     @SequenceGenerator(sequenceName = "users_id_seq", name = "users_id_seq", allocationSize = 1)
@@ -29,6 +36,7 @@ final public class UserImpl{
         this.telephone = telephone;
         this.behavior = behaviour;
         this.password = password;
+        this.profilePhoto = null;
     }
 
     public UserImpl(int id, String email, String name, String telephone, String password, Behaviour behaviour) {
@@ -38,6 +46,16 @@ final public class UserImpl{
         this.id = Long.valueOf(id);
         this.behavior = behaviour;
         this.password = password;
+        this.profilePhoto = null;
+    }
+
+    public UserImpl(String email, String name, String telephone, String password, Behaviour behaviour, ImageImpl profilePhoto) {
+        this.email = email;
+        this.name = name;
+        this.telephone = telephone;
+        this.behavior = behaviour;
+        this.password = password;
+        this.profilePhoto = profilePhoto;
     }
 
     public UserImpl() {
@@ -75,6 +93,10 @@ final public class UserImpl{
 
     public String getName() {
         return this.name;
+    }
+
+    public ImageImpl getProfilePhoto() {
+        return this.profilePhoto;
     }
 
     public void setPassword(String newPassword) {
@@ -123,6 +145,11 @@ final public class UserImpl{
         return id != null && id.equals(otherUser.id);
     }
 
+
+
+    public void setProfilePhoto(ImageImpl img) {
+        this.profilePhoto = img;
+    }
 
 }
 
