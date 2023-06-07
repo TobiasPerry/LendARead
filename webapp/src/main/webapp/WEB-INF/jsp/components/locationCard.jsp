@@ -16,6 +16,12 @@
     <c:url var="editUrl" value="/editLocation" />
     <form:form action="${editUrl}" method="post">
         <div class="field-group">
+            <spring:message code="book_name" var="titlePH"/>
+            <spring:message code="book_name" var="titlePH"/>
+            <label for="locality${location.id}" class="form-label">${titlePH}</label>
+            <input  type="text" name="name" id="name${location.id}" placeholder="${titlePH}"
+                    class="form-control" value="${location.name}" disabled/>
+
             <div class="d-flex justify-content-between">
                 <div class="field">
                     <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
@@ -49,7 +55,6 @@
             </div>
             <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
         </div>
-        <input type="hidden" name="name" id="name${location.id}" class="form-control" value="${location.name}" />
         <div class="mt-3 form-button-container">
             <button type="button" class="edit-button btn btn-outline-success mx-1">Edit</button>
             <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
