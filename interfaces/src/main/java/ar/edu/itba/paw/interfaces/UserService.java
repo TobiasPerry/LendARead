@@ -30,4 +30,6 @@ public interface UserService {
     boolean isTokenValid(final String token);
 
     void logInUser(final String email, final String password);
+
+    boolean isCurrent(int userId);
 }

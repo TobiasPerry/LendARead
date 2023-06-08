@@ -17,7 +17,9 @@ public class UserProfileViewController {
     @RequestMapping("/user/{id}")
     public ModelAndView userProfileView(@PathVariable(name = "id") int id) throws UserNotFoundException {
         UserImpl user = userService.getUserById(id);
+
         return new ModelAndView("/views/userProfileView")
-                .addObject("user", user);
+                .addObject("user", user)
+                .addObject("isCurrent", userService.isCurrent(id));
     }
 }

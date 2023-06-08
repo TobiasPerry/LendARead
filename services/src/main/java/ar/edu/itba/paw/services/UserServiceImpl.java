@@ -155,4 +155,17 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
+    @Override
+    public boolean isCurrent(final int userId) {
+        Optional<UserImpl> user = userDao.getUser(userId);
+        if (!user.isPresent()) {
+            LOGGER.error("User not found");
+            return false;
+        }
+
+        String current = getCurrentUser();
+        LOGGER.debug("Current User: {}", current);
+        return current.equals(user.get().getEmail());
+    }
 }

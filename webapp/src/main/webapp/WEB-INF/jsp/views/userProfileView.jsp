@@ -36,9 +36,11 @@
                 <div class="user-profile-cell">
                     <img class="user-profile-picture"
                          src="https://e0.pxfuel.com/wallpapers/383/587/desktop-wallpaper-anya-spyxfamily-waifu-cute.jpg"/>
-                    <div class="user-change-picture-container">
-                        <i class="fas fa-solid fa-camera"></i>
-                    </div>
+                    <c:if test="${isCurrent}">
+                        <div class="user-change-picture-container">
+                            <i class="fas fa-solid fa-camera"></i>
+                        </div>
+                    </c:if>
                 </div>
             </div>
             <div class="user-info">
