@@ -27,6 +27,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+
+<%--    Icons--%>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -34,18 +38,6 @@
     <script src="<c:url value="/static/javaScript/assetView.js"/>"></script>
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
-
-    <style>
-        .rating {
-            font-size: 48px;
-            color: orange;
-            display: inline-block;
-            overflow: hidden;
-        }
-        .rating::before {
-            content: "★★★★★"
-        }
-    </style>
 
 </head>
 <body data-path="${path}" class=" body-class" data-maxDays="<c:out value="${assetInstance.maxDays}" /> ">
@@ -130,8 +122,22 @@
     <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
         <div class="container-column" style="flex: 0 0 100%">
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
-
-                <div id="rating1" class="rating"></div>
+                <div class="container-row">
+                    <div class="" style="flex-grow: 1; display: flex; justify-content: center;align-items: center;">
+                        <div class="container-column">
+                            <div class="container-row">
+                                <h1>4.5<small>/5</small></h1>
+                            </div>
+                            <div class="container-row">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -150,15 +156,3 @@
 
 </body>
 </html>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () =>{
-        fillStars(3.3);
-    })
-
-    var cw = window.rating1.clientWidth; // save original 100% pixel width
-
-    function rating( stars ) {
-        window.rating1.style.width = Math.round(cw * (stars / 5)) + 'px';
-    }
-</script>
