@@ -146,7 +146,9 @@ function beforeSubmit() {
     const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
     const borrowTimeType = document.getElementById('borrow-time-type')
     const timeInDays = document.getElementById('maxDays')
-
+    if (borrowTimeQuantity.value === "") {
+        borrowTimeQuantity.value = "0"
+    }
     const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
 
     timeInDays.value = totalTimeInDays

@@ -30,6 +30,9 @@ public class AssetInstanceForm {
     @Min(value = 1)
     private int maxDays;
 
+    @Size(min = 20, max = 300)
+    private String description;
+
     @Image
     private MultipartFile image;
 }

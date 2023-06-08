@@ -116,9 +116,9 @@ final public class UserAssetDetailsController {
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.POST)
     public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException {
         if (errors.hasErrors()) {
-            return new ModelAndView("redirect:/myBookDetails/" + id);
+            return changeAsset(id,assetInstanceForm);
         }
-        assetInstanceService.changeAssetInstance(id,PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation(assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry()), assetInstanceForm.getImage().getBytes());
+        assetInstanceService.changeAssetInstance(id,PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation(assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry()), assetInstanceForm.getImage().getBytes(),assetInstanceForm.getDescription());
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)

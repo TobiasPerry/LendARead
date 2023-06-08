@@ -22,6 +22,6 @@ public interface AssetInstanceService {
 
     boolean isOwner(final AssetInstanceImpl assetInstance, final String email);
 
-    void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location, final byte[] photo) throws AssetInstanceNotFoundException;
+    void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location, final byte[] photo,final String description) throws AssetInstanceNotFoundException;
 
 }
