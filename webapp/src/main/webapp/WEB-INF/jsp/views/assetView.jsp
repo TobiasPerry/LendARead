@@ -68,6 +68,9 @@
                         <c:out value="${assetInstance.book.author}"/>
                     </span>
                 </h3>
+                <div class="card" style="background-color: #E1E6F6 ">
+                    <h5 class="textOverflow"><c:out value="${assetInstance.description}"/></h5>
+                </div>
 
                 <h6 id="physicalConditionClick" class="text-clickable"
                     data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">

@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +14,7 @@ final public class BorrowedAssetInstanceImpl extends AssetInstanceImpl {
     private final LendingState lendingState;
 
     public BorrowedAssetInstanceImpl(final AssetInstanceImpl assetInstance, final String dueDate, final String borrower, final int lendingId, final LendingState lendingState) {
-        super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImage(), assetInstance.getAssetState(),assetInstance.getMaxDays());
+        //super(assetInstance.getId(), assetInstance.getBook(), assetInstance.getPhysicalCondition(), assetInstance.getOwner(), assetInstance.getLocation(), assetInstance.getImage(), assetInstance.getAssetState(),assetInstance.getMaxDays());
         this.dueDate = formatDate(dueDate);
         this.borrower = borrower;
         this.lendingId = lendingId;

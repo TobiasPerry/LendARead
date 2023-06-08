@@ -31,6 +31,9 @@ public class AddAssetForm {
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String zipcode;
 
+    @Size(min = 1, max = 300)
+    private String description;
+
     @Size(min = 1, max = 100)
     private String locality;
 

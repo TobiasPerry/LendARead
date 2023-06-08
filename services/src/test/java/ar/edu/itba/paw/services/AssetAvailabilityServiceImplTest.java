@@ -60,7 +60,7 @@ public class AssetAvailabilityServiceImplTest {
             new LocationImpl(0, "", "", "", ""),
             new ImageImpl(),
             AssetState.PUBLIC,
-            10
+            10,"DESC"
     );
 
 
