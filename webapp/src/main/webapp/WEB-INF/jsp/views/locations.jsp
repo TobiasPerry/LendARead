@@ -107,20 +107,20 @@
               </div>
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
             </div>
-            <div class="mt-3 form-button-container d-flex justify-content-around">
-              <c:url value="/deleteLocation" var="deleteUrl"/>
-              <form:form action="${deleteUrl}" method="post" class="d-inline-block">
-                <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
-                <button type="submit" class="btn btn-danger delete-location">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </form:form>
-              <div>
-                <button type="button" class="edit-button btn btn-green mx-1" style="opacity: 0.6">Edit</button>
-                <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
-              </div>
-            </div>
+            <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
           </form:form>
+          <div class="mt-3 form-button-container d-flex justify-content-around">
+            <c:url value="/deleteLocation" var="deleteUrl"/>
+            <form:form action="${deleteUrl}" method="post" class="d-inline-block">
+              <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
+              <button type="submit" class="btn btn-danger delete-location">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form:form>
+            <div>
+              <button type="button" class="edit-button btn btn-green mx-1" style="opacity: 0.6">Edit</button>
+            </div>
+          </div>
         </div>
       </c:forEach>
       <c:if test="${locationIdError == -1 }">
