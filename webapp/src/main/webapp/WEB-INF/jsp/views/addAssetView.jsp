@@ -196,40 +196,37 @@
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="4">
                             <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
-                            <c:forEach items="${locations}" var="location" varStatus="status">
-                                <div style="display: ${status.index == 0 ? 'block' : 'none'};" id="locationCard-${status.index}">
-                                    <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
-                                    <div class="field-group">
-                                        <div class="field">
-                                            <label class="form-label">Locality</label>
-                                            <p>${location.locality}</p>
-                                        </div>
-                                        <div class="field">
-                                            <label class="form-label">Province</label>
-                                            <p>${location.province}</p>
-                                        </div>
-                                    </div>
-                                    <div class="field-group">
-                                        <div class="field">
-                                            <label class="form-label">Country</label>
-                                            <p>${location.country}</p>
-                                        </div>
-                                        <div class="field">
-                                            <label class="form-label">Zipcode</label>
-                                            <p>${location.zipcode}</p>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3 form-button-container">
-                                        <button type="button" class="prev-location-button btn btn-outline-success mx-1" ${status.index == 0 ? 'disabled' : ''} onclick="changeCard(${status.index}, ${status.index - 1})">Prev</button>
-                                        <button type="button" class="next-location-button btn btn-outline-success mx-1" ${status.index == locations.size() - 1 ? 'disabled' : ''} onclick="changeCard(${status.index}, ${status.index + 1})">Next</button>
-                                    </div>
+                            <button type="button" class="prev-location-button btn btn-outline-success mx-1" onclick="changeLocation(-1)"> < </button>
+                            <button type="button" class="next-location-button btn btn-outline-success mx-1" onclick="changeLocation(1)"> > </button>
+                            <div class="field-group">
+                                <div class="field">
+                                    <label class="form-label">Name</label>
+                                    <p id="name">${locations[0].name}</p>
                                 </div>
-                            </c:forEach>
+                                <div class="field">
+                                    <label class="form-label">Locality</label>
+                                    <p id="locality">${locations[0].locality}</p>
+                                </div>
+                                <div class="field">
+                                    <label class="form-label">Province</label>
+                                    <p id="province">${locations[0].province}</p>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field">
+                                    <label class="form-label">Country</label>
+                                    <p id="country">${locations[0].country}</p>
+                                </div>
+                                <div class="field">
+                                    <label class="form-label">Zipcode</label>
+                                    <p id="zipcode">${locations[0].zipcode}</p>
+                                </div>
+                            </div>
                         </fieldset>
                         <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;"
                                onchange="previewImage()"/>
                     </form:form>
-                </fieldset>
+                </div>
             </div>
         </div>
     </div>
@@ -253,14 +250,41 @@
     <jsp:param name="text" value="${text}"/>
 </jsp:include>
 
-</body>
 
 <script>
-    function changeCard(currentIndex, newIndex) {
-        document.getElementById('locationCard-' + currentIndex).style.display = 'none';
-        document.getElementById('locationCard-' + newIndex).style.display = 'block';
+    let locations = [
+        <c:forEach var="location" items="${locations}" varStatus="status">
+        {
+            "name": "<c:out value="${location.name}"/>",
+            "zipcode": "<c:out value="${location.zipcode}"/>",
+            "locality": "<c:out value="${location.locality}"/>",
+            "province": "<c:out value="${location.province}"/>",
+            "country": "<c:out value="${location.country}"/>"
+        }<c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+    console.log(locations)
+
+    let currentLocationIndex = 0;
+    function updateLocationFields(index) {
+        document.getElementById('name').innerText = locations[index].name;
+        document.getElementById('locality').innerText = locations[index].locality;
+        document.getElementById('province').innerText = locations[index].province;
+        document.getElementById('country').innerText = locations[index].country;
+        document.getElementById('zipcode').innerText = locations[index].zipcode;
     }
+    function changeLocation(direction) {
+        currentLocationIndex += direction;
+        // Ensure that index stays within the valid range
+        currentLocationIndex = Math.max(0, Math.min(locations.length - 1, currentLocationIndex));
+        updateLocationFields(currentLocationIndex);
+    }
+
 </script>
+</body>
+
+
+
 
 <script>
     window.isbnUrl = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`
