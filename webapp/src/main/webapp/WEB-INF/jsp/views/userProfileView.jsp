@@ -25,9 +25,13 @@
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/userProfile.css"/>" rel="stylesheet"/>
+    <c:if test="${isCurrent}">
+        <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
+    </c:if>
 
 </head>
 <body class="body-class">
+
 <jsp:include page="../components/navBar.jsp"/>
 <div class="main-class">
     <div class="user-container">
@@ -37,9 +41,10 @@
                     <img class="user-profile-picture"
                          src="https://e0.pxfuel.com/wallpapers/383/587/desktop-wallpaper-anya-spyxfamily-waifu-cute.jpg"/>
                     <c:if test="${isCurrent}">
-                        <div class="user-change-picture-container">
+                        <div class="user-change-picture-container" id="change-profile-pic-btn">
                             <i class="fas fa-solid fa-camera"></i>
                         </div>
+
                     </c:if>
                 </div>
             </div>
@@ -88,6 +93,13 @@
             </div>
         </div>
     </div>
+
+    <c:if test="${isCurrent}">
+        <jsp:include page="../components/changePictureModal.jsp">
+            <jsp:param name="title" value="Change Profile Picture"/>
+            <jsp:param name="userId" value="${user.id}"/>
+        </jsp:include>
+    </c:if>
 </div>
 
 </body>
