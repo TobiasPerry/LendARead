@@ -21,12 +21,14 @@ CREATE TABLE IF NOT EXISTS users(
     photo_id int references photos(id) on delete cascade
 );
 CREATE TABLE IF NOT EXISTS location(
-    id SERIAL primary key,
-    zipcode varchar(100) NOT NULL,
-    locality varchar(100) NOT NULL,
-    province varchar(100) NOT NULL,
-    country varchar(100) NOT NULL,
-    address varchar(100)
+   id SERIAL PRIMARY KEY,
+   name VARCHAR(100) NOT NULL,
+   zipcode VARCHAR(100) NOT NULL,
+   locality VARCHAR(100) NOT NULL,
+   province VARCHAR(100) NOT NULL,
+   country VARCHAR(100) NOT NULL,
+   address VARCHAR(100) DEFAULT 'Address',
+   owner INT REFERENCES users(id) ON DELETE CASCADE
 );
 
 

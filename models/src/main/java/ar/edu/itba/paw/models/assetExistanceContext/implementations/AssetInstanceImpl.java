@@ -43,16 +43,6 @@ public class AssetInstanceImpl{
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
     private ImageImpl image;
 
-    public AssetInstanceImpl(int id, BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending) {
-        this.id = (long) id;
-        this.book = book;
-        this.physicalCondition = physicalCondition;
-        this.userReference = userReference;
-        this.location = location;
-        this.image = imageId;
-        this.assetState = as;
-        this.maxLendingDays = maxDaysLending;
-    }
     public AssetInstanceImpl( BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending) {
         this.book = book;
         this.physicalCondition = physicalCondition;

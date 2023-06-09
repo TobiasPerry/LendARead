@@ -53,11 +53,10 @@ public class AssetAvailabilityServiceImplTest {
     private static final LocalDate DEVOLUTION_DATE_WRONG = LocalDate.now().plusDays(30);
     private static final UserImpl USER = new UserImpl(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
     private static final AssetInstanceImpl ASSET_INSTANCE = new AssetInstanceImpl(
-            ASSET_ID,
             new BookImpl(0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
-            new LocationImpl(0, "", "", "", ""),
+            new LocationImpl(0,"", "", "", "", "", null),
             new ImageImpl(),
             AssetState.PUBLIC,
             10

@@ -56,6 +56,8 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
         } else {
             book = bookOptional.get();
         }
+        //here probably the problem with the transactional and adding a location that references
+        //the user.
         Optional<UserImpl> user = userDao.getUser(assetInstance.getOwner().getEmail());
         LocationImpl location = locationDao.addLocation(assetInstance.getLocation());
         ImageImpl image = photosDao.addPhoto(photo);

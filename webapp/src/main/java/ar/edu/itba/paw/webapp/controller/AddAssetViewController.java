@@ -1,11 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
@@ -48,16 +50,18 @@ final public class AddAssetViewController {
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name = "file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
-                                 final BindingResult errors, HttpServletResponse response) throws InternalErrorException {
+                                 final BindingResult errors, HttpServletResponse response) throws UserNotFoundException {
 
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
         if (errors.hasErrors() || parsedImage == null)
             return addAssetView(addAssetForm, false, -1, true).addObject(INVALID_SNACKBAR, true);
 
+        UserImpl user = userService.getUser(userService.getCurrentUser());
+
         try {
             LOGGER.info("AssetInstance has ben created");
-            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
+            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, user), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");

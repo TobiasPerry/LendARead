@@ -32,21 +32,15 @@ final public class FormFactoryAddAssetView {
             return null;
     }
 
-    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, String email) {
-
-        UserImpl user = UserFactory.createUser(
-                email,
-                DEFAULT_STRING_VALUE,
-                DEFAULT_STRING_VALUE,
-                DEFAULT_STRING_VALUE,
-                Behaviour.LENDER
-        );
+    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, UserImpl user) {
 
         LocationImpl location = LocationFactory.createLocation(
+                "",
                 request.getZipcode(),
                 request.getLocality(),
                 request.getProvince(),
-                request.getCountry()
+                request.getCountry(),
+                user
         );
 
 

@@ -2,12 +2,15 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingCompletionUnsuccessfulException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.userContext.factories.LocationFactory;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.miscellaneous.CustomMultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,8 @@ final public class UserAssetDetailsController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
+    private final UserService userService;
+
     private final static String VIEW_NAME = "views/userHomeAssetDetail/userBookDetails";
     private final static String VIEW_NAME_ASSET_EDIT = "views/editAssetInstance";
 
@@ -45,10 +50,11 @@ final public class UserAssetDetailsController {
 
 
     @Autowired
-    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
+    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userAssetInstanceService = userAssetInstanceService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/userHomeReturn", method = RequestMethod.GET)
@@ -114,11 +120,13 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException {
+    public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException, UserNotFoundException {
         if (errors.hasErrors()) {
             return new ModelAndView("redirect:/myBookDetails/" + id);
         }
-        assetInstanceService.changeAssetInstance(id,PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation(assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry()), assetInstanceForm.getImage().getBytes());
+        UserImpl user = userService.getUser(userService.getCurrentUser());
+
+        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),LocationFactory.createLocation("", assetInstanceForm.getZipcode(),assetInstanceForm.getLocality(),assetInstanceForm.getProvince(),assetInstanceForm.getCountry(), user), assetInstanceForm.getImage().getBytes());
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)
