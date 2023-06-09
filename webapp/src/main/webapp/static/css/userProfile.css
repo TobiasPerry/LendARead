@@ -67,8 +67,13 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(10);
-    opacity: 0.9;
+    opacity: 0.5;
     color: white;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.user-profile-picture-modal:hover > svg {
+    opacity: 0.85;
 }
 
 .user-profile-cell {
