@@ -107,9 +107,9 @@
               </div>
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
             </div>
-            <div>
+          <div style=" width: 100%; text-align: center; padding-top: 20px;">
             <input type="submit" class="save-button btn btn-green mx-1 d-none" value="Save"/>
-            </div>
+          </div>
           </form:form>
           <div class="mt-3 form-button-container d-flex justify-content-around">
             <c:url value="/deleteLocation" var="deleteUrl"/>
@@ -119,7 +119,7 @@
                 <i class="fas fa-trash-alt"></i>
               </button>
             </form:form>
-            <div >
+            <div>
               <button type="button" class="edit-button btn btn-green mx-1" style="opacity: 0.6">Edit</button>
             </div>
           </div>
@@ -147,16 +147,16 @@
 <script>
   $(function() {
     $('body').on('click', '.edit-button', function() {
-      console.log('Edit button clicked');
       $(this).closest('.info-container').find('input[type="text"]').prop('disabled', false);
       $(this).addClass('d-none');
+      $(this).closest('.info-container').find('.delete-location').addClass('d-none'); // Added this line
       $(this).closest('.info-container').find('.save-button').removeClass('d-none');
-      $('.add-button, .delete-location').prop('disabled', true);
+      $('.add-button').prop('disabled', true);
     });
 
 
     $('body').on('click', '.save-button', function() {
-      $('.delete-location').addClass('d-none');
+      $('.add-button, .delete-location').prop('disabled', false);
     });
 
     $(".add-new-location").click(function() {
