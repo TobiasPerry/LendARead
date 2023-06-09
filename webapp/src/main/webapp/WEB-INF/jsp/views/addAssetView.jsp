@@ -196,55 +196,40 @@
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="4">
                             <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
-                            <div class="field-group">
-                                <div class="field">
-                                    <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
-                                    <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
-                                    <label for="locality" class="form-label">${localityLabel}</label>
-                                    <form:input path="locality" id="locality" placeholder="${localityPH}"
-                                                class="form-control"/>
-                                    <form:errors path="locality" cssClass="text-danger small" element="small"/>
+                            <c:forEach items="${locations}" var="location" varStatus="status">
+                                <div style="display: ${status.index == 0 ? 'block' : 'none'};" id="locationCard-${status.index}">
+                                    <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
+                                    <div class="field-group">
+                                        <div class="field">
+                                            <label class="form-label">Locality</label>
+                                            <p>${location.locality}</p>
+                                        </div>
+                                        <div class="field">
+                                            <label class="form-label">Province</label>
+                                            <p>${location.province}</p>
+                                        </div>
+                                    </div>
+                                    <div class="field-group">
+                                        <div class="field">
+                                            <label class="form-label">Country</label>
+                                            <p>${location.country}</p>
+                                        </div>
+                                        <div class="field">
+                                            <label class="form-label">Zipcode</label>
+                                            <p>${location.zipcode}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 form-button-container">
+                                        <button type="button" class="prev-location-button btn btn-outline-success mx-1" ${status.index == 0 ? 'disabled' : ''} onclick="changeCard(${status.index}, ${status.index - 1})">Prev</button>
+                                        <button type="button" class="next-location-button btn btn-outline-success mx-1" ${status.index == locations.size() - 1 ? 'disabled' : ''} onclick="changeCard(${status.index}, ${status.index + 1})">Next</button>
+                                    </div>
                                 </div>
-                                <div class="field">
-                                    <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
-                                    <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
-                                    <label for="province" class="form-label">${provinceLabel}</label>
-                                    <form:input path="province" id="province" placeholder="${provincePH}"
-                                                class="form-control"/>
-                                    <form:errors path="province" cssClass="text-danger small" element="small"/>
-                                </div>
-                            </div>
-                            <div class="field-group">
-                                <div class="field">
-                                    <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
-                                    <spring:message code="addAssetView.placeholders.country" var="countryPH"/>
-                                    <label for="country" class="form-label">${countryLabel}</label>
-                                    <form:input path="country" id="country" placeholder="${countryPH}"
-                                                class="form-control"/>
-                                    <form:errors path="country" cssClass="text-danger small" element="small"/>
-                                </div>
-                                <div class="field">
-                                    <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
-                                    <spring:message code="addAssetView.placeholders.zipcode" var="zipcpdePH"/>
-                                    <label for="zipcode" class="form-label">${zipcodeLabel}</label>
-                                    <form:input path="zipcode" id="zipcode" placeholder="${zipcpdePH}"
-                                                class="form-control"/>
-                                    <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
-                                </div>
-                            </div>
-                            <div class="mt-3 form-button-container">
-                                <input type="button" class="prev-button btn btn-outline-success mx-1"
-                                       value="<spring:message code="addAssetView.steps.prevButton"/>"
-                                />
-                                <spring:message code="addAssetView.addButton" var="addButton"/>
-                                <input type="submit" class="btn btn-green mx-1"
-                                       value="<c:out value="${addButton}"/>"/>
-                            </div>
+                            </c:forEach>
                         </fieldset>
                         <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;"
                                onchange="previewImage()"/>
                     </form:form>
-                </div>
+                </fieldset>
             </div>
         </div>
     </div>
@@ -269,6 +254,13 @@
 </jsp:include>
 
 </body>
+
+<script>
+    function changeCard(currentIndex, newIndex) {
+        document.getElementById('locationCard-' + currentIndex).style.display = 'none';
+        document.getElementById('locationCard-' + newIndex).style.display = 'block';
+    }
+</script>
 
 <script>
     window.isbnUrl = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`

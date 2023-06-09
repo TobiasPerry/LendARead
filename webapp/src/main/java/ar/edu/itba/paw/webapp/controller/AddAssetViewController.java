@@ -4,6 +4,7 @@ import ar.edu.itba.paw.exceptions.InternalErrorException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.LanguagesService;
+import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
@@ -37,14 +38,18 @@ final public class AddAssetViewController {
     private final UserService userService;
     private final AssetExistanceService assetExistanceService;
     private final LanguagesService languagesService;
+
+    private final LocationsService locationsService;
+
     private final static String viewName = "views/addAssetView";
     private final static String NAV_BAR_PATH = "addAsset", INVALID_SNACKBAR = "showSnackbarInvalid";
 
     @Autowired
-    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService) {
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService, LocationsService locationsService) {
         this.userService = userService;
         this.assetExistanceService = assetExistanceService;
         this.languagesService = languagesService;
+        this.locationsService = locationsService;
     }
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
@@ -75,7 +80,7 @@ final public class AddAssetViewController {
             @RequestParam(required = false, name = "succes") boolean success,
             @RequestParam(required = false, name = "id") Integer id,
             @RequestParam(required = false, name = "invalidImg") boolean invalidImg
-    ) {
+    ) throws UserNotFoundException {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<LanguageImpl> languages = languagesService.getLanguages();
         mav.addObject("langs", languages);
@@ -86,7 +91,7 @@ final public class AddAssetViewController {
         if (invalidImg) {
             mav.addObject("invalidImg", true);
         }
-        return mav;
+        return mav.addObject("locations", locationsService.getLocations(userService.getUser(userService.getCurrentUser())));
     }
 
 
