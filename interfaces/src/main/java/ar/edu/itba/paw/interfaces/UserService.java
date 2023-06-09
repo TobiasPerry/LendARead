@@ -32,4 +32,6 @@ public interface UserService {
     void logInUser(final String email, final String password);
 
     boolean isCurrent(int userId);
+
+    void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException;
 }

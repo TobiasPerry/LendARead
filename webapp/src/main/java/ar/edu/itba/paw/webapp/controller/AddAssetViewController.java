@@ -56,8 +56,8 @@ final public class AddAssetViewController {
             return addAssetView(addAssetForm, false, -1, true).addObject(INVALID_SNACKBAR, true);
 
         try {
-            LOGGER.info("AssetInstance has ben created");
             AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
+            LOGGER.info("AssetInstance has ben created");
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");

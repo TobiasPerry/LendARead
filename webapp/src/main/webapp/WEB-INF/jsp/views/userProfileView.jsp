@@ -33,21 +33,21 @@
 <body class="body-class">
 
 <jsp:include page="../components/navBar.jsp"/>
+<c:choose>
+    <c:when test="${user.profilePhoto == null}">
+        <c:url var="profilePicSrc"
+               value="https://images.sftcdn.net/images/t_app-logo-xl,f_auto,dpr_2/p/b05628f2-9b32-11e6-89cc-00163ed833e7/395437428/hola-free-vpn-logo"/>
+    </c:when>
+    <c:otherwise>
+        <c:url var="profilePicSrc"
+               value="/getImage/${user.profilePhoto.id}"/>
+    </c:otherwise>
+</c:choose>
 <div class="main-class">
     <div class="user-container">
         <div class="info-container w-100" id="user-info">
             <div class="position-relative">
                 <div class="user-profile-cell">
-                    <c:choose>
-                        <c:when test="${user.profilePhoto == null}">
-                            <c:url var="profilePicSrc"
-                                   value="https://images.sftcdn.net/images/t_app-logo-xl,f_auto,dpr_2/p/b05628f2-9b32-11e6-89cc-00163ed833e7/395437428/hola-free-vpn-logo"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:url var="profilePicSrc"
-                                   value="/getImage/${user.profilePhoto.id}"/>
-                        </c:otherwise>
-                    </c:choose>
                     <img class="user-profile-picture"
                          src="${profilePicSrc}" alt="User profile Picture"/>
                     <c:if test="${isCurrent}">
@@ -103,12 +103,16 @@
             </div>
         </div>
     </div>
-
     <c:if test="${isCurrent}">
-        <jsp:include page="../components/changePictureModal.jsp">
-            <jsp:param name="title" value="Change Profile Picture"/>
-            <jsp:param name="userId" value="${user.id}"/>
-        </jsp:include>
+        <c:url var="changeProfilePicUrl" value="/user/${user.id}/editPic"/>
+        <form:form modelAttribute="changeProfilePicForm" action="${changeProfilePicUrl}" method="post"
+                   enctype="multipart/form-data">
+            <jsp:include page="../components/changePictureModal.jsp">
+                <jsp:param name="title" value="Change Profile Picture"/>
+                <jsp:param name="userId" value="${user.id}"/>
+                <jsp:param name="imgSrc" value="${profilePicSrc}"/>
+            </jsp:include>
+        </form:form>
     </c:if>
 </div>
 

@@ -3,9 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,7 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserDao userDao;
+    private final ImagesDao imagesDao;
 
     private final EmailService emailService;
 
@@ -37,11 +40,12 @@ public class UserServiceImpl implements UserService {
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
 
     @Autowired
-    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager, final ImagesDao imagesDao) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
         this.authenticationManager = authenticationManager;
+        this.imagesDao = imagesDao;
     }
 
 
@@ -167,5 +171,21 @@ public class UserServiceImpl implements UserService {
         String current = getCurrentUser();
         LOGGER.debug("Current User: {}", current);
         return current.equals(user.get().getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException {
+        Optional<UserImpl> maybeUser = userDao.getUser(userId);
+        if (!maybeUser.isPresent()) {
+            LOGGER.error("User not found");
+            throw new UserNotFoundException("User not found");
+        }
+
+        ImageImpl image = this.imagesDao.addPhoto(parsedImage);
+        LOGGER.debug("New profile image created for user id {}", userId);
+        UserImpl user = maybeUser.get();
+        user.setProfilePhoto(image);
+        LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
     }
 }

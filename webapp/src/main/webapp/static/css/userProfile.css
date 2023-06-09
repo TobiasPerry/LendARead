@@ -32,6 +32,45 @@
     color: black;
 }
 
+.user-profile-picture-modal {
+    width: 75%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+}
+
+
+.user-profile-picture-modal > img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: brightness(0.75);
+    transition: all 0.1s ease-in-out;
+}
+
+.user-profile-picture-modal:hover > img {
+    filter: brightness(0.5);
+}
+
+.user-profile-picture-modal > svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(10);
+    opacity: 0.9;
+    color: white;
+}
+
 .user-profile-cell {
     width: min(var(--photo-width), var(--min-photo-width));
     position: absolute;
