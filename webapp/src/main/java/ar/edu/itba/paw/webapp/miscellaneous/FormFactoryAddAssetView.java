@@ -32,16 +32,7 @@ final public class FormFactoryAddAssetView {
             return null;
     }
 
-    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, UserImpl user) {
-
-        LocationImpl location = LocationFactory.createLocation(
-                "",
-                request.getZipcode(),
-                request.getLocality(),
-                request.getProvince(),
-                request.getCountry(),
-                user
-        );
+    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, UserImpl user, LocationImpl location) {
 
 
         BookImpl book = BookFactory.createBook(request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());

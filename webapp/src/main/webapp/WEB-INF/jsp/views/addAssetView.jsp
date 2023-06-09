@@ -222,6 +222,17 @@
                                     <p id="zipcode">${locations[0].zipcode}</p>
                                 </div>
                             </div>
+
+                            <form:input type="hidden" path="id" id="id" value="${locations[0].id}" class="form-control d-none" readonly="true"/>
+
+                            <div class="mt-3 form-button-container">
+                                <input type="button" class="prev-button btn btn-outline-success mx-1"
+                                       value="<spring:message code="addAssetView.steps.prevButton"/>"
+                                />
+                                <spring:message code="addAssetView.addButton" var="addButton"/>
+                                <input type="submit" class="btn btn-green mx-1"
+                                       value="<c:out value="${addButton}"/>"/>
+                            </div>
                         </fieldset>
                         <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;"
                                onchange="previewImage()"/>
@@ -255,18 +266,20 @@
     let locations = [
         <c:forEach var="location" items="${locations}" varStatus="status">
         {
+            "id": "<c:out value="${location.id}"/>",
             "name": "<c:out value="${location.name}"/>",
             "zipcode": "<c:out value="${location.zipcode}"/>",
             "locality": "<c:out value="${location.locality}"/>",
             "province": "<c:out value="${location.province}"/>",
             "country": "<c:out value="${location.country}"/>"
-        }<c:if test="${!status.last}">,</c:if>
+        } <c:if test="${!status.last}">,</c:if>
         </c:forEach>
     ];
-    console.log(locations)
 
     let currentLocationIndex = 0;
+
     function updateLocationFields(index) {
+        document.getElementById('id').innerText = locations[index].id;
         document.getElementById('name').innerText = locations[index].name;
         document.getElementById('locality').innerText = locations[index].locality;
         document.getElementById('province').innerText = locations[index].province;
@@ -275,7 +288,6 @@
     }
     function changeLocation(direction) {
         currentLocationIndex += direction;
-        // Ensure that index stays within the valid range
         currentLocationIndex = Math.max(0, Math.min(locations.length - 1, currentLocationIndex));
         updateLocationFields(currentLocationIndex);
     }

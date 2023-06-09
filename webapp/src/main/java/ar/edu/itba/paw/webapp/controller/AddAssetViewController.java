@@ -66,7 +66,7 @@ final public class AddAssetViewController {
 
         try {
             LOGGER.info("AssetInstance has ben created");
-            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, user), parsedImage);
+            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, user, locationsService.getLocation(addAssetForm.getId())), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");
