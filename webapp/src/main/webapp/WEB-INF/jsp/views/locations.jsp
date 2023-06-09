@@ -42,7 +42,7 @@
           <c:url var="editUrl" value="/editLocation" />
           <form:form action="${editUrl}" method="post" modelAttribute="locationForm">
             <div class="field-group">
-              <form:input path="name" id="name${location.id}" class="form-control title-input" disabled="true" value="${location.name}"/>
+              <form:input path="name" id="name${location.id}" class="form-control" disabled="true" value="${location.name}" style="font-size: 1.5em; font-weight: bold; border: none; outline: none; background-color: transparent;"/>
               <c:if test="${location.id == locationIdError}">
                 <form:errors path="name" cssClass="text-danger small" element="small"/>
               </c:if>
