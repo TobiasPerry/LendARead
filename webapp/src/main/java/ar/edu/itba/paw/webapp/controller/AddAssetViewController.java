@@ -70,7 +70,12 @@ final public class AddAssetViewController {
     }
 
     @RequestMapping(value = "/addAssetView", method = RequestMethod.GET)
-    public ModelAndView addAssetView(@ModelAttribute("addAssetForm") final AddAssetForm addAssetForm, @RequestParam(required = false, name = "succes") boolean success, @RequestParam(required = false, name = "id") Integer id, @RequestParam(required = false, name = "invalidImg") boolean invalidImg) {
+    public ModelAndView addAssetView(
+            @ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,
+            @RequestParam(required = false, name = "succes") boolean success,
+            @RequestParam(required = false, name = "id") Integer id,
+            @RequestParam(required = false, name = "invalidImg") boolean invalidImg
+    ) {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<LanguageImpl> languages = languagesService.getLanguages();
         mav.addObject("langs", languages);

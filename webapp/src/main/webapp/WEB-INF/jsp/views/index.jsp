@@ -26,7 +26,9 @@
 </head>
 
 <body data-path="${path}" class = "body-class">
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 <jsp:include page="../components/snackbarComponent.jsp"/>
 
 <section id="hero" style="background-color: #D0DCD0; padding-bottom: 100px; ">
@@ -45,19 +47,24 @@
     </div>
 </section>
 
-<c:if test="${books.size() > 0}">
+<c:if test="${assetInstances.size() > 0}">
     <section style="background-color: #FFFFFF; margin-top: 100px">
         <div class="container-row-wrapped">
             <h1><spring:message code="index.recentlyAddBooks"/></h1>
         </div>
         <div class="container-row-wrapped" style="margin: 20px auto; padding-top: 20px; background-color: #FFFFFF; border-radius: 20px; width: 90%">
-            <c:forEach var="book" items="${books}">
+            <c:forEach var="assetInstance" items="${assetInstances}">
                 <% request.setCharacterEncoding("utf-8"); %>
                 <jsp:include page="../components/bookCard.jsp">
-                    <jsp:param name="id" value="${book.id}"/>
-                    <jsp:param name="bookTitle" value="${book.book.name}"/>
-                    <jsp:param name="bookAuthor" value="${book.book.author}"/>
-                    <jsp:param name="imageId" value="${book.image.id}"/>
+                    <jsp:param name="id" value="${assetInstance.id}"/>
+                    <jsp:param name="bookTitle" value="${assetInstance.book.name}"/>
+                    <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>
+                    <jsp:param name="imageId" value="${assetInstance.image.id}"/>
+                    <jsp:param name="user" value="${assetInstance.owner.name}"/>
+                    <jsp:param name="locality" value="${assetInstance.location.locality}"/>
+                    <jsp:param name="province" value="${assetInstance.location.province}"/>
+                    <jsp:param name="country" value="${assetInstance.location.country}"/>
+                    <jsp:param name="physicalCondition" value="${assetInstance.physicalCondition}"/>
                 </jsp:include>
             </c:forEach>
         </div>

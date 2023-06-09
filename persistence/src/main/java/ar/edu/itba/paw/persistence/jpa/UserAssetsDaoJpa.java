@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistence.jpa;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.PageUserAssetsImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.stereotype.Repository;
@@ -103,7 +103,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         if (list.isEmpty())
-            return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
+            return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
 
         String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids ";
@@ -120,7 +120,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
 
-        return new PageUserAssetsImpl<>(list2, pageNumber, totalPages);
+        return new PagingImpl<>(list2, pageNumber, totalPages);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         if (list.isEmpty())
-            return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
+            return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
 
         String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
@@ -170,7 +170,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
 
-        return new PageUserAssetsImpl<>(list2, pageNumber, totalPages);
+        return new PagingImpl<>(list2, pageNumber, totalPages);
     }
 
     private void setQueryAttributes(String filterAtribuite, String sortAtribuite, String direction, StringBuilder queryIds, StringBuilder queryCount) {
@@ -233,7 +233,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         if (list.isEmpty())
-            return new PageUserAssetsImpl<>(new ArrayList<>(), 1, 1);
+            return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
         String query = "SELECT a FROM AssetInstanceImpl a WHERE a.id in :ids ";
 
@@ -247,7 +247,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         List<AssetInstanceImpl> assetInstanceList=  em.createQuery(query, AssetInstanceImpl.class).setParameter("ids", list).getResultList();
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
 
-        return new PageUserAssetsImpl<>(assetInstanceList, pageNumber, totalPages);
+        return new PagingImpl<>(assetInstanceList, pageNumber, totalPages);
     }
 
     @Override

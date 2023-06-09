@@ -28,7 +28,9 @@
 
 <body data-path="${path}" class="body-class">
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 <div class="main-class">
     <div class="container my-5">
 

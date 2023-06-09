@@ -10,13 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
-public class ErrorsController {
+public class ErrorsControllerAdvice {
 
 
     private final MessageSource messageSource;
 
     @Autowired
-    public ErrorsController(final MessageSource messageSource) {
+    public ErrorsControllerAdvice(final MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
@@ -48,5 +48,10 @@ public class ErrorsController {
         mav.addObject("errorTitle", messageSource.getMessage("error.internalError.Title", null, LocaleContextHolder.getLocale()));
         mav.addObject("errorSubtitle", messageSource.getMessage("error.internalError.Subtitle", null, LocaleContextHolder.getLocale()));
         return mav;
+    }
+
+    @ExceptionHandler({UnauthorizedUserException.class})
+    public ModelAndView unauthorizedUserException(){
+        return new ModelAndView("views/403View");
     }
 }

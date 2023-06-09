@@ -5,13 +5,20 @@ CREATE TABLE IF NOT EXISTS book(
     title text not null,
     lang varchar(100) not null
 );
+
+CREATE TABLE IF NOT EXISTS photos(
+    id SERIAL primary key,
+    photo bytea
+);
+
 CREATE TABLE IF NOT EXISTS users(
     behavior varchar(100),
     id SERIAL primary key,
     mail varchar(100) unique,
     name varchar(100) not null,
     telephone varchar(100),
-    password varchar(200)
+    password varchar(200),
+    photo_id int references photos(id) on delete cascade
 );
 CREATE TABLE IF NOT EXISTS location(
    id SERIAL PRIMARY KEY,
@@ -24,11 +31,6 @@ CREATE TABLE IF NOT EXISTS location(
    owner INT REFERENCES users(id) ON DELETE CASCADE
 );
 
-
-CREATE TABLE IF NOT EXISTS photos(
-    id SERIAL primary key,
-    photo bytea
-);
 
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,
@@ -58,4 +60,21 @@ CREATE TABLE IF NOT EXISTS resetpasswordinfo(
 CREATE TABLE IF NOT EXISTS languages(
     id VARCHAR(3) PRIMARY KEY,
     name varchar(100)
+);
+
+CREATE TABLE IF NOT EXISTS assetInstanceReview(
+    id SERIAL primary key,
+    review TEXT,
+    rating INT,
+    userId INT references users(id) ON DELETE CASCADE,
+    lendId INT references lendings(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS userReview(
+    id SERIAL primary key,
+    reviewer INT references users(id) ON DELETE CASCADE,
+    recipient INT references users(id) ON DELETE CASCADE,
+    lendId INT references lendings(id) ON DELETE CASCADE,
+    review TEXT,
+    rating INT
 );
