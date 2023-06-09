@@ -45,11 +45,11 @@
                         </c:when>
                         <c:otherwise>
                             <c:url var="profilePicSrc"
-                                   value="getImage/${user.profilePhoto.id}"/>
+                                   value="/getImage/${user.profilePhoto.id}"/>
                         </c:otherwise>
                     </c:choose>
                     <img class="user-profile-picture"
-                         src="${profilePicSrc}"/>
+                         src="${profilePicSrc}" alt="User profile Picture"/>
                     <c:if test="${isCurrent}">
                         <div class="user-change-picture-container" id="change-profile-pic-btn">
                             <i class="fas fa-solid fa-camera"></i>
