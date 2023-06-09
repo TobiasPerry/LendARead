@@ -38,8 +38,18 @@
         <div class="info-container w-100" id="user-info">
             <div class="position-relative">
                 <div class="user-profile-cell">
+                    <c:choose>
+                        <c:when test="${user.profilePhoto == null}">
+                            <c:url var="profilePicSrc"
+                                   value="https://images.sftcdn.net/images/t_app-logo-xl,f_auto,dpr_2/p/b05628f2-9b32-11e6-89cc-00163ed833e7/395437428/hola-free-vpn-logo"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:url var="profilePicSrc"
+                                   value="getImage/${user.profilePhoto.id}"/>
+                        </c:otherwise>
+                    </c:choose>
                     <img class="user-profile-picture"
-                         src="https://e0.pxfuel.com/wallpapers/383/587/desktop-wallpaper-anya-spyxfamily-waifu-cute.jpg"/>
+                         src="${profilePicSrc}"/>
                     <c:if test="${isCurrent}">
                         <div class="user-change-picture-container" id="change-profile-pic-btn">
                             <i class="fas fa-solid fa-camera"></i>
