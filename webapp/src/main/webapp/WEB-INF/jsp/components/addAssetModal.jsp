@@ -12,7 +12,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: #D0DCD0;
+    background: #82ce34;
+    opacity: 0.8;
     border-radius: 15px;
     padding: 20px;
   }
@@ -20,17 +21,20 @@
     flex: 0 0 calc(50% - 10px);
     margin-bottom: 10px;
   }
-  .title-input-edit {
+  .title-input {
     font-size: 1.5em;
     font-weight: bold;
+    border: none;
+    outline: none;
+    background-color: transparent;
   }
 
 </style>
 
 <div class="modal fade" id="borrowUser" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="${param.modalTitle}" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content rounded-3 border-0 shadow">
-      <div class="modal-header border-0" style="text-align: center">
+    <div class="modal-content rounded-3 border-0 shadow" >
+      <div class="modal-header border-0" style="text-align: center;">
         <div class="icon-box">
           <i class="fas fa-book-reader"></i>
         </div>
@@ -41,7 +45,7 @@
           <p class="mb-4"><c:out value="${param.text}" /></p>
           <div class="form-container">
             <spring:message code="addAssetView.titleLabel" var="titleLabel"/>
-            <input type="text" class="form-control title-input-edit" id="name" name="name" required maxlength="100" placeholder="${titleLabel}">
+            <input type="text" class="form-control title-input" id="name" name="name" required maxlength="100" placeholder="${titleLabel}">
             <div class="form-group">
               <label for="zipcode"><spring:message code="addAssetView.placeholders.zipcode"/> </label>
               <input type="text" class="form-control" id="zipcode" name="zipcode" required pattern="^[a-zA-Z0-9]+$" maxlength="100">
