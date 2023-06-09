@@ -114,10 +114,9 @@
             <div class="promo-box">
                 <h2><spring:message code="become_lender.title"/></h2>
                 <p><spring:message code="become_lender.subtitle"/></p>
-                <form action="<c:url value="/changeRole"/>" method="post">
-                    <button type="submit" class="button-status"><spring:message
-                            code="become_lender.button"/></button>
-                </form>
+                <a href="<c:url value='/addAssetView'/>" class="button-status" style="color: #2B3B2B; font-weight: bold">
+                    <spring:message code="become_lender.button"/>
+                </a>
             </div>
         </c:otherwise>
     </c:choose>
