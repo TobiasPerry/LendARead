@@ -43,7 +43,10 @@
       outline: none;
       background-color: transparent;
     }
-
+    .title-input-edit {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
   </style>
 </head>
 
