@@ -19,6 +19,8 @@
             crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
     <script src="<c:url value="/static/javaScript/utils.js"/>" defer></script>
@@ -196,54 +198,52 @@
                         </fieldset>
                         <fieldset class="info-container d-none" data-step="4">
                             <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
-                            <div class="field-group">
-                                <div class="field">
-                                    <spring:message code="addAssetView.localityLabel" var="localityLabel"/>
-                                    <spring:message code="addAssetView.placeholders.city" var="localityPH"/>
-                                    <label for="locality" class="form-label">${localityLabel}</label>
-                                    <form:input path="locality" id="locality" placeholder="${localityPH}"
-                                                class="form-control"/>
-                                    <form:errors path="locality" cssClass="text-danger small" element="small"/>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <button id="prev-location" type="button" class="prev-location-button btn" onclick="changeLocation(-1)">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+
+                                <div class="flex-grow-1 mx-3 p-3" style="background-color: #D1E9C3; border-radius: 20px;">
+                                    <div class="field">
+                                        <p id="name" style="font-size: 1.5em; font-weight: bold; border: none; outline: none; background-color: transparent;">${locations[0].name}</p>
+                                    </div>
+                                    <div class="field-group">
+                                        <div class="field">
+                                            <label class="form-label"><spring:message code="addAssetView.localityLabel"/> </label>
+                                            <p id="locality">${locations[0].locality}</p>
+                                        </div>
+                                        <div class="field">
+                                            <label class="form-label"><spring:message code="addAssetView.placeholders.province"/> </label>
+                                            <p id="province">${locations[0].province}</p>
+                                        </div>
+                                    </div>
+                                    <div class="field-group">
+                                        <div class="field">
+                                            <label class="form-label"><spring:message code="addAssetView.countryLabel"/> </label>
+                                            <p id="country">${locations[0].country}</p>
+                                        </div>
+                                        <div class="field">
+                                            <label class="form-label"><spring:message code="addAssetView.zipcodeLabel"/> </label>
+                                            <p id="zipcode">${locations[0].zipcode}</p>
+                                        </div>
+                                    </div>
+                                    <form:input type="hidden" path="id" id="id" value="${locations[0].id}" class="form-control d-none" readonly="true"/>
                                 </div>
-                                <div class="field">
-                                    <spring:message code="addAssetView.provinceLabel" var="provinceLabel"/>
-                                    <spring:message code="addAssetView.placeholders.province" var="provincePH"/>
-                                    <label for="province" class="form-label">${provinceLabel}</label>
-                                    <form:input path="province" id="province" placeholder="${provincePH}"
-                                                class="form-control"/>
-                                    <form:errors path="province" cssClass="text-danger small" element="small"/>
-                                </div>
+
+                                <button type="button" class="next-location-button btn"  onclick="changeLocation(1)">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
                             </div>
-                            <div class="field-group">
-                                <div class="field">
-                                    <spring:message code="addAssetView.countryLabel" var="countryLabel"/>
-                                    <spring:message code="addAssetView.placeholders.country" var="countryPH"/>
-                                    <label for="country" class="form-label">${countryLabel}</label>
-                                    <form:input path="country" id="country" placeholder="${countryPH}"
-                                                class="form-control"/>
-                                    <form:errors path="country" cssClass="text-danger small" element="small"/>
-                                </div>
-                                <div class="field">
-                                    <spring:message code="addAssetView.zipcodeLabel" var="zipcodeLabel"/>
-                                    <spring:message code="addAssetView.placeholders.zipcode" var="zipcpdePH"/>
-                                    <label for="zipcode" class="form-label">${zipcodeLabel}</label>
-                                    <form:input path="zipcode" id="zipcode" placeholder="${zipcpdePH}"
-                                                class="form-control"/>
-                                    <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
-                                </div>
-                            </div>
+
                             <div class="mt-3 form-button-container">
-                                <input type="button" class="prev-button btn btn-outline-success mx-1"
-                                       value="<spring:message code="addAssetView.steps.prevButton"/>"
-                                />
+                                <input type="button" class="prev-button btn btn-outline-success mx-1" value="<spring:message code="addAssetView.steps.prevButton"/>"/>
                                 <spring:message code="addAssetView.addButton" var="addButton"/>
-                                <input type="submit" class="btn btn-green mx-1"
-                                       value="<c:out value="${addButton}"/>"/>
+                                <input type="submit" class="btn btn-green mx-1" value="<c:out value="${addButton}"/>"/>
                             </div>
                         </fieldset>
-                        <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;"
-                               onchange="previewImage()"/>
+                        <input type="file" accept="image/*" name="file" id="uploadImage" style="display:none;" onchange="previewImage()"/>
                     </form:form>
+
                 </div>
             </div>
         </div>
@@ -268,7 +268,51 @@
     <jsp:param name="text" value="${text}"/>
 </jsp:include>
 
+
+<script>
+    let locations = [
+        <c:forEach var="location" items="${locations}" varStatus="status">
+        {
+            "id": "<c:out value="${location.id}"/>",
+            "name": "<c:out value="${location.name}"/>",
+            "zipcode": "<c:out value="${location.zipcode}"/>",
+            "locality": "<c:out value="${location.locality}"/>",
+            "province": "<c:out value="${location.province}"/>",
+            "country": "<c:out value="${location.country}"/>"
+        } <c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+
+    let currentLocationIndex = 0;
+
+    function updateLocationFields(index) {
+        document.getElementById('id').innerText = locations[index].id;
+        document.getElementById('name').innerText = locations[index].name;
+        document.getElementById('locality').innerText = locations[index].locality;
+        document.getElementById('province').innerText = locations[index].province;
+        document.getElementById('country').innerText = locations[index].country;
+        document.getElementById('zipcode').innerText = locations[index].zipcode;
+
+        // Update visibility of navigation buttons
+        document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
+        document.getElementById('next-location').style.display = (index < locations.length - 2) ? 'inline' : 'none';
+    }
+
+    function changeLocation(direction) {
+        currentLocationIndex += direction;
+        currentLocationIndex = Math.max(0, Math.min(locations.length - 1, currentLocationIndex));
+        updateLocationFields(currentLocationIndex);
+    }
+
+    // Initialize
+    updateLocationFields(currentLocationIndex);
+
+
+</script>
 </body>
+
+
+
 
 <script>
     window.isbnUrl = `<c:url value="/book"><c:param name="isbn" value="${isbn}" /></c:url>`

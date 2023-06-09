@@ -25,29 +25,7 @@
   <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
   <title><spring:message code="addAssetView.locationInfo"/></title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-  <style>
-    .btn-icon {
-      color: #000000;
-      font-size: 2rem;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
-    }
 
-    .btn-icon:hover {
-      box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.25);
-    }
-    .title-input {
-      font-size: 1.5em;
-      font-weight: bold;
-      border: none;
-      outline: none;
-      background-color: transparent;
-    }
-    .title-input-edit {
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-  </style>
 </head>
 
 
@@ -64,7 +42,7 @@
           <c:url var="editUrl" value="/editLocation" />
           <form:form action="${editUrl}" method="post" modelAttribute="locationForm">
             <div class="field-group">
-              <form:input path="name" id="name${location.id}" class="form-control title-input" disabled="true" value="${location.name}"/>
+              <form:input path="name" id="name${location.id}" class="form-control" disabled="true" value="${location.name}" style="font-size: 1.5em; font-weight: bold; border: none; outline: none; background-color: transparent;"/>
               <c:if test="${location.id == locationIdError}">
                 <form:errors path="name" cssClass="text-danger small" element="small"/>
               </c:if>

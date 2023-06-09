@@ -267,3 +267,14 @@ input[type="text"].loading {
     justify-content: space-around;
 }
 
+.prev-location-button, .next-location-button {
+    background: none;
+    border: none;
+    color: #000;
+    transition: color 0.6s;
+}
+
+.prev-location-button:hover, .next-location-button:hover {
+    color: #000000;
+    font-weight: bold;
+}
