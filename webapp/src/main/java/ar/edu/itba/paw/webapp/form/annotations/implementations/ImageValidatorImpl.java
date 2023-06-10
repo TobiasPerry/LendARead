@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class ImageValidatorImpl implements ConstraintValidator<Image, MultipartFile> {
-    private static final long MAX_SIZE = 1024*1024;
+    private static final long MAX_SIZE = 1024 * 1024;
     private static final String ACCEPTED_MIME_TYPES = "image/";
 
 
@@ -18,9 +18,9 @@ public class ImageValidatorImpl implements ConstraintValidator<Image, MultipartF
 
     @Override
     public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext constraintValidatorContext) {
-        if(multipartFile.isEmpty()) {
+        if (multipartFile == null || multipartFile.isEmpty()) {
             return true;
         }
-        return  multipartFile.getSize() < MAX_SIZE && multipartFile.getContentType().contains(ACCEPTED_MIME_TYPES);
+        return multipartFile.getSize() < MAX_SIZE && multipartFile.getContentType().contains(ACCEPTED_MIME_TYPES);
     }
 }
