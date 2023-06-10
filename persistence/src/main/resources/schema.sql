@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS location(
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,
     assetId INT references book(uid) ON DELETE CASCADE,
+    description TEXT,
     owner INT references users(id) ON DELETE CASCADE,
     locationId INT references location(id) ON DELETE SET NULL,
     physicalCondition varchar(100),

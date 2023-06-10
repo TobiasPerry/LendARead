@@ -102,15 +102,19 @@
                 value="${assetInstance.book.isbn}"/>
         </h6>
           <h6 class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></h6>
-          <div class="d-flex">
-              <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" min="1" style="margin-right: 5px" class="w-25 form-control"/>
-              <select class="w-26 ml-2 form-select" id="borrow-time-type">
-                  <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
-                  <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
-                  <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
-              </select>
-              <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
+          <div>
+              <div class="d-flex">
+                  <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" min="1" style="margin-right: 5px" class="w-25 form-control"/>
+                  <select class="w-26 ml-2 form-select" id="borrow-time-type">
+                      <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
+                      <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
+                      <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
+                  </select>
+                  <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
+              </div >
+              <form:errors path="maxDays" id="durationError" cssClass="text-danger small" element="small"/>
           </div>
+
           <input class="btn btn-green mt-2" type="submit"  value="<spring:message code="editAssetView.editButton"/>">
       </div>
     </div>
@@ -124,28 +128,47 @@
           <h5 class="card-title"><spring:message code="assetView.locationTitle"/></h5>
             <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.zipcode"/></h6>
           <form:input path="zipcode" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.zipcode}"/>
+            <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
 
           <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.locality"/></h6>
          <form:input path="locality" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.locality}"/>
+            <form:errors path="locality" cssClass="text-danger small" element="small"/>
 
           <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.province"/></h6>
           <form:input path="province" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.province}"/>
+            <form:errors path="province" cssClass="text-danger small" element="small"/>
 
 
           <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.country"/></h6>
           <form:input path="country" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.country}"/>
+            <form:errors path="country" cssClass="text-danger small" element="small"/>
 
         </div>
       </div>
     </div>
-
-
-</div>
+  </div>
+  <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
+        <div class="container-column" style="flex: 0 0 100%">
+            <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
+                <div class="card-body">
+                    <h5 class="card-title" style="text-align: center"><spring:message code="assetView.description"/></h5>
+                    <textarea class="form-control" id="myTextArea" onchange="here();"><c:out value="${assetInstance.description}"/></textarea>
+                    <form:input type="hidden" id="content" path="description" value="${assetInstance.description}"/>
+                    <form:errors path="description" cssClass="text-danger small" element="small"/>
+                </div>
+            </div>
+        </div>
+  </div>
 
 </div>
 </form:form>
 
 <script>
+    var text1 = document.getElementById('myTextArea').value;
+        function here() {
+        text1 = document.getElementById('myTextArea').value;
+        document.getElementById("content").value = text1;
+    }
   document.addEventListener("DOMContentLoaded", () => {
     options = document.getElementById("physicalCondition").options;
     for (let i = 0; i < options.length; i++) {
@@ -154,12 +177,24 @@
       }
     }
   });
+    async function checkDuration() {
+        const durationInput = parseInt(document.getElementById('borrow-time-quantity').value)
+        const durationErrorMsg = document.getElementById('durationError')
+        if (durationInput < 1) {
+            durationErrorMsg.classList.remove('d-none')
+            return false
+        }
+        durationErrorMsg.classList.add('d-none')
+        return true
+    }
   function beforeSubmit() {
       const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
       const borrowTimeType = document.getElementById('borrow-time-type')
       const timeInDays = document.getElementById('maxDays')
-
-      const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
+        if (borrowTimeQuantity.value === "") {
+            borrowTimeQuantity.value = "0"
+        }
+       const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
 
       timeInDays.value = totalTimeInDays
 

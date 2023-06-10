@@ -28,6 +28,9 @@ public class AssetInstanceImpl{
     @JoinColumn(name = "locationId", referencedColumnName = "id")
     private  LocationImpl location;
 
+    @Column(name = "description", length = 300)
+    private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "physicalCondition", length = 100)
     private  PhysicalCondition physicalCondition;
@@ -43,7 +46,8 @@ public class AssetInstanceImpl{
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
     private ImageImpl image;
 
-    public AssetInstanceImpl( BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending) {
+    public AssetInstanceImpl(final int id,final BookImpl book,final PhysicalCondition physicalCondition,final UserImpl userReference,final LocationImpl location,final ImageImpl imageId,final AssetState as,final int maxDaysLending,final String description) {
+        this.id = (long) id;
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
@@ -51,6 +55,17 @@ public class AssetInstanceImpl{
         this.image = imageId;
         this.assetState = as;
         this.maxLendingDays = maxDaysLending;
+        this.description = description;
+    }
+    public AssetInstanceImpl( BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending,String description) {
+        this.book = book;
+        this.physicalCondition = physicalCondition;
+        this.userReference = userReference;
+        this.location = location;
+        this.image = imageId;
+        this.assetState = as;
+        this.maxLendingDays = maxDaysLending;
+        this.description = description;
     }
 
 
@@ -117,6 +132,14 @@ public class AssetInstanceImpl{
 
     public void setPhysicalCondition(PhysicalCondition physicalCondition) {
         this.physicalCondition = physicalCondition;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setAssetState(AssetState assetState) {

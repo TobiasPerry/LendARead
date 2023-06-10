@@ -103,7 +103,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location, byte[] photo) throws AssetInstanceNotFoundException{
+    public void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location,final byte[] photo,final String description) throws AssetInstanceNotFoundException{
         AssetInstanceImpl assetInstance = getAssetInstance(id);
 
         if (!assetInstance.getLocation().equals(location)) {
@@ -113,6 +113,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             ImageImpl image = imagesDao.addPhoto(photo);
             assetInstance.setImage(image);
         }
+        assetInstance.setDescription(description);
         assetInstance.setMaxLendingDays(maxLendingDays);
         assetInstance.setPhysicalCondition(physicalCondition);
     }

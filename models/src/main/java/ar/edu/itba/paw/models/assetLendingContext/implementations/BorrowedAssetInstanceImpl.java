@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.interfaces.BorrowedAssetInstance;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

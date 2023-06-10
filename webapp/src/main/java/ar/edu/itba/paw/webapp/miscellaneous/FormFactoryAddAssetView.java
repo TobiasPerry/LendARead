@@ -40,6 +40,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return AssetInstanceFactory.createAssetInstance( book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays());
+        return AssetInstanceFactory.createAssetInstance( book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays(),request.getDescription());
     }
 }

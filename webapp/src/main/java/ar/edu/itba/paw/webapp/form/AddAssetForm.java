@@ -30,6 +30,8 @@ public class AddAssetForm {
 
     @Min(value = 0)
     private int id;
+    @Size(min = 20, max = 300)
+    private String description;
 
     @Min(value = 1)
     private int maxDays;

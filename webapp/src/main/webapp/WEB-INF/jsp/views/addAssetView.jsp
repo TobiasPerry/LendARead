@@ -154,6 +154,7 @@
                                 <div class="field">
                                     <spring:message code="addAssetView.languageLabel" var="languageLabel"/>
                                     <spring:message code="addAssetView.placeholders.language" var="languagePH"/>
+
                                     <label for="language" class="form-label">${languageLabel}</label>
                                     <form:select class="form-control round" id="languageSelect" path="languageSelect" disabled="true">
                                         <c:forEach var="lang" items="${langs}">
@@ -164,6 +165,16 @@
                                                 class="form-control d-none" readonly="true"/>
                                     <form:errors path="language" cssClass="text-danger small" element="small"/>
                                 </div>
+
+                            </div>
+                            <div class="field-group">
+                                <spring:message code="addAssetView.placeholders.description" var="descriptionPH"/>
+                                <spring:message code="addAssetView.descriptionLabel" var="descriptionLabel"/>
+
+                                <h6  class="form-label">${descriptionLabel}</h6>
+                                <form:textarea path="description" id="description" placeholder="${descriptionPH}"
+                                               class="form-control" />
+                                <form:errors path="description" cssClass="text-danger small" element="small"/>
                             </div>
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"

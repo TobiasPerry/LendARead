@@ -122,7 +122,7 @@ final public class UserAssetDetailsController {
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.POST)
     public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException, UserNotFoundException {
         if (errors.hasErrors()) {
-            return new ModelAndView("redirect:/myBookDetails/" + id);
+            return changeAsset(id,assetInstanceForm);
         }
         UserImpl user = userService.getUser(userService.getCurrentUser());
 
