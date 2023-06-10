@@ -5,6 +5,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "location")
 final public class LocationImpl{
+
+    @Column(length = 100, nullable = false)
+    private boolean active;
+
     @Column(length = 100, nullable = false)
     private String zipcode;
     @Column(length = 100, nullable = false)
@@ -35,6 +39,7 @@ final public class LocationImpl{
         this.id = id;
         this.userReference = user;
         this.name = name;
+        this.active = true;
     }
     public LocationImpl(String name, String zipcode, String locality, String province, String country, UserImpl user) {
         this.zipcode = zipcode;
@@ -43,8 +48,17 @@ final public class LocationImpl{
         this.country = country;
         this.userReference = user;
         this.name = name;
+        this.active = true;
     }
     public LocationImpl(){}
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public int getId() {
         return id;

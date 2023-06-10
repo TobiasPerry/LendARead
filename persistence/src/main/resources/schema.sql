@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS location(
    province VARCHAR(100) NOT NULL,
    country VARCHAR(100) NOT NULL,
    address VARCHAR(100) DEFAULT 'Address',
+   active BOOLEAN DEFAULT true,
    owner INT REFERENCES users(id) ON DELETE CASCADE
 );
 

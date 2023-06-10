@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class LocationsDaoJpaImpl implements LocationDao {
@@ -23,7 +24,7 @@ public class LocationsDaoJpaImpl implements LocationDao {
 
     @Override
     public List<LocationImpl> getLocations(UserImpl user) {
-        TypedQuery<LocationImpl> query = entityManager.createQuery("SELECT l FROM LocationImpl l WHERE l.userReference = :user", LocationImpl.class);
+        TypedQuery<LocationImpl> query = entityManager.createQuery("SELECT l FROM LocationImpl l WHERE l.userReference = :user AND l.active = TRUE", LocationImpl.class);
         query.setParameter("user", user);
         return query.getResultList();
     }
@@ -41,7 +42,7 @@ public class LocationsDaoJpaImpl implements LocationDao {
 
     @Override
     public void deleteLocation(LocationImpl lc) {
-        entityManager.remove(lc);
+        lc.setActive(false);
     }
 
 }
