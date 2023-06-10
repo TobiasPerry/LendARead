@@ -32,6 +32,50 @@
     color: black;
 }
 
+.user-profile-picture-modal {
+    width: 75%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+}
+
+
+.user-profile-picture-modal > img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: brightness(0.75);
+    transition: all 0.1s ease-in-out;
+}
+
+.user-profile-picture-modal:hover > img {
+    filter: brightness(0.5);
+}
+
+.user-profile-picture-modal > svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(10);
+    opacity: 0.5;
+    color: white;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.user-profile-picture-modal:hover > svg {
+    opacity: 0.85;
+}
+
 .user-profile-cell {
     width: min(var(--photo-width), var(--min-photo-width));
     position: absolute;
@@ -46,10 +90,34 @@
 .user-profile-picture {
     width: 100%;
     -webkit-box-shadow: 0 0 15px black;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 15px black;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;
+}
+
+.user-change-picture-container {
+    position: absolute;
+    background: #2B3B2B;
+    padding: min(2vh, 2vw);
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px black;
+    cursor: pointer;
+}
+
+.user-change-picture-container:hover {
+    filter: brightness(150%);
+}
+
+.user-change-picture-container > i {
+    color: white;
+    font-size: min(2vh, 2vw);
 }
 
 .user-info {
