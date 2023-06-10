@@ -163,6 +163,9 @@
                                                 class="form-control d-none" readonly="true"/>
                                     <form:errors path="language" cssClass="text-danger small" element="small"/>
                                 </div>
+
+                            </div>
+                            <div class="field-group">
                                 <spring:message code="addAssetView.placeholders.description" var="descriptionPH"/>
                                 <spring:message code="addAssetView.descriptionLabel" var="descriptionLabel"/>
 

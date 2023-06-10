@@ -171,9 +171,14 @@ document.addEventListener("DOMContentLoaded", e => {
     const stepsInputs = []
 
     formSteps.forEach(form => {
-        const children = form.querySelectorAll("input[type=text]")
+        const childrenInputs = form.querySelectorAll("input[type=text]")
+        const childrenTextArea = form.querySelectorAll('textarea')
+        console.log(childrenTextArea)
         const inputNames = []
-        children.forEach(child => {
+        childrenTextArea.forEach(child => {
+            inputNames.push(child.getAttribute('name'))
+        })
+        childrenInputs.forEach(child => {
             inputNames.push(child.getAttribute('name'))
 
         })
