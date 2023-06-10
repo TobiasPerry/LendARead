@@ -124,12 +124,12 @@
     <div class="container-column" style="flex: 0 0 100%">
       <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
         <div class="card-body">
-            <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
+            <h5 class="card-title" style="text-align: center"><spring:message code="assetView.locality"/></h5>
             <div class="d-flex align-items-center justify-content-between">
-                <button id="prev-location" type="button" class="carousel-control-prev btn"  style="background-color: #777777" onclick="changeLocation(-1)">
+                <button id="prev-location" type="button" class="carousel-control-prev btn"  style="background-color: #777777;width: 3.5%;border-top-left-radius: 25px;border-bottom-left-radius: 25px" onclick="changeLocation(-1)">
                     <i class="fas fa-angle-left"></i>
                 </button>
-                <div class="flex-grow-1 mx-3 p-3" style="background-color: #D1E9C3; border-radius: 20px;">
+                <div class="flex-grow-1 mx-3 p-3" style="border-radius: 20px;">
                     <div class="field">
                         <p id="name" style="font-size: 1.5em; font-weight: bold; border: none; outline: none; background-color: transparent;">${locations[0].name}</p>
                     </div>
@@ -155,7 +155,7 @@
                     </div>
                     <form:input type="hidden" path="id" id="id" value="${locations[0].id}" class="form-control d-none" readonly="true"/>
                 </div>
-                <button type="button" class="carousel-control-next btn" style="background-color: #777777" onclick="changeLocation(1)">
+                <button type="button" class="carousel-control-next btn" style="background-color: #777777; width: 3.5%;border-top-right-radius: 25px;border-bottom-right-radius: 25px" onclick="changeLocation(1)">
                     <i class="fas fa-angle-right"></i>
                 </button>
         </div>
