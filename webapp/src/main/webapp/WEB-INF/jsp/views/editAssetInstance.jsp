@@ -121,30 +121,46 @@
     </div>
 
   <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
-
     <div class="container-column" style="flex: 0 0 100%">
       <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
         <div class="card-body">
-          <h5 class="card-title"><spring:message code="assetView.locationTitle"/></h5>
-            <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.zipcode"/></h6>
-          <form:input path="zipcode" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.zipcode}"/>
-            <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
-
-          <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.locality"/></h6>
-         <form:input path="locality" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.locality}"/>
-            <form:errors path="locality" cssClass="text-danger small" element="small"/>
-
-          <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.province"/></h6>
-          <form:input path="province" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.province}"/>
-            <form:errors path="province" cssClass="text-danger small" element="small"/>
-
-
-          <h6 class="card-text" style="margin-bottom: 5px"><spring:message code="assetView.country"/></h6>
-          <form:input path="country" class="form-control" style="margin-bottom: 5px" value="${assetInstance.location.country}"/>
-            <form:errors path="country" cssClass="text-danger small" element="small"/>
-
+            <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
+            <div class="d-flex align-items-center justify-content-between">
+                <button id="prev-location" type="button" class="carousel-control-prev btn"  style="background-color: #777777" onclick="changeLocation(-1)">
+                    <i class="fas fa-angle-left"></i>
+                </button>
+                <div class="flex-grow-1 mx-3 p-3" style="background-color: #D1E9C3; border-radius: 20px;">
+                    <div class="field">
+                        <p id="name" style="font-size: 1.5em; font-weight: bold; border: none; outline: none; background-color: transparent;">${locations[0].name}</p>
+                    </div>
+                    <div class="field-group">
+                        <div class="field">
+                            <label class="form-label"><spring:message code="addAssetView.localityLabel"/> </label>
+                            <p id="locality">${locations[0].locality}</p>
+                        </div>
+                        <div class="field">
+                            <label class="form-label"><spring:message code="addAssetView.placeholders.province"/> </label>
+                            <p id="province">${locations[0].province}</p>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <div class="field">
+                            <label class="form-label"><spring:message code="addAssetView.countryLabel"/> </label>
+                            <p id="country">${locations[0].country}</p>
+                        </div>
+                        <div class="field">
+                            <label class="form-label"><spring:message code="addAssetView.zipcodeLabel"/> </label>
+                            <p id="zipcode">${locations[0].zipcode}</p>
+                        </div>
+                    </div>
+                    <form:input type="hidden" path="id" id="id" value="${locations[0].id}" class="form-control d-none" readonly="true"/>
+                </div>
+                <button type="button" class="carousel-control-next btn" style="background-color: #777777" onclick="changeLocation(1)">
+                    <i class="fas fa-angle-right"></i>
+                </button>
         </div>
       </div>
+    </div>
     </div>
   </div>
   <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
@@ -187,7 +203,44 @@
         durationErrorMsg.classList.add('d-none')
         return true
     }
-  function beforeSubmit() {
+    let locations = [
+        <c:forEach var="location" items="${locations}" varStatus="status">
+        {
+            "id": "<c:out value="${location.id}"/>",
+            "name": "<c:out value="${location.name}"/>",
+            "zipcode": "<c:out value="${location.zipcode}"/>",
+            "locality": "<c:out value="${location.locality}"/>",
+            "province": "<c:out value="${location.province}"/>",
+            "country": "<c:out value="${location.country}"/>"
+        } <c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+
+    let currentLocationIndex = 0;
+
+    function updateLocationFields(index) {
+        document.getElementById('id').value = locations[index].id;
+        document.getElementById('name').innerText = locations[index].name;
+        document.getElementById('locality').innerText = locations[index].locality;
+        document.getElementById('province').innerText = locations[index].province;
+        document.getElementById('country').innerText = locations[index].country;
+        document.getElementById('zipcode').innerText = locations[index].zipcode;
+
+        // Update visibility of navigation buttons
+        document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
+        document.getElementById('next-location').style.display = (index < locations.length - 2) ? 'inline' : 'none';
+    }
+
+    function changeLocation(direction) {
+        currentLocationIndex += direction;
+        currentLocationIndex = Math.max(0, Math.min(locations.length - 1, currentLocationIndex));
+        updateLocationFields(currentLocationIndex);
+    }
+
+    // Initialize
+    updateLocationFields(currentLocationIndex);
+
+    function beforeSubmit() {
       const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
       const borrowTimeType = document.getElementById('borrow-time-type')
       const timeInDays = document.getElementById('maxDays')

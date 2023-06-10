@@ -10,6 +10,6 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 public class AssetInstanceFactory {
     public static AssetInstanceImpl createAssetInstance( BookImpl book, PhysicalCondition physicalCondition, UserImpl user, LocationImpl location, ImageImpl photoId, AssetState state, int maxDaysLending,String description) {
-        return new AssetInstanceImpl(book, physicalCondition, user, location,photoId,state, maxDaysLending,String description);
+        return new AssetInstanceImpl(book, physicalCondition, user, location,photoId,state, maxDaysLending, description);
     }
 }

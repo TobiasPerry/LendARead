@@ -297,7 +297,7 @@
     let currentLocationIndex = 0;
 
     function updateLocationFields(index) {
-        document.getElementById('id').innerText = locations[index].id;
+        document.getElementById('id').value = locations[index].id;
         document.getElementById('name').innerText = locations[index].name;
         document.getElementById('locality').innerText = locations[index].locality;
         document.getElementById('province').innerText = locations[index].province;
