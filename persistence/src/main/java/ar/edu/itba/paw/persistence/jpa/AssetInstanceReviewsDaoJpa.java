@@ -25,11 +25,11 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     @Override
     public double getRating(AssetInstanceImpl assetInstance) {
         try {
-            String hql = "SELECT AVG(r.rating) FROM AssetInstanceReview as r WHERE r.assetInstance.id = :assetInstance";
+            String hql = "SELECT AVG(r.rating) FROM AssetInstanceReview as r WHERE r.lending.assetInstance.id = :assetInstanceId";
             return (Double) em.createQuery(hql)
-                    .setParameter("assetInstance", assetInstance.getId())
+                    .setParameter("assetInstanceId", Long.valueOf(assetInstance.getId()))
                     .getSingleResult();
-        } catch (NoResultException e) {
+        } catch (NoResultException | NullPointerException e) {
             return 0.0;
         }
     }
