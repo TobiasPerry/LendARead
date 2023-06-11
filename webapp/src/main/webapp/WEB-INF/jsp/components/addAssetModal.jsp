@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
@@ -12,7 +13,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background: #82ce34;
     opacity: 0.8;
     border-radius: 15px;
     padding: 20px;
@@ -40,30 +40,42 @@
         </div>
         <h3 class="modal-title w-100 mt-2"><c:out value="${param.modalTitle}" /></h3>
       </div>
-      <form action="<c:url value="/defaultLocation"/>" method="post">
+      <c:url value="/defaultLocation" var="defaultLocation" />
+      <form:form action="${defaultLocation}" modelAttribute="locationForm" method="post">
         <div class="modal-body text-center py-0 border-0">
           <p class="mb-4"><c:out value="${param.text}" /></p>
           <div class="form-container">
             <spring:message code="addAssetView.titleLabel" var="titleLabel"/>
-            <input type="text" class="form-control title-input" id="name" name="name" required maxlength="100" placeholder="${titleLabel}">
+            <label for="name" class="title-input"><c:out value="${titleLabel}" /></label>
+            <form:input path="name" id="name-modal" class="form-control" value=""/>
+            <form:errors path="name" cssClass="text-danger small" element="small"/>
+
             <div class="form-group">
               <label for="zipcode"><spring:message code="addAssetView.placeholders.zipcode"/> </label>
-              <input type="text" class="form-control" id="zipcode" name="zipcode" required pattern="^[a-zA-Z0-9]+$" maxlength="100">
+              <form:input path="zipcode"  id="zipcode-modal" class="form-control"  value=""/>
+              <form:errors path="zipcode" cssClass="text-danger small" element="small"/>
+
             </div>
             <div class="form-group">
               <label for="locality"><spring:message code="addAssetView.localityLabel"/> </label>
-              <input type="text" class="form-control" id="locality" name="locality" required maxlength="100">
+              <form:input id="locality-modal" path="locality" class="form-control"  value=""/>
+              <form:errors path="locality" cssClass="text-danger small" element="small"/>
+
             </div>
             <div class="form-group">
               <label for="province"><spring:message code="addAssetView.placeholders.province"/> </label>
-              <input type="text" class="form-control" id="province" name="province" required maxlength="100">
+              <form:input id="province-modal" path="province"  class="form-control"  value=""/>
+              <form:errors path="province" cssClass="text-danger small" element="small"/>
+
             </div>
             <div class="form-group">
               <label for="country"><spring:message code="addAssetView.countryLabel"/></label>
-              <input type="text" class="form-control" id="country" name="country" required maxlength="100">
+              <form:input path="country" id="country-modal" class="form-control"  value=""/>
+              <form:errors path="country" cssClass="text-danger small" element="small"/>
+
             </div>
           </div>
-          <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
+          <form:input path="id" type="hidden" name="id" value="${location.id == null ? -1 : location.id}"/>
         </div>
         <div class="modal-footer border-0">
           <a class="btn btn-outline-dark mx-2 rounded-pill px-4 py-2" href="<c:url value="/discovery"/>">
@@ -73,7 +85,7 @@
             <spring:message code="addAssetView.changeRole" />
           </button>
         </div>
-      </form>
+      </form:form>
     </div>
   </div>
 </div>
@@ -81,8 +93,9 @@
 
 <script>
   const borrowUserModal = '${borrowerUser}' === 'true';
-  if (borrowUserModal) {
+  if (borrowUserModal ) {
     new bootstrap.Modal($('#borrowUser')).show();
 
   }
+
 </script>

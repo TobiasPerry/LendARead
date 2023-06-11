@@ -119,12 +119,12 @@
         </div>
 
     </div>
-    <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
+    <div class="container-row" style="width: 50%; margin-bottom: 20px">
         <div class="container-column" style="flex: 0 0 100%">
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
                 <h5 class="card-title" style="text-align: center"><spring:message code="assetView.description"/></h5>
-                <p><c:out value="${assetInstance.description}"/></p>
+                <p style="word-wrap: break-word; word-break: break-word; max-height: 200px; overflow-y: auto;"><c:out value="${assetInstance.description}"/></p>
                 </div>
             </div>
         </div>

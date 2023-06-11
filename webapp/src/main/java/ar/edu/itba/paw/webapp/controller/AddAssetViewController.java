@@ -8,8 +8,10 @@ import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
+import ar.edu.itba.paw.webapp.form.LocationForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
@@ -55,12 +58,14 @@ final public class AddAssetViewController {
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name = "file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
-                                 final BindingResult errors, HttpServletResponse response) throws UserNotFoundException {
+                                 final BindingResult errors,
+                                 @ModelAttribute final LocationForm locationForm,
+                                  HttpServletResponse response) throws UserNotFoundException {
 
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
         if (errors.hasErrors() || parsedImage == null)
-            return addAssetView(addAssetForm, false, -1, true).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm, false, -1, true,locationForm).addObject(INVALID_SNACKBAR, true).addObject("errorCode",1);
 
         UserImpl user = userService.getUser(userService.getCurrentUser());
 
@@ -70,7 +75,7 @@ final public class AddAssetViewController {
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");
-            return addAssetView(addAssetForm, false, -1, false).addObject(INVALID_SNACKBAR, true);
+            return addAssetView(addAssetForm, false, -1, false,locationForm).addObject(INVALID_SNACKBAR, true);
         }
     }
 
@@ -79,7 +84,8 @@ final public class AddAssetViewController {
             @ModelAttribute("addAssetForm") final AddAssetForm addAssetForm,
             @RequestParam(required = false, name = "succes") boolean success,
             @RequestParam(required = false, name = "id") Integer id,
-            @RequestParam(required = false, name = "invalidImg") boolean invalidImg
+            @RequestParam(required = false, name = "invalidImg") boolean invalidImg,
+            @ModelAttribute("locationForm") final LocationForm locationForm
     ) throws UserNotFoundException {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<LanguageImpl> languages = languagesService.getLanguages();
@@ -91,9 +97,16 @@ final public class AddAssetViewController {
         if (invalidImg) {
             mav.addObject("invalidImg", true);
         }
-        return mav.addObject("locations", locationsService.getLocations(userService.getUser(userService.getCurrentUser())));
+        return mav.addObject("locations", locationsService.getLocations(userService.getUser(userService.getCurrentUser()))).addObject("errorCode",-1);
     }
-
+    @RequestMapping(value = "/defaultLocation", method = RequestMethod.POST)
+    public ModelAndView changeRole(final HttpServletRequest request, @Valid @ModelAttribute("locationForm") final LocationForm locationForm,final BindingResult errors,@ModelAttribute  AddAssetForm addAssetForm) throws UserNotFoundException {
+        if(errors.hasErrors())
+            return addAssetView( addAssetForm,false, -1, true,locationForm).addObject("errorCode",2);
+        locationsService.addLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
+        userService.changeRole(userService.getCurrentUser(), Behaviour.LENDER);
+        return new ModelAndView("redirect:/addAssetView"  );
+    }
 
     @ModelAttribute
     public void addAttributes(Model model) {

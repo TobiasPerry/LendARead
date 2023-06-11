@@ -17,10 +17,10 @@ public class LocationForm {
     @Size(min = 1, max = 100)
     private String locality;
 
-    @Size(min = 1, max = 100)
+    @Size(min = 4, max = 100)
     private String province;
 
-    @Size(min = 1, max = 100)
+    @Size(min = 4, max = 100)
     private String country;
 
     @Size(min = 1, max = 100)

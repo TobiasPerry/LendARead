@@ -226,7 +226,6 @@
         document.getElementById('country').innerText = locations[index].country;
         document.getElementById('zipcode').innerText = locations[index].zipcode;
 
-        console.log(locations.length)
         // Update visibility of navigation buttons
         document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
         document.getElementById('next-location').style.display = (index < locations.length -1) ? 'inline' : 'none';

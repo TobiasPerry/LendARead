@@ -313,6 +313,12 @@
         currentLocationIndex = Math.max(0, Math.min(locations.length - 1, currentLocationIndex));
         updateLocationFields(currentLocationIndex);
     }
+    document.addEventListener("DOMContentLoaded", e => {
+        errorCode = '${errorCode}';
+        console.log("LLEGUE")
+        if (errorCode === 2) {
+            new bootstrap.Modal($('#borrowUser')).show();
+        }});
 
     // Initialize
     updateLocationFields(currentLocationIndex);
