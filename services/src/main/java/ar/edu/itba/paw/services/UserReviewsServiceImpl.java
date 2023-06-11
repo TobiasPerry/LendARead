@@ -116,8 +116,8 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl reviewer) {
-        return userReviewsDao.getUserReviewsAsBorrower(pageNum, itemsPerPage, reviewer);
+    public PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl recipient) {
+        return userReviewsDao.getUserReviewsAsBorrower(pageNum, itemsPerPage, recipient);
     }
 
     @Transactional

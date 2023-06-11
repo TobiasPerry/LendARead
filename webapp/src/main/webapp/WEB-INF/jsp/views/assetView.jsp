@@ -28,10 +28,11 @@
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
 
-<%--    Icons--%>
+    <%--    Icons--%>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-afdagadgdagdagda" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha384-afdagadgdagdagda" crossorigin="anonymous">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
@@ -56,8 +57,9 @@
                         value="${assetInstance.book.name} "/></h1>
 
 
-                <h3 class="textOverflow" id="authorClick" data-author="<c:out value="${assetInstance.book.author}"/>"><spring:message
-                        code="assetView.by"/>
+                <h3 class="textOverflow" id="authorClick" data-author="<c:out value="${assetInstance.book.author}"/>">
+                    <spring:message
+                            code="assetView.by"/>
                     <span class="text-clickable">
                         <c:out value="${assetInstance.book.author}"/>
                     </span>
@@ -67,7 +69,8 @@
                     <i><u><spring:message code="enum.${assetInstance.physicalCondition}"/></u></i>
                 </h6>
 
-                <h6 id="languageClick" data-language="<c:out value="${assetInstance.book.language}"/>" style="color: #7d7c7c">
+                <h6 id="languageClick" data-language="<c:out value="${assetInstance.book.language}"/>"
+                    style="color: #7d7c7c">
                     <spring:message code="assetView.language"/>: <span class="text-clickable"> <c:out
                         value="${assetInstance.book.language}"/></span>
                 </h6>
@@ -91,7 +94,8 @@
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
                     <a class="btn-green" href="<c:url value="/login"/>"
-                       style="text-decoration: none; text-align: center"><spring:message code="assetView.borrowButtonNotLoggedIn"/></a>
+                       style="text-decoration: none; text-align: center"><spring:message
+                            code="assetView.borrowButtonNotLoggedIn"/></a>
                 </security:authorize>
             </div>
         </div>
@@ -102,7 +106,8 @@
         <div class="container-column" style="flex: 0 0 100%">
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
-                    <h5 class="card-title" style="text-align: center"><spring:message code="assetView.locationTitle"/></h5>
+                    <h5 class="card-title" style="text-align: center"><spring:message
+                            code="assetView.locationTitle"/></h5>
                     <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.zipcode"/></p>
                     <h3 class="textOverflow"><c:out value="${assetInstance.location.zipcode}"/></h3>
 
@@ -123,8 +128,10 @@
         <div class="container-column" style="flex: 0 0 100%">
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
-                <h5 class="card-title" style="text-align: center"><spring:message code="assetView.description"/></h5>
-                <p style="word-wrap: break-word; word-break: break-word; max-height: 200px; overflow-y: auto;"><c:out value="${assetInstance.description}"/></p>
+                    <h5 class="card-title" style="text-align: center"><spring:message
+                            code="assetView.description"/></h5>
+                    <p style="word-wrap: break-word; word-break: break-word; max-height: 200px; overflow-y: auto;">
+                        <c:out value="${assetInstance.description}"/></p>
                 </div>
             </div>
         </div>
@@ -134,19 +141,22 @@
         <div class="container-column" style="flex: 0 0 100%">
             <div class="card p-2" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px;">
                 <div class="container-row">
-                    <div class="" style="flex-grow: 1; display: flex; justify-content: center;align-items: center;" id="scrollspyRating">
+                    <div class="" style="flex-grow: 1; display: flex; justify-content: center;align-items: center;"
+                         id="scrollspyRating">
                         <div class="container-column">
                             <c:if test="${hasReviews}">
                                 <div class="container-row" style="justify-content: center !important;">
                                     <h1>
-                                        <span id="rating-value"><c:out value="${assetInstanceReviewAverage}"/></span><small>/5</small>
+                                        <span id="rating-value"><c:out
+                                                value="${assetInstanceReviewAverage}"/></span><small>/5</small>
                                     </h1>
                                 </div>
-                                <div class="container-row mb-2" style="justify-content: center !important;" id="stars-container" data-rating="<c:out value="${assetInstanceReviewAverage}"/>">
+                                <div class="container-row mb-2" style="justify-content: center !important;"
+                                     id="stars-container" data-rating="<c:out value="${assetInstanceReviewAverage}"/>">
                                         <%--Stars will be added via JS based on the rating--%>
                                 </div>
 
-                                <c:forEach var="review" items="${assetInstanceReviewPage.userAssets}">
+                                <c:forEach var="review" items="${assetInstanceReviewPage.list}">
                                     <jsp:include page="../components/reviewCard.jsp">
                                         <jsp:param name="rating" value="${review.rating}"/>
                                         <jsp:param name="review" value="${review.review}"/>
@@ -154,15 +164,18 @@
                                     </jsp:include>
                                 </c:forEach>
 
-                                <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
+                                <div class="container-row-wrapped"
+                                     style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                                     <div>
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination justify-content-center align-items-center">
                                                 <li class="page-item">
                                                     <button type="button"
                                                             class="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage != 1 ? "" : "disabled"}"
-                                                            id="previousPageButton" style="border-color: rgba(255, 255, 255, 0)"
-                                                            onclick="window.location.href = '<c:url value="/info/${assetInstance.id}?reviewPage=${assetInstanceReviewPage.currentPage - 1}#scrollspyRating"/>'"
+                                                            id="previousPageButton"
+                                                            style="border-color: rgba(255, 255, 255, 0)"
+                                                            onclick="window.location.href = '<c:url
+                                                                    value="/info/${assetInstance.id}?reviewPage=${assetInstanceReviewPage.currentPage - 1}#scrollspyRating"/>'"
                                                     >
                                                         <i class="bi bi-chevron-left"></i> <spring:message
                                                             code="paginationButton.previous"/>
@@ -170,14 +183,17 @@
                                                 </li>
 
                                                 <li>
-                                                    <c:out value="${assetInstanceReviewPage.currentPage}"/> / <c:out value="${assetInstanceReviewPage.totalPages}"/>
+                                                    <c:out value="${assetInstanceReviewPage.currentPage}"/> / <c:out
+                                                        value="${assetInstanceReviewPage.totalPages}"/>
                                                 </li>
 
                                                 <li class="page-item">
                                                     <button type="button"
                                                             class="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage < assetInstanceReviewPage.totalPages ? "" : "disabled"}"
-                                                            id="nextPageButton" style="border-color: rgba(255, 255, 255, 0)"
-                                                            onclick="window.location.href = '<c:url value="/info/${assetInstance.id}?reviewPage=${assetInstanceReviewPage.currentPage + 1}#scrollspyRating"/>'"
+                                                            id="nextPageButton"
+                                                            style="border-color: rgba(255, 255, 255, 0)"
+                                                            onclick="window.location.href = '<c:url
+                                                                    value="/info/${assetInstance.id}?reviewPage=${assetInstanceReviewPage.currentPage + 1}#scrollspyRating"/>'"
                                                     >
                                                         <spring:message code="paginationButton.next"/> <i
                                                             class="bi bi-chevron-right"></i>
@@ -191,7 +207,8 @@
                             </c:if>
                             <c:if test="${!hasReviews}">
                                 <h1 class="text-muted text-center mt-5"><i class="bi bi-x-circle"></i></h1>
-                                <h6 class="text-muted text-center mb-5"><spring:message code="assetView.noReviews"/></h6>
+                                <h6 class="text-muted text-center mb-5"><spring:message
+                                        code="assetView.noReviews"/></h6>
                             </c:if>
                         </div>
                     </div>
@@ -216,7 +233,7 @@
 </html>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Assuming assetInstanceReviewAverage contains the average rating value
         var assetInstanceReviewAverage = document.getElementById("stars-container").getAttribute("data-rating");
 
