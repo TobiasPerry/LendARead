@@ -3,16 +3,17 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.webapp.form.LocationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -51,12 +52,6 @@ public class LocationsController {
         return new ModelAndView("redirect:/userLocations/");
     }
 
-    @RequestMapping(value = "/defaultLocation", method = RequestMethod.POST)
-    public ModelAndView changeRole(HttpServletRequest request, @Valid @ModelAttribute LocationForm locationForm) throws UserNotFoundException {
 
-        locationsService.addLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
-        userService.changeRole(userService.getCurrentUser(), Behaviour.LENDER);
-        return new ModelAndView("redirect:" + request.getHeader("Referer"));
-    }
 
 }
