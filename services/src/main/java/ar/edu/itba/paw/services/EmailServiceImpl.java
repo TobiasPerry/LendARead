@@ -125,6 +125,40 @@ class EmailServiceImpl implements EmailService {
         this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "rejectedEmail.html", locale));
     }
 
+    @Async
+    @Override
+    public void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, Long lendingId, Locale locale){
+        if (assetInstance == null || borrower == null) {
+            return;
+        }
+
+        BookImpl book = assetInstance.getBook();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("assetInstance", assetInstance);
+        variables.put("book", book);
+        variables.put("borrower", borrower);
+        variables.put("path", baseUrl);
+        String subject = messageSource.getMessage("email.rejected.subject", null, locale);
+        this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "reviewBorrowerEmail.html", locale));
+    }
+
+    @Async
+    @Override
+    public void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, Long lendingId, Locale locale){
+        if (assetInstance == null || lender == null) {
+            return;
+        }
+
+        BookImpl book = assetInstance.getBook();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("assetInstance", assetInstance);
+        variables.put("book", book);
+        variables.put("lender", lender);
+        variables.put("path", baseUrl);
+        String subject = messageSource.getMessage("email.rejected.subject", null, locale);
+        this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "reviewLenderEmail.html", locale));
+    }
+
     private String mailFormat(final Map<String, Object> variables, final String mailTemplate, final Locale locale) {
         Context thymeleafContext = new Context(locale);
         thymeleafContext.setVariables(variables);

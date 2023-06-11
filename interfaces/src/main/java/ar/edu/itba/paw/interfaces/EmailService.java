@@ -15,4 +15,8 @@ public interface EmailService {
 
     void sendRejectedEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId, final Locale locale);
 
+    void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, Long lendingId, Locale locale);
+
+    void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl borrower, Long lendingId, Locale locale);
+
 }
