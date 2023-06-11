@@ -7,6 +7,7 @@ import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,39 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
                     .setParameter("userId", user)
                     .getSingleResult();
         } catch (NoResultException e) {
-            return 0.0;
+            return -1;
+        }
+    }
+
+    @Override
+    public double getRatingAsLender(final UserImpl user) {
+        try {
+            String hql = "SELECT AVG(ur.rating) AS average_rating " +
+                    "FROM userreview AS ur " +
+                    "JOIN lendings AS l ON ur.lendId = l.id " +
+                    "JOIN AssetInstance AS ai ON l.assetInstanceId = ai.id " +
+                    "WHERE ur.recipient = :userId AND ai.owner = :userId";
+            BigDecimal avg = (BigDecimal) em.createNativeQuery(hql)
+                    .setParameter("userId", user.getId())
+                    .getSingleResult();
+            return avg.doubleValue();
+        } catch (NoResultException e) {
+            return -1;
+        }
+    }
+
+
+    @Override
+    public double getRatingAsBorrower(final UserImpl user) {
+        try {
+            String hql = "SELECT AVG(ur.rating) AS average_rating " +
+                    "FROM userreview AS ur " +
+                    "JOIN lendings AS l ON ur.lendId = l.id " +
+                    "WHERE ur.recipient = :userId AND l.borrowerid = :userId";
+            BigDecimal avg = (BigDecimal) (em.createNativeQuery(hql).setParameter("userId", user.getId()).getSingleResult());
+            return avg.doubleValue();
+        } catch (NoResultException e) {
+            return -1;
         }
     }
 
@@ -42,7 +75,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         query.setParameter("lendingId", (long) lendingId);
         query.setParameter("user", user);
         final List<UserReview> list = query.getResultList();
-      return list.stream().findFirst();
+        return list.stream().findFirst();
     }
 
     @Override
@@ -55,19 +88,19 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
         final int offset = (pageNum - 1) * itemsPerPage;
 
-        queryCount.setParameter("userRecipient",recipient.getId());
-        queryNative.setParameter("limit",itemsPerPage);
-        queryNative.setParameter("offset",offset);
-        queryNative.setParameter("userRecipient",recipient.getId());
+        queryCount.setParameter("userRecipient", recipient.getId());
+        queryNative.setParameter("limit", itemsPerPage);
+        queryNative.setParameter("offset", offset);
+        queryNative.setParameter("userRecipient", recipient.getId());
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
-        if(list.isEmpty())
+        if (list.isEmpty())
             return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
-        return getReviewsFromIds(list,pageNum,totalPages);
+        return getReviewsFromIds(list, pageNum, totalPages);
     }
 
     @Override
@@ -80,22 +113,23 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
         final int offset = (pageNum - 1) * itemsPerPage;
 
-        queryCount.setParameter("userRecipient",reviewer.getId());
-        queryNative.setParameter("limit",itemsPerPage);
-        queryNative.setParameter("offset",offset);
-        queryNative.setParameter("userRecipient",reviewer.getId());
+        queryCount.setParameter("userRecipient", reviewer.getId());
+        queryNative.setParameter("limit", itemsPerPage);
+        queryNative.setParameter("offset", offset);
+        queryNative.setParameter("userRecipient", reviewer.getId());
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
-        if(list.isEmpty())
+        if (list.isEmpty())
             return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
-        return getReviewsFromIds(list,pageNum,totalPages);
+        return getReviewsFromIds(list, pageNum, totalPages);
     }
-    private PagingImpl<UserReview> getReviewsFromIds(final List<Long> list,final int pageNum,final int totalPages){
-        final TypedQuery<UserReview> query = em.createQuery("FROM UserReview AS ai WHERE id IN (:ids) ORDER BY ai.id DESC" , UserReview.class);
+
+    private PagingImpl<UserReview> getReviewsFromIds(final List<Long> list, final int pageNum, final int totalPages) {
+        final TypedQuery<UserReview> query = em.createQuery("FROM UserReview AS ai WHERE id IN (:ids) ORDER BY ai.id DESC", UserReview.class);
         query.setParameter("ids", list);
         List<UserReview> reviewList = query.getResultList();
         return new PagingImpl<>(reviewList, pageNum, totalPages);
