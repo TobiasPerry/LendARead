@@ -3,6 +3,7 @@
     --text-offset: 20px;
     --photo-width: 25%;
     --min-photo-width: 25vh;
+    --grey-custom: #9ca3af;
 }
 
 .user-grid {
@@ -21,7 +22,7 @@
 
 
 .grey-text {
-    color: #9ca3af;
+    color: var(--grey-custom);
 }
 
 .black-text {
@@ -142,6 +143,12 @@
 .user-name {
     display: flex;
     color: black;
+}
+
+.user-role-stars {
+    border: 1px solid var(--grey-custom);
+    border-radius: 50em;
+    padding-inline: 0.3em;
 }
 
 .user-ratings-wrapper {

@@ -10,15 +10,24 @@ public interface UserReviewsService {
     void addReview(final UserReview userReview);
 
     boolean lenderCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException;
+
     boolean borrowerCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException;
 
     double getRating(final UserImpl user);
-    boolean userHasReview(final int lendingId,final String user);
-    double getRatingById(final int userId)  throws UserNotFoundException;
 
-    PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage,UserImpl recipient);
-    PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage,final int borrowerId)throws UserNotFoundException;
+    double getRatingAsLender(UserImpl user);
+
+    double getRatingAsBorrower(UserImpl user);
+
+    boolean userHasReview(final int lendingId, final String user);
+
+    double getRatingById(final int userId) throws UserNotFoundException;
+
+    PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient);
+
+    PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage, final int borrowerId) throws UserNotFoundException;
 
     PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl reviewer);
-    PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum,final int itemsPerPage,int reviewerId) throws UserNotFoundException ;
+
+    PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum, final int itemsPerPage, int reviewerId) throws UserNotFoundException;
 }
