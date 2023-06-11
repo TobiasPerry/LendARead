@@ -1,12 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +32,7 @@ public class LocationsController {
     @RequestMapping(value = "/userLocations", method = RequestMethod.GET)
     public ModelAndView manageLocations(@ModelAttribute("locationForm") final LocationForm locationForm) throws UserNotFoundException {
         List<LocationImpl> locations = locationsService.getLocations(userService.getUser(userService.getCurrentUser()));
-        return new ModelAndView(VIEW_NAME).addObject("locations", locations);
+        return new ModelAndView(VIEW_NAME).addObject("locations", locations).addObject("locationIdError", -2);
     }
 
     @RequestMapping(value = "/editLocation", method = RequestMethod.POST)
@@ -43,7 +41,7 @@ public class LocationsController {
         if(errors.hasErrors())
             return manageLocations(locationForm).addObject("locationIdError", locationForm.getId()).addObject("hasErrors", true);
 
-        locationsService.handleNewLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
+        locationsService.addLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
         return new ModelAndView("redirect:/userLocations/");
     }
 
@@ -56,7 +54,7 @@ public class LocationsController {
     @RequestMapping(value = "/defaultLocation", method = RequestMethod.POST)
     public ModelAndView changeRole(HttpServletRequest request, @Valid @ModelAttribute LocationForm locationForm) throws UserNotFoundException {
 
-        locationsService.handleNewLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
+        locationsService.addLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
         userService.changeRole(userService.getCurrentUser(), Behaviour.LENDER);
         return new ModelAndView("redirect:" + request.getHeader("Referer"));
     }

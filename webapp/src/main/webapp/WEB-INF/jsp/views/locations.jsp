@@ -23,7 +23,7 @@
   <script src="<c:url value="/static/javaScript/utils.js"/>" defer></script>
   <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
   <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
-  <title><spring:message code="addAssetView.locationInfo"/></title>
+  <title><spring:message code="locations.title"/></title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
 </head>
@@ -35,8 +35,8 @@
 <body class="body-class">
 <div class="main-class" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
   <div class="container">
-    <h2 style="padding: 20px;"><spring:message code="addAssetView.locationInfo"/></h2>
-    <div class="locations-grid d-flex flex-wrap" style="background-color: #D0DCD0; border-radius: 20px; padding: 20px;">
+    <h2 style="padding: 20px;"><spring:message code="locations.title"/></h2>
+    <div class="container-row-wrapped" style="background-color: #D0DCD0; border-radius: 20px; padding: 20px;">
       <c:forEach var="location" items="${locations}" >
         <div class="info-container m-3" style="max-width: 300px; min-width: 300px; min-height: 300px">
           <c:url var="editUrl" value="/editLocation" />
@@ -95,24 +95,22 @@
           <div class="mt-3 form-button-container d-flex justify-content-around">
             <c:url value="/deleteLocation" var="deleteUrl"/>
             <form:form action="${deleteUrl}" method="post" class="d-inline-block">
+
               <input type="hidden" name="id" value="${location.id == null ? -1 : location.id}">
-              <button type="submit" class="btn btn-danger delete-location">
+              <div style="height: 43px">
+              <button type="submit" style="min-width: 100%;height: 100%;width: 50%;" class="btn-red delete-location" >
                 <i class="fas fa-trash-alt"></i>
               </button>
+              </div>
             </form:form>
-            <div>
-              <button type="button" class="edit-button btn btn-green mx-1" style="opacity: 0.6">Edit</button>
+            <div style="width: 50%">
+              <button type="button" class="edit-button btn-green mx-1" style="min-width: 100%;border-width: 0 " >Edit</button>
             </div>
           </div>
         </div>
       </c:forEach>
-      <c:if test="${locationIdError == -1 }">
-        <jsp:include page="../components/locationCard.jsp">
-          <jsp:param name="location" value="${location}"/>
-          <jsp:param name="showError" value="${true}"/>
-        </jsp:include>
-      </c:if>
-      <c:if test="${locations.size() <= 5 && locationIdError != -1 && hasErrors != true}">
+
+      <c:if test="${locations.size() <= 5 }">
       <div class="info-container m-3 add-new-location btn-icon add-button" style="max-width: 300px; min-width: 300px; height: 300px;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
           <i class="bi bi-plus-lg"></i>
@@ -122,11 +120,25 @@
     </div>
   </div>
 </div>
+<spring:message code="locations.addLocation" var="addLocation"/>
+<jsp:include page="../components/locationModal.jsp">
+    <jsp:param name="modalTitle" value="${addLocation}"/>
+    <jsp:param name="editUrl" value="${editUrl}"/>
+</jsp:include>
 </body>
 </html>
 
 <script>
-  $(function() {
+  addLocationModal = () => {
+    new bootstrap.Modal($('#myModal')).show();
+  }
+  document.addEventListener("DOMContentLoaded", e => {
+    locationId = ${locationIdError};
+    if (locationId != null && locationId === -1 ) {
+      addLocationModal();
+    }
+  });
+    $(function() {
     $('body').on('click', '.edit-button', function() {
       $(this).closest('.info-container').find('input[type="text"]').prop('disabled', false);
       $(this).addClass('d-none');
@@ -141,15 +153,7 @@
     });
 
     $(".add-new-location").click(function() {
-      let newCard = `
-        <jsp:include page="../components/locationCard.jsp">
-         <jsp:param name="location" value="${location}"/>
-         <jsp:param name="showError" value="${false}"/>
-         <jsp:param name="hasErrors" value="${false}"/>
-       </jsp:include>`;
-
-      $(this).before(newCard);
-      $(this).addClass('d-none');
+        addLocationModal();
     });
   });
 </script>

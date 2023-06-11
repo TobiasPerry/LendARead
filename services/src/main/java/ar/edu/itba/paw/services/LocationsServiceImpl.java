@@ -32,7 +32,7 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public void handleNewLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) {
+    public void addLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) {
         if(id == -1) {
             LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, user);
             addLocation(newLocation);

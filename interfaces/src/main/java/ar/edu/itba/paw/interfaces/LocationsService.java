@@ -9,7 +9,7 @@ import java.util.List;
 public interface LocationsService {
     void addLocation(final LocationImpl lc);
 
-    void handleNewLocation(final int id, final String name, final String locality, final String province, final String country, final String zipcode, final UserImpl user);
+    void addLocation(final int id, final String name, final String locality, final String province, final String country, final String zipcode, final UserImpl user);
     LocationImpl getLocation(final int locationId);
 
     List<LocationImpl> getLocations(final UserImpl user);
