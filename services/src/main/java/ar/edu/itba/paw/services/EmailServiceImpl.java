@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.slf4j.Logger;
@@ -127,7 +128,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, Long lendingId, Locale locale){
+    public void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, UserImpl lender, Long lendingId, Locale locale){
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -137,14 +138,16 @@ class EmailServiceImpl implements EmailService {
         variables.put("assetInstance", assetInstance);
         variables.put("book", book);
         variables.put("borrower", borrower);
-        variables.put("path", baseUrl);
-        String subject = messageSource.getMessage("email.rejected.subject", null, locale);
+        variables.put("lender", lender);
+        variables.put("path", baseUrl + "/review/borrower/" + lendingId);
+        String subject = messageSource.getMessage("email.review.borrower.subject", null, locale);
+        LOGGER.debug("Sending email to borrower");
         this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "reviewBorrowerEmail.html", locale));
     }
 
     @Async
     @Override
-    public void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, Long lendingId, Locale locale){
+    public void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, UserImpl borrower, Long lendingId, Locale locale){
         if (assetInstance == null || lender == null) {
             return;
         }
@@ -153,9 +156,11 @@ class EmailServiceImpl implements EmailService {
         Map<String, Object> variables = new HashMap<>();
         variables.put("assetInstance", assetInstance);
         variables.put("book", book);
+        variables.put("borrower", borrower);
         variables.put("lender", lender);
-        variables.put("path", baseUrl);
-        String subject = messageSource.getMessage("email.rejected.subject", null, locale);
+        variables.put("path", baseUrl + "/review/lender/" + lendingId);
+        String subject = messageSource.getMessage("email.review.lender.subject", null, locale);
+        LOGGER.debug("Sending email to lender");
         this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "reviewLenderEmail.html", locale));
     }
 
