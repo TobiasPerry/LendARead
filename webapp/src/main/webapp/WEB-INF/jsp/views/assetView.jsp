@@ -27,6 +27,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+
+<%--    Icons--%>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-afdagadgdagdagda" crossorigin="anonymous">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -34,18 +40,6 @@
     <script src="<c:url value="/static/javaScript/assetView.js"/>"></script>
     <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
     <link rel="stylesheet" href="<c:url value="/static/css/assetView.css"/>">
-
-    <style>
-        .rating {
-            font-size: 48px;
-            color: orange;
-            display: inline-block;
-            overflow: hidden;
-        }
-        .rating::before {
-            content: "★★★★★"
-        }
-    </style>
 
 </head>
 <body data-path="${path}" class=" body-class" data-maxDays="<c:out value="${assetInstance.maxDays}" /> ">
@@ -136,11 +130,72 @@
         </div>
     </div>
 
-    <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
+    <div class="container-row" style="width: 50%; margin-bottom: 20px">
         <div class="container-column" style="flex: 0 0 100%">
-            <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
+            <div class="card p-2" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px;">
+                <div class="container-row">
+                    <div class="" style="flex-grow: 1; display: flex; justify-content: center;align-items: center;" id="scrollspyRating">
+                        <div class="container-column">
+                            <c:if test="${hasReviews}">
+                                <div class="container-row" style="justify-content: center !important;">
+                                    <h1>
+                                        <span id="rating-value"><c:out value="${assetInstanceReviewAverage}"/></span><small>/5</small>
+                                    </h1>
+                                </div>
+                                <div class="container-row mb-2" style="justify-content: center !important;" id="stars-container" data-rating="<c:out value="${assetInstanceReviewAverage}"/>">
+                                        <%--Stars will be added via JS based on the rating--%>
+                                </div>
 
-                <div id="rating1" class="rating"></div>
+                                <c:forEach var="review" items="${assetInstanceReviewPage.userAssets}">
+                                    <jsp:include page="../components/reviewCard.jsp">
+                                        <jsp:param name="rating" value="${review.rating}"/>
+                                        <jsp:param name="review" value="${review.review}"/>
+                                        <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                    </jsp:include>
+                                </c:forEach>
+
+                                <div class="container-row-wrapped" style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
+                                    <div>
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination justify-content-center align-items-center">
+                                                <li class="page-item">
+                                                    <button type="button"
+                                                            class="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage != 1 ? "" : "disabled"}"
+                                                            id="previousPageButton" style="border-color: rgba(255, 255, 255, 0)"
+                                                            onclick="window.location.href = '<c:url value="/info/${assetInstance.id}?reviewPage=${assetInstanceReviewPage.currentPage - 1}#scrollspyRating"/>'"
+                                                    >
+                                                        <i class="bi bi-chevron-left"></i> <spring:message
+                                                            code="paginationButton.previous"/>
+                                                    </button>
+                                                </li>
+
+                                                <li>
+                                                    <c:out value="${assetInstanceReviewPage.currentPage}"/> / <c:out value="${assetInstanceReviewPage.totalPages}"/>
+                                                </li>
+
+                                                <li class="page-item">
+                                                    <button type="button"
+                                                            class="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage < assetInstanceReviewPage.totalPages ? "" : "disabled"}"
+                                                            id="nextPageButton" style="border-color: rgba(255, 255, 255, 0)"
+                                                            onclick="window.location.href = '<c:url value="/info/${assetInstance.id}?reviewPage=${assetInstanceReviewPage.currentPage + 1}#scrollspyRating"/>'"
+                                                    >
+                                                        <spring:message code="paginationButton.next"/> <i
+                                                            class="bi bi-chevron-right"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                            </c:if>
+                            <c:if test="${!hasReviews}">
+                                <h1 class="text-muted text-center mt-5"><i class="bi bi-x-circle"></i></h1>
+                                <h6 class="text-muted text-center mb-5"><spring:message code="assetView.noReviews"/></h6>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -161,13 +216,60 @@
 </html>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () =>{
-        fillStars(3.3);
-    })
+    document.addEventListener("DOMContentLoaded", function() {
+        // Assuming assetInstanceReviewAverage contains the average rating value
+        var assetInstanceReviewAverage = document.getElementById("stars-container").getAttribute("data-rating");
 
-    var cw = window.rating1.clientWidth; // save original 100% pixel width
+        // Get the stars-container element
+        var starsContainer = document.getElementById("stars-container");
 
-    function rating( stars ) {
-        window.rating1.style.width = Math.round(cw * (stars / 5)) + 'px';
-    }
+        // Calculate the number of filled stars
+        var filledStars = Math.floor(assetInstanceReviewAverage);
+
+        // Calculate the number of half stars
+        var halfStar = Math.ceil(assetInstanceReviewAverage) - filledStars;
+
+        // Calculate the number of empty stars
+        var emptyStars = 5 - filledStars - halfStar;
+
+        // Create the HTML elements for filled stars
+        for (var i = 0; i < filledStars; i++) {
+            var filledStar = document.createElement("i");
+            filledStar.className = "bi bi-star-fill";
+            filledStar.style.fontSize = "30px";
+            filledStar.style.color = "#CC9900";
+            starsContainer.appendChild(filledStar);
+        }
+
+        // Create the HTML element for the half star
+        if (halfStar) {
+            var halfStar = document.createElement("i");
+            halfStar.className = "bi bi-star-half";
+            halfStar.style.fontSize = "30px";
+            halfStar.style.color = "#CC9900";
+            starsContainer.appendChild(halfStar);
+        }
+
+        // Create the HTML elements for empty stars
+        for (var j = 0; j < emptyStars; j++) {
+            var emptyStar = document.createElement("i");
+            emptyStar.className = "bi bi-star";
+            emptyStar.style.fontSize = "30px";
+            emptyStar.style.color = "#CC9900";
+            starsContainer.appendChild(emptyStar);
+        }
+
+        // Get the rating value element
+        var ratingValueElement = document.getElementById("rating-value");
+
+        // Get the current rating value
+        var ratingValue = parseFloat(ratingValueElement.textContent);
+
+        // Format the rating value to have one decimal place
+        var formattedRatingValue = ratingValue.toFixed(1);
+
+        // Update the rating value element with the formatted value
+        ratingValueElement.textContent = formattedRatingValue;
+
+    });
 </script>
