@@ -4,6 +4,8 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserReviewsDaoJpa implements UserReviewsDao {
+
+
+    private static Logger LOGGER = LoggerFactory.getLogger(UserReviewsDaoJpa.class);
 
     @PersistenceContext
     private EntityManager em;
@@ -47,7 +52,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
             BigDecimal avg = (BigDecimal) em.createNativeQuery(hql)
                     .setParameter("userId", user.getId())
                     .getSingleResult();
-            return avg.doubleValue();
+            return avg == null ? -1 : avg.doubleValue();
         } catch (NoResultException e) {
             return -1;
         }
@@ -62,7 +67,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
                     "JOIN lendings AS l ON ur.lendId = l.id " +
                     "WHERE ur.recipient = :userId AND l.borrowerid = :userId";
             BigDecimal avg = (BigDecimal) (em.createNativeQuery(hql).setParameter("userId", user.getId()).getSingleResult());
-            return avg.doubleValue();
+            return avg == null ? -1 : avg.doubleValue();
         } catch (NoResultException e) {
             return -1;
         }

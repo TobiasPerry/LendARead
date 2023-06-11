@@ -62,10 +62,24 @@
             <div class="user-info">
                 <h1><c:out value="${user.name}"/></h1>
                 <p class="grey-text"><spring:message code="borrower"/>
-                    <span class="user-role-stars"><c:out value="${borrowerRating}"/> ★</span>
+                    <span class="user-role-stars">
+                        <c:if test="${borrowerRating < 0}">
+                            <c:out value="-.-"/>
+                        </c:if>
+                        <c:if test="${borrowerRating >= 0}">
+                            <c:out value="${borrowerRating}"/>
+                        </c:if>
+                             ★</span>
                     <c:if test="${user.behavior == 'LENDER'}"> -
                         <spring:message code="lender"/>
-                        <span class="user-role-stars"><c:out value="${lenderRating}"/> ★</span>
+                        <span class="user-role-stars">
+                            <c:if test="${lenderRating < 0}">
+                                <c:out value="-.-"/>
+                            </c:if>
+                        <c:if test="${lenderRating >= 0}">
+                            <c:out value="${lenderRating}"/>
+                        </c:if>
+                            ★</span>
                     </c:if>
                 </p>
             </div>
