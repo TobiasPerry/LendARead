@@ -155,7 +155,7 @@
                     </div>
                     <form:input type="hidden" path="id" id="id" value="${locations[0].id}" class="form-control d-none" readonly="true"/>
                 </div>
-                <button type="button" class="carousel-control-next btn" style="background-color: #777777; width: 3.5%;border-top-right-radius: 25px;border-bottom-right-radius: 25px" onclick="changeLocation(1)">
+                <button type="button" id="next-location" class="carousel-control-next btn" style="background-color: #777777; width: 3.5%;border-top-right-radius: 25px;border-bottom-right-radius: 25px" onclick="changeLocation(1)">
                     <i class="fas fa-angle-right"></i>
                 </button>
         </div>
@@ -226,9 +226,10 @@
         document.getElementById('country').innerText = locations[index].country;
         document.getElementById('zipcode').innerText = locations[index].zipcode;
 
+        console.log(locations.length)
         // Update visibility of navigation buttons
         document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
-        document.getElementById('next-location').style.display = (index < locations.length - 2) ? 'inline' : 'none';
+        document.getElementById('next-location').style.display = (index < locations.length -1) ? 'inline' : 'none';
     }
 
     function changeLocation(direction) {

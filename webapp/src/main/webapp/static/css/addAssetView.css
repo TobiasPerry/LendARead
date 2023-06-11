@@ -266,9 +266,17 @@ input[type="text"].loading {
 .spc-ard {
     justify-content: space-around;
 }
+.prev-location-bock{
+    background-color: #9ca3af;
+}
+.button-container {
+    flex-grow: 1;
+    display: flex;
+}
 
 .prev-location-button, .next-location-button {
-    background: none;
+    background-color: #9ca3af;
+    height: 100%;
     border: none;
     color: #000;
     transition: color 0.6s;

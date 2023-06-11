@@ -210,10 +210,9 @@
                         <fieldset class="info-container d-none" data-step="4">
                             <h2><spring:message code="addAssetView.steps.LOCATION.title"/> </h2>
                             <div class="d-flex align-items-center justify-content-between">
-                                <button id="prev-location" type="button" class="prev-location-button btn" onclick="changeLocation(-1)">
-                                    <i class="bi bi-chevron-left"></i>
-                                </button>
-
+                                    <button id="prev-location" type="button" class="prev-location-button btn" onclick="changeLocation(-1)">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
                                 <div class="flex-grow-1 mx-3 p-3" style="background-color: #D1E9C3; border-radius: 20px;">
                                     <div class="field">
                                         <p id="name" style="font-size: 1.5em; font-weight: bold; border: none; outline: none; background-color: transparent;">${locations[0].name}</p>
@@ -241,7 +240,7 @@
                                     <form:input type="hidden" path="id" id="id" value="${locations[0].id}" class="form-control d-none" readonly="true"/>
                                 </div>
 
-                                <button type="button" class="next-location-button btn"  onclick="changeLocation(1)">
+                                <button type="button" id="next-location" class="next-location-button btn"  onclick="changeLocation(1)">
                                     <i class="bi bi-chevron-right"></i>
                                 </button>
                             </div>
@@ -306,7 +305,7 @@
 
         // Update visibility of navigation buttons
         document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
-        document.getElementById('next-location').style.display = (index < locations.length - 2) ? 'inline' : 'none';
+        document.getElementById('next-location').style.display = (index < locations.length - 1) ? 'inline' : 'none';
     }
 
     function changeLocation(direction) {
