@@ -6,6 +6,7 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.miscellaneous.CustomMultipartFile;
@@ -63,6 +64,8 @@ final public class UserAssetDetailsController {
 
     @RequestMapping(value = "/lentBookDetails/{lendingId}", method = RequestMethod.GET)
     public ModelAndView lentBookDetail(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
+        LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+
         return new ModelAndView(VIEW_NAME_LENDING_VIEW)
                 .addObject(LENDING, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
                 .addObject(TABLE, LENDED_BOOKS);

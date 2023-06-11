@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.models.assetLendingContext.implementations;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 //this model only relates to the asset availability dao, in reality business
 //logic deals with borrowed asset instances.
@@ -36,6 +39,11 @@ public class LendingImpl {
     @Enumerated(EnumType.STRING)
     @Column(name = "active")
     private LendingState active;
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lending" )
+    private List<UserReview> userReviews;
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "lending")
+    private AssetInstanceReview assetInstanceReview;
 
     public LendingImpl() {}
 
@@ -93,6 +101,22 @@ public class LendingImpl {
 
     public void setActive(LendingState active) {
         this.active = active;
+    }
+
+    public List<UserReview> getUserReviews() {
+        return userReviews;
+    }
+
+    public void setUserReviews(List<UserReview> userReview) {
+        this.userReviews = userReview;
+    }
+
+    public AssetInstanceReview getAssetInstanceReview() {
+        return assetInstanceReview;
+    }
+
+    public void setAssetInstanceReview(AssetInstanceReview assetInstanceReview) {
+        this.assetInstanceReview = assetInstanceReview;
     }
 }
 

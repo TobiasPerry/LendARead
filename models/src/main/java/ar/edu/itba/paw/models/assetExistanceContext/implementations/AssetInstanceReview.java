@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class AssetInstanceReview {
 
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="lendId", referencedColumnName = "id", nullable = false)
     private LendingImpl lending;
 
