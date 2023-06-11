@@ -62,7 +62,6 @@
                         <c:out value="${assetInstance.book.author}"/>
                     </span>
                 </h3>
-
                 <h6 id="physicalConditionClick" class="text-clickable"
                     data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
                     <i><u><spring:message code="enum.${assetInstance.physicalCondition}"/></u></i>
@@ -103,7 +102,7 @@
         <div class="container-column" style="flex: 0 0 100%">
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
-                    <h5 class="card-title"><spring:message code="assetView.locationTitle"/></h5>
+                    <h5 class="card-title" style="text-align: center"><spring:message code="assetView.locationTitle"/></h5>
                     <p class="card-text" style="margin-bottom: -5px"><spring:message code="assetView.zipcode"/></p>
                     <h3 class="textOverflow"><c:out value="${assetInstance.location.zipcode}"/></h3>
 
@@ -119,6 +118,16 @@
             </div>
         </div>
 
+    </div>
+    <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
+        <div class="container-column" style="flex: 0 0 100%">
+            <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
+                <div class="card-body">
+                <h5 class="card-title" style="text-align: center"><spring:message code="assetView.description"/></h5>
+                <p><c:out value="${assetInstance.description}"/></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container-row" style="width: 50%; margin-bottom: 20px">

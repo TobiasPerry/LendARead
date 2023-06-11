@@ -32,22 +32,7 @@ final public class FormFactoryAddAssetView {
             return null;
     }
 
-    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, String email) {
-
-        UserImpl user = UserFactory.createUser(
-                email,
-                DEFAULT_STRING_VALUE,
-                DEFAULT_STRING_VALUE,
-                DEFAULT_STRING_VALUE,
-                Behaviour.LENDER
-        );
-
-        LocationImpl location = LocationFactory.createLocation(
-                request.getZipcode(),
-                request.getLocality(),
-                request.getProvince(),
-                request.getCountry()
-        );
+    public static AssetInstanceImpl createAssetInstance(AddAssetForm request, UserImpl user, LocationImpl location) {
 
 
         BookImpl book = BookFactory.createBook(request.getIsbn(),request.getAuthor(),request.getTitle(),request.getLanguage());
@@ -55,6 +40,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return AssetInstanceFactory.createAssetInstance( book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays());
+        return AssetInstanceFactory.createAssetInstance( book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays(),request.getDescription());
     }
 }

@@ -3,14 +3,19 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
+import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
+import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -28,10 +34,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     private final AssetInstanceDao assetInstanceDao;
 
+
+    private final ImagesDao imagesDao;
+
     @Autowired
-    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao) {
+    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao) {
         this.assetDao = assetDao;
         this.assetInstanceDao = assetInstanceDao;
+        this.imagesDao = imagesDao;
     }
 
     @Transactional(readOnly = true)
@@ -91,5 +101,20 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         AssetInstanceImpl assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);
     }
+    @Transactional
+    @Override
+    public void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location,final byte[] photo,final String description) throws AssetInstanceNotFoundException{
+        AssetInstanceImpl assetInstance = getAssetInstance(id);
 
+        if (!assetInstance.getLocation().equals(location)) {
+            assetInstance.setLocation(location);
+        }
+        if (photo.length > 0 &&!Arrays.equals(assetInstance.getImage().getPhoto(), photo)){
+            ImageImpl image = imagesDao.addPhoto(photo);
+            assetInstance.setImage(image);
+        }
+        assetInstance.setDescription(description);
+        assetInstance.setMaxLendingDays(maxLendingDays);
+        assetInstance.setPhysicalCondition(physicalCondition);
+    }
 }

@@ -4,7 +4,8 @@ package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 
@@ -20,4 +21,7 @@ public interface AssetInstanceService {
     boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException;
 
     boolean isOwner(final AssetInstanceImpl assetInstance, final String email);
+
+    void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location, final byte[] photo,final String description) throws AssetInstanceNotFoundException;
+
 }

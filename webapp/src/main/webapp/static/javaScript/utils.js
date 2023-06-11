@@ -37,4 +37,20 @@ function isValidISBN(isbn) {
     }
 
     return false;
+
+}
+
+function previewImageLoad(elementId) {
+    const fileInput = document.getElementById('uploadImage');
+    const file = fileInput.files[0];
+    const img = document.getElementById(elementId);
+    const reader = new FileReader();
+
+    reader.addEventListener('load', function () {
+        img.src = reader.result;
+    }, false);
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
 }

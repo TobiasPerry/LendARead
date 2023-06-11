@@ -106,7 +106,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .accessDecisionManager(accessDecisionManager())
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
-                .antMatchers("/addAsset","/lentBookDetails/**","/myBookDetails/**","/review/lender/**").hasRole("LENDER")
+                .antMatchers("/addAsset","/lentBookDetails/**","/myBookDetails/**","/review/lender/**","/editAsset/**").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**","/review/lenderAdd").hasRole("LENDER")
                 .antMatchers("/review/borrower/**").hasRole("BORROWER")
                 .antMatchers(HttpMethod.POST,"/review/borrowerAdd").hasRole("BORROWER")

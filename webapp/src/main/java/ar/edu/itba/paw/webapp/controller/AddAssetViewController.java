@@ -1,11 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.LanguagesService;
+import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
@@ -35,29 +38,35 @@ final public class AddAssetViewController {
     private final UserService userService;
     private final AssetExistanceService assetExistanceService;
     private final LanguagesService languagesService;
+
+    private final LocationsService locationsService;
+
     private final static String viewName = "views/addAssetView";
     private final static String NAV_BAR_PATH = "addAsset", INVALID_SNACKBAR = "showSnackbarInvalid";
 
     @Autowired
-    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService) {
+    public AddAssetViewController(UserService userService, AssetExistanceService assetExistanceService, LanguagesService languagesService, LocationsService locationsService) {
         this.userService = userService;
         this.assetExistanceService = assetExistanceService;
         this.languagesService = languagesService;
+        this.locationsService = locationsService;
     }
 
     @RequestMapping(value = "/addAsset", method = RequestMethod.POST)
     public ModelAndView addAsset(@RequestParam(name = "file") final MultipartFile image,
                                  @Valid @ModelAttribute final AddAssetForm addAssetForm,
-                                 final BindingResult errors, HttpServletResponse response) throws InternalErrorException {
+                                 final BindingResult errors, HttpServletResponse response) throws UserNotFoundException {
 
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
         if (errors.hasErrors() || parsedImage == null)
             return addAssetView(addAssetForm, false, -1, true).addObject(INVALID_SNACKBAR, true);
 
+        UserImpl user = userService.getUser(userService.getCurrentUser());
+
         try {
+            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, user, locationsService.getLocation(addAssetForm.getId())), parsedImage);
             LOGGER.info("AssetInstance has ben created");
-            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, userService.getCurrentUser()), parsedImage);
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {
             LOGGER.warn("Could not create assetInstance");
@@ -71,7 +80,7 @@ final public class AddAssetViewController {
             @RequestParam(required = false, name = "succes") boolean success,
             @RequestParam(required = false, name = "id") Integer id,
             @RequestParam(required = false, name = "invalidImg") boolean invalidImg
-    ) {
+    ) throws UserNotFoundException {
         ModelAndView mav = new ModelAndView(viewName).addObject("borrowerUser", String.valueOf(userService.getCurrentUserIsBorrower()));
         List<LanguageImpl> languages = languagesService.getLanguages();
         mav.addObject("langs", languages);
@@ -82,7 +91,7 @@ final public class AddAssetViewController {
         if (invalidImg) {
             mav.addObject("invalidImg", true);
         }
-        return mav;
+        return mav.addObject("locations", locationsService.getLocations(userService.getUser(userService.getCurrentUser())));
     }
 
 

@@ -47,7 +47,14 @@ public class BorrowerViewVoter implements AccessDecisionVoter<FilterInvocation> 
                 int variables = stringBuilder.indexOf("?");
                 if(variables != -1)
                     stringBuilder.delete(variables,stringBuilder.length()+1);
-                if(userAssetInstanceService.getBorrowedAssetInstance(Integer.parseInt(stringBuilder.toString())).getUserReference().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
+                int id;
+                try {
+                    id = Integer.parseInt(stringBuilder.toString());
+                }catch (NumberFormatException e){
+                    vote.set(ACCESS_DENIED);
+                    return vote.get();
+                }
+                if(userAssetInstanceService.getBorrowedAssetInstance(id).getUserReference().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
                     vote.set(ACCESS_GRANTED);
                 else {
                     vote.set(ACCESS_DENIED);

@@ -5,30 +5,38 @@ CREATE TABLE IF NOT EXISTS book(
     title text not null,
     lang varchar(100) not null
 );
+
+CREATE TABLE IF NOT EXISTS photos(
+    id SERIAL primary key,
+    photo bytea
+);
+
 CREATE TABLE IF NOT EXISTS users(
     behavior varchar(100),
     id SERIAL primary key,
     mail varchar(100) unique,
     name varchar(100) not null,
     telephone varchar(100),
-    password varchar(200)
+    password varchar(200),
+    photo_id int references photos(id) on delete cascade
 );
 CREATE TABLE IF NOT EXISTS location(
-    id SERIAL primary key,
-    zipcode varchar(100) NOT NULL,
-    locality varchar(100) NOT NULL,
-    province varchar(100) NOT NULL,
-    country varchar(100) NOT NULL,
-    address varchar(100)
+   id SERIAL PRIMARY KEY,
+   name VARCHAR(100) NOT NULL,
+   zipcode VARCHAR(100) NOT NULL,
+   locality VARCHAR(100) NOT NULL,
+   province VARCHAR(100) NOT NULL,
+   country VARCHAR(100) NOT NULL,
+   address VARCHAR(100) DEFAULT 'Address',
+   active BOOLEAN DEFAULT true,
+   owner INT REFERENCES users(id) ON DELETE CASCADE
 );
-CREATE TABLE IF NOT EXISTS photos(
-    id SERIAL primary key,
-    photo bytea
-);
+
 
 CREATE TABLE IF NOT EXISTS AssetInstance(
     id SERIAL primary key,
     assetId INT references book(uid) ON DELETE CASCADE,
+    description TEXT,
     owner INT references users(id) ON DELETE CASCADE,
     locationId INT references location(id) ON DELETE SET NULL,
     physicalCondition varchar(100),

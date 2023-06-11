@@ -10,6 +10,8 @@ import java.util.Collection;
 public interface UserService {
     UserImpl getUser(final String email) throws UserNotFoundException;
 
+    UserImpl getUserById(final int id) throws UserNotFoundException;
+
     UserImpl createUser(final String email, final String name, final String telephone, final String password);
 
     void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException;
@@ -28,4 +30,8 @@ public interface UserService {
     boolean isTokenValid(final String token);
 
     void logInUser(final String email, final String password);
+
+    boolean isCurrent(int userId);
+
+    void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException;
 }

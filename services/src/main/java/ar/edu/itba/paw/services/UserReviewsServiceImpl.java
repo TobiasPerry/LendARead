@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
 
 @Service
@@ -30,8 +31,9 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     private final UserDao userDao;
 
     private final UserService userService;
+
     @Autowired
-    public UserReviewsServiceImpl(final UserReviewsDao userReviewsDao,final UserDao userDao, final UserAssetInstanceService userAssetInstanceService, final UserService userService){
+    public UserReviewsServiceImpl(final UserReviewsDao userReviewsDao, final UserDao userDao, final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
         this.userReviewsDao = userReviewsDao;
         this.userDao = userDao;
         this.userService = userService;
@@ -49,17 +51,17 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Override
     public boolean lenderCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        boolean hasReview = userHasReview(lendingId,userService.getCurrentUser());
+        boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
 
-        return !hasReview &&lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
+        return !hasReview && lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
     }
 
     @Transactional(readOnly = true)
     @Override
     public boolean borrowerCanReview(int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        boolean hasReview = userHasReview(lendingId,userService.getCurrentUser());
-        return  !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED) ;
+        boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
+        return !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
     }
 
     @Transactional
@@ -68,18 +70,32 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         return userReviewsDao.getRating(user);
     }
 
+    @Transactional
+    @Override
+    public double getRatingAsLender(UserImpl user) {
+        return Math.round(userReviewsDao.getRatingAsLender(user) * 10) / 10.0;
+    }
+
+    @Transactional
+    @Override
+    public double getRatingAsBorrower(UserImpl user) {
+        return Math.round(userReviewsDao.getRatingAsBorrower(user) * 10) / 10.0;
+    }
+
     private UserImpl getUser(int userId) throws UserNotFoundException {
         Optional<UserImpl> user = userDao.getUser(userId);
-        if(!user.isPresent())
+        if (!user.isPresent())
             throw new UserNotFoundException("not found user to get the rating");
         return user.get();
     }
+
     @Transactional(readOnly = true)
     @Override
-    public boolean userHasReview(int lendingId,String user){
-       Optional<UserReview> review = userReviewsDao.getUserReviewsByLendingIdAndUser(lendingId,user);
-       return  review.isPresent();
+    public boolean userHasReview(int lendingId, String user) {
+        Optional<UserReview> review = userReviewsDao.getUserReviewsByLendingIdAndUser(lendingId, user);
+        return review.isPresent();
     }
+
     @Transactional
     @Override
     public double getRatingById(int userId) throws UserNotFoundException {
@@ -88,25 +104,25 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage,UserImpl recipient) {
-        return userReviewsDao.getUserReviewsAsLender(pageNum,itemsPerPage,recipient);
+    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient) {
+        return userReviewsDao.getUserReviewsAsLender(pageNum, itemsPerPage, recipient);
     }
 
     @Transactional
     @Override
-    public PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage,int recipientId) throws UserNotFoundException{
-        return getUserReviewsAsLender(pageNum,itemsPerPage,getUser(recipientId));
+    public PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage, int recipientId) throws UserNotFoundException {
+        return getUserReviewsAsLender(pageNum, itemsPerPage, getUser(recipientId));
     }
 
     @Transactional
     @Override
     public PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl reviewer) {
-        return userReviewsDao.getUserReviewsAsBorrower(pageNum,itemsPerPage,reviewer);
+        return userReviewsDao.getUserReviewsAsBorrower(pageNum, itemsPerPage, reviewer);
     }
 
     @Transactional
     @Override
-    public PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum,final int itemsPerPage,int reviewerId) throws UserNotFoundException {
-        return getUserReviewsBorrower(pageNum,itemsPerPage,getUser(reviewerId));
+    public PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum, final int itemsPerPage, int reviewerId) throws UserNotFoundException {
+        return getUserReviewsBorrower(pageNum, itemsPerPage, getUser(reviewerId));
     }
 }

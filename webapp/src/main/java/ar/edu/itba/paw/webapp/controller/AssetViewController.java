@@ -12,7 +12,6 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
-import ar.edu.itba.paw.webapp.form.SearchFilterSortForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,6 @@ public class AssetViewController {
     public ModelAndView assetInfoView(@PathVariable(name = "id") int id,
                                       @RequestParam(name = "reviewPage", required = false) Integer reviewPage,
                                       @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,
-                                      final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
                                       @RequestParam(required = false, name = "success") final boolean success) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
@@ -75,10 +73,9 @@ public class AssetViewController {
     @RequestMapping(value = "/requestAsset/{id}", method = RequestMethod.POST)
     public ModelAndView requestAsset(@PathVariable(name = "id") int id,
                                      @Valid @ModelAttribute final BorrowAssetForm borrowAssetForm,
-                                     final @Valid @ModelAttribute("searchFilterSortForm") SearchFilterSortForm searchFilterSortForm,
                                      final BindingResult errors) throws AssetInstanceBorrowException, UserNotFoundException, AssetInstanceNotFoundException {
         if (errors.hasErrors()) {
-            return assetInfoView(id, 1, borrowAssetForm, searchFilterSortForm, false);
+            return assetInfoView(id, 1, borrowAssetForm, false);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -88,7 +85,7 @@ public class AssetViewController {
 
         } catch (DayOutOfRangeException ex) {
             LOGGER.warn("Cannot borrow asset because the de dayFormat");
-            ModelAndView assetInfoView = assetInfoView(id,1, borrowAssetForm, searchFilterSortForm, false);
+            ModelAndView assetInfoView = assetInfoView(id,1, borrowAssetForm, false);
             assetInfoView.addObject("dayError", true);
             return assetInfoView;
         }

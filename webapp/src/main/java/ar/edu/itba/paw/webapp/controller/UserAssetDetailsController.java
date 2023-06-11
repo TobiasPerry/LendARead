@@ -2,13 +2,17 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingCompletionUnsuccessfulException;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
+import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
+import ar.edu.itba.paw.webapp.miscellaneous.CustomMultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.IOException;
 
 
 @Controller
@@ -26,20 +32,28 @@ final public class UserAssetDetailsController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
+    private final UserService userService;
+
+    private final LocationsService locationsService;
+
     private final static String VIEW_NAME = "views/userHomeAssetDetail/userBookDetails";
+    private final static String VIEW_NAME_ASSET_EDIT = "views/editAssetInstance";
+
     private final static String VIEW_NAME_LENDING_VIEW = "views/userHomeAssetDetail/lendingBookDetails";
 
-    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending";
+    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending",ASSET_INSTANCE = "assetInstance",LOCATIONS = "locations";
 
     private final static String BACKURL = "backUrl";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
 
 
     @Autowired
-    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, UserAssetInstanceService userAssetInstanceService) {
+    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserAssetInstanceService userAssetInstanceService, final UserService userService, final LocationsService locationsService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userAssetInstanceService = userAssetInstanceService;
+        this.userService = userService;
+        this.locationsService = locationsService;
     }
 
     @RequestMapping(value = "/userHomeReturn", method = RequestMethod.GET)
@@ -102,6 +116,24 @@ final public class UserAssetDetailsController {
             assetAvailabilityService.setAssetPublic(id);
 
         return new ModelAndView("redirect:/myBookDetails/" + id);
+    }
+
+    @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.POST)
+    public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException, UserNotFoundException {
+        if (errors.hasErrors()) {
+            return changeAsset(id,assetInstanceForm);
+        }
+        LocationImpl location = locationsService.getLocation(assetInstanceForm.getId());
+        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),location, assetInstanceForm.getImage().getBytes(), assetInstanceForm.getDescription());
+        return new ModelAndView("redirect:/myBookDetails/" + id);
+    }
+    @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)
+    public ModelAndView changeAsset(@PathVariable("id") final int id,@ModelAttribute("assetInstanceForm") final AssetInstanceForm assetInstanceForm) throws AssetInstanceNotFoundException, UserNotFoundException {
+        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);
+        CustomMultipartFile file = new CustomMultipartFile(assetInstance.getImage().getPhoto());
+
+        return new ModelAndView(VIEW_NAME_ASSET_EDIT)
+                .addObject(ASSET_INSTANCE, assetInstance).addObject(LOCATIONS, locationsService.getLocations(userService.getUser(userService.getCurrentUser())));
     }
 
     @ModelAttribute

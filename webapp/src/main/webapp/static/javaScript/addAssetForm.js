@@ -146,7 +146,9 @@ function beforeSubmit() {
     const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
     const borrowTimeType = document.getElementById('borrow-time-type')
     const timeInDays = document.getElementById('maxDays')
-
+    if (borrowTimeQuantity.value === "") {
+        borrowTimeQuantity.value = "0"
+    }
     const totalTimeInDays = parseInt(borrowTimeQuantity.value) * parseInt(borrowTimeType.value)
 
     timeInDays.value = totalTimeInDays
@@ -169,9 +171,14 @@ document.addEventListener("DOMContentLoaded", e => {
     const stepsInputs = []
 
     formSteps.forEach(form => {
-        const children = form.querySelectorAll("input[type=text]")
+        const childrenInputs = form.querySelectorAll("input[type=text]")
+        const childrenTextArea = form.querySelectorAll('textarea')
+        console.log(childrenTextArea)
         const inputNames = []
-        children.forEach(child => {
+        childrenTextArea.forEach(child => {
+            inputNames.push(child.getAttribute('name'))
+        })
+        childrenInputs.forEach(child => {
             inputNames.push(child.getAttribute('name'))
 
         })
