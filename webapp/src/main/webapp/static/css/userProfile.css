@@ -161,6 +161,15 @@
     margin-left: 10vh;
 }
 
+.user-profile-reviews-pane {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.user-profile-reviews-pane > div {
+    width: 20%;
+}
 
 .spacer {
     max-width: 100%;
