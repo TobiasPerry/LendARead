@@ -190,6 +190,7 @@
                             <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>
                             <jsp:param name="imageId" value="${assetInstance.image.id}"/>
                             <jsp:param name="user" value="${assetInstance.owner.name}"/>
+                            <jsp:param name="userPhoto" value="${assetInstance.owner.profilePhoto == null? -1:assetInstance.owner.profilePhoto.id}"/>
                             <jsp:param name="locality" value="${assetInstance.location.locality}"/>
                             <jsp:param name="province" value="${assetInstance.location.province}"/>
                             <jsp:param name="country" value="${assetInstance.location.country}"/>
