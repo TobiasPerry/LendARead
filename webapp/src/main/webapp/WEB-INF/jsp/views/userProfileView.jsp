@@ -10,7 +10,7 @@
     <title><c:out value="Profile ${user.name}" escapeXml="true"/></title>
 
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro-bg.ico'/>" type="image/x-icon">
-    <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
+    <script src="<c:url value="/static/javaScript/topbar.js"/>" defer></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -90,26 +90,21 @@
             <div class="tabs-container">
                 <ul class="nav nav-tabs" id="user-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active black-text" id="tab1-tab" data-bs-toggle="tab"
+                        <button class="nav-link black-text" id="tab1-tab" data-bs-toggle="tab"
                                 data-bs-target="#tab1"
                                 type="button" role="tab" aria-controls="tab1" aria-selected="true">Borrower Reviews
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link black-text" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                        <button class="nav-link black-text" id="tab2-tab" data-bs-toggle="tab"
+                                data-bs-target="#tab2"
                                 type="button"
                                 role="tab" aria-controls="tab2" aria-selected="false">Lender Review
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link black-text" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3"
-                                type="button"
-                                role="tab" aria-controls="tab3" aria-selected="false">Locations
-                        </button>
-                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                    <div class="tab-pane show" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                         <c:choose>
                             <c:when test="${borrowerReviews.list.size() > 0}">
                                 <div class="user-profile-reviews-pane">
@@ -147,8 +142,7 @@
                                                     id="nextPageButtonBorrower"
                                                     style="border-color: rgba(255, 255, 255, 0)"
                                                     onclick="window.location.href = '<c:url
-                                                            value="/user/${user.id}?activetab=borrowerReviews&activetabpage=${borrowerReviews.currentPage + 1}"/>'"
-                                            >
+                                                            value="/user/${user.id}?activetab=borrowerReviews&activetabpage=${borrowerReviews.currentPage + 1}"/>'">
                                                 <spring:message code="paginationButton.next"/> <i
                                                     class="bi bi-chevron-right"></i>
                                             </button>
@@ -218,10 +212,6 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                        <h3>Tab 3 Content</h3>
-                        <p>This is the content for Tab 3.</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -238,6 +228,10 @@
         </form:form>
     </c:if>
 </div>
+
+<script>
+    let activeTab = `<c:out value="${activeTab}" />`
+</script>
 
 </body>
 </html>
