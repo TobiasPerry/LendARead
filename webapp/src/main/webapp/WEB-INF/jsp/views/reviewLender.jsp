@@ -25,30 +25,26 @@
 <jsp:include page="../components/navBar.jsp">
     <jsp:param name="showSearchbar" value="true"/>
 </jsp:include>
-  <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
+
+<div class="main-class" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
 
 
     <div class="container-row-wrapped">
-        <div class="card text-white card-has-bg click-col" style="background-image:url(<c:url value="/getImage/${assetInstance.image.id}"/>); height: 400px; width: 300px">
-          <img class="card-img d-none" src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="<c:out value="${book.name} cover"/>">
-          <div class="card-img-overlay d-flex flex-column">
-              <div class="card-body">
-                  <small class="card-meta mb-2">Phill H. Knight</small>
-                  <h3 class="card-title mt-0 ">Shoe Dog</h3>
-                  <small><i class="far fa-clock"></i> Good </small>
-              </div>
-              <div class="card-footer">
-                  <div class="media">
-                      <img class="mr-3 rounded-circle" src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Generic placeholder image" style="width:50px; height: 50px">
-                      <div class="media-body">
-                          <h6 class="my-0 text-white d-block">ippo</h6>
-                          <small> Villa Martelli, Buenos Aires </small>
-                      </div>
-                  </div>
-              </div>
-          </div>
+        <div class="d-flex align-items-center justify-content-center"> <!-- Added this line -->
+            <% request.setCharacterEncoding("utf-8"); %>
+            <jsp:include page="../components/bookCard.jsp">
+                <jsp:param name="id" value="${assetInstance.id}"/>
+                <jsp:param name="bookTitle" value="${assetInstance.book.name}"/>
+                <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>
+                <jsp:param name="imageId" value="${assetInstance.image.id}"/>
+                <jsp:param name="user" value="${assetInstance.owner.name}"/>
+                <jsp:param name="userPhoto" value="${assetInstance.owner.profilePhoto == null? -1:assetInstance.owner.profilePhoto.id}"/>
+                <jsp:param name="locality" value="${assetInstance.location.locality}"/>
+                <jsp:param name="province" value="${assetInstance.location.province}"/>
+                <jsp:param name="country" value="${assetInstance.location.country}"/>
+                <jsp:param name="physicalCondition" value="${assetInstance.physicalCondition}"/>
+            </jsp:include>
         </div>
-
         <div class="">
             <div style="display: flex; flex-direction: column; justify-content: space-between; max-width: 800px;">
 
@@ -96,9 +92,11 @@
 
                 <c:url value="/review/lenderAdd/${lendingId}" var="reviewsBorrowerUrl"/>
                 <form:form method="post" accept-charset="UTF-8" action="${reviewsBorrowerUrl}" id="spring-form">
-                    <input type="submit" class="btn btn-green mx-1" id="btn-submit"
-                           value="<spring:message code="review.sendReview"/>"
-                    />
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-green mx-1" id="btn-submit"
+                               value="<spring:message code="review.sendReview"/>"
+                        />
+                    </div>
                     <input type="hidden" name="rating" id="rating-form" value="-1"/>
                     <input type="hidden" name="review" id="review-form" value=""/>
                     <input type="hidden" name="lendingId" value="${lendingId}"/>
