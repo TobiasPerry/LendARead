@@ -91,19 +91,20 @@
     background: rgb(35, 79, 109);
     background: linear-gradient(
             0deg,
-            rgba(17, 23, 17, 0.8),
-            rgba(17, 23, 17, 0.2),
+            rgba(17, 23, 17, 1),
+            rgba(17, 23, 17, 0.7),
             rgba(17, 23, 17, 0.4),
-            rgba(17, 23, 17, 1)
+            rgba(17, 23, 17, 0.8)
+
+            /*rgba(17, 23, 17, 0.8),*/
+            /*rgba(17, 23, 17, 0.2),*/
+            /*rgba(17, 23, 17, 0.4),*/
+            /*rgba(17, 23, 17, 1)*/
+
     );
 }
 
-/*
-* Created with https://www.css-gradient.com
-* Gradient link: https://www.css-gradient.com/?c1=2b3b2b&c2=111711&gt=l&gd=dtl
-*/
-/*background: rgba(43, 59, 43, 1.0);*/
-/*background: linear-gradient(135deg, rgba(43, 59, 43, 1.0), rgba(17, 23, 17, 1.0));*/
+
 
 
 @media (max-width: 767px) {
