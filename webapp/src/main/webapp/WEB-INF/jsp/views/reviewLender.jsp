@@ -109,5 +109,14 @@
 
   </div>
 
+<spring:message code="review.modal.title" var="modalTitle"/>
+<spring:message code="review.modal.text" var="modalText"/>
+<% request.setCharacterEncoding("utf-8"); %>
+<jsp:include page="../components/modal.jsp">
+    <jsp:param name="modalTitle" value="${modalTitle}"/>
+    <jsp:param name="text" value="${modalText}"/>
+    <jsp:param name="redirectionUrl" value="/info/${lendingId}"/>
+</jsp:include>
+
 </body>
 </html>

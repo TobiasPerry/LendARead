@@ -22,7 +22,12 @@
             </div>
             <div class="card-footer">
                 <div class="media">
-                    <img class="mr-3 rounded-circle" src="https://www.ippo.com.ar/assets/img/DSC_0154.JPG" alt="Generic placeholder image" style="width:50px; height: 50px">
+                    <c:if test="${param.userPhoto != -1}">
+                        <img class="mr-3 rounded-circle" src="<c:url value="/getImage/${param.userPhoto}"/>" alt="Generic placeholder image" style="width:50px; height: 50px">
+                    </c:if>
+                    <c:if test="${param.userPhoto == -1}">
+                        <img class="mr-3 rounded-circle" src="<c:url value="/static/images/profilePicPlaceholder.png"/>" alt="Generic placeholder image" style="width:50px; height: 50px">
+                    </c:if>
                     <div class="media-body">
                         <h6 class="my-0 text-white d-block text-truncate"><c:out value="${param.user}"/></h6>
                         <small class="text-white truncate-3-lines"> <c:out value="${param.locality}"/>, <c:out value="${param.province}"/>, <c:out value="${param.country}"/> </small>
