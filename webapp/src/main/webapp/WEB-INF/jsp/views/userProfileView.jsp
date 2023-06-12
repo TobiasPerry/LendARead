@@ -32,7 +32,7 @@
     </c:if>
 
 </head>
-<body class="body-class">
+<body data-path=${path} class="body-class">
 
 <jsp:include page="../components/navBar.jsp"/>
 <c:choose>
@@ -108,30 +108,49 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                        <div class="user-profile-reviews-pane">
-                            <c:forEach var="review" items="${borrowerReviews}">
-                                <jsp:include page="../components/reviewCardProfile.jsp">
-                                    <jsp:param name="review" value="${review.review}"/>
-                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
-                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
-                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
-                                    <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
-                                </jsp:include>
-                            </c:forEach>
-                        </div>
+                        <c:choose>
+                            <c:when test="${borrowerReviews.size() > 0}">
+                                <div class="user-profile-reviews-pane">
+                                    <c:forEach var="review" items="${borrowerReviews}">
+                                        <jsp:include page="../components/reviewCardProfile.jsp">
+                                            <jsp:param name="review" value="${review.review}"/>
+                                            <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                            <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                            <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                            <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
+                                        </jsp:include>
+                                    </c:forEach>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="user-profile-no-reviews">
+                                    <h4 class="grey-text"><spring:message code="userProfile.noReviews"/></h4>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                        <div class="user-profile-reviews-pane">
-                            <c:forEach var="review" items="${lendingReviews}">
-                                <jsp:include page="../components/reviewCardProfile.jsp">
-                                    <jsp:param name="review" value="${review.review}"/>
-                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
-                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
-                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
-                                    <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto.id}"/>
-                                </jsp:include>
-                            </c:forEach>
-                        </div>
+                        <c:choose>
+                            <c:when test="${lenderReviews.size() > 0}">
+                                <div class="user-profile-reviews-pane">
+                                    <c:forEach var="review" items="${lenderReviews}">
+                                        <jsp:include page="../components/reviewCardProfile.jsp">
+                                            <jsp:param name="review" value="${review.review}"/>
+                                            <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                            <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                            <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                            <jsp:param name="imgSrc"
+                                                       value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
+                                        </jsp:include>
+                                    </c:forEach>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="user-profile-no-reviews">
+                                    <h4 class="grey-text"><spring:message code="userProfile.noReviews"/></h4>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                         <h3>Tab 3 Content</h3>

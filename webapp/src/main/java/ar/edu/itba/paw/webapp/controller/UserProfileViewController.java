@@ -10,6 +10,7 @@ import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +41,7 @@ public class UserProfileViewController {
                 .addObject("isCurrent", userService.isCurrent(id))
                 .addObject("borrowerRating", userReviewsService.getRatingAsBorrower(user))
                 .addObject("lenderRating", userReviewsService.getRatingAsLender(user))
-                .addObject("lendingReviews", userReviewsService.getUserReviewsAsLender(1, TOTAL_LATEST_REVIEWS, user).getList())
+                .addObject("lenderReviews", userReviewsService.getUserReviewsAsLender(1, TOTAL_LATEST_REVIEWS, user).getList())
                 .addObject("borrowerReviews", userReviewsService.getUserReviewsAsBorrower(1, TOTAL_LATEST_REVIEWS, user).getList());
     }
 
@@ -63,5 +64,10 @@ public class UserProfileViewController {
             LOGGER.error("Error changing profile picturo of user {}", id);
             return new ModelAndView("redirect:/user/" + id + "?editSuccess=false");
         }
+    }
+
+    @ModelAttribute
+    public void addAttribute(final Model model) {
+        model.addAttribute("path", "userView");
     }
 }
