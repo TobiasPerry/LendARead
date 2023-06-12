@@ -63,13 +63,12 @@ public class ReviewsController {
 
         userReviewsService.addReview(new UserReview(reviewForm.getReview(), reviewForm.getRating(), assetInstance.getOwner(), user,lending));
 
-        return new ModelAndView("redirect:/review/lender/"+ lending.getId() + "?succes=true");
+        return new ModelAndView("redirect:/lentBookDetails/"+ lending.getId());
     }
 
     @RequestMapping(value = "/review/lender/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewLenderView(
             @PathVariable int lendingId,
-            @RequestParam(required = false, name = "succes") boolean succes,
             final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException {
 
@@ -87,8 +86,6 @@ public class ReviewsController {
         mav.addObject("user", user);
         mav.addObject("lendingId", lendingId);
 
-        mav.addObject("success", succes);
-
         return mav;
     }
 
@@ -104,13 +101,12 @@ public class ReviewsController {
         assetInstanceReviewsService.addReview(new AssetInstanceReview(lending, reviewForm.getAssetInstanceReview(),user, reviewForm.getAssetInstanceRating()));
         userReviewsService.addReview(new UserReview(reviewForm.getUserReview(), reviewForm.getUserRating(), user, lending.getAssetInstance().getOwner(),lending));
 
-        return new ModelAndView("redirect:/review/borrower/"+ lending.getId() + "?succes=true");
+        return new ModelAndView("redirect:/info/" + lending.getAssetInstance().getId());
     }
 
     @RequestMapping(value = "/review/borrower/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewBorrowerView(
             @PathVariable int lendingId,
-            @RequestParam(required = false, name = "succes") boolean succes,
             final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException, UserNotFoundException {
 
@@ -127,8 +123,6 @@ public class ReviewsController {
         mav.addObject("assetInstance", assetInstance);
         mav.addObject("user", user);
         mav.addObject("lendingId", lendingId);
-
-        mav.addObject("success", succes);
 
         return mav;
     }

@@ -139,7 +139,7 @@ class EmailServiceImpl implements EmailService {
         variables.put("book", book);
         variables.put("borrower", borrower);
         variables.put("lender", lender);
-        variables.put("path", baseUrl + "/review/borrower/" + lendingId);
+        variables.put("path", baseUrl + "review/borrower/" + lendingId);
         String subject = messageSource.getMessage("email.review.borrower.subject", null, locale);
         LOGGER.debug("Sending email to borrower");
         this.sendEmail(borrower.getEmail(), subject, this.mailFormat(variables, "reviewBorrowerEmail.html", locale));
@@ -158,7 +158,7 @@ class EmailServiceImpl implements EmailService {
         variables.put("book", book);
         variables.put("borrower", borrower);
         variables.put("lender", lender);
-        variables.put("path", baseUrl + "/review/lender/" + lendingId);
+        variables.put("path", baseUrl + "review/lender/" + lendingId);
         String subject = messageSource.getMessage("email.review.lender.subject", null, locale);
         LOGGER.debug("Sending email to lender");
         this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "reviewLenderEmail.html", locale));
