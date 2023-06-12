@@ -29,7 +29,9 @@
 </head>
 
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 
 <body class="body-class">
 <div class="main-class" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
