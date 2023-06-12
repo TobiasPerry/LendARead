@@ -1,0 +1,12 @@
+.reviews-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+.reviews-column > .profile-review-card {
+    width: 60%;
+    max-width: 60%;
+    margin: 1vh;
+}

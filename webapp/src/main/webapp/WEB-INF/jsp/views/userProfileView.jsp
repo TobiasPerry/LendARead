@@ -119,8 +119,8 @@
                                             <jsp:param name="userId" value="${review.reviewer.id}"/>
                                             <jsp:param name="reviewer" value="${review.reviewer.name}"/>
                                             <jsp:param name="role" value="${review.reviewer.behavior}"/>
-                                            <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
-                                        </jsp:include>
+                                            <jsp:param name="imgSrc"
+                                                       value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>                                        </jsp:include>
                                     </c:forEach>
                                 </div>
                                 <div class="user-profile-reviews-buttons">

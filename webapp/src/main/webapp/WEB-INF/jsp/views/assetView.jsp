@@ -155,15 +155,19 @@
                                      id="stars-container" data-rating="<c:out value="${assetInstanceReviewAverage}"/>">
                                         <%--Stars will be added via JS based on the rating--%>
                                 </div>
+                                <div class="user-profile-reviews-pane">
 
                                 <c:forEach var="review" items="${assetInstanceReviewPage.list}">
-                                    <jsp:include page="../components/reviewCard.jsp">
-                                        <jsp:param name="rating" value="${review.rating}"/>
+                                    <jsp:include page="../components/reviewCardProfile.jsp">
                                         <jsp:param name="review" value="${review.review}"/>
+                                        <jsp:param name="userId" value="${review.reviewer.id}"/>
                                         <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                        <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                        <jsp:param name="imgSrc"
+                                                   value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
                                     </jsp:include>
                                 </c:forEach>
-
+                                </div>
                                 <div class="container-row-wrapped"
                                      style="margin-top: 25px; margin-bottom: 25px; width: 100%;">
                                     <div>
