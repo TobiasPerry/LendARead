@@ -20,8 +20,9 @@
     <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
     <i class="fas fa-calendar"></i>
   </span>
-    <form:errors path="date" cssClass="text-danger small" element="small"/>
+<%--    <form:errors path="date" cssClass="text-danger small" element="small"/>--%>
 </div>
+<form:errors path="date" cssClass="text-danger small" element="small"/><br>
 
 <script>
 
