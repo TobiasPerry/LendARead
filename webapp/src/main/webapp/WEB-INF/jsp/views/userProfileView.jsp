@@ -85,6 +85,9 @@
                             ★</span>
                     </c:if>
                 </p>
+                <a href="<c:url value="/userLocations"/> ">
+                    <button class="btn btn-primary"><spring:message code="userProfile.myLocations"/></button>
+                </a>
             </div>
             <hr/>
             <div class="tabs-container">

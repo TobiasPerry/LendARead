@@ -123,7 +123,7 @@
 
 .user-info {
     margin-left: calc(min(var(--photo-width), var(--min-photo-width)) + var(--photo-offset) + var(--text-offset));
-    margin-bottom: calc(min(var(--photo-width), var(--min-photo-width)) / 4);
+    margin-bottom: calc(min(var(--photo-width), var(--min-photo-width)) / 6);
 }
 
 .user-info > .info-container {
