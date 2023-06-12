@@ -41,7 +41,7 @@ public class UserProfileViewController {
                 .addObject("borrowerRating", userReviewsService.getRatingAsBorrower(user))
                 .addObject("lenderRating", userReviewsService.getRatingAsLender(user))
                 .addObject("lendingReviews", userReviewsService.getUserReviewsAsLender(1, TOTAL_LATEST_REVIEWS, user).getList())
-                .addObject("borrowerReviews", userReviewsService.getUserReviewsAsLender(1, TOTAL_LATEST_REVIEWS, user).getList());
+                .addObject("borrowerReviews", userReviewsService.getUserReviewsAsBorrower(1, TOTAL_LATEST_REVIEWS, user).getList());
     }
 
     @RequestMapping(value = "/user/{id}/editPic", method = RequestMethod.POST)

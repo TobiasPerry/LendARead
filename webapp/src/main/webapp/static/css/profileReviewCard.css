@@ -1,0 +1,82 @@
+:root {
+    --card-background: #f0f5f0;
+}
+
+.profile-review-card {
+    border-radius: 20px;
+    background: var(--card-background);
+    box-shadow: 0 0 5px lightgray;
+    -webkit-box-shadow: 0 0 5px lightgray;
+    padding: 1vh
+}
+
+.profile-review-card-user {
+    display: flex;
+}
+
+.profile-review-card-userroles {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-review-card-img-wrapper {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    margin-right: 1vh;
+}
+
+.profile-review-card-img-wrapper > img {
+    border-radius: 50%;
+    box-shadow: 0 0 3px black;
+    -webkit-box-shadow: 0 0 3px black;
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.profile-review-card-info {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.profile-review-card-info > a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.profile-review-card-review {
+    margin-top: 10%;
+    padding-inline: 10%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-review-card-review > i {
+    /*border: 1px solid green;*/
+    color: grey;
+    height: 100%;
+    line-height: 100%;
+    align-items: center;
+}
+
+.profile-review-card-review-text {
+    /*border: 1px solid red;*/
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 100%;
+    word-break: break-word;
+    text-overflow: ellipsis;
+    width: 90%;
+    height: 100%;
+    margin-inline: 1vw;
+}
+

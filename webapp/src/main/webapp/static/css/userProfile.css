@@ -90,8 +90,8 @@
 
 .user-profile-picture {
     width: 100%;
-    -webkit-box-shadow: 0 0 15px black;
-    box-shadow: 0 0 15px black;
+    -webkit-box-shadow: 0 0 15px gray;
+    box-shadow: 0 0 15px gray;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 50%;
@@ -164,11 +164,14 @@
 .user-profile-reviews-pane {
     display: flex;
     flex-wrap: nowrap;
+    justify-content: flex-start;
     overflow: hidden;
 }
 
-.user-profile-reviews-pane > div {
-    width: 20%;
+.user-profile-reviews-pane > .profile-review-card {
+    width: 33%;
+    max-width: 33%;
+    margin: 1vh;
 }
 
 .spacer {

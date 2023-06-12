@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
 import java.util.Optional;
 
 @Service
@@ -116,13 +115,13 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl recipient) {
+    public PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, UserImpl recipient) {
         return userReviewsDao.getUserReviewsAsBorrower(pageNum, itemsPerPage, recipient);
     }
 
     @Transactional
     @Override
     public PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum, final int itemsPerPage, int reviewerId) throws UserNotFoundException {
-        return getUserReviewsBorrower(pageNum, itemsPerPage, getUser(reviewerId));
+        return getUserReviewsAsBorrower(pageNum, itemsPerPage, getUser(reviewerId));
     }
 }

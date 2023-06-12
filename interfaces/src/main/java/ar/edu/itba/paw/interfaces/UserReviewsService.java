@@ -27,7 +27,7 @@ public interface UserReviewsService {
 
     PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage, final int borrowerId) throws UserNotFoundException;
 
-    PagingImpl<UserReview> getUserReviewsBorrower(int pageNum, int itemsPerPage, UserImpl recipient);
+    PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, UserImpl recipient);
 
     PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum, final int itemsPerPage, int reviewerId) throws UserNotFoundException;
 }
