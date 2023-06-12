@@ -62,7 +62,7 @@ public class ReviewsController {
         if(errors.hasErrors())
             return reviewLenderView(lendingId, true, reviewForm);
 
-        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(reviewForm.getLendingId());
+        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         final AssetInstanceImpl assetInstance = lending.getAssetInstance();
         final UserImpl user = lending.getUserReference();
@@ -75,7 +75,7 @@ public class ReviewsController {
     @RequestMapping(value = "/review/lender/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewLenderView(
             @PathVariable int lendingId,
-            @RequestParam(name = "hasErrors", required = true) boolean hasErrors,
+            @RequestParam(name = "hasErrors", required = false, defaultValue = "false") boolean hasErrors,
             final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException {
 
@@ -110,7 +110,7 @@ public class ReviewsController {
         if(errors.hasErrors())
             return reviewBorrowerView(lendingId, true, reviewForm);
 
-        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(reviewForm.getLendingId());
+        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         final UserImpl user = lending.getUserReference();
 
@@ -123,7 +123,7 @@ public class ReviewsController {
     @RequestMapping(value = "/review/borrower/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewBorrowerView(
             @PathVariable int lendingId,
-            @RequestParam(name = "hasErrors", required = true) boolean hasErrors,
+            @RequestParam(name = "hasErrors", required = false, defaultValue = "false") boolean hasErrors,
             final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException, UserNotFoundException {
 
@@ -143,8 +143,8 @@ public class ReviewsController {
 
         mav.addObject("reviewUserError", hasErrors && reviewForm.getUserReview() != null);
         mav.addObject("ratingUserError", hasErrors && reviewForm.getUserRating() != null);
-        mav.addObject("reviewUserError", hasErrors && reviewForm.getAssetInstanceReview() != null);
-        mav.addObject("ratingUserError", hasErrors && reviewForm.getAssetInstanceRating() != null);
+        mav.addObject("reviewAssetInstanceError", hasErrors && reviewForm.getAssetInstanceReview() != null);
+        mav.addObject("ratingAssetInstanceError", hasErrors && reviewForm.getAssetInstanceRating() != null);
 
         return mav;
     }

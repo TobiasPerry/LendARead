@@ -85,9 +85,9 @@
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
                     </div>
-                    <p class="error"><spring:message code="review.rating.error"/></p>
+                    <p class="error ${ratingAssetInstanceError ? "" : "d-none"}"><spring:message code="review.rating.error"/></p>
                     <textarea class="form-control" aria-label="With textarea" id="review-area-asset-instance" placeholder="<spring:message code="review.assetInstance.placeholder"/>"></textarea>
-                    <p class="error"><spring:message code="review.user.error"/></p>
+                    <p class="error ${reviewAssetInstanceError ? "" : "d-none"}"><spring:message code="review.user.error"/></p>
                 </div>
 
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px">
@@ -127,9 +127,9 @@
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
                     </div>
-                    <p class="error"><spring:message code="review.rating.error"/></p>
+                    <p class="error ${ratingUserError ? "" : "d-none"}"><spring:message code="review.rating.error"/></p>
                     <textarea class="form-control" aria-label="With textarea" id="review-area-user" placeholder="<spring:message code="review.user.placeholder"/>"></textarea>
-                    <p class="error"><spring:message code="review.assetInstance.error"/></p>
+                    <p class="error ${reviewUserError ? "" : "d-none"}"><spring:message code="review.assetInstance.error"/></p>
                 </div>
 
                 <c:url value="/review/borrowerAdd/${lendingId}" var="reviewsBorrowerUrl"/>
@@ -139,8 +139,8 @@
                     />
                     <input type="hidden" name="assetInstanceReview" id="review-asset-instance-form" value=""/>
                     <input type="hidden" name="userReview" id="review-user-form" value=""/>
-                    <input type="hidden" name="userRating" id="rating-form-user" value=""/>
-                    <input type="hidden" name="assetInstanceRating" id="rating-form-asset-instance" value=""/>
+                    <input type="hidden" name="userRating" id="rating-form-user" value="-1"/>
+                    <input type="hidden" name="assetInstanceRating" id="rating-form-asset-instance" value="-1"/>
                     <input type="hidden" name="lendingId" value="${lendingId}"/>
 
                 </form:form>
