@@ -34,7 +34,9 @@
 </head>
 <body data-path=${path} class="body-class">
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 <c:choose>
     <c:when test="${user.profilePhoto == null}">
         <c:url var="profilePicSrc"
@@ -109,9 +111,9 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                         <c:choose>
-                            <c:when test="${borrowerReviews.size() > 0}">
+                            <c:when test="${borrowerReviews.list.size() > 0}">
                                 <div class="user-profile-reviews-pane">
-                                    <c:forEach var="review" items="${borrowerReviews}">
+                                    <c:forEach var="review" items="${borrowerReviews.list}">
                                         <jsp:include page="../components/reviewCardProfile.jsp">
                                             <jsp:param name="review" value="${review.review}"/>
                                             <jsp:param name="userId" value="${review.reviewer.id}"/>
@@ -120,6 +122,38 @@
                                             <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
                                         </jsp:include>
                                     </c:forEach>
+                                </div>
+                                <div class="user-profile-reviews-buttons">
+                                    <ul class="pagination justify-content-center align-items-center">
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${borrowerReviews.currentPage != 1 ? "" : "disabled"}"
+                                                    id="previousPageButtonBorrower"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=borrowerReviews&activetabpage=${borrowerReviews.currentPage - 1}"/>'">
+                                                <i class="bi bi-chevron-left"></i> <spring:message
+                                                    code="paginationButton.previous"/>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <c:out value="${borrowerReviews.currentPage}"/> / <c:out
+                                                value="${borrowerReviews.totalPages}"/>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${borrowerReviews.currentPage < borrowerReviews.totalPages ? "" : "disabled"}"
+                                                    id="nextPageButtonBorrower"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=borrowerReviews&activetabpage=${borrowerReviews.currentPage + 1}"/>'"
+                                            >
+                                                <spring:message code="paginationButton.next"/> <i
+                                                    class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
                                 </div>
                             </c:when>
                             <c:otherwise>
@@ -131,9 +165,9 @@
                     </div>
                     <div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                         <c:choose>
-                            <c:when test="${lenderReviews.size() > 0}">
+                            <c:when test="${lenderReviews.list.size() > 0}">
                                 <div class="user-profile-reviews-pane">
-                                    <c:forEach var="review" items="${lenderReviews}">
+                                    <c:forEach var="review" items="${lenderReviews.list}">
                                         <jsp:include page="../components/reviewCardProfile.jsp">
                                             <jsp:param name="review" value="${review.review}"/>
                                             <jsp:param name="userId" value="${review.reviewer.id}"/>
@@ -143,6 +177,38 @@
                                                        value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
                                         </jsp:include>
                                     </c:forEach>
+                                </div>
+                                <div class="user-profile-reviews-buttons">
+                                    <ul class="pagination justify-content-center align-items-center">
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${lenderReviews.currentPage != 1 ? "" : "disabled"}"
+                                                    id="previousPageButtonLender"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=lenderReviews&activetabpage=${lenderReviews.currentPage - 1}"/>'">
+                                                <i class="bi bi-chevron-left"></i> <spring:message
+                                                    code="paginationButton.previous"/>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <c:out value="${lenderReviews.currentPage}"/> / <c:out
+                                                value="${lenderReviews.totalPages}"/>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${lenderReviews.currentPage < lenderReviews.totalPages ? "" : "disabled"}"
+                                                    id="nextPageButtonLender"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=lenderReviews&activetabpage=${lenderReviews.currentPage + 1}"/>'"
+                                            >
+                                                <spring:message code="paginationButton.next"/> <i
+                                                    class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
                                 </div>
                             </c:when>
                             <c:otherwise>

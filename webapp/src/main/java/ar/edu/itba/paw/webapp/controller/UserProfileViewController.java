@@ -24,7 +24,9 @@ public class UserProfileViewController {
     private final Logger LOGGER = LoggerFactory.getLogger(UserProfileViewController.class);
     private final UserService userService;
     private final UserReviewsService userReviewsService;
-    private final Integer TOTAL_LATEST_REVIEWS = 4;
+    private final Integer TOTAL_LATEST_REVIEWS = 3;
+    private final String borrowerTab = "borrowerReviews";
+    private final String lenderTab = "lenderReviews";
 
     public UserProfileViewController(UserService userService, UserReviewsService userReviewsService) {
         this.userService = userService;
@@ -33,16 +35,27 @@ public class UserProfileViewController {
 
     @RequestMapping("/user/{id}")
     public ModelAndView userProfileView(@PathVariable(name = "id") final int id,
+                                        @RequestParam(name = "activetab", defaultValue = borrowerTab) final String activeTab,
+                                        @RequestParam(name = "activetabpage", defaultValue = "1") final int activeTabPage,
                                         @ModelAttribute("changeProfilePicForm") final ChangeProfilePicForm changeProfilePicForm) throws UserNotFoundException {
         UserImpl user = userService.getUserById(id);
 
-        return new ModelAndView("/views/userProfileView")
+        ModelAndView mav = new ModelAndView("/views/userProfileView")
                 .addObject("user", user)
                 .addObject("isCurrent", userService.isCurrent(id))
                 .addObject("borrowerRating", userReviewsService.getRatingAsBorrower(user))
                 .addObject("lenderRating", userReviewsService.getRatingAsLender(user))
-                .addObject("lenderReviews", userReviewsService.getUserReviewsAsLender(1, TOTAL_LATEST_REVIEWS, user).getList())
-                .addObject("borrowerReviews", userReviewsService.getUserReviewsAsBorrower(1, TOTAL_LATEST_REVIEWS, user).getList());
+                .addObject("activeTab", activeTab);
+
+        if (activeTab.equals(borrowerTab)) {
+            mav.addObject("lenderReviews", userReviewsService.getUserReviewsAsLender(1, this.TOTAL_LATEST_REVIEWS, user));
+            mav.addObject("borrowerReviews", userReviewsService.getUserReviewsAsBorrower(activeTabPage, this.TOTAL_LATEST_REVIEWS, user));
+        } else if (activeTab.equals(lenderTab)) {
+            mav.addObject("lenderReviews", userReviewsService.getUserReviewsAsLender(activeTabPage, this.TOTAL_LATEST_REVIEWS, user));
+            mav.addObject("borrowerReviews", userReviewsService.getUserReviewsAsBorrower(1, this.TOTAL_LATEST_REVIEWS, user));
+        }
+
+        return mav;
     }
 
     @RequestMapping(value = "/user/{id}/editPic", method = RequestMethod.POST)
@@ -53,7 +66,7 @@ public class UserProfileViewController {
         byte[] parsedImage = FormFactoryAddAssetView.getByteArray(image);
 
         if (errors.hasErrors() || parsedImage == null) {
-            return userProfileView(id, changeProfilePicForm).addObject("INVALID_PHOTO", true);
+            return userProfileView(id, "borrowerReviews", 1, changeProfilePicForm).addObject("INVALID_PHOTO", true);
         }
 
         try {
