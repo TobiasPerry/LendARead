@@ -12,17 +12,13 @@ import javax.validation.constraints.Size;
 public class LenderReviewForm {
 
 
-    @Size(max = 200)
+    @Size(min = 1, max = 200)
     private String review;
 
     @Min(1)
     @Max(5)
-    private int rating;
+    private Integer rating;
 
     private int lendingId;
-
-    public LenderReviewForm(){
-        this.rating = 1;
-    }
 
 }

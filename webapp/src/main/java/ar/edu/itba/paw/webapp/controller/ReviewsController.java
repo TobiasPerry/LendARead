@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
@@ -51,12 +52,17 @@ public class ReviewsController {
         this.assetInstanceReviewsService = assetInstanceReviewsService;
     }
 
-    @RequestMapping(value = "/review/lenderAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "/review/lenderAdd/{lendingId}", method = RequestMethod.POST)
     public ModelAndView reviewLender(
-            final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm
-    ) throws AssetInstanceNotFoundException {
+            @PathVariable int lendingId,
+            final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm,
+            final BindingResult errors
+    ) throws AssetInstanceNotFoundException, UnauthorizedUserException {
 
-        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(reviewForm.getLendingId());
+        if(errors.hasErrors())
+            return reviewLenderView(lendingId, true, reviewForm);
+
+        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         final AssetInstanceImpl assetInstance = lending.getAssetInstance();
         final UserImpl user = lending.getUserReference();
@@ -69,6 +75,7 @@ public class ReviewsController {
     @RequestMapping(value = "/review/lender/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewLenderView(
             @PathVariable int lendingId,
+            @RequestParam(name = "hasErrors", required = false, defaultValue = "false") boolean hasErrors,
             final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException {
 
@@ -86,15 +93,24 @@ public class ReviewsController {
         mav.addObject("user", user);
         mav.addObject("lendingId", lendingId);
 
+        mav.addObject("reviewError", hasErrors && reviewForm.getReview() != null);
+        mav.addObject("ratingError", hasErrors && reviewForm.getRating() != null);
+
+
         return mav;
     }
 
-    @RequestMapping(value = "/review/borrowerAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "/review/borrowerAdd/{lendingId}", method = RequestMethod.POST)
     public ModelAndView reviewBorrower(
-            final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm
-    ) throws AssetInstanceNotFoundException {
+            @PathVariable int lendingId,
+            final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm,
+            final BindingResult errors
+    ) throws AssetInstanceNotFoundException, UserNotFoundException, UnauthorizedUserException {
 
-        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(reviewForm.getLendingId());
+        if(errors.hasErrors())
+            return reviewBorrowerView(lendingId, true, reviewForm);
+
+        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         final UserImpl user = lending.getUserReference();
 
@@ -107,6 +123,7 @@ public class ReviewsController {
     @RequestMapping(value = "/review/borrower/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewBorrowerView(
             @PathVariable int lendingId,
+            @RequestParam(name = "hasErrors", required = false, defaultValue = "false") boolean hasErrors,
             final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException, UserNotFoundException {
 
@@ -123,6 +140,11 @@ public class ReviewsController {
         mav.addObject("assetInstance", assetInstance);
         mav.addObject("user", user);
         mav.addObject("lendingId", lendingId);
+
+        mav.addObject("reviewUserError", hasErrors && reviewForm.getUserReview() != null);
+        mav.addObject("ratingUserError", hasErrors && reviewForm.getUserRating() != null);
+        mav.addObject("reviewAssetInstanceError", hasErrors && reviewForm.getAssetInstanceReview() != null);
+        mav.addObject("ratingAssetInstanceError", hasErrors && reviewForm.getAssetInstanceRating() != null);
 
         return mav;
     }

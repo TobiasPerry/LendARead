@@ -11,25 +11,22 @@ import javax.validation.constraints.Size;
 @Setter
 public class BorrowerReviewForm {
 
-    @Size(max = 200)
+    @Size(min = 1,max = 200)
     private String assetInstanceReview;
 
-    @Size(max = 200)
+    @Size(min = 1, max = 200)
     private String userReview;
 
     @Min(1)
     @Max(5)
-    private int userRating;
+    private Integer userRating;
 
     @Min(1)
     @Max(5)
-    private int assetInstanceRating;
+    private Integer assetInstanceRating;
 
     private int lendingId;
 
-    public BorrowerReviewForm(){
-        this.assetInstanceRating = 1;
-        this.userRating = 1;
-    }
+
 
 }

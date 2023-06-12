@@ -89,15 +89,17 @@
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
                     </div>
+                    <p class="error ${ratingError ? "" : "d-none"}"><spring:message code="review.rating.error"/></p>
                     <textarea class="form-control" aria-label="With textarea" id="review-area" placeholder="<spring:message code="review.user.placeholder"/>"></textarea>
+                    <p class="error ${reviewError ? "" : "d-none"}"><spring:message code="review.user.error"/></p>
                 </div>
 
-                <c:url value="/review/lenderAdd" var="reviewsBorrowerUrl"/>
+                <c:url value="/review/lenderAdd/${lendingId}" var="reviewsBorrowerUrl"/>
                 <form:form method="post" accept-charset="UTF-8" action="${reviewsBorrowerUrl}" id="spring-form">
                     <input type="submit" class="btn btn-green mx-1" id="btn-submit"
                            value="<spring:message code="review.sendReview"/>"
                     />
-                    <input type="hidden" name="rating" id="rating-form" value=""/>
+                    <input type="hidden" name="rating" id="rating-form" value="-1"/>
                     <input type="hidden" name="review" id="review-form" value=""/>
                     <input type="hidden" name="lendingId" value="${lendingId}"/>
                 </form:form>
