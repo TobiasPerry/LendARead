@@ -92,14 +92,16 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link black-text" id="tab1-tab" data-bs-toggle="tab"
                                 data-bs-target="#tab1"
-                                type="button" role="tab" aria-controls="tab1" aria-selected="true">Borrower Reviews
+                                type="button" role="tab" aria-controls="tab1" aria-selected="true">
+                            <spring:message code="userProfile.borrowerReviews"/>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link black-text" id="tab2-tab" data-bs-toggle="tab"
                                 data-bs-target="#tab2"
                                 type="button"
-                                role="tab" aria-controls="tab2" aria-selected="false">Lender Review
+                                role="tab" aria-controls="tab2" aria-selected="false">
+                            <spring:message code="userProfile.lenderReviews"/>
                         </button>
                     </li>
                 </ul>
