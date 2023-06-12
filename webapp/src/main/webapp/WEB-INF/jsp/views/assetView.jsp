@@ -50,7 +50,7 @@
     <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px; width: 50%">
         <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
             <img src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book cover"
-                 style="margin-left: 0; margin-right: 50px; height: 500px; width: 300px; object-fit: cover">
+                 style="margin-left: 0; margin-right: 50px; height: 500px; width: 300px; object-fit: cover; border-radius: 10px">
             <div class="mx-2">
 
                 <h1 class="textOverflow" title="<c:out value="${assetInstance.book.name}"/>"><c:out
@@ -130,8 +130,16 @@
                 <div class="card-body">
                     <h5 class="card-title" style="text-align: center"><spring:message
                             code="assetView.description"/></h5>
-                    <p style="word-wrap: break-word; word-break: break-word; max-height: 200px; overflow-y: auto;">
-                        <c:out value="${assetInstance.description}"/></p>
+                    <c:if test="${hasDescription}">
+                        <p style="word-wrap: break-word; word-break: break-word; max-height: 200px; overflow-y: auto;">
+                            <c:out value="${assetInstance.description}"/>
+                        </p>
+                    </c:if>
+                    <c:if test="${!hasDescription}">
+                        <h1 class="text-muted text-center mt-5"><i class="bi bi-x-circle"></i></h1>
+                        <h6 class="text-muted text-center mb-5"><spring:message
+                                code="assetView.noDescription"/></h6>
+                    </c:if>
                 </div>
             </div>
         </div>

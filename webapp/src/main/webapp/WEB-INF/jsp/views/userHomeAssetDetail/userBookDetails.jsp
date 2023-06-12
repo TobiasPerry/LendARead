@@ -67,7 +67,7 @@
             <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; max-width: 50%; min-width: 650px">
                 <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
                     <img src="<c:url value="/getImage/${asset.image.id}"/>" class="mx-3" alt="Book cover"
-                         style="height: 500px; width: 300px; object-fit: cover">
+                         style="height: 500px; width: 300px; object-fit: cover; border-radius: 10px">
                     <div class="mx-2" style="min-width: 400px">
                         <h1 class="textOverflow" style="max-width: min-content " title="<c:out
                                 value="${asset.book.name} "/>"><c:out

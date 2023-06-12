@@ -85,9 +85,11 @@
                             ★</span>
                     </c:if>
                 </p>
-                <a href="<c:url value="/userLocations"/> ">
-                    <button class="btn btn-primary"><spring:message code="userProfile.myLocations"/></button>
-                </a>
+                <c:if test="${user.behavior == 'LENDER' && isCurrent}">
+                    <a href="<c:url value="/userLocations"/> ">
+                        <button class="btn btn-primary"><spring:message code="userProfile.myLocations"/></button>
+                    </a>
+                </c:if>
             </div>
             <hr/>
             <div class="tabs-container">
@@ -120,7 +122,8 @@
                                             <jsp:param name="reviewer" value="${review.reviewer.name}"/>
                                             <jsp:param name="role" value="${review.reviewer.behavior}"/>
                                             <jsp:param name="imgSrc"
-                                                       value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>                                        </jsp:include>
+                                                       value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
+                                        </jsp:include>
                                     </c:forEach>
                                 </div>
                                 <div class="user-profile-reviews-buttons">

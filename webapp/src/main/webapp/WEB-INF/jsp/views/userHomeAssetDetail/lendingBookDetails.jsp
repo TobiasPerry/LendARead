@@ -68,7 +68,7 @@
                 <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
                     <img src="<c:url value="/getImage/${lending.assetInstance.image.id}"/>" class="mx-3"
                          alt="Book cover"
-                         style="height: 500px; width: 300px; object-fit: cover">
+                         style="height: 500px; width: 300px; object-fit: cover; border-radius: 10px">
                     <div class="mx-2" style="min-width: 400px">
                         <h1 class="textOverflow" style="max-width: min-content " title="<c:out
                                 value="${lending.assetInstance.book.name} "/>"><c:out

@@ -63,6 +63,7 @@ public class AssetViewController {
 
         PagingImpl<AssetInstanceReview> assetInstanceReviewPage = assetInstanceReviewsService.getAssetInstanceReviews((reviewPage != null) ? reviewPage : 1, 2, assetInstanceOpt);
         mav.addObject("assetInstanceReviewPage", assetInstanceReviewPage);
+        mav.addObject("hasDescription", !assetInstanceOpt.getDescription().isEmpty());
         mav.addObject("hasReviews", !assetInstanceReviewPage.getList().isEmpty());
         mav.addObject("assetInstanceReviewAverage", assetInstanceReviewsService.getRatingById(assetInstanceOpt.getId()));
         mav.addObject("assetInstance", assetInstanceOpt);
