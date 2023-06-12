@@ -193,3 +193,7 @@
 .star {
     font-size: 2vw;
 }
+
+.navbar-nav > div > form {
+    margin-bottom: 0;
+}
