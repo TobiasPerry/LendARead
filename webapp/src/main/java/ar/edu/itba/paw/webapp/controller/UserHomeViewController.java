@@ -47,7 +47,7 @@ final public class UserHomeViewController {
         ModelAndView model = new ModelAndView(registerViewName);
         PageUserAssets page = getUserAssetsIn(currentPage, table, sortAtribuite, sortValue, filterAtribuite, filterValue);
         model.addObject(IS_LENDER, !userService.getCurrentUserIsBorrower());
-        model.addObject(USER_ASSETS, page.getUserAssets());
+        model.addObject(USER_ASSETS, page.getList());
         model.addObject(USER_EMAIL, userService.getUser(userService.getCurrentUser()).getName());
         model.addObject(TABLE, table);
 

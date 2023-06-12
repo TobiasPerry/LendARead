@@ -38,7 +38,7 @@ public class AssetViewController {
 
 
     @Autowired
-    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService,final AssetInstanceReviewsService assetInstanceReviewsService){
+    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService, final AssetInstanceReviewsService assetInstanceReviewsService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userService = userService;
@@ -63,7 +63,7 @@ public class AssetViewController {
 
         PagingImpl<AssetInstanceReview> assetInstanceReviewPage = assetInstanceReviewsService.getAssetInstanceReviews((reviewPage != null) ? reviewPage : 1, 2, assetInstanceOpt);
         mav.addObject("assetInstanceReviewPage", assetInstanceReviewPage);
-        mav.addObject("hasReviews", !assetInstanceReviewPage.getUserAssets().isEmpty());
+        mav.addObject("hasReviews", !assetInstanceReviewPage.getList().isEmpty());
         mav.addObject("assetInstanceReviewAverage", assetInstanceReviewsService.getRatingById(assetInstanceOpt.getId()));
         mav.addObject("assetInstance", assetInstanceOpt);
 
@@ -85,7 +85,7 @@ public class AssetViewController {
 
         } catch (DayOutOfRangeException ex) {
             LOGGER.warn("Cannot borrow asset because the de dayFormat");
-            ModelAndView assetInfoView = assetInfoView(id,1, borrowAssetForm, false);
+            ModelAndView assetInfoView = assetInfoView(id, 1, borrowAssetForm, false);
             assetInfoView.addObject("dayError", true);
             return assetInfoView;
         }

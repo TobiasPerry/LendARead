@@ -26,6 +26,7 @@
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/userProfile.css"/>" rel="stylesheet"/>
+    <link href="<c:url value="/static/css/profileReviewCard.css"/>" rel="stylesheet"/>
     <c:if test="${isCurrent}">
         <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
     </c:if>
@@ -106,15 +107,33 @@
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                        <h3>Tab 1 Content</h3>
-                        <p>This is the content for Tab 1.</p>
+                    <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                        <div class="user-profile-reviews-pane">
+                            <c:forEach var="review" items="${borrowerReviews}">
+                                <jsp:include page="../components/reviewCardProfile.jsp">
+                                    <jsp:param name="review" value="${review.review}"/>
+                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                    <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
+                                </jsp:include>
+                            </c:forEach>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                        <h3>Tab 2 Content</h3>
-                        <p>This is the content for Tab 2.</p>
+                    <div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                        <div class="user-profile-reviews-pane">
+                            <c:forEach var="review" items="${lendingReviews}">
+                                <jsp:include page="../components/reviewCardProfile.jsp">
+                                    <jsp:param name="review" value="${review.review}"/>
+                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                    <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto.id}"/>
+                                </jsp:include>
+                            </c:forEach>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                    <div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                         <h3>Tab 3 Content</h3>
                         <p>This is the content for Tab 3.</p>
                     </div>

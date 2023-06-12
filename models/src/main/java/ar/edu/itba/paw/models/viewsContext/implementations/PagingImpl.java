@@ -31,7 +31,7 @@ public class PagingImpl<T> implements PageUserAssets<T> {
     }
 
     @Override
-    public List<T> getUserAssets() {
+    public List<T> getList() {
         return userAssets;
     }
 }
