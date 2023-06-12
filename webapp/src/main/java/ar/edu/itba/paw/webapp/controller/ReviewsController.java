@@ -16,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ViewResolver;
 
@@ -66,12 +63,13 @@ public class ReviewsController {
 
         userReviewsService.addReview(new UserReview(reviewForm.getReview(), reviewForm.getRating(), assetInstance.getOwner(), user,lending));
 
-        return new ModelAndView("views/reviewSubmited");
+        return new ModelAndView("redirect:/review/lender/"+ lending.getId() + "?succes=true");
     }
 
     @RequestMapping(value = "/review/lender/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewLenderView(
             @PathVariable int lendingId,
+            @RequestParam(required = false, name = "succes") boolean succes,
             final @Valid @ModelAttribute("reviewForm") LenderReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException {
 
@@ -89,6 +87,8 @@ public class ReviewsController {
         mav.addObject("user", user);
         mav.addObject("lendingId", lendingId);
 
+        mav.addObject("success", succes);
+
         return mav;
     }
 
@@ -104,12 +104,13 @@ public class ReviewsController {
         assetInstanceReviewsService.addReview(new AssetInstanceReview(lending, reviewForm.getAssetInstanceReview(),user, reviewForm.getAssetInstanceRating()));
         userReviewsService.addReview(new UserReview(reviewForm.getUserReview(), reviewForm.getUserRating(), user, lending.getAssetInstance().getOwner(),lending));
 
-        return new ModelAndView("views/reviewSubmited");
+        return new ModelAndView("redirect:/review/borrower/"+ lending.getId() + "?succes=true");
     }
 
     @RequestMapping(value = "/review/borrower/{lendingId}", method = RequestMethod.GET)
     public ModelAndView reviewBorrowerView(
             @PathVariable int lendingId,
+            @RequestParam(required = false, name = "succes") boolean succes,
             final @Valid @ModelAttribute("reviewForm") BorrowerReviewForm reviewForm
             ) throws AssetInstanceNotFoundException, UnauthorizedUserException, UserNotFoundException {
 
@@ -126,6 +127,8 @@ public class ReviewsController {
         mav.addObject("assetInstance", assetInstance);
         mav.addObject("user", user);
         mav.addObject("lendingId", lendingId);
+
+        mav.addObject("success", succes);
 
         return mav;
     }
