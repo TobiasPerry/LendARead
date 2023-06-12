@@ -26,6 +26,7 @@
     <script src="<c:url value="/static/javaScript/utils.js"/>" defer></script>
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
+    <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
 </head>
 
 <body data-path="${path}" class="body-class">
@@ -34,10 +35,8 @@
     <jsp:param name="showSearchbar" value="true"/>
 </jsp:include>
 <div class="main-class">
+    <jsp:include page="../components/snackbarComponent.jsp"/>
     <div class="container my-5">
-
-        <jsp:include page="../components/snackbarComponent.jsp"/>
-
         <h1 class="text-center mb-5"><spring:message code="addAssetView.title"> </spring:message></h1>
         <div class="p-4 rounded">
             <div class="flex-container">

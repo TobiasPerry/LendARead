@@ -36,9 +36,9 @@
 
                 <c:if test="${param.showSearchbar}">
 
-                    <div class="form mx-3">
+                    <div class="form mx-3" style="margin-block-end: 0">
                         <c:url var="discovery" value="/discovery"/>
-                        <form:form modelAttribute="searchFilterSortForm" method="get" action="${discovery}" id="form-search">
+                        <form:form modelAttribute="searchFilterSortForm" cssStyle="margin-block-end: 0" method="get" action="${discovery}" id="form-search">
                             <i class="fa fa-search fa-search-class"></i>
                             <input type="text" class="form-control form-input" name="search"
                                    placeholder="<spring:message code="discovery.search.placeholder"/>" id="nav-bar-search-bar"
@@ -64,12 +64,12 @@
                         <a class="nav-link navItem" id="userView"  aria-current="page" href="<c:url value='/user/${currentUser.id}'/>">
                             <c:if test="${currentUser.profilePhoto != null}">
                                 <a class="navbar-brand" href="<c:url value='/user/${currentUser.id}'/>">
-                                    <img  src="/getImage/${currentUser.profilePhoto.id}" class="rounded-circle" width="30" height="30" alt="logo">
+                                    <img  src="<c:url value="/getImage/${currentUser.profilePhoto.id}"/>" class="rounded-circle" width="30" height="30" alt="logo">
                                 </a>
                             </c:if>
                             <c:if test="${currentUser.profilePhoto == null}">
                                 <a class="navbar-brand" href="<c:url value='/user/${currentUser.id}'/>">
-                                    <img  src="https://i.pinimg.com/originals/d4/2e/d7/d42ed7bf30a4c1a6a201565f0bc61190.jpg" class="rounded-circle" width="30" height="30" alt="logo">
+                                    <img  src="<c:url value="/static/images/profilePicPlaceholder.png"/>" class="rounded-circle" width="30" height="30" alt="logo">
                                 </a>
                             </c:if>
                         </a>
