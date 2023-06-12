@@ -19,17 +19,14 @@ public class BorrowerReviewForm {
 
     @Min(1)
     @Max(5)
-    private int userRating;
+    private Integer userRating;
 
     @Min(1)
     @Max(5)
-    private int assetInstanceRating;
+    private Integer assetInstanceRating;
 
     private int lendingId;
 
-    public BorrowerReviewForm(){
-        this.assetInstanceRating = 1;
-        this.userRating = 1;
-    }
+
 
 }

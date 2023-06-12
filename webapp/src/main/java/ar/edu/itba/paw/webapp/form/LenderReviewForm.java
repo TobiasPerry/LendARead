@@ -17,12 +17,8 @@ public class LenderReviewForm {
 
     @Min(1)
     @Max(5)
-    private int rating;
+    private Integer rating;
 
     private int lendingId;
-
-    public LenderReviewForm(){
-        this.rating = 1;
-    }
 
 }

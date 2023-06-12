@@ -85,7 +85,9 @@
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
                     </div>
+                    <p class="error"><spring:message code="review.rating.error"/></p>
                     <textarea class="form-control" aria-label="With textarea" id="review-area-asset-instance" placeholder="<spring:message code="review.assetInstance.placeholder"/>"></textarea>
+                    <p class="error"><spring:message code="review.user.error"/></p>
                 </div>
 
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px">
@@ -125,10 +127,12 @@
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
                     </div>
+                    <p class="error"><spring:message code="review.rating.error"/></p>
                     <textarea class="form-control" aria-label="With textarea" id="review-area-user" placeholder="<spring:message code="review.user.placeholder"/>"></textarea>
+                    <p class="error"><spring:message code="review.assetInstance.error"/></p>
                 </div>
 
-                <c:url value="/review/borrowerAdd" var="reviewsBorrowerUrl"/>
+                <c:url value="/review/borrowerAdd/${lendingId}" var="reviewsBorrowerUrl"/>
                 <form:form method="post" accept-charset="UTF-8" action="${reviewsBorrowerUrl}">
                     <input type="submit" class="btn btn-green mx-1"
                            value="<spring:message code="review.sendReview"/>"
