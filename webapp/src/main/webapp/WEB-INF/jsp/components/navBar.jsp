@@ -19,6 +19,8 @@
 <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
 
 <link href="<c:url value="/static/css/navBar.css"/>" rel="stylesheet"/>
+<link href="<c:url value="/static/css/profileReviewCard.css"/>" rel="stylesheet"/>
+
 <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -55,9 +57,23 @@
                 <security:authorize access="isAuthenticated()">
                     <li class="nav-item d-flex align-items-center">
                     <a class="nav-link navItem" id="userHome"  aria-current="page" href="<c:url value='/userHome'/>">
-                        <i class="fas fa-user"></i>
+                        <spring:message code="navBar.userBooks" />
                     </a>
                 </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link navItem" id="userView"  aria-current="page" href="<c:url value='/user/${currentUser.id}'/>">
+                            <c:if test="${currentUser.profilePhoto != null}">
+                                <a class="navbar-brand" href="<c:url value='/user/${currentUser.id}'/>">
+                                    <img  src="/getImage/${currentUser.profilePhoto.id}" class="rounded-circle" width="30" height="30" alt="logo">
+                                </a>
+                            </c:if>
+                            <c:if test="${currentUser.profilePhoto == null}">
+                                <a class="navbar-brand" href="<c:url value='/user/${currentUser.id}'/>">
+                                    <img  src="https://i.pinimg.com/originals/d4/2e/d7/d42ed7bf30a4c1a6a201565f0bc61190.jpg" class="rounded-circle" width="30" height="30" alt="logo">
+                                </a>
+                            </c:if>
+                        </a>
+                    </li>
                 <li class="nav-item d-flex align-items-center">
                     <a class="nav-link navItem" id="logout"  aria-current="page" href="<c:url value='/logout'/>">
                         <i class="fas fa-sign-out-alt"></i>

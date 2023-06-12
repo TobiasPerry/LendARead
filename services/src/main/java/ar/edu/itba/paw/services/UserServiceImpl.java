@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserImpl getUserById(int id) throws UserNotFoundException {
         Optional<UserImpl> user = userDao.getUser(id);
@@ -98,13 +99,14 @@ public class UserServiceImpl implements UserService {
         return getCurrentRoles().contains(new SimpleGrantedAuthority(BORROWER_ROLE));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public String getCurrentUser() {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
             org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return userDetails.getUsername();
         }
-        return "";
+        return "anonymousUser";
     }
 
     @Override
