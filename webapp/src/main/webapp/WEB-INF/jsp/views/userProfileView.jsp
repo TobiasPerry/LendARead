@@ -10,7 +10,7 @@
     <title><c:out value="Profile ${user.name}" escapeXml="true"/></title>
 
     <link rel="shortcut icon" href="<c:url value='/static/images/favicon-claro-bg.ico'/>" type="image/x-icon">
-    <script src="<c:url value="/static/javaScript/topbar.js"/>"></script>
+    <script src="<c:url value="/static/javaScript/topbar.js"/>" defer></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
-    <script src="/static/javaScript/userProfile.js" defer></script>
+    <script src="<c:url value="/static/javaScript/userProfile.js"/>" defer></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
@@ -32,13 +32,15 @@
     </c:if>
 
 </head>
-<body class="body-class">
+<body data-path=${path} class="body-class">
 
-<jsp:include page="../components/navBar.jsp"/>
+<jsp:include page="../components/navBar.jsp">
+    <jsp:param name="showSearchbar" value="true"/>
+</jsp:include>
 <c:choose>
     <c:when test="${user.profilePhoto == null}">
         <c:url var="profilePicSrc"
-               value="https://images.sftcdn.net/images/t_app-logo-xl,f_auto,dpr_2/p/b05628f2-9b32-11e6-89cc-00163ed833e7/395437428/hola-free-vpn-logo"/>
+               value="/static/images/user-placeholder.jpeg"/>
     </c:when>
     <c:otherwise>
         <c:url var="profilePicSrc"
@@ -83,59 +85,137 @@
                             ★</span>
                     </c:if>
                 </p>
+                <a href="<c:url value="/userLocations"/> ">
+                    <button class="btn btn-primary"><spring:message code="userProfile.myLocations"/></button>
+                </a>
             </div>
             <hr/>
             <div class="tabs-container">
                 <ul class="nav nav-tabs" id="user-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active black-text" id="tab1-tab" data-bs-toggle="tab"
+                        <button class="nav-link black-text" id="tab1-tab" data-bs-toggle="tab"
                                 data-bs-target="#tab1"
-                                type="button" role="tab" aria-controls="tab1" aria-selected="true">Borrower Reviews
+                                type="button" role="tab" aria-controls="tab1" aria-selected="true">
+                            <spring:message code="userProfile.borrowerReviews"/>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link black-text" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                        <button class="nav-link black-text" id="tab2-tab" data-bs-toggle="tab"
+                                data-bs-target="#tab2"
                                 type="button"
-                                role="tab" aria-controls="tab2" aria-selected="false">Lender Review
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link black-text" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3"
-                                type="button"
-                                role="tab" aria-controls="tab3" aria-selected="false">Locations
+                                role="tab" aria-controls="tab2" aria-selected="false">
+                            <spring:message code="userProfile.lenderReviews"/>
                         </button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                        <div class="user-profile-reviews-pane">
-                            <c:forEach var="review" items="${borrowerReviews}">
-                                <jsp:include page="../components/reviewCardProfile.jsp">
-                                    <jsp:param name="review" value="${review.review}"/>
-                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
-                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
-                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
-                                    <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
-                                </jsp:include>
-                            </c:forEach>
-                        </div>
+                    <div class="tab-pane show" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                        <c:choose>
+                            <c:when test="${borrowerReviews.list.size() > 0}">
+                                <div class="user-profile-reviews-pane">
+                                    <c:forEach var="review" items="${borrowerReviews.list}">
+                                        <jsp:include page="../components/reviewCardProfile.jsp">
+                                            <jsp:param name="review" value="${review.review}"/>
+                                            <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                            <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                            <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                            <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto}"/>
+                                        </jsp:include>
+                                    </c:forEach>
+                                </div>
+                                <div class="user-profile-reviews-buttons">
+                                    <ul class="pagination justify-content-center align-items-center">
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${borrowerReviews.currentPage != 1 ? "" : "disabled"}"
+                                                    id="previousPageButtonBorrower"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=borrowerReviews&activetabpage=${borrowerReviews.currentPage - 1}"/>'">
+                                                <i class="bi bi-chevron-left"></i> <spring:message
+                                                    code="paginationButton.previous"/>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <c:out value="${borrowerReviews.currentPage}"/> / <c:out
+                                                value="${borrowerReviews.totalPages}"/>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${borrowerReviews.currentPage < borrowerReviews.totalPages ? "" : "disabled"}"
+                                                    id="nextPageButtonBorrower"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=borrowerReviews&activetabpage=${borrowerReviews.currentPage + 1}"/>'">
+                                                <spring:message code="paginationButton.next"/> <i
+                                                    class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="user-profile-no-reviews">
+                                    <h4 class="grey-text"><spring:message code="userProfile.noReviews"/></h4>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                        <div class="user-profile-reviews-pane">
-                            <c:forEach var="review" items="${lendingReviews}">
-                                <jsp:include page="../components/reviewCardProfile.jsp">
-                                    <jsp:param name="review" value="${review.review}"/>
-                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
-                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
-                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
-                                    <jsp:param name="imgSrc" value="${review.reviewer.profilePhoto.id}"/>
-                                </jsp:include>
-                            </c:forEach>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                        <h3>Tab 3 Content</h3>
-                        <p>This is the content for Tab 3.</p>
+                        <c:choose>
+                            <c:when test="${lenderReviews.list.size() > 0}">
+                                <div class="user-profile-reviews-pane">
+                                    <c:forEach var="review" items="${lenderReviews.list}">
+                                        <jsp:include page="../components/reviewCardProfile.jsp">
+                                            <jsp:param name="review" value="${review.review}"/>
+                                            <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                            <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                            <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                            <jsp:param name="imgSrc"
+                                                       value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
+                                        </jsp:include>
+                                    </c:forEach>
+                                </div>
+                                <div class="user-profile-reviews-buttons">
+                                    <ul class="pagination justify-content-center align-items-center">
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${lenderReviews.currentPage != 1 ? "" : "disabled"}"
+                                                    id="previousPageButtonLender"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=lenderReviews&activetabpage=${lenderReviews.currentPage - 1}"/>'">
+                                                <i class="bi bi-chevron-left"></i> <spring:message
+                                                    code="paginationButton.previous"/>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <c:out value="${lenderReviews.currentPage}"/> / <c:out
+                                                value="${lenderReviews.totalPages}"/>
+                                        </li>
+
+                                        <li class="page-item">
+                                            <button type="button"
+                                                    class="btn mx-5 pagination-button ${lenderReviews.currentPage < lenderReviews.totalPages ? "" : "disabled"}"
+                                                    id="nextPageButtonLender"
+                                                    style="border-color: rgba(255, 255, 255, 0)"
+                                                    onclick="window.location.href = '<c:url
+                                                            value="/user/${user.id}?activetab=lenderReviews&activetabpage=${lenderReviews.currentPage + 1}"/>'"
+                                            >
+                                                <spring:message code="paginationButton.next"/> <i
+                                                    class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="user-profile-no-reviews">
+                                    <h4 class="grey-text"><spring:message code="userProfile.noReviews"/></h4>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -153,6 +233,10 @@
         </form:form>
     </c:if>
 </div>
+
+<script>
+    let activeTab = `<c:out value="${activeTab}" />`
+</script>
 
 </body>
 </html>

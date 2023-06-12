@@ -5,7 +5,12 @@
 <div class="profile-review-card">
     <div class="profile-review-card-user">
         <div class="profile-review-card-img-wrapper">
-            <img src="<c:url value="/getImage/${param.imgSrc}"/>" alt="Reviewer Profile Picture"/>
+            <c:if test="${param.imgSrc == -1}">
+                <img src="<c:url value="/static/images/user-placeholder.jpeg"/>"/>
+            </c:if>
+            <c:if test="${param.imgSrc != -1}">
+                <img src="<c:url value="/getImage/${param.imgSrc}"/>" alt="Reviewer Profile Picture"/>
+            </c:if>
         </div>
         <div class="profile-review-card-info">
             <a class="text-clickable" href="<c:url value="/user/${param.userId}"/> ">
