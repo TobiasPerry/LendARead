@@ -40,7 +40,7 @@
 <c:choose>
     <c:when test="${user.profilePhoto == null}">
         <c:url var="profilePicSrc"
-               value="https://images.sftcdn.net/images/t_app-logo-xl,f_auto,dpr_2/p/b05628f2-9b32-11e6-89cc-00163ed833e7/395437428/hola-free-vpn-logo"/>
+               value="/static/images/user-placeholder.jpeg"/>
     </c:when>
     <c:otherwise>
         <c:url var="profilePicSrc"
