@@ -199,6 +199,11 @@
                             <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
                             <small id="durationError" class="text-danger small d-none"><spring:message code="Min.addAssetForm.maxDays"/></small>
 
+                            <div class="custom-control custom-switch mt-3">
+                                <form:checkbox cssClass="custom-control-input" id="reservationSwitch" value="0" path="isReservable" data-toggle="tooltip" title="<spring:message code='addAssetView.tooltip.reservation'/>" />
+                                <label class="custom-control-label" for="reservationSwitch"><spring:message code="addAssetView.label.acceptReservation"/></label>
+                            </div>
+
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"
                                        value="<spring:message code="addAssetView.steps.prevButton"/>"/>
@@ -277,6 +282,19 @@
     <jsp:param name="text" value="${text}"/>
 </jsp:include>
 
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip(); // Enable tooltips
+
+        $('#reservationSwitch').change(function() {
+            if($(this).is(':checked')) {
+                $(this).closest('.custom-switch').css('background-color', '#28a745'); // Change to green when checked
+            } else {
+                $(this).closest('.custom-switch').css('background-color', ''); // Reset to default when unchecked
+            }
+        });
+    });
+</script>
 
 <script>
     let locations = [
