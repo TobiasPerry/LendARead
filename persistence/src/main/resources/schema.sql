@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS AssetInstance(
     physicalCondition varchar(100),
     photoId INT references photos(id) ON DELETE SET NULL,
     status varchar(100),
-    maxLendingDays INT
+    maxLendingDays INT,
+    isReservable BOOLEAN NOT NULL DEFAULT TRUE
 );
 CREATE TABLE IF NOT EXISTS lendings(
     id SERIAL primary key,

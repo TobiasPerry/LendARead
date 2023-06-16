@@ -42,6 +42,8 @@ public class AssetInstanceImpl{
     @Column(name = "maxLendingDays", nullable = false)
     private  int maxLendingDays;
 
+    @Column(name = "isReservable", nullable = false)
+    private  boolean isReservable;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
     private ImageImpl image;
