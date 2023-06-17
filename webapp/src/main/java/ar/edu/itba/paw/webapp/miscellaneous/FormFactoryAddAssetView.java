@@ -39,6 +39,6 @@ final public class FormFactoryAddAssetView {
 
         PhysicalCondition physicalCondition = PhysicalCondition.fromString(request.getPhysicalCondition());
 
-        return new AssetInstanceImpl(book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays(),request.getDescription(), Boolean.parseBoolean(String.valueOf(request.getIsReservable())));
+        return new AssetInstanceImpl(book, physicalCondition, user, location, new ImageImpl(), AssetState.PUBLIC,request.getMaxDays(),request.getDescription(), request.getIsReservable() != 0);
     }
 }

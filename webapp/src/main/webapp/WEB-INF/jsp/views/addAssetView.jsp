@@ -20,6 +20,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
@@ -27,6 +30,20 @@
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
+    <style>
+        .big-switch:checked ~ .custom-control-label::before {
+            background-color: #28a745; /* Nice Green */
+        }
+
+        .custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+            background-color: #28a745; /* Nice Green */
+        }
+
+        .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+            transform: translateX(25px);
+        }
+    </style>
+
 </head>
 
 <body data-path="${path}" class="body-class">
@@ -199,8 +216,8 @@
                             <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
                             <small id="durationError" class="text-danger small d-none"><spring:message code="Min.addAssetForm.maxDays"/></small>
 
-                            <div class="custom-control custom-switch mt-3">
-                                <form:checkbox cssClass="custom-control-input" id="reservationSwitch" value="0" path="isReservable" data-toggle="tooltip" title="<spring:message code='addAssetView.tooltip.reservation'/>" />
+                            <div class="custom-control custom-switch mt-3 d-flex justify-content-center">
+                                <form:checkbox cssClass="custom-control-input big-switch" id="reservationSwitch" path="isReservable" value="1" data-toggle="tooltip" title="<spring:message code='addAssetView.tooltip.reservation'/>" />
                                 <label class="custom-control-label" for="reservationSwitch"><spring:message code="addAssetView.label.acceptReservation"/></label>
                             </div>
 
@@ -281,21 +298,11 @@
     <jsp:param name="modalTitle" value="${title}"/>
     <jsp:param name="text" value="${text}"/>
 </jsp:include>
-
 <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip(); // Enable tooltips
-
-        $('#reservationSwitch').change(function() {
-            if($(this).is(':checked')) {
-                $(this).closest('.custom-switch').css('background-color', '#28a745'); // Change to green when checked
-            } else {
-                $(this).closest('.custom-switch').css('background-color', ''); // Reset to default when unchecked
-            }
-        });
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-
 <script>
     let locations = [
         <c:forEach var="location" items="${locations}" varStatus="status">
