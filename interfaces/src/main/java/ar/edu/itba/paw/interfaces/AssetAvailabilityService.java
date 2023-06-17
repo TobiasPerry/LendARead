@@ -1,8 +1,11 @@
 package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.*;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface AssetAvailabilityService {
 
@@ -16,4 +19,5 @@ public interface AssetAvailabilityService {
 
     void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
     void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+     List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai);
 }

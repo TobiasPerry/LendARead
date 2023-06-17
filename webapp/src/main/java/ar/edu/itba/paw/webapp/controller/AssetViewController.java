@@ -10,6 +10,7 @@ import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.SnackbarControl;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Controller
@@ -60,13 +62,15 @@ public class AssetViewController {
         if (success)
             SnackbarControl.displaySuccess(mav, SUCESS_MSG);
 
+        List<LendingImpl> activeLendings = assetAvailabilityService.getActiveLendings(assetInstanceOpt);
+
 
         PagingImpl<AssetInstanceReview> assetInstanceReviewPage = assetInstanceReviewsService.getAssetInstanceReviews((reviewPage != null) ? reviewPage : 1, 2, assetInstanceOpt);
         mav.addObject("assetInstanceReviewPage", assetInstanceReviewPage);
         mav.addObject("hasDescription", !assetInstanceOpt.getDescription().isEmpty());
         mav.addObject("hasReviews", !assetInstanceReviewPage.getList().isEmpty());
         mav.addObject("assetInstanceReviewAverage", assetInstanceReviewsService.getRatingById(assetInstanceOpt.getId()));
-        mav.addObject("assetInstance", assetInstanceOpt);
+        mav.addObject("assetInstance", assetInstanceOpt).addObject("lendings", activeLendings);
 
         return mav;
     }

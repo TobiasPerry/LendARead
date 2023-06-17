@@ -22,56 +22,136 @@
   </span>
 <%--    <form:errors path="date" cssClass="text-danger small" element="small"/>--%>
 </div>
+<div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker2" data-td-target-input="nearest"
+     data-td-target-toggle="nearest">
+    <form:input path="date" name="date" id="datetimepicker2Input" type="text" class="form-control" value=""
+                data-td-target="#datetimepicker2" readonly="true"/>
+    <span class="input-group-text" data-td-target="#datetimepicker2" data-td-toggle="datetimepicker">
+    <i class="fas fa-calendar"></i>
+  </span>
+    <%--    <form:errors path="date" cssClass="text-danger small" element="small"/>--%>
+</div>
 <form:errors path="date" cssClass="text-danger small" element="small"/><br>
-
+<div id="lendings" hidden="hidden">
+<c:forEach var="listValue" items="${lendings}">
+    <div hidden="hidden" data-lendate="${listValue.lendDate}" data-dev="${listValue.devolutionDate}"></div>
+</c:forEach>
+</div>
 <script>
 
     const showError = '${dayError}' === 'true';
+    const dates = [];
+    $(document).ready(function() {
+        var children = Array.from(document.getElementById("lendings").children);
+        children.forEach(function (child) {
+            const dateRange = getDateRange(new Date(child.dataset.lendate), new Date(child.dataset.dev));
+            dates.push(...dateRange); // Use the spread operator to concatenate the arrays
+        });
+
+        new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
+            display: {
+                viewMode: "calendar",
+                components: {
+                    decades: true,
+                    year: true,
+                    month: true,
+                    date: true,
+                    hours: false,
+                    minutes: false,
+                    seconds: false
+                },
+                icons: {
+                    time: 'far fa-clock',
+                    date: 'far fa-calendar',
+                    up: 'far fa-arrow-up',
+                    down: 'far fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'far fa-calendar-check-o',
+                    clear: 'far fa-trash',
+                    close: 'far fa-times'
+                },
+
+            },
+
+            restrictions: {
+                minDate: new Date(),
+                enabledDates: [],
+                disabledDates: dates,
+                daysOfWeekDisabled: [],
+                disabledHours: [],
+                enabledHours: []
+            }
+
+        });
+        new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'), {
+            display: {
+                viewMode: "calendar",
+                components: {
+                    decades: true,
+                    year: true,
+                    month: true,
+                    date: true,
+                    hours: false,
+                    minutes: false,
+                    seconds: false
+                },
+                icons: {
+                    time: 'far fa-clock',
+                    date: 'far fa-calendar',
+                    up: 'far fa-arrow-up',
+                    down: 'far fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'far fa-calendar-check-o',
+                    clear: 'far fa-trash',
+                    close: 'far fa-times'
+                },
+
+            },
+
+            restrictions: {
+                minDate: new Date(),
+                disabledDates: dates,
+                enabledDates: [],
+                daysOfWeekDisabled: [],
+                disabledTimeIntervals: [],
+                disabledHours: [],
+                enabledHours: []
+            }
+
+        });
+    });
     if (showError) {
         document.getElementById("dateOutOfRange").hidden = false
     }
+    function getDateRange(startDate, endDate) {
+        const dates = [];
+        const currentDate = new Date(startDate);
 
-    new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
-        display: {
-            viewMode: "calendar",
-            components: {
-                decades: true,
-                year: true,
-                month: true,
-                date: true,
-                hours: false,
-                minutes: false,
-                seconds: false
-            },
-            icons: {
-                time: 'far fa-clock',
-                date: 'far fa-calendar',
-                up: 'far fa-arrow-up',
-                down: 'far fa-arrow-down',
-                previous: 'fas fa-chevron-left',
-                next: 'fas fa-chevron-right',
-                today: 'far fa-calendar-check-o',
-                clear: 'far fa-trash',
-                close: 'far fa-times'
-            },
-
-        },
-        localization: {
-            format: 'L'
-        },
-        restrictions: {
-            minDate: new Date(),
-            maxDate: addDays(new Date(), parseInt(document.querySelector('body').dataset.maxdays) + 1),
-            disabledDates: [addDays(new Date(), parseInt(document.querySelector('body').dataset.maxdays) + 1)],
-            enabledDates: [],
-            daysOfWeekDisabled: [],
-            disabledTimeIntervals: [],
-            disabledHours: [],
-            enabledHours: []
+        while (currentDate <= endDate) {
+            dates.push(new Date(currentDate));
+            currentDate.setDate(currentDate.getDate() + 1);
         }
 
-    });
+        return dates;
+    }
 
+
+    document
+        .getElementById('datetimepicker1')
+        .addEventListener('change.td', (event) => {
+            new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'),
+                {
+                    restrictions: {
+                        minDate: new Date(event.detail.date),
+                        maxDate: addDays(new Date(event.detail.date), parseInt(document.querySelector('body').dataset.maxdays)),
+                        disabledDates: dates,
+
+                    }
+                }
+            )
+        });
     function addDays(date, days) {
         date.setDate(date.getDate() + days);
         return date;

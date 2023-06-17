@@ -1,20 +1,7 @@
 package ar.edu.itba.paw.persistence.sql;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-
-import javax.sql.DataSource;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-
 //@Repository
+/*
 public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
 
     private final JdbcTemplate jdbcTemplate;
@@ -41,9 +28,12 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
 
     @Override
     public void changeLendingStatus(LendingImpl lendingId, final LendingState lendingState) {
-        /*String query = "UPDATE lendings SET active = ? WHERE id = ? ";
+        */
+/*String query = "UPDATE lendings SET active = ? WHERE id = ? ";
         int updatedRows = jdbcTemplate.update(query, lendingState.toString(), lendingId);
-        return updatedRows == 1;*/
+        return updatedRows == 1;*//*
+
     }
 
 }
+*/
