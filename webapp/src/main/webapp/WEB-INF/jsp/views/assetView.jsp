@@ -79,6 +79,38 @@
                     <a href="<c:url value="/user/${assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">
                         <span class="mx-2 text-clickable"><c:out value="${assetInstance.owner.name}"/></span>
                     </a>
+                    <p>
+                        <c:choose>
+                            <c:when test="${!noReviewAsLender}">
+                                <c:choose>
+                                    <c:when test="${ownerRating >= 4.0}">
+                                        <span class="badge bg-success">
+                                            <c:out value="${ownerRating}"/> ★
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${ownerRating >= 3.0}">
+                                                <span class="badge bg-warning">
+                                                <c:out value="${ownerRating}"/> ★
+                                            </span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-danger">
+                                                <c:out value="${ownerRating}"/> ★
+                                            </span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge bg-secondary">
+                                    -.- ★
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
                 </div>
 
 
