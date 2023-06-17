@@ -43,3 +43,17 @@
     margin: 30px;
     background: #009938;
 }
+
+
+.img-hover-click {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.img-hover-click:hover {
+    border: 2px solid green;
+}
