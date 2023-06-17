@@ -85,7 +85,7 @@ public class AssetInstanceImpl{
                 '}';
     }
 
-    public boolean isReservable() {
+    public boolean getIsReservable() {
         return isReservable;
     }
 

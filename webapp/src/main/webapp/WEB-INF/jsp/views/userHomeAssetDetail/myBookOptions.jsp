@@ -22,6 +22,9 @@
         <i class="fas fa-trash"></i>
         <spring:message code="delete"/>
     </button>
+    <button id="changeIsReservable" class="btn-green" style="margin-top: 5px" type="submit">
+        <spring:message code="reservable"/>
+    </button>
 </div>
 
 <jsp:include page="deleteBookModal.jsp">
@@ -30,6 +33,8 @@
 <jsp:include page="changeStatusModal.jsp">
     <jsp:param name="asset" value="${asset}"/>
 </jsp:include>
-
+<jsp:include page="changeReservabilityModal.jsp">
+    <jsp:param name="asset" value="${asset}"/>
+</jsp:include>
 
 

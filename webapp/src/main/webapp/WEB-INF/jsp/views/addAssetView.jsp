@@ -39,9 +39,6 @@
             background-color: #28a745; /* Nice Green */
         }
 
-        .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
-            transform: translateX(25px);
-        }
     </style>
 
 </head>
