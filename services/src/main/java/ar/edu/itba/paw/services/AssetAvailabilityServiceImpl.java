@@ -82,11 +82,10 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetInstance, AssetState.PRIVATE);
         LOGGER.info("Asset {} has been set private", assetId);
     }
-
+    @Transactional
     @Override
     public void changeReservability(int assetId) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
-        System.out.println(assetInstance.getIsReservable());
         assetInstanceDao.setReservability(assetInstance, !assetInstance.getIsReservable());
         LOGGER.info("Asset {} has been chaned its reservability", assetId);
     }

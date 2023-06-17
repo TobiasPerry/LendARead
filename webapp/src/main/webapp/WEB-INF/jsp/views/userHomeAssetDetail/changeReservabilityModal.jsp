@@ -23,8 +23,8 @@
           </c:if>
       </div>
       <div class="modal-footer border-0">
-        <c:url var="changeStatusUrl" value="/changeStatus/${asset.id}"/>
-        <form action="${changeStatusUrl}" method="post">
+        <c:url var="isReservableUrl" value="/changeReservability/${asset.id}"/>
+        <form action="${isReservableUrl}" method="post">
           <button type="submit" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #2B3B2B; border-color: #00B4A0;">
             <c:if test="${!asset.isReservable}">
               <spring:message code="userHomeView.changeReservabilitYes.button" />
