@@ -16,6 +16,7 @@ public interface AssetInstanceDao {
      Optional<AssetInstanceImpl> getAssetInstance(final int assetId);
 
     void changeStatus(final AssetInstanceImpl ai,final AssetState as);
+    void setReservability(final AssetInstanceImpl ai, final boolean value);
 
     void changeStatusByLendingId(AssetInstanceImpl ai, final AssetState as);
 

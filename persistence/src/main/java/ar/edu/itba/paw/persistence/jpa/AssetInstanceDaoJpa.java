@@ -76,6 +76,12 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
+    public void setReservability(AssetInstanceImpl ai, boolean value) {
+        ai.setReservable(value);
+        em.persist(ai);
+    }
+
+    @Override
     public void changeStatusByLendingId(AssetInstanceImpl ai, AssetState as) {
         ai.setAssetState(as);
         em.persist(ai);
