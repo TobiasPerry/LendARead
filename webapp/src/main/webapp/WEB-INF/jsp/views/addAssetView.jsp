@@ -214,7 +214,8 @@
                             <small id="durationError" class="text-danger small d-none"><spring:message code="Min.addAssetForm.maxDays"/></small>
 
                             <div class="custom-control custom-switch mt-3 d-flex justify-content-center">
-                                <form:checkbox cssClass="custom-control-input big-switch" id="reservationSwitch" path="isReservable" value="1" data-toggle="tooltip" title="<spring:message code='addAssetView.tooltip.reservation'/>" />
+                                <spring:message code="addAssetView.tooltip.reservation" var="tooltiptext"/>
+                                <form:checkbox cssClass="custom-control-input big-switch" id="reservationSwitch" path="isReservable" value="1" data-toggle="tooltip" title="${tooltiptext}" />
                                 <label class="custom-control-label" for="reservationSwitch"><spring:message code="addAssetView.label.acceptReservation"/></label>
                             </div>
 
