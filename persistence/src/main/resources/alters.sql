@@ -1,0 +1,1 @@
+; added isReservable to AssetInstance

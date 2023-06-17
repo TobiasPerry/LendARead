@@ -108,7 +108,11 @@ final public class UserAssetDetailsController {
         assetAvailabilityService.rejectAsset(lendingId);
         return new ModelAndView("redirect:/lentBookDetails/" + lendingId);
     }
-
+    @RequestMapping(value = "/changeReservability/{id}", method = RequestMethod.POST)
+    public ModelAndView changeReservability(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
+        assetAvailabilityService.changeReservability(id);
+        return new ModelAndView("redirect:/myBookDetails/" + id);
+    }
     @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.POST)
     public ModelAndView changeMyBookStatus(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);

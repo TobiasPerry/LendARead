@@ -34,5 +34,9 @@ public class AddAssetForm {
     @Min(value = 1)
     private int maxDays;
 
+    @Min(value = 0)
+    private int isReservable;
+
     private String languageSelect;
+
 }

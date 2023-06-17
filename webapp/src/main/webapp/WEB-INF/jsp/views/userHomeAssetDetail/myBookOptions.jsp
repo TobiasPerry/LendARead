@@ -18,6 +18,16 @@
         <i class="fas fa-pencil-alt"></i>
         <spring:message code="edit"/>
     </a>
+    <button id="changeIsReservable" class="btn-green" style="margin-top: 5px" type="submit">
+        <c:choose>
+        <c:when test="${asset.isReservable}">
+            <i class="fas fa-calendar-alt"></i> <spring:message code="reservable"/>
+        </c:when>
+        <c:otherwise>
+            <i class="fas fa-calendar-times"></i> <spring:message code="reservable"/>
+        </c:otherwise>
+        </c:choose>
+    </button>
     <button id="deleteBtn" class="btn-red" style="margin-top: 5px" type="submit">
         <i class="fas fa-trash"></i>
         <spring:message code="delete"/>
@@ -30,6 +40,8 @@
 <jsp:include page="changeStatusModal.jsp">
     <jsp:param name="asset" value="${asset}"/>
 </jsp:include>
-
+<jsp:include page="changeReservabilityModal.jsp">
+    <jsp:param name="asset" value="${asset}"/>
+</jsp:include>
 
 
