@@ -303,8 +303,11 @@
         document.getElementById('zipcode').innerText = locations[index].zipcode;
 
         // Update visibility of navigation buttons
-        document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
-        document.getElementById('next-location').style.display = (index < locations.length - 1) ? 'inline' : 'none';
+        // document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
+        // document.getElementById('next-location').style.display = (index < locations.length - 1) ? 'inline' : 'none';
+        document.getElementById('prev-location').disabled = index <= 0;
+        document.getElementById('next-location').disabled = index >= locations.length - 1;
+
     }
 
     function changeLocation(direction) {
