@@ -3,14 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- Popperjs -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 <!-- Tempus Dominus JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/js/tempus-dominus.min.js"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/js/tempus-dominus.min.js" crossorigin="anonymous"></script>
+
 <!-- Tempus Dominus Styles -->
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css"
-      crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
 
 <small id="dateOutOfRange" class="text-danger small " hidden="true"><spring:message code="assetView.tiemerror"/></small>
 <div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker1" data-td-target-input="nearest"
@@ -49,6 +48,7 @@
         });
 
         new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
+
             display: {
                 viewMode: "calendar",
                 components: {
@@ -73,7 +73,6 @@
                 },
 
             },
-
             restrictions: {
                 minDate: new Date(),
                 enabledDates: [],
@@ -112,12 +111,8 @@
 
             restrictions: {
                 minDate: new Date(),
-                disabledDates: dates,
-                enabledDates: [],
-                daysOfWeekDisabled: [],
-                disabledTimeIntervals: [],
-                disabledHours: [],
-                enabledHours: []
+                disabledDates: [new Date()],
+                maxDate:new Date()
             }
 
         });
@@ -137,18 +132,42 @@
         return dates;
     }
 
-
     document
         .getElementById('datetimepicker1')
         .addEventListener('change.td', (event) => {
+            document.getElementById("datetimepicker2Input").value = null;
             new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'),
                 {
+                    defaultDate: new Date(event.detail.date),
                     restrictions: {
                         minDate: new Date(event.detail.date),
                         maxDate: addDays(new Date(event.detail.date), parseInt(document.querySelector('body').dataset.maxdays)),
                         disabledDates: dates,
+                    },
+                    display: {
+                        viewMode: "calendar",
+                        components: {
+                            decades: true,
+                            year: true,
+                            month: true,
+                            date: true,
+                            hours: false,
+                            minutes: false,
+                            seconds: false
+                        },
+                        icons: {
+                            time: 'far fa-clock',
+                            date: 'far fa-calendar',
+                            up: 'far fa-arrow-up',
+                            down: 'far fa-arrow-down',
+                            previous: 'fas fa-chevron-left',
+                            next: 'fas fa-chevron-right',
+                            today: 'far fa-calendar-check-o',
+                            clear: 'far fa-trash',
+                            close: 'far fa-times'
+                        },
 
-                    }
+                    },
                 }
             )
         });
