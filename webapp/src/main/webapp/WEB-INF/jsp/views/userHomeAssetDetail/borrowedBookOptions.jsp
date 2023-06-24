@@ -11,8 +11,10 @@
 <%--  <jsp:param name="asset" value="${asset}"/>--%>
 <%--</jsp:include>--%>
 <c:if test="${lending.assetInstance.assetState.isPending()}">
-    <spring:message code="borrowedBookOption.pendingInfo"/>
-    <button id="cancelAssetBtn" class="btn btn-red" type="submit">Cancel Lending</button>
+    <div class="options-menu">
+        <spring:message code="borrowedBookOption.pendingInfo"/>
+        <button id="cancelAssetBtn" class="btn btn-red mt-3" type="submit">Cancel Lending</button>
+    </div>
     <jsp:include page="cancelModal.jsp">
         <jsp:param name="lending" value="${lending}"/>
     </jsp:include>

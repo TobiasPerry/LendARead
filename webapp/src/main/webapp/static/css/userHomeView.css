@@ -289,7 +289,7 @@ td.date-column > a > svg {
 .options-menu {
     display: flex;
     flex-flow: column;
-    padding-inline: 5vw;
+    padding-inline: 1vw;
     align-items: center;
     text-align: center;
 }
