@@ -91,9 +91,15 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
         // Base query for getting the assets IDs for a given page
-        StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
+        StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai " +
+                "LEFT OUTER JOIN (SELECT lendings.assetinstanceid AS assetinstanceid, AVG(rating) AS avg_rating FROM assetInstancereview JOIN lendings ON assetInstancereview.lendid = lendings.id GROUP BY lendings.assetinstanceid) AS avg_reviews ON ai.id = avg_reviews.assetInstanceid " +
+                "JOIN Book b on ai.assetid = b.uid " +
+                "WHERE ai.status = :state ");
         // Base query for getting the total amount of assetsInstances
-        StringBuilder queryCountString = new StringBuilder("SELECT COUNT(ai.id) FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
+        StringBuilder queryCountString = new StringBuilder("SELECT COUNT(ai.id) FROM AssetInstance ai " +
+                "LEFT OUTER JOIN (SELECT lendings.assetinstanceid AS assetinstanceid, AVG(rating) AS avg_rating FROM assetInstancereview JOIN lendings ON assetInstancereview.lendid = lendings.id GROUP BY lendings.assetinstanceid) AS avg_reviews ON ai.id = avg_reviews.assetInstanceid " +
+                "JOIN Book b on ai.assetid = b.uid " +
+                "WHERE ai.status = :state");
 
         // Query filters based on the search filters
         StringBuilder queryFilters = new StringBuilder();
@@ -132,6 +138,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             queryFiltersORM.append(" AND ai.physicalCondition IN (:physicalConditions) ");
         }
 
+        // If there's a rating filter parameter
+        queryFilters.append(" AND COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
+        //queryFiltersORM.append(" AND COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
+
         // Append the filters
         queryCountString.append(queryFilters);
         queryNativeString.append(queryFilters);
@@ -163,6 +173,12 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             queryNative.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
             queryCount.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
         }
+
+        queryNative.setParameter("min_rating", searchQuery.getMinRating());
+        queryNative.setParameter("max_rating", searchQuery.getMaxRating());
+
+        queryCount.setParameter("min_rating", searchQuery.getMinRating());
+        queryCount.setParameter("max_rating", searchQuery.getMaxRating());
 
         queryNative.setParameter("state", "PUBLIC");
         queryCount.setParameter("state", "PUBLIC");

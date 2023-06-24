@@ -40,8 +40,8 @@ public class AssetInstanceDaoTest {
     @Autowired
     private AssetInstanceDaoJpa assetInstanceDaoJpa;
 
-    private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
-    private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG");
+    private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "",1 ,5);
+    private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5);
 
     private final static String AUTHOR = "AUTHOR";
     private final static String TITLE = "TITLE";
