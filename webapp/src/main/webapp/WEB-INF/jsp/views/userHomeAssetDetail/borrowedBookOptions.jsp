@@ -9,5 +9,6 @@
 <%--  <jsp:param name="asset" value="${asset}"/>--%>
 <%--</jsp:include>--%>
 <c:if test="${lending.assetInstance.assetState.isPending()}">
-    <spring:message code="borrowedBookOption.pendingInfo" />
+    <spring:message code="borrowedBookOption.pendingInfo"/>
+    <button class="btn btn-red" type="submit">Cancel Lending</button>
 </c:if>
