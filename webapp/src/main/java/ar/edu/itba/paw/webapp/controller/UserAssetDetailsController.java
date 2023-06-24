@@ -109,6 +109,12 @@ final public class UserAssetDetailsController {
         return new ModelAndView("redirect:/lentBookDetails/" + lendingId);
     }
 
+    @RequestMapping(value = "/cancelAsset/{lendingId}", method = RequestMethod.POST)
+    public ModelAndView cancelAsset(@PathVariable("lendingId") final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        assetAvailabilityService.cancelAsset(lendingId);
+        return new ModelAndView("redirect:/borrowedBookDetails/" + lendingId);
+    }
+
     @RequestMapping(value = "/changeReservability/{id}", method = RequestMethod.POST)
     public ModelAndView changeReservability(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         assetAvailabilityService.changeReservability(id);

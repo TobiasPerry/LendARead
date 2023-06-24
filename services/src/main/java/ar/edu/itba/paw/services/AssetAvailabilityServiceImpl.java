@@ -126,10 +126,12 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());
     }
 
+    @Transactional
     @Override
     public void cancelAsset(int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
+        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PUBLIC);
     }
 
 
