@@ -285,3 +285,11 @@ td.date-column > a > svg {
     visibility: visible;
     opacity: 1;
 }
+
+.options-menu {
+    display: flex;
+    flex-flow: column;
+    padding-inline: 5vw;
+    align-items: center;
+    text-align: center;
+}
