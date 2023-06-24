@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Pedro
-  Date: 4/2/23
-  Time: 7:34 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -77,6 +70,56 @@
 
                 <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
                         value="${assetInstance.book.isbn}"/></h6>
+
+
+                <div class="container-row" style="justify-content: start">
+                    <a href="<c:url value="/user/${assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">
+                        <c:choose>
+                            <c:when test="${assetInstance.owner.profilePhoto != null}">
+                                <img class="rounded-circle img-hover-click" style="width: 25px; height: 25px" src="<c:url value="/getImage/${assetInstance.owner.profilePhoto.id}"/>" alt="profile picture"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img class="rounded-circle img-hover-click" style="width: 25px;" src="<c:url value="/static/images/user-placeholder.jpeg"/>" alt="profile picture"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </a>
+                    <a href="<c:url value="/user/${assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">
+                        <span class="mx-2 text-clickable"><c:out value="${assetInstance.owner.name}"/></span>
+                    </a>
+                    <p>
+                        <c:choose>
+                            <c:when test="${!noReviewAsLender}">
+                                <c:choose>
+                                    <c:when test="${ownerRating >= 4.0}">
+                                        <span class="badge bg-success">
+                                            <c:out value="${ownerRating}"/> ★
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${ownerRating >= 3.0}">
+                                                <span class="badge bg-warning">
+                                                <c:out value="${ownerRating}"/> ★
+                                            </span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-danger">
+                                                <c:out value="${ownerRating}"/> ★
+                                            </span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge bg-secondary">
+                                    -.- ★
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                </div>
+
 
                 <c:url var="discovery" value="/discovery"/>
                 <form:form modelAttribute="searchFilterSortForm" method="get" action="${discovery}" id="formSearch">

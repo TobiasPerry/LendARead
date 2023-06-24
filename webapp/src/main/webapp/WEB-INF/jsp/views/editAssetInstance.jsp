@@ -40,84 +40,85 @@
            action="${changeAsset}" enctype="multipart/form-data" onsubmit="return beforeSubmit()" id="form" accept-charset="utf-8" >
 <div class="main-class" style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
 
-    <div style="background-color: #f0f5f0; margin: 50px; border-radius: 20px; padding: 20px; width: 50%">
-    <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
-        <div class="image-wrapper">
-            <label for="uploadImage" class="image-container position-relative ${showSnackbarInvalid ? 'image-border-error' : ''}">
+    <div style="background-color: #f0f5f0; margin: 50px 50px 20px 50px; border-radius: 20px; padding: 20px; width: 50%">
+        <div style="display: flex; flex-flow: wrap; width: 100%; justify-content: start;">
+            <div class="image-wrapper">
+                <label for="uploadImage" class="image-container position-relative ${showSnackbarInvalid ? 'image-border-error' : ''}">
+<%--                    <img src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book Cover"--%>
+<%--                         class="img-fluid" id="bookImage" style="width: 200px; height: 300px; object-fit: cover">--%>
                 <img src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book Cover"
-                     class="img-fluid" id="bookImage" style="width: 400px; height: 600px; object-fit: cover">
-                <div class="img-hover-text">
-                    <i class="fas fa-pencil-alt" style="color: #D1E9C3"></i>
-                    <spring:message code="editAssetView.changeImage"/>
-                </div>
-            </label>
-        </div>
+                     class="img-fluid" id="bookImage" style="max-width: 100%; min-width: 100px ;height: auto; max-height: 300px;object-fit: cover">
+                    <div class="img-hover-text">
+                        <i class="fas fa-pencil-alt" style="color: #D1E9C3"></i>
+                        <spring:message code="editAssetView.changeImage"/>
+                    </div>
+                </label>
+            </div>
 
-      <div class="mx-2">
+          <div class="mx-2">
 
-        <h1 class="textOverflow" title="<c:out value="${assetInstance.book.name}"/>"><c:out
-                value="${assetInstance.book.name} "/></h1>
+            <h1 class="textOverflow" title="<c:out value="${assetInstance.book.name}"/>"><c:out
+                    value="${assetInstance.book.name} "/></h1>
 
 
-        <h3 class="textOverflow" id="authorClick" data-author="<c:out value="${assetInstance.book.author}"/>"><spring:message
-                code="assetView.by"/>
-          <span class="textOverflow">
-                        <c:out value="${assetInstance.book.author}"/>
-          </span>
-        </h3>
+            <h3 class="textOverflow" id="authorClick" data-author="<c:out value="${assetInstance.book.author}"/>"><spring:message
+                    code="assetView.by"/>
+              <span class="textOverflow">
+                            <c:out value="${assetInstance.book.author}"/>
+              </span>
+            </h3>
 
-        <form:input path="image" type="file"  accept="image/*" name="file" id="uploadImage" style="display:none;"
-          onchange="previewImage()"/>
-          <h6 id="physicalConditionClick"
-            data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
-          <form:select path="physicalCondition" id="physicalCondition" class="form-control form-select"
-                       accept-charset="utf-9" >
-              <form:option  value="ASNEW"    ><spring:message
-                      code="enum.ASNEW"/></form:option>
-              <form:option value="FINE" ><spring:message
-                      code="enum.FINE"/></form:option>
-              <form:option  value="VERYGOOD">
-                <spring:message code="enum.VERYGOOD"/></form:option>
-              <form:option value="GOOD"><spring:message
-                      code="enum.GOOD"/></form:option>
-              <form:option value="FAIR" ><spring:message
-                      code="enum.FAIR"/></form:option>
-              <form:option value="POOR"  ><spring:message
-                      code="enum.POOR"/></form:option>
-              <form:option value="EXLIBRARY"><spring:message
-                      code="enum.EXLIBRARY"/></form:option>
-              <form:option  value="BOOKCLUB" ><spring:message
-                      code="enum.BOOKCLUB"/></form:option>
-              <form:option  value="BINDINGCOPY" ><spring:message
-                      code="enum.BINDINGCOPY"/></form:option>
-          </form:select>
-        </h6>
+            <form:input path="image" type="file"  accept="image/*" name="file" id="uploadImage" style="display:none;"
+              onchange="previewImage()"/>
+              <h6 id="physicalConditionClick"
+                data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
+              <form:select path="physicalCondition" id="physicalCondition" class="form-control form-select"
+                           accept-charset="utf-9" >
+                  <form:option  value="ASNEW"    ><spring:message
+                          code="enum.ASNEW"/></form:option>
+                  <form:option value="FINE" ><spring:message
+                          code="enum.FINE"/></form:option>
+                  <form:option  value="VERYGOOD">
+                    <spring:message code="enum.VERYGOOD"/></form:option>
+                  <form:option value="GOOD"><spring:message
+                          code="enum.GOOD"/></form:option>
+                  <form:option value="FAIR" ><spring:message
+                          code="enum.FAIR"/></form:option>
+                  <form:option value="POOR"  ><spring:message
+                          code="enum.POOR"/></form:option>
+                  <form:option value="EXLIBRARY"><spring:message
+                          code="enum.EXLIBRARY"/></form:option>
+                  <form:option  value="BOOKCLUB" ><spring:message
+                          code="enum.BOOKCLUB"/></form:option>
+                  <form:option  value="BINDINGCOPY" ><spring:message
+                          code="enum.BINDINGCOPY"/></form:option>
+              </form:select>
+            </h6>
 
-        <h6 id="languageClick" data-language="<c:out value="${assetInstance.book.language}"/>" style="color: #7d7c7c">
-          <spring:message code="assetView.language"/>: <span > <c:out
-                value="${assetInstance.book.language}"/></span>
-        </h6>
+            <h6 id="languageClick" data-language="<c:out value="${assetInstance.book.language}"/>" style="color: #7d7c7c">
+              <spring:message code="assetView.language"/>: <span > <c:out
+                    value="${assetInstance.book.language}"/></span>
+            </h6>
 
-        <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
-                value="${assetInstance.book.isbn}"/>
-        </h6>
-          <h6 class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></h6>
-          <div>
-              <div class="d-flex">
-                  <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" min="1" style="margin-right: 5px" class="w-25 form-control"/>
-                  <select class="w-26 ml-2 form-select" id="borrow-time-type">
-                      <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
-                      <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
-                      <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
-                  </select>
-                  <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
-              </div >
-              <form:errors path="maxDays" id="durationError" cssClass="text-danger small" element="small"/>
+            <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
+                    value="${assetInstance.book.isbn}"/>
+            </h6>
+              <h6 class="align-baseline mx-1"><spring:message code="addAssetView.steps.TIME.lendFor"/></h6>
+              <div>
+                  <div class="d-flex">
+                      <input type="number" value="${assetInstance.maxDays}" id="borrow-time-quantity" name="borrow-time-quantity" min="1" style="margin-right: 5px" class="w-25 form-control"/>
+                      <select class="w-26 ml-2 form-select" id="borrow-time-type">
+                          <option value="1"><spring:message code="addAssetView.steps.TIME.days"/></option>
+                          <option value="7"><spring:message code="addAssetView.steps.TIME.weeks"/></option>
+                          <option value="31"><spring:message code="addAssetView.steps.TIME.months"/></option>
+                      </select>
+                      <form:input path="maxDays" id="maxDays" class="d-none" min="1"/>
+                  </div >
+                  <form:errors path="maxDays" id="durationError" cssClass="text-danger small" element="small"/>
+              </div>
+
           </div>
-
-          <input class="btn btn-green mt-2" type="submit"  value="<spring:message code="editAssetView.editButton"/>">
-      </div>
-    </div>
+        </div>
     </div>
 
   <div class="container-row" style="min-width: 50%; width: fit-content; margin-bottom: 20px">
@@ -168,15 +169,19 @@
             <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
                 <div class="card-body">
                     <h5 class="card-title" style="text-align: center"><spring:message code="assetView.description"/></h5>
-                    <textarea class="form-control" id="myTextArea" onchange="here();"><c:out value="${assetInstance.description}"/></textarea>
+                    <textarea class="form-control" style="height: 100px" id="myTextArea" onchange="here();"><c:out value="${assetInstance.description}"/></textarea>
                     <form:input type="hidden" id="content" path="description" value="${assetInstance.description}"/>
                     <form:errors path="description" cssClass="text-danger small" element="small"/>
                 </div>
             </div>
         </div>
   </div>
-
+    <div class="container-row" style="align-content: center; margin-bottom: 20px">
+        <input class="btn btn-green mt-2 mx-auto" type="submit" value="<spring:message code='editAssetView.editButton'/>">
+    </div>
 </div>
+
+
 </form:form>
 
 <script>
@@ -254,3 +259,7 @@
       return true
   }
 </script>
+
+
+
+</body>
