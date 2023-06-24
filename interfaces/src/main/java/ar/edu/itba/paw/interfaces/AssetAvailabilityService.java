@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AssetAvailabilityService {
 
-    void borrowAsset(final int assetId, final String borrower, final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
+    void borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate,final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
     void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException;
 

@@ -86,7 +86,6 @@
                     <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
                     <form:form modelAttribute="borrowAssetForm" method="post"
                                action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
-                        <h5><spring:message code="assetView.return"/></h5>
                         <jsp:include page="../components/calendar.jsp"/>
                         <input class="btn btn-green" type="submit"
                                value="<spring:message code="assetView.borrowButton"/>">

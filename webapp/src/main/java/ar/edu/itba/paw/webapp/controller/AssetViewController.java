@@ -85,7 +85,7 @@ public class AssetViewController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         try {
-            assetAvailabilityService.borrowAsset(id, userService.getCurrentUser(), LocalDate.parse(borrowAssetForm.getDate(), formatter));
+            assetAvailabilityService.borrowAsset(id, userService.getCurrentUser(), LocalDate.parse(borrowAssetForm.getBorrowDate(), formatter),LocalDate.parse(borrowAssetForm.getDevolutionDate(), formatter));
             LOGGER.info("Borrow asset correct");
 
         } catch (DayOutOfRangeException ex) {

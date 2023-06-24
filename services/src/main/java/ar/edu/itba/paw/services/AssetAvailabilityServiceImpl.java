@@ -48,7 +48,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void borrowAsset(final int assetId, final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
+    public void borrowAsset(final int assetId, final String borrower, final  LocalDate borrowDate,final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstanceImpl> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<UserImpl> user = userDao.getUser(borrower);
 
@@ -64,11 +64,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("AssetInstance is not public with id {}", assetId);
             throw new AssetInstanceBorrowException("The assetInstance is not public");
         }
-        if (LocalDate.now().plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
+        if (borrowDate.plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
             throw new DayOutOfRangeException();
         }
-        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate, LendingState.ACTIVE);
+        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), LocaleContextHolder.getLocale());
         LOGGER.info("Asset {} has been borrow", assetId);

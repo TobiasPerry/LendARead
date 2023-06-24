@@ -70,7 +70,7 @@ public class AssetAvailabilityServiceImplTest {
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
 
         // 2 - Ejercitación
-        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK);
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL,DEVOLUTION_DATE_OK ,DEVOLUTION_DATE_OK);
 
         // 3 - Assertions
         Assert.fail();
@@ -83,7 +83,7 @@ public class AssetAvailabilityServiceImplTest {
         when(userDao.getUser(anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK);
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK,DEVOLUTION_DATE_OK);
 
         // 3 - Assertions
         Assert.fail();
@@ -109,7 +109,7 @@ public class AssetAvailabilityServiceImplTest {
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
 
         // 2 - Ejercitación
-        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_WRONG);
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_WRONG,DEVOLUTION_DATE_WRONG);
 
         // 3 - Assertions
         Assert.fail();
