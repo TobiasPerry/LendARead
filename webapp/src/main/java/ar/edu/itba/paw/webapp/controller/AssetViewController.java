@@ -4,10 +4,7 @@ import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
-import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
@@ -36,22 +33,24 @@ public class AssetViewController {
     private final AssetInstanceReviewsService assetInstanceReviewsService;
     private final AssetAvailabilityService assetAvailabilityService;
     private final UserService userService;
+    private final UserReviewsService userReviewsService;
     private static final Logger LOGGER = LoggerFactory.getLogger(AddAssetViewController.class);
 
 
     @Autowired
-    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService, final AssetInstanceReviewsService assetInstanceReviewsService) {
+    public AssetViewController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserService userService, final AssetInstanceReviewsService assetInstanceReviewsService, final UserReviewsService userReviewsService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userService = userService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
+        this.userReviewsService = userReviewsService;
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
     public ModelAndView assetInfoView(@PathVariable(name = "id") int id,
                                       @RequestParam(name = "reviewPage", required = false) Integer reviewPage,
                                       @ModelAttribute("borrowAssetForm") final BorrowAssetForm borrowAssetForm,
-                                      @RequestParam(required = false, name = "success") final boolean success) throws AssetInstanceNotFoundException {
+                                      @RequestParam(required = false, name = "success") final boolean success) throws AssetInstanceNotFoundException, UserNotFoundException {
         AssetInstanceImpl assetInstanceOpt = assetInstanceService.getAssetInstance(id);
 
         if (assetInstanceService.isOwner(assetInstanceOpt, userService.getCurrentUser()))
@@ -71,6 +70,10 @@ public class AssetViewController {
         mav.addObject("hasReviews", !assetInstanceReviewPage.getList().isEmpty());
         mav.addObject("assetInstanceReviewAverage", assetInstanceReviewsService.getRatingById(assetInstanceOpt.getId()));
         mav.addObject("assetInstance", assetInstanceOpt).addObject("lendings", activeLendings);
+
+        double rating = userReviewsService.getRatingAsLender(assetInstanceOpt.getOwner());
+        mav.addObject("ownerRating", rating);
+        mav.addObject("noReviewAsLender", rating <= 0);
 
         return mav;
     }

@@ -42,6 +42,8 @@ public class AssetInstanceImpl{
     @Column(name = "maxLendingDays", nullable = false)
     private  int maxLendingDays;
 
+    @Column(name = "isReservable", nullable = false)
+    private  boolean isReservable;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
     private ImageImpl image;
@@ -57,7 +59,7 @@ public class AssetInstanceImpl{
         this.maxLendingDays = maxDaysLending;
         this.description = description;
     }
-    public AssetInstanceImpl( BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending,String description) {
+    public AssetInstanceImpl(BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending,String description, boolean isReservable) {
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
@@ -66,6 +68,7 @@ public class AssetInstanceImpl{
         this.assetState = as;
         this.maxLendingDays = maxDaysLending;
         this.description = description;
+        this.isReservable = isReservable;
     }
 
 
@@ -80,6 +83,14 @@ public class AssetInstanceImpl{
                 ", userReference=" + userReference +
                 ", location=" + location +
                 '}';
+    }
+
+    public boolean getIsReservable() {
+        return isReservable;
+    }
+
+    public void setReservable(boolean reservable) {
+        isReservable = reservable;
     }
 
     public BookImpl getBook() {

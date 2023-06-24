@@ -20,6 +20,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetView.js"/>" defer></script>
@@ -27,6 +30,17 @@
     <link href="<c:url value="/static/css/addAssetView.css"/>" rel="stylesheet"/>
     <script src="<c:url value="/static/javaScript/addAssetForm.js"/>" defer></script>
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
+    <style>
+        .big-switch:checked ~ .custom-control-label::before {
+            background-color: #28a745; /* Nice Green */
+        }
+
+        .custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+            background-color: #28a745; /* Nice Green */
+        }
+
+    </style>
+
 </head>
 
 <body data-path="${path}" class="body-class">
@@ -199,6 +213,12 @@
                             <form:errors path="maxDays" cssClass="text-danger small" element="small"/>
                             <small id="durationError" class="text-danger small d-none"><spring:message code="Min.addAssetForm.maxDays"/></small>
 
+                            <div class="custom-control custom-switch mt-3 d-flex justify-content-center">
+                                <spring:message code="addAssetView.tooltip.reservation" var="tooltiptext"/>
+                                <form:checkbox cssClass="custom-control-input big-switch" id="reservationSwitch" path="isReservable" value="1" data-toggle="tooltip" title="${tooltiptext}" />
+                                <label class="custom-control-label" for="reservationSwitch"><spring:message code="addAssetView.label.acceptReservation"/></label>
+                            </div>
+
                             <div class="mt-3 form-button-container">
                                 <input type="button" class="prev-button btn btn-outline-success mx-1"
                                        value="<spring:message code="addAssetView.steps.prevButton"/>"/>
@@ -276,8 +296,11 @@
     <jsp:param name="modalTitle" value="${title}"/>
     <jsp:param name="text" value="${text}"/>
 </jsp:include>
-
-
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 <script>
     let locations = [
         <c:forEach var="location" items="${locations}" varStatus="status">
@@ -303,8 +326,9 @@
         document.getElementById('zipcode').innerText = locations[index].zipcode;
 
         // Update visibility of navigation buttons
-        document.getElementById('prev-location').style.display = (index > 0) ? 'inline' : 'none';
-        document.getElementById('next-location').style.display = (index < locations.length - 1) ? 'inline' : 'none';
+        document.getElementById('prev-location').disabled = index <= 0;
+        document.getElementById('next-location').disabled = index >= locations.length - 1;
+
     }
 
     function changeLocation(direction) {
@@ -314,7 +338,6 @@
     }
     document.addEventListener("DOMContentLoaded", e => {
         errorCode = '${errorCode}';
-        console.log("LLEGUE")
         if (errorCode === 2) {
             new bootstrap.Modal($('#borrowUser')).show();
         }});
