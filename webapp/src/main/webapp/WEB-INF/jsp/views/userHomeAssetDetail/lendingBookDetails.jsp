@@ -120,64 +120,64 @@
                         </c:when>
                     </c:choose>
                 </div>
-                <c:if test="${!(table == 'borrowed_books' || (table == 'lended_books' && ( lending.active.getIsFinished() || lending.active.getIsRejected())))}">
-                    <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; width: 300px;">
-                        <h1 class="textOverflow"><spring:message code="userAssetDetailView.options"/></h1>
-                        <c:choose>
-                            <c:when test="${table == 'lended_books'}">
-                                <jsp:include page="lendedBookOptions.jsp">
-                                    <jsp:param name="lending" value="${lending}"/>
-                                </jsp:include>
-                            </c:when>
-                            <c:when test="${table == 'borrowed_books'}">
-                                <jsp:include page="borrowedBookOptions.jsp">
-                                    <jsp:param name="lending" value="${lending}"/>
-                                </jsp:include>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                </c:if>
+                <%--                <c:if test="${!(table == 'borrowed_books' || (table == 'lended_books' && ( lending.active.getIsFinished() || lending.active.getIsRejected())))}">--%>
+                <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; width: 300px;">
+                    <h1 class="textOverflow"><spring:message code="userAssetDetailView.options"/></h1>
+                    <c:choose>
+                        <c:when test="${table == 'lended_books'}">
+                            <jsp:include page="lendedBookOptions.jsp">
+                                <jsp:param name="lending" value="${lending}"/>
+                            </jsp:include>
+                        </c:when>
+                        <c:when test="${table == 'borrowed_books'}">
+                            <jsp:include page="borrowedBookOptions.jsp">
+                                <jsp:param name="lending" value="${lending}"/>
+                            </jsp:include>
+                        </c:when>
+                    </c:choose>
+                </div>
+                <%--                </c:if>--%>
             </div>
 
         </div>
         <c:if test="${lending.active.isFinished && lending.assetInstanceReview != null && lending.userReviews != null}">
-        <div class="container-row" style="justify-content: center">
-            <div class="card"  style="background-color: #f0f5f0; border-radius: 20px;">
-                <div class="card-body">
-                    <h1 class="textOverflow"><spring:message code="lendingBookDetails.review" /></h1>
-                    <div class="container-column reviews-column">
-                        <c:forEach items="${lending.userReviews}" var="review" >
-                            <c:if test="${review.reviewer.id == lending.userReference.id}">
-                                <h3><spring:message code="lendingBookDetails.borrowerReview"/> </h3>
-                            </c:if>
-                            <c:if test="${review.reviewer.id == lending.assetInstance.owner.id}">
-                                <h3><spring:message code="lendingBookDetails.ownerReview"/> </h3>
-                            </c:if>
-                            <jsp:include page="../../components/reviewCardProfile.jsp">
-                                <jsp:param name="review" value="${review.review}"/>
-                                <jsp:param name="userId" value="${review.reviewer.id}"/>
-                                <jsp:param name="reviewer" value="${review.reviewer.name}"/>
-                                <jsp:param name="role" value="${review.reviewer.behavior}"/>
-                                <jsp:param name="imgSrc"
-                                           value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
-                            </jsp:include>
-                        </c:forEach>
+            <div class="container-row" style="justify-content: center">
+                <div class="card" style="background-color: #f0f5f0; border-radius: 20px;">
+                    <div class="card-body">
+                        <h1 class="textOverflow"><spring:message code="lendingBookDetails.review"/></h1>
+                        <div class="container-column reviews-column">
+                            <c:forEach items="${lending.userReviews}" var="review">
+                                <c:if test="${review.reviewer.id == lending.userReference.id}">
+                                    <h3><spring:message code="lendingBookDetails.borrowerReview"/></h3>
+                                </c:if>
+                                <c:if test="${review.reviewer.id == lending.assetInstance.owner.id}">
+                                    <h3><spring:message code="lendingBookDetails.ownerReview"/></h3>
+                                </c:if>
+                                <jsp:include page="../../components/reviewCardProfile.jsp">
+                                    <jsp:param name="review" value="${review.review}"/>
+                                    <jsp:param name="userId" value="${review.reviewer.id}"/>
+                                    <jsp:param name="reviewer" value="${review.reviewer.name}"/>
+                                    <jsp:param name="role" value="${review.reviewer.behavior}"/>
+                                    <jsp:param name="imgSrc"
+                                               value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>
+                                </jsp:include>
+                            </c:forEach>
 
-                        <c:if test="${lending.assetInstanceReview != null}">
-                        <h3><spring:message code="lendingBookDetails.assetReview"/> </h3>
-                            <jsp:include page="../../components/reviewCardProfile.jsp">
-                                <jsp:param name="review" value="${lending.assetInstanceReview.review}"/>
-                                <jsp:param name="userId" value="${lending.assetInstanceReview.reviewer.id}"/>
-                                <jsp:param name="reviewer" value="${lending.assetInstanceReview.reviewer.name}"/>
-                                <jsp:param name="role" value="${lending.assetInstanceReview.reviewer.behavior}"/>
-                                <jsp:param name="imgSrc"
-                                           value="${lending.assetInstanceReview.reviewer.profilePhoto == null ? -1 : lending.assetInstanceReview.reviewer.profilePhoto.id}"/>
-                            </jsp:include>
-                        </c:if>
+                            <c:if test="${lending.assetInstanceReview != null}">
+                                <h3><spring:message code="lendingBookDetails.assetReview"/></h3>
+                                <jsp:include page="../../components/reviewCardProfile.jsp">
+                                    <jsp:param name="review" value="${lending.assetInstanceReview.review}"/>
+                                    <jsp:param name="userId" value="${lending.assetInstanceReview.reviewer.id}"/>
+                                    <jsp:param name="reviewer" value="${lending.assetInstanceReview.reviewer.name}"/>
+                                    <jsp:param name="role" value="${lending.assetInstanceReview.reviewer.behavior}"/>
+                                    <jsp:param name="imgSrc"
+                                               value="${lending.assetInstanceReview.reviewer.profilePhoto == null ? -1 : lending.assetInstanceReview.reviewer.profilePhoto.id}"/>
+                                </jsp:include>
+                            </c:if>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </c:if>
     </div>
 </div>

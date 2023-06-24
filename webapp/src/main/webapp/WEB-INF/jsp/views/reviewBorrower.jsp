@@ -8,7 +8,8 @@
 <head>
     <title><spring:message code="review.borrower.headTitle"/></title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/neoBookCard.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/starRating.css"/>" rel="stylesheet"/>
@@ -37,7 +38,8 @@
                 <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>
                 <jsp:param name="imageId" value="${assetInstance.image.id}"/>
                 <jsp:param name="user" value="${assetInstance.owner.name}"/>
-                <jsp:param name="userPhoto" value="${assetInstance.owner.profilePhoto == null? -1:assetInstance.owner.profilePhoto.id}"/>
+                <jsp:param name="userPhoto"
+                           value="${assetInstance.owner.profilePhoto == null? -1:assetInstance.owner.profilePhoto.id}"/>
                 <jsp:param name="locality" value="${assetInstance.location.locality}"/>
                 <jsp:param name="province" value="${assetInstance.location.province}"/>
                 <jsp:param name="country" value="${assetInstance.location.country}"/>
@@ -80,15 +82,18 @@
                             <i class="fas fa-star d-inline-block star"></i>
                         </label>
                     </div>
-                    <p class="error ${ratingAssetInstanceError ? "" : "d-none"}"><spring:message code="review.rating.error"/></p>
-                    <textarea class="form-control" aria-label="With textarea" id="review-area-asset-instance" placeholder="<spring:message code="review.assetInstance.placeholder"/>"></textarea>
-                    <p class="error ${reviewAssetInstanceError ? "" : "d-none"}"><spring:message code="review.user.error"/></p>
+                    <p class="error ${ratingAssetInstanceError ? "" : "d-none"}"><spring:message
+                            code="review.rating.error"/></p>
+                    <textarea class="form-control" aria-label="With textarea" id="review-area-asset-instance"
+                              placeholder="<spring:message code="review.assetInstance.placeholder"/>"></textarea>
+                    <p class="error ${reviewAssetInstanceError ? "" : "d-none"}"><spring:message
+                            code="review.user.error"/></p>
                 </div>
 
                 <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px">
                     <h2>
                         <spring:message code="review.borrower.userReview.title">
-                            <spring:argument><c:out value="${user.name}"/></spring:argument>
+                            <spring:argument><c:out value="${assetInstance.owner.name}"/></spring:argument>
                         </spring:message>
                     </h2>
                     <div class="rating-wrapper">
@@ -123,8 +128,10 @@
                         </label>
                     </div>
                     <p class="error ${ratingUserError ? "" : "d-none"}"><spring:message code="review.rating.error"/></p>
-                    <textarea class="form-control" aria-label="With textarea" id="review-area-user" placeholder="<spring:message code="review.user.placeholder"/>"></textarea>
-                    <p class="error ${reviewUserError ? "" : "d-none"}"><spring:message code="review.assetInstance.error"/></p>
+                    <textarea class="form-control" aria-label="With textarea" id="review-area-user"
+                              placeholder="<spring:message code="review.user.placeholder"/>"></textarea>
+                    <p class="error ${reviewUserError ? "" : "d-none"}"><spring:message
+                            code="review.assetInstance.error"/></p>
                 </div>
 
                 <c:url value="/review/borrowerAdd/${lendingId}" var="reviewsBorrowerUrl"/>
