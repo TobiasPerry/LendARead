@@ -132,6 +132,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
         assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PUBLIC);
+        emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), LocaleContextHolder.getLocale());
     }
 
 

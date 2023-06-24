@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title th:text="#{email.lender.title}"></title>
+    <title th:text="#{email.canceled.title}"></title>
 </head>
 <body style="background-color: #D0DCD0; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
 <span class="preheader"
@@ -43,7 +43,7 @@
                                     <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
                                         valign="top">
                                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"
-                                           th:text="#{email.canceled.hello} + ' ' +${borrower.name}"></p>
+                                           th:text="#{email.canceled.hello} + ' ' +${lender.name}"></p>
                                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"
                                            th:text="#{email.canceled.text1} + ' ' + ${book.name} + ' ' + #{email.canceled.text2}"></p>
                                         <p th:text="#{email.canceled.text3}"></p>
