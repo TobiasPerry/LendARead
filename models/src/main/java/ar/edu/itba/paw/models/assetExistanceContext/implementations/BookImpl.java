@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
 import javax.persistence.*;
+import java.util.Objects;
+
 @Entity
 @Table(name = "book")
 public class BookImpl{
@@ -42,6 +44,21 @@ public class BookImpl{
     public BookImpl() {
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BookImpl book = (BookImpl) o;
+
+        if (id != book.id) return false;
+        if (!Objects.equals(isbn, book.isbn)) return false;
+        if (!Objects.equals(author, book.author)) return false;
+        if (!Objects.equals(title, book.title)) return false;
+        return Objects.equals(language, book.language);
+    }
+
 
     private static String convertToISBN13(String isbn) {
         // Eliminar guiones y espacios en blanco del ISBN

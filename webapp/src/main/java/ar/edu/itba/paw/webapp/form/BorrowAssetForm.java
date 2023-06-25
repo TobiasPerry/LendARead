@@ -9,5 +9,8 @@ import org.hibernate.validator.constraints.Length;
 public class BorrowAssetForm {
 
     @Length(min = 1, max = 100)
-    String date;
+    String borrowDate;
+
+    @Length(min = 1, max = 100)
+    String devolutionDate;
 }

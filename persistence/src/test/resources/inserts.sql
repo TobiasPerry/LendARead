@@ -1,11 +1,13 @@
-INSERT INTO users(behavior,mail,name,telephone, password) VALUES ('BORROWER','EMAIL', 'NAME', 'TELEPHONE', 'PASSWORD_NOT_ENCODED');
+INSERT INTO users(id,behavior,mail,name,telephone, password) VALUES (0,'BORROWER','EMAIL', 'NAME', 'TELEPHONE', 'PASSWORD_NOT_ENCODED');
 
-INSERT INTO book(ISBN, AUTHOR, TITLE, lang)VALUES ('ISBN','AUTHOR','TITLE','LANGUAGE');
+INSERT INTO book(uid,ISBN, AUTHOR, TITLE, lang)VALUES (0,'ISBN','AUTHOR','TITLE','LANGUAGE');
 
-INSERT INTO location(zipcode, locality, province, country, address) VALUES ('ZIPCODE','LOCALITY','PROVINCE','COUNTRY','ADDRESS');
+INSERT INTO location(id,zipcode, locality, province, country, address,active,name,owner) VALUES (0,'ZIPCODE','LOCALITY','PROVINCE','COUNTRY','Address',true,'NAME',0);
 
-INSERT INTO photos(photo) VALUES (null);
+INSERT INTO photos(id,photo) VALUES (0,null);
 
-INSERT INTO assetinstance(assetid, owner, locationid, physicalcondition, photoid, status) VALUES (1,1,1,'ASNEW',1,'PUBLIC');
+INSERT INTO assetinstance(id,assetid, owner, locationid, physicalcondition, photoid, status,ISRESERVABLE,MAXLENDINGDAYS) VALUES (0,0,0,0,'ASNEW',0,'PUBLIC',true,7);
 
-INSERT INTO resetpasswordinfo(token,userid,expiration) VALUES ('TOKEN',1, TIMESTAMP '2010-07-16 18:19:00-8:00');
+INSERT INTO resetpasswordinfo(id,token,userid,expiration) VALUES (0,'TOKEN',1, TIMESTAMP '2010-07-16 18:19:00-8:00');
+
+INSERT INTO lendings(id,assetinstanceid, borrowerid, lenddate, devolutiondate, active) VALUES (0,0,0, TIMESTAMP '2010-07-16 18:19:00-8:00', TIMESTAMP '2010-07-16 18:19:00-8:00','ACTIVE');

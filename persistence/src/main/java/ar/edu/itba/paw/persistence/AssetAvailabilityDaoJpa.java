@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence.jpa;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
@@ -22,6 +23,14 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         LendingImpl lending = new LendingImpl(assetInstance, user, borrowDate, devolutionDate, lendingState);
         em.persist(lending);
         return lending;
+    }
+
+    @Override
+    public List<LendingImpl> getActiveLendings(AssetInstanceImpl ai) {
+        return em.createQuery("from LendingImpl as l where l.assetInstance = :ai and l.active != :active", LendingImpl.class)
+                .setParameter("ai", ai)
+                .setParameter("active", LendingState.FINISHED)
+                .getResultList();
     }
 
     @Override
