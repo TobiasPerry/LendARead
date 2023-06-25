@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @EnableScheduling
@@ -88,8 +89,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             }
         }
         LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
-        emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
-        emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), LocaleContextHolder.getLocale());
+        emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), new Locale(user.get().getLocale()));
+        emailService.sendLenderEmail(ai.get(), borrower, lending.getId(),new Locale(ai.get().getOwner().getLocale()));
         LOGGER.info("Asset {} has been borrow", assetId);
     }
 
@@ -144,15 +145,14 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         if(!lending.getAssetInstance().getIsReservable())
             assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.FINISHED);
-        emailService.sendReviewBorrower(lending.getAssetInstance(), lending.getUserReference(), lending.getAssetInstance().getOwner(), lending.getId(), LocaleContextHolder.getLocale());
-        emailService.sendReviewLender(lending.getAssetInstance(), lending.getAssetInstance().getOwner(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());
+        emailService.sendReviewBorrower(lending.getAssetInstance(), lending.getUserReference(), lending.getAssetInstance().getOwner(), lending.getId(), new Locale(lending.getUserReference().getLocale()));
+        emailService.sendReviewLender(lending.getAssetInstance(), lending.getAssetInstance().getOwner(), lending.getUserReference(), lending.getId(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
     }
 
     @Transactional
     @Override
     public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
-        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.BORROWED);
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
     }
 
@@ -160,9 +160,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
-        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
-        emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());
+        emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), new Locale(lending.getUserReference().getLocale()));
     }
     @Transactional(readOnly = true)
     @Override
@@ -180,8 +179,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     public void cancelAsset(int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
-        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PUBLIC);
-        emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), LocaleContextHolder.getLocale());
+        emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(),new Locale(lending.getAssetInstance().getOwner().getLocale()));
     }
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -191,14 +189,14 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         Optional<List<LendingImpl>> maybeNewLendingList = lendingDao.getActiveLendingsStartingOn(LocalDate.now());
         if (maybeNewLendingList.isPresent()) {
             for (LendingImpl lending : maybeNewLendingList.get()) {
-                emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
+                emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
             }
         }
 
         Optional<List<LendingImpl>> maybeReturnLendingList = lendingDao.getActiveLendingEndingOn(LocalDate.now());
         if (maybeReturnLendingList.isPresent()) {
             for (LendingImpl lending : maybeReturnLendingList.get()) {
-                emailService.sendRemindReturnToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
+                emailService.sendRemindReturnToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
             }
         }
     }

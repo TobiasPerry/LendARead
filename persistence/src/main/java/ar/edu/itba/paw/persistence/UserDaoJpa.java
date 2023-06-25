@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,6 +22,7 @@ public class UserDaoJpa implements UserDao {
     @Override
     public UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password) {
         final UserImpl user = new UserImpl(email, name, telephone, password, behavior);
+        user.setLocale(LocaleContextHolder.getLocale().getLanguage());
         em.persist(user);
         return user;
     }

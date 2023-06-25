@@ -19,6 +19,9 @@ final public class UserImpl{
     @Column(length = 100, nullable = false)
     private String password;
 
+    @Column(length = 100, nullable = false)
+    private String locale;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = true)
     private ImageImpl profilePhoto;
@@ -68,6 +71,14 @@ final public class UserImpl{
                 ", name='" + name + '\'' +
                 ", message='" + telephone + '\'' +
                 '}';
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     public int getId() {

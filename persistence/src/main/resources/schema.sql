@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS users(
     name varchar(100) not null,
     telephone varchar(100),
     password varchar(200),
-    photo_id int references photos(id) on delete cascade
+    photo_id int references photos(id) on delete cascade,
+    locale varchar(100) not null default 'en'
 );
 CREATE TABLE IF NOT EXISTS location(
    id SERIAL PRIMARY KEY,
