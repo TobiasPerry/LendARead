@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,13 @@ public class ChangeAssetStatusVoter implements AccessDecisionVoter<FilterInvocat
                 vote.set(ACCESS_DENIED);
                 return vote.get();
             }
-            if(assetInstanceService.isOwner(id,((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
-                vote.set(ACCESS_GRANTED);
-            else {
+            try {
+                if (assetInstanceService.isOwner(id, ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
+                    vote.set(ACCESS_GRANTED);
+                else {
+                    vote.set(ACCESS_DENIED);
+                }
+            }catch (AssetInstanceNotFoundException e){
                 vote.set(ACCESS_DENIED);
             }
         }

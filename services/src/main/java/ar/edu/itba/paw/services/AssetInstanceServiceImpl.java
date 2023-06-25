@@ -15,16 +15,19 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
-import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AssetInstanceServiceImpl implements AssetInstanceService {
@@ -116,5 +119,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         assetInstance.setDescription(description);
         assetInstance.setMaxLendingDays(maxLendingDays);
         assetInstance.setPhysicalCondition(physicalCondition);
+    }
+
+    @Override
+    public List<AssetInstanceImpl> getSimilarAssetsInstances(AssetInstanceImpl ai, int pageNum, int itemPerPage) {
+        return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName())).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
     }
 }

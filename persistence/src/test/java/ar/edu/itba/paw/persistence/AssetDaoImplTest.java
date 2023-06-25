@@ -31,7 +31,7 @@ public class AssetDaoImplTest {
     private final static String TITLE = "TITLE";
     private final static String LANGUAGE = "LANGUAGE";
     private final static String ISBN_ALREADY_EXIST = "ISBN";
-    private final static BookImpl book = new BookImpl(-1, ISBN, AUTHOR, TITLE, LANGUAGE);
+    private final static BookImpl book = new BookImpl( ISBN, AUTHOR, TITLE, LANGUAGE);
     private final static BookImpl DUPLICATED_BOOK = new BookImpl(-1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
 
 
@@ -60,7 +60,7 @@ public class AssetDaoImplTest {
         //3
         final BookImpl bookReturned;
 
-        BookAlreadyExistException exception = Assert.assertThrows(BookAlreadyExistException.class, () -> {
+        Assert.assertThrows(BookAlreadyExistException.class, () -> {
             assetDao.addAsset(DUPLICATED_BOOK);
         });
     }

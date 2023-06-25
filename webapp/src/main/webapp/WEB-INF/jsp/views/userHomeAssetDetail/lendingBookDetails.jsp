@@ -99,6 +99,8 @@
                     <h1 class="textOverflow"><spring:message code="statusChange"/>: <c:out value=""/></h1>
                     <c:choose>
                         <c:when test="${table == 'lended_books'}">
+                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="lended_date"/>: <c:out
+                                    value="${lending.lendDate}"/></h6>
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out
                                     value="${lending.devolutionDate}"/></h6>
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out
