@@ -135,6 +135,7 @@
                             <c:when test="${table == 'my_books'}">
                                 <jsp:include page="myBookOptions.jsp">
                                     <jsp:param name="asset" value="${asset}"/>
+                                    <jsp:param name="lendings" value="${lendings}"/>
                                 </jsp:include>
                             </c:when>
                             <c:when test="${table == 'lended_books'}">

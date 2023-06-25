@@ -75,7 +75,7 @@ final public class UserAssetDetailsController {
     public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id) throws AssetInstanceNotFoundException {
         return new ModelAndView(VIEW_NAME)
                 .addObject(ASSET, assetInstanceService.getAssetInstance(id))
-                .addObject(TABLE, MY_BOOKS);
+                .addObject(TABLE, MY_BOOKS).addObject("lendings",assetAvailabilityService.getActiveLendings(assetInstanceService.getAssetInstance(id)));
     }
 
     @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)

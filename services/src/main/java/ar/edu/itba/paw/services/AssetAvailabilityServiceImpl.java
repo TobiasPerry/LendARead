@@ -74,7 +74,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
 
         if (!ai.get().getIsReservable()){
-            ai.get().setAssetState(AssetState.BORROWED);
+            ai.get().setAssetState(AssetState.PRIVATE);
         }else{
             List<LendingImpl> lending = lendingDao.getActiveLendings(ai.get());
             if (verificarSolapamiento(borrowDate, devolutionDate, lending)) {
@@ -136,7 +136,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
-        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
+        if(!lending.getAssetInstance().getIsReservable())
+            assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.FINISHED);
         emailService.sendReviewBorrower(lending.getAssetInstance(), lending.getUserReference(), lending.getAssetInstance().getOwner(), lending.getId(), LocaleContextHolder.getLocale());
         emailService.sendReviewLender(lending.getAssetInstance(), lending.getAssetInstance().getOwner(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());

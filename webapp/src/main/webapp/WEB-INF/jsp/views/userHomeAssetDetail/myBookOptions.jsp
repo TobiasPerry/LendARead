@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
 
 <div class="options-menu">
+    <c:if test="${!(asset.getIsReservable() && lendings.size() > 0 )}">
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">
@@ -14,6 +15,7 @@
             </c:otherwise>
         </c:choose>
     </button>
+    </c:if>
     <a class="btn-green" href="<c:url value="/editAsset/${asset.id}"/>" style="margin-top: 5px;text-decoration: none">
         <i class="fas fa-pencil-alt"></i>
         <spring:message code="edit"/>
