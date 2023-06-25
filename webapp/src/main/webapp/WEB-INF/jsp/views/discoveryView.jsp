@@ -33,8 +33,7 @@
     <!--    Book card JavaScript -->
     <script src="<c:url value="/static/javaScript/bookCard.js"/>"></script>
 
-    <!-- Bootstrap Slider CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css">
+
 
 
 </head>
@@ -148,9 +147,8 @@
 
             <h5><spring:message code="discovery.filters.rating"/></h5>
             <div style="width: 90%; margin: 10px auto;">
-                <b class="mx-3">1</b>
-                <input id="ex12b" type="text" style="width: 60%" class="mx-3" data-slider-tooltip="hide"/>
-                <b class="mx-3">5</b>
+                <label class="form-label d-flex justify-content-center" for="customRange3" id="customRange3Id">${actualMinRating}★ - ${actualMaxRating}★</label>
+                <input type="range" class="form-range custom-range" min="1" max="5" step="1" id="customRange3" value="${actualMinRating}">
             </div>
 
 
@@ -259,46 +257,6 @@
     </div>
 </div>
 
-<!-- Bootstrap 5 JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Bootstrap Slider JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
-
-<script>
-    var sliderB = new Slider("#ex12b", { id: "slider12b", min: 1, max: 5, range: true, value: [${actualMinRating}, ${actualMaxRating}] });
-
-    sliderB.on("change", () => {
-            var values = sliderB.getValue();
-            var range1 = parseFloat(values[0]);
-            var range2 = parseFloat(values[1]);
-            document.getElementById("minRating").value = range1;
-            document.getElementById("maxRating").value = range2;
-        }
-    );
-</script>
-
-<style>
-    #slider12b .slider-track-high {
-        background: #D1E9C3;
-    }
-
-    #slider12b .slider-track-low{
-        background: #D1E9C3;
-    }
-
-    #slider12b .slider-selection {
-        background: #2B3B2B;
-    }
-
-
-
-    #slider12b .slider-handle {
-        background-color: red; /* Customize the background color */
-        border-color: red; /* Customize the border color */
-        width: 20px; /* Customize the width */
-        height: 20px; /* Customize the height */
-    }
-</style>
 
 </body>
 </html>
