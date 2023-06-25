@@ -68,6 +68,13 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
             throw new DayOutOfRangeException();
         }
+        if(!ai.get().getIsReservable() && !borrowDate.isEqual(LocalDate.now())){
+            LOGGER.error("AssetInstance is not reservable with id {}", assetId);
+            throw new AssetInstanceBorrowException("The assetInstance is not reservable");
+        }
+        if (!ai.get().getIsReservable()){
+            ai.get().setAssetState(AssetState.BORROWED);
+        }
         LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), LocaleContextHolder.getLocale());
