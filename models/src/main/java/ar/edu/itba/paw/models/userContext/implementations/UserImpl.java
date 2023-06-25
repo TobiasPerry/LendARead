@@ -3,7 +3,6 @@ package ar.edu.itba.paw.models.userContext.implementations;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 
 import javax.persistence.*;
-import java.awt.*;
 
 @Entity
 @Table(name = "users")
@@ -127,10 +126,6 @@ final public class UserImpl{
         this.id = id;
     }
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
 
     @Override
     public boolean equals(Object obj) {

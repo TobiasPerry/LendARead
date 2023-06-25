@@ -52,6 +52,8 @@ final public class LocationImpl{
     }
     public LocationImpl(){}
 
+
+
     public boolean isActive() {
         return active;
     }
@@ -86,6 +88,13 @@ final public class LocationImpl{
 
     public String getAddress() {
         return null;
+    }
+
+    public UserImpl getUser() {
+        return userReference;
+    }
+    public void setUser(UserImpl user) {
+        this.userReference = user;
     }
 
     @Override

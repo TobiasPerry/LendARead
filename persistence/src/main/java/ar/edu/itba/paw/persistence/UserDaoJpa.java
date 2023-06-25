@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence.jpa;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
@@ -56,9 +56,9 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public boolean setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken) {
+    public PasswordResetTokenImpl setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken) {
         em.persist(passwordResetToken);
-        return true;
+        return passwordResetToken;
     }
 
     @Override

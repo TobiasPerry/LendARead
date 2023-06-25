@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "AssetInstance")
@@ -84,6 +85,27 @@ public class AssetInstanceImpl{
                 ", location=" + location +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AssetInstanceImpl that = (AssetInstanceImpl) o;
+
+        if (maxLendingDays != that.maxLendingDays) return false;
+        if (isReservable != that.isReservable) return false;
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(book, that.book)) return false;
+        if (!Objects.equals(userReference, that.userReference))
+            return false;
+        if (!Objects.equals(location, that.location)) return false;
+        if (!Objects.equals(description, that.description)) return false;
+        if (physicalCondition != that.physicalCondition) return false;
+        if (assetState != that.assetState) return false;
+        return Objects.equals(image, that.image);
+    }
+
 
     public boolean getIsReservable() {
         return isReservable;

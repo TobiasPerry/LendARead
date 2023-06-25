@@ -14,7 +14,7 @@ public interface UserDao {
      boolean changeRole(String email,Behaviour behaviour);
 
      Optional<UserImpl> getUser(int id);
-    boolean setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken);
+    PasswordResetTokenImpl setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken);
     Optional<PasswordResetTokenImpl> getPasswordRestToken(String token);
     int deletePasswordRestToken(String token);
 }

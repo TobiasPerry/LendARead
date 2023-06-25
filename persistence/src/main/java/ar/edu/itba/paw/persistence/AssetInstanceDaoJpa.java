@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence.jpa;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
@@ -226,7 +226,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private String getPostgresFromSort(Sort sort) {
-
+        if (sort == null)
+            return "ai.id";
         switch (sort) {
             case TITLE_NAME:
                 return "b.title";
@@ -239,7 +240,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private String getOrmFromSort(Sort sort) {
-
+        if (sort == null)
+            return "ai.id";
         switch (sort) {
             case TITLE_NAME:
                 return "ai.book.title";
@@ -252,6 +254,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private String getPostgresFromSortDirection(SortDirection sortDirection) {
+        if (sortDirection == null)
+            return "ASC";
         switch (sortDirection) {
             case ASCENDING:
                 return "ASC";
