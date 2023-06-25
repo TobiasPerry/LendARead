@@ -60,3 +60,62 @@
 .img-hover-click:hover {
     border: 2px solid green;
 }
+
+.asset-details-row {
+    display: flex;
+    padding: 3%;
+    justify-content: center;
+}
+
+.island {
+    background: #f0f5f0;
+    border-radius: 20px;
+    padding: 3%;
+    box-shadow: 0 0 15px lightgray;
+}
+
+.asset-instance-info {
+    display: flex;
+    flex-flow: row;
+    margin-right: 2vw;
+    width: 60vw;
+}
+
+.asset-instance-info > img {
+    max-width: 20vw;
+    border-radius: 2px;
+}
+
+.future-lending-island {
+    background: #f0f5f0;
+    border-radius: 20px;
+    justify-content: center;
+}
+
+.asset-instance-text {
+    max-width: 50%;
+}
+
+.asset-instances-menu-column {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.status-menu {
+    height: 100%;
+    margin-bottom: 10%;
+}
+
+.options-island {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+}
+
+.options-menu-container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}

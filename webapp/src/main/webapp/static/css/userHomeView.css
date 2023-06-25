@@ -287,9 +287,16 @@ td.date-column > a > svg {
 }
 
 .options-menu {
+    width: 100%;
     display: flex;
     flex-flow: column;
-    padding-inline: 1vw;
     align-items: center;
     text-align: center;
+    justify-content: center;
+    margin-bottom: 1%;
+}
+
+.options-menu > button, a {
+    width: 90% !important;
+    padding-inline: 0;
 }

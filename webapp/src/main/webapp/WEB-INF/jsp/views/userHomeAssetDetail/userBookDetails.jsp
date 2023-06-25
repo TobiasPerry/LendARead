@@ -60,95 +60,94 @@
             </c:choose>
         </c:if>
     </div>
-    <div class="main-class"
-         style="display: flex; justify-content: center;align-items: center;flex-direction: column;">
-        <div class="container-row-wrapped"
-             style="display: flex; flex-direction: row; align-items: flex-start; justify-content: center;">
-            <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; max-width: 50%; min-width: 650px">
-                <div style="display: flex; flex-flow: row; width: 100%; justify-content: start;">
-                    <img src="<c:url value="/getImage/${asset.image.id}"/>" class="mx-3" alt="Book cover"
-                         style="height: 500px; width: 300px; object-fit: cover; border-radius: 10px">
-                    <div class="mx-2" style="min-width: 400px">
-                        <h1 class="textOverflow" style="max-width: min-content " title="<c:out
-                                value="${asset.book.name} "/>"><c:out
-                                value="${asset.book.name} "/></h1>
-                        <h3 class="textOverflow"
-                            style="max-width: min-content;">
-                            <spring:message
-                                    code="assetView.by"/>
-                            <c:out
-                                    value="${asset.book.author}"/></h3>
-                        <h6>
-                            <i>
-                                <u><spring:message code="enum.${asset.physicalCondition}"/></u>
-                            </i>
-                        </h6>
-                        <h6 style="color: #7d7c7c"><spring:message code="assetView.language"/>: <c:out
-                                value="${asset.book.language}"/></h6>
-                        <h6 style="color: #7d7c7c"><spring:message code="assetView.isbn"/>: <c:out
-                                value="${asset.book.isbn}"/></h6>
-
-                    </div>
-
+    <div class="main-class">
+        <div class="asset-details-row">
+            <div class="island asset-instance-info">
+                <img src="<c:url value="/getImage/${asset.image.id}"/>" class="mx-3" alt="Book cover">
+                <div class="asset-instance-text mx-2">
+                    <h1 class="textOverflow"><c:out
+                            value="${asset.book.name} "/>"><c:out
+                            value="${asset.book.name} "/></h1>
+                    <h3 class="textOverflow">
+                        <spring:message
+                                code="assetView.by"/>
+                        <c:out
+                                value="${asset.book.author}"/></h3>
+                    <h6>
+                        <i>
+                            <u><spring:message code="enum.${asset.physicalCondition}"/></u>
+                        </i>
+                    </h6>
+                    <h6><spring:message code="assetView.language"/>: <c:out
+                            value="${asset.book.language}"/></h6>
+                    <h6><spring:message code="assetView.isbn"/>: <c:out
+                            value="${asset.book.isbn}"/></h6>
                 </div>
-
             </div>
-            <div style="display: flex; flex-direction: column; justify-content: space-between; width: 300px;">
-                <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; width: 300px;">
+
+            <div class="asset-instances-menu-column">
+                <div class="status-menu island">
                     <h1 class="textOverflow"><spring:message code="statusChange"/>: <c:out value=""/></h1>
                     <c:choose>
                         <c:when test="${table == 'lended_books'}">
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out
+                            <h6><spring:message code="return_date"/>: <c:out
                                     value="${asset.dueDate}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out
+                            <h6><spring:message code="borrower_name"/>: <c:out
                                     value="${asset.owner.name}"/></h6>
                             <c:if test="${asset.lendingState.isRejected}">
-                                <h6 style="color: #7d7c7c; font-weight: bolder"><spring:message
+                                <h6><spring:message
                                         code="userHomeView.rejected"/></h6>
                             </c:if>
                             <c:if test="${asset.lendingState.isFinished}">
-                                <h6 style="color: #7d7c7c; font-weight: bolder"><spring:message
+                                <h6><spring:message
                                         code="userHomeView.finished"/></h6>
                             </c:if>
                         </c:when>
                         <c:when test="${table == 'borrowed_books'}">
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out
+                            <h6><spring:message code="return_date"/>: <c:out
                                     value="${asset.dueDate}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out
+                            <h6><spring:message code="owner_name"/>: <c:out
                                     value="${asset.owner.name}"/></h6>
                         </c:when>
                         <c:when test="${table == 'my_books'}">
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message
+                            <h6><spring:message
                                     code="addAssetView.locationInfo"/> <c:out value="${asset.location}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="addAssetView.maxDays"/>:
+                            <h6><spring:message code="addAssetView.maxDays"/>:
                                 <c:out value="${asset.maxDays}"/></h6>
                         </c:when>
                     </c:choose>
                 </div>
                 <c:if test="${!(table == 'borrowed_books' || (table == 'lended_books' &&  asset.lendingState.getIsFinished()))}">
-                    <div style="background-color: #f0f5f0; border-radius: 20px; margin: 20px; padding: 20px; width: 300px;">
+                    <div class="options-island island">
                         <h1 class="textOverflow"><spring:message code="userAssetDetailView.options"/></h1>
-                        <c:choose>
-                            <c:when test="${table == 'my_books'}">
-                                <jsp:include page="myBookOptions.jsp">
-                                    <jsp:param name="asset" value="${asset}"/>
-                                    <jsp:param name="lendings" value="${lendings}"/>
-                                </jsp:include>
-                            </c:when>
-                            <c:when test="${table == 'lended_books'}">
-                                <jsp:include page="lendedBookOptions.jsp">
-                                    <jsp:param name="asset" value="${asset}"/>
-                                </jsp:include>
-                            </c:when>
-                            <c:when test="${table == 'borrowed_books' && !asset.lendingState.isDelivered()}">
-                                <jsp:include page="borrowedBookOptions.jsp">
-                                    <jsp:param name="asset" value="${asset}"/>
-                                </jsp:include>
-                            </c:when>
-                        </c:choose>
+                        <div class="options-menu-container">
+                            <c:choose>
+                                <c:when test="${table == 'my_books'}">
+                                    <jsp:include page="myBookOptions.jsp">
+                                        <jsp:param name="asset" value="${asset}"/>
+                                        <jsp:param name="lendings" value="${lendings}"/>
+                                    </jsp:include>
+                                </c:when>
+                                <c:when test="${table == 'lended_books'}">
+                                    <jsp:include page="lendedBookOptions.jsp">
+                                        <jsp:param name="asset" value="${asset}"/>
+                                    </jsp:include>
+                                </c:when>
+                                <c:when test="${table == 'borrowed_books' && !asset.lendingState.isDelivered()}">
+                                    <jsp:include page="borrowedBookOptions.jsp">
+                                        <jsp:param name="asset" value="${asset}"/>
+                                    </jsp:include>
+                                </c:when>
+                            </c:choose>
+                        </div>
                     </div>
                 </c:if>
             </div>
+        </div>
+    </div>
+    <div class="asset-details-row">
+        <div class="island">
+            <h3>Hola</h3>
         </div>
     </div>
 </div>
