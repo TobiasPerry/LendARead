@@ -15,7 +15,6 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -140,19 +139,23 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), LocaleContextHolder.getLocale());
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     @Async
     @Override
     public void notifyNewLendings() {
-        Optional<List<LendingImpl>> maybeLendingList = lendingDao.getLendingsStartingOn(LocalDate.now());
-        if (maybeLendingList.isPresent()) {
-            for (LendingImpl lending : maybeLendingList.get()) {
+        Optional<List<LendingImpl>> maybeNewLendingList = lendingDao.getActiveLendingsStartingOn(LocalDate.now());
+        if (maybeNewLendingList.isPresent()) {
+            for (LendingImpl lending : maybeNewLendingList.get()) {
                 emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
-                System.out.println("Borrower: " + lending.getUserReference());
-                System.out.println("Lender: " + lending.getAssetInstance().getOwner());
-                System.out.println("Book Title: " + lending.getAssetInstance().getBook().getName());
-                System.out.println("Borrower email: " + lending.getUserReference().getEmail());
+            }
+        }
+
+        Optional<List<LendingImpl>> maybeReturnLendingList = lendingDao.getActiveLendingEndingOn(LocalDate.now());
+        if (maybeReturnLendingList.isPresent()) {
+            for (LendingImpl lending : maybeReturnLendingList.get()) {
+                emailService.sendRemindReturnToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
             }
         }
     }
+
 }

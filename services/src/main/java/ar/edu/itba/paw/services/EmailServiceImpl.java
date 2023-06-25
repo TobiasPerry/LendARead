@@ -197,6 +197,23 @@ class EmailServiceImpl implements EmailService {
         this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "notifyLenderNewLending.html", locale));
     }
 
+    @Async
+    @Override
+    public void sendRemindReturnToLender(LendingImpl lending, UserImpl lender, UserImpl borrower, Locale locale) {
+        if (lending == null) {
+            return;
+        }
+        BookImpl book = lending.getAssetInstance().getBook();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("lender", lender);
+        variables.put("book", book);
+        variables.put("borrower", borrower);
+        variables.put("path", baseUrl);
+        String subject = messageSource.getMessage("email.notify.return.lender.subject", null, locale);
+        LOGGER.debug("Sending Reminder of new Lending to Lender");
+        this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "notifyLenderReturn.html", locale));
+    }
+
     private String mailFormat(final Map<String, Object> variables, final String mailTemplate, final Locale locale) {
         Context thymeleafContext = new Context(locale);
         thymeleafContext.setVariables(variables);

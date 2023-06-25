@@ -46,7 +46,12 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
     }
 
     @Override
-    public Optional<List<LendingImpl>> getLendingsStartingOn(LocalDate date) {
+    public Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<LendingImpl>> getActiveLendingEndingOn(LocalDate date) {
         return Optional.empty();
     }
 

@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,11 @@ public class UserDaoImpl implements UserDao {
         String query = "DELETE FROM resetpasswordinfo where token = ?";
         final int delete = jdbcTemplate.update(query, token);
         return delete;
+    }
+
+    @Override
+    public void deletePasswordRecoveryTokensOnDay(LocalDate data) {
+
     }
 
 }

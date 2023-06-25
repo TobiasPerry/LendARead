@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public class UserDaoJpa implements UserDao {
     @PersistenceContext
@@ -18,7 +20,7 @@ public class UserDaoJpa implements UserDao {
 
     @Override
     public UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password) {
-        final UserImpl user = new UserImpl(email, name, telephone,  password,behavior);
+        final UserImpl user = new UserImpl(email, name, telephone, password, behavior);
         em.persist(user);
         return user;
     }
@@ -26,7 +28,7 @@ public class UserDaoJpa implements UserDao {
     @Override
     public boolean changePassword(PasswordResetTokenImpl passwordResetToken, String newPassword) {
         UserImpl user = getUser(passwordResetToken.getUserId()).orElse(null);
-        if(user == null) return false;
+        if (user == null) return false;
         user.setPassword(newPassword);
         em.persist(user);
         return true;
@@ -43,7 +45,7 @@ public class UserDaoJpa implements UserDao {
     @Override
     public boolean changeRole(String email, Behaviour behaviour) {
         UserImpl user = getUser(email).orElse(null);
-        if(user == null) return false;
+        if (user == null) return false;
         user.setBehaviour(behaviour);
         em.persist(user);
         return true;
@@ -64,7 +66,7 @@ public class UserDaoJpa implements UserDao {
     @Override
     public Optional<PasswordResetTokenImpl> getPasswordRestToken(String token) {
         TypedQuery<PasswordResetTokenImpl> query = em.createQuery("SELECT p FROM PasswordResetTokenImpl p WHERE p.token = :token", PasswordResetTokenImpl.class);
-        query.setParameter("token",token);
+        query.setParameter("token", token);
         List<PasswordResetTokenImpl> passwordResetTokenList = query.getResultList();
         return passwordResetTokenList.stream().findFirst();
     }
@@ -74,5 +76,10 @@ public class UserDaoJpa implements UserDao {
         return em.createQuery("delete from PasswordResetTokenImpl p where p.token=:token")
                 .setParameter("token", token)
                 .executeUpdate();
+    }
+
+    @Override
+    public void deletePasswordRecoveryTokensOnDay(LocalDate date) {
+        em.createQuery("delete from PasswordResetTokenImpl p where  p.expiryDate = :date").setParameter("date", date).executeUpdate();
     }
 }

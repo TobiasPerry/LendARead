@@ -25,4 +25,6 @@ public interface EmailService {
     void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, UserImpl borrower, Long lendingId, Locale locale);
 
     void sendRemindLendingToLender(LendingImpl lending, UserImpl lender, UserImpl borrower, Locale locale);
+
+    void sendRemindReturnToLender(LendingImpl lending, UserImpl lender, UserImpl borrower, Locale locale);
 }
