@@ -166,6 +166,8 @@
                     <input type="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
                 </c:forEach>
 
+                <input type="hidden" name="minRating" id="minRating" value="${actualMinRating}"/>
+                <input type="hidden" name="maxRating" id="maxRating" value="${actualMaxRating}"/>
 
             </form:form>
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
@@ -259,7 +261,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
 
 <script>
-    var sliderB = new Slider("#ex12b", { id: "slider12b", min: 1, max: 5, range: true, value: [2, 4] });
+    var sliderB = new Slider("#ex12b", { id: "slider12b", min: 1, max: 5, range: true, value: [${actualMinRating}, ${actualMaxRating}] });
+
+    sliderB.on("change", () => {
+            var values = sliderB.getValue();
+            var range1 = parseFloat(values[0]);
+            var range2 = parseFloat(values[1]);
+            document.getElementById("minRating").value = range1;
+            document.getElementById("maxRating").value = range2;
+        }
+    );
 </script>
 
 </body>

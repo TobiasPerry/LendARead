@@ -65,8 +65,8 @@ public class IndexViewController {
                         (searchFilterSortForm.getSearch() != null) ? searchFilterSortForm.getSearch() : "",
                         (searchFilterSortForm.getSort() != null) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.RECENT,
                         (searchFilterSortForm.getSortDirection() != null) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING,
-                        4,
-                        5
+                        searchFilterSortForm.getMinRating(),
+                        searchFilterSortForm.getMaxRating()
                 )
         );
 
@@ -93,6 +93,10 @@ public class IndexViewController {
         mav.addObject("sortDirection", (searchFilterSortForm.getSortDirection() != null) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING);
 
         mav.addObject("itemsPerPage", itemsPerPage);
+
+        mav.addObject("itemsPerPage", itemsPerPage);
+        mav.addObject("actualMinRating", searchFilterSortForm.getMinRating());
+        mav.addObject("actualMaxRating", searchFilterSortForm.getMaxRating());
 
         return mav;
     }
