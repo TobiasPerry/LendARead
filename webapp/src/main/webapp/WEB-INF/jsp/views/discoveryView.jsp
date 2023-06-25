@@ -147,7 +147,12 @@
             </ul>
 
             <h5><spring:message code="discovery.filters.rating"/></h5>
-            <input id="ex12b" type="text"/><br/>
+            <div style="width: 90%; margin: 10px auto;">
+                <b class="mx-3">1</b>
+                <input id="ex12b" type="text" style="width: 60%" class="mx-3"/>
+                <b class="mx-3">5</b>
+            </div>
+
 
             <c:url value="/discovery" var="discoveryPageUrl"/>
             <form:form method="get" accept-charset="UTF-8" action="${discoveryPageUrl}"
