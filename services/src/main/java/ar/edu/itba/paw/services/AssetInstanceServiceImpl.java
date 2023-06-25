@@ -121,6 +121,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         assetInstance.setPhysicalCondition(physicalCondition);
     }
 
+    @Transactional
     @Override
     public List<AssetInstanceImpl> getSimilarAssetsInstances(AssetInstanceImpl ai, int pageNum, int iteamPerPage) {
         return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
