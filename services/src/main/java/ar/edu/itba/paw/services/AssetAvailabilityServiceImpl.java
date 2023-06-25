@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
@@ -165,6 +166,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         return lendingDao.getActiveLendings(ai);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public PagingImpl<LendingImpl> getPagingActiveLendings(final AssetInstanceImpl ai, final int page, final int size) {
+        return lendingDao.getPagingActiveLending(ai, page, size);
+    }
     @Transactional
     @Override
     public void cancelAsset(int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {

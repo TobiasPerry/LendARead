@@ -9,8 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-//this model only relates to the asset availability dao, in reality business
-//logic deals with borrowed asset instances.
+
 @Entity
 @Table(name = "lendings")
 public class LendingImpl {

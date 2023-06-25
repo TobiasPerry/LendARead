@@ -6,7 +6,6 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;

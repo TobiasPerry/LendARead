@@ -1,15 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;

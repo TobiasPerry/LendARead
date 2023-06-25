@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.interfaces.AssetInstance;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 
 import java.util.List;

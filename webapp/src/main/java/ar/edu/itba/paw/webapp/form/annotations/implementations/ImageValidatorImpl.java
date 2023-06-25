@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class ImageValidatorImpl implements ConstraintValidator<Image, MultipartFile> {
-    private static final long MAX_SIZE = 1024 * 1024;
+    private static final long MAX_SIZE = 3000 * 3000;
     private static final String ACCEPTED_MIME_TYPES = "image/";
 
 
