@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -140,12 +141,17 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     }
 
     @Scheduled(cron = "*/10 * * * * *")
+    @Async
     @Override
     public void notifyNewLendings() {
         Optional<List<LendingImpl>> maybeLendingList = lendingDao.getLendingsStartingOn(LocalDate.now());
         if (maybeLendingList.isPresent()) {
             for (LendingImpl lending : maybeLendingList.get()) {
-                System.out.println(lending.getId() + " -- Borrower: " + lending.getUserReference().getEmail() + " -- Lender: " + lending.getAssetInstance().getOwner().getEmail());
+                emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
+                System.out.println("Borrower: " + lending.getUserReference());
+                System.out.println("Lender: " + lending.getAssetInstance().getOwner());
+                System.out.println("Book Title: " + lending.getAssetInstance().getBook().getName());
+                System.out.println("Borrower email: " + lending.getUserReference().getEmail());
             }
         }
     }

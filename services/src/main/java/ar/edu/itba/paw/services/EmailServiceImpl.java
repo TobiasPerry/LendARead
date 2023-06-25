@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.slf4j.Logger;
@@ -177,6 +178,23 @@ class EmailServiceImpl implements EmailService {
         String subject = messageSource.getMessage("email.review.lender.subject", null, locale);
         LOGGER.debug("Sending email to lender");
         this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "reviewLenderEmail.html", locale));
+    }
+
+    @Async
+    @Override
+    public void sendRemindLendingToLender(LendingImpl lending, UserImpl lender, UserImpl borrower, Locale locale) {
+        if (lending == null) {
+            return;
+        }
+        BookImpl book = lending.getAssetInstance().getBook();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("lender", lender);
+        variables.put("book", book);
+        variables.put("borrower", borrower);
+        variables.put("path", baseUrl);
+        String subject = messageSource.getMessage("email.notify.newLending.lender.subject", null, locale);
+        LOGGER.debug("Sending Reminder of new Lending to Lender");
+        this.sendEmail(lender.getEmail(), subject, this.mailFormat(variables, "notifyLenderNewLending.html", locale));
     }
 
     private String mailFormat(final Map<String, Object> variables, final String mailTemplate, final Locale locale) {

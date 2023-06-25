@@ -36,7 +36,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         em.persist(lending);
     }
 
-    @Transactional
+    //@Transactional
     @Override
     public Optional<List<LendingImpl>> getLendingsStartingOn(LocalDate date) {
         TypedQuery<LendingImpl> lendingsQuery = em.createQuery("FROM LendingImpl l WHERE l.lendDate = :date AND l.active = 'ACTIVE'", LendingImpl.class);
