@@ -72,13 +72,40 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("AssetInstance is not reservable with id {}", assetId);
             throw new AssetInstanceBorrowException("The assetInstance is not reservable");
         }
+
         if (!ai.get().getIsReservable()){
             ai.get().setAssetState(AssetState.BORROWED);
+        }else{
+            List<LendingImpl> lending = lendingDao.getActiveLendings(ai.get());
+            if (verificarSolapamiento(borrowDate, devolutionDate, lending)) {
+                LOGGER.error("AssetInstance is not available with id {}", assetId);
+                throw new AssetInstanceBorrowException("The assetInstance is not available");
+            }
         }
         LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), LocaleContextHolder.getLocale());
         LOGGER.info("Asset {} has been borrow", assetId);
+    }
+
+    public static boolean verificarSolapamiento(LocalDate fechaInicial, LocalDate fechaFinal, List<LendingImpl> lendings) {
+        for (LendingImpl lending : lendings) {
+            LocalDate borrowDate = lending.getLendDate();
+            LocalDate devolutionDate = lending.getDevolutionDate();
+            if ((borrowDate.isAfter(fechaInicial) || borrowDate.isEqual(fechaInicial))
+                    && (borrowDate.isBefore(fechaFinal) || borrowDate.isEqual(fechaFinal))) {
+                return true;
+            }
+            if ((devolutionDate.isAfter(fechaInicial) || devolutionDate.isEqual(fechaInicial))
+                    && (devolutionDate.isBefore(fechaFinal) || devolutionDate.isEqual(fechaFinal))) {
+                return true;
+            }
+            if ((borrowDate.isBefore(fechaInicial) || borrowDate.isEqual(fechaInicial))
+                    && (devolutionDate.isAfter(fechaFinal) || devolutionDate.isEqual(fechaFinal))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional
