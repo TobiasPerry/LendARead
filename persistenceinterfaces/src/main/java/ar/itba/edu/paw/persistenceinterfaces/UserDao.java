@@ -4,17 +4,25 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface UserDao {
-     UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password);
-    boolean changePassword(PasswordResetTokenImpl passwordResetToken,String newPassword);
-     Optional<UserImpl> getUser(String email);
+    UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password);
 
-     boolean changeRole(String email,Behaviour behaviour);
+    boolean changePassword(PasswordResetTokenImpl passwordResetToken, String newPassword);
 
-     Optional<UserImpl> getUser(int id);
+    Optional<UserImpl> getUser(String email);
+
+    boolean changeRole(String email, Behaviour behaviour);
+
+    Optional<UserImpl> getUser(int id);
+
     PasswordResetTokenImpl setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken);
+
     Optional<PasswordResetTokenImpl> getPasswordRestToken(String token);
+
     int deletePasswordRestToken(String token);
+
+    void deletePasswordRecoveryTokensOnDay(LocalDate data);
 }

@@ -28,7 +28,7 @@ public class AssetDaoJpa implements AssetDao {
     public BookImpl addAsset(BookImpl bi) throws BookAlreadyExistException {
         final BookImpl book = new BookImpl(bi.getId(), bi.getIsbn(), bi.getAuthor(), bi.getName(), bi.getLanguage());
         Optional<BookImpl> existingBook = getBook(book.getIsbn());
-        if(existingBook.isPresent()){
+        if (existingBook.isPresent()) {
             throw new BookAlreadyExistException();
         }
         em.persist(book);

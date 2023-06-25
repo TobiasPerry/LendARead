@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
@@ -37,6 +39,23 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     public void changeLendingStatus(LendingImpl lending, LendingState lendingState) {
         lending.setActive(lendingState);
         em.persist(lending);
+    }
+
+    //@Transactional
+    @Override
+    public Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date) {
+        TypedQuery<LendingImpl> lendingsQuery = em.createQuery("FROM LendingImpl l WHERE l.lendDate = :date AND l.active = 'ACTIVE'", LendingImpl.class);
+        lendingsQuery.setParameter("date", date);
+        List<LendingImpl> lendings = lendingsQuery.getResultList();
+        return Optional.of(lendings);
+    }
+
+    @Override
+    public Optional<List<LendingImpl>> getActiveLendingEndingOn(LocalDate date) {
+        TypedQuery<LendingImpl> lendingsQuery = em.createQuery("FROM LendingImpl l WHERE l.devolutionDate = :date AND l.active = 'ACTIVE'", LendingImpl.class);
+        lendingsQuery.setParameter("date", date);
+        List<LendingImpl> lendings = lendingsQuery.getResultList();
+        return Optional.of(lendings);
     }
 }
 
