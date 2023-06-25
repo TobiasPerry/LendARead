@@ -39,8 +39,9 @@
                     <div class="form mx-3" style="margin-block-end: 0">
                         <c:url var="discovery" value="/discovery"/>
                         <form:form modelAttribute="searchFilterSortForm" cssStyle="margin-block-end: 0" method="get" action="${discovery}" id="form-search">
-                            <i class="fa fa-search fa-search-class"></i>
-                            <input type="text" class="form-control form-input" name="search"
+                            <i class="fa fa-search fa-search-class" ></i>
+                            <input type="text" class="form-input" name="search"
+                                   style="margin-left: 4px"
                                    placeholder="<spring:message code="discovery.search.placeholder"/>" id="nav-bar-search-bar"
                                    >
                         </form:form>
