@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
-<div class="card text-white card-has-bg click-col" style="background-image:url(<c:url value="/getImage/${param.imageId}"/>);
+<div class="card text-white card-has-bg click-col cardBook" style="background-image:url(<c:url value="/getImage/${param.imageId}"/>);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

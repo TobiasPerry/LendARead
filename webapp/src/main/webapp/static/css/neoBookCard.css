@@ -3,7 +3,7 @@
     margin: 10vh;
 }
 
-.card {
+.cardBook {
     border: none;
     transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
     overflow: hidden;
@@ -13,13 +13,13 @@
 }
 
 @media (max-width: 768px) {
-    .card {
+    .cardBook {
         min-height: 350px;
     }
 }
 
 @media (max-width: 420px) {
-    .card {
+    .cardBook {
         min-height: 300px;
     }
 }
@@ -68,7 +68,7 @@
     border-top: none;
 }
 
-.card .media img {
+.cardBook .media img {
     border: solid 3px rgba(255, 255, 255, 0.3);
 }
 
@@ -80,13 +80,13 @@
     transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.card:hover .card-body {
+.cardBook:hover .card-body {
     margin-top: 30px;
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
     cursor: pointer;
 }
 
-.card .card-img-overlay {
+.cardBook .card-img-overlay {
     transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
     background: rgb(35, 79, 109);
     background: linear-gradient(
