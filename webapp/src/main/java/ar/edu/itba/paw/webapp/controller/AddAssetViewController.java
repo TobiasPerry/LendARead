@@ -8,7 +8,6 @@ import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
@@ -104,7 +103,6 @@ final public class AddAssetViewController {
         if(errors.hasErrors())
             return addAssetView( addAssetForm,false, -1, true,locationForm).addObject("errorCode",2);
         locationsService.addLocation(locationForm.getId(), locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode(), userService.getUser(userService.getCurrentUser()));
-        userService.changeRole(userService.getCurrentUser(), Behaviour.LENDER);
         return new ModelAndView("redirect:/addAssetView"  );
     }
 

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
@@ -32,7 +33,9 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public void addLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) {
+    public void addLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) throws UserNotFoundException {
+       if (user.getBehavior().equals(Behaviour.BORROWER))
+           userService.changeRole(user.getEmail(), Behaviour.LENDER);
         if(id == -1) {
             LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, user);
             addLocation(newLocation);
