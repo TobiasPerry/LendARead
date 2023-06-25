@@ -149,7 +149,7 @@
             <h5><spring:message code="discovery.filters.rating"/></h5>
             <div style="width: 90%; margin: 10px auto;">
                 <b class="mx-3">1</b>
-                <input id="ex12b" type="text" style="width: 60%" class="mx-3"/>
+                <input id="ex12b" type="text" style="width: 60%" class="mx-3" data-slider-tooltip="hide"/>
                 <b class="mx-3">5</b>
             </div>
 
@@ -276,6 +276,29 @@
         }
     );
 </script>
+
+<style>
+    #slider12b .slider-track-high {
+        background: #D1E9C3;
+    }
+
+    #slider12b .slider-track-low{
+        background: #D1E9C3;
+    }
+
+    #slider12b .slider-selection {
+        background: #2B3B2B;
+    }
+
+
+
+    #slider12b .slider-handle {
+        background-color: red; /* Customize the background color */
+        border-color: red; /* Customize the border color */
+        width: 20px; /* Customize the width */
+        height: 20px; /* Customize the height */
+    }
+</style>
 
 </body>
 </html>
