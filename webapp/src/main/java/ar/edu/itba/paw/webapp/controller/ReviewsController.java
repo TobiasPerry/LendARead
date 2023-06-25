@@ -117,7 +117,7 @@ public class ReviewsController {
         assetInstanceReviewsService.addReview(new AssetInstanceReview(lending, reviewForm.getAssetInstanceReview(),user, reviewForm.getAssetInstanceRating()));
         userReviewsService.addReview(new UserReview(reviewForm.getUserReview(), reviewForm.getUserRating(), user, lending.getAssetInstance().getOwner(),lending));
 
-        return new ModelAndView("redirect:/info/" + lending.getAssetInstance().getId());
+        return new ModelAndView("redirect:/borrowedBookDetails/" + lendingId);
     }
 
     @RequestMapping(value = "/review/borrower/{lendingId}", method = RequestMethod.GET)
