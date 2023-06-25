@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -73,9 +74,10 @@ final public class UserAssetDetailsController {
 
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
     public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id) throws AssetInstanceNotFoundException {
+        List<LendingImpl> lendings = assetAvailabilityService.getActiveLendings(assetInstanceService.getAssetInstance(id));
         return new ModelAndView(VIEW_NAME)
                 .addObject(ASSET, assetInstanceService.getAssetInstance(id))
-                .addObject(TABLE, MY_BOOKS).addObject("lendings",assetAvailabilityService.getActiveLendings(assetInstanceService.getAssetInstance(id)));
+                .addObject(TABLE, MY_BOOKS).addObject("lendings",lendings);
     }
 
     @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)

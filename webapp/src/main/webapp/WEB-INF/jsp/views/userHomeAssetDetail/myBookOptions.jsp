@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
 
 <div class="options-menu">
-    <c:if test="${!(asset.getIsReservable() && lendings.size() > 0 )}">
+    <c:if test="${!(!asset.getIsReservable() && lendings.size() > 0 )}">
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">
