@@ -58,7 +58,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional(readOnly = true)
     @Override
     public Page getAllAssetsInstances(final int pageNum, final int itemsPerPage) {
-        return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), ""));
+        return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5));
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +69,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         if (searchQuery == null)
-            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "");
+            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5);
 
 
         Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
