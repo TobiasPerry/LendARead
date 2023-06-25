@@ -1,0 +1,100 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title th:text="#{email.notify.return.lender.title}"></title>
+</head>
+<body style="background-color: #D0DCD0; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+<span class="preheader"
+      style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;"
+      th:text="#{email.lender.title}"></span>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body"
+       style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #D0DCD0; width: 100%;"
+       width="100%" bgcolor="#f6f6f6">
+
+    <tr>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;
+        </td>
+        <td class="container"
+            style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; max-width: 580px; padding: 10px; width: 580px; margin: 0 auto;"
+            width="580" valign="top">
+            <div class="content"
+                 style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px;">
+
+                <!-- START CENTERED WHITE CONTAINER -->
+                <table role="presentation" class="main"
+                       style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #D1E9C3; border-radius: 3px; width: 100%;"
+                       width="100%">
+                    <tr>
+                        <td style="padding-bottom: 12px; text-align: center;">
+                            <a href="http://pawserver.it.itba.edu.ar/paw-2023a-03/">
+                                <img src="https://i.ibb.co/Ttd6SJc/logo-oscuro.png" alt="Logo image" width="300">
+                            </a>
+                        </td>
+                    </tr>
+                    <!-- START MAIN CONTENT AREA -->
+                    <tr>
+                        <td class="wrapper"
+                            style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;"
+                            valign="top">
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0"
+                                   style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"
+                                   width="100%">
+                                <tr>
+                                    <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
+                                        valign="top">
+                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"
+                                           th:text="#{email.notify.return.lender.hello} + ' ' +${lender.name}"></p>
+                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"
+                                           th:text="#{email.notify.return.lender.text1} + ' ' + ${book.name} + '.'"></p>
+                                        <p th:text="#{email.notify.return.lender.text3} + ' ' + ${borrower.name} + ' ' + #{email.notify.return.lender.text4}"></p>
+                                        <p th:text="#{email.notify.return.lender.text5} + ' ' + ${borrower.name} + ' ' + #{email.notify.return.lender.text6} + ' ' + ${borrower.name} + #{email.notify.return.lender.text7} + ' ' + ${borrower.email}"></p>
+
+
+                                        <table role="presentation" border="0" cellpadding="0" cellspacing="0"
+                                               class="btn btn-primary"
+                                               style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; box-sizing: border-box; width: 100%;"
+                                               width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td align="left"
+                                                    style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;"
+                                                    valign="top">
+                                                    <table role="presentation" border="0" cellpadding="0"
+                                                           cellspacing="0"
+                                                           style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; border-radius: 5px; text-align: center; background-color: #2B3B2B;"
+                                                                valign="top" align="center" bgcolor="#3498db"><a
+                                                                    th:href="@{${path}}" target="_blank"
+                                                                    style="border: solid 1px #2B3B2B; border-radius: 5px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-decoration: none; text-transform: capitalize; background-color: #2B3B2B; border-color: #2B3B2B; color: #ffffff;"
+                                                                    th:text="#{email.notify.return.lender.button}"></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"
+                                           th:text="#{email.notify.return.lender.finalText}"></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- END MAIN CONTENT AREA -->
+                </table>
+                <!-- END CENTERED WHITE CONTAINER -->
+
+            </div>
+        </td>
+        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">&nbsp;</td>
+    </tr>
+</table>
+</body>
+</html>

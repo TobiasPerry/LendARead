@@ -12,7 +12,10 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +30,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@EnableScheduling
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserDao userDao;
@@ -189,5 +193,12 @@ public class UserServiceImpl implements UserService {
         UserImpl user = maybeUser.get();
         user.setProfilePhoto(image);
         LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    public void deletePastChangePasswordTokens() {
+        userDao.deletePasswordRecoveryTokensOnDay(LocalDate.now());
     }
 }

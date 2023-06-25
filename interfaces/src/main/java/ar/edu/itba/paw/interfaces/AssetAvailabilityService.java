@@ -27,4 +27,6 @@ public interface AssetAvailabilityService {
      PagingImpl<LendingImpl> getPagingActiveLendings(final AssetInstanceImpl ai, final int page, final int size);
 
     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+
+    void notifyNewLendings();
 }

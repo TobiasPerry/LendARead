@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfaces;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -34,4 +35,7 @@ public interface UserService {
     boolean isCurrent(int userId);
 
     void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException;
+
+    @Scheduled
+    void deletePastChangePasswordTokens();
 }

@@ -17,6 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@EnableScheduling
 @Service
 public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
@@ -180,5 +184,23 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), LocaleContextHolder.getLocale());
     }
 
+    @Scheduled(cron = "0 0 0 * * *")
+    @Async
+    @Override
+    public void notifyNewLendings() {
+        Optional<List<LendingImpl>> maybeNewLendingList = lendingDao.getActiveLendingsStartingOn(LocalDate.now());
+        if (maybeNewLendingList.isPresent()) {
+            for (LendingImpl lending : maybeNewLendingList.get()) {
+                emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
+            }
+        }
+
+        Optional<List<LendingImpl>> maybeReturnLendingList = lendingDao.getActiveLendingEndingOn(LocalDate.now());
+        if (maybeReturnLendingList.isPresent()) {
+            for (LendingImpl lending : maybeReturnLendingList.get()) {
+                emailService.sendRemindReturnToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), LocaleContextHolder.getLocale());
+            }
+        }
+    }
 
 }

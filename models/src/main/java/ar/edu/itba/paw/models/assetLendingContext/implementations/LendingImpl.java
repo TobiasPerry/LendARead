@@ -39,12 +39,13 @@ public class LendingImpl {
     @Column(name = "active")
     private LendingState active;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "lending" )
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lending")
     private List<UserReview> userReviews;
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "lending")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "lending")
     private AssetInstanceReview assetInstanceReview;
 
-    public LendingImpl() {}
+    public LendingImpl() {
+    }
 
     public LendingImpl(AssetInstanceImpl assetInstance, UserImpl userReference, LocalDate lendDate, LocalDate devolutionDate, LendingState active) {
         this.assetInstance = assetInstance;
@@ -116,6 +117,20 @@ public class LendingImpl {
 
     public void setAssetInstanceReview(AssetInstanceReview assetInstanceReview) {
         this.assetInstanceReview = assetInstanceReview;
+    }
+
+    @Override
+    public String toString() {
+        return "LendingImpl{" +
+                "id=" + id +
+                ", assetInstance=" + assetInstance +
+                ", userReference=" + userReference +
+                ", lendDate=" + lendDate +
+                ", devolutionDate=" + devolutionDate +
+                ", active=" + active +
+                ", userReviews=" + userReviews +
+                ", assetInstanceReview=" + assetInstanceReview +
+                '}';
     }
 }
 

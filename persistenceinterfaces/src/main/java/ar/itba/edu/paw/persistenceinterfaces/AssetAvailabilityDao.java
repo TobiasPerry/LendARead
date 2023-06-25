@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface AssetAvailabilityDao {
 
@@ -17,4 +18,8 @@ public interface AssetAvailabilityDao {
     void changeLendingStatus(LendingImpl lending,final LendingState lendingState);
 
     public PagingImpl<LendingImpl> getPagingActiveLending(final AssetInstanceImpl ai, final int pageNum, final int itemsPerPage);
+
+    Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date);
+
+    Optional<List<LendingImpl>> getActiveLendingEndingOn(LocalDate date);
 }
