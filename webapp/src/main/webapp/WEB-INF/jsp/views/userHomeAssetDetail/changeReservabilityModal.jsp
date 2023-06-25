@@ -16,10 +16,10 @@
       <div class="modal-body text-center py-0 border-0">
         <p class="mb-4">
           <c:if test="${asset.isReservable}">
-            <spring:message code="userHomeView.changeReservabilityText" />
+            <spring:message code="userHomeView.changeReservabilityTextNo" />
           </c:if>
           <c:if test="${!asset.isReservable}">
-            <spring:message code="userHomeView.changeReservabilityTextNo" />
+            <spring:message code="userHomeView.changeReservabilityText" />
           </c:if>
       </div>
       <div class="modal-footer border-0">
