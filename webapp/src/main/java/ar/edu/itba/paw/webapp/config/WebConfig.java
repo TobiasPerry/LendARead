@@ -21,6 +21,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -40,6 +41,7 @@ import java.util.Properties;
 
 @EnableWebMvc
 @EnableAsync
+@EnableScheduling
 @EnableTransactionManagement
 @PropertySource("classpath:/application.properties")
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.webapp.form", "ar.edu.itba.paw.persistence", "ar.edu.itba.paw.webapp.miscellaneous"})
@@ -84,6 +86,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         return factoryBean;
     }
+
     @Bean
     public CharacterEncodingFilter characterEncodingFilter() {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();

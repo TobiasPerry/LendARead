@@ -5,11 +5,17 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
@@ -28,6 +34,15 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     public void changeLendingStatus(LendingImpl lending, LendingState lendingState) {
         lending.setActive(lendingState);
         em.persist(lending);
+    }
+
+    @Transactional
+    @Override
+    public Optional<List<LendingImpl>> getLendingsStartingOn(LocalDate date) {
+        TypedQuery<LendingImpl> lendingsQuery = em.createQuery("FROM LendingImpl l WHERE l.lendDate = :date AND l.active = 'ACTIVE'", LendingImpl.class);
+        lendingsQuery.setParameter("date", date);
+        List<LendingImpl> lendings = lendingsQuery.getResultList();
+        return Optional.of(lendings);
     }
 }
 

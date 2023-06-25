@@ -6,11 +6,15 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 public interface AssetAvailabilityDao {
 
     LendingImpl borrowAssetInstance(AssetInstanceImpl assetInstance, UserImpl user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState);
 
+    void changeLendingStatus(LendingImpl lending, final LendingState lendingState);
 
-    void changeLendingStatus(LendingImpl lending,final LendingState lendingState);
+    Optional<List<LendingImpl>> getLendingsStartingOn(LocalDate date);
 }

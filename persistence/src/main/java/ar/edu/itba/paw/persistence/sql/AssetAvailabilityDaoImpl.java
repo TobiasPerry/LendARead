@@ -11,8 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 //@Repository
 public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
@@ -44,6 +43,11 @@ public class AssetAvailabilityDaoImpl implements AssetAvailabilityDao {
         /*String query = "UPDATE lendings SET active = ? WHERE id = ? ";
         int updatedRows = jdbcTemplate.update(query, lendingState.toString(), lendingId);
         return updatedRows == 1;*/
+    }
+
+    @Override
+    public Optional<List<LendingImpl>> getLendingsStartingOn(LocalDate date) {
+        return Optional.empty();
     }
 
 }
