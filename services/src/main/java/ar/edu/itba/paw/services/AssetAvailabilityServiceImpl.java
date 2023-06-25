@@ -115,6 +115,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(assetInstance, AssetState.PRIVATE);
         LOGGER.info("Asset {} has been set private", assetId);
     }
+
     @Transactional
     @Override
     public void changeReservability(int assetId) throws AssetInstanceNotFoundException {
@@ -162,5 +163,15 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     public List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai) {
         return lendingDao.getActiveLendings(ai);
     }
+
+    @Transactional
+    @Override
+    public void cancelAsset(int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+        lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
+        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PUBLIC);
+        emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), LocaleContextHolder.getLocale());
+    }
+
 
 }

@@ -42,7 +42,7 @@ final public class UserAssetDetailsController {
 
     private final static String VIEW_NAME_LENDING_VIEW = "views/userHomeAssetDetail/lendingBookDetails";
 
-    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending",ASSET_INSTANCE = "assetInstance",LOCATIONS = "locations";
+    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending", ASSET_INSTANCE = "assetInstance", LOCATIONS = "locations";
 
     private final static String BACKURL = "backUrl";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
@@ -108,11 +108,19 @@ final public class UserAssetDetailsController {
         assetAvailabilityService.rejectAsset(lendingId);
         return new ModelAndView("redirect:/lentBookDetails/" + lendingId);
     }
+
+    @RequestMapping(value = "/cancelAsset/{lendingId}", method = RequestMethod.POST)
+    public ModelAndView cancelAsset(@PathVariable("lendingId") final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        assetAvailabilityService.cancelAsset(lendingId);
+        return new ModelAndView("redirect:/borrowedBookDetails/" + lendingId);
+    }
+
     @RequestMapping(value = "/changeReservability/{id}", method = RequestMethod.POST)
     public ModelAndView changeReservability(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         assetAvailabilityService.changeReservability(id);
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
+
     @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.POST)
     public ModelAndView changeMyBookStatus(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
         AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);
@@ -126,16 +134,17 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.POST)
-    public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors ) throws AssetInstanceNotFoundException, IOException, UserNotFoundException {
+    public ModelAndView changeAsset(@PathVariable("id") final int id, @Valid @ModelAttribute AssetInstanceForm assetInstanceForm, final BindingResult errors) throws AssetInstanceNotFoundException, IOException, UserNotFoundException {
         if (errors.hasErrors()) {
-            return changeAsset(id,assetInstanceForm);
+            return changeAsset(id, assetInstanceForm);
         }
         LocationImpl location = locationsService.getLocation(assetInstanceForm.getId());
-        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(),location, assetInstanceForm.getImage().getBytes(), assetInstanceForm.getDescription());
+        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(), location, assetInstanceForm.getImage().getBytes(), assetInstanceForm.getDescription());
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
+
     @RequestMapping(value = "/editAsset/{id}", method = RequestMethod.GET)
-    public ModelAndView changeAsset(@PathVariable("id") final int id,@ModelAttribute("assetInstanceForm") final AssetInstanceForm assetInstanceForm) throws AssetInstanceNotFoundException, UserNotFoundException {
+    public ModelAndView changeAsset(@PathVariable("id") final int id, @ModelAttribute("assetInstanceForm") final AssetInstanceForm assetInstanceForm) throws AssetInstanceNotFoundException, UserNotFoundException {
         AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(id);
         CustomMultipartFile file = new CustomMultipartFile(assetInstance.getImage().getPhoto());
 

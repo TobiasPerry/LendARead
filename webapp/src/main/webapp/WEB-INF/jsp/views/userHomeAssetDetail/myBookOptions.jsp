@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
 
-<div style=" ">
+<div class="options-menu">
     <button id="privatePublicBtn" class="btn-green" type="submit">
         <c:choose>
             <c:when test="${asset.assetState.isPublic()}">
@@ -20,12 +20,12 @@
     </a>
     <button id="changeIsReservable" class="btn-green" style="margin-top: 5px" type="submit">
         <c:choose>
-        <c:when test="${asset.isReservable}">
-            <i class="fas fa-calendar-alt"></i> <spring:message code="reservable"/>
-        </c:when>
-        <c:otherwise>
-            <i class="fas fa-calendar-times"></i> <spring:message code="reservable"/>
-        </c:otherwise>
+            <c:when test="${asset.isReservable}">
+                <i class="fas fa-calendar-alt"></i> <spring:message code="reservable"/>
+            </c:when>
+            <c:otherwise>
+                <i class="fas fa-calendar-times"></i> <spring:message code="reservable"/>
+            </c:otherwise>
         </c:choose>
     </button>
     <button id="deleteBtn" class="btn-red" style="margin-top: 5px" type="submit">

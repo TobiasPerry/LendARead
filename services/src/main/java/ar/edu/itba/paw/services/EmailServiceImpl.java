@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import org.slf4j.Logger;
@@ -128,7 +127,23 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, UserImpl lender, Long lendingId, Locale locale){
+    public void sendCanceledEmail(AssetInstanceImpl assetInstance, Long lendingId, Locale locale) {
+        if (assetInstance == null) {
+            return;
+        }
+        BookImpl book = assetInstance.getBook();
+        UserImpl owner = assetInstance.getOwner();
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("book", book);
+        variables.put("lender", owner);
+        variables.put("path", baseUrl);
+        String subject = messageSource.getMessage("email.canceled.subject", null, locale);
+        this.sendEmail(owner.getEmail(), subject, this.mailFormat(variables, "canceledEmail.html", locale));
+    }
+
+    @Async
+    @Override
+    public void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, UserImpl lender, Long lendingId, Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
@@ -147,7 +162,7 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, UserImpl borrower, Long lendingId, Locale locale){
+    public void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, UserImpl borrower, Long lendingId, Locale locale) {
         if (assetInstance == null || lender == null) {
             return;
         }
