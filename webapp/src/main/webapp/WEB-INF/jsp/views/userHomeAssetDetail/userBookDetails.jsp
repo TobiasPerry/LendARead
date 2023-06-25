@@ -146,8 +146,11 @@
         </div>
     </div>
     <div class="asset-details-row">
-        <div class="island">
-            <h3>Hola</h3>
+        <div class="island future-lending-island">
+            <h1>Future Lendings</h1>
+            <div class="future-lending-list">
+
+            </div>
         </div>
     </div>
 </div>

@@ -296,7 +296,7 @@ td.date-column > a > svg {
     margin-bottom: 1%;
 }
 
-.options-menu > button, a {
+.options-menu > button, .options-menu > a {
     width: 90% !important;
     padding-inline: 0;
 }

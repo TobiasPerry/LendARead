@@ -63,14 +63,15 @@
 
 .asset-details-row {
     display: flex;
-    padding: 3%;
-    justify-content: center;
+    padding-top: 3%;
+    padding-inline: 10%;
+    justify-content: space-between;
 }
 
 .island {
     background: #f0f5f0;
     border-radius: 20px;
-    padding: 3%;
+    padding: 1vw;
     box-shadow: 0 0 15px lightgray;
 }
 
@@ -78,7 +79,7 @@
     display: flex;
     flex-flow: row;
     margin-right: 2vw;
-    width: 60vw;
+    width: fit-content;
 }
 
 .asset-instance-info > img {
@@ -87,13 +88,11 @@
 }
 
 .future-lending-island {
-    background: #f0f5f0;
-    border-radius: 20px;
-    justify-content: center;
+    width: 100%;
 }
 
 .asset-instance-text {
-    max-width: 50%;
+    max-width: 100%;
 }
 
 .asset-instances-menu-column {
