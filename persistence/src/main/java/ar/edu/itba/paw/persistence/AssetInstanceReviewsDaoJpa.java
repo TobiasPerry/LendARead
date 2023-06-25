@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence.jpa;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
@@ -35,7 +35,6 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     }
 
 
-
     @Override
     @SuppressWarnings("unchecked")
     public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstanceImpl assetInstance) {
@@ -46,19 +45,19 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
 
         final int offset = (pageNum - 1) * itemsPerPage;
 
-        queryCount.setParameter("assetInstance",assetInstance.getId());
-        queryNative.setParameter("limit",itemsPerPage);
-        queryNative.setParameter("offset",offset);
-        queryNative.setParameter("assetInstance",assetInstance.getId());
+        queryCount.setParameter("assetInstance", assetInstance.getId());
+        queryNative.setParameter("limit", itemsPerPage);
+        queryNative.setParameter("offset", offset);
+        queryNative.setParameter("assetInstance", assetInstance.getId());
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
-        if(list.isEmpty())
+        if (list.isEmpty())
             return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
-        final TypedQuery<AssetInstanceReview> query = em.createQuery("FROM AssetInstanceReview AS ai WHERE id IN (:ids) ORDER BY ai.id DESC" , AssetInstanceReview.class);
+        final TypedQuery<AssetInstanceReview> query = em.createQuery("FROM AssetInstanceReview AS ai WHERE id IN (:ids) ORDER BY ai.id DESC", AssetInstanceReview.class);
         query.setParameter("ids", list);
         List<AssetInstanceReview> reviewList = query.getResultList();
 

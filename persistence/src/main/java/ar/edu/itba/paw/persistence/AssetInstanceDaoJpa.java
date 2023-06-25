@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence.jpa;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
@@ -40,26 +40,30 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
-    public void changePhysicalCondition(final AssetInstanceImpl ai, final PhysicalCondition physicalCondition){
+    public void changePhysicalCondition(final AssetInstanceImpl ai, final PhysicalCondition physicalCondition) {
         ai.setPhysicalCondition(physicalCondition);
         em.persist(ai);
     }
+
     @Override
-    public void changeLocation(final AssetInstanceImpl ai,final LocationImpl location){
+    public void changeLocation(final AssetInstanceImpl ai, final LocationImpl location) {
         ai.setLocation(location);
         em.persist(ai);
     }
+
     @Override
-    public void changeImage(final AssetInstanceImpl ai,final ImageImpl image){
+    public void changeImage(final AssetInstanceImpl ai, final ImageImpl image) {
         ai.setImage(image);
         em.persist(ai);
     }
+
     @Override
-    public void changeMaxLendingDays(final AssetInstanceImpl ai, final int maxLendingDays){
+    public void changeMaxLendingDays(final AssetInstanceImpl ai, final int maxLendingDays) {
 
         ai.setMaxLendingDays(maxLendingDays);
         em.persist(ai);
     }
+
     @Override
     public Optional<AssetInstanceImpl> getAssetInstance(int assetId) {
         String queryString = "FROM AssetInstanceImpl as ai WHERE ai.id = :id";
@@ -115,19 +119,19 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         String pagination = " LIMIT :limit OFFSET :offset ";
 
         // If there's a search parameter
-        if(!searchQuery.getSearch().equals("")) {
+        if (!searchQuery.getSearch().equals("")) {
             queryFilters.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
             queryFiltersORM.append(" AND ( UPPER(ai.book.title) LIKE CONCAT('%', :search, '%') OR UPPER(ai.book.author) LIKE CONCAT('%', :search, '%') ) ");
         }
 
         // If the search is filtered bt languages
-        if(!searchQuery.getLanguages().isEmpty()){
+        if (!searchQuery.getLanguages().isEmpty()) {
             queryFilters.append(" AND b.lang IN (:languages) ");
             queryFiltersORM.append(" AND ai.book.language IN (:languages) ");
         }
 
         // If the search is filtered by physicalConditions
-        if(!searchQuery.getPhysicalConditions().isEmpty()){
+        if (!searchQuery.getPhysicalConditions().isEmpty()) {
             queryFilters.append(" AND ai.physicalCondition IN (:physicalConditions) ");
             queryFiltersORM.append(" AND ai.physicalCondition IN (:physicalConditions) ");
         }
@@ -147,19 +151,19 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         final Query queryCount = em.createNativeQuery(queryCountString.toString());
 
         final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
-        if(!searchQuery.getSearch().equals("")) {
+        if (!searchQuery.getSearch().equals("")) {
             queryNative.setParameter("search", search);
             queryCount.setParameter("search", search);
         }
 
         // If the search is filtered bt languages
-        if(!searchQuery.getLanguages().isEmpty()){
+        if (!searchQuery.getLanguages().isEmpty()) {
             queryNative.setParameter("languages", searchQuery.getLanguages());
             queryCount.setParameter("languages", searchQuery.getLanguages());
         }
 
         // If the search is filtered by physicalConditions
-        if(!searchQuery.getPhysicalConditions().isEmpty()){
+        if (!searchQuery.getPhysicalConditions().isEmpty()) {
             queryNative.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
             queryCount.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
         }
@@ -178,7 +182,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
 
         // In case of empty result -> Return a Page with empty lists
-        if(list.isEmpty())
+        if (list.isEmpty())
             return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Get the AssetInstances that match those IDs for given page
@@ -189,7 +193,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(searchQuery, queryFiltersORM.toString()), getPhysicalConditions(searchQuery, queryFiltersORM.toString())));
     }
 
-    private List<String> getLanguages(SearchQuery searchQuery, String queryFilters){
+    private List<String> getLanguages(SearchQuery searchQuery, String queryFilters) {
         String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
@@ -197,7 +201,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return getResults(query, searchQuery, queryString);
     }
 
-    private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters){
+    private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters) {
         String queryString = "SELECT DISTINCT ai.physicalCondition FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
 
         TypedQuery<PhysicalCondition> query = em.createQuery(queryString, PhysicalCondition.class);
@@ -205,23 +209,23 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return getResults(query, searchQuery, queryString).stream().map(Enum::name).collect(Collectors.toList());
     }
 
-    private <T> List<T> getResults(TypedQuery<T> query, SearchQuery searchQuery, String queryString){
+    private <T> List<T> getResults(TypedQuery<T> query, SearchQuery searchQuery, String queryString) {
         query.setParameter("state", AssetState.PUBLIC);
 
         final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
-        if(!searchQuery.getSearch().equals(""))
+        if (!searchQuery.getSearch().equals(""))
             query.setParameter("search", search);
 
-        if(!searchQuery.getLanguages().isEmpty())
+        if (!searchQuery.getLanguages().isEmpty())
             query.setParameter("languages", searchQuery.getLanguages());
 
-        if(!searchQuery.getPhysicalConditions().isEmpty())
+        if (!searchQuery.getPhysicalConditions().isEmpty())
             query.setParameter("physicalConditions", getPhysicalConditionsList(searchQuery.getPhysicalConditions()));
 
         return query.getResultList();
     }
 
-    private List<PhysicalCondition> getPhysicalConditionsList(List<String> list){
+    private List<PhysicalCondition> getPhysicalConditionsList(List<String> list) {
         return list.stream().map(PhysicalCondition::fromString).collect(Collectors.toList());
     }
 

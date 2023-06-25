@@ -23,6 +23,5 @@ public interface AssetAvailabilityService {
 
     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 
-    @Scheduled(cron = "*/15 * * * * *")
     void notifyNewLendings();
 }

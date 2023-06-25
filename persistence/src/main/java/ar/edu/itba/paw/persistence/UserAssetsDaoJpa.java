@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.persistence.jpa;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
@@ -22,7 +22,6 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
     private EntityManager em;
 
 
-
     private String matchSortAttribuite(String sortAttribute) {
         switch (sortAttribute) {
             case "book_name":
@@ -41,6 +40,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
                 return "none";
         }
     }
+
     private String matchSortAttribuiteJpa(String sortAttribute) {
         switch (sortAttribute) {
             case "book_name":
@@ -59,6 +59,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
                 return "none";
         }
     }
+
     private String matchSortAttribuiteUserAssetJpa(String sortAttribute) {
         switch (sortAttribute) {
             case "book_name":
@@ -92,7 +93,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         queryCountNative.setParameter("email", email);
         queryNative.setParameter("email", email);
 
-        if(filterAtribuite.equalsIgnoreCase("status") || filterAtribuite.equalsIgnoreCase("lendingStatus")) {
+        if (filterAtribuite.equalsIgnoreCase("status") || filterAtribuite.equalsIgnoreCase("lendingStatus")) {
             queryNative.setParameter("filterValue", filterValue.toUpperCase());
             queryCountNative.setParameter("filterValue", filterValue.toUpperCase());
         }
@@ -109,13 +110,13 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids ";
 
         if (!matchSortAttribuiteJpa(sortAtribuite).equalsIgnoreCase("none")) {
-            query   +=" ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
+            query += " ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
             if (!direction.equalsIgnoreCase("none")) {
-                query+= " "+ direction;
+                query += " " + direction;
             }
         }
 
-        List<LendingImpl> list2 =  em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
+        List<LendingImpl> list2 = em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
 
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
@@ -142,7 +143,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         queryCountNative.setParameter("email", email);
         queryNative.setParameter("email", email);
 
-        if(filterAtribuite.equalsIgnoreCase("status") || filterAtribuite.equalsIgnoreCase("lendingStatus")) {
+        if (filterAtribuite.equalsIgnoreCase("status") || filterAtribuite.equalsIgnoreCase("lendingStatus")) {
             queryNative.setParameter("filterValue", filterValue.toUpperCase());
             queryCountNative.setParameter("filterValue", filterValue.toUpperCase());
         }
@@ -159,13 +160,12 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
 
         if (!matchSortAttribuiteJpa(sortAtribuite).equalsIgnoreCase("none")) {
-            query   +=" ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
+            query += " ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
             if (!direction.equalsIgnoreCase("none")) {
-                query+= " "+ direction;
+                query += " " + direction;
             }
         }
-        List<LendingImpl> list2 =  em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
-
+        List<LendingImpl> list2 = em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
 
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
@@ -175,7 +175,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
 
     private void setQueryAttributes(String filterAtribuite, String sortAtribuite, String direction, StringBuilder queryIds, StringBuilder queryCount) {
         if (filterAtribuite.equalsIgnoreCase("status")) {
-            queryIds.append( "AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND ai.status = :filterValue");
+            queryIds.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND ai.status = :filterValue");
             queryCount.append("AND (l.active = 'DELIVERED' OR l.active = 'ACTIVE') AND ai.status = :filterValue");
         }
         if (filterAtribuite.equalsIgnoreCase("lendingStatus")) {
@@ -238,13 +238,13 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         String query = "SELECT a FROM AssetInstanceImpl a WHERE a.id in :ids ";
 
         if (!matchSortAttribuiteUserAssetJpa(sortAtribuite).equalsIgnoreCase("none")) {
-            query   +=" ORDER BY " + matchSortAttribuiteUserAssetJpa(sortAtribuite);
+            query += " ORDER BY " + matchSortAttribuiteUserAssetJpa(sortAtribuite);
             if (!direction.equalsIgnoreCase("none")) {
-                query+= " "+ direction;
+                query += " " + direction;
             }
         }
 
-        List<AssetInstanceImpl> assetInstanceList=  em.createQuery(query, AssetInstanceImpl.class).setParameter("ids", list).getResultList();
+        List<AssetInstanceImpl> assetInstanceList = em.createQuery(query, AssetInstanceImpl.class).setParameter("ids", list).getResultList();
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
 
         return new PagingImpl<>(assetInstanceList, pageNumber, totalPages);
@@ -253,7 +253,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
     @Override
     public Optional<LendingImpl> getBorrowedAsset(int lendingId) {
         String query = "SELECT l FROM LendingImpl l WHERE l.id = :lendingId";
-        List<LendingImpl> list =  em.createQuery(query, LendingImpl.class).setParameter("lendingId", new Long(lendingId)).getResultList();
+        List<LendingImpl> list = em.createQuery(query, LendingImpl.class).setParameter("lendingId", new Long(lendingId)).getResultList();
         return list.stream().findFirst();
     }
 }
