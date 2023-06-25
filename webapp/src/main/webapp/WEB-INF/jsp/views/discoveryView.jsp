@@ -13,7 +13,6 @@
     <script src="<c:url value="/static/javaScript/discovery.js"/>"></script>
 
     <link href="<c:url value="/static/css/neoBookCard.css"/>" rel="stylesheet"/>
-<%--    <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>--%>
 
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/discovery.css"/>" rel="stylesheet"/>

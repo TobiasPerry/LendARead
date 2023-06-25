@@ -92,12 +92,14 @@
     </div>
 </nav>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("nav-bar-search-bar").addEventListener("keyup", (event) => {
-            if (event.key === "Enter" || event.code === "Enter") {
-                document.getElementById("form-search").submit();
-            }
+<c:if test="${param.showSearchbar}">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("nav-bar-search-bar").addEventListener("keyup", (event) => {
+                if (event.key === "Enter" || event.code === "Enter") {
+                    document.getElementById("form-search").submit();
+                }
+            })
         })
-    })
-</script>
+    </script>
+</c:if>
