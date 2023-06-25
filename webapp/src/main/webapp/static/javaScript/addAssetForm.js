@@ -146,6 +146,11 @@ function beforeSubmit() {
     const borrowTimeQuantity = document.getElementById('borrow-time-quantity')
     const borrowTimeType = document.getElementById('borrow-time-type')
     const timeInDays = document.getElementById('maxDays')
+    const reservationSwitch = document.getElementById('reservationSwitch')
+    console.log(reservationSwitch.value)
+    if (reservationSwitch.value === null){
+        reservationSwitch.value = "1"
+    }
     if (borrowTimeQuantity.value === "") {
         borrowTimeQuantity.value = "0"
     }

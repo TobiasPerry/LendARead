@@ -28,6 +28,14 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
+    public List<LendingImpl> getActiveLendings(AssetInstanceImpl ai) {
+        return em.createQuery("from LendingImpl as l where l.assetInstance = :ai and l.active != :active", LendingImpl.class)
+                .setParameter("ai", ai)
+                .setParameter("active", LendingState.FINISHED)
+                .getResultList();
+    }
+
+    @Override
     public void changeLendingStatus(LendingImpl lending, LendingState lendingState) {
         lending.setActive(lendingState);
         em.persist(lending);

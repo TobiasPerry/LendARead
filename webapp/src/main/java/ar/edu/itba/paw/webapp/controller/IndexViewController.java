@@ -35,7 +35,7 @@ public class IndexViewController {
     @RequestMapping("/")
     public ModelAndView indexView() {
         Page page = assetInstanceService.getAllAssetsInstances(
-                1, 4, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", Sort.RECENT, SortDirection.DESCENDING)
+                1, 4, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", Sort.RECENT, SortDirection.DESCENDING, 1,5)
         );
 
         ModelAndView mav = new ModelAndView("/views/index");
@@ -64,7 +64,9 @@ public class IndexViewController {
                         (searchFilterSortForm.getPhysicalConditions() != null) ? searchFilterSortForm.getPhysicalConditions() : new ArrayList<>(),
                         (searchFilterSortForm.getSearch() != null) ? searchFilterSortForm.getSearch() : "",
                         (searchFilterSortForm.getSort() != null) ? Sort.fromString(searchFilterSortForm.getSort()) : Sort.RECENT,
-                        (searchFilterSortForm.getSortDirection() != null) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING
+                        (searchFilterSortForm.getSortDirection() != null) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING,
+                        searchFilterSortForm.getMinRating(),
+                        searchFilterSortForm.getMaxRating()
                 )
         );
 
@@ -91,6 +93,10 @@ public class IndexViewController {
         mav.addObject("sortDirection", (searchFilterSortForm.getSortDirection() != null) ? SortDirection.fromString(searchFilterSortForm.getSortDirection()) : SortDirection.DESCENDING);
 
         mav.addObject("itemsPerPage", itemsPerPage);
+
+        mav.addObject("itemsPerPage", itemsPerPage);
+        mav.addObject("actualMinRating", searchFilterSortForm.getMinRating());
+        mav.addObject("actualMaxRating", searchFilterSortForm.getMaxRating());
 
         return mav;
     }

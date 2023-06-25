@@ -18,7 +18,7 @@ public interface UserDao {
 
     Optional<UserImpl> getUser(int id);
 
-    boolean setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken);
+    PasswordResetTokenImpl setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken);
 
     Optional<PasswordResetTokenImpl> getPasswordRestToken(String token);
 

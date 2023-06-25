@@ -13,7 +13,8 @@ public interface AssetAvailabilityDao {
 
     LendingImpl borrowAssetInstance(AssetInstanceImpl assetInstance, UserImpl user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState);
 
-    void changeLendingStatus(LendingImpl lending, final LendingState lendingState);
+    List<LendingImpl> getActiveLendings(AssetInstanceImpl ai);
+    void changeLendingStatus(LendingImpl lending,final LendingState lendingState);
 
     Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date);
 

@@ -16,4 +16,9 @@ public interface SearchQuery {
     Sort getSort();
 
     SortDirection getSortDirection();
+
+    int getMinRating();
+
+    int getMaxRating();
+
 }

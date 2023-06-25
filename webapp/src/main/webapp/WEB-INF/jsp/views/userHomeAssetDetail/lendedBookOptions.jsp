@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="<c:url value="/static/css/modal.css"/>">
 <c:if test="${!lending.active.getIsRejected() && !lending.active.getIsFinished()}">
     <div class="options-menu">
-        <c:if test="${lending.assetInstance.assetState.isPending()}">
+        <c:if test="${lending.active.getIsActive()}">
             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="userHomeView.minText"/>
                 <spring:message code="userHomeView.pending"/>
             </h6>
@@ -16,7 +16,7 @@
             </button>
 
         </c:if>
-        <c:if test="${lending.assetInstance.assetState.isBorrowed()}">
+        <c:if test="${lending.active.getIsDelivered()}">
             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="userHomeView.minText"/>
                 <spring:message code="userHomeView.inProgress"/>
             </h6>

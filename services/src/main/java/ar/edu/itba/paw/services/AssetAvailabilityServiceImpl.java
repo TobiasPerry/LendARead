@@ -52,7 +52,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void borrowAsset(final int assetId, final String borrower, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
+    public void borrowAsset(final int assetId, final String borrower, final  LocalDate borrowDate,final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstanceImpl> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<UserImpl> user = userDao.getUser(borrower);
 
@@ -68,15 +68,48 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             LOGGER.error("AssetInstance is not public with id {}", assetId);
             throw new AssetInstanceBorrowException("The assetInstance is not public");
         }
-        if (LocalDate.now().plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
+        if (borrowDate.plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
             throw new DayOutOfRangeException();
         }
-        assetInstanceDao.changeStatus(ai.get(), AssetState.PENDING);
-        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), LocalDate.now(), devolutionDate, LendingState.ACTIVE);
+        if(!ai.get().getIsReservable() && !borrowDate.isEqual(LocalDate.now())){
+            LOGGER.error("AssetInstance is not reservable with id {}", assetId);
+            throw new AssetInstanceBorrowException("The assetInstance is not reservable");
+        }
+
+        if (!ai.get().getIsReservable()){
+            ai.get().setAssetState(AssetState.PRIVATE);
+        }else{
+            List<LendingImpl> lending = lendingDao.getActiveLendings(ai.get());
+            if (verificarSolapamiento(borrowDate, devolutionDate, lending)) {
+                LOGGER.error("AssetInstance is not available with id {}", assetId);
+                throw new AssetInstanceBorrowException("The assetInstance is not available");
+            }
+        }
+        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), LocaleContextHolder.getLocale());
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), LocaleContextHolder.getLocale());
         LOGGER.info("Asset {} has been borrow", assetId);
+    }
+
+    public static boolean verificarSolapamiento(LocalDate fechaInicial, LocalDate fechaFinal, List<LendingImpl> lendings) {
+        for (LendingImpl lending : lendings) {
+            LocalDate borrowDate = lending.getLendDate();
+            LocalDate devolutionDate = lending.getDevolutionDate();
+            if ((borrowDate.isAfter(fechaInicial) || borrowDate.isEqual(fechaInicial))
+                    && (borrowDate.isBefore(fechaFinal) || borrowDate.isEqual(fechaFinal))) {
+                return true;
+            }
+            if ((devolutionDate.isAfter(fechaInicial) || devolutionDate.isEqual(fechaInicial))
+                    && (devolutionDate.isBefore(fechaFinal) || devolutionDate.isEqual(fechaFinal))) {
+                return true;
+            }
+            if ((borrowDate.isBefore(fechaInicial) || borrowDate.isEqual(fechaInicial))
+                    && (devolutionDate.isAfter(fechaFinal) || devolutionDate.isEqual(fechaFinal))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional
@@ -107,7 +140,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Override
     public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
-        assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
+        if(!lending.getAssetInstance().getIsReservable())
+            assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.FINISHED);
         emailService.sendReviewBorrower(lending.getAssetInstance(), lending.getUserReference(), lending.getAssetInstance().getOwner(), lending.getId(), LocaleContextHolder.getLocale());
         emailService.sendReviewLender(lending.getAssetInstance(), lending.getAssetInstance().getOwner(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());
@@ -128,6 +162,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
         emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), LocaleContextHolder.getLocale());
+    }
+    @Transactional(readOnly = true)
+    @Override
+    public List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai) {
+        return lendingDao.getActiveLendings(ai);
     }
 
     @Transactional

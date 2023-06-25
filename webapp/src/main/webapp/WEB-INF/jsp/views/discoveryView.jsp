@@ -13,7 +13,6 @@
     <script src="<c:url value="/static/javaScript/discovery.js"/>"></script>
 
     <link href="<c:url value="/static/css/neoBookCard.css"/>" rel="stylesheet"/>
-<%--    <link href="<c:url value="/static/css/bookCard.css"/>" rel="stylesheet"/>--%>
 
     <link href="<c:url value="/static/css/searchBar.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/discovery.css"/>" rel="stylesheet"/>
@@ -33,6 +32,10 @@
 
     <!--    Book card JavaScript -->
     <script src="<c:url value="/static/javaScript/bookCard.js"/>"></script>
+
+
+
+
 </head>
 <body data-path="${path}" class="body-class">
 <!-- Esto va a cambiar es un mockUp -->
@@ -66,8 +69,8 @@
                         code="enum.${sort.name()}.${sortDirection.name()}"/>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" id="mostRecent"><spring:message code="discovery.sort.mostRecent"/></a>
-                    </li>
+                    <li><a class="dropdown-item" id="mostRecent"><spring:message
+                            code="discovery.sort.mostRecent"/></a></li>
                     <li><a class="dropdown-item" id="leastRecent"><spring:message
                             code="discovery.sort.leastRecent"/></a></li>
                     <li><a class="dropdown-item" id="titleAscending"><spring:message
@@ -142,6 +145,13 @@
                 </c:choose>
             </ul>
 
+            <h5><spring:message code="discovery.filters.rating"/></h5>
+            <div style="width: 90%; margin: 10px auto;">
+                <label class="form-label d-flex justify-content-center" for="customRange3" id="customRange3Id">${actualMinRating}★ - ${actualMaxRating}★</label>
+                <input type="range" class="form-range custom-range" min="1" max="5" step="1" id="customRange3" value="${actualMinRating}">
+            </div>
+
+
             <c:url value="/discovery" var="discoveryPageUrl"/>
             <form:form method="get" accept-charset="UTF-8" action="${discoveryPageUrl}"
                        modelAttribute="searchFilterSortForm" id="springForm">
@@ -158,6 +168,8 @@
                     <input type="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
                 </c:forEach>
 
+                <input type="hidden" name="minRating" id="minRating" value="${actualMinRating}"/>
+                <input type="hidden" name="maxRating" id="maxRating" value="${actualMaxRating}"/>
 
             </form:form>
             <div class="container-row-wrapped" style="margin-top: 10px; margin-bottom: 25px; width: 100%;">
@@ -244,5 +256,7 @@
         </div>
     </div>
 </div>
+
+
 </body>
 </html>

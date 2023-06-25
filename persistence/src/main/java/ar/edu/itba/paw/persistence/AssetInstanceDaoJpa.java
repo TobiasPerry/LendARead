@@ -95,13 +95,13 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
         // Base query for getting the assets IDs for a given page
-        StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
-        // Base query for getting the total amount of assetsInstances
-        StringBuilder queryCountString = new StringBuilder("SELECT COUNT(ai.id) FROM AssetInstance ai JOIN Book b on ai.assetid = b.uid WHERE ai.status = :state");
+        StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai " +
+                "LEFT OUTER JOIN (SELECT lendings.assetinstanceid AS assetinstanceid, AVG(rating) AS avg_rating FROM assetInstancereview JOIN lendings ON assetInstancereview.lendid = lendings.id GROUP BY lendings.assetinstanceid) AS avg_reviews ON ai.id = avg_reviews.assetInstanceid " +
+                "JOIN Book b on ai.assetid = b.uid " +
+                "WHERE ai.status = :state ");
 
         // Query filters based on the search filters
         StringBuilder queryFilters = new StringBuilder();
-        StringBuilder queryFiltersORM = new StringBuilder();
 
         // Order by (Postgres and ORM)
         String orderByPostgres = " ORDER BY " +
@@ -121,34 +121,35 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         // If there's a search parameter
         if (!searchQuery.getSearch().equals("")) {
             queryFilters.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
-            queryFiltersORM.append(" AND ( UPPER(ai.book.title) LIKE CONCAT('%', :search, '%') OR UPPER(ai.book.author) LIKE CONCAT('%', :search, '%') ) ");
         }
 
         // If the search is filtered bt languages
         if (!searchQuery.getLanguages().isEmpty()) {
             queryFilters.append(" AND b.lang IN (:languages) ");
-            queryFiltersORM.append(" AND ai.book.language IN (:languages) ");
         }
 
         // If the search is filtered by physicalConditions
         if (!searchQuery.getPhysicalConditions().isEmpty()) {
             queryFilters.append(" AND ai.physicalCondition IN (:physicalConditions) ");
-            queryFiltersORM.append(" AND ai.physicalCondition IN (:physicalConditions) ");
         }
 
+        // If there's a rating filter parameter
+        queryFilters.append(" AND COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
+
         // Append the filters
-        queryCountString.append(queryFilters);
         queryNativeString.append(queryFilters);
 
         // Order by and pagination for the native queries
         queryNativeString.append(orderByPostgres);
+
+        // Count pages
+        final Query queryCount = em.createNativeQuery(queryNativeString.toString());
+
+        // Add pagination
         queryNativeString.append(pagination);
 
         // Get IDs for given page
         final Query queryNative = em.createNativeQuery(queryNativeString.toString());
-
-        // Count pages
-        final Query queryCount = em.createNativeQuery(queryCountString.toString());
 
         final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
         if (!searchQuery.getSearch().equals("")) {
@@ -168,14 +169,23 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             queryCount.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
         }
 
+        queryNative.setParameter("min_rating", searchQuery.getMinRating());
+        queryNative.setParameter("max_rating", searchQuery.getMaxRating());
+
+        queryCount.setParameter("min_rating", searchQuery.getMinRating());
+        queryCount.setParameter("max_rating", searchQuery.getMaxRating());
+
         queryNative.setParameter("state", "PUBLIC");
         queryCount.setParameter("state", "PUBLIC");
 
         queryNative.setParameter("limit", limit);
         queryNative.setParameter("offset", offset);
 
-        // Get the total assetInstances and calculate the number of pages
-        final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
+        // Get the list of IDs (not paginated) of assetInstances and calculate the number of pages
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) queryCount.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        final int totalPages = (int) Math.ceil((double) ((Number) ids.size()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
@@ -190,39 +200,29 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         query.setParameter("ids", list);
         List<AssetInstanceImpl> assetInstances = query.getResultList();
 
-        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(searchQuery, queryFiltersORM.toString()), getPhysicalConditions(searchQuery, queryFiltersORM.toString())));
+        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(ids), getPhysicalConditions(ids)));
     }
 
-    private List<String> getLanguages(SearchQuery searchQuery, String queryFilters) {
-        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
+    private List<String> getLanguages(List<Long> ids){
+        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
-
-        return getResults(query, searchQuery, queryString);
-    }
-
-    private List<String> getPhysicalConditions(SearchQuery searchQuery, String queryFilters) {
-        String queryString = "SELECT DISTINCT ai.physicalCondition FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state " + queryFilters;
-
-        TypedQuery<PhysicalCondition> query = em.createQuery(queryString, PhysicalCondition.class);
-
-        return getResults(query, searchQuery, queryString).stream().map(Enum::name).collect(Collectors.toList());
-    }
-
-    private <T> List<T> getResults(TypedQuery<T> query, SearchQuery searchQuery, String queryString) {
+        query.setParameter("ids", ids);
         query.setParameter("state", AssetState.PUBLIC);
 
-        final String search = searchQuery.getSearch().toUpperCase().replace("%", "\\%");
-        if (!searchQuery.getSearch().equals(""))
-            query.setParameter("search", search);
-
-        if (!searchQuery.getLanguages().isEmpty())
-            query.setParameter("languages", searchQuery.getLanguages());
-
-        if (!searchQuery.getPhysicalConditions().isEmpty())
-            query.setParameter("physicalConditions", getPhysicalConditionsList(searchQuery.getPhysicalConditions()));
-
         return query.getResultList();
+
+    }
+
+    private List<String> getPhysicalConditions(List<Long> ids){
+        String queryString = "SELECT DISTINCT ai.physicalCondition FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
+
+        TypedQuery<PhysicalCondition> query = em.createQuery(queryString, PhysicalCondition.class);
+        query.setParameter("ids", ids);
+        query.setParameter("state", AssetState.PUBLIC);
+
+        return query.getResultList().stream().map(Enum::name).collect(Collectors.toList());
+
     }
 
     private List<PhysicalCondition> getPhysicalConditionsList(List<String> list) {
@@ -230,7 +230,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private String getPostgresFromSort(Sort sort) {
-
+        if (sort == null)
+            return "ai.id";
         switch (sort) {
             case TITLE_NAME:
                 return "b.title";
@@ -243,7 +244,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private String getOrmFromSort(Sort sort) {
-
+        if (sort == null)
+            return "ai.id";
         switch (sort) {
             case TITLE_NAME:
                 return "ai.book.title";
@@ -256,6 +258,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private String getPostgresFromSortDirection(SortDirection sortDirection) {
+        if (sortDirection == null)
+            return "ASC";
         switch (sortDirection) {
             case ASCENDING:
                 return "ASC";

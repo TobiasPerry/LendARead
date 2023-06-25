@@ -58,9 +58,9 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public boolean setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken) {
+    public PasswordResetTokenImpl setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken) {
         em.persist(passwordResetToken);
-        return true;
+        return passwordResetToken;
     }
 
     @Override

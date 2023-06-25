@@ -99,4 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
         submitFilters(event);
     });
 
+    // Get the range input element and label element
+    var rangeInput = document.getElementById('customRange3');
+    var rangeLabel = document.getElementById('customRange3Id');
+
+    // Add an event listener to the range input
+    rangeInput.addEventListener('input', function() {
+        document.getElementById("minRating").value = rangeInput.value;
+        var min = document.getElementById("minRating").value;
+        var max = document.getElementById("maxRating").value;
+        // Update the label text with the current value
+        rangeLabel.textContent = min + "★" + " - " + max + "★";
+    });
+
 })

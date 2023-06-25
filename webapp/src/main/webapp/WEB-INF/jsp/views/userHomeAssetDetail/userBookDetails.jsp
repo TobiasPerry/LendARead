@@ -122,9 +122,6 @@
                                     code="addAssetView.locationInfo"/> <c:out value="${asset.location}"/></h6>
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="addAssetView.maxDays"/>:
                                 <c:out value="${asset.maxDays}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message
-                                    code="addAssetView.reservations"/>:
-                                <c:out value="${asset.isReservable}"/></h6>
                         </c:when>
                     </c:choose>
                 </div>
@@ -135,6 +132,7 @@
                             <c:when test="${table == 'my_books'}">
                                 <jsp:include page="myBookOptions.jsp">
                                     <jsp:param name="asset" value="${asset}"/>
+                                    <jsp:param name="lendings" value="${lendings}"/>
                                 </jsp:include>
                             </c:when>
                             <c:when test="${table == 'lended_books'}">

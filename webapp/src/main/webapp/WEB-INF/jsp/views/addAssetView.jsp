@@ -215,7 +215,7 @@
 
                             <div class="custom-control custom-switch mt-3 d-flex justify-content-center">
                                 <spring:message code="addAssetView.tooltip.reservation" var="tooltiptext"/>
-                                <form:checkbox cssClass="custom-control-input big-switch" id="reservationSwitch" path="isReservable" value="1" data-toggle="tooltip" title="${tooltiptext}" />
+                                <form:checkbox cssClass="custom-control-input big-switch" id="reservationSwitch" path="isReservable" value="false" data-toggle="tooltip" title="${tooltiptext}" />
                                 <label class="custom-control-label" for="reservationSwitch"><spring:message code="addAssetView.label.acceptReservation"/></label>
                             </div>
 

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
           integrity="sha384-afdagadgdagdagda" crossorigin="anonymous">
+    <link href="<c:url value="/static/css/neoBookCard.css"/>" rel="stylesheet"/>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
@@ -129,8 +130,14 @@
                     <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>
                     <form:form modelAttribute="borrowAssetForm" method="post"
                                action="${borrowAsset}" enctype="multipart/form-data" id="form" accept-charset="utf-9">
-                        <h5><spring:message code="assetView.return"/></h5>
-                        <jsp:include page="../components/calendar.jsp"/>
+                        <c:choose >
+                            <c:when test="${assetInstance.isReservable}">
+                                <jsp:include page="../components/calendar.jsp"/>
+                            </c:when>
+                            <c:otherwise>
+                                <jsp:include page="../components/simpleCalendar.jsp"/>
+                            </c:otherwise>
+                        </c:choose>
                         <input class="btn btn-green" type="submit"
                                value="<spring:message code="assetView.borrowButton"/>">
                     </form:form>
@@ -187,6 +194,36 @@
             </div>
         </div>
     </div>
+    <c:if test="${assetInstances.size() > 0}">
+        <div class="container-row" style="width: 50%; margin-bottom: 20px">
+            <div class="container-column" style="flex: 0 0 100%">
+                <div class="card" style="background-color:#e3e6e3;height: fit-content; border-radius: 25px">
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align: center"><spring:message
+                                code="addAssetView.similarBooks"/></h5>
+                        <div class="container-row-wrapped" >
+
+                        <c:forEach var="assetInstance" items="${assetInstances}">
+                            <% request.setCharacterEncoding("utf-8"); %>
+                            <jsp:include page="../components/bookCard.jsp">
+                                <jsp:param name="id" value="${assetInstance.id}"/>
+                                <jsp:param name="bookTitle" value="${assetInstance.book.name}"/>
+                                <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>
+                                <jsp:param name="imageId" value="${assetInstance.image.id}"/>
+                                <jsp:param name="user" value="${assetInstance.owner.name}"/>
+                                <jsp:param name="userPhoto" value="${assetInstance.owner.profilePhoto == null? -1:assetInstance.owner.profilePhoto.id}"/>
+                                <jsp:param name="locality" value="${assetInstance.location.locality}"/>
+                                <jsp:param name="province" value="${assetInstance.location.province}"/>
+                                <jsp:param name="country" value="${assetInstance.location.country}"/>
+                                <jsp:param name="physicalCondition" value="${assetInstance.physicalCondition}"/>
+                            </jsp:include>
+                        </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c:if>
 
     <div class="container-row" style="width: 50%; margin-bottom: 20px">
         <div class="container-column" style="flex: 0 0 100%">

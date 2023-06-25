@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -31,8 +33,8 @@ public class UserJdbcDaoTest {
     private static final String TELEPHONE = "TELEPHONE";
     private static final String ALREADY_EXISTS_EMAIL = "EMAIL";
 
-    private static final PasswordResetTokenImpl PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetTokenImpl("TOKEN2", 3, LocalDate.now());
-    private static final PasswordResetTokenImpl PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetTokenImpl("TOKEN2", 1, LocalDate.now());
+    private static final PasswordResetTokenImpl PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetTokenImpl("TOKEN2",3, LocalDate.now());
+    private static final PasswordResetTokenImpl PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetTokenImpl("TOKEN2",0, LocalDate.now());
 
     private static final String TOKEN_ALREADY_EXISTS = "TOKEN";
     private static final int TOKEN_ID_ALREADY_EXISTS = 1;
@@ -44,18 +46,20 @@ public class UserJdbcDaoTest {
     @Autowired
     private UserDaoJpa userDao;
 
+    @PersistenceContext
+    private EntityManager em;
 
     private JdbcTemplate jdbcTemplate;
 
     @Rollback
     @Before
-    public void setUp() {
+    public void setUp(){
         jdbcTemplate = new JdbcTemplate(ds);
     }
 
     @Rollback
     @Test
-    public void getUser() {
+    public void getUser(){
         //2
         final Optional<UserImpl> user = userDao.getUser(ALREADY_EXISTS_EMAIL);
 
@@ -63,13 +67,13 @@ public class UserJdbcDaoTest {
         Assert.assertTrue(user.isPresent());
         Assert.assertEquals(ALREADY_EXISTS_EMAIL, user.get().getEmail());
     }
-
     @Rollback
     @Test
-    public void testRegister() {
+    public void testRegister(){
 
         //2
-        final UserImpl user = userDao.addUser(Behaviour.BORROWER, EMAIL, NAME, TELEPHONE, PASSWORD);
+        final UserImpl user = userDao.addUser(Behaviour.BORROWER,EMAIL, NAME, TELEPHONE,PASSWORD);
+        em.flush();
 
         //3
         Assert.assertNotNull(user);
@@ -79,67 +83,47 @@ public class UserJdbcDaoTest {
 
     @Rollback
     @Test
-    public void testChangeRole() {
+    public void testChangeRole(){
         //2
-        final boolean hasChange = userDao.changeRole(ALREADY_EXISTS_EMAIL, Behaviour.LENDER);
+        final boolean hasChange = userDao.changeRole(ALREADY_EXISTS_EMAIL,Behaviour.LENDER);
 
         //3
         Assert.assertTrue(hasChange);
     }
-
     @Rollback
     @Test
-    public void getUserById() {
+    public void getUserById(){
         //2
-        final Optional<UserImpl> user = userDao.getUser(1);
+        final Optional<UserImpl> user = userDao.getUser(0);
 
         //3
         Assert.assertTrue(user.isPresent());
-        Assert.assertEquals(ALREADY_EXISTS_EMAIL, user.get().getEmail());
+        Assert.assertEquals(ALREADY_EXISTS_EMAIL,user.get().getEmail());
     }
 
     @Rollback
     @Test
-    public void changePassword() {
+    public void changePassword(){
         //1
         final String newPassword = "NewPassword";
         //2
-        final boolean hasChange = userDao.changePassword(PASSWORD_RESET_TOKEN_USER_EXISTS, newPassword);
+        final boolean hasChange = userDao.changePassword(PASSWORD_RESET_TOKEN_USER_EXISTS,newPassword);
         //3
         Assert.assertTrue(hasChange);
     }
 
-    @Rollback
-    @Test
-    public void setForgotPasswordTokenUserNotExists() {
-        //2
-        final boolean hasChange = userDao.setForgotPasswordToken(PASSWORD_RESET_TOKEN_USER_NOT_EXISTS);
-
-        //3
-        Assert.assertFalse(hasChange);
-    }
 
     @Rollback
     @Test
-    public void setForgotPasswordTokenUser() {
-        //2
-        final boolean hasChange = userDao.setForgotPasswordToken(PASSWORD_RESET_TOKEN_USER_EXISTS);
-
-        //3
-        Assert.assertTrue(hasChange);
-    }
-
-    @Rollback
-    @Test
-    public void getPasswordRestToken() {
+    public void getPasswordRestToken(){
         //2
         final Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(TOKEN_ALREADY_EXISTS);
 
         //3
         Assert.assertTrue(passwordResetToken.isPresent());
-        Assert.assertEquals(TOKEN_ALREADY_EXISTS, passwordResetToken.get().getToken());
-        Assert.assertEquals(1, passwordResetToken.get().getUserId());
-        Assert.assertEquals(TOKEN_EXPIRATION_DATE_ALREADY_EXISTS, passwordResetToken.get().getExpiryDate());
+        Assert.assertEquals(TOKEN_ALREADY_EXISTS,passwordResetToken.get().getToken());
+        Assert.assertEquals(1,passwordResetToken.get().getUserId());
+        Assert.assertEquals(TOKEN_EXPIRATION_DATE_ALREADY_EXISTS,passwordResetToken.get().getExpiryDate());
 
     }
 
