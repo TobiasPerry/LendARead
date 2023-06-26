@@ -44,7 +44,7 @@
 <script>
 
     const showError = '${dayError}' === 'true';
-    const dates = [];
+    const dates = [new Date()];
     $(document).ready(function() {
         var children = Array.from(document.getElementById("lendings").children);
         children.forEach(function (child) {
@@ -85,7 +85,7 @@
             restrictions: {
                 minDate: new Date(),
                 enabledDates: [],
-                disabledDates: dates.push(new Date()),
+                disabledDates: dates,
                 daysOfWeekDisabled: [],
                 disabledHours: [],
                 enabledHours: []
