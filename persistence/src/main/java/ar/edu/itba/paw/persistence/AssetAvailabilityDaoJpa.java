@@ -39,29 +39,33 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
                 .setParameter("rejected", LendingState.REJECTED)
                 .getResultList();
     }
+
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLending(final AssetInstanceImpl ai, final int pageNum,final int itemsPerPage) {
+    public PagingImpl<LendingImpl> getPagingActiveLending(final AssetInstanceImpl ai, final int pageNum, final int itemsPerPage) {
 
         final Query queryNative = em.createNativeQuery("select l.id from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected order by l.lenddate limit :limit offset :offset");
 
-        final Query queryCount = em.createNativeQuery("select Count(l.id) from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected order by l.lenddate");
+        final Query queryCount = em.createNativeQuery("select Count(l.id) from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected");
 
         final int offset = (pageNum - 1) * itemsPerPage;
 
-        queryCount.setParameter("ai",ai.getId());
-        queryNative.setParameter("limit",itemsPerPage);
-        queryNative.setParameter("offset",offset);
-        queryNative.setParameter("active",LendingState.FINISHED);
-        queryNative.setParameter("rejected",LendingState.REJECTED);
+        queryCount.setParameter("ai", ai.getId());
+        queryCount.setParameter("active", "FINISHED");
+        queryCount.setParameter("rejected", "REJECTED");
+        queryNative.setParameter("ai", ai.getId());
+        queryNative.setParameter("limit", itemsPerPage);
+        queryNative.setParameter("offset", offset);
+        queryNative.setParameter("active", "FINISHED");
+        queryNative.setParameter("rejected", "REJECTED");
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
-        if(list.isEmpty())
+        if (list.isEmpty())
             return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
-        final TypedQuery<LendingImpl> query = em.createQuery("FROM LendingImpl AS l WHERE id IN (:ids) ORDER BY l.lendDate" , LendingImpl.class);
+        final TypedQuery<LendingImpl> query = em.createQuery("FROM LendingImpl AS l WHERE id IN (:ids) ORDER BY l.lendDate", LendingImpl.class);
         query.setParameter("ids", list);
         List<LendingImpl> reviewList = query.getResultList();
 

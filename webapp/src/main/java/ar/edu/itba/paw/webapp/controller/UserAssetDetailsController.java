@@ -8,16 +8,15 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.miscellaneous.CustomMultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,12 +44,14 @@ final public class UserAssetDetailsController {
 
     private final static String VIEW_NAME_LENDING_VIEW = "views/userHomeAssetDetail/lendingBookDetails";
 
-    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending", ASSET_INSTANCE = "assetInstance", LOCATIONS = "locations";
+    private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending", ASSET_INSTANCE = "assetInstance", LOCATIONS = "locations", FUTURE_LENDINGS = "futureLendings";
 
     private final static String BACKURL = "backUrl";
 
     private final static String CAN_REVIEW = "canReview";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
+
+    private final static Integer FUTURE_LENDINGS_PER_PAGE = 5;
 
 
     @Autowired
@@ -78,11 +79,13 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
-    public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id) throws AssetInstanceNotFoundException {
+    public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id, @RequestParam(name = "futureLendingsPage", defaultValue = "1") final int futureLendingsPage) throws AssetInstanceNotFoundException {
         List<LendingImpl> lendings = assetAvailabilityService.getActiveLendings(assetInstanceService.getAssetInstance(id));
+        PagingImpl<LendingImpl> futureLendings = assetAvailabilityService.getPagingActiveLendings(assetInstanceService.getAssetInstance(id), futureLendingsPage, FUTURE_LENDINGS_PER_PAGE);
         return new ModelAndView(VIEW_NAME)
                 .addObject(ASSET, assetInstanceService.getAssetInstance(id))
-                .addObject(TABLE, MY_BOOKS).addObject("lendings",lendings);
+                .addObject(TABLE, MY_BOOKS).addObject("lendings", lendings)
+                .addObject(FUTURE_LENDINGS, futureLendings);
     }
 
     @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)

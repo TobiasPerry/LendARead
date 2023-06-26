@@ -87,8 +87,13 @@
                 </p>
                 <c:if test="${user.behavior == 'LENDER' && isCurrent}">
                     <a href="<c:url value="/userLocations"/> ">
-                        <button class="btn btn-primary"><spring:message code="userProfile.myLocations"/></button>
+                        <button class="btn btn-primary"><spring:message
+                                code="userProfile.myLocations"/></button>
                     </a>
+                </c:if>
+                <c:if test="${user.behavior != 'LENDER' || !isCurrent}">
+                    <button class="btn btn-primary" disabled style="opacity: 0"><spring:message
+                            code="userProfile.myLocations"/></button>
                 </c:if>
             </div>
             <hr/>
