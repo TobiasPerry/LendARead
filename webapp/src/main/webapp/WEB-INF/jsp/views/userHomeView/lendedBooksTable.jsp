@@ -98,6 +98,16 @@
 
                         <jsp:include page="sortButton.jsp">
                             <jsp:param name="table" value="lended_books"/>
+                            <jsp:param name="attribute" value="expected_lending_date"/>
+                            <jsp:param name="sortAttribute" value="${sort_expected_lending_date}"/>
+                            <jsp:param name="filterValue" value="${filterValue}"/>
+                            <jsp:param name="filterAtribuite" value="${filterAtribuite}"/>
+                            <jsp:param name="title" value="expected_lending_date"/>
+                            <jsp:param name="currentPage" value="${currentPage}"/>
+                        </jsp:include>
+
+                        <jsp:include page="sortButton.jsp">
+                            <jsp:param name="table" value="lended_books"/>
                             <jsp:param name="attribute" value="expected_retrieval_date"/>
                             <jsp:param name="sortAttribute" value="${sort_expected_retrieval_date}"/>
                             <jsp:param name="filterValue" value="${filterValue}"/>
@@ -142,6 +152,7 @@
                                 </div>
                             </td>
                             <td><c:out value="${lending.assetInstance.book.name}"/></td>
+                            <td><c:out value="${lending.lendDate}"/></td>
                             <td class="date-column no-hidden-of"
                                 data-asset-status="<c:out value="${lending.active}"/>"><c:out
                                     value="${lending.devolutionDate}"/></td>
