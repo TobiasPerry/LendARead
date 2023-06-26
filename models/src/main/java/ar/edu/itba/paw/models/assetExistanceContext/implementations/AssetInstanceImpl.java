@@ -106,6 +106,20 @@ public class AssetInstanceImpl{
         return Objects.equals(image, that.image);
     }
 
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (book != null ? book.hashCode() : 0);
+        result = 31 * result + (userReference != null ? userReference.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (physicalCondition != null ? physicalCondition.hashCode() : 0);
+        result = 31 * result + (assetState != null ? assetState.hashCode() : 0);
+        result = 31 * result + maxLendingDays;
+        result = 31 * result + (isReservable ? 1 : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        return result;
+    }
 
     public boolean getIsReservable() {
         return isReservable;

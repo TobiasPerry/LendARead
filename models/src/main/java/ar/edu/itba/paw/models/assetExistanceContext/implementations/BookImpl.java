@@ -59,6 +59,15 @@ public class BookImpl{
         return Objects.equals(language, book.language);
     }
 
+    @Override
+    public int hashCode() {
+        int result = isbn != null ? isbn.hashCode() : 0;
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        result = 31 * result + id;
+        return result;
+    }
 
     private static String convertToISBN13(String isbn) {
         // Eliminar guiones y espacios en blanco del ISBN
