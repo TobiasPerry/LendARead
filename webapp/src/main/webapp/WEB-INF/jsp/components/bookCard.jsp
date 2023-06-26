@@ -10,7 +10,7 @@
         background-repeat: no-repeat;
         height: 400px; margin: 15px;width: 18rem; object-fit: cover">
 
-    <a href="<c:url value="/info/${param.id}"/>" style="text-decoration: none">
+    <a href="<c:url value="/info/${param.id}"/>" id="infoRef" style="text-decoration: none">
 
         <img class="card-img d-none" src="<c:url value="/getImage/${param.imageId}"/>" alt="<c:out value="${param.bookTitle}"/>">
 

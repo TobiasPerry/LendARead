@@ -34,6 +34,8 @@ final public class UserAssetDetailsController {
 
     private final UserAssetInstanceService userAssetInstanceService;
 
+    private final UserReviewsService userReviewsService;
+
     private final UserService userService;
 
     private final LocationsService locationsService;
@@ -46,16 +48,19 @@ final public class UserAssetDetailsController {
     private final static String TABLE = "table", ASSET = "asset", NAV_BAR_PATH = "userHome", LENDING = "lending", ASSET_INSTANCE = "assetInstance", LOCATIONS = "locations";
 
     private final static String BACKURL = "backUrl";
+
+    private final static String CAN_REVIEW = "canReview";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
 
 
     @Autowired
-    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserAssetInstanceService userAssetInstanceService, final UserService userService, final LocationsService locationsService) {
+    public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserAssetInstanceService userAssetInstanceService, final UserService userService, final LocationsService locationsService,final UserReviewsService userReviewsService) {
         this.assetInstanceService = assetInstanceService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.userAssetInstanceService = userAssetInstanceService;
         this.userService = userService;
         this.locationsService = locationsService;
+        this.userReviewsService = userReviewsService;
     }
 
     @RequestMapping(value = "/userHomeReturn", method = RequestMethod.GET)
@@ -64,12 +69,12 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/lentBookDetails/{lendingId}", method = RequestMethod.GET)
-    public ModelAndView lentBookDetail(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
+    public ModelAndView lentBookDetail(@PathVariable final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
         LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
 
         return new ModelAndView(VIEW_NAME_LENDING_VIEW)
                 .addObject(LENDING, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
-                .addObject(TABLE, LENDED_BOOKS);
+                .addObject(TABLE, LENDED_BOOKS).addObject(CAN_REVIEW,userReviewsService.lenderCanReview(lendingId));
     }
 
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
@@ -81,10 +86,10 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/borrowedBookDetails/{lendingId}", method = RequestMethod.GET)
-    public ModelAndView borrowedBookDetails(@PathVariable final int lendingId) throws AssetInstanceNotFoundException {
+    public ModelAndView borrowedBookDetails(@PathVariable final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
         return new ModelAndView(VIEW_NAME_LENDING_VIEW)
                 .addObject(LENDING, userAssetInstanceService.getBorrowedAssetInstance(lendingId))
-                .addObject(TABLE, BORROWED_BOOKS);
+                .addObject(TABLE, BORROWED_BOOKS).addObject(CAN_REVIEW,userReviewsService.borrowerCanReview(lendingId));
     }
 
     @RequestMapping(value = "/deleteAsset/{id}", method = RequestMethod.POST)

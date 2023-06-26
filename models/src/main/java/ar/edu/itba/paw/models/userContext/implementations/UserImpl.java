@@ -152,6 +152,18 @@ final public class UserImpl{
     }
 
 
+    @Override
+    public int hashCode() {
+        int result = email != null ? email.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
+        result = 31 * result + (behavior != null ? behavior.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (profilePhoto != null ? profilePhoto.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
+    }
 
     public void setProfilePhoto(ImageImpl img) {
         this.profilePhoto = img;
