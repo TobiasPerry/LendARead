@@ -106,15 +106,11 @@ public class AssetInstanceReviewTest{
         entityManager.persist(review2);
 
 
-        // Llamar al método que queremos probar
         int pageNum = 1;
         int itemsPerPage = 10;
         PagingImpl<AssetInstanceReview> result = assetInstanceReviewRepository.getAssetInstanceReviews(pageNum, itemsPerPage, lending.getAssetInstance());
 
-        // Verificar el resultado esperado
         Assert.assertEquals(2, result.getList().size());
-        // Realizar más aserciones según los atributos de las AssetInstanceReview devueltas en result
     }
 
-    // Aquí puedes agregar más pruebas unitarias para diferentes escenarios y casos de borde
 }

@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService {
 
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
 
+    private static final String ROLE = "ROLE_";
+
     @Autowired
     public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager, final ImagesDao imagesDao) {
         this.passwordEncoder = passwordEncoder;
@@ -156,7 +158,7 @@ public class UserServiceImpl implements UserService {
             return;
         }
         final Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.get().getBehavior().toString()));
+        authorities.add(new SimpleGrantedAuthority(ROLE + user.get().getBehavior().toString()));
         org.springframework.security.core.userdetails.User userDetails =
                 new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(), authorities);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
