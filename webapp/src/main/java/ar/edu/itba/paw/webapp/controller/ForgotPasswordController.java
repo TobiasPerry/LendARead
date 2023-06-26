@@ -28,6 +28,7 @@ public class ForgotPasswordController {
 
     @RequestMapping("/forgotPassword")
     public ModelAndView forgotPassword(@ModelAttribute("emailForm") final EmailForm emailForm) {
+        LOGGER.info("Forgot password view");
         return new ModelAndView("/views/forgotPassword");
     }
 
@@ -44,12 +45,14 @@ public class ForgotPasswordController {
 
     @RequestMapping("/changePassword")
     public ModelAndView changePassword(@ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm) {
+        LOGGER.info("Change password view");
         return new ModelAndView("/views/changePassword");
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public ModelAndView changePasswordPost(@Valid @ModelAttribute("changePasswordForm") final ChangePasswordForm changePasswordForm, final BindingResult errors) {
         if (errors.hasErrors()) {
+            LOGGER.warn("Change password form error");
             return changePassword(changePasswordForm);
         }
         userService.changePassword(changePasswordForm.getToken(), changePasswordForm.getPassword());
