@@ -85,7 +85,7 @@
             restrictions: {
                 minDate: new Date(),
                 enabledDates: [],
-                disabledDates: dates,
+                disabledDates: dates.push(new Date()),
                 daysOfWeekDisabled: [],
                 disabledHours: [],
                 enabledHours: []
