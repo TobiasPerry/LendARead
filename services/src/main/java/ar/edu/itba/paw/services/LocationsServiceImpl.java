@@ -87,7 +87,6 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public LocationImpl editLocationById(int locationId) {
-        //return locationsDao.editLocation(locationsDao.getLocation(locationId));
         LocationImpl location = locationsDao.editLocation(locationsDao.getLocation(locationId));
         LOGGER.info("Location {} modified for user {}", location.getId(), location.getUser().getId());
         return  location;
