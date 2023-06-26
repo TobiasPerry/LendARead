@@ -92,7 +92,7 @@
     restrictions: {
       minDate: new Date(),
       maxDate: minDate,
-      disabledDates:[minDate]
+      disabledDates:[minDate,new Date()]
     }
 
   });

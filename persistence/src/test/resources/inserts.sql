@@ -1,4 +1,4 @@
-INSERT INTO users(id,behavior,mail,name,telephone, password) VALUES (0,'BORROWER','EMAIL', 'NAME', 'TELEPHONE', 'PASSWORD_NOT_ENCODED');
+INSERT INTO users(id,behavior,mail,name,telephone, password,LOCALE) VALUES (0,'BORROWER','EMAIL', 'NAME', 'TELEPHONE', 'PASSWORD_NOT_ENCODED','ES');
 
 INSERT INTO book(uid,ISBN, AUTHOR, TITLE, lang)VALUES (0,'ISBN','AUTHOR','TITLE','LANGUAGE');
 

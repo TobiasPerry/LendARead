@@ -182,6 +182,12 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(),new Locale(lending.getAssetInstance().getOwner().getLocale()));
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public boolean haveActiveLendings(AssetInstanceImpl ai) {
+        return getActiveLendings(ai).size() > 0;
+    }
+
     @Scheduled(cron = "0 0 0 * * *")
     @Async
     @Override

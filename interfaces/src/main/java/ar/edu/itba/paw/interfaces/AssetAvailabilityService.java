@@ -28,5 +28,6 @@ public interface AssetAvailabilityService {
 
     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 
+    boolean haveActiveLendings(final AssetInstanceImpl ai);
     void notifyNewLendings();
 }
