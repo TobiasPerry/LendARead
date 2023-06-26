@@ -147,11 +147,23 @@
     </div>
     <div class="asset-details-row">
         <div class="island future-lending-island">
-            <h1><spring:message code="userAssetDetailView.futureRatings"/></h1>
+            <c:if test="${asset.isReservable}">
+                <h1><spring:message code="userAssetDetailView.futureLendings"/></h1>
+            </c:if>
+            <c:if test="${!asset.isReservable}">
+                <h1><spring:message code="userAssetDetailView.currentLending"/></h1>
+            </c:if>
             <c:if test="${futureLendings.list.size() == 0}">
-                <div class="future-lendings-empty">
-                    <h3><spring:message code="userAssetDetailView.noLendings"/></h3>
-                </div>
+                <c:if test="${asset.isReservable}">
+                    <div class="future-lendings-empty">
+                        <h3><spring:message code="userAssetDetailView.noLendings"/></h3>
+                    </div>
+                </c:if>
+                <c:if test="${!asset.isReservable}">
+                    <div class="future-lendings-empty">
+                        <h3><spring:message code="userAssetDetailView.noCurrentLendings"/></h3>
+                    </div>
+                </c:if>
             </c:if>
             <c:if test="${futureLendings.list.size() > 0}">
                 <div class="future-lending-list">
