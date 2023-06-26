@@ -44,11 +44,9 @@ public class BorrowerReviewVoter implements AccessDecisionVoter<FilterInvocation
                 if (userReviewsService.borrowerCanReview(Integer.parseInt(stringBuilder.toString())))
                     vote.set(ACCESS_GRANTED);
                 else {
-                    SecurityContextHolder.clearContext();
                     vote.set(ACCESS_DENIED);
                 }
             } catch (Exception e) {
-                SecurityContextHolder.clearContext();
                 vote.set(ACCESS_DENIED);
             }
 

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingCompletionUnsuccessfulException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
@@ -125,7 +126,7 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/changeReservability/{id}", method = RequestMethod.POST)
-    public ModelAndView changeReservability(@PathVariable("id") final int id) throws AssetInstanceNotFoundException {
+    public ModelAndView changeReservability(@PathVariable("id") final int id) throws AssetInstanceNotFoundException, AssetInstanceBorrowException {
         assetAvailabilityService.changeReservability(id);
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
