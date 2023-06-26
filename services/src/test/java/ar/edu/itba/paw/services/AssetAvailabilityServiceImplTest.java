@@ -147,7 +147,6 @@ public class AssetAvailabilityServiceImplTest {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
-        when(lendingDao.getActiveLendings(any())).thenReturn(LENDING_LIST);
 
         // 2 - Ejercitación
         assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, BORROW_DATE_THREE_WEEK, DEVOLUTION_DATE_FOUR_WEEK);
