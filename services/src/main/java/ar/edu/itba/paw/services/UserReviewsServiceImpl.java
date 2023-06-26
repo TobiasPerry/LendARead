@@ -44,6 +44,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Override
     public void addReview(UserReview userReview) {
         userReviewsDao.addReview(userReview);
+        LOGGER.info("Review added");
     }
 
     @Transactional(readOnly = true)

@@ -7,6 +7,8 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Service
 public class LocationsServiceImpl implements LocationsService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserReviewsServiceImpl.class);
 
     private final LocationDao locationsDao;
     private final UserService userService;
@@ -34,14 +38,18 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public void addLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) throws UserNotFoundException {
-       if (user.getBehavior().equals(Behaviour.BORROWER))
+       if (user.getBehavior().equals(Behaviour.BORROWER)) {
            userService.changeRole(user.getEmail(), Behaviour.LENDER);
+           LOGGER.info("User {} changed role to Lender", user.getId());
+       }
         if(id == -1) {
             LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, user);
             addLocation(newLocation);
+            LOGGER.info("Location {} added for user {}", newLocation.getId(), user.getId());
         } else {
             LocationImpl newLocation = new LocationImpl(id, name, zipcode, locality, province, country, user);
             editLocation(newLocation);
+            LOGGER.info("Location {} modified for user {}", newLocation.getId(), user.getId());
         }
     }
 
@@ -67,6 +75,7 @@ public class LocationsServiceImpl implements LocationsService {
     @Transactional
     public void deleteLocation(LocationImpl lc) {
             locationsDao.deleteLocation(lc);
+            LOGGER.info("Location {} deleted for user {}", lc.getId(), lc.getUser().getId());
     }
 
     @Override
@@ -78,13 +87,18 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public LocationImpl editLocationById(int locationId) {
-        return locationsDao.editLocation(locationsDao.getLocation(locationId));
+        //return locationsDao.editLocation(locationsDao.getLocation(locationId));
+        LocationImpl location = locationsDao.editLocation(locationsDao.getLocation(locationId));
+        LOGGER.info("Location {} modified for user {}", location.getId(), location.getUser().getId());
+        return  location;
     }
 
     @Override
     @Transactional
     public void deleteLocationById(int locationId) throws UserNotFoundException {
-        if(locationId != -1)
+        if(locationId != -1) {
             deleteLocation(getLocation(locationId));
+            LOGGER.info("Location {} deleted", locationId);
+        }
     }
 }
