@@ -44,8 +44,6 @@
         <div style="display: flex; flex-flow: wrap; width: 100%; justify-content: start;">
             <div class="image-wrapper">
                 <label for="uploadImage" class="image-container position-relative ${showSnackbarInvalid ? 'image-border-error' : ''}">
-<%--                    <img src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book Cover"--%>
-<%--                         class="img-fluid" id="bookImage" style="width: 200px; height: 300px; object-fit: cover">--%>
                 <img src="<c:url value="/getImage/${assetInstance.image.id}"/>" alt="Book Cover"
                      class="img-fluid" id="bookImage" style="max-width: 100%; min-width: 100px ;height: auto; max-height: 300px;object-fit: cover">
                     <div class="img-hover-text">
@@ -70,6 +68,7 @@
 
             <form:input path="image" type="file"  accept="image/*" name="file" id="uploadImage" style="display:none;"
               onchange="previewImage()"/>
+              <form:errors path="image" cssClass="text-danger small" element="small"/>
               <h6 id="physicalConditionClick"
                 data-physicalcondition="<c:out value="${assetInstance.physicalCondition}"/>">
               <form:select path="physicalCondition" id="physicalCondition" class="form-control form-select"

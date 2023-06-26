@@ -8,7 +8,6 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.miscellaneous.CustomMultipartFile;
@@ -22,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
 
 
 @Controller
@@ -53,6 +51,8 @@ final public class UserAssetDetailsController {
 
     private final static Integer FUTURE_LENDINGS_PER_PAGE = 5;
 
+    private final static String HAVE_ACTIVE_LENDINGS = "haveActiveLendings";
+
 
     @Autowired
     public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserAssetInstanceService userAssetInstanceService, final UserService userService, final LocationsService locationsService,final UserReviewsService userReviewsService) {
@@ -80,11 +80,10 @@ final public class UserAssetDetailsController {
 
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
     public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id, @RequestParam(name = "futureLendingsPage", defaultValue = "1") final int futureLendingsPage) throws AssetInstanceNotFoundException {
-        List<LendingImpl> lendings = assetAvailabilityService.getActiveLendings(assetInstanceService.getAssetInstance(id));
         PagingImpl<LendingImpl> futureLendings = assetAvailabilityService.getPagingActiveLendings(assetInstanceService.getAssetInstance(id), futureLendingsPage, FUTURE_LENDINGS_PER_PAGE);
         return new ModelAndView(VIEW_NAME)
                 .addObject(ASSET, assetInstanceService.getAssetInstance(id))
-                .addObject(TABLE, MY_BOOKS).addObject("lendings", lendings)
+                .addObject(TABLE, MY_BOOKS).addObject(HAVE_ACTIVE_LENDINGS, assetAvailabilityService.haveActiveLendings(assetInstanceService.getAssetInstance(id)))
                 .addObject(FUTURE_LENDINGS, futureLendings);
     }
 

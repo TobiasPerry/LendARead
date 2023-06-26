@@ -108,7 +108,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
                 .antMatchers("/addAsset","/lentBookDetails/**","/review/lender/**").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**","/review/lenderAdd").hasRole("LENDER")
-                .antMatchers("/review/borrower/**").hasRole("BORROWER")
                 .antMatchers(HttpMethod.POST,"/review/borrowerAdd").hasRole("BORROWER")
                 .antMatchers("/userHome","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**","/userLocations/**").authenticated()
                 .antMatchers("/**").permitAll()

@@ -13,9 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 final public class FormFactoryAddAssetView {
 
-    private final static String DEFAULT_STRING_VALUE = "";
-
-    private final static int ID_DEFAULT_VALUE = -1;
 
     public static byte[] getByteArray(MultipartFile file) {
             if (!file.isEmpty()) {

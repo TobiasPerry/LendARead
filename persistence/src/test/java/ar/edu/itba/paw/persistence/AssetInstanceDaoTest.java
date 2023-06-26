@@ -108,23 +108,13 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesButEmptyTest() {
         //1
-        em.createQuery("DELETE FROM AssetInstanceImpl WHERE id = 0").executeUpdate();
+        em.createQuery("UPDATE FROM AssetInstanceImpl SET assetState = 'DELETED' WHERE id = 0").executeUpdate();
         //2
         Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
         Assert.assertTrue(page.isPresent());
         Assert.assertEquals(0,page.get().getCurrentPage());
         Assert.assertEquals(0,page.get().getTotalPages());
-    }
-    @Rollback
-    @Test
-    public void getAllAssetInstancesSearchEmptyTest() {
-        //2
-       // Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQueryWithAuthorText);
-        //3
-        /*Assert.assertTrue(page.isPresent());
-        Assert.assertEquals(0,page.get().getCurrentPage());
-        Assert.assertEquals(0,page.get().getTotalPages());*/
     }
 
 }

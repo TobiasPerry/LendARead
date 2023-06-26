@@ -91,7 +91,7 @@ public class AssetAvailabilityDaoTest {
 
         List<LendingImpl> activeLendings = assetAvailabilityDao.getActiveLendings(ASSET_INSTANCE);
 
-        Assert.assertEquals(2, activeLendings.size());
+        Assert.assertEquals(3, activeLendings.size());
         Assert.assertTrue(activeLendings.contains(activeLending1));
         Assert.assertTrue(activeLendings.contains(activeLending2));
         Assert.assertFalse(activeLendings.contains(finishedLending));
