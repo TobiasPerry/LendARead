@@ -21,6 +21,7 @@
             crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"/>
     <link href="<c:url value="/static/css/userHomeView.css"/>" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Overpass:400,700|Roboto:400,700" rel="stylesheet">
@@ -147,33 +148,76 @@
     </div>
     <div class="asset-details-row">
         <div class="island future-lending-island">
-            <h1>Future Lendings</h1>
-            <div class="future-lending-list">
+            <h1><spring:message code="userAssetDetailView.futureRatings"/></h1>
+            <c:if test="${futureLendings.list.size() == 0}">
+                <div class="future-lendings-empty">
+                    <h3><spring:message code="userAssetDetailView.noLendings"/></h3>
+                </div>
+            </c:if>
+            <c:if test="${futureLendings.list.size() > 0}">
+                <div class="future-lending-list">
 
-                <c:forEach var="futureLending" items="${futureLendings.list}">
-                    <a href="<c:url value="/lentBookDetails/${futureLending.id}"/>"
-                       style="text-decoration: none; color: black">
-                        <div class="future-lending-card">
-                            <c:if test="${futureLending.userReference.profilePhoto.id == null}">
-                                <c:set var="photoUrl" value="/static/images/profilePicPlaceholder.png"/>
-                            </c:if>
-                            <c:if test="${futureLending.userReference.profilePhoto.id != null}">
-                                <c:set var="photoUrl" value="/getImage/${futureLending.userReference.profilePhoto.id}"/>
-                            </c:if>
-                            <div class="future-lending-img-wrapper">
-                                <img src="<c:url value="${photoUrl}"/>"
-                                     alt="borrower profile pic">
+
+                    <c:forEach var="futureLending" items="${futureLendings.list}">
+                        <a class="future-lending-card-wrapper"
+                           href="<c:url value="/lentBookDetails/${futureLending.id}"/>"
+                           style="text-decoration: none; color: black">
+                            <div class="future-lending-card">
+                                <c:if test="${futureLending.userReference.profilePhoto.id == null}">
+                                    <c:set var="photoUrl" value="/static/images/profilePicPlaceholder.png"/>
+                                </c:if>
+                                <c:if test="${futureLending.userReference.profilePhoto.id != null}">
+                                    <c:set var="photoUrl"
+                                           value="/getImage/${futureLending.userReference.profilePhoto.id}"/>
+                                </c:if>
+                                <div class="future-lending-img-wrapper">
+                                    <img src="<c:url value="${photoUrl}"/>"
+                                         alt="borrower profile pic">
+                                </div>
+                                <h4><c:out value="${futureLending.userReference.name}"/></h4>
+                                <h4 class="future-lending-card-title to_end bold"><spring:message
+                                        code="userAssetDetailView.from"/></h4>
+                                <h4><c:out value="${futureLending.lendDate}"/></h4>
+                                <div class="vertical-div"></div>
+                                <h4 class="future-lending-card-title bold"><spring:message
+                                        code="userAssetDetailView.to"/></h4>
+                                <h4><c:out value="${futureLending.devolutionDate}"/></h4>
                             </div>
-                            <h4><c:out value="${futureLending.userReference.name}"/></h4>
-                            <h4 class="future-lending-card-title to_end bold">From</h4>
-                            <h4><c:out value="${futureLending.lendDate}"/></h4>
-                            <div class="vertical-div"></div>
-                            <h4 class="future-lending-card-title bold">To</h4>
-                            <h4><c:out value="${futureLending.devolutionDate}"/></h4>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
+                        </a>
+                    </c:forEach>
+                </div>
+                <div class="future-lending-buttons">
+                    <ul class="pagination justify-content-center align-items-center">
+                        <li class="page-item">
+                            <button type="button"
+                                    class="btn mx-5 pagination-button ${futureLendings.currentPage != 1 ? "" : "disabled"}"
+                                    id="previousPageButtonBorrower"
+                                    style="border-color: rgba(255, 255, 255, 0)"
+                                    onclick="window.location.href = '<c:url
+                                            value="/myBookDetails/${asset.id}?futureLendingsPage=${futureLendings.currentPage - 1}"/>'">
+                                <i class="bi bi-chevron-left"></i> <spring:message
+                                    code="paginationButton.previous"/>
+                            </button>
+                        </li>
+                        <li>
+                            <c:out value="${futureLendings.currentPage}"/> / <c:out
+                                value="${futureLendings.totalPages}"/>
+                        </li>
+
+                        <li class="page-item">
+                            <button type="button"
+                                    class="btn mx-5 pagination-button ${futureLendings.currentPage < futureLendings.totalPages ? "" : "disabled"}"
+                                    id="nextPageButtonBorrower"
+                                    style="border-color: rgba(255, 255, 255, 0)"
+                                    onclick="window.location.href = '<c:url
+                                            value="/myBookDetails/${asset.id}?futureLendingsPage=${futureLendings.currentPage + 1}"/>'">
+                                <spring:message code="paginationButton.next"/> <i
+                                    class="bi bi-chevron-right"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>

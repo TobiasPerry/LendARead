@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +47,8 @@ final public class UserAssetDetailsController {
     private final static String BACKURL = "backUrl";
     private final static String LENDED_BOOKS = "lended_books", MY_BOOKS = "my_books", BORROWED_BOOKS = "borrowed_books";
 
+    private final static Integer FUTURE_LENDINGS_PER_PAGE = 5;
+
 
     @Autowired
     public UserAssetDetailsController(final AssetInstanceService assetInstanceService, final AssetAvailabilityService assetAvailabilityService, final UserAssetInstanceService userAssetInstanceService, final UserService userService, final LocationsService locationsService) {
@@ -75,9 +74,9 @@ final public class UserAssetDetailsController {
     }
 
     @RequestMapping(value = "/myBookDetails/{id}", method = RequestMethod.GET)
-    public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id) throws AssetInstanceNotFoundException {
+    public ModelAndView myBookDetails(HttpServletRequest request, @PathVariable final int id, @RequestParam(name = "futureLendingsPage", defaultValue = "1") final int futureLendingsPage) throws AssetInstanceNotFoundException {
         List<LendingImpl> lendings = assetAvailabilityService.getActiveLendings(assetInstanceService.getAssetInstance(id));
-        PagingImpl<LendingImpl> futureLendings = assetAvailabilityService.getPagingActiveLendings(assetInstanceService.getAssetInstance(id), 1, 5);
+        PagingImpl<LendingImpl> futureLendings = assetAvailabilityService.getPagingActiveLendings(assetInstanceService.getAssetInstance(id), futureLendingsPage, FUTURE_LENDINGS_PER_PAGE);
         return new ModelAndView(VIEW_NAME)
                 .addObject(ASSET, assetInstanceService.getAssetInstance(id))
                 .addObject(TABLE, MY_BOOKS).addObject("lendings", lendings)

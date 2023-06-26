@@ -132,12 +132,13 @@
     transition: all 0.2s ease-in-out;
 }
 
-.future-lending-card:not(:last-child) {
-    border-bottom: lightgray 1px solid;
+.future-lending-card-wrapper:not(:last-child) {
+    border-bottom: red 1px solid;
 }
 
 .future-lending-card:hover {
     transform: scale(1.01);
+    background: #d2e1d2;
 }
 
 .future-lending-card > h4 {
@@ -178,4 +179,24 @@
     width: 1px;
     height: 100%;
     margin-inline: 2vw;
+}
+
+li > button:hover {
+    background: #f0f5f0 !important;
+}
+
+.future-lending-buttons {
+    margin-block: 2vw;
+}
+
+.future-lendings-empty {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.future-lendings-empty > h3 {
+    color: #9ca3af;
+    margin-inline: 0;
+    margin-block: 2vh;
 }
