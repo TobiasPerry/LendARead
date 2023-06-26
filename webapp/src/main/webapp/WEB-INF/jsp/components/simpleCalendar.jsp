@@ -36,7 +36,7 @@
 <script>
 
   const showError = '${dayError}' === 'true';
-  const dates = [];
+  const dates = [new Date()];
   var minDate;
   $(document).ready(function() {
     const today = new Date();
@@ -49,54 +49,52 @@
 
     const formattedToday = mm + '/' + dd + '/' + yyyy;
     document.getElementById("datetimepicker1Input").value = formattedToday;
+
+
+  minDate = (minDate <= addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays))) ? minDate:addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays))
+  $(document).ready(function() {
     var children = Array.from(document.getElementById("lendings").children);
     children.forEach(function (child) {
-      const dateRange = getDateRange(new Date(child.dataset.lendate), addDays(new Date(child.dataset.dev),1));
-      dates.push(...dateRange);
+      const dateRange = getDateRange(new Date(child.dataset.lendate), addDays(new Date(child.dataset.dev), 1));
+      dates.push(...dateRange); // Use the spread operator to concatenate the arrays
+    });
+    new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'), {
+      display: {
+        viewMode: "calendar",
+        components: {
+          decades: true,
+          year: true,
+          month: true,
+          date: true,
+          hours: false,
+          minutes: false,
+          seconds: false
+        },
+        icons: {
+          time: 'far fa-clock',
+          date: 'far fa-calendar',
+          up: 'far fa-arrow-up',
+          down: 'far fa-arrow-down',
+          previous: 'fas fa-chevron-left',
+          next: 'fas fa-chevron-right',
+          today: 'far fa-calendar-check-o',
+          clear: 'far fa-trash',
+          close: 'far fa-times'
+        },
+
+      },
+      localization: {
+        format: 'L'
+      },
+      restrictions: {
+        minDate: new Date(),
+        maxDate: minDate,
+        disabledDates: dates
+      }
 
     });
-    });
-  minDate =new Date(Math.min.apply(null,dates.filter(date =>{
-    return  date >= new Date()
-  })));
-  minDate = (minDate <= addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays))) ? minDate:addDays(new Date(),parseInt(document.querySelector('body').dataset.maxdays))
-
-  new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'), {
-    display: {
-      viewMode: "calendar",
-      components: {
-        decades: true,
-        year: true,
-        month: true,
-        date: true,
-        hours: false,
-        minutes: false,
-        seconds: false
-      },
-      icons: {
-        time: 'far fa-clock',
-        date: 'far fa-calendar',
-        up: 'far fa-arrow-up',
-        down: 'far fa-arrow-down',
-        previous: 'fas fa-chevron-left',
-        next: 'fas fa-chevron-right',
-        today: 'far fa-calendar-check-o',
-        clear: 'far fa-trash',
-        close: 'far fa-times'
-      },
-
-    },
-    localization:{
-      format: 'L'
-    },
-    restrictions: {
-      minDate: new Date(),
-      maxDate: minDate,
-      disabledDates:[minDate,new Date()]
-    }
-
   });
-
+  });
   if (showError) {
     document.getElementById("dateOutOfRange").hidden = false
   }

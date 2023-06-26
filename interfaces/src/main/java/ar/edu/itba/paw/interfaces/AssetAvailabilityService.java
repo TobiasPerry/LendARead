@@ -14,7 +14,7 @@ public interface AssetAvailabilityService {
 
     void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException;
 
-    void changeReservability(final int assetId) throws AssetInstanceNotFoundException;
+    void changeReservability(final int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException;
 
     void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException;
 

@@ -20,6 +20,7 @@
         <i class="fas fa-pencil-alt"></i>
         <spring:message code="edit"/>
     </a>
+    <c:if test="${!haveActiveLendings}">
     <button id="changeIsReservable" class="btn-green" style="margin-top: 5px" type="submit">
         <c:choose>
             <c:when test="${asset.isReservable}">
@@ -30,6 +31,7 @@
             </c:otherwise>
         </c:choose>
     </button>
+    </c:if>
     <button id="deleteBtn" class="btn-red" style="margin-top: 5px" type="submit">
         <i class="fas fa-trash"></i>
         <spring:message code="delete"/>

@@ -124,8 +124,13 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void changeReservability(int assetId) throws AssetInstanceNotFoundException {
+    public void changeReservability(int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException {
+
         AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
+        if (this.getActiveLendings(assetInstance).size() > 0) {
+            LOGGER.error("Cannot change reservability of {}", assetId);
+            throw new AssetInstanceBorrowException("The assetInstance is not available");
+        }
         assetInstanceDao.setReservability(assetInstance, !assetInstance.getIsReservable());
         LOGGER.info("Asset {} has been chaned its reservability", assetId);
     }
