@@ -28,7 +28,7 @@ public class AddAssetForm {
 
     @Min(value = 0)
     private int id;
-    @Size(min = 0, max = 300)
+    @Size(min = 0, max = 1000)
     private String description;
 
     @Min(value = 1)

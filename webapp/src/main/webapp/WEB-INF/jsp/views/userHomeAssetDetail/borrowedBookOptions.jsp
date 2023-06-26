@@ -11,3 +11,6 @@
         <jsp:param name="lending" value="${lending}"/>
     </jsp:include>
 </c:if>
+<c:if test="${canReview}">
+    <a class="btn btn-green mt-3" href="<c:out value="/review/borrower/${lending.id}"/>"><spring:message code="makeReview"/></a>
+</c:if>
