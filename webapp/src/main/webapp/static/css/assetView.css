@@ -69,7 +69,7 @@
 }
 
 .island {
-    background: #f0f5f0;
+    background: #ececec;
     border-radius: 20px;
     padding: 1vw;
     box-shadow: 0 0 15px lightgray;
@@ -117,4 +117,65 @@
     display: flex;
     align-content: center;
     justify-content: center;
+}
+
+.future-lending-list {
+    background: #f0f5f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.future-lending-card {
+    display: flex;
+    align-items: center;
+    padding-inline: 1vw;
+    transition: all 0.2s ease-in-out;
+}
+
+.future-lending-card:not(:last-child) {
+    border-bottom: lightgray 1px solid;
+}
+
+.future-lending-card:hover {
+    transform: scale(1.01);
+}
+
+.future-lending-card > h4 {
+    margin-block: 0;
+}
+
+.future-lending-img-wrapper {
+    width: 5%;
+    display: flex;
+    margin-right: 1vw;
+    margin-block: 1vh;
+    align-content: center;
+    justify-content: center;
+}
+
+.future-lending-img-wrapper > img {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 100%;
+    object-fit: cover;
+    -webkit-box-shadow: 0 0 3px black;
+    box-shadow: 0 0 3px black;
+}
+
+.to_end {
+    margin-left: auto !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.future-lending-card-title {
+    margin-right: 1vw;
+}
+
+.vertical-div {
+    width: 1px;
+    height: 100%;
+    margin-inline: 2vw;
 }

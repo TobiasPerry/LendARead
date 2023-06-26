@@ -68,11 +68,11 @@
                     <h1 class="textOverflow"><c:out
                             value="${asset.book.name} "/>"><c:out
                             value="${asset.book.name} "/></h1>
-                    <h3 class="textOverflow">
+                    <h4 class="textOverflow">
                         <spring:message
                                 code="assetView.by"/>
                         <c:out
-                                value="${asset.book.author}"/></h3>
+                                value="${asset.book.author}"/></h4>
                     <h6>
                         <i>
                             <u><spring:message code="enum.${asset.physicalCondition}"/></u>
@@ -150,6 +150,29 @@
             <h1>Future Lendings</h1>
             <div class="future-lending-list">
 
+                <c:forEach var="futureLending" items="${futureLendings.list}">
+                    <a href="<c:url value="/lentBookDetails/${futureLending.id}"/>"
+                       style="text-decoration: none; color: black">
+                        <div class="future-lending-card">
+                            <c:if test="${futureLending.userReference.profilePhoto.id == null}">
+                                <c:set var="photoUrl" value="/static/images/profilePicPlaceholder.png"/>
+                            </c:if>
+                            <c:if test="${futureLending.userReference.profilePhoto.id != null}">
+                                <c:set var="photoUrl" value="/getImage/${futureLending.userReference.profilePhoto.id}"/>
+                            </c:if>
+                            <div class="future-lending-img-wrapper">
+                                <img src="<c:url value="${photoUrl}"/>"
+                                     alt="borrower profile pic">
+                            </div>
+                            <h4><c:out value="${futureLending.userReference.name}"/></h4>
+                            <h4 class="future-lending-card-title to_end bold">From</h4>
+                            <h4><c:out value="${futureLending.lendDate}"/></h4>
+                            <div class="vertical-div"></div>
+                            <h4 class="future-lending-card-title bold">To</h4>
+                            <h4><c:out value="${futureLending.devolutionDate}"/></h4>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
         </div>
     </div>
