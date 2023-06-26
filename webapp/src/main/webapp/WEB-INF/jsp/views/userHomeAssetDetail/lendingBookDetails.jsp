@@ -103,8 +103,21 @@
                                     value="${lending.lendDate}"/></h6>
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out
                                     value="${lending.devolutionDate}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="borrower_name"/>: <c:out
-                                    value="${lending.userReference.name}"/></h6>
+                            <h6 style="color: #7d7c7c; font-weight: bold">
+                                <a href="<c:url value="/user/${lending.userReference.id}"/>" style="color: inherit; text-decoration: none;">
+                                    <c:choose>
+                                        <c:when test="${lending.userReference.profilePhoto != null}">
+                                            <img class="rounded-circle img-hover-click" style="width: 25px; height: 25px" src="<c:url value="/getImage/${lending.userReference.profilePhoto.id}"/>" alt="profile picture"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="rounded-circle img-hover-click" style="width: 25px;" src="<c:url value="/static/images/user-placeholder.jpeg"/>" alt="profile picture"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                                <a href="<c:url value="/user/${lending.userReference.id}"/>" style="color: inherit; text-decoration: none;">
+                                    <span class="mx-2 text-clickable"><c:out value="${lending.userReference.name}"/></span>
+                                </a>
+                            </h6>
                             <c:if test="${lending.active.isRejected}">
                                 <h6 style="color: #7d7c7c; font-weight: bolder"><spring:message
                                         code="userHomeView.rejected"/></h6>
@@ -117,8 +130,21 @@
                         <c:when test="${table == 'borrowed_books'}">
                             <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="return_date"/>: <c:out
                                     value="${lending.devolutionDate}"/></h6>
-                            <h6 style="color: #7d7c7c; font-weight: bold"><spring:message code="owner_name"/>: <c:out
-                                    value="${lending.assetInstance.owner.name}"/></h6>
+                            <h6 style="color: #7d7c7c; font-weight: bold">
+                                <a href="<c:url value="/user/${lending.assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">
+                                    <c:choose>
+                                        <c:when test="${lending.assetInstance.owner.profilePhoto != null}">
+                                            <img class="rounded-circle img-hover-click" style="width: 25px; height: 25px" src="<c:url value="/getImage/${lending.assetInstance.owner.profilePhoto.id}"/>" alt="profile picture"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="rounded-circle img-hover-click" style="width: 25px;" src="<c:url value="/static/images/user-placeholder.jpeg"/>" alt="profile picture"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                                <a href="<c:url value="/user/${lending.assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">
+                                    <span class="mx-2 text-clickable"><c:out value="${lending.assetInstance.owner.name}"/></span>
+                                </a>
+                            </h6>
                         </c:when>
                     </c:choose>
                 </div>
