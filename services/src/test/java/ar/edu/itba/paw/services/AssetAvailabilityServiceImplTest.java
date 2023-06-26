@@ -7,6 +7,8 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
@@ -22,10 +24,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,8 +52,14 @@ public class AssetAvailabilityServiceImplTest {
     private static final String TELEPHONE = "";
     private static final String PASSWORD_ENCODED = "";
     private static final Behaviour BEHAVIOUR = Behaviour.BORROWER;
+    private static final LocalDate BORROW_DATE_TODAY = LocalDate.now();
+    private static final LocalDate BORROW_DATE_FUTURE = LocalDate.now().plusDays(1);
     private static final LocalDate DEVOLUTION_DATE_OK = LocalDate.now().plusDays(5);
     private static final LocalDate DEVOLUTION_DATE_WRONG = LocalDate.now().plusDays(30);
+
+    private static final LocalDate BORROW_DATE_THREE_WEEK = LocalDate.now().plusDays(21);
+    private static final LocalDate DEVOLUTION_DATE_ONE_WEEK = LocalDate.now().plusDays(7);
+    private static final LocalDate DEVOLUTION_DATE_FOUR_WEEK = LocalDate.now().plusDays(28);
     private static final UserImpl USER = new UserImpl(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
     private static final AssetInstanceImpl ASSET_INSTANCE = new AssetInstanceImpl(
             new BookImpl(0, "", "", "", ""),
@@ -61,6 +71,11 @@ public class AssetAvailabilityServiceImplTest {
             10,"DESC", false
     );
 
+    private static final List<LendingImpl> LENDING_LIST = new ArrayList<>(Arrays.asList(
+            new LendingImpl(ASSET_INSTANCE, USER, BORROW_DATE_TODAY, DEVOLUTION_DATE_ONE_WEEK, LendingState.ACTIVE),
+            new LendingImpl(ASSET_INSTANCE, USER, BORROW_DATE_THREE_WEEK, DEVOLUTION_DATE_FOUR_WEEK, LendingState.ACTIVE)
+    )
+    );
 
     @Test(expected = AssetInstanceBorrowException.class)
     public void borrowAssetNotPresentTest() throws Exception {
@@ -88,18 +103,18 @@ public class AssetAvailabilityServiceImplTest {
         Assert.fail();
     }
 
-//    @Test(expected = AssetInstanceBorrowException.class)
-//    public void borrowAssetNotPublicTest() throws Exception {
-//        // 1 - Precondiciones
-//        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
-//        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
-//
-//        // 2 - Ejercitación
-//        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_OK);
-//
-//        // 3 - Assertions
-//        Assert.fail();
-//    }
+    @Test(expected = AssetInstanceBorrowException.class)
+    public void borrowAssetNotPublicTest() throws Exception {
+        // 1 - Precondiciones
+        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
+        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
+
+        // 2 - Ejercitación
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, BORROW_DATE_FUTURE, DEVOLUTION_DATE_OK);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
 
     @Test(expected = DayOutOfRangeException.class)
     public void borrowAssetInvalidDateTest() throws Exception {
@@ -108,11 +123,37 @@ public class AssetAvailabilityServiceImplTest {
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
 
         // 2 - Ejercitación
-        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, DEVOLUTION_DATE_WRONG,DEVOLUTION_DATE_WRONG);
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, BORROW_DATE_TODAY, DEVOLUTION_DATE_WRONG);
 
         // 3 - Assertions
         Assert.fail();
     }
 
+    @Test(expected = AssetInstanceBorrowException.class)
+    public void borrowAssetNotReservable() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
+        // 1 - Precondiciones
+        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
+        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
+
+        // 2 - Ejercitación
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, BORROW_DATE_FUTURE, DEVOLUTION_DATE_OK);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
+
+    @Test(expected = AssetInstanceBorrowException.class)
+    public void borrowAssetOverlappingDates() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
+        // 1 - Precondiciones
+        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
+        when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
+        when(lendingDao.getActiveLendings(any())).thenReturn(LENDING_LIST);
+
+        // 2 - Ejercitación
+        assetAvailabilityService.borrowAsset(ASSET_ID, EMAIL, BORROW_DATE_THREE_WEEK, DEVOLUTION_DATE_FOUR_WEEK);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
 
 }

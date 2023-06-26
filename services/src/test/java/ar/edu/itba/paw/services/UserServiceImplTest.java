@@ -13,8 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,6 +26,8 @@ public class UserServiceImplTest {
     private UserServiceImpl us;
 
     private static final String EMAIL = "EMAIL";
+    private static final byte[] IMAGE = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    private static final int ID = 1;
     private static final Behaviour BEHAVIOUR = Behaviour.BORROWER;
 
 
@@ -43,12 +44,36 @@ public class UserServiceImplTest {
     }
 
     @Test(expected = UserNotFoundException.class)
+    public void getUserByIdTest() throws UserNotFoundException {
+        // 1 - Precondiciones
+        when(userDao.getUser(anyInt())).thenReturn(Optional.empty());
+
+        // 2 - Ejercitación
+        us.getUserById(ID);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
+
+    @Test(expected = UserNotFoundException.class)
     public void changeRoleTest() throws UserNotFoundException {
         // 1 - Precondiciones
         when(userDao.changeRole(anyString(), any())).thenReturn(false);
 
         // 2 - Ejercitación
         us.changeRole(EMAIL, BEHAVIOUR);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void changeUserProfilePic() throws UserNotFoundException {
+        // 1 - Precondiciones
+        when(userDao.getUser(anyInt())).thenReturn(Optional.empty());
+
+        // 2 - Ejercitación
+        us.changeUserProfilePic(ID, IMAGE);
 
         // 3 - Assertions
         Assert.fail();

@@ -83,7 +83,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
             ai.get().setAssetState(AssetState.PRIVATE);
         }else{
             List<LendingImpl> lending = lendingDao.getActiveLendings(ai.get());
-            if (verificarSolapamiento(borrowDate, devolutionDate, lending)) {
+            if (checkOverlapping(borrowDate, devolutionDate, lending)) {
                 LOGGER.error("AssetInstance is not available with id {}", assetId);
                 throw new AssetInstanceBorrowException("The assetInstance is not available");
             }
@@ -94,7 +94,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         LOGGER.info("Asset {} has been borrow", assetId);
     }
 
-    public static boolean verificarSolapamiento(LocalDate fechaInicial, LocalDate fechaFinal, List<LendingImpl> lendings) {
+    public static boolean checkOverlapping(LocalDate fechaInicial, LocalDate fechaFinal, List<LendingImpl> lendings) {
         for (LendingImpl lending : lendings) {
             LocalDate borrowDate = lending.getLendDate();
             LocalDate devolutionDate = lending.getDevolutionDate();

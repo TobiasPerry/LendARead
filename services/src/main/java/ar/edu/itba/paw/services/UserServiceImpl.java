@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserImpl createUser(final String email, String name, final String telephone, final String password) {
-
         return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
 
