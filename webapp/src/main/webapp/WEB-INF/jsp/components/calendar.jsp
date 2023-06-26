@@ -10,7 +10,7 @@
 
 <!-- Tempus Dominus Styles -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.7/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
-
+<div class="container-column">
 <small id="dateOutOfRange" class="text-danger small " hidden="true"><spring:message code="assetView.tiemerror"/></small>
 <form:label path="borrowDate"> <spring:message code="borrowDate"/></form:label>
 <div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker1" data-td-target-input="nearest"
@@ -20,8 +20,9 @@
     <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
     <i class="fas fa-calendar"></i>
   </span>
-   <form:errors path="borrowDate" cssClass="text-danger small" element="small"/>
 </div>
+<form:errors path="borrowDate" cssClass="text-danger small" element="small"/>
+
 <form:label path="borrowDate"> <spring:message code="devolutionDate"/></form:label>
 <div class="input-group log-event " style="margin-bottom: 6px" id="datetimepicker2" data-td-target-input="nearest"
      data-td-target-toggle="nearest">
@@ -30,8 +31,11 @@
     <span class="input-group-text" data-td-target="#datetimepicker2" data-td-toggle="datetimepicker">
     <i class="fas fa-calendar"></i>
   </span>
-    <form:errors path="devolutionDate" cssClass="text-danger small" element="small"/>
 </div>
+    <form:errors path="devolutionDate" cssClass="text-danger small" element="small"/>
+
+</div>
+
     <div id="lendings" hidden="hidden">
 <c:forEach var="listValue" items="${lendings}">
     <div hidden="hidden" data-lendate="${listValue.lendDate}" data-dev="${listValue.devolutionDate}"></div>
