@@ -28,6 +28,8 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
                 return "b.title";
             case "expected_retrieval_date":
                 return "l.devolutiondate";
+            case "expected_lending_date":
+                return "l.lenddate";
             case "borrower_name":
                 return "u.name";
             case "author":
@@ -47,6 +49,8 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
                 return "l.assetInstance.book.title";
             case "expected_retrieval_date":
                 return "l.devolutionDate";
+            case "expected_lending_date":
+                return "l.lendDate";
             case "borrower_name":
                 return "l.userReference.name";
             case "author":

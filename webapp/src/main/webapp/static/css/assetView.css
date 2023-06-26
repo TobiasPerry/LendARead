@@ -76,6 +76,7 @@
 }
 
 .asset-instance-info {
+    flex: 1;
     display: flex;
     flex-flow: row;
     margin-right: 2vw;

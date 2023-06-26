@@ -67,8 +67,7 @@
                 <img src="<c:url value="/getImage/${asset.image.id}"/>" class="mx-3" alt="Book cover">
                 <div class="asset-instance-text mx-2">
                     <h1 class="textOverflow"><c:out
-                            value="${asset.book.name} "/>"><c:out
-                            value="${asset.book.name} "/></h1>
+                            value="${asset.book.name}"/></h1>
                     <h4 class="textOverflow">
                         <spring:message
                                 code="assetView.by"/>
