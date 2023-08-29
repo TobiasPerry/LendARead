@@ -44,7 +44,18 @@
     <org.hsqldb.version>2.5.1</org.hsqldb.version>
     <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
     <org.hibernate.version>5.1.0.Final</org.hibernate.version>
+    <jersey.version>3.0-SNAPSHOT</jersey.version>
   </properties>
+  <repositories>
+    <repository>
+      <id>jersey-snapshot</id>
+      <url>https://maven.java.net/content/repositories/snapshots/</url>
+      <name>Jersey Snapshots</name>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
 
@@ -211,6 +222,7 @@
         <scope>test</scope>
       </dependency>
 
+
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
@@ -244,8 +256,91 @@
         <artifactId>hibernate-java8</artifactId>
         <version>${org.hibernate.version}</version>
       </dependency>
-    </dependencies>
 
+
+
+      <!-- JERSEY -->
+      <dependency>
+        <groupId>org.glassfish.jersey.containers</groupId>
+        <artifactId>jersey-container-servlet-core</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.ext</groupId>
+        <artifactId>jersey-bean-validation</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <!-- Queremos usar la de Spring 4 -->
+        <groupId>org.glassfish.jersey.ext</groupId>
+        <artifactId>jersey-spring4</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <exclusion>
+            <!-- Ya tenemos la de Bean validation, no queremos la que provee -->
+            <!-- La versión incluida requiere Java 9+ -->
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.hk2</groupId>
+        <artifactId>hk2</artifactId>
+        <version>2.5.0-b05</version> <!-- última versión compatible con Java 8 -->
+        <exclusions>
+          <exclusion>
+            <groupId>org.glassfish.hk2.external</groupId>
+            <artifactId>bean-validator</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-server</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!-- JERSEY JSON -->
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-moxy</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <!-- Not Java 10 compliant -->
+          <exclusion>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!-- Java 10 compatible -->
+      <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>org.eclipse.persistence.moxy</artifactId>
+        <version>2.7.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-jaxb</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+    </dependencies>
 
   </dependencyManagement>
     
