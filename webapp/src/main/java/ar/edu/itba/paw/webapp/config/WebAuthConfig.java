@@ -21,15 +21,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
@@ -58,6 +62,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     LenderReviewVoter lenderReviewVoter;
+    @Autowired
+    private  JwtTokenFilter jwtTokenFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -102,30 +109,38 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
-        http.sessionManagement().invalidSessionUrl("/")
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new UnauthorizedRequestHandler())
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .accessDecisionManager(accessDecisionManager())
+                .antMatchers("/users/**").authenticated()
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
                 .antMatchers("/addAsset","/lentBookDetails/**").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**","/review/lenderAdd").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/review/borrowerAdd").hasRole("BORROWER")
                 .antMatchers("/userHome","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**","/userLocations/**").authenticated()
-                .antMatchers("/**").permitAll()
-                .and().formLogin().loginPage("/login")
-                .usernameParameter("email").passwordParameter("password")
-                .defaultSuccessUrl("/discovery",false)
-                .successHandler(authSuccessHandler)
-                .and().rememberMe().rememberMeParameter("rememberme")
-                .userDetailsService(userDetailsService)
-                .key(environment.getProperty("persistence.salt"))
-                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30)).
-                and().logout()
-                .deleteCookies("JSESSIONID")
-                .deleteCookies("remember-me")
-                .logoutUrl("/logout").
-                logoutSuccessUrl("/").
-                and().exceptionHandling().accessDeniedPage("/errors/403")
-                .and().csrf().disable();
+                .antMatchers("/**")
+                .permitAll().and().cors().and().csrf().disable()
+                .addFilterBefore(
+                jwtTokenFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
+
+    }
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
     @Bean
     public AuthSuccessHandler authSuccessHandler() {
