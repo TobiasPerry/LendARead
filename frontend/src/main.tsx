@@ -1,4 +1,5 @@
 import * as React from "react";
+//@ts-ignore
 import * as ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
