@@ -7,14 +7,12 @@ import ar.edu.itba.paw.webapp.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 @Path("users")
 @Component
@@ -29,14 +27,15 @@ public class UserController {
         final List<User> allUsers = us.getAll();
         return Response.ok(new UserList(allUsers)).build();
     }
+    */
     @POST
     @Produces(value = { MediaType.APPLICATION_JSON, })
     public Response createUser(final UserDTO userDto) {
-        final User user = us.register(userDto.getUsername(), userDto.getPassword());
+        final UserImpl user = us.createUser(userDto.getEmail(),userDto.getUserName(),userDto.getTelephone(), userDto.getPassword());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
         return Response.created(uri).build();
-    }*/
+    }
     @GET
     @Path("/{id}")
     @Produces(value = { MediaType.APPLICATION_JSON, })

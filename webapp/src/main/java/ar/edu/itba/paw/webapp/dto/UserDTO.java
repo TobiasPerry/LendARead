@@ -10,9 +10,14 @@ public class UserDTO {
     private String email;
 
     private String image;
+
+    private String password;
+
+    private String telephone;
     public static UserDTO fromUser(UriInfo url, UserImpl user) {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
+        dto.telephone = user.getTelephone();
         dto.email = user.getEmail();
         dto.image = url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
@@ -41,5 +46,17 @@ public class UserDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    public void setPassword(String password){
+        this.password = password;
+    }
+    public String getPassword(){
+        return this.password;
+    }
+    public void setTelephone(String telephone){
+        this.telephone = telephone;
+    }
+    public String getTelephone(){
+        return this.telephone;
     }
 }

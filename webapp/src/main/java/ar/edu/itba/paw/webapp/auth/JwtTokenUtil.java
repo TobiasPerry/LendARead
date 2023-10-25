@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
-    private final String jwtSecret = "secret";
+    private final String jwtSecret = "secretaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
     private final int jwtExpirationMs= 86400000;
 

@@ -41,7 +41,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-
         // Get jwt token and validate
         final String token = header.split(" ")[1].trim();
         if (!jwtTokenUtil.validateJwtToken(token)) {
@@ -64,9 +63,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request)
         );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(request, response);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         response.setHeader(HttpHeaders.AUTHORIZATION, header);

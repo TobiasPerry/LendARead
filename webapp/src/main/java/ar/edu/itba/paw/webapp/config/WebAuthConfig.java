@@ -64,6 +64,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     LenderReviewVoter lenderReviewVoter;
     @Autowired
     private  JwtTokenFilter jwtTokenFilter;
+    @Autowired
+    private BasicTokenFilter basicTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -116,7 +118,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new UnauthorizedRequestHandler())
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
                 .accessDecisionManager(accessDecisionManager())
-                .antMatchers("/users/**").authenticated()
+                .antMatchers(HttpMethod.GET,"/users/**").authenticated()
                 .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
                 .antMatchers("/addAsset","/lentBookDetails/**").hasRole("LENDER")
                 .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**","/review/lenderAdd").hasRole("LENDER")
@@ -124,6 +126,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/userHome","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**","/userLocations/**").authenticated()
                 .antMatchers("/**")
                 .permitAll().and().cors().and().csrf().disable()
+                .addFilterBefore(
+                        basicTokenFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(
                 jwtTokenFilter,
                 UsernamePasswordAuthenticationFilter.class
