@@ -1,26 +1,34 @@
 package ar.edu.itba.paw.webapp.auth;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
+import javax.crypto.SecretKey;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
-    private final String jwtSecret = "secretaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    private final SecretKey jwtSecret ;
 
-    private final int jwtExpirationMs= 86400000;
+    private final int jwtExpirationMs= 7 * 24 * 60 * 60 * 1000;
 
+    public JwtTokenUtil(Resource jwtKeyResource) throws IOException {
+        this.jwtSecret = Keys.hmacShaKeyFor(
+                FileCopyUtils.copyToString(new InputStreamReader(jwtKeyResource.getInputStream()))
+                        .getBytes(StandardCharsets.UTF_8)
+        );
+    }
     public String generateJwtToken(Authentication authentication) {
-
         PawUserDetails userPrincipal = (PawUserDetails) authentication.getPrincipal();
-
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
@@ -31,7 +39,7 @@ public class JwtTokenUtil {
     }
 
     private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        return jwtSecret;
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -40,12 +48,7 @@ public class JwtTokenUtil {
     }
 
     public boolean validateJwtToken(String authToken) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
-            return true;
-        } catch (MalformedJwtException e) {
-
-        }
-        return false;
+        Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
+        return true;
     }
 }

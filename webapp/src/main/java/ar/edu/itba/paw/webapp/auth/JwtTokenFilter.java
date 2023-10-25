@@ -41,15 +41,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        // Get jwt token and validate
+        // Get jwt.salt token and validate
         final String token = header.split(" ")[1].trim();
-        if (!jwtTokenUtil.validateJwtToken(token)) {
+        try {
+            jwtTokenUtil.validateJwtToken(token);
+        }
+        catch(Exception e){
             chain.doFilter(request, response);
             return;
         }
 
         // Get user identity and set it on the spring security context
-        UserDetails userDetails = null;
+        UserDetails userDetails;
 
         userDetails = pawUserDetailsService.loadUserByUsername(jwtTokenUtil.getUserNameFromJwtToken(token));
 
