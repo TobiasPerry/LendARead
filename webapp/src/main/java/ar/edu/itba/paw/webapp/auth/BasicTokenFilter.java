@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth;
 
-import ar.edu.itba.paw.interfaces.UserService;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,17 +23,12 @@ import static org.thymeleaf.util.StringUtils.isEmpty;
 public class BasicTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
 
-    private final PawUserDetailsService pawUserDetailsService;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil,
-                          UserService userService,PawUserDetailsService pawUserDetailsService, AuthenticationManager authenticationManager) {
+    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.userService = userService;
-        this.pawUserDetailsService = pawUserDetailsService;
         this.authenticationManager = authenticationManager;
     }
 

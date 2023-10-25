@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth;
 
-import ar.edu.itba.paw.interfaces.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +20,10 @@ import static org.thymeleaf.util.StringUtils.isEmpty;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
 
     private final PawUserDetailsService pawUserDetailsService;
-    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil,
-                          UserService userService,PawUserDetailsService pawUserDetailsService) {
+    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, PawUserDetailsService pawUserDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.userService = userService;
         this.pawUserDetailsService = pawUserDetailsService;
     }
 

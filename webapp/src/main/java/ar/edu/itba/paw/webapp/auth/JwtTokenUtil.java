@@ -19,7 +19,7 @@ import java.util.Date;
 public class JwtTokenUtil {
     private final SecretKey jwtSecret ;
 
-    private final int jwtExpirationMs= 7 * 24 * 60 * 60 * 1000;
+    private final int JWT_VALID_PIRIOD = 7 * 24 * 60 * 60 * 1000;
 
     public JwtTokenUtil(Resource jwtKeyResource) throws IOException {
         this.jwtSecret = Keys.hmacShaKeyFor(
@@ -32,7 +32,7 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .setExpiration(new Date((new Date()).getTime() + JWT_VALID_PIRIOD))
                 .claim("authorities", userPrincipal.getAuthorities())
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();

@@ -163,7 +163,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
         @Override
-    public	void configure(final WebSecurity web)	throws	Exception {
+    public	void configure(final WebSecurity web){
         web.ignoring().antMatchers("/static/css/**", "/static/js/**", "/static/images/**", "/favicon.ico", "/errors/403");
     }
     @Bean
