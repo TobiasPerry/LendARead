@@ -34,7 +34,7 @@ public interface UserService {
 
     boolean isCurrent(int userId);
 
-    void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException;
+    int changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException;
 
     @Scheduled
     void deletePastChangePasswordTokens();

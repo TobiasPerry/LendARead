@@ -2,9 +2,13 @@ package ar.edu.itba.paw.webapp.dto;
 
 
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.ws.rs.core.UriInfo;
 
+@Getter
+@Setter
 public class UserDTO {
     private String userName;
     private String email;
@@ -24,39 +28,4 @@ public class UserDTO {
 
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-    public void setPassword(String password){
-        this.password = password;
-    }
-    public String getPassword(){
-        return this.password;
-    }
-    public void setTelephone(String telephone){
-        this.telephone = telephone;
-    }
-    public String getTelephone(){
-        return this.telephone;
-    }
 }

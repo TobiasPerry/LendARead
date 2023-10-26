@@ -1,12 +1,24 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.AssetExistanceService;
+import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
+import ar.edu.itba.paw.webapp.form.ChangePasswordForm;
+import ar.edu.itba.paw.webapp.form.RegisterForm;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
+import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -19,26 +31,32 @@ import java.net.URI;
 public class UserController {
     @Autowired
     private UserService us;
+    @Autowired
+    private AssetExistanceService ais;
     @Context
     private UriInfo uriInfo;
-  /*  @GET
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response listUsers() throws {
-        final List<User> allUsers = us.getAll();
-        return Response.ok(new UserList(allUsers)).build();
+    @Autowired
+    private UserAssetInstanceService uais;
+
+    @PATCH
+    @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
+    @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
+    public Response changePassword(@Valid @NotEmpty final ChangePasswordForm changePasswordForm){
+        us.changePassword(changePasswordForm.getPassword(),changePasswordForm.getToken());
+        return Response.ok().build();
     }
-    */
     @POST
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response createUser(final UserDTO userDto) {
-        final UserImpl user = us.createUser(userDto.getEmail(),userDto.getUserName(),userDto.getTelephone(), userDto.getPassword());
+    @Produces(value = { Vnd.VND_USER })
+    @Consumes(value = { Vnd.VND_USER })
+    public Response createUser(@Valid @NotEmpty final RegisterForm registerForm) {
+        final UserImpl user = us.createUser(registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone(), registerForm.getPassword());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
         return Response.created(uri).build();
     }
     @GET
     @Path("/{id}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
+    @Produces(value = { Vnd.VND_USER })
     public Response getById(@PathParam("id") final long id) throws UserNotFoundException {
         final UserImpl user = us.getUserById(Math.toIntExact(id));
         if (user != null) {
@@ -47,11 +65,39 @@ public class UserController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
-    /*@DELETE
-    @Path("/{id}")
-    @Produces(value = { MediaType.APPLICATION_JSON, })
-    public Response deleteById(@PathParam("id") final long id) {
-        us.deleteById(id);
-        return Response.noContent().build();
-    }*/
+    @POST
+    @Path("/reset-password-token")
+    @Produces(value = { Vnd.VND_RESET_PASSWORD })
+    @Consumes(value = { Vnd.VND_RESET_PASSWORD })
+    public Response createChangePasswordToken() {
+        us.createChangePasswordToken(us.getCurrentUser());
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/{id}/image")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+    public Response changeUserProfilePic(@PathParam("id") final long id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
+        int photoId = us.changeUserProfilePic(Math.toIntExact(id),imageBytes);
+        return Response.noContent().contentLocation(uriInfo.getBaseUriBuilder().path("images").path(String.valueOf(photoId)).build()).build();
+    }
+
+    @GET
+    @Path("/{id}/image")
+    @Produces(value = {MediaType.MULTIPART_FORM_DATA})
+    public Response getUserProfilePic(@PathParam("id") final long id) throws UserNotFoundException {
+        UserImpl user = us.getUserById(Math.toIntExact(id));
+        if (user.getProfilePhoto() == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.noContent().contentLocation(uriInfo.getBaseUriBuilder().path("images").path(String.valueOf(user.getId())).build()).build();
+    }
+
+    @GET
+    @Path("/{id}/assetsInstances")
+    public Response getUserAssetsInstances(@PathParam("id") final long id,@QueryParam("page") int page,@QueryParam("items") int items,@QueryParam("filterAtribuite") String filterAtribuite,@QueryParam("filterValue") String filterValue, @QueryParam("sortAtribuite") String sortAtribuite,@QueryParam("sortValue") String sortValue) throws UserNotFoundException {
+       PageUserAssets<AssetInstanceImpl> ai =  uais.getUserAssetsInstances(page,items,us.getUserById(Math.toIntExact(id)).getEmail(),filterAtribuite,filterValue,sortAtribuite,sortValue);
+       return Response.ok(ai).build();
+    }
+
 }

@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException {
+    public int changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException {
         Optional<UserImpl> maybeUser = userDao.getUser(userId);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
@@ -192,6 +192,7 @@ public class UserServiceImpl implements UserService {
         UserImpl user = maybeUser.get();
         user.setProfilePhoto(image);
         LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
+        return image.getId();
     }
 
     @Override
