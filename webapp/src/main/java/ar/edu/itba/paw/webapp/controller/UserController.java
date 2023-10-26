@@ -20,10 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 
 @Path("users")
@@ -75,22 +72,23 @@ public class UserController {
     }
 
     @PUT
-    @Path("/{id}/image")
+    @Path("/{id}/profilePic")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response changeUserProfilePic(@PathParam("id") final long id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
         int photoId = us.changeUserProfilePic(Math.toIntExact(id),imageBytes);
-        return Response.noContent().contentLocation(uriInfo.getBaseUriBuilder().path("images").path(String.valueOf(photoId)).build()).build();
+        return Response.noContent().contentLocation(uriInfo.getRequestUri()).build();
     }
 
     @GET
-    @Path("/{id}/image")
-    @Produces(value = {MediaType.MULTIPART_FORM_DATA})
+    @Path("/{id}/profilePic")
+    @Produces(value = {"image/webp"})
     public Response getUserProfilePic(@PathParam("id") final long id) throws UserNotFoundException {
-        UserImpl user = us.getUserById(Math.toIntExact(id));
-        if (user.getProfilePhoto() == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.noContent().contentLocation(uriInfo.getBaseUriBuilder().path("images").path(String.valueOf(user.getId())).build()).build();
+        final UserImpl user = us.getUserById(Math.toIntExact(id));
+
+        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto()));
+
+        byte[] profileImage =   user.getProfilePhoto().getPhoto();
+        return Response.ok(profileImage).tag(eTag).build();
     }
 
     @GET
