@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.oldControllers;
+/*package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -115,3 +115,4 @@ final public class UserHomeViewController {
     }
 
 }
+*/
