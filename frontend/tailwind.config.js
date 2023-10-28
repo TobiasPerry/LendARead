@@ -11,6 +11,7 @@ export default {
         'fluorescent-green': '#16df7e',
         'gray': '#D0DCD0',
         'dark-green': '#2B3B2B',
+        'black-lend-a-read': '#111711',
         'light-green': '#D1E9C3',
       },
     }
