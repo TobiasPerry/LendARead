@@ -13,4 +13,6 @@ public interface AbstractPage {
     default boolean previousPage() {
         return getCurrentPage() != 1;
     }
+
+    default int getFirstPage() {return 1;}
 }

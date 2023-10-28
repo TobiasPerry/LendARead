@@ -52,9 +52,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         userDetails = pawUserDetailsService.loadUserByUsername(jwtTokenUtil.getUserNameFromJwtToken(token));
 
-
         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails.getAuthorities(),
+                userDetails,
                 userDetails.getPassword(),
                 userDetails.getAuthorities()
         );

@@ -4,9 +4,7 @@ import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
-import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
 import ar.edu.itba.paw.webapp.form.ChangePasswordForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
@@ -38,7 +36,7 @@ public class UserController {
     @PATCH
     @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
-    public Response changePassword(@Valid @NotEmpty final ChangePasswordForm changePasswordForm){
+    public Response changePassword(@Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
         us.changePassword(changePasswordForm.getPassword(),changePasswordForm.getToken());
         return Response.ok().build();
     }
@@ -91,11 +89,6 @@ public class UserController {
         return Response.ok(profileImage).tag(eTag).build();
     }
 
-    @GET
-    @Path("/{id}/assetsInstances")
-    public Response getUserAssetsInstances(@PathParam("id") final long id,@QueryParam("page") int page,@QueryParam("items") int items,@QueryParam("filterAtribuite") String filterAtribuite,@QueryParam("filterValue") String filterValue, @QueryParam("sortAtribuite") String sortAtribuite,@QueryParam("sortValue") String sortValue) throws UserNotFoundException {
-       PageUserAssets<AssetInstanceImpl> ai =  uais.getUserAssetsInstances(page,items,us.getUserById(Math.toIntExact(id)).getEmail(),filterAtribuite,filterValue,sortAtribuite,sortValue);
-       return Response.ok(ai).build();
-    }
+
 
 }

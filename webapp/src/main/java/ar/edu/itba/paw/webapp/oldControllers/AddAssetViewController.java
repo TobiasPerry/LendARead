@@ -69,7 +69,7 @@ final public class AddAssetViewController {
         UserImpl user = userService.getUser(userService.getCurrentUser());
 
         try {
-            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, user, locationsService.getLocation(addAssetForm.getId())), parsedImage);
+            AssetInstanceImpl assetInstance = assetExistanceService.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(addAssetForm, user, locationsService.getLocation(1)), parsedImage);
             LOGGER.info("AssetInstance has ben created");
             return new ModelAndView("redirect:/addAssetView?succes=true&&id=" + assetInstance.getId());
         } catch (InternalErrorException e) {

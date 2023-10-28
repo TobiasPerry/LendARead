@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,9 +28,12 @@ public class BasicTokenFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+    private final PawUserDetailsService pawUserDetailsService;
+
+    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
+        this.pawUserDetailsService = pawUserDetailsService;
     }
 
     @Override
@@ -55,14 +59,19 @@ public class BasicTokenFilter extends OncePerRequestFilter {
             throw new BadCredentialsException("Failed to decode basic authentication token");
         }
         try{
+            UserDetails userDetails;
+
+            userDetails = pawUserDetailsService.loadUserByUsername(username);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        username,
-                        password
+                        userDetails,
+                        password,
+                        userDetails.getAuthorities()
                 )
 
         );
         response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateJwtToken(authentication));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch (Exception e){
             SecurityContextHolder.clearContext();

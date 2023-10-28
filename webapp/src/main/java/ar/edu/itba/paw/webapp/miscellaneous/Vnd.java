@@ -12,4 +12,8 @@ public class Vnd {
 
     public static final String VND_RESET_PASSWORD = VND_PREFIX + "resetPassword.v1" + VND_SUFFIX;
 
+    public static final String VND_ASSET_INSTANCE_SEARCH = VND_PREFIX + "assetInstanceSearch.v1" + VND_SUFFIX;
+
+    public static final String VND_ASSET_INSTANCE = VND_PREFIX + "assetInstance.v1" + VND_SUFFIX;
+
 }
