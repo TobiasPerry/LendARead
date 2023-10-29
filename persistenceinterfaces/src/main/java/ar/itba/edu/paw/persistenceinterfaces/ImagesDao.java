@@ -8,4 +8,6 @@ public interface ImagesDao {
     ImageImpl addPhoto(final byte[] photo);
 
     Optional<byte []> getPhoto(int id);
+
+    ImageImpl getImage(int id);
 }

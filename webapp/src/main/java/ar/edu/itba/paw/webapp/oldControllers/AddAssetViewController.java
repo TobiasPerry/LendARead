@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
@@ -111,3 +112,4 @@ final public class AddAssetViewController {
         model.addAttribute("path", NAV_BAR_PATH);
     }
 }
+*/

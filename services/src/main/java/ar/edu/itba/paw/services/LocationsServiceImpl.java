@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
@@ -55,8 +56,12 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public LocationImpl getLocation(int locationId) {
-        return locationsDao.getLocation(locationId);
+    public LocationImpl getLocation(int locationId) throws LocationNotFoundException {
+        LocationImpl location= locationsDao.getLocation(locationId);
+        if (location == null) {
+            throw new LocationNotFoundException("Location not found");
+        }
+        return location;
     }
 
     @Override
@@ -94,7 +99,7 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public void deleteLocationById(int locationId) throws UserNotFoundException {
+    public void deleteLocationById(int locationId) throws UserNotFoundException, LocationNotFoundException {
         if(locationId != -1) {
             deleteLocation(getLocation(locationId));
             LOGGER.info("Location {} deleted", locationId);

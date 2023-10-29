@@ -11,18 +11,30 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 public class AssetInstanceForm {
+
     @Size(min = 1, max = 100)
+    @FormDataParam("physicalCondition")
     private String physicalCondition;
 
-    private int id;
 
     @Min(value = 1)
+    @FormDataParam("maxDays")
     private Integer maxDays;
 
     @Size(min = 0, max = 1000)
+    @FormDataParam("description")
     private String description;
 
+    @Min(value = 0)
+    @FormDataParam("locationId")
     private Integer locationId;
+
+    @Min(value = 1)
+    @FormDataParam("photoId")
+    private Integer photoId;
+
+    @FormDataParam("isReservable")
+    private Boolean isReservable;
 
     @Image
     @FormDataParam("image")
@@ -30,5 +42,8 @@ public class AssetInstanceForm {
 
     @FormDataParam("image")
     private byte[] imageBytes;
+
+
+
 
 }

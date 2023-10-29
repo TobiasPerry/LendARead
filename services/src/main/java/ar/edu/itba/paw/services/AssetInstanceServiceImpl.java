@@ -1,12 +1,14 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.ImageNotFoundException;
+import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.interfaces.ImageService;
+import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,11 +39,17 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     private final ImagesDao imagesDao;
 
+    private final LocationsService locationsService;
+
+    private final ImageService imageService;
+
     @Autowired
-    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao) {
+    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final ImageService imageService) {
         this.assetDao = assetDao;
         this.assetInstanceDao = assetInstanceDao;
         this.imagesDao = imagesDao;
+        this.locationsService = locationsService;
+        this.imageService = imageService;
     }
 
     @Transactional(readOnly = true)
@@ -104,22 +111,20 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final PhysicalCondition physicalCondition, final Integer maxLendingDays, final LocationImpl location,final byte[] photo,final String description) throws AssetInstanceNotFoundException{
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable) throws AssetInstanceNotFoundException, LocationNotFoundException, ImageNotFoundException {
         AssetInstanceImpl assetInstance = getAssetInstance(id);
+        if (location.isPresent())
+            assetInstance.setLocation(locationsService.getLocation(location.get()));
+        if (image != null)
+            assetInstance.setImage(imagesDao.addPhoto(image));
+        description.ifPresent(assetInstance::setDescription);
+        physicalCondition.ifPresent(assetInstance::setPhysicalCondition);
+        maxLendingDays.ifPresent(assetInstance::setMaxLendingDays);
+        isReservable.ifPresent(assetInstance::setIsReservable);
 
-        if (!assetInstance.getLocation().equals(location)) {
-            assetInstance.setLocation(location);
-        }
-        if (photo.length > 0 &&!Arrays.equals(assetInstance.getImage().getPhoto(), photo)){
-            ImageImpl image = imagesDao.addPhoto(photo);
-            assetInstance.setImage(image);
-        }
-        assetInstance.setDescription(description);
-        assetInstance.setMaxLendingDays(maxLendingDays);
-        assetInstance.setPhysicalCondition(physicalCondition);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<AssetInstanceImpl> getSimilarAssetsInstances(AssetInstanceImpl ai, int pageNum, int iteamPerPage) {
         return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());

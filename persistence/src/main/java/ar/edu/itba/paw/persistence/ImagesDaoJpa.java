@@ -27,5 +27,10 @@ public class ImagesDaoJpa implements ImagesDao {
         ImageImpl image = entityManager.find(ImageImpl.class, id);
         return Optional.ofNullable(image).map(ImageImpl::getPhoto);
     }
+
+    @Override
+    public ImageImpl getImage(int id) {
+        return entityManager.find(ImageImpl.class, id);
+    }
 }
 

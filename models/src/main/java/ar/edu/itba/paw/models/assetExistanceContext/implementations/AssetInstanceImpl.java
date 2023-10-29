@@ -200,4 +200,8 @@ public class AssetInstanceImpl{
     public void setImage(ImageImpl image) {
         this.image = image;
     }
+    public void setIsReservable(boolean isReservable) {
+        this.isReservable = isReservable;
+    }
+
 }

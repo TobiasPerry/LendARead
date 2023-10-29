@@ -1,12 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.InternalErrorException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
@@ -30,6 +27,7 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Path("assetInstance")
@@ -110,26 +108,20 @@ public class AssetInstanceController {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
-    public Response createAssetInstance( @Valid @BeanParam final AddAssetForm assetInstanceForm) throws UserNotFoundException, InternalErrorException {
-        //TODO CHECK THE @VALID BAD REQUEST
-        AssetInstanceImpl assetInstance = aes.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(assetInstanceForm, us.getUser(us.getCurrentUser()), ls.getLocation(1)), assetInstanceForm.getImageBytes());
+    public Response createAssetInstance( @Valid @BeanParam final AddAssetForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
+        AssetInstanceImpl assetInstance = aes.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(assetInstanceForm, us.getUser(us.getCurrentUser()), ls.getLocation(assetInstanceForm.getLocationId())), assetInstanceForm.getImageBytes());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
         return Response.created(uri).build();
     }
 
-    //TODO change ALL the PATCH
     @PATCH
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
-    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = ais.getAssetInstance(id);
-        LocationImpl location = ls.getLocation(assetInstanceForm.getLocationId());
-        ais.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getMaxDays(),location,assetInstanceForm.getImageBytes(),assetInstanceForm.getDescription());
-        final URI uri = uriInfo.getAbsolutePathBuilder()
-                .path(String.valueOf(assetInstance.getId())).build();
-        return Response.created(uri).build();
+    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
+        ais.changeAssetInstance(id, Optional.ofNullable(assetInstanceForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstanceForm.getMaxDays()), Optional.ofNullable(assetInstanceForm.getLocationId()), assetInstanceForm.getImageBytes(), Optional.ofNullable(assetInstanceForm.getDescription()), Optional.ofNullable(assetInstanceForm.getIsReservable()));
+        return Response.noContent().build();
     }
 
 }
