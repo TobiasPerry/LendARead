@@ -11,7 +11,6 @@ import javax.ws.rs.core.UriInfo;
 public class AssetDTO {
     private int id;
     private String isbn;
-
     private String author;
     private String title;
     private String language;
