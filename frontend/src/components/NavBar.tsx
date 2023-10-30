@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import {Fragment, useState} from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import {useTranslation} from "react-i18next";
@@ -12,7 +12,13 @@ function classNames(...classes) {
 export default function NavBar() {
 
     const { t, i18n } = useTranslation();
+    const [language, setLanguage] = useState('en');
 
+    const toggleLanguage = () => {
+        const next_language = language === 'en' ? 'es' : 'en';
+        i18n.changeLanguage(next_language);
+        setLanguage(next_language);
+    };
     const navigation = [
         { name: t('Dashboard'), href: '#', current: true },
         { name: t('Team'), href: '#', current: false },
@@ -135,10 +141,7 @@ export default function NavBar() {
                                     </Transition>
                                 </Menu>
                             </div>
-                            <div className="ml-2 mr-2">
-                                <button onClick={() => changeLanguage("es")}>es</button>
-                                <button onClick={() => changeLanguage("en")}>en</button>
-                            </div>
+                                <button className="bg-gray-700 text-xs py-1 px-2 text-white rounded border-0"onClick={toggleLanguage}>{language}</button>
                         </div>
                     </div>
 
