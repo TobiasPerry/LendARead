@@ -1,4 +1,9 @@
 {
-  "home_greeting": "Bienvenido! <0>{{username}}<0>",
-  "bye": "chau"
+  "Open main menu": "Abrir menu principal",
+  "Your profile": "Tu perfil",
+  "Dashboard": "Dashboard",
+  "Team": "Equipo",
+  "Projects": "Proyectos",
+  "Calendar": "Calendario"
+
 }

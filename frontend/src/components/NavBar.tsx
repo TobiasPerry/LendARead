@@ -1,19 +1,29 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import {useTranslation} from "react-i18next";
 
-const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
-]
 
+// @ts-ignore
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function NavBar() {
+
+    const { t, i18n } = useTranslation();
+
+    const navigation = [
+        { name: t('Dashboard'), href: '#', current: true },
+        { name: t('Team'), href: '#', current: false },
+        { name: t('Projects'), href: '#', current: false },
+        { name: t('Calendar'), href: '#', current: false },
+    ]
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
+
     return (
         <Disclosure as="nav" className="bg-black-lend-a-read">
             {({ open }) => (
@@ -24,7 +34,7 @@ export default function NavBar() {
                                 {/* Mobile menu button*/}
                                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                                     <span className="absolute -inset-0.5" />
-                                    <span className="sr-only">Open main menu</span>
+                                    <span className="sr-only">{t('Open main menu')}</span>
                                     {open ? (
                                         <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                                     ) : (
@@ -97,7 +107,7 @@ export default function NavBar() {
                                                         href="#"
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
-                                                        Your Profile
+                                                        {t('Your profile')}
                                                     </a>
                                                 )}
                                             </Menu.Item>
@@ -125,6 +135,10 @@ export default function NavBar() {
                                     </Transition>
                                 </Menu>
                             </div>
+                            <div className="ml-2 mr-2">
+                                <button onClick={() => changeLanguage("es")}>es</button>
+                                <button onClick={() => changeLanguage("en")}>en</button>
+                            </div>
                         </div>
                     </div>
 
@@ -146,8 +160,12 @@ export default function NavBar() {
                             ))}
                         </div>
                     </Disclosure.Panel>
+
+
+
                 </>
             )}
+
         </Disclosure>
     )
 }

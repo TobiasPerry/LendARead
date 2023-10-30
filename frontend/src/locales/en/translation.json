@@ -1,4 +1,8 @@
 {
-  "home_greeting": "Welcome back... <0>{{username}}<0>",
-  "bye": "byee "
+  "Open main menu": "Open main menu",
+  "Your profile": "Your Profile",
+  "Dashboard": "Dashboard",
+  "Team": "Team",
+  "Projects": "Projects",
+  "Calendar": "Calendar"
 }
