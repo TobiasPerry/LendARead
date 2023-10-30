@@ -18,7 +18,6 @@ public class LocationDTO {
     private String province;
     private String country;
     private String userReference;
-    private boolean active;
 
     public static LocationDTO fromLocation(UriInfo url, LocationImpl location) {
         LocationDTO dto = new LocationDTO();
@@ -30,7 +29,6 @@ public class LocationDTO {
         dto.province = location.getProvince();
         dto.country = location.getCountry();
         dto.userReference = UserDTO.reference(url, location.getUser());
-        dto.active = location.isActive();
         return dto;
     }
     public static String reference(UriInfo url, LocationImpl location) {

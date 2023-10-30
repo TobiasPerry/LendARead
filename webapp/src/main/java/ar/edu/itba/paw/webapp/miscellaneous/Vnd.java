@@ -16,4 +16,6 @@ public class Vnd {
 
     public static final String VND_ASSET_INSTANCE = VND_PREFIX + "assetInstance.v1" + VND_SUFFIX;
 
+    public static final String VND_LOCATION = VND_PREFIX + "location.v1" + VND_SUFFIX;
+
 }

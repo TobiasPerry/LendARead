@@ -6,11 +6,12 @@ import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LocationsService {
     void addLocation(final LocationImpl lc);
 
-    void addLocation(final int id, final String name, final String locality, final String province, final String country, final String zipcode, final UserImpl user) throws UserNotFoundException;
+    LocationImpl addLocation(final String name, final String locality, final String province, final String country, final String zipcode) throws UserNotFoundException;
     LocationImpl getLocation(final int locationId) throws LocationNotFoundException;
 
     List<LocationImpl> getLocations(final UserImpl user);
@@ -19,8 +20,9 @@ public interface LocationsService {
 
     void deleteLocation(final LocationImpl lc);
 
-    public List<LocationImpl> getLocationsById(final int userId) throws UserNotFoundException;
+     List<LocationImpl> getLocationsById(final int userId) throws UserNotFoundException;
 
-    LocationImpl editLocationById(final int locationId);
-    void deleteLocationById(final int locationId) throws UserNotFoundException, LocationNotFoundException;
+    LocationImpl editLocationById(int locationId, Optional<String> name, Optional<String> locality, Optional<String> province, Optional<String> country, Optional<String> zipcode) throws LocationNotFoundException;
+    List<LocationImpl> getLocations();
+    void deleteLocationById(final int locationId) throws  LocationNotFoundException;
 }

@@ -127,6 +127,9 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if (!searchQuery.getPhysicalConditions().isEmpty()) {
             queryFilters.append(" AND ai.physicalCondition IN (:physicalConditions) ");
         }
+        if (searchQuery.getUserId() != -1) {
+            queryFilters.append(" AND ai.owner = :userId ");
+        }
 
         // If there's a rating filter parameter
         queryFilters.append(" AND COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
@@ -163,7 +166,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             queryNative.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
             queryCount.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
         }
-
+        if (searchQuery.getUserId() != -1) {
+            queryNative.setParameter("userId", searchQuery.getUserId());
+            queryCount.setParameter("userId", searchQuery.getUserId());
+        }
         queryNative.setParameter("min_rating", searchQuery.getMinRating());
         queryNative.setParameter("max_rating", searchQuery.getMaxRating());
 

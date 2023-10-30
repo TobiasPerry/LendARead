@@ -66,7 +66,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional(readOnly = true)
     @Override
     public Page getAllAssetsInstances(final int pageNum, final int itemsPerPage) {
-        return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5));
+        return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1));
     }
 
     @Transactional(readOnly = true)
@@ -77,7 +77,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         if (searchQuery == null)
-            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5);
+            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
 
 
         Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
@@ -127,6 +127,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional(readOnly = true)
     @Override
     public List<AssetInstanceImpl> getSimilarAssetsInstances(AssetInstanceImpl ai, int pageNum, int iteamPerPage) {
-        return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
+        return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5,-1)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
     }
 }

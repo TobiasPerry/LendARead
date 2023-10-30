@@ -122,4 +122,36 @@ final public class LocationImpl{
     public String getName() {
         return name;
     }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setUserReference(UserImpl userReference) {
+        this.userReference = userReference;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

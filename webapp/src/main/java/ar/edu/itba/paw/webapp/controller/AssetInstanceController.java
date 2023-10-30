@@ -14,6 +14,7 @@ import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
+import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -74,18 +75,19 @@ public class AssetInstanceController {
         byte[] profileImage =   assetInstance.getImage().getPhoto();
         return Response.ok(profileImage).tag(eTag).build();
     }
+
     @GET
-    @Path("/")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_SEARCH})
-    public Response getAssetsInstances(  @QueryParam("search") @Size(min = 1, max = 100) String search,
-                                         @QueryParam("physicalConditions") List<String> physicalConditions,
-                                         @QueryParam("languages") List<String> languages,
-                                         @QueryParam("sort")  @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT|DEFAULT") String sort,
-                                         @QueryParam("sortDirection")  @Pattern(regexp = "ASCENDING|DESCENDING|DEFAULT") String sortDirection,
-                                         @QueryParam("page") @DefaultValue("1")  @Min(1) int currentPage,
-                                         @QueryParam("minRating") @DefaultValue("1")@Min(1) @Max(5) int minRating,
-                                         @QueryParam("maxRating") @DefaultValue("5") @Min(1) @Max(5)int maxRating,
-                                         @QueryParam("itemsPerPage")@DefaultValue("1") int itemsPerPage) {
+    public Response getAssetsInstances( @QueryParam("search") @Nullable @Size(min = 1, max = 100) String search,
+                                         @QueryParam("physicalConditions")@Nullable  List<String> physicalConditions,
+                                         @QueryParam("languages") @Nullable List<String> languages,
+                                         @QueryParam("sort")  @Nullable @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT|DEFAULT") String sort,
+                                         @QueryParam("sortDirection")  @Nullable @Pattern(regexp = "ASCENDING|DESCENDING|DEFAULT") String sortDirection,
+                                         @QueryParam("page") @Nullable @DefaultValue("1")  @Min(1) int currentPage,
+                                         @QueryParam("minRating") @Nullable @DefaultValue("1")@Min(1) @Max(5) int minRating,
+                                         @QueryParam("maxRating") @Nullable @DefaultValue("5") @Min(1) @Max(5)int maxRating,
+                                         @QueryParam("itemsPerPage")@Nullable @DefaultValue("1") int itemsPerPage,
+                                        @QueryParam("userId")  @DefaultValue("-1") int userId) throws  InternalErrorException, LocationNotFoundException {
         Page page = ais.getAllAssetsInstances(
                 currentPage, itemsPerPage,
                 new SearchQueryImpl(
@@ -95,8 +97,9 @@ public class AssetInstanceController {
                         (sort != null) ? Sort.fromString(sort) : Sort.RECENT,
                         (sortDirection != null) ? SortDirection.fromString(sort) : SortDirection.DESCENDING,
                         minRating,
-                        maxRating
-                )
+                        maxRating,
+                        userId
+                        )
         );
         List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getBooks());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetsInstancesDTO>>(assetsInstancesDTO) {});
