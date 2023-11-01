@@ -133,6 +133,23 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         return getReviewsFromIds(list, pageNum, totalPages);
     }
 
+    @Override
+    public Optional<UserReview> getUserReviewAsLender(int userId, int reviewId) {
+        final  TypedQuery<UserReview>  query = em.createQuery("SELECT r FROM UserReview r WHERE r.recipient.id = :userId AND r.lending.assetInstance.userReference.id = :userId AND r.id = :reviewId",UserReview.class);
+        query.setParameter("userId", (long) userId);
+        query.setParameter("reviewId", (long) reviewId);
+        List<UserReview> userReviews = query.getResultList();
+        return userReviews.stream().findFirst();
+    }
+
+    @Override
+    public Optional<UserReview> getUserReviewAsBorrower(int userId, int reviewId) {
+        final  TypedQuery<UserReview>  query = em.createQuery("SELECT r FROM UserReview r WHERE r.recipient.id = :userId AND r.lending.userReference.id = :userId AND r.id = :reviewId",UserReview.class);
+        query.setParameter("userId", (long) userId);
+        query.setParameter("reviewId", (long) reviewId);
+        List<UserReview> userReviews = query.getResultList();
+        return userReviews.stream().findFirst();    }
+
     private PagingImpl<UserReview> getReviewsFromIds(final List<Long> list, final int pageNum, final int totalPages) {
         final TypedQuery<UserReview> query = em.createQuery("FROM UserReview AS ai WHERE id IN (:ids) ORDER BY ai.id DESC", UserReview.class);
         query.setParameter("ids", list);

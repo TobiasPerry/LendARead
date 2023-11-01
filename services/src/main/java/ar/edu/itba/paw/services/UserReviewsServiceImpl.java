@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
@@ -42,9 +43,14 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public void addReview(UserReview userReview) {
+    public UserReview addReview(final int lendingId, final String reviewer,final String recipient, final String review, final int rating) throws AssetInstanceNotFoundException, UserNotFoundException {
+        LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        UserImpl reviewerUser = userService.getUser(reviewer);
+        UserImpl recipientUser = userService.getUser(recipient);
+        UserReview userReview = new UserReview( review, rating,  reviewerUser,recipientUser, lending);
         userReviewsDao.addReview(userReview);
         LOGGER.info("Review added");
+        return userReview;
     }
 
     @Transactional(readOnly = true)
@@ -70,13 +76,13 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         return userReviewsDao.getRating(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public double getRatingAsLender(UserImpl user) {
         return Math.round(userReviewsDao.getRatingAsLender(user) * 10) / 10.0;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public double getRatingAsBorrower(UserImpl user) {
         return Math.round(userReviewsDao.getRatingAsBorrower(user) * 10) / 10.0;
@@ -94,6 +100,19 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     public boolean userHasReview(int lendingId, String user) {
         Optional<UserReview> review = userReviewsDao.getUserReviewsByLendingIdAndUser(lendingId, user);
         return review.isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserReview getUserReviewAsLender(int userId, int reviewId) throws UserReviewNotFoundException {
+        return userReviewsDao.getUserReviewAsLender(userId,reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserReview getUserReviewAsBorrower(int userId, int reviewId) throws UserReviewNotFoundException {
+        return userReviewsDao.getUserReviewAsBorrower(userId,reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
     }
 
     @Transactional

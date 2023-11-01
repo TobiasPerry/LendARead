@@ -3,13 +3,11 @@ package ar.edu.itba.paw.webapp.form;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
-public class LenderReviewForm {
+public class UserReviewForm {
 
 
     @Size(min = 1, max = 200)
@@ -19,6 +17,7 @@ public class LenderReviewForm {
     @Max(5)
     private Integer rating;
 
+    @NotNull
     private int lendingId;
 
 }

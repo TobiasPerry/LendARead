@@ -9,17 +9,11 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class BorrowerReviewForm {
+public class AssetInstanceReviewForm {
 
     @Size(min = 1,max = 200)
     private String assetInstanceReview;
 
-    @Size(min = 1, max = 200)
-    private String userReview;
-
-    @Min(1)
-    @Max(5)
-    private Integer userRating;
 
     @Min(1)
     @Max(5)

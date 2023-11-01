@@ -22,4 +22,8 @@ public interface UserReviewsDao {
 
     PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, final UserImpl reviewer);
 
+    Optional<UserReview> getUserReviewAsLender(final int userId, final int reviewId) ;
+
+    Optional<UserReview> getUserReviewAsBorrower(final int userId, final int reviewId) ;
+
 }

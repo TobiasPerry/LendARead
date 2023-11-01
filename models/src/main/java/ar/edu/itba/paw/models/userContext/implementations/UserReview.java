@@ -61,4 +61,8 @@ public class UserReview {
     public UserImpl getRecipient() {
         return recipient;
     }
+
+    public LendingImpl getLending() {
+        return lending;
+    }
 }

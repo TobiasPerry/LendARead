@@ -18,4 +18,8 @@ public class Vnd {
 
     public static final String VND_LOCATION = VND_PREFIX + "location.v1" + VND_SUFFIX;
 
+    public static final String VND_USER_LENDER_REVIEW = VND_PREFIX + "userLenderReview.v1" + VND_SUFFIX;
+
+    public static final String VND_USER_BORROWER_REVIEW = VND_PREFIX + "userBorrowerReview.v1" + VND_SUFFIX;
+
 }
