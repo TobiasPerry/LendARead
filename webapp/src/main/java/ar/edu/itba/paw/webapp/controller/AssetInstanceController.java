@@ -3,20 +3,22 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
-import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
+import ar.edu.itba.paw.models.viewsContext.implementations.*;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.webapp.dto.AssetInstanceReviewDTO;
 import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
+import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
 import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -43,17 +45,19 @@ public class AssetInstanceController {
     private final LocationsService ls;
 
     private final UserService us;
+    private final AssetInstanceReviewsService air;
 
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public AssetInstanceController(final UserAssetInstanceService uais, final AssetInstanceService ais,final AssetExistanceService aes,final LocationsService ls,final UserService us) {
+    public AssetInstanceController(final UserAssetInstanceService uais, final AssetInstanceService ais,final AssetExistanceService aes,final LocationsService ls,final UserService us,final AssetInstanceReviewsService air) {
         this.uais = uais;
         this.ais = ais;
         this.aes = aes;
         this.ls = ls;
         this.us = us;
+        this.air = air;
     }
 
     @GET
@@ -126,5 +130,45 @@ public class AssetInstanceController {
         ais.changeAssetInstance(id, Optional.ofNullable(assetInstanceForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstanceForm.getMaxDays()), Optional.ofNullable(assetInstanceForm.getLocationId()), assetInstanceForm.getImageBytes(), Optional.ofNullable(assetInstanceForm.getDescription()), Optional.ofNullable(assetInstanceForm.getIsReservable()));
         return Response.noContent().build();
     }
+
+    @GET
+    @Path("/{id}/reviews")
+    @Produces(value ={Vnd.VND_ASSET_INSTANCE_REVIEW})
+    public Response getAssetInstanceReviews(@PathParam("id") final int id, @QueryParam("page") @Nullable @DefaultValue("1") final int page, @QueryParam("itemsPerPage")@Nullable @DefaultValue("4") final int itemsPerPage) throws AssetInstanceNotFoundException {
+        PagingImpl<AssetInstanceReview> reviews = air.getAssetInstanceReviewsById(page, itemsPerPage,id);
+        Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetInstanceReviewDTO>>(AssetInstanceReviewDTO.fromAssetInstanceReviews(reviews.getList(),uriInfo)) {});
+        PaginatedData.paginatedData(response, reviews, uriInfo);
+        return response.build();
+    }
+    @POST
+    @Path("/{id}/reviews")
+    @Consumes(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
+    @Produces(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
+    public Response createAssetInstanceReview(@PathParam("id") final int id, @Valid @RequestBody final AssetInstanceReviewForm assetInstanceReviewForm) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException {
+        AssetInstanceReview review = air.addReview(id,assetInstanceReviewForm.getLendingId(),assetInstanceReviewForm.getReview(),assetInstanceReviewForm.getRating());
+        final URI uri = uriInfo.getAbsolutePathBuilder()
+                .path(String.valueOf(review.getId())).build();
+        return Response.created(uri).build();
+    }
+
+    @GET
+    @Path("/{id}/reviews/{idReview}")
+    @Produces(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
+    public Response getAssetInstanceReview(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws AssetInstanceNotFoundException, AssetInstanceReviewNotFoundException {
+        AssetInstanceReview review = air.getReviewById(idReview);
+        return Response.ok(AssetInstanceReviewDTO.fromAssetInstanceReview(review,uriInfo)).build();
+    }
+
+
+    //TODO CHEQUEAR SI ESTA BIEN ESTO O MANDARLO DIRECTO EN EL ASSETINSTANCE
+    @GET
+    @Path("/{id}/rating")
+    @Produces(value = {Vnd.VND_ASSET_INSTANCE_RATING})
+    public Response getAssetInstanceRating(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
+        double rating = air.getRatingById(id);
+        return Response.ok(rating).build();
+    }
+
+
 
 }

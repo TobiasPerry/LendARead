@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -62,6 +63,14 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
         List<AssetInstanceReview> reviewList = query.getResultList();
 
         return new PagingImpl<>(reviewList, pageNum, totalPages);
+    }
+
+    @Override
+    public Optional<AssetInstanceReview> getReviewById(int reviewId) {
+        final  TypedQuery<AssetInstanceReview>  query = em.createQuery("SELECT r FROM AssetInstanceReview r WHERE r.id= :reviewId",AssetInstanceReview.class);
+        query.setParameter("reviewId", (long) reviewId);
+        List<AssetInstanceReview> assetInstanceReviews = query.getResultList();
+        return assetInstanceReviews.stream().findFirst();
     }
 
 }

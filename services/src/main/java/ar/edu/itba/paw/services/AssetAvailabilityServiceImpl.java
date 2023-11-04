@@ -16,7 +16,6 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -143,9 +142,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         LOGGER.info("Asset {} has been set public", assetId);
     }
 
-    @Transactional()
+    @Transactional
     @Override
-    public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+    public void returnAsset(final int lendingId) throws  LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         if (!lending.getAssetInstance().getIsReservable())
             assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
