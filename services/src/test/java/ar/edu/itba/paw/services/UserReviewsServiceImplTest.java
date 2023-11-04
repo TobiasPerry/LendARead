@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
@@ -66,7 +66,7 @@ public class UserReviewsServiceImplTest {
     private static final UserReview USER_REVIEW = new UserReview("", 5, USER, USER, LENDING);
 
     @Test
-    public void lenderCanReviewTrueTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void lenderCanReviewTrueTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
         when(userService.getCurrentUser()).thenReturn(USER.getEmail());
@@ -81,7 +81,7 @@ public class UserReviewsServiceImplTest {
     }
 
     @Test
-    public void lenderCanReviewAlreadyReviewedFalseTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void lenderCanReviewAlreadyReviewedFalseTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
         when(userService.getCurrentUser()).thenReturn(USER.getEmail());
@@ -96,7 +96,7 @@ public class UserReviewsServiceImplTest {
     }
 
     @Test
-    public void lenderCanReviewDifferentUserTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void lenderCanReviewDifferentUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
         when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT.getEmail());
@@ -111,7 +111,7 @@ public class UserReviewsServiceImplTest {
     }
 
     @Test
-    public void lenderCanReviewNotFinishedUserTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void lenderCanReviewNotFinishedUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING_NOT_FINISHED);
         when(userService.getCurrentUser()).thenReturn(USER.getEmail());
@@ -128,7 +128,7 @@ public class UserReviewsServiceImplTest {
     //_____________________________________________________________________________________________
 
     @Test
-    public void borrowerCanReviewTrueTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void borrowerCanReviewTrueTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
         when(userService.getCurrentUser()).thenReturn(USER.getEmail());
@@ -143,7 +143,7 @@ public class UserReviewsServiceImplTest {
     }
 
     @Test
-    public void borrowerCanReviewAlreadyReviewedFalseTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void borrowerCanReviewAlreadyReviewedFalseTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
         when(userService.getCurrentUser()).thenReturn(USER.getEmail());
@@ -158,7 +158,7 @@ public class UserReviewsServiceImplTest {
     }
 
     @Test
-    public void borrowerCanReviewDifferentUserTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void borrowerCanReviewDifferentUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
         when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT.getEmail());
@@ -173,7 +173,7 @@ public class UserReviewsServiceImplTest {
     }
 
     @Test
-    public void borrowerCanReviewNotFinishedUserTest() throws AssetInstanceNotFoundException, UserNotFoundException {
+    public void borrowerCanReviewNotFinishedUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING_NOT_FINISHED);
         when(userService.getCurrentUser()).thenReturn(USER.getEmail());

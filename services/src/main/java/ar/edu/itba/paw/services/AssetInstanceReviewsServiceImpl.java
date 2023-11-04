@@ -72,6 +72,12 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
         return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException("Review with id " + reviewId + " not found"));
     }
 
+    @Override
+    public void deleteReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
+        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException("Review with id " + reviewId + " not found"));
+        assetInstanceReviewsDao.deleteReview(assetInstanceReview);
+    }
+
 
     @Transactional(readOnly = true)
     @Override

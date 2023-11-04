@@ -16,5 +16,6 @@ public interface AssetInstanceReviewsService {
 
     AssetInstanceReview getReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
 
+    void deleteReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
     PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage, int assetInstanceId) throws AssetInstanceNotFoundException;
 }

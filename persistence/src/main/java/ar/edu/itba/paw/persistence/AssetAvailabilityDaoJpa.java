@@ -41,18 +41,37 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLending(final AssetInstanceImpl ai, final int pageNum, final int itemsPerPage) {
+    public PagingImpl<LendingImpl> getPagingActiveLending( final int pageNum, final int itemsPerPage,final Integer aiId,final Integer userId) {
 
-        final Query queryNative = em.createNativeQuery("select l.id from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected order by l.lenddate limit :limit offset :offset");
+        final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l where l.assetinstanceid = :ai and l.borrowerid = :userId and l.active != :active and l.active != :rejected");
+        final StringBuilder queryCountStringBuilder = new StringBuilder("select Count(l.id) from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected");
+        if(aiId != null){
+            queryNativeStringBuilder.append(" and l.assetinstanceid = :ai");
+            queryCountStringBuilder.append(" and l.assetinstanceid = :ai");
+        }
+        if(userId != null){
+            queryNativeStringBuilder.append(" and l.borrowerid = :userId");
+            queryCountStringBuilder.append(" and l.borrowerid = :userId");
+        }
+        queryNativeStringBuilder.append(" order by l.lenddate limit :limit offset :offset");
+        queryCountStringBuilder.append(" order by l.lenddate limit :limit offset :offset");
 
-        final Query queryCount = em.createNativeQuery("select Count(l.id) from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected");
+        final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
+
+        final Query queryCount = em.createNativeQuery(queryCountStringBuilder.toString());
 
         final int offset = (pageNum - 1) * itemsPerPage;
+        if (aiId != null) {
+            queryNative.setParameter("ai", aiId);
+            queryCount.setParameter("ai", aiId);
+        }
+        if (userId != null) {
+            queryNative.setParameter("userId", userId);
+            queryCount.setParameter("userId", userId);
+        }
 
-        queryCount.setParameter("ai", ai.getId());
         queryCount.setParameter("active", "FINISHED");
         queryCount.setParameter("rejected", "REJECTED");
-        queryNative.setParameter("ai", ai.getId());
         queryNative.setParameter("limit", itemsPerPage);
         queryNative.setParameter("offset", offset);
         queryNative.setParameter("active", "FINISHED");

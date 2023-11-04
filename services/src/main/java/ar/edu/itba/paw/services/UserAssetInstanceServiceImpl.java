@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
@@ -49,11 +49,11 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public LendingImpl getBorrowedAssetInstance(final int lendingId) throws AssetInstanceNotFoundException {
+    public LendingImpl getBorrowedAssetInstance(final int lendingId) throws LendingNotFoundException {
       Optional<LendingImpl> lending = userAssetsDao.getBorrowedAsset(lendingId);
       if (!lending.isPresent()) {
           LOGGER.error("Not found borrowed asset instance with the lending lendingId: {}", lendingId);
-          throw new AssetInstanceNotFoundException("Not found BorrowedAssetInstance");
+          throw new LendingNotFoundException("Not found BorrowedAssetInstance");
       }
       return lending.get();
     }

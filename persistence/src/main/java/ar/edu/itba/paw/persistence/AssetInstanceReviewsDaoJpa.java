@@ -73,4 +73,11 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
         return assetInstanceReviews.stream().findFirst();
     }
 
+    @Override
+    public void deleteReview(AssetInstanceReview assetInstanceReview) {
+        em.remove(assetInstanceReview);
+    }
+
+
+
 }

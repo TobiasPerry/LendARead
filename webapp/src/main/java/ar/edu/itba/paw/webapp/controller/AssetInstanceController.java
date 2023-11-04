@@ -158,6 +158,12 @@ public class AssetInstanceController {
         AssetInstanceReview review = air.getReviewById(idReview);
         return Response.ok(AssetInstanceReviewDTO.fromAssetInstanceReview(review,uriInfo)).build();
     }
+    @DELETE
+    @Path("/{id}/reviews/{idReview}")
+    public Response deleteReviewById(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws AssetInstanceNotFoundException, AssetInstanceReviewNotFoundException {
+        air.deleteReviewById(idReview);
+        return Response.noContent().build();
+    }
 
 
     //TODO CHEQUEAR SI ESTA BIEN ESTO O MANDARLO DIRECTO EN EL ASSETINSTANCE

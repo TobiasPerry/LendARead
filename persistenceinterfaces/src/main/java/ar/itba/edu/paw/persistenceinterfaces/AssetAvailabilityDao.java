@@ -17,7 +17,7 @@ public interface AssetAvailabilityDao {
     List<LendingImpl> getActiveLendings(AssetInstanceImpl ai);
     void changeLendingStatus(LendingImpl lending,final LendingState lendingState);
 
-    public PagingImpl<LendingImpl> getPagingActiveLending(final AssetInstanceImpl ai, final int pageNum, final int itemsPerPage);
+     PagingImpl<LendingImpl> getPagingActiveLending( final int pageNum, final int itemsPerPage,final Integer aiId,final Integer userId);
 
     Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date);
 

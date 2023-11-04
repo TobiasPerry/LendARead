@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -26,11 +25,10 @@ public class UserReviewsDTO {
             return dto;
       }
       public static List<UserReviewsDTO> fromUserReviewsList(List<UserReview> userReviews, UriInfo uriInfo) {
-          List<UserReviewsDTO> toReturn = new ArrayList<>();
-            for (UserReview userReview : userReviews) {
-                toReturn.add(fromUserReview(userReview, uriInfo));
-            }
-            return toReturn;
+          return userReviews.stream().map(userReview -> fromUserReview(userReview, uriInfo)).collect(java.util.stream.Collectors.toList());
+      }
+      public static String reference(UriInfo url, UserReview userReview) {
+            return url.getBaseUriBuilder().path("user").path(String.valueOf(userReview.getRecipient().getId())).path("reviews").path(String.valueOf(userReview.getId())).build().toString();
       }
 
 }

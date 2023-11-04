@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -51,11 +50,7 @@ public class AssetsInstancesDTO {
         return dto;
     }
     public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstanceImpl> assetInstances) {
-        List<AssetsInstancesDTO> dtos = new ArrayList<>();
-        for (AssetInstanceImpl assetInstance : assetInstances) {
-            dtos.add(fromAssetInstance(url, assetInstance));
-        }
-        return dtos;
+       return assetInstances.stream().map(assetInstance -> fromAssetInstance(url, assetInstance)).collect(java.util.stream.Collectors.toList());
     }
     public static String reference(UriInfo url, AssetInstanceImpl assetInstance) {
         return url.getBaseUriBuilder().path("assetsInstance").path(String.valueOf(assetInstance.getId())).build().toString();

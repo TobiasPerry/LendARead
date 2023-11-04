@@ -53,7 +53,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
+    public LendingImpl borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
         Optional<AssetInstanceImpl> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<UserImpl> user = userDao.getUser(borrower);
 
@@ -91,6 +91,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), new Locale(user.get().getLocale()));
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), new Locale(ai.get().getOwner().getLocale()));
         LOGGER.info("Asset {} has been borrow", assetId);
+        return lending;
     }
 
     public static boolean checkOverlapping(LocalDate fechaInicial, LocalDate fechaFinal, List<LendingImpl> lendings) {
@@ -179,8 +180,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLendings(final AssetInstanceImpl ai, final int page, final int size) {
-        return lendingDao.getPagingActiveLending(ai, page, size);
+    public PagingImpl<LendingImpl> getPagingActiveLendings(final int page, final int size,final Integer aiId,final Integer userId)  {
+        return lendingDao.getPagingActiveLending(page, size, aiId, userId);
     }
 
     @Transactional

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AssetAvailabilityService {
 
-    void borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate,final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
+    LendingImpl borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate,final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
     void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException;
 
@@ -24,7 +24,7 @@ public interface AssetAvailabilityService {
 
     void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
      List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai);
-     PagingImpl<LendingImpl> getPagingActiveLendings(final AssetInstanceImpl ai, final int page, final int size);
+     PagingImpl<LendingImpl> getPagingActiveLendings(final int page, final int size,final Integer aiId,final Integer userId);
 
     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 

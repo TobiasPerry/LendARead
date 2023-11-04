@@ -15,4 +15,6 @@ public interface AssetInstanceReviewsDao {
     PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstanceImpl assetInstance);
 
     Optional<AssetInstanceReview> getReviewById(final int reviewId);
+
+    void deleteReview(final AssetInstanceReview reviewId);
 }

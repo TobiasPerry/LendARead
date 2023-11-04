@@ -2,15 +2,23 @@ package ar.edu.itba.paw.webapp.form;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class BorrowAssetForm {
 
-    @Length(min = 1, max = 11)
-    String borrowDate;
+    @NotNull
+    @DateTimeFormat
+    LocalDate borrowDate;
 
-    @Length(min = 1, max = 11)
-    String devolutionDate;
+    @NotNull
+    @DateTimeFormat
+    LocalDate devolutionDate;
+
+    @NotNull
+    Integer assetInstanceId;
 }

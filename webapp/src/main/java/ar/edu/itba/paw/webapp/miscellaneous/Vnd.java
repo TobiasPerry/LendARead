@@ -23,5 +23,6 @@ public class Vnd {
     public static final String VND_USER_BORROWER_REVIEW = VND_PREFIX + "userBorrowerReview.v1" + VND_SUFFIX;
     public static final String VND_ASSET_INSTANCE_REVIEW = VND_PREFIX + "assetInstanceReview.v1" + VND_SUFFIX;
     public static final String VND_ASSET_INSTANCE_RATING = VND_PREFIX + "assetInstanceRating.v1" + VND_SUFFIX;
+    public static final String VND_ASSET_INSTANCE_LENDING = VND_PREFIX + "assetInstanceLending.v1" + VND_SUFFIX;
 
 }

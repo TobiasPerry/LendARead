@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -43,7 +43,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public UserReview addReview(final int lendingId, final String reviewer,final String recipient, final String review, final int rating) throws AssetInstanceNotFoundException, UserNotFoundException {
+    public UserReview addReview(final int lendingId, final String reviewer,final String recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException {
         LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         UserImpl reviewerUser = userService.getUser(reviewer);
         UserImpl recipientUser = userService.getUser(recipient);
@@ -55,7 +55,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean lenderCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
+    public boolean lenderCanReview(final int lendingId) throws UserNotFoundException, LendingNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
 
@@ -64,7 +64,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean borrowerCanReview(int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException {
+    public boolean borrowerCanReview(int lendingId) throws UserNotFoundException, LendingNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
         return !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
