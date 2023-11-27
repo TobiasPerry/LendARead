@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,13 +53,9 @@ public class LenderViewOwnerVoter implements AccessDecisionVoter<FilterInvocatio
                     vote.set(ACCESS_DENIED);
                     return vote.get();
                 }
-                try {
-                    if (userAssetInstanceService.getBorrowedAssetInstance(id).getAssetInstance().getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
-                        vote.set(ACCESS_GRANTED);
-                    else {
-                        vote.set(ACCESS_DENIED);
-                    }
-                }catch (AssetInstanceNotFoundException e){
+                if (userAssetInstanceService.getBorrowedAssetInstance(id).getAssetInstance().getOwner().getEmail().equals(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()))
+                    vote.set(ACCESS_GRANTED);
+                else {
                     vote.set(ACCESS_DENIED);
                 }
             }

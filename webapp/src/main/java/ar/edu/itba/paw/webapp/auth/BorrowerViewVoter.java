@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.auth;
 
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import lombok.SneakyThrows;
@@ -56,13 +55,9 @@ public class BorrowerViewVoter implements AccessDecisionVoter<FilterInvocation> 
                     vote.set(ACCESS_DENIED);
                     return vote.get();
                 }
-                try {
-                    if (userAssetInstanceService.getBorrowedAssetInstance(id).getUserReference().getEmail().equals(userService.getCurrentUser()))
-                        vote.set(ACCESS_GRANTED);
-                    else {
-                        vote.set(ACCESS_DENIED);
-                    }
-                }catch(AssetInstanceNotFoundException e){
+                if (userAssetInstanceService.getBorrowedAssetInstance(id).getUserReference().getEmail().equals(userService.getCurrentUser()))
+                    vote.set(ACCESS_GRANTED);
+                else {
                     vote.set(ACCESS_DENIED);
                 }
             }

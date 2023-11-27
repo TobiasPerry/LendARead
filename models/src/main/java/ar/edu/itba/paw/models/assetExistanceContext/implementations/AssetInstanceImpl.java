@@ -4,6 +4,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -48,6 +49,10 @@ public class AssetInstanceImpl{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
     private ImageImpl image;
+
+    @Formula("(SELECT COALESCE(AVG(COALESCE(asr.rating, 0)),0) FROM assetInstanceReview AS asr left outer join lendings as l on asr.lendid = l.id  WHERE l.assetinstanceid = id)")
+    private Integer rating;
+
 
     public AssetInstanceImpl(final int id,final BookImpl book,final PhysicalCondition physicalCondition,final UserImpl userReference,final LocationImpl location,final ImageImpl imageId,final AssetState as,final int maxDaysLending,final String description) {
         this.id = (long) id;
@@ -199,6 +204,12 @@ public class AssetInstanceImpl{
 
     public void setImage(ImageImpl image) {
         this.image = image;
+    }
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+    public Integer getRating() {
+        return rating;
     }
     public void setIsReservable(boolean isReservable) {
         this.isReservable = isReservable;

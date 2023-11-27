@@ -90,7 +90,7 @@ public class AssetInstanceController {
                                          @QueryParam("page") @Nullable @DefaultValue("1")  @Min(1) int currentPage,
                                          @QueryParam("minRating") @Nullable @DefaultValue("1")@Min(1) @Max(5) int minRating,
                                          @QueryParam("maxRating") @Nullable @DefaultValue("5") @Min(1) @Max(5)int maxRating,
-                                         @QueryParam("itemsPerPage")@Nullable @DefaultValue("1") int itemsPerPage,
+                                         @QueryParam("itemsPerPage")@Nullable @DefaultValue("10") int itemsPerPage,
                                         @QueryParam("userId")  @DefaultValue("-1") int userId) throws  InternalErrorException, LocationNotFoundException {
         Page page = ais.getAllAssetsInstances(
                 currentPage, itemsPerPage,
@@ -164,17 +164,5 @@ public class AssetInstanceController {
         air.deleteReviewById(idReview);
         return Response.noContent().build();
     }
-
-
-    //TODO CHEQUEAR SI ESTA BIEN ESTO O MANDARLO DIRECTO EN EL ASSETINSTANCE
-    @GET
-    @Path("/{id}/rating")
-    @Produces(value = {Vnd.VND_ASSET_INSTANCE_RATING})
-    public Response getAssetInstanceRating(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
-        double rating = air.getRatingById(id);
-        return Response.ok(rating).build();
-    }
-
-
 
 }

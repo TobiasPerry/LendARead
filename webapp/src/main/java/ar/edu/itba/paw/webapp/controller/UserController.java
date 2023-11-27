@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
@@ -130,7 +131,7 @@ public class UserController {
     @Path("/{id}/lender_reviews")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException {
+    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
         UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),us.getCurrentUser(),us.getUserById(id).getEmail(),lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         return Response.created(uri).build();
@@ -139,7 +140,7 @@ public class UserController {
     @Path("/{id}/borrower_reviews")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException {
+    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
         UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),us.getCurrentUser(),us.getUserById(id).getEmail(),borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         return Response.created(uri).build();
