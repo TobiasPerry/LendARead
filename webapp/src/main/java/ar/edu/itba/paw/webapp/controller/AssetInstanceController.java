@@ -127,7 +127,7 @@ public class AssetInstanceController {
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
     public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
-        ais.changeAssetInstance(id, Optional.ofNullable(assetInstanceForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstanceForm.getMaxDays()), Optional.ofNullable(assetInstanceForm.getLocationId()), assetInstanceForm.getImageBytes(), Optional.ofNullable(assetInstanceForm.getDescription()), Optional.ofNullable(assetInstanceForm.getIsReservable()));
+        ais.changeAssetInstance(id, Optional.ofNullable(assetInstanceForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstanceForm.getMaxDays()), Optional.ofNullable(assetInstanceForm.getLocationId()), assetInstanceForm.getImageBytes(), Optional.ofNullable(assetInstanceForm.getDescription()), Optional.ofNullable(assetInstanceForm.getIsReservable()), Optional.ofNullable(assetInstanceForm.getState()));
         return Response.noContent().build();
     }
 
@@ -164,5 +164,4 @@ public class AssetInstanceController {
         air.deleteReviewById(idReview);
         return Response.noContent().build();
     }
-
 }

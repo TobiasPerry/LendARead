@@ -111,7 +111,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable) throws AssetInstanceNotFoundException, LocationNotFoundException, ImageNotFoundException {
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotFoundException, ImageNotFoundException {
         AssetInstanceImpl assetInstance = getAssetInstance(id);
         if (location.isPresent())
             assetInstance.setLocation(locationsService.getLocation(location.get()));
@@ -121,6 +121,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         physicalCondition.ifPresent(assetInstance::setPhysicalCondition);
         maxLendingDays.ifPresent(assetInstance::setMaxLendingDays);
         isReservable.ifPresent(assetInstance::setIsReservable);
+        state.ifPresent(s -> assetInstance.setAssetState(AssetState.fromString(s)));
 
     }
 

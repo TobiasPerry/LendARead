@@ -36,6 +36,9 @@ public class AssetInstanceForm {
     @FormDataParam("isReservable")
     private Boolean isReservable;
 
+    @FormDataParam("status")
+    private String state;
+
     @Image
     @FormDataParam("image")
     private FormDataBodyPart image;

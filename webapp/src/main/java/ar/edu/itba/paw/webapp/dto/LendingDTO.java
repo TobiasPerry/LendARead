@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,12 @@ public class LendingDTO {
         dto.userReference = UserDTO.reference(url, lending.getUserReference());
         dto.lendDate = lending.getLendDate().toString();
         dto.devolutionDate = lending.getDevolutionDate().toString();
-        dto.userReviews = lending.getUserReviews().stream().map(userReview -> UserReviewsDTO.reference(url, userReview)).collect(Collectors.toList());
-        dto.assetInstanceReview = AssetInstanceReviewDTO.reference(url, lending.getAssetInstanceReview());
+        if (lending.getUserReviews() != null)
+            dto.userReviews = lending.getUserReviews().stream().map(userReview -> UserReviewsDTO.reference(url, userReview)).collect(Collectors.toList());
+        else dto.userReviews = new ArrayList<>();
+        if (lending.getAssetInstanceReview() != null)
+            dto.assetInstanceReview = AssetInstanceReviewDTO.reference(url, lending.getAssetInstanceReview());
+        else dto.assetInstanceReview = "";
         return dto;
     }
     public static List<LendingDTO> fromLendings(List<LendingImpl> lendings, UriInfo url) {

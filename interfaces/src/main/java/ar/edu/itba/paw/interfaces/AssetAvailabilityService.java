@@ -23,8 +23,10 @@ public interface AssetAvailabilityService {
     void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 
     void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
-     List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai);
-     PagingImpl<LendingImpl> getPagingActiveLendings(final int page, final int size,final Integer aiId,final Integer userId);
+
+    void changeLending(final int lendingId,final String state) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai);
+    PagingImpl<LendingImpl> getPagingActiveLendings(final int page, final int size,final Integer aiId,final Integer userId);
 
     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 

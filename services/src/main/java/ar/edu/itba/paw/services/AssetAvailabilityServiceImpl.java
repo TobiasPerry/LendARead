@@ -156,20 +156,38 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+    public void confirmAsset(final int lendingId) throws  LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
     }
 
     @Transactional
     @Override
-    public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+    public void rejectAsset(final int lendingId) throws  LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException("Can't cancel non-active lending");
         }
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
         emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), new Locale(lending.getUserReference().getLocale()));
+    }
+
+    @Transactional
+    @Override
+    public void changeLending(final int lendingId, final String state) throws  LendingCompletionUnsuccessfulException {
+       switch (state) {
+           case "DELIVERED":
+               confirmAsset(lendingId);
+               break;
+           case "REJECTED":
+               rejectAsset(lendingId);
+               break;
+           case "FINISHED":
+               returnAsset(lendingId);
+               break;
+           default:
+               throw new LendingCompletionUnsuccessfulException("Invalid state");
+       }
     }
 
     @Transactional(readOnly = true)
@@ -186,7 +204,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void cancelAsset(int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+    public void cancelAsset(int lendingId) throws  LendingCompletionUnsuccessfulException {
         LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException("Can't cancel non-active lending");

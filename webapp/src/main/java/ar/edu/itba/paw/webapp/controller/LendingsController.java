@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
+import ar.edu.itba.paw.webapp.form.PatchLendingForm;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
@@ -65,6 +66,14 @@ public class LendingsController {
     public Response getLending(@PathParam("id") final int id) throws LendingNotFoundException {
         LendingImpl lending = uais.getBorrowedAssetInstance(id);
         return Response.ok(LendingDTO.fromLending(lending, uriInfo)).build();
+    }
+
+    // TODO CHECK IF WORKS
+    @PATCH
+    @Path("/{id}")
+    public Response editLending(@PathParam("id") final int id, @RequestBody @Valid PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+        aas.changeLending(id, patchLendingForm.getState());
+        return Response.noContent().location(uriInfo.getRequestUriBuilder().path(String.valueOf(id)).build()).build();
     }
 
 }
