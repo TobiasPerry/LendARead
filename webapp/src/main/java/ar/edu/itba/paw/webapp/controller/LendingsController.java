@@ -14,7 +14,6 @@ import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -56,7 +55,7 @@ public class LendingsController {
     @POST
     @Path("/")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
-    public Response addLending(@RequestBody @Valid BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
+    public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
       LendingImpl lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       return Response.noContent().location(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
     }
@@ -68,12 +67,12 @@ public class LendingsController {
         return Response.ok(LendingDTO.fromLending(lending, uriInfo)).build();
     }
 
-    // TODO CHECK IF WORKS
     @PATCH
     @Path("/{id}")
-    public Response editLending(@PathParam("id") final int id, @RequestBody @Valid PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+    @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
+    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         aas.changeLending(id, patchLendingForm.getState());
-        return Response.noContent().location(uriInfo.getRequestUriBuilder().path(String.valueOf(id)).build()).build();
+        return Response.noContent().location(uriInfo.getRequestUriBuilder().build()).build();
     }
 
 }
