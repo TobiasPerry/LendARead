@@ -6,6 +6,17 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize:{
+
+      },
+      textColor:{
+        'primary': '#2B3B2B',
+        'secondary': '#444444',
+        'black': '#111711'
+      },
+      fontFamily:{
+        'primary': ['Overpass', 'sans-serif']
+      },
       colors: {
         'primary-gray': '#444444',
         'fluorescent-green': '#16df7e',
