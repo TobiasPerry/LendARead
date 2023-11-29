@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
 import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -25,6 +26,15 @@ final public class UserImpl{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = true)
     private ImageImpl profilePhoto;
+
+    @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  WHERE us.id = id)")
+    private Integer rating;
+
+    @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  JOIN lendings AS l ON ur.lendId = l.id JOIN AssetInstance AS ai ON l.assetInstanceId = ai.id WHERE ur.recipient = id AND ai.owner = id AND us.id = id)")
+    private Integer ratingAsLender;
+
+    @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  JOIN lendings AS l ON ur.lendId = l.id WHERE ur.recipient = id AND l.borrowerid = id )")
+    private Integer ratingAsBorrower;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
@@ -131,6 +141,18 @@ final public class UserImpl{
 
     public void setBehavior(Behaviour behavior) {
         this.behavior = behavior;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public Integer getRatingAsLender() {
+        return ratingAsLender;
+    }
+
+    public Integer getRatingAsBorrower() {
+        return ratingAsBorrower;
     }
 
     public void setId(Long id) {

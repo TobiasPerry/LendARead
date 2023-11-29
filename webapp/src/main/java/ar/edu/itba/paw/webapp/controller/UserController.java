@@ -47,12 +47,13 @@ public class UserController {
     private UserReviewsService urs;
 
 
-    // TODO check this
+
     @PATCH
+    @Path("/{email}")
     @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
-    public Response changePassword(@Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
-        us.changePassword(changePasswordForm.getPassword(),changePasswordForm.getToken());
+    public Response changePassword(@PathParam("email") String email, @Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
+        us.changePassword(email,changePasswordForm.getPassword(),changePasswordForm.getToken());
         return Response.noContent().build();
     }
     @POST
@@ -65,38 +66,34 @@ public class UserController {
         return Response.created(uri).build();
     }
     @GET
-    @Path("/{id}")
+    @Path("/{email}")
     @Produces(value = { Vnd.VND_USER })
-    public Response getById(@PathParam("id") final long id) throws UserNotFoundException {
-        final UserImpl user = us.getUserById(Math.toIntExact(id));
-        if (user != null) {
-            return Response.ok(UserDTO.fromUser(uriInfo,user)).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public Response getById(@PathParam("email") final String email) throws UserNotFoundException {
+        final UserImpl user = us.getUser(email);
+        return Response.ok(UserDTO.fromUser(uriInfo,user)).build();
     }
     @POST
-    @Path("/reset-password-token")
+    @Path("/{email}/reset-password-token")
     @Produces(value = { Vnd.VND_RESET_PASSWORD })
     @Consumes(value = { Vnd.VND_RESET_PASSWORD })
-    public Response createChangePasswordToken() {
-        us.createChangePasswordToken(us.getCurrentUser());
+    public Response createChangePasswordToken(@PathParam("email") final String email) throws UserNotFoundException {
+        us.createChangePasswordToken(email);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("/{id}/profilePic")
+    @Path("/{email}/profilePic")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-    public Response changeUserProfilePic(@PathParam("id") final long id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
-        int photoId = us.changeUserProfilePic(Math.toIntExact(id),imageBytes);
+    public Response changeUserProfilePic(@PathParam("email") final String email, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
+        int photoId = us.changeUserProfilePic(email,imageBytes);
         return Response.noContent().build();
     }
 
     @GET
-    @Path("/{id}/profilePic")
+    @Path("/{email}/profilePic")
     @Produces(value = {"image/webp"})
-    public Response getUserProfilePic(@PathParam("id") final long id) throws UserNotFoundException {
-        final UserImpl user = us.getUserById(Math.toIntExact(id));
+    public Response getUserProfilePic(@PathParam("email") final String email) throws UserNotFoundException {
+        final UserImpl user = us.getUser(email);
 
         EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto()));
 
@@ -105,10 +102,10 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}/lender_reviews")
+    @Path("/{email}/lender_reviews")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response getLenderReviews(@PathParam("id") final long id,@QueryParam("page") @DefaultValue("1") final int page,@QueryParam("itemsPerPage")@DefaultValue("1") final int itemsPerPage) throws UserNotFoundException {
-        PagingImpl<UserReview> items =urs.getUserReviewsAsLender(page,itemsPerPage,us.getUserById(Math.toIntExact(id)));
+    public Response getLenderReviews(@PathParam("email") final String email,@QueryParam("page") @DefaultValue("1") final int page,@QueryParam("itemsPerPage")@DefaultValue("1") final int itemsPerPage) throws UserNotFoundException {
+        PagingImpl<UserReview> items =urs.getUserReviewsAsLender(page,itemsPerPage,us.getUser(email));
         List<UserReviewsDTO> reviewsDTOS = UserReviewsDTO.fromUserReviewsList(items.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<UserReviewsDTO>>(reviewsDTOS) {});
 
@@ -118,10 +115,10 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}/borrower_reviews")
+    @Path("/{email}/borrower_reviews")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response getBorrowerReviews(@PathParam("id") final long id,@QueryParam("page") @DefaultValue("1") final int page,@QueryParam("itemsPerPage")@DefaultValue("1") final int itemsPerPage) throws UserNotFoundException {
-        PagingImpl<UserReview> items =urs.getUserReviewsAsBorrower(page,itemsPerPage,us.getUserById(Math.toIntExact(id)));
+    public Response getBorrowerReviews(@PathParam("email") final String email,@QueryParam("page") @DefaultValue("1") final int page,@QueryParam("itemsPerPage")@DefaultValue("1") final int itemsPerPage) throws UserNotFoundException {
+        PagingImpl<UserReview> items =urs.getUserReviewsAsBorrower(page,itemsPerPage,us.getUser(email));
         List<UserReviewsDTO> reviewsDTOS = UserReviewsDTO.fromUserReviewsList(items.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<UserReviewsDTO>>(reviewsDTOS) {});
 
@@ -130,37 +127,37 @@ public class UserController {
     }
 
     @POST
-    @Path("/{id}/lender_reviews")
+    @Path("/{email}/lender_reviews")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
-        UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),us.getCurrentUser(),us.getUserById(id).getEmail(),lenderReviewForm.getReview(),lenderReviewForm.getRating());
+    public Response createLenderReview(@PathParam("email") final String email,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
+        UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),us.getCurrentUser(),email,lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         return Response.created(uri).build();
     }
     @POST
-    @Path("/{id}/borrower_reviews")
+    @Path("/{email}/borrower_reviews")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
-        UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),us.getCurrentUser(),us.getUserById(id).getEmail(),borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
+    public Response createBorrowerReview(@PathParam("email") final String email,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
+        UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),us.getCurrentUser(),email,borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         return Response.created(uri).build();
     }
 
     @GET
-    @Path("/{id}/lender_reviews/{reviewId}")
+    @Path("/{email}/lender_reviews/{reviewId}")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response getLenderReview(@PathParam("id") final int id,@PathParam("reviewId") final int reviewId) throws UserReviewNotFoundException {
-        UserReview userReview =           urs.getUserReviewAsLender(id,reviewId);
+    public Response getLenderReview(@PathParam("email") final String email,@PathParam("reviewId") final int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
+        UserReview userReview = urs.getUserReviewAsLender(email,reviewId);
         UserReviewsDTO userReviewsDTO = UserReviewsDTO.fromUserReview(userReview,uriInfo);
         return Response.ok( new GenericEntity<UserReviewsDTO>(userReviewsDTO){}).build();
     }
     @GET
-    @Path("/{id}/borrower_reviews/{reviewId}")
+    @Path("/{email}/borrower_reviews/{reviewId}")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response getBorrowerReview(@PathParam("id") final int id,@PathParam("reviewId") final int reviewId) throws  UserReviewNotFoundException {
-        UserReview userReview = urs.getUserReviewAsBorrower(id,reviewId);
+    public Response getBorrowerReview(@PathParam("email") final String email,@PathParam("reviewId") final int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
+        UserReview userReview = urs.getUserReviewAsBorrower(email,reviewId);
         UserReviewsDTO userReviewsDTO = UserReviewsDTO.fromUserReview(userReview,uriInfo);
         return Response.ok( new GenericEntity<UserReviewsDTO>(userReviewsDTO){}).build();
     }

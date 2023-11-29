@@ -24,9 +24,9 @@ public interface UserService {
     Collection
             <? extends GrantedAuthority> getCurrentRoles();
 
-    void createChangePasswordToken(final String email);
+    void createChangePasswordToken(final String email) throws UserNotFoundException;
 
-    void changePassword(final String token, final String password);
+    void changePassword(final String email,final String token, final String password);
 
     boolean isTokenValid(final String token);
 
@@ -34,7 +34,7 @@ public interface UserService {
 
     boolean isCurrent(int userId);
 
-    int changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException;
+    int changeUserProfilePic(final String email, byte[] parsedImage) throws UserNotFoundException;
 
     @Scheduled
     void deletePastChangePasswordTokens();

@@ -119,12 +119,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createChangePasswordToken(final String email) {
+    public void createChangePasswordToken(final String email) throws UserNotFoundException {
         String token = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         Optional<UserImpl> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
-            return;
+            throw new UserNotFoundException("User not found");
         }
         PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token, user.get().getId(), LocalDate.now().plusDays(1));
         emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken(), new Locale(user.get().getLocale()));
@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void changePassword(final String token, final String password) {
+    public void changePassword(final String email,final String token, final String password) {
         Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
         if (!passwordResetToken.isPresent())
             return;
@@ -180,15 +180,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException {
-        Optional<UserImpl> maybeUser = userDao.getUser(userId);
+    public int changeUserProfilePic(final String email, byte[] parsedImage) throws UserNotFoundException {
+        Optional<UserImpl> maybeUser = userDao.getUser(email);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
             throw new UserNotFoundException("User not found");
         }
 
         ImageImpl image = this.imagesDao.addPhoto(parsedImage);
-        LOGGER.debug("New profile image created for user id {}", userId);
+        LOGGER.debug("New profile image created for user email {}", email);
         UserImpl user = maybeUser.get();
         user.setProfilePhoto(image);
         LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());

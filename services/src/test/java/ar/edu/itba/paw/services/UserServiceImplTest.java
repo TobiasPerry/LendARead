@@ -73,7 +73,7 @@ public class UserServiceImplTest {
         when(userDao.getUser(anyInt())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        us.changeUserProfilePic(ID, IMAGE);
+        us.changeUserProfilePic(EMAIL, IMAGE);
 
         // 3 - Assertions
         Assert.fail();

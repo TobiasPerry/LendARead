@@ -11,7 +11,6 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +27,12 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     private final UserReviewsDao userReviewsDao;
 
     private final UserAssetInstanceService userAssetInstanceService;
-    private final UserDao userDao;
 
     private final UserService userService;
 
     @Autowired
-    public UserReviewsServiceImpl(final UserReviewsDao userReviewsDao, final UserDao userDao, final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
+    public UserReviewsServiceImpl(final UserReviewsDao userReviewsDao, final UserAssetInstanceService userAssetInstanceService, final UserService userService) {
         this.userReviewsDao = userReviewsDao;
-        this.userDao = userDao;
         this.userService = userService;
         this.userAssetInstanceService = userAssetInstanceService;
     }
@@ -70,30 +67,6 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         return !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
     }
 
-    @Transactional
-    @Override
-    public double getRating(UserImpl user) {
-        return userReviewsDao.getRating(user);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public double getRatingAsLender(UserImpl user) {
-        return Math.round(userReviewsDao.getRatingAsLender(user) * 10) / 10.0;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public double getRatingAsBorrower(UserImpl user) {
-        return Math.round(userReviewsDao.getRatingAsBorrower(user) * 10) / 10.0;
-    }
-
-    private UserImpl getUser(int userId) throws UserNotFoundException {
-        Optional<UserImpl> user = userDao.getUser(userId);
-        if (!user.isPresent())
-            throw new UserNotFoundException("not found user to get the rating");
-        return user.get();
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -104,44 +77,39 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserReview getUserReviewAsLender(int userId, int reviewId) throws UserReviewNotFoundException {
-        return userReviewsDao.getUserReviewAsLender(userId,reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
+    public UserReview getUserReviewAsLender(final String email, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
+        return userReviewsDao.getUserReviewAsLender(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public UserReview getUserReviewAsBorrower(int userId, int reviewId) throws UserReviewNotFoundException {
-        return userReviewsDao.getUserReviewAsBorrower(userId,reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
+    public UserReview getUserReviewAsBorrower(final String email, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
+        return userReviewsDao.getUserReviewAsBorrower(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
     }
 
-    @Transactional
-    @Override
-    public double getRatingById(int userId) throws UserNotFoundException {
-        return getRating(getUser(userId));
-    }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient) {
         return userReviewsDao.getUserReviewsAsLender(pageNum, itemsPerPage, recipient);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage, int recipientId) throws UserNotFoundException {
-        return getUserReviewsAsLender(pageNum, itemsPerPage, getUser(recipientId));
+        return getUserReviewsAsLender(pageNum, itemsPerPage, userService.getUserById(recipientId));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, UserImpl recipient) {
         return userReviewsDao.getUserReviewsAsBorrower(pageNum, itemsPerPage, recipient);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum, final int itemsPerPage, int reviewerId) throws UserNotFoundException {
-        return getUserReviewsAsBorrower(pageNum, itemsPerPage, getUser(reviewerId));
+        return getUserReviewsAsBorrower(pageNum, itemsPerPage, userService.getUserById(reviewerId));
     }
 }

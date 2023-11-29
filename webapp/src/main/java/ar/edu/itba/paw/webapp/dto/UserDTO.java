@@ -20,12 +20,18 @@ public class UserDTO {
     private String telephone;
 
     private String role;
+    private Integer rating;
+    private Integer ratingAsLender;
+    private Integer ratingAsBorrower;
     public static UserDTO fromUser(UriInfo url, UserImpl user) {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
         dto.telephone = user.getTelephone();
         dto.email = user.getEmail();
         dto.role = user.getBehavior().toString();
+        dto.rating = user.getRating();
+        dto.ratingAsBorrower = user.getRatingAsBorrower();
+        dto.ratingAsLender = user.getRatingAsLender();
         dto.image = url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
     }

@@ -15,19 +15,13 @@ public interface UserReviewsService {
 
     boolean borrowerCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException;
 
-    double getRating(final UserImpl user);
-
-    double getRatingAsLender(UserImpl user);
-
-    double getRatingAsBorrower(UserImpl user);
 
     boolean userHasReview(final int lendingId, final String user);
 
-    UserReview getUserReviewAsLender(final int userId,final int reviewId) throws UserReviewNotFoundException;
+    UserReview getUserReviewAsLender(final String email,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
 
-    UserReview getUserReviewAsBorrower(final int userId,final int reviewId) throws UserReviewNotFoundException;
+    UserReview getUserReviewAsBorrower(final String email,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
 
-    double getRatingById(final int userId) throws UserNotFoundException;
 
     PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient);
 
