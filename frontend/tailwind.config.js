@@ -18,6 +18,7 @@ export default {
         'primary': ['Overpass', 'sans-serif']
       },
       colors: {
+        'primary': '#2B3B2B',
         'primary-gray': '#444444',
         'fluorescent-green': '#16df7e',
         'gray': '#D0DCD0',

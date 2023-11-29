@@ -3,21 +3,26 @@ import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Landing from "./views/Landing.tsx";
 import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./views/NotFound.tsx";
+
+
+
 export default function App() {
     return (
         <div>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Landing />} />
-                    <Route path="about" element={<About />} />
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="discovery" element={<DiscoveryView/>} />
-                    {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-            </Routes>
+            
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Landing />} />
+                        <Route path="about" element={<About />} />
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="discovery" element={<DiscoveryView/>} />
+                        {/* Using path="*"" means "match anything", so this route
+                    acts like a catch-all for URLs that we don't have explicit
+                    routes for. */}
+                        <Route path="*" element={<NotFound />} />
+                    </Route>
+                </Routes>
+            
         </div>
     );
 }

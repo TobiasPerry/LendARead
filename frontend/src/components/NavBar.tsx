@@ -53,7 +53,7 @@ export default function NavBar() {
                                         <img
                                             className="h-10 w-auto"
                                             src="../../public/logo-claro.png"
-                                            alt="Your Company"
+                                            alt="Lend a Read"
                                         />
                                     </div>
                                 </Link>
