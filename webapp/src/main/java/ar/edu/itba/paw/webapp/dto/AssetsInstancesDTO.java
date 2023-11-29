@@ -24,7 +24,6 @@ public class AssetsInstancesDTO {
 
     private  String physicalCondition;
 
-    private  String assetState;
 
     private  int maxLendingDays;
 
@@ -44,7 +43,6 @@ public class AssetsInstancesDTO {
         dto.locationReference = LocationDTO.reference(url, assetInstance.getLocation());
         dto.description = assetInstance.getDescription();
         dto.physicalCondition = assetInstance.getPhysicalCondition().toString();
-        dto.assetState = assetInstance.getAssetState().toString();
         dto.rating = assetInstance.getRating();
         dto.maxLendingDays = assetInstance.getMaxDays();
         dto.isReservable = assetInstance.getIsReservable();

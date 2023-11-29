@@ -5,14 +5,17 @@ import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.viewsContext.implementations.*;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.webapp.dto.AssetInstanceReviewDTO;
 import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
-import ar.edu.itba.paw.webapp.form.AddAssetForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
+import ar.edu.itba.paw.webapp.form.AssetInstancePatchForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
-import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
@@ -115,8 +118,8 @@ public class AssetInstanceController {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
-    public Response createAssetInstance( @Valid @BeanParam final AddAssetForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
-        AssetInstanceImpl assetInstance = aes.addAssetInstance(FormFactoryAddAssetView.createAssetInstance(assetInstanceForm, us.getUser(us.getCurrentUser()), ls.getLocation(assetInstanceForm.getLocationId())), assetInstanceForm.getImageBytes());
+    public Response createAssetInstance( @Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
+        AssetInstanceImpl assetInstance = aes.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
         return Response.created(uri).build();
@@ -126,8 +129,8 @@ public class AssetInstanceController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
-    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
-        ais.changeAssetInstance(id, Optional.ofNullable(assetInstanceForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstanceForm.getMaxDays()), Optional.ofNullable(assetInstanceForm.getLocationId()), assetInstanceForm.getImageBytes(), Optional.ofNullable(assetInstanceForm.getDescription()), Optional.ofNullable(assetInstanceForm.getIsReservable()), Optional.ofNullable(assetInstanceForm.getState()));
+    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstancePatchForm assetInstancePatchForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
+        ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getState()));
         return Response.noContent().build();
     }
 

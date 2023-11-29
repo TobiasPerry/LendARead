@@ -26,7 +26,7 @@ public class ISBNCheckerServiceImpl implements ISBNCheckerService {
     @Transactional(readOnly = true)
     @Override
     public Optional<BookImpl> getBookIfExistsByISBN(final String isbn) {
-        Optional<BookImpl> bookOpt = this.assetDao.getBook(isbn);
+        Optional<BookImpl> bookOpt = this.assetDao.getBookByIsbn(isbn);
         if (bookOpt.isPresent()) {
             return bookOpt;
         }

@@ -46,12 +46,14 @@ public class UserController {
     @Autowired
     private UserReviewsService urs;
 
+
+    // TODO check this
     @PATCH
     @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     public Response changePassword(@Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
         us.changePassword(changePasswordForm.getPassword(),changePasswordForm.getToken());
-        return Response.ok().build();
+        return Response.noContent().build();
     }
     @POST
     @Produces(value = { Vnd.VND_USER })
@@ -87,7 +89,7 @@ public class UserController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response changeUserProfilePic(@PathParam("id") final long id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
         int photoId = us.changeUserProfilePic(Math.toIntExact(id),imageBytes);
-        return Response.noContent().contentLocation(uriInfo.getRequestUri()).build();
+        return Response.noContent().build();
     }
 
     @GET

@@ -27,7 +27,7 @@ public class AssetDaoJpa implements AssetDao {
     @Override
     public BookImpl addAsset(BookImpl bi) throws BookAlreadyExistException {
         final BookImpl book = new BookImpl(bi.getId(), bi.getIsbn(), bi.getAuthor(), bi.getName(), bi.getLanguage());
-        Optional<BookImpl> existingBook = getBook(book.getIsbn());
+        Optional<BookImpl> existingBook = getBookByIsbn(book.getIsbn());
         if (existingBook.isPresent()) {
             throw new BookAlreadyExistException();
         }
@@ -35,12 +35,57 @@ public class AssetDaoJpa implements AssetDao {
         return book;
     }
 
+
     @Override
-    public Optional<BookImpl> getBook(String isbn) {
+    public Optional<BookImpl> getBookByIsbn(final String isbn) {
         TypedQuery<BookImpl> query = em.createQuery("SELECT b FROM BookImpl b WHERE b.isbn = :isbn", BookImpl.class);
         query.setParameter("isbn", isbn);
         List<BookImpl> books = query.getResultList();
         return books.isEmpty() ? Optional.empty() : Optional.of(books.get(0));
     }
+
+    @Override
+    public List<BookImpl> getBooks(String isbn, String author, String title, String language) {
+        StringBuilder sb = new StringBuilder("SELECT b FROM BookImpl b ");
+        boolean first = true;
+        if (isbn != null) {
+            sb.append("WHERE b.isbn = :isbn ");
+            first = false;
+        }
+        if (author != null) {
+            sb.append(first ? "WHERE " : "AND ");
+            sb.append("b.author = :author ");
+            first = false;
+        }
+        if (title != null) {
+            sb.append(first ? "WHERE " : "AND ");
+            sb.append("b.title = :title ");
+            first = false;
+        }
+        if (language != null) {
+            sb.append(first ? "WHERE " : "AND ");
+            sb.append("b.language = :language ");
+        }
+        TypedQuery<BookImpl> query = em.createQuery(sb.toString(), BookImpl.class);
+        if (isbn != null) {
+            query.setParameter("isbn", isbn);
+        }
+        if (author != null) {
+            query.setParameter("author", author);
+        }
+        if (title != null) {
+            query.setParameter("title", title);
+        }
+        if (language != null) {
+            query.setParameter("language", language);
+        }
+        return query.getResultList();
+    }
+
+    @Override
+    public BookImpl getBookById(int id) {
+        return em.find(BookImpl.class, id);
+    }
+
 }
 

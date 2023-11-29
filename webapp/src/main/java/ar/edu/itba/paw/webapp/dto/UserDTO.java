@@ -18,11 +18,14 @@ public class UserDTO {
     private String password;
 
     private String telephone;
+
+    private String role;
     public static UserDTO fromUser(UriInfo url, UserImpl user) {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
         dto.telephone = user.getTelephone();
         dto.email = user.getEmail();
+        dto.role = user.getBehavior().toString();
         dto.image = url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
     }

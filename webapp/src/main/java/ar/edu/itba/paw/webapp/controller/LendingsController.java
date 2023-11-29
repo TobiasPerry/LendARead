@@ -57,7 +57,7 @@ public class LendingsController {
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
       LendingImpl lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
-      return Response.noContent().location(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
+      return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
     }
     @GET
     @Path("/{id}")
@@ -72,7 +72,7 @@ public class LendingsController {
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
         aas.changeLending(id, patchLendingForm.getState());
-        return Response.noContent().location(uriInfo.getRequestUriBuilder().build()).build();
+        return Response.noContent().build();
     }
 
 }

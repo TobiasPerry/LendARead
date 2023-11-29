@@ -11,6 +11,10 @@ public interface AssetDao {
 
     BookImpl addAsset(final BookImpl bi) throws BookAlreadyExistException;
 
-    Optional<BookImpl> getBook(final String isbn);
+    Optional<BookImpl> getBookByIsbn(final String isbn);
+
+    List<BookImpl> getBooks(final String isbn,final String author,final String title,final String language);
+
+    BookImpl getBookById(final int id);
 
 }

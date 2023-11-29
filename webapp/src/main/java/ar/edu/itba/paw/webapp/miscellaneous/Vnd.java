@@ -25,4 +25,6 @@ public class Vnd {
     public static final String VND_ASSET_INSTANCE_LENDING = VND_PREFIX + "assetInstanceLending.v1" + VND_SUFFIX;
     public static final String VND_ASSET_INSTANCE_LENDING_STATE = VND_PREFIX + "assetInstanceLendingState.v1" + VND_SUFFIX;
 
+    public static final String VND_ASSET = VND_PREFIX + "asset.v1" + VND_SUFFIX;
+
 }

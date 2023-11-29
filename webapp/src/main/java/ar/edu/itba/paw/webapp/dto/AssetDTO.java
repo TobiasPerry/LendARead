@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +29,9 @@ public class AssetDTO {
     }
     public static String reference(UriInfo url, BookImpl asset) {
         return url.getBaseUriBuilder().path("assets").path(String.valueOf(asset.getId())).build().toString();
+    }
+    public static List<AssetDTO> fromBooks(final List<BookImpl> books, final UriInfo uriInfo) {
+        return books.stream().map(book -> fromAsset(uriInfo, book)).collect(java.util.stream.Collectors.toList());
     }
 
 }

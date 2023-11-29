@@ -69,7 +69,7 @@ public class AssetDaoImplTest {
     @Test
     public void getAssetTest() {
         //2
-        Optional<BookImpl> returnBook = assetDao.getBook(ISBN_ALREADY_EXIST);
+        Optional<BookImpl> returnBook = assetDao.getBookByIsbn(ISBN_ALREADY_EXIST);
         //3
         Assert.assertTrue(returnBook.isPresent());
         Assert.assertEquals(DUPLICATED_BOOK.getName(),returnBook.get().getName());
