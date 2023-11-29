@@ -4,12 +4,21 @@ import Landing from "./views/Landing.tsx";
 import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./views/NotFound.tsx";
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+// Create a custom MUI theme
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2B3B2B',
+    },
+  },
+});
 
 export default function App() {
     return (
         <div>
-            
+            <ThemeProvider theme={theme}>
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Landing />} />
@@ -22,7 +31,7 @@ export default function App() {
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
-            
+            </ThemeProvider>
         </div>
     );
 }
