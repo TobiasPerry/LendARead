@@ -24,7 +24,7 @@ export default function App() {
 function Layout() {
     return (
         <div>
-            <NavBar showSearchbar={true} />
+            <NavBar />
             <hr />
             {/* An <Outlet> renders whatever child route is currently active,
           so you can think about this <Outlet> as a placeholder for

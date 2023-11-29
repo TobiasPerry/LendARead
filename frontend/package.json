@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@mui/base": "^5.0.0-beta.24",
+    "@mui/material": "^5.14.18",
+    "classnames": "^2.3.2",
     "i18next": "^23.6.0",
     "i18next-browser-languagedetector": "^7.1.0",
     "react": "^18.2.0",
