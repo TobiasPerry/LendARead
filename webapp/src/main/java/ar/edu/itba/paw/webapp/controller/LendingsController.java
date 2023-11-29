@@ -27,16 +27,20 @@ import java.util.List;
 @Controller
 public class LendingsController {
 
-    @Autowired
-    private AssetAvailabilityService aas;
+    private final AssetAvailabilityService aas;
 
-    @Autowired
-    private UserService us;
-    @Autowired
-    private UserAssetInstanceService uais;
+    private final UserService us;
+    private final UserAssetInstanceService uais;
 
     @Context
     private UriInfo uriInfo;
+
+    @Autowired
+    public LendingsController(final AssetAvailabilityService assetAvailabilityService, final UserService userService, final UserAssetInstanceService userAssetInstanceService){
+        this.aas = assetAvailabilityService;
+        this.us = userService;
+        this.uais = userAssetInstanceService;
+    }
 
     @GET
     @Path("/")

@@ -5,7 +5,6 @@ import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
-import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
@@ -35,17 +34,20 @@ import java.util.List;
 @Path("users")
 @Component
 public class UserController {
-    @Autowired
-    private UserService us;
-    @Autowired
-    private AssetExistanceService ais;
+    private final UserService us;
+    private final AssetExistanceService ais;
     @Context
     private UriInfo uriInfo;
-    @Autowired
-    private UserAssetInstanceService uais;
-    @Autowired
-    private UserReviewsService urs;
 
+    private final UserReviewsService urs;
+
+    @Autowired
+    public UserController (final UserService userService, final AssetExistanceService assetExistanceService, final UserReviewsService userReviewsService){
+        this.us = userService;
+        this.ais = assetExistanceService;
+        this.urs = userReviewsService;
+
+    }
 
 
     @PATCH
