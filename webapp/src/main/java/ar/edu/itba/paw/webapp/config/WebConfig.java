@@ -45,7 +45,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename("classpath:i18n/messages");
+        ms.setBasename("classpath:i18n/ValidationMessages");
         ms.setUseCodeAsDefaultMessage(true);
         ms.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
         return ms;

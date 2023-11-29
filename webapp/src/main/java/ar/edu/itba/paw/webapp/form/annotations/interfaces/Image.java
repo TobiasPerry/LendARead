@@ -17,7 +17,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Constraint(validatedBy= ImageValidatorImpl.class)
 public @interface Image {
 
-    String message() default "Invalid image";
+    String message() default "{image.validation}";
 
     Class<?>[] groups() default {};
 

@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RepeatPassword {
 
-    String message() default "Fields values don't match!";
+    String message() default "{repeat.password.validation}";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

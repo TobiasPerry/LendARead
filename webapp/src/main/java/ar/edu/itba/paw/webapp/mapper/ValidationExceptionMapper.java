@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.exceptionMapper;
+package ar.edu.itba.paw.webapp.mapper;
 
 import ar.edu.itba.paw.webapp.dto.ErrorsDTO;
 import org.springframework.stereotype.Component;

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidTokenImpl.class)
 public @interface ValidToken {
-    String message() default "The field cannot be empty";
+    String message() default "{token.validation}";
 
     Class<?>[] groups() default {};
 

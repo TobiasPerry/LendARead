@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EmailImpl.class)
 public @interface Email {
-    String message() default "Please enter a valid email";
+    String message() default "{email.format.validation}";
 
     Class<?>[] groups() default {};
 
