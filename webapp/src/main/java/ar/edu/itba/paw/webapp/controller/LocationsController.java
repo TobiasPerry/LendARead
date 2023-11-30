@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.webapp.dto.LocationDTO;
 import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,8 +48,11 @@ public class LocationsController {
     @Path("/{id}")
     @Produces(value = { Vnd.VND_LOCATION })
     public Response getLocationById(@PathParam("id") final Integer locationId) throws LocationNotFoundException {
+
         final LocationImpl location = ls.getLocation(locationId);
-        return Response.ok(LocationDTO.fromLocation(uriInfo,location)).build();
+        Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
+        StaticCache.setUnconditionalCache(response);
+        return response.build();
     }
     @PATCH
     @Path("/{id}")

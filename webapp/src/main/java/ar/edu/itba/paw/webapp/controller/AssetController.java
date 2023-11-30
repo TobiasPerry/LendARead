@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
 import ar.edu.itba.paw.webapp.dto.AssetDTO;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import com.sun.istack.internal.Nullable;
@@ -53,7 +54,11 @@ public class AssetController {
     @Produces(value = {Vnd.VND_ASSET})
     public Response getAsset(@PathParam("id") final Integer id){
         BookImpl book = as.getBookById(id);
-        return Response.ok(AssetDTO.fromAsset(uriInfo,book)).build();
+
+        Response.ResponseBuilder response = Response.ok(AssetDTO.fromAsset(uriInfo,book));
+        StaticCache.setUnconditionalCache(response);
+
+        return response.build();
     }
 
     @POST

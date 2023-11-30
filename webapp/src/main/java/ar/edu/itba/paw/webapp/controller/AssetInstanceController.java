@@ -17,6 +17,7 @@ import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.form.AssetInstancePatchForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,18 +70,26 @@ public class AssetInstanceController {
     public Response getUserAssetsInstances(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
         final AssetInstanceImpl assetInstance = ais.getAssetInstance(id);
         AssetsInstancesDTO assetDTO = AssetsInstancesDTO.fromAssetInstance(uriInfo,assetInstance);
-        return Response.ok(assetDTO).build();
+        Response.ResponseBuilder response = Response.ok(assetDTO);
+        StaticCache.setUnconditionalCache(response);
+        return response.build();
     }
     @GET
     @Path("/{id}/image")
     @Produces(value = {"image/webp"})
-    public Response getImage(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
+    public Response getImage(@PathParam("id") final int id,@Context javax.ws.rs.core.Request request) throws AssetInstanceNotFoundException {
         final AssetInstanceImpl assetInstance = ais.getAssetInstance(id);
 
-        EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage()));
+        EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage().getId()));
 
-        byte[] profileImage =   assetInstance.getImage().getPhoto();
-        return Response.ok(profileImage).tag(eTag).build();
+        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
+
+        if (response == null) {
+            Response.ResponseBuilder responseBuilder = Response.ok(assetInstance.getImage().getPhoto()).tag(eTag);
+            return responseBuilder.build();
+        }
+
+        return response.build();
     }
 
     @GET

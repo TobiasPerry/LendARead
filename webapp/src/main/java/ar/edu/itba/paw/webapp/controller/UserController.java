@@ -17,6 +17,7 @@ import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -72,7 +73,8 @@ public class UserController {
     @Produces(value = { Vnd.VND_USER })
     public Response getById(@PathParam("email") final String email) throws UserNotFoundException {
         final UserImpl user = us.getUser(email);
-        return Response.ok(UserDTO.fromUser(uriInfo,user)).build();
+        Response.ResponseBuilder response = Response.ok(UserDTO.fromUser(uriInfo,user));
+        return response.build();
     }
     @POST
     @Path("/{email}/reset-password-token")
@@ -94,13 +96,18 @@ public class UserController {
     @GET
     @Path("/{email}/profilePic")
     @Produces(value = {"image/webp"})
-    public Response getUserProfilePic(@PathParam("email") final String email) throws UserNotFoundException {
+    public Response getUserProfilePic(@PathParam("email") final String email,@Context javax.ws.rs.core.Request request) throws UserNotFoundException {
         final UserImpl user = us.getUser(email);
+        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId()));
 
-        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto()));
+        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
 
-        byte[] profileImage =   user.getProfilePhoto().getPhoto();
-        return Response.ok(profileImage).tag(eTag).build();
+        if (response == null) {
+            Response.ResponseBuilder responseBuilder = Response.ok(user.getProfilePhoto().getPhoto()).tag(eTag);
+            return responseBuilder.build();
+        }
+
+        return response.build();
     }
 
     @GET
