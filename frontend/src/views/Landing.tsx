@@ -12,11 +12,11 @@ export default function Landing(){
                     <h1
                         className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl"
                     >
-                        <span className="sm:block"> The new era of </span>
+                        <span className="sm:block font-primary text-secondary"> The new era of </span>
                         reading
                     </h1>
 
-                    <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
+                    <p className="mx-auto mt-4 max-w-xl sm:text-xl/relaxed font-primary text-secondary">
                         A shared book is a multiplied story
                     </p>
 
