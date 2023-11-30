@@ -13,6 +13,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
@@ -58,7 +59,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         Optional<AssetInstanceImpl> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
         if (!assetInstanceOpt.isPresent()) {
             LOGGER.error("Failed to find the asset instance");
-            throw new AssetInstanceNotFoundException("assetInstance not found");
+            throw new AssetInstanceNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         return assetInstanceOpt.get();
     }

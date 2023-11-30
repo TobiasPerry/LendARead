@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,18 +49,18 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public LocationImpl getLocation(int locationId) throws LocationNotFoundException {
         LocationImpl location= locationsDao.getLocation(locationId);
         if (location == null) {
-            throw new LocationNotFoundException("Location not found");
+            throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         return location;
     }
 
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<LocationImpl> getLocations(UserImpl user) {
         return locationsDao.getLocations(user);
     }
@@ -78,7 +79,7 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<LocationImpl> getLocationsById(int userId) throws UserNotFoundException {
         return locationsDao.getLocations(userService.getUserById(userId));
     }
@@ -97,6 +98,7 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LocationImpl> getLocations() {
         //return locationsDao.getAllLocations();
         return null;

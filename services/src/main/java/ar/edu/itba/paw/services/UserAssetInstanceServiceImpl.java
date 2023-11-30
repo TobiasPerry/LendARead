@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
       Optional<LendingImpl> lending = userAssetsDao.getBorrowedAsset(lendingId);
       if (!lending.isPresent()) {
           LOGGER.error("Not found borrowed asset instance with the lending lendingId: {}", lendingId);
-          throw new LendingNotFoundException("Not found BorrowedAssetInstance");
+          throw new LendingNotFoundException(HttpStatusCodes.NOT_FOUND);
       }
       return lending.get();
     }

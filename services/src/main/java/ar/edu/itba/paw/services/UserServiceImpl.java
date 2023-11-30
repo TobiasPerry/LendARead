@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserImpl> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("Failed to get user {}", email);
-            throw new UserNotFoundException("The user was not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         return user.get();
     }
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserImpl> user = userDao.getUser(id);
         if (!user.isPresent()) {
             LOGGER.error("User with id {} not found", id);
-            throw new UserNotFoundException("The user with id " + id + " not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
 
         return user.get();
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
     public void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException {
         boolean changed = userDao.changeRole(email, behaviour);
         if (!changed)
-            throw new UserNotFoundException("The user was not founded");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
         actualAuthorities.add(new SimpleGrantedAuthority("ROLE_" + behaviour.toString()));
@@ -124,7 +125,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserImpl> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
         PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token, user.get().getId(), LocalDate.now().plusDays(1));
         emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken(), new Locale(user.get().getLocale()));
@@ -184,7 +185,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserImpl> maybeUser = userDao.getUser(email);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
 
         ImageImpl image = this.imagesDao.addPhoto(parsedImage);

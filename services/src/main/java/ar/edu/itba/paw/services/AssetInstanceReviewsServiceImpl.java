@@ -12,6 +12,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     public AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException {
         LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         if(lending.getAssetInstance().getId() != assetId){
-            throw new LendingNotFoundException("Not lending asset instance with id " + assetId);
+            throw new LendingNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
         AssetInstanceReview assetInstanceReview = new AssetInstanceReview(lending, review, userService.getUser(userService.getCurrentUser()),rating) ;
        assetInstanceReviewsDao.addReview(assetInstanceReview);
@@ -69,12 +70,12 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
 
     @Override
     public AssetInstanceReview getReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
-        return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException("Review with id " + reviewId + " not found"));
+        return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
     }
 
     @Override
     public void deleteReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
-        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException("Review with id " + reviewId + " not found"));
+        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.BAD_REQUEST));
         assetInstanceReviewsDao.deleteReview(assetInstanceReview);
     }
 

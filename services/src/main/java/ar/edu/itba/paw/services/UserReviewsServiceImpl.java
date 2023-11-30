@@ -11,6 +11,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,14 +79,14 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional(readOnly = true)
     @Override
     public UserReview getUserReviewAsLender(final String email, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
-        return userReviewsDao.getUserReviewAsLender(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
+        return userReviewsDao.getUserReviewAsLender(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
 
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserReview getUserReviewAsBorrower(final String email, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
-        return userReviewsDao.getUserReviewAsBorrower(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException("User review not found"));
+        return userReviewsDao.getUserReviewAsBorrower(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
     }
 
 
