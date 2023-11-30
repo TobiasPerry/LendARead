@@ -11,7 +11,7 @@ public interface AbstractPage {
     }
 
     default boolean previousPage() {
-        return getCurrentPage() != 1;
+        return getCurrentPage() > 1;
     }
 
     default int getFirstPage() {return 1;}

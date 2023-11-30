@@ -46,13 +46,13 @@ public class AssetsInstancesDTO {
         dto.rating = assetInstance.getRating();
         dto.maxLendingDays = assetInstance.getMaxDays();
         dto.isReservable = assetInstance.getIsReservable();
-        dto.imageReference = url.getBaseUriBuilder().path("assetInstance").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
+        dto.imageReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
         return dto;
     }
     public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstanceImpl> assetInstances) {
        return assetInstances.stream().map(assetInstance -> fromAssetInstance(url, assetInstance)).collect(java.util.stream.Collectors.toList());
     }
     public static String reference(UriInfo url, AssetInstanceImpl assetInstance) {
-        return url.getBaseUriBuilder().path("assetsInstance").path(String.valueOf(assetInstance.getId())).build().toString();
+        return url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).build().toString();
     }
 }

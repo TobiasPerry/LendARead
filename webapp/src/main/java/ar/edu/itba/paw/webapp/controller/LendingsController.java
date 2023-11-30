@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -48,9 +50,10 @@ public class LendingsController {
     public Response getLendings(@QueryParam("page")@DefaultValue("1") Integer page,
                                 @QueryParam("itemsPerPage")@DefaultValue("1") Integer itemsPerPage,
                                 @QueryParam("assetInstanceId") @Nullable Integer assetInstanceId,
-                                @QueryParam("userId")@Nullable Integer userId){
-
-        PagingImpl<LendingImpl> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, userId);
+                                @QueryParam("borrowerId")@Nullable Integer borrowerId,
+                                @QueryParam("state")@Nullable @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED") String state,
+                                @QueryParam("lenderId")@Nullable Integer lenderId) {
+        PagingImpl<LendingImpl> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LendingDTO>>(lendingDTOS) {});
         PaginatedData.paginatedData(response, paging, uriInfo);

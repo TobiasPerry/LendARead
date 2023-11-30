@@ -41,49 +41,63 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLending( final int pageNum, final int itemsPerPage,final Integer aiId,final Integer userId) {
+    public PagingImpl<LendingImpl> getPagingActiveLending( final int pageNum, final int itemsPerPage,final Integer aiId,final Integer borrowerId,final LendingState lendingState,final Integer lenderId) {
 
-        final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l where l.assetinstanceid = :ai and l.borrowerid = :userId and l.active != :active and l.active != :rejected");
-        final StringBuilder queryCountStringBuilder = new StringBuilder("select Count(l.id) from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected");
+        final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id ");
+
+        boolean first = true;
+        if (lenderId != null){
+            queryNativeStringBuilder.append("WHERE a.owner = :lenderId ");
+            first = false;
+        }
+        if (lendingState != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.active = :active ");
+            first = false;
+        }
         if(aiId != null){
-            queryNativeStringBuilder.append(" and l.assetinstanceid = :ai");
-            queryCountStringBuilder.append(" and l.assetinstanceid = :ai");
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.assetinstanceid = :ai");
+            first = false;
+
         }
-        if(userId != null){
-            queryNativeStringBuilder.append(" and l.borrowerid = :userId");
-            queryCountStringBuilder.append(" and l.borrowerid = :userId");
+        if(borrowerId != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
+            first = false;
         }
-        queryNativeStringBuilder.append(" order by l.lenddate limit :limit offset :offset");
-        queryCountStringBuilder.append(" order by l.lenddate limit :limit offset :offset");
+        queryNativeStringBuilder.append("group by l.id,l.lenddate order by l.lenddate limit :limit offset :offset");
 
         final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
 
-        final Query queryCount = em.createNativeQuery(queryCountStringBuilder.toString());
 
         final int offset = (pageNum - 1) * itemsPerPage;
-        if (aiId != null) {
-            queryNative.setParameter("ai", aiId);
-            queryCount.setParameter("ai", aiId);
+        if (lenderId != null){
+            queryNative.setParameter("lenderId", lenderId);
         }
-        if (userId != null) {
-            queryNative.setParameter("userId", userId);
-            queryCount.setParameter("userId", userId);
+        if (lendingState != null){
+            queryNative.setParameter("active", lendingState.toString());
+        }
+        if(aiId != null){
+            queryNative.setParameter("ai", aiId);
+        }
+        if(borrowerId != null){
+            queryNative.setParameter("borrowerId", borrowerId);
         }
 
-        queryCount.setParameter("active", "FINISHED");
-        queryCount.setParameter("rejected", "REJECTED");
+
         queryNative.setParameter("limit", itemsPerPage);
         queryNative.setParameter("offset", offset);
-        queryNative.setParameter("active", "FINISHED");
-        queryNative.setParameter("rejected", "REJECTED");
 
-        final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
+
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
+            return new PagingImpl<>(new ArrayList<>(), pageNum, 1);
+
         final TypedQuery<LendingImpl> query = em.createQuery("FROM LendingImpl AS l WHERE id IN (:ids) ORDER BY l.lendDate", LendingImpl.class);
         query.setParameter("ids", list);
         List<LendingImpl> reviewList = query.getResultList();

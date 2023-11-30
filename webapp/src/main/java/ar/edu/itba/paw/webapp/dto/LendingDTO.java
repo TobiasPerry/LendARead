@@ -27,6 +27,7 @@ public class LendingDTO {
 
     private String assetInstanceReview;
 
+    private String state;
     public static LendingDTO fromLending(LendingImpl lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();
         dto.id = lending.getId();
@@ -34,6 +35,7 @@ public class LendingDTO {
         dto.userReference = UserDTO.reference(url, lending.getUserReference());
         dto.lendDate = lending.getLendDate().toString();
         dto.devolutionDate = lending.getDevolutionDate().toString();
+        dto.state = lending.getActive().toString();
         if (lending.getUserReviews() != null)
             dto.userReviews = lending.getUserReviews().stream().map(userReview -> UserReviewsDTO.reference(url, userReview)).collect(Collectors.toList());
         else dto.userReviews = new ArrayList<>();

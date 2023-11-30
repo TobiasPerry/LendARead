@@ -198,8 +198,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLendings(final int page, final int size,final Integer aiId,final Integer userId)  {
-        return lendingDao.getPagingActiveLending(page, size, aiId, userId);
+    public PagingImpl<LendingImpl> getPagingActiveLendings(final int page, final int size,final Integer aiId,final Integer borrowerId,final LendingState lendingState,final Integer lenderId) {
+        return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId);
     }
 
     @Transactional
