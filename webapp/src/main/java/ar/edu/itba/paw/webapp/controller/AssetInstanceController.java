@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@Path("assetInstances")
+@Path("/api/assetInstances")
 public class AssetInstanceController {
 
 

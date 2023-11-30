@@ -32,7 +32,7 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 
-@Path("users")
+@Path("/api/users")
 @Component
 public class UserController {
     private final UserService us;

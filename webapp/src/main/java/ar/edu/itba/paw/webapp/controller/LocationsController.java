@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@Path("locations")
+@Path("/api/locations")
 public class LocationsController {
 
     private final LocationsService ls;

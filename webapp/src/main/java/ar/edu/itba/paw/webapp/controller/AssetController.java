@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@Path("assets")
+@Path("/api/assets")
 public class AssetController {
 
 

@@ -37,11 +37,11 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   </filter>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </filter-mapping>
 
   <filter>
@@ -51,7 +51,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
   <filter-mapping>
     <filter-name>openEntityManagerInView</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </filter-mapping>
 
   <filter>
@@ -97,7 +97,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   </filter>
   <filter-mapping>
     <filter-name>jersey</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </filter-mapping>
   
 </web-app>

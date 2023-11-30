@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-@Path("lendings")
+@Path("/api/lendings")
 @Controller
 public class LendingsController {
 
