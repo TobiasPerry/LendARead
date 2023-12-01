@@ -21,4 +21,6 @@ public interface AssetAvailabilityDao {
     Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date);
 
     Optional<List<LendingImpl>> getActiveLendingEndingOn(LocalDate date);
+
+    Optional<LendingImpl> getLendingById(final int lendingId);
 }

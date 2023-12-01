@@ -56,15 +56,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     private Environment environment;
 
     @Autowired
-    LenderViewOwnerVoter lenderViewOwnerVoter;
+    private LenderViewOwnerVoter lenderViewOwnerVoter;
     @Autowired
-    BorrowerViewVoter borrowerViewVoter;
+    private BorrowerViewVoter borrowerViewVoter;
 
     @Autowired
-    BorrowerReviewVoter borrowerReviewVoter;
+    private BorrowerReviewVoter borrowerReviewVoter;
 
     @Autowired
-    LenderReviewVoter lenderReviewVoter;
+    private LenderReviewVoter lenderReviewVoter;
     @Autowired
     private  JwtTokenFilter jwtTokenFilter;
     @Autowired
@@ -75,6 +75,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(request, #email)";
 
+    private static final String ACCESS_CONTROL_LOCATIONS = "@accessFunctions.locationOwner(request, #id)";
+
+    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingOwner(request, #id)";
+
+    private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner(request, #id)";
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -130,10 +135,23 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new UnauthorizedRequest())
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
+                 // User endpoints
                 .antMatchers(HttpMethod.GET,"/api/users/{email}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.DELETE,"/api/users/{email}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PUT,"/api/users/{email}/password").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PATCH,"/api/users/{email}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.POST,"/api/users/{email}/reset-password-token").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT,"/api/users/{email}/profilePic").access(ACCESS_CONTROL_USER)
 
+                // Location endpoints
+                .antMatchers(HttpMethod.PATCH,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)
+                .antMatchers(HttpMethod.DELETE,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)
+
+                // Lendings endpoints
+                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").access(ACCESS_CONTROL_LENDINGS)
+
+                // AssetInstance endpoints
+                .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
+                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
 
 
                 .and().cors().and().csrf().disable()

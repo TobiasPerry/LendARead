@@ -162,6 +162,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
     }
 
+    @Override
+    public UserImpl getLender(int lendingId) throws AssetInstanceNotFoundException {
+        return lendingDao.getLendingById(lendingId).orElseThrow(() -> new AssetInstanceNotFoundException(HttpStatusCodes.BAD_REQUEST)).getAssetInstance().getOwner();
+    }
+
     @Transactional
     @Override
     public void rejectAsset(final int lendingId) throws  LendingCompletionUnsuccessfulException {
