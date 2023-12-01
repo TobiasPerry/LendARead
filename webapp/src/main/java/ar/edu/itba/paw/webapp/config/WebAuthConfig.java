@@ -70,6 +70,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BasicTokenFilter basicTokenFilter;
 
+    @Autowired
+    private AccessFunctions accessFunctions;
+
+    private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(request, #email)";
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -122,16 +127,16 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new UnauthorizedRequestHandler())
+                .accessDeniedHandler(new UnauthorizedRequest())
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
-                .accessDecisionManager(accessDecisionManager())
-                .antMatchers(HttpMethod.GET,"/users/**").authenticated()
-                .antMatchers("/login","/register","/forgotPassword","/changePassword").anonymous()
-                .antMatchers("/addAsset","/lentBookDetails/**").hasRole("LENDER")
-                .antMatchers(HttpMethod.POST,"/deleteAsset/**","/changeStatus/**","/confirmAsset/**","/returnAsset/**","/rejectAsset/**","/review/lenderAdd").hasRole("LENDER")
-                .antMatchers(HttpMethod.POST,"/review/borrowerAdd").hasRole("BORROWER")
-                .antMatchers("/userHome","/changeRole","/requestAsset/**","/addAssetView/**","/borrowedBookDetails/**","/userLocations/**").authenticated()
-                .antMatchers("/**")
-                .permitAll().and().cors().and().csrf().disable()
+
+                .antMatchers(HttpMethod.GET,"/api/users/{email}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.DELETE,"/api/users/{email}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT,"/api/users/{email}/password").access(ACCESS_CONTROL_USER)
+
+
+
+                .and().cors().and().csrf().disable()
                 .addFilterBefore(
                         basicTokenFilter,
                         UsernamePasswordAuthenticationFilter.class)
