@@ -16,6 +16,7 @@ public class AssetDTO {
     private String title;
     private String language;
 
+    private String selfUrl;
 
 
     public static AssetDTO fromAsset(UriInfo url, BookImpl asset) {
@@ -25,6 +26,7 @@ public class AssetDTO {
         assetDTO.author = asset.getAuthor();
         assetDTO.title = asset.getName();
         assetDTO.language = asset.getLanguage();
+        assetDTO.selfUrl = reference(url, asset);
         return assetDTO;
     }
     public static String reference(UriInfo url, BookImpl asset) {

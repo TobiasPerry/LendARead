@@ -23,6 +23,7 @@ public class UserDTO {
     private Integer rating;
     private Integer ratingAsLender;
     private Integer ratingAsBorrower;
+    private String selfUrl;
     public static UserDTO fromUser(UriInfo url, UserImpl user) {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
@@ -32,6 +33,7 @@ public class UserDTO {
         dto.rating = user.getRating();
         dto.ratingAsBorrower = user.getRatingAsBorrower();
         dto.ratingAsLender = user.getRatingAsLender();
+        dto.selfUrl = reference(url, user);
         dto.image = url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
     }

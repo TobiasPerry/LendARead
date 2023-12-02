@@ -28,6 +28,8 @@ public class LendingDTO {
     private String assetInstanceReview;
 
     private String state;
+
+    private String selfUrl;
     public static LendingDTO fromLending(LendingImpl lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();
         dto.id = lending.getId();
@@ -42,6 +44,7 @@ public class LendingDTO {
         if (lending.getAssetInstanceReview() != null)
             dto.assetInstanceReview = AssetInstanceReviewDTO.reference(url, lending.getAssetInstanceReview());
         else dto.assetInstanceReview = "";
+        dto.selfUrl = reference(url, lending);
         return dto;
     }
     public static List<LendingDTO> fromLendings(List<LendingImpl> lendings, UriInfo url) {

@@ -33,6 +33,8 @@ public class AssetsInstancesDTO {
 
     private Integer rating;
 
+    private String selfUrl;
+
 
     public static AssetsInstancesDTO fromAssetInstance(UriInfo url, AssetInstanceImpl assetInstance) {
         AssetsInstancesDTO dto = new AssetsInstancesDTO();
@@ -46,6 +48,7 @@ public class AssetsInstancesDTO {
         dto.rating = assetInstance.getRating();
         dto.maxLendingDays = assetInstance.getMaxDays();
         dto.isReservable = assetInstance.getIsReservable();
+        dto.selfUrl = reference(url, assetInstance);
         dto.imageReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
         return dto;
     }

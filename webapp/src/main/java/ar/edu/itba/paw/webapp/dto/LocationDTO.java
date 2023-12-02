@@ -19,6 +19,8 @@ public class LocationDTO {
     private String country;
     private String userReference;
 
+    private String selfUrl;
+
     public static LocationDTO fromLocation(UriInfo url, LocationImpl location) {
         LocationDTO dto = new LocationDTO();
         dto.id = location.getId();
@@ -29,6 +31,7 @@ public class LocationDTO {
         dto.province = location.getProvince();
         dto.country = location.getCountry();
         dto.userReference = UserDTO.reference(url, location.getUser());
+        dto.selfUrl = reference(url, location);
         return dto;
     }
     public static String reference(UriInfo url, LocationImpl location) {

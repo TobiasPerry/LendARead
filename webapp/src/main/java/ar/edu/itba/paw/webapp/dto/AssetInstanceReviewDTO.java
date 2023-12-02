@@ -16,12 +16,15 @@ public class AssetInstanceReviewDTO {
         private String lendingReference;
         private String reviewer;
 
+        private String selfUrl;
+
         public static AssetInstanceReviewDTO fromAssetInstanceReview(final AssetInstanceReview review, final UriInfo uriInfo) {
             final AssetInstanceReviewDTO dto = new AssetInstanceReviewDTO();
             dto.setRating(review.getRating());
             dto.setReview(review.getReview());
             dto.setLendingReference(LendingDTO.reference(uriInfo,review.getLending()));
             dto.setReviewer(UserDTO.reference(uriInfo,review.getReviewer()));
+            dto.setSelfUrl(reference(uriInfo,review));
             return dto;
         }
         public static List<AssetInstanceReviewDTO> fromAssetInstanceReviews(final List<AssetInstanceReview> reviews, final UriInfo uriInfo) {
