@@ -15,8 +15,7 @@ const BookCard = () => {
           margin: '15px',
           width: '18rem',
           objectFit: 'cover',
-        }}
-          >
+        }}          >
 
     <a href="/" id="infoRef" style={{textDecoration: 'none'}} >
 
