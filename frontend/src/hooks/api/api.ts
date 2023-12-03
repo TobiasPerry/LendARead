@@ -1,4 +1,7 @@
 
+/**
+ * TODO: DEBERIA ESTAR EN UN CONTEXT? ME PUEDE LLEGAR A JODER MUCHAS INSTANCIAS DE ESTO.
+ * */
 export class Api {
     private static token: string = "";
     private static authenticated: Boolean = false;
@@ -63,7 +66,7 @@ export class Api {
         return await Api.fetch(url, {});
     }
 
-    static async post(url: string, data: object,  rememberMe: boolean = false, headers = { "Content-Type": "application/json; charset=utf-8"}) {
+    static async post(url: string, data: object, rememberMe: boolean = false, headers?: any) {
         return await Api.fetch(
             url,
             {
@@ -75,7 +78,7 @@ export class Api {
         );
     }
 
-    static async put(url: string , data: object, headers = { "Content-Type": "application/json; charset=utf-8"}) {
+    static async put(url: string , data: object,headers?: any) {
         return await Api.fetch(
             url,
             {

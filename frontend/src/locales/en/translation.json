@@ -4,5 +4,15 @@
   "Dashboard": "Dashboard",
   "Team": "Team",
   "Projects": "Projects",
-  "Calendar": "Calendar"
+  "Calendar": "Calendar",
+  "auth": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loginError": "Incorrect email or password",
+    "rememberMe": "Remember me",
+    "logInBtn": "Log In",
+    "doNotHaveAccount": "Don't have an account? Sign up",
+    "forgotPassword": "Forgot password?"
+  }
 }

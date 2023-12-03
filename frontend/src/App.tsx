@@ -5,6 +5,7 @@ import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./views/NotFound.tsx";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LoginView from "./views/LogIn";
 
 // Create a custom MUI theme
 const theme = createTheme({
@@ -25,6 +26,7 @@ export default function App() {
                         <Route path="about" element={<About />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="discovery" element={<DiscoveryView/>} />
+                        <Route path="user" element={<LoginView />} />
                         {/* Using path="*"" means "match anything", so this route
                     acts like a catch-all for URLs that we don't have explicit
                     routes for. */}
