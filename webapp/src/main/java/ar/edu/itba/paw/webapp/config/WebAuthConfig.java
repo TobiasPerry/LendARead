@@ -77,7 +77,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AccessFunctions accessFunctions;
 
-    private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(request, #email)";
+    private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(request, #id)";
 
     private static final String ACCESS_CONTROL_LOCATIONS = "@accessFunctions.locationOwner(request, #id)";
 
@@ -140,11 +140,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
                  // User endpoints
-                .antMatchers(HttpMethod.GET,"/api/users/{email}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.DELETE,"/api/users/{email}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PATCH,"/api/users/{email}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.POST,"/api/users/{email}/reset-password-token").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PUT,"/api/users/{email}/profilePic").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.GET,"/api/users/{id}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.DELETE,"/api/users/{id}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PATCH,"/api/users/{id}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/reset-password-token").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT,"/api/users/{id}/profilePic").access(ACCESS_CONTROL_USER)
 
                 // Location endpoints
                 .antMatchers(HttpMethod.PATCH,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)

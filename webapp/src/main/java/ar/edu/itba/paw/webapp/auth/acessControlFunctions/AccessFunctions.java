@@ -37,8 +37,8 @@ public class AccessFunctions {
     public boolean borrowerCanReview(Integer id) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
         return userReviewsService.borrowerCanReview(id);
     }
-    public boolean checkUser(HttpServletRequest request, String email) throws UserNotFoundException {
-        return userService.getCurrentUser().equals(email);
+    public boolean checkUser(HttpServletRequest request, int id) throws UserNotFoundException {
+        return userService.getUser(userService.getCurrentUser()).getId() == id;
     }
     public boolean locationOwner(HttpServletRequest request, Integer id) throws LocationNotFoundException {
         return locationsService.getLocation(id).getUser().getEmail().equals(userService.getCurrentUser());
