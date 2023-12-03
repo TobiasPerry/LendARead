@@ -1,5 +1,5 @@
 
-import '../styles/neoBookCard.css';
+import './styles/bookCard.css';
 
 const BookCard = () => {
   return (

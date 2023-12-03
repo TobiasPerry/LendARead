@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -73,4 +70,269 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* main.css */
+
+img {
+  image-rendering: auto;
+}
+
+.book-cover {
+  height: 300px;
+  width: 100px;
+  background-color: aqua;
+}
+
+.navItem {
+  font-size: large;
+  font-weight: 800;
+  color: #9c9c9c;
+}
+
+.error {
+  color: lightcoral;
+  font-style: oblique;
+}
+
+
+.info-container {
+  background-color: #ececec;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-container div label {
+  display: flex;
+  align-items: center;
+}
+
+.container-row-wrapped {
+  display: flex;
+  flex-flow: row wrap;
+  margin: auto;
+  justify-content: center;
+}
+
+.container-row {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.container-row-center {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.container-column {
+  display: flex;
+  flex-flow: column;
+  /*width: 100%;*/
+}
+
+.imagen-card {
+  object-fit: fill;
+}
+
+.form-label {
+  font-weight: bold;
+  margin: 2px;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.text-color {
+  color: #7DCFB6;
+}
+
+.main-class {
+  flex-grow: 1;
+  background-color: #D0DCD0;
+}
+
+.body-class {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group {
+  display: flex;
+}
+
+.field {
+  flex: 1;
+  padding-right: 8px;
+}
+
+/*
+  Defaults fonts
+*/
+
+h1 h2 h3 h4 h5 h6 {
+  font-family: 'Overpass', sans-serif;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+}
+
+
+.text-clickable:hover {
+  text-decoration: underline;
+  text-decoration-color: #16df7e;
+  color: #16df7e;
+  cursor: pointer;
+}
+
+/*Scrollbar styling*/
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Modify scrollbar width and color */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+/* Modify thumb appearance */
+::-webkit-scrollbar-thumb {
+  background-color: #2B3B2B;
+  border-radius: 5px;
+}
+
+/* Modify hover effect on thumb */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #111711;
+}
+
+.btn-green {
+  min-width: 200px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 30px 10px 30px;
+  border-radius: 4px;
+  transition: 0.5s;
+  color: #fff;
+  background: #16df7e;
+  box-shadow: 0 8px 28px rgba(22, 223, 126, 0.45);
+}
+
+.btn-green:hover {
+  background: #206bfb;
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(32, 107, 251, 0.45);
+}
+
+.btn-red-outline {
+  min-width: 200px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 30px 10px 30px;
+  border-radius: 4px;
+  transition: 0.5s;
+  color: #000000;
+  background: rgba(212, 82, 53, 0.1);
+  border-width: 5px;
+  border-color: transparent;
+  box-shadow: 0 0 0 1px #D45235, 0 8px 28px rgba(212, 82, 53, 0.25);
+}
+
+.btn-red-outline:hover {
+  background: #D45235;
+  color: #fff;
+  box-shadow: 0 0 0 2px #D45235, 0 8px 28px rgba(212, 82, 53, 0.45);
+}
+
+.btn-red {
+  min-width: 200px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 30px 10px 30px;
+  border-radius: 4px;
+  transition: 0.5s;
+  color: #ffffff;
+  background: rgba(223, 125, 104, 1);
+  border-width: 5px;
+  border-color: transparent;
+  box-shadow: 0 0 0 1px #D45235, 0 8px 28px rgba(212, 82, 53, 0.25);
+}
+
+.btn-red:hover {
+  background: #D45235;
+  color: #fff;
+  box-shadow: 0 0 0 2px #D45235, 0 8px 28px rgba(212, 82, 53, 0.45);
+}
+
+.btn-green-outline {
+  min-width: 200px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 30px 10px 30px;
+  border-radius: 4px;
+  transition: 0.5s;
+  color: #000000;
+  background: rgba(22, 223, 126, 0.1);
+  border-width: 5px;
+  border-color: transparent;
+  box-shadow: 0 0 0 1px #16df7e, 0 8px 28px rgba(22, 223, 126, 0.25);
+}
+
+.btn-green-outline:hover {
+  background: #16df7e;
+  color: #fff;
+  box-shadow: 0 0 0 2px #16df7e, 0 8px 28px rgba(22, 223, 126, 0.45);
+}
+
+.btn-icon {
+  color: #000000;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.btn-icon:hover {
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.25);
+}
+
+.title-input {
+  font-size: 1.5em;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.title-input-edit {
+  font-size: 1.5em;
+  font-weight: bold;
 }
