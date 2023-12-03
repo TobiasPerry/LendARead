@@ -11,6 +11,7 @@ import org.springframework.util.FileCopyUtils;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -27,13 +28,14 @@ public class JwtTokenUtil {
                         .getBytes(StandardCharsets.UTF_8)
         );
     }
-    public String generateJwtToken(Authentication authentication) {
+    public String generateJwtToken(Authentication authentication, URI userReference) {
         PawUserDetails userPrincipal = (PawUserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + JWT_VALID_PIRIOD))
                 .claim("authorities", userPrincipal.getAuthorities())
+                .claim("userReference", userReference)
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }

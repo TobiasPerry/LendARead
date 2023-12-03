@@ -9,7 +9,7 @@ import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface UserReviewsService {
-     UserReview addReview(final int lendingId, final String reviewer,final String recipient, final String review, final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException;
+     UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException;
 
     boolean lenderCanReview(final int lendingId) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException;
 
@@ -18,9 +18,9 @@ public interface UserReviewsService {
 
     boolean userHasReview(final int lendingId, final String user);
 
-    UserReview getUserReviewAsLender(final String email,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
+    UserReview getUserReviewAsLender(final int id,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
 
-    UserReview getUserReviewAsBorrower(final String email,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
+    UserReview getUserReviewAsBorrower(final int id,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
 
 
     PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient);

@@ -1,5 +1,9 @@
-package ar.edu.itba.paw.webapp.auth;
+package ar.edu.itba.paw.webapp.auth.filters;
 
+import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
+import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,7 +18,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -28,12 +34,18 @@ public class BasicTokenFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    private final PawUserDetailsService pawUserDetailsService;
+    private final UserService userService;
 
-    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService) {
+    private final PawUserDetailsService pawUserDetailsService;
+    @Context
+    private UriInfo uriInfo;
+
+
+    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService, UserService userService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
         this.pawUserDetailsService = pawUserDetailsService;
+        this.userService = userService;
     }
 
     @Override
@@ -62,7 +74,7 @@ public class BasicTokenFilter extends OncePerRequestFilter {
             UserDetails userDetails;
 
             userDetails = pawUserDetailsService.loadUserByUsername(username);
-        Authentication authentication = authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userDetails,
                         password,
@@ -70,7 +82,8 @@ public class BasicTokenFilter extends OncePerRequestFilter {
                 )
 
         );
-        response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateJwtToken(authentication));
+            UserImpl user = userService.getUser(username);
+        response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateJwtToken(authentication,uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).build()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch (Exception e){

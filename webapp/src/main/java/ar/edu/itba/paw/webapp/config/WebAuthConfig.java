@@ -1,6 +1,10 @@
 package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.webapp.auth.*;
+import ar.edu.itba.paw.webapp.auth.acessControlFunctions.AccessFunctions;
+import ar.edu.itba.paw.webapp.auth.filters.BasicTokenFilter;
+import ar.edu.itba.paw.webapp.auth.filters.JwtTokenFilter;
+import ar.edu.itba.paw.webapp.auth.voters.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -66,7 +70,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LenderReviewVoter lenderReviewVoter;
     @Autowired
-    private  JwtTokenFilter jwtTokenFilter;
+    private JwtTokenFilter jwtTokenFilter;
     @Autowired
     private BasicTokenFilter basicTokenFilter;
 

@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.auth;
+package ar.edu.itba.paw.webapp.auth.voters;
 
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import lombok.SneakyThrows;

@@ -120,21 +120,21 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createChangePasswordToken(final String email) throws UserNotFoundException {
+    public void createChangePasswordToken(final int id) throws UserNotFoundException {
         String token = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-        Optional<UserImpl> user = userDao.getUser(email);
+        Optional<UserImpl> user = userDao.getUser(id);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
             throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
         PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token, user.get().getId(), LocalDate.now().plusDays(1));
-        emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken(), new Locale(user.get().getLocale()));
+        emailService.sendForgotPasswordEmail(user.get().getEmail(), passwordResetToken.getToken(), new Locale(user.get().getLocale()));
         userDao.setForgotPasswordToken(passwordResetToken);
     }
 
     @Transactional
     @Override
-    public void changePassword(final String email,final String token, final String password) {
+    public void changePassword(final int id,final String token, final String password) {
         Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
         if (!passwordResetToken.isPresent())
             return;
@@ -181,15 +181,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int changeUserProfilePic(final String email, byte[] parsedImage) throws UserNotFoundException {
-        Optional<UserImpl> maybeUser = userDao.getUser(email);
+    public int changeUserProfilePic(final int id, byte[] parsedImage) throws UserNotFoundException {
+        Optional<UserImpl> maybeUser = userDao.getUser(id);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
             throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
 
         ImageImpl image = this.imagesDao.addPhoto(parsedImage);
-        LOGGER.debug("New profile image created for user email {}", email);
+        LOGGER.debug("New profile image created for user email {}", maybeUser.get().getEmail());
         UserImpl user = maybeUser.get();
         user.setProfilePhoto(image);
         LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());

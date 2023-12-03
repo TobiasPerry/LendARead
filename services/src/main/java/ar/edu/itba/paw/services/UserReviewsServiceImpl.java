@@ -41,10 +41,10 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public UserReview addReview(final int lendingId, final String reviewer,final String recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException {
+    public UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException {
         LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        UserImpl reviewerUser = userService.getUser(reviewer);
-        UserImpl recipientUser = userService.getUser(recipient);
+        UserImpl reviewerUser = userService.getUser(userService.getCurrentUser());
+        UserImpl recipientUser = userService.getUserById(recipient);
         UserReview userReview = new UserReview( review, rating,  reviewerUser,recipientUser, lending);
         userReviewsDao.addReview(userReview);
         LOGGER.info("Review added");
@@ -78,15 +78,15 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserReview getUserReviewAsLender(final String email, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
-        return userReviewsDao.getUserReviewAsLender(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
+    public UserReview getUserReviewAsLender(final int id, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
+        return userReviewsDao.getUserReviewAsLender(userService.getUserById(id).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public UserReview getUserReviewAsBorrower(final String email, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
-        return userReviewsDao.getUserReviewAsBorrower(userService.getUser(email).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
+    public UserReview getUserReviewAsBorrower(final int id, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
+        return userReviewsDao.getUserReviewAsBorrower(userService.getUserById(id).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
     }
 
 

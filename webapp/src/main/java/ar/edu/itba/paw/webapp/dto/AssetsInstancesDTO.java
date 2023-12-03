@@ -24,6 +24,7 @@ public class AssetsInstancesDTO {
 
     private  String physicalCondition;
 
+    private String reviewsReference;
 
     private  int maxLendingDays;
 
@@ -49,6 +50,7 @@ public class AssetsInstancesDTO {
         dto.maxLendingDays = assetInstance.getMaxDays();
         dto.isReservable = assetInstance.getIsReservable();
         dto.selfUrl = reference(url, assetInstance);
+        dto.reviewsReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("reviews").build().toString();
         dto.imageReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
         return dto;
     }

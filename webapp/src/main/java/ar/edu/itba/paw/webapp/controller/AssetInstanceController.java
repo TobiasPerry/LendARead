@@ -103,7 +103,7 @@ public class AssetInstanceController {
                                          @QueryParam("minRating") @Nullable @DefaultValue("1")@Min(1) @Max(5) int minRating,
                                          @QueryParam("maxRating") @Nullable @DefaultValue("5") @Min(1) @Max(5)int maxRating,
                                          @QueryParam("itemsPerPage")@Nullable @DefaultValue("10") int itemsPerPage,
-                                        @QueryParam("userId")  @DefaultValue("-1") int userId) throws  InternalErrorException, LocationNotFoundException {
+                                        @QueryParam("userId")  @DefaultValue("-1") int userId)  {
         Page page = ais.getAllAssetsInstances(
                 currentPage, itemsPerPage,
                 new SearchQueryImpl(

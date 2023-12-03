@@ -1,5 +1,7 @@
-package ar.edu.itba.paw.webapp.auth;
+package ar.edu.itba.paw.webapp.auth.filters;
 
+import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
+import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
 
     private final PawUserDetailsService pawUserDetailsService;
+
+
+
     public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, PawUserDetailsService pawUserDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.pawUserDetailsService = pawUserDetailsService;
