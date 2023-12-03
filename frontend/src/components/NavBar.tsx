@@ -69,7 +69,7 @@ export default function NavBar() {
                                     <a className="nav-link navItem" id="userView"  aria-current="page" href="/user">
                                         
                                         <a className="navbar-brand" href="/user">
-                                            <img src="/" className="rounded-circle" width="30" height="30" alt="logo"/>
+                                            <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/70" className="rounded-circle" width="30" height="30" alt="logo"/>
                                         </a>
                                     
                                     </a>
