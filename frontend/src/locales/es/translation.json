@@ -4,6 +4,15 @@
   "Dashboard": "Dashboard",
   "Team": "Equipo",
   "Projects": "Proyectos",
-  "Calendar": "Calendario"
-
+  "Calendar": "Calendario",
+  "auth": {
+    "login": "Iniciar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "loginError": "Correo electrónico o contraseña incorrectos",
+    "rememberMe": "Recuérdame",
+    "logInBtn": "Iniciar sesión",
+    "doNotHaveAccount": "¿No tienes una cuenta? Regístrate",
+    "forgotPassword": "¿Olvidaste la contraseña?"
+  }
 }

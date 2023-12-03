@@ -4,21 +4,36 @@ import Landing from "./views/Landing.tsx";
 import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./views/NotFound.tsx";
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import LoginView from "./views/LogIn";
+
+// Create a custom MUI theme
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2B3B2B',
+    },
+  },
+});
+
 export default function App() {
     return (
-        <div>        
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Landing />} />
-                    <Route path="about" element={<About />} />
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="discovery" element={<DiscoveryView/>} />
-                    {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-            </Routes>
+        <div>
+            <ThemeProvider theme={theme}>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Landing />} />
+                        <Route path="about" element={<About />} />
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="discovery" element={<DiscoveryView/>} />
+                        <Route path="user" element={<LoginView />} />
+                        {/* Using path="*"" means "match anything", so this route
+                    acts like a catch-all for URLs that we don't have explicit
+                    routes for. */}
+                        <Route path="*" element={<NotFound />} />
+                    </Route>
+                </Routes>
+            </ThemeProvider>
         </div>
     );
 }
