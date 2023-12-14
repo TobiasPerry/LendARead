@@ -4,6 +4,7 @@ import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,9 +40,9 @@ public class PreAuthorizeFunctions {
         }
     }
 
-    public boolean borrowerCanAssetInstanceReview(final int lendingId){
+    public boolean borrowerCanAssetInstanceReview(final int assetInstanceId,final AssetInstanceReview assetInstanceReview){
         try {
-            return assetInstanceReviewsService.canReview(lendingId);
+            return assetInstanceReviewsService.canReview(assetInstanceId,Math.toIntExact(assetInstanceReview.getId()));
         }catch (LendingNotFoundException e){
             return false;
         }

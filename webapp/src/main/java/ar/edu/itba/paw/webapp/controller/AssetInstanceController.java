@@ -21,6 +21,7 @@ import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -127,7 +128,7 @@ public class AssetInstanceController {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
-    public Response createAssetInstance( @Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
+    public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
         AssetInstanceImpl assetInstance = aes.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
@@ -154,6 +155,7 @@ public class AssetInstanceController {
     }
     @POST
     @Path("/{id}/reviews")
+    @PreAuthorize("@preAuthorizeFunctions.borrowerCanAssetInstanceReview(#id,#assetInstanceReviewForm)")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
     public Response createAssetInstanceReview(@PathParam("id") final int id, @Valid @RequestBody final AssetInstanceReviewForm assetInstanceReviewForm) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException {

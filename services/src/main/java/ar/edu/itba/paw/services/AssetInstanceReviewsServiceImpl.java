@@ -83,10 +83,10 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     }
 
     @Override
-    public boolean canReview(final int lendingId) throws LendingNotFoundException {
+    public boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException {
         Optional<AssetInstanceReview> assetInstanceReview = assetInstanceReviewsDao.getReviewByLendingId(lendingId);
         LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser());
+        return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser()) && lending.getAssetInstance().getId() == assetInstanceId;
 
     }
     @Transactional(readOnly = true)

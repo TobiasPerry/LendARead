@@ -18,5 +18,5 @@ public interface AssetInstanceReviewsService {
 
     void deleteReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
     PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage, int assetInstanceId) throws AssetInstanceNotFoundException;
-    boolean canReview(final int lendingId) throws LendingNotFoundException;
+    boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException;
 }
