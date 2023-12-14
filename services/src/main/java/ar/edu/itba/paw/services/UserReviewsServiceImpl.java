@@ -53,19 +53,19 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean lenderCanReview(final int lendingId) throws UserNotFoundException, LendingNotFoundException {
+    public boolean lenderCanReview(final int recipientId,final int lendingId) throws UserNotFoundException, LendingNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
 
-        return !hasReview && lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
+        return !hasReview && lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser())) && lending.getUserReference().getId() == recipientId && lending.getActive().equals(LendingState.FINISHED);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean borrowerCanReview(int lendingId) throws UserNotFoundException, LendingNotFoundException {
+    public boolean borrowerCanReview(final int recipientId,int lendingId) throws UserNotFoundException, LendingNotFoundException {
         final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
-        return !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getActive().equals(LendingState.FINISHED);
+        return !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getAssetInstance().getOwner().getId() == recipientId && lending.getActive().equals(LendingState.FINISHED);
     }
 
 

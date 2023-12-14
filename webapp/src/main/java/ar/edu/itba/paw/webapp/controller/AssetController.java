@@ -9,7 +9,7 @@ import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
@@ -21,7 +21,7 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
 
-@Controller
+@Component
 @Path("/api/assets")
 public class AssetController {
 

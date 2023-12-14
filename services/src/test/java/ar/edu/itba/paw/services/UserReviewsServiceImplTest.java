@@ -74,7 +74,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertTrue(returnValue);
@@ -89,7 +89,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.of(USER_REVIEW));
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertFalse(returnValue);
@@ -104,7 +104,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertFalse(returnValue);
@@ -119,7 +119,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertFalse(returnValue);
@@ -136,7 +136,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertTrue(returnValue);
@@ -151,7 +151,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.of(USER_REVIEW));
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertFalse(returnValue);
@@ -166,7 +166,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertFalse(returnValue);
@@ -181,7 +181,7 @@ public class UserReviewsServiceImplTest {
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID);
+        boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
 
         // 3 - Assertions
         Assert.assertFalse(returnValue);

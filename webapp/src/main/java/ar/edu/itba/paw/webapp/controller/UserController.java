@@ -22,6 +22,7 @@ import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -137,6 +138,7 @@ public class UserController {
 
     @POST
     @Path("/{id}/lender_reviews")
+    @PreAuthorize("@preAuthorizeFunctions.borrowerCanUserReview(#id,#lenderReviewForm)")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_LENDER_REVIEW})
     public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
@@ -146,6 +148,7 @@ public class UserController {
     }
     @POST
     @Path("/{id}/borrower_reviews")
+    @PreAuthorize("@preAuthorizeFunctions.lenderCanUserReview(#id,#borrowerReviewForm)")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_BORROWER_REVIEW})
     public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {

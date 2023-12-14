@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
@@ -34,9 +33,6 @@ public class AccessFunctions {
 
 
 
-    public boolean borrowerCanReview(Integer id) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
-        return userReviewsService.borrowerCanReview(id);
-    }
     public boolean checkUser(HttpServletRequest request, int id) throws UserNotFoundException {
         return userService.getUser(userService.getCurrentUser()).getId() == id;
     }

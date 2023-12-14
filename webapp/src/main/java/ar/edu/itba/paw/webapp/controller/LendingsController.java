@@ -14,7 +14,7 @@ import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
@@ -26,7 +26,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Path("/api/lendings")
-@Controller
+@Component
 public class LendingsController {
 
     private final AssetAvailabilityService aas;

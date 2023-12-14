@@ -5,6 +5,8 @@ import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.glassfish.jersey.internal.util.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,9 +20,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -37,15 +37,15 @@ public class BasicTokenFilter extends OncePerRequestFilter {
     private final UserService userService;
 
     private final PawUserDetailsService pawUserDetailsService;
-    @Context
-    private UriInfo uriInfo;
 
-
-    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService, UserService userService) {
+    private final String baseUrl;
+    @Autowired
+    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService, UserService userService,final @Qualifier("baseUrl") String baseUrl) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
         this.pawUserDetailsService = pawUserDetailsService;
         this.userService = userService;
+        this.baseUrl = baseUrl;
     }
 
     @Override
@@ -81,11 +81,12 @@ public class BasicTokenFilter extends OncePerRequestFilter {
                         userDetails.getAuthorities()
                 )
 
-        );
-            UserImpl user = userService.getUser(username);
-        response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateJwtToken(authentication,uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).build()));
+                );
+        UserImpl user = userService.getUser(username);
+        response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateJwtToken(authentication,baseUrl + "api/users/" + user.getId()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         }catch (Exception e){
             SecurityContextHolder.clearContext();
             chain.doFilter(request, response);

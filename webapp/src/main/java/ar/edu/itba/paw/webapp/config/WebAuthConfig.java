@@ -1,17 +1,17 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.auth.*;
-import ar.edu.itba.paw.webapp.auth.acessControlFunctions.AccessFunctions;
+import ar.edu.itba.paw.webapp.auth.AuthSuccessHandler;
+import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
+import ar.edu.itba.paw.webapp.auth.UnauthorizedRequest;
+import ar.edu.itba.paw.webapp.auth.UnauthorizedRequestHandler;
 import ar.edu.itba.paw.webapp.auth.filters.BasicTokenFilter;
 import ar.edu.itba.paw.webapp.auth.filters.JwtTokenFilter;
-import ar.edu.itba.paw.webapp.auth.voters.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
@@ -23,6 +23,7 @@ import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,38 +45,22 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("classpath:/application.properties")
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
-    @Autowired
-    private DeleteAssetVoter deleteAssetVoter;
+
     @Autowired
     private AuthSuccessHandler authSuccessHandler;
 
-    @Autowired
-    private ChangeAssetStatusVoter changeAssetStatusVoter;
-    @Autowired
-    private Environment environment;
 
-    @Autowired
-    private LenderViewOwnerVoter lenderViewOwnerVoter;
-    @Autowired
-    private BorrowerViewVoter borrowerViewVoter;
-
-    @Autowired
-    private BorrowerReviewVoter borrowerReviewVoter;
-
-    @Autowired
-    private LenderReviewVoter lenderReviewVoter;
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
     @Autowired
     private BasicTokenFilter basicTokenFilter;
 
-    @Autowired
-    private AccessFunctions accessFunctions;
 
     private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(request, #id)";
 
@@ -119,13 +104,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         List<AccessDecisionVoter<?>> decisionVoters = Arrays.asList(
                 webExpressionVoter(),
                 new RoleVoter(),
-                new AuthenticatedVoter(),
-                deleteAssetVoter,
-                changeAssetStatusVoter,
-                lenderViewOwnerVoter,
-                borrowerViewVoter,
-                lenderReviewVoter,
-                borrowerReviewVoter
+                new AuthenticatedVoter()
         );
         return new UnanimousBased(decisionVoters);
     }

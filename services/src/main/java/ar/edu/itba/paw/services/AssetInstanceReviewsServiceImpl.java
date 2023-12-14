@@ -11,6 +11,7 @@ import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
@@ -19,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsService {
@@ -79,7 +82,13 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
         assetInstanceReviewsDao.deleteReview(assetInstanceReview);
     }
 
+    @Override
+    public boolean canReview(final int lendingId) throws LendingNotFoundException {
+        Optional<AssetInstanceReview> assetInstanceReview = assetInstanceReviewsDao.getReviewByLendingId(lendingId);
+        LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser());
 
+    }
     @Transactional(readOnly = true)
     @Override
     public PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage,int assetInstanceId) throws AssetInstanceNotFoundException {

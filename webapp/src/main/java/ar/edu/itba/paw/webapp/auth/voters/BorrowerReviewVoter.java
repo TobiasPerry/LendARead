@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.auth.voters;
 
 import ar.edu.itba.paw.interfaces.UserReviewsService;
@@ -55,3 +56,4 @@ public class BorrowerReviewVoter implements AccessDecisionVoter<FilterInvocation
     }
 }
 
+*/

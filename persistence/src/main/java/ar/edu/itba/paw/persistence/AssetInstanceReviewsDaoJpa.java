@@ -78,6 +78,13 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
         em.remove(assetInstanceReview);
     }
 
+    @Override
+    public Optional<AssetInstanceReview> getReviewByLendingId(int lendingId) {
+        final  TypedQuery<AssetInstanceReview>  query = em.createQuery("SELECT r FROM AssetInstanceReview r WHERE r.lending.id= :lendingId",AssetInstanceReview.class);
+        query.setParameter("lendingId", (long) lendingId);
+        List<AssetInstanceReview> assetInstanceReviews = query.getResultList();
+        return assetInstanceReviews.stream().findFirst();
+    }
 
 
 }

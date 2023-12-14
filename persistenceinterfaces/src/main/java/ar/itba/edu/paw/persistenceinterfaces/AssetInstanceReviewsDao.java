@@ -17,4 +17,6 @@ public interface AssetInstanceReviewsDao {
     Optional<AssetInstanceReview> getReviewById(final int reviewId);
 
     void deleteReview(final AssetInstanceReview reviewId);
+
+    Optional<AssetInstanceReview> getReviewByLendingId(final int lendingId);
 }
