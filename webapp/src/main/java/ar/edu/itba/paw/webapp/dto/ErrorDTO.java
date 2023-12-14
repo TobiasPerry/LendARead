@@ -8,12 +8,10 @@ import lombok.Setter;
 @Setter
 public class ErrorDTO {
 
-    private String attribute;
     private String message;
 
-    public static ErrorDTO fromMessage(String attribute, String message) {
+    public static ErrorDTO fromError( String message) {
         ErrorDTO errorValidationDto = new ErrorDTO();
-        errorValidationDto.attribute = attribute;
         errorValidationDto.message = message;
         return errorValidationDto;
     }

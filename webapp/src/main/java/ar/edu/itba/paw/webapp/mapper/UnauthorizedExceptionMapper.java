@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.mapper;
 
 
+import ar.edu.itba.paw.webapp.dto.ErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -24,7 +25,7 @@ public class UnauthorizedExceptionMapper implements ExceptionMapper<AccessDenied
     }
     @Override
     public Response toResponse(AccessDeniedException e) {
-        return Response.status(Response.Status.UNAUTHORIZED).entity(messageSource.getMessage("exception.accessDenied", null, LocaleContextHolder.getLocale())).build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity(ErrorDTO.fromError(messageSource.getMessage("exception.accessDenied", null, LocaleContextHolder.getLocale()))).build();
 
     }
 }

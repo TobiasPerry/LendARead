@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.mapper;
 
 
 import ar.edu.itba.paw.exceptions.CustomException;
+import ar.edu.itba.paw.webapp.dto.ErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -25,6 +26,6 @@ public class CustomExceptionMapper implements ExceptionMapper<CustomException> {
 
     @Override
     public Response toResponse(CustomException e) {
-        return Response.status(e.getStatusCode()).entity(messageSource.getMessage(e.getMessage(), null,LocaleContextHolder.getLocale())).build();
+        return Response.status(e.getStatusCode()).entity(ErrorDTO.fromError(messageSource.getMessage(e.getMessage(), null,LocaleContextHolder.getLocale()))).build();
     }
 }

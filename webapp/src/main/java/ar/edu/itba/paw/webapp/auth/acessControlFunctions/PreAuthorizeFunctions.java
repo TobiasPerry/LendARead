@@ -23,22 +23,27 @@ public class PreAuthorizeFunctions {
     }
 
 
-
-
-
-    public boolean borrowerCanUserReview(final int recipientId,final UserReviewForm userReviewForm) throws UserNotFoundException, LendingNotFoundException {
-        return userReviewsService.borrowerCanReview(recipientId,userReviewForm.getLendingId());
+    public boolean borrowerCanUserReview(final int recipientId,final UserReviewForm userReviewForm) {
+        try {
+            return userReviewsService.borrowerCanReview(recipientId, userReviewForm.getLendingId());
+        }catch (LendingNotFoundException | UserNotFoundException e){
+            return false;
+        }
     }
 
-    public boolean lenderCanUserReview(final int recipientId,final UserReviewForm userReviewForm) throws UserNotFoundException, LendingNotFoundException {
-        return userReviewsService.lenderCanReview(recipientId,userReviewForm.getLendingId());
+    public boolean lenderCanUserReview(final int recipientId,final UserReviewForm userReviewForm)  {
+        try {
+            return userReviewsService.lenderCanReview(recipientId, userReviewForm.getLendingId());
+        }catch (LendingNotFoundException | UserNotFoundException e){
+            return false;
+        }
     }
 
-    public boolean borrowerCanAssetInstanceReview(final int lendingId) throws  LendingNotFoundException {
-        return assetInstanceReviewsService.canReview(lendingId);
+    public boolean borrowerCanAssetInstanceReview(final int lendingId){
+        try {
+            return assetInstanceReviewsService.canReview(lendingId);
+        }catch (LendingNotFoundException e){
+            return false;
+        }
     }
-
-
-
-
 }

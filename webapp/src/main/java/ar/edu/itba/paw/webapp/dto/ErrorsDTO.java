@@ -19,7 +19,7 @@ public class ErrorsDTO {
     public static ErrorsDTO fromValidationError(ConstraintViolationException e) {
         ErrorsDTO errorsDTO = new ErrorsDTO();
         errorsDTO.errors = new ArrayList<>();
-        e.getConstraintViolations().forEach(violation -> errorsDTO.errors.add(ErrorDTO.fromMessage(getViolationPropertyName(violation), violation.getMessage())));
+        e.getConstraintViolations().forEach(violation -> errorsDTO.errors.add(ErrorDTO.fromError(violation.getMessage())));
         errorsDTO.errosCount = e.getConstraintViolations().size();
         return errorsDTO;
     }
