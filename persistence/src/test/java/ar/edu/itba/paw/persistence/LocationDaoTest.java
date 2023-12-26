@@ -2,8 +2,8 @@ package ar.edu.itba.paw.persistence;
 
 
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.junit.Assert;
@@ -35,17 +35,17 @@ public class LocationDaoTest {
     private static String LOCALITY = "LOCALITY";
     private static String PROVINCE = "PROVINCE";
     private static String COUNTRY = "COUNTRY";
-    private final static UserImpl USER = new UserImpl(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
 
-    private static LocationImpl LOCATION = new LocationImpl("", ZIPCODE, LOCALITY, PROVINCE, COUNTRY, USER);
+    private static Location LOCATION = new Location("", ZIPCODE, LOCALITY, PROVINCE, COUNTRY, USER);
 
     @Rollback
     @Test
     public void addLocationTest() {
-        UserImpl user = em.find(UserImpl.class, 0L);
+        User user = em.find(User.class, 0L);
         LOCATION.setUser(user);
         //2
-        LocationImpl added = locationDao.addLocation(LOCATION);
+        Location added = locationDao.addLocation(LOCATION);
 
         //3
         Assert.assertEquals(1, added.getId());

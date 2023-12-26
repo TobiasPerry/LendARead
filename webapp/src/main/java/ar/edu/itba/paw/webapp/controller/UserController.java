@@ -7,7 +7,7 @@ import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
@@ -69,7 +69,7 @@ public class UserController {
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
     public Response createUser(@Valid @NotEmpty final RegisterForm registerForm) {
-        final UserImpl user = us.createUser(registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone(), registerForm.getPassword());
+        final User user = us.createUser(registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone(), registerForm.getPassword());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
         LOGGER.info("POST user/ email:{} name:{} telephone:{}",registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone());
@@ -79,7 +79,7 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
     public Response getById(@PathParam("id") final int id) throws UserNotFoundException {
-        final UserImpl user = us.getUserById(id);
+        final User user = us.getUserById(id);
         Response.ResponseBuilder response = Response.ok(UserDTO.fromUser(uriInfo,user));
         LOGGER.info("GET user/ id:{}",id);
         return response.build();
@@ -107,7 +107,7 @@ public class UserController {
     @Path("/{id}/profilePic")
     @Produces(value = {"image/webp"})
     public Response getUserProfilePic(@PathParam("id") final int id,@Context javax.ws.rs.core.Request request) throws UserNotFoundException {
-        final UserImpl user = us.getUserById(id);
+        final User user = us.getUserById(id);
         EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId()));
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);

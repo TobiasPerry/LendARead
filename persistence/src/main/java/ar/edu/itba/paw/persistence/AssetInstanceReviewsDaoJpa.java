@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
@@ -24,7 +24,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     }
 
     @Override
-    public double getRating(AssetInstanceImpl assetInstance) {
+    public double getRating(AssetInstance assetInstance) {
         try {
             String hql = "SELECT AVG(r.rating) FROM AssetInstanceReview as r WHERE r.lending.assetInstance.id = :assetInstanceId";
             return (Double) em.createQuery(hql)
@@ -38,7 +38,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstanceImpl assetInstance) {
+    public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstance assetInstance) {
 
         final Query queryNative = em.createNativeQuery("SELECT r.id FROM AssetInstanceReview as r JOIN lendings l on r.lendid = l.id JOIN assetinstance a on a.id = l.assetinstanceid WHERE a.id = :assetInstance ORDER BY r.id DESC LIMIT :limit OFFSET :offset");
 

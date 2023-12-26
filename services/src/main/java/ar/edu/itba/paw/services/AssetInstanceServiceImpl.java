@@ -6,7 +6,7 @@ import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.interfaces.LocationsService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
@@ -55,8 +55,8 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public AssetInstanceImpl getAssetInstance(final int id) throws AssetInstanceNotFoundException {
-        Optional<AssetInstanceImpl> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
+    public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
+        Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
         if (!assetInstanceOpt.isPresent()) {
             LOGGER.error("Failed to find the asset instance");
             throw new AssetInstanceNotFoundException(HttpStatusCodes.NOT_FOUND);
@@ -95,25 +95,25 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = getAssetInstance(id);
+        AssetInstance assetInstance = getAssetInstance(id);
         assetInstanceDao.changeStatus(assetInstance,AssetState.DELETED);
     }
 
     @Override
-    public boolean isOwner(final AssetInstanceImpl assetInstance, final String email) {
+    public boolean isOwner(final AssetInstance assetInstance, final String email) {
         return assetInstance.getOwner().getEmail().equals(email);
     }
 
     @Transactional(readOnly = true)
     @Override
     public boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = getAssetInstance(id);
+        AssetInstance assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);
     }
     @Transactional
     @Override
     public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotFoundException, ImageNotFoundException {
-        AssetInstanceImpl assetInstance = getAssetInstance(id);
+        AssetInstance assetInstance = getAssetInstance(id);
         if (location.isPresent())
             assetInstance.setLocation(locationsService.getLocation(location.get()));
         if (image != null)
@@ -128,7 +128,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<AssetInstanceImpl> getSimilarAssetsInstances(AssetInstanceImpl ai, int pageNum, int iteamPerPage) {
+    public List<AssetInstance> getSimilarAssetsInstances(AssetInstance ai, int pageNum, int iteamPerPage) {
         return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5,-1)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
     }
 }

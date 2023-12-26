@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "languages")
-public class LanguageImpl {
+public class Language {
 
     @Id
     @Column(length = 3, nullable = false, name = "id")
@@ -16,12 +16,12 @@ public class LanguageImpl {
     @Column
     private String name;
 
-    public LanguageImpl(final String code, final String name) {
+    public Language(final String code, final String name) {
         this.code = code;
         this.name = name;
     }
 
-    public LanguageImpl() {
+    public Language() {
         // For Hibernate
     }
 

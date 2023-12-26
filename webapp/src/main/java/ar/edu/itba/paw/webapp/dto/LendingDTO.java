@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +30,7 @@ public class LendingDTO {
     private String state;
 
     private String selfUrl;
-    public static LendingDTO fromLending(LendingImpl lending, UriInfo url) {
+    public static LendingDTO fromLending(Lending lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();
         dto.id = lending.getId();
         dto.assetInstance = AssetsInstancesDTO.reference(url, lending.getAssetInstance());
@@ -47,12 +47,12 @@ public class LendingDTO {
         dto.selfUrl = reference(url, lending);
         return dto;
     }
-    public static List<LendingDTO> fromLendings(List<LendingImpl> lendings, UriInfo url) {
+    public static List<LendingDTO> fromLendings(List<Lending> lendings, UriInfo url) {
         return lendings.stream().map(lending -> fromLending(lending, url)).collect(Collectors.toList());
     }
 
 
-    public static String reference(UriInfo url, LendingImpl lending) {
+    public static String reference(UriInfo url, Lending lending) {
         return url.getBaseUriBuilder().path("lending").path(String.valueOf(lending.getId())).build().toString();
     }
 }

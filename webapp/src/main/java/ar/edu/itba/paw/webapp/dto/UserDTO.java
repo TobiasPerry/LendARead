@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +24,7 @@ public class UserDTO {
     private Integer ratingAsLender;
     private Integer ratingAsBorrower;
     private String selfUrl;
-    public static UserDTO fromUser(UriInfo url, UserImpl user) {
+    public static UserDTO fromUser(UriInfo url, User user) {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
         dto.telephone = user.getTelephone();
@@ -37,7 +37,7 @@ public class UserDTO {
         dto.image = url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
     }
-    public static String reference(UriInfo url, UserImpl user) {
+    public static String reference(UriInfo url, User user) {
         return url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).build().toString();
     }
 

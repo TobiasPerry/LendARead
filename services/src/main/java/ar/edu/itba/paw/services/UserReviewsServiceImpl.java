@@ -6,9 +6,9 @@ import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
@@ -42,9 +42,9 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional
     @Override
     public UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException {
-        LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        UserImpl reviewerUser = userService.getUser(userService.getCurrentUser());
-        UserImpl recipientUser = userService.getUserById(recipient);
+        Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        User reviewerUser = userService.getUser(userService.getCurrentUser());
+        User recipientUser = userService.getUserById(recipient);
         UserReview userReview = new UserReview( review, rating,  reviewerUser,recipientUser, lending);
         userReviewsDao.addReview(userReview);
         LOGGER.info("Review added");
@@ -54,7 +54,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional(readOnly = true)
     @Override
     public boolean lenderCanReview(final int recipientId,final int lendingId) throws UserNotFoundException, LendingNotFoundException {
-        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        final Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
 
         return !hasReview && lending.getAssetInstance().getOwner().equals(userService.getUser(userService.getCurrentUser())) && lending.getUserReference().getId() == recipientId && lending.getActive().equals(LendingState.FINISHED);
@@ -63,7 +63,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional(readOnly = true)
     @Override
     public boolean borrowerCanReview(final int recipientId,int lendingId) throws UserNotFoundException, LendingNotFoundException {
-        final LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        final Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser());
         return !hasReview && lending.getUserReference().equals(userService.getUser(userService.getCurrentUser())) && lending.getAssetInstance().getOwner().getId() == recipientId && lending.getActive().equals(LendingState.FINISHED);
     }
@@ -92,7 +92,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient) {
+    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, User recipient) {
         return userReviewsDao.getUserReviewsAsLender(pageNum, itemsPerPage, recipient);
     }
 
@@ -104,7 +104,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, UserImpl recipient) {
+    public PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, User recipient) {
         return userReviewsDao.getUserReviewsAsBorrower(pageNum, itemsPerPage, recipient);
     }
 

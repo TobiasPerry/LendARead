@@ -1,20 +1,20 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AssetDao {
-    Optional<List<BookImpl>> getAssets();
+    Optional<List<Asset>> getAssets();
 
-    BookImpl addAsset(final BookImpl bi) throws BookAlreadyExistException;
+    Asset addAsset(final Asset bi) throws BookAlreadyExistException;
 
-    Optional<BookImpl> getBookByIsbn(final String isbn);
+    Optional<Asset> getBookByIsbn(final String isbn);
 
-    List<BookImpl> getBooks(final String isbn,final String author,final String title,final String language);
+    List<Asset> getBooks(final String isbn, final String author, final String title, final String language);
 
-    BookImpl getBookById(final int id);
+    Asset getBookById(final int id);
 
 }

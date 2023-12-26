@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "resetpasswordinfo")
-public class PasswordResetTokenImpl{
+public class PasswordResetToken {
 
     private static final int EXPIRATION = 60 * 24;
 
@@ -25,12 +25,12 @@ public class PasswordResetTokenImpl{
     @Column(name = "expiration")
     private LocalDate expiryDate;
 
-    public PasswordResetTokenImpl(String token, int user, LocalDate expiryDate) {
+    public PasswordResetToken(String token, int user, LocalDate expiryDate) {
         this.token = token;
         this.user = user;
         this.expiryDate = expiryDate;
     }
-    public PasswordResetTokenImpl(){
+    public PasswordResetToken(){
 
     }
 

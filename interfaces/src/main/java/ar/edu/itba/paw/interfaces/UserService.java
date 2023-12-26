@@ -2,18 +2,18 @@ package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 public interface UserService {
-    UserImpl getUser(final String email) throws UserNotFoundException;
+    User getUser(final String email) throws UserNotFoundException;
 
-    UserImpl getUserById(final int id) throws UserNotFoundException;
+    User getUserById(final int id) throws UserNotFoundException;
 
-    UserImpl createUser(final String email, final String name, final String telephone, final String password);
+    User createUser(final String email, final String name, final String telephone, final String password);
 
     void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException;
 

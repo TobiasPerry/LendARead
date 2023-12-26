@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "location")
-final public class LocationImpl{
+final public class Location {
 
     @Column(length = 100, nullable = false)
     private boolean active;
@@ -19,7 +19,7 @@ final public class LocationImpl{
     private String country;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
-    private  UserImpl userReference;
+    private User userReference;
 
     @Column(length = 100, nullable = false)
     private String name;
@@ -31,7 +31,7 @@ final public class LocationImpl{
     @SequenceGenerator(sequenceName = "location_id_seq", name = "location_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
-    public LocationImpl(int id,String name, String zipcode, String locality, String province, String country, UserImpl user) {
+    public Location(int id, String name, String zipcode, String locality, String province, String country, User user) {
         this.zipcode = zipcode;
         this.locality = locality;
         this.province = province;
@@ -41,7 +41,7 @@ final public class LocationImpl{
         this.name = name;
         this.active = true;
     }
-    public LocationImpl(String name, String zipcode, String locality, String province, String country, UserImpl user) {
+    public Location(String name, String zipcode, String locality, String province, String country, User user) {
         this.zipcode = zipcode;
         this.locality = locality;
         this.province = province;
@@ -50,7 +50,7 @@ final public class LocationImpl{
         this.name = name;
         this.active = true;
     }
-    public LocationImpl(){}
+    public Location(){}
 
 
 
@@ -90,10 +90,10 @@ final public class LocationImpl{
         return null;
     }
 
-    public UserImpl getUser() {
+    public User getUser() {
         return userReference;
     }
-    public void setUser(UserImpl user) {
+    public void setUser(User user) {
         this.userReference = user;
     }
 
@@ -101,7 +101,7 @@ final public class LocationImpl{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LocationImpl location = (LocationImpl) o;
+        Location location = (Location) o;
         return zipcode.equals(location.zipcode) && locality.equals(location.locality) && province.equals(location.province) && country.equals(location.country);
     }
 
@@ -139,7 +139,7 @@ final public class LocationImpl{
         this.country = country;
     }
 
-    public void setUserReference(UserImpl userReference) {
+    public void setUserReference(User userReference) {
         this.userReference = userReference;
     }
 

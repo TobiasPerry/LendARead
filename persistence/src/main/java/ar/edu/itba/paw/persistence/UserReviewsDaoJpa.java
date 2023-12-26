@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
@@ -30,7 +30,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
     }
 
     @Override
-    public double getRating(final UserImpl user) {
+    public double getRating(final User user) {
         try {
             String jql = "SELECT AVG(r.rating) FROM UserReview r WHERE r.recipient = :userId";
             return (Double) em.createQuery(jql)
@@ -42,7 +42,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
     }
 
     @Override
-    public double getRatingAsLender(final UserImpl user) {
+    public double getRatingAsLender(final User user) {
         try {
             String hql = "SELECT AVG(ur.rating) AS average_rating " +
                     "FROM userreview AS ur " +
@@ -60,7 +60,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
 
     @Override
-    public double getRatingAsBorrower(final UserImpl user) {
+    public double getRatingAsBorrower(final User user) {
         try {
             String hql = "SELECT AVG(ur.rating) AS average_rating " +
                     "FROM userreview AS ur " +
@@ -85,7 +85,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, final UserImpl recipient) {
+    public PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, final User recipient) {
 
         final Query queryNative = em.createNativeQuery("SELECT r.id FROM userreview as r JOIN lendings l on l.id = r.lendid WHERE r.recipient = :userRecipient AND  l.borrowerid = r.recipient ORDER BY r.id DESC LIMIT :limit OFFSET :offset");
 
@@ -110,7 +110,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, final UserImpl reviewer) {
+    public PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, final User reviewer) {
 
         final Query queryNative = em.createNativeQuery("SELECT r.id FROM userreview as r JOIN lendings l on l.id = r.lendid JOIN assetinstance a on a.id = l.assetinstanceid WHERE r.recipient = :userRecipient AND r.recipient = a.owner ORDER BY r.id DESC LIMIT :limit OFFSET :offset");
 

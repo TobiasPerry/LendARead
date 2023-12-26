@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "book")
-public class BookImpl{
+public class Asset {
 
     @Column(length = 100, nullable = false, unique = true)
     private  String isbn;
@@ -26,14 +26,14 @@ public class BookImpl{
     @Column(name = "uid")
     private  int id;
 
-    public BookImpl(final int id,final String isbn,final String author,final String title,final String language) {
+    public Asset(final int id, final String isbn, final String author, final String title, final String language) {
         this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
         this.language = language;
         this.id = id;
     }
-    public BookImpl(final String isbn,final String author,final String title,final String language) {
+    public Asset(final String isbn, final String author, final String title, final String language) {
         this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
@@ -41,7 +41,7 @@ public class BookImpl{
     }
 
 
-    public BookImpl() {
+    public Asset() {
 
     }
 
@@ -50,7 +50,7 @@ public class BookImpl{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BookImpl book = (BookImpl) o;
+        Asset book = (Asset) o;
 
         if (id != book.id) return false;
         if (!Objects.equals(isbn, book.isbn)) return false;

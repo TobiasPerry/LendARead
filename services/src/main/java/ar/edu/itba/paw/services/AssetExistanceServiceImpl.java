@@ -7,13 +7,13 @@ import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.slf4j.Logger;
@@ -46,13 +46,13 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
     @Override
     @Transactional
-    public AssetInstanceImpl addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final int assetId, byte[] fileByteArray) throws InternalErrorException, UserNotFoundException, LocationNotFoundException {
+    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final int assetId, byte[] fileByteArray) throws InternalErrorException, UserNotFoundException, LocationNotFoundException {
 
-        BookImpl book = assetService.getBookById(assetId);
-        UserImpl user = userService.getUser(userService.getCurrentUser());
-        LocationImpl location = locationsService.getLocation(locationId);
-        ImageImpl image = photosDao.addPhoto(fileByteArray);
-        AssetInstanceImpl assetInstance = new AssetInstanceImpl();
+        Asset book = assetService.getBookById(assetId);
+        User user = userService.getUser(userService.getCurrentUser());
+        Location location = locationsService.getLocation(locationId);
+        Image image = photosDao.addPhoto(fileByteArray);
+        AssetInstance assetInstance = new AssetInstance();
         assetInstance.setBook(book);
         assetInstance.setLocation(location);
         assetInstance.setImage(image);

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 @Entity
 @Table(name = "photos")
-public class ImageImpl {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "photos_id_seq")
@@ -19,11 +19,11 @@ public class ImageImpl {
     @Column(name = "photo")
     private byte[] photo;
 
-    public ImageImpl() {
+    public Image() {
         // Default constructor required by JPA
     }
 
-    public ImageImpl(byte[] photo) {
+    public Image(byte[] photo) {
         this.photo = photo;
     }
 
@@ -43,7 +43,7 @@ public class ImageImpl {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ImageImpl image = (ImageImpl) o;
+        Image image = (Image) o;
         return Arrays.equals(photo, image.photo);
     }
 }

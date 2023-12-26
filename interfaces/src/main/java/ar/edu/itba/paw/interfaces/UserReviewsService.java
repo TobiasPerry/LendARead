@@ -3,7 +3,7 @@ package ar.edu.itba.paw.interfaces;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
@@ -22,11 +22,11 @@ public interface UserReviewsService {
     UserReview getUserReviewAsBorrower(final int id,final int reviewId) throws UserReviewNotFoundException, UserNotFoundException;
 
 
-    PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, UserImpl recipient);
+    PagingImpl<UserReview> getUserReviewsAsLender(int pageNum, int itemsPerPage, User recipient);
 
     PagingImpl<UserReview> getUserReviewsAsLenderById(int pageNum, int itemsPerPage, final int borrowerId) throws UserNotFoundException;
 
-    PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, UserImpl recipient);
+    PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, User recipient);
 
     PagingImpl<UserReview> getUserReviewsAsReviewerById(final int pageNum, final int itemsPerPage, int reviewerId) throws UserNotFoundException;
 }

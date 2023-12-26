@@ -1,13 +1,13 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-final public class UserImpl{
+final public class User {
     @Column(length = 100, nullable = false, unique = true, name = "mail")
     private String email;
     @Column(length = 100, nullable = false)
@@ -25,7 +25,7 @@ final public class UserImpl{
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = true)
-    private ImageImpl profilePhoto;
+    private Image profilePhoto;
 
     @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  WHERE us.id = id)")
     private Integer rating;
@@ -42,7 +42,7 @@ final public class UserImpl{
     @Column(name = "id")
     private Long id;
 
-    public UserImpl(String email, String name, String telephone, String password, Behaviour behaviour) {
+    public User(String email, String name, String telephone, String password, Behaviour behaviour) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
@@ -51,7 +51,7 @@ final public class UserImpl{
         this.profilePhoto = null;
     }
 
-    public UserImpl(int id, String email, String name, String telephone, String password, Behaviour behaviour) {
+    public User(int id, String email, String name, String telephone, String password, Behaviour behaviour) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
@@ -61,7 +61,7 @@ final public class UserImpl{
         this.profilePhoto = null;
     }
 
-    public UserImpl(String email, String name, String telephone, String password, Behaviour behaviour, ImageImpl profilePhoto) {
+    public User(String email, String name, String telephone, String password, Behaviour behaviour, Image profilePhoto) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
@@ -70,7 +70,7 @@ final public class UserImpl{
         this.profilePhoto = profilePhoto;
     }
 
-    public UserImpl() {
+    public User() {
 
     }
 
@@ -115,7 +115,7 @@ final public class UserImpl{
         return this.name;
     }
 
-    public ImageImpl getProfilePhoto() {
+    public Image getProfilePhoto() {
         return this.profilePhoto;
     }
 
@@ -169,7 +169,7 @@ final public class UserImpl{
             return false;
         }
 
-        UserImpl otherUser = (UserImpl) obj;
+        User otherUser = (User) obj;
         return id != null && id.equals(otherUser.id);
     }
 
@@ -187,7 +187,7 @@ final public class UserImpl{
         return result;
     }
 
-    public void setProfilePhoto(ImageImpl img) {
+    public void setProfilePhoto(Image img) {
         this.profilePhoto = img;
     }
 

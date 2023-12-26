@@ -4,7 +4,7 @@ import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
@@ -57,7 +57,7 @@ public class LendingsController {
                                 @QueryParam("borrowerId")@Nullable Integer borrowerId,
                                 @QueryParam("state")@Nullable @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED") String state,
                                 @QueryParam("lenderId")@Nullable Integer lenderId) {
-        PagingImpl<LendingImpl> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
+        PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
 
         LOGGER.info("GET lendings/ page:{} itemsPerPage:{} assetInstanceId:{} borrowerId:{} state:{} lenderId:{}",page,itemsPerPage,assetInstanceId,borrowerId,state,lenderId);
@@ -69,7 +69,7 @@ public class LendingsController {
     @Path("/")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
-      LendingImpl lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
+      Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       LOGGER.info("POST lendings/ assetInstanceId:{}",borrowAssetForm.getAssetInstanceId());
       return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
     }
@@ -77,7 +77,7 @@ public class LendingsController {
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     public Response getLending(@PathParam("id") final int id) throws LendingNotFoundException {
-        LendingImpl lending = uais.getBorrowedAssetInstance(id);
+        Lending lending = uais.getBorrowedAssetInstance(id);
         LOGGER.info("GET lendings/ id:{}",id);
         return Response.ok(LendingDTO.fromLending(lending, uriInfo)).build();
     }

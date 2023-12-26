@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +19,7 @@ public class AssetDTO {
     private String selfUrl;
 
 
-    public static AssetDTO fromAsset(UriInfo url, BookImpl asset) {
+    public static AssetDTO fromAsset(UriInfo url, Asset asset) {
         AssetDTO assetDTO = new AssetDTO();
         assetDTO.id = asset.getId();
         assetDTO.isbn = asset.getIsbn();
@@ -29,10 +29,10 @@ public class AssetDTO {
         assetDTO.selfUrl = reference(url, asset);
         return assetDTO;
     }
-    public static String reference(UriInfo url, BookImpl asset) {
+    public static String reference(UriInfo url, Asset asset) {
         return url.getBaseUriBuilder().path("assets").path(String.valueOf(asset.getId())).build().toString();
     }
-    public static List<AssetDTO> fromBooks(final List<BookImpl> books, final UriInfo uriInfo) {
+    public static List<AssetDTO> fromBooks(final List<Asset> books, final UriInfo uriInfo) {
         return books.stream().map(book -> fromAsset(uriInfo, book)).collect(java.util.stream.Collectors.toList());
     }
 

@@ -2,8 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
@@ -30,28 +30,28 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageUserAssets<AssetInstanceImpl> getUserAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+    public PageUserAssets<AssetInstance> getUserAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
 
         return userAssetsDao.getUsersAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
 
     }
     @Transactional(readOnly = true)
     @Override
-    public PageUserAssets<LendingImpl> getUserBorrowedAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+    public PageUserAssets<Lending> getUserBorrowedAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
 
         return userAssetsDao.getBorrowedAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
 
     }
     @Transactional(readOnly = true)
     @Override
-    public PageUserAssets<LendingImpl> getUserLentAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
+    public PageUserAssets<Lending> getUserLentAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
         return userAssetsDao.getLendedAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public LendingImpl getBorrowedAssetInstance(final int lendingId) throws LendingNotFoundException {
-      Optional<LendingImpl> lending = userAssetsDao.getBorrowedAsset(lendingId);
+    public Lending getBorrowedAssetInstance(final int lendingId) throws LendingNotFoundException {
+      Optional<Lending> lending = userAssetsDao.getBorrowedAsset(lendingId);
       if (!lending.isPresent()) {
           LOGGER.error("Not found borrowed asset instance with the lending lendingId: {}", lendingId);
           throw new LendingNotFoundException(HttpStatusCodes.NOT_FOUND);

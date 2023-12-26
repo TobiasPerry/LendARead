@@ -4,7 +4,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.webapp.dto.LocationDTO;
 import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
@@ -43,7 +43,7 @@ public class LocationsController {
     @Path("/")
     @Produces(value = { Vnd.VND_LOCATION })
     public Response getLocation(@QueryParam("userId")@NotNull final Integer userId) throws UserNotFoundException {
-        final List<LocationImpl> locations = ls.getLocationsById(userId);
+        final List<Location> locations = ls.getLocationsById(userId);
         final List<LocationDTO> locationsDTO = new ArrayList<>();
         locations.forEach(location -> locationsDTO.add(LocationDTO.fromLocation(uriInfo, location)));
         LOGGER.info("GET location/ userId:{}",userId);
@@ -54,7 +54,7 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     public Response getLocationById(@PathParam("id") final Integer locationId) throws LocationNotFoundException {
 
-        final LocationImpl location = ls.getLocation(locationId);
+        final Location location = ls.getLocation(locationId);
         Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
         StaticCache.setUnconditionalCache(response);
         LOGGER.info("GET location/ id:{}",locationId);
@@ -65,7 +65,7 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     @Consumes(value = { MediaType.MULTIPART_FORM_DATA })
     public Response editLocation(@PathParam("id")final Integer locationId, @BeanParam @Valid EditLocationForm locationForm) throws LocationNotFoundException {
-        LocationImpl location = ls.editLocationById(locationId, Optional.ofNullable(locationForm.getName()), Optional.ofNullable(locationForm.getLocality()), Optional.ofNullable(locationForm.getProvince()), Optional.ofNullable(locationForm.getCountry()), Optional.ofNullable(locationForm.getZipcode()));
+        Location location = ls.editLocationById(locationId, Optional.ofNullable(locationForm.getName()), Optional.ofNullable(locationForm.getLocality()), Optional.ofNullable(locationForm.getProvince()), Optional.ofNullable(locationForm.getCountry()), Optional.ofNullable(locationForm.getZipcode()));
         LOGGER.info("PATCH location/ id:{}",locationId);
         return Response.noContent().build();
     }
@@ -82,7 +82,7 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     @Consumes(value = { MediaType.MULTIPART_FORM_DATA })
     public Response addLocation(@BeanParam @Valid LocationForm locationForm) throws UserNotFoundException {
-        LocationImpl location = ls.addLocation(locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode());
+        Location location = ls.addLocation(locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(location.getId())).build();
         LOGGER.info("POST location/ id:{}",location.getId());

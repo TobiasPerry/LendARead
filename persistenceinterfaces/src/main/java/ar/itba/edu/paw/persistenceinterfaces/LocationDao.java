@@ -1,19 +1,19 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 
 import java.util.List;
 
 public interface LocationDao {
 
-    LocationImpl addLocation(LocationImpl lc);
+    Location addLocation(Location lc);
 
-    List<LocationImpl> getLocations(UserImpl user);
+    List<Location> getLocations(User user);
 
-    LocationImpl getLocation(int location);
+    Location getLocation(int location);
 
-    LocationImpl editLocation(LocationImpl lc);
+    Location editLocation(Location lc);
 
-    void deleteLocation(LocationImpl lc);
+    void deleteLocation(Location lc);
 }

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +37,7 @@ public class AssetsInstancesDTO {
     private String selfUrl;
 
 
-    public static AssetsInstancesDTO fromAssetInstance(UriInfo url, AssetInstanceImpl assetInstance) {
+    public static AssetsInstancesDTO fromAssetInstance(UriInfo url, AssetInstance assetInstance) {
         AssetsInstancesDTO dto = new AssetsInstancesDTO();
         dto.id = assetInstance.getId();
         dto.assetReference =  AssetDTO.reference(url, assetInstance.getBook());
@@ -54,10 +54,10 @@ public class AssetsInstancesDTO {
         dto.imageReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
         return dto;
     }
-    public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstanceImpl> assetInstances) {
+    public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstance> assetInstances) {
        return assetInstances.stream().map(assetInstance -> fromAssetInstance(url, assetInstance)).collect(java.util.stream.Collectors.toList());
     }
-    public static String reference(UriInfo url, AssetInstanceImpl assetInstance) {
+    public static String reference(UriInfo url, AssetInstance assetInstance) {
         return url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).build().toString();
     }
 }

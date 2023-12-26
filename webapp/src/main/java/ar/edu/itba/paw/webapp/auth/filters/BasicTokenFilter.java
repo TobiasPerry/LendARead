@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.auth.filters;
 
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.glassfish.jersey.internal.util.Base64;
@@ -82,7 +82,7 @@ public class BasicTokenFilter extends OncePerRequestFilter {
                 )
 
                 );
-        UserImpl user = userService.getUser(username);
+        User user = userService.getUser(username);
         response.setHeader(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateJwtToken(authentication,baseUrl + "api/users/" + user.getId()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

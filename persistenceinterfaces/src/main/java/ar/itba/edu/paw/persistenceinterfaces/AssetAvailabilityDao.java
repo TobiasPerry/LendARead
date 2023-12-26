@@ -1,9 +1,9 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.time.LocalDate;
@@ -12,15 +12,15 @@ import java.util.Optional;
 
 public interface AssetAvailabilityDao {
 
-    LendingImpl borrowAssetInstance(AssetInstanceImpl assetInstance, UserImpl user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState);
+    Lending borrowAssetInstance(AssetInstance assetInstance, User user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState);
 
-    List<LendingImpl> getActiveLendings(AssetInstanceImpl ai);
-    void changeLendingStatus(LendingImpl lending,final LendingState lendingState);
+    List<Lending> getActiveLendings(AssetInstance ai);
+    void changeLendingStatus(Lending lending, final LendingState lendingState);
 
-    PagingImpl<LendingImpl> getPagingActiveLending( final int pageNum, final int itemsPerPage,final Integer aiId,final Integer borrowerId,final LendingState lendingState,final Integer lenderId) ;
-    Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date);
+    PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId) ;
+    Optional<List<Lending>> getActiveLendingsStartingOn(LocalDate date);
 
-    Optional<List<LendingImpl>> getActiveLendingEndingOn(LocalDate date);
+    Optional<List<Lending>> getActiveLendingEndingOn(LocalDate date);
 
-    Optional<LendingImpl> getLendingById(final int lendingId);
+    Optional<Lending> getLendingById(final int lendingId);
 }

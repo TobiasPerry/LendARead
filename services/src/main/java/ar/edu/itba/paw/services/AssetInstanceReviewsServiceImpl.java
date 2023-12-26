@@ -8,9 +8,9 @@ import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
@@ -47,7 +47,7 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     @Transactional
     @Override
     public AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException {
-        LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         if(lending.getAssetInstance().getId() != assetId){
             throw new LendingNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
@@ -60,14 +60,14 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     @Transactional(readOnly = true)
     @Override
     public double getRating(final int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
         return assetInstanceReviewsDao.getRating(assetInstance);
     }
 
     @Transactional(readOnly = true)
     @Override
     public double getRatingById(int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
         return assetInstanceReviewsDao.getRating(assetInstance);
     }
 
@@ -85,14 +85,14 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     @Override
     public boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException {
         Optional<AssetInstanceReview> assetInstanceReview = assetInstanceReviewsDao.getReviewByLendingId(lendingId);
-        LendingImpl lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
         return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser()) && lending.getAssetInstance().getId() == assetInstanceId;
 
     }
     @Transactional(readOnly = true)
     @Override
     public PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage,int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
         return assetInstanceReviewsDao.getAssetInstanceReviews(pageNum,itemsPerPage,assetInstance);
     }
 }

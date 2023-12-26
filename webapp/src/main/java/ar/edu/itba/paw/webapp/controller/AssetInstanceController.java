@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.*;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
@@ -67,7 +67,7 @@ public class AssetInstanceController {
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response getUserAssetsInstances(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
-        final AssetInstanceImpl assetInstance = ais.getAssetInstance(id);
+        final AssetInstance assetInstance = ais.getAssetInstance(id);
         LOGGER.info("GET assetInstances/{}",id);
         AssetsInstancesDTO assetDTO = AssetsInstancesDTO.fromAssetInstance(uriInfo,assetInstance);
         Response.ResponseBuilder response = Response.ok(assetDTO);
@@ -78,7 +78,7 @@ public class AssetInstanceController {
     @Path("/{id}/image")
     @Produces(value = {"image/webp"})
     public Response getImage(@PathParam("id") final int id,@Context javax.ws.rs.core.Request request) throws AssetInstanceNotFoundException {
-        final AssetInstanceImpl assetInstance = ais.getAssetInstance(id);
+        final AssetInstance assetInstance = ais.getAssetInstance(id);
 
         EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage().getId()));
 
@@ -129,7 +129,7 @@ public class AssetInstanceController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
-        AssetInstanceImpl assetInstance = aes.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
+        AssetInstance assetInstance = aes.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
         LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +21,7 @@ public class LocationDTO {
 
     private String selfUrl;
 
-    public static LocationDTO fromLocation(UriInfo url, LocationImpl location) {
+    public static LocationDTO fromLocation(UriInfo url, Location location) {
         LocationDTO dto = new LocationDTO();
         dto.id = location.getId();
         dto.name = location.getName();
@@ -34,7 +34,7 @@ public class LocationDTO {
         dto.selfUrl = reference(url, location);
         return dto;
     }
-    public static String reference(UriInfo url, LocationImpl location) {
+    public static String reference(UriInfo url, Location location) {
         return url.getBaseUriBuilder().path("locations").path(String.valueOf(location.getId())).build().toString();
     }
 

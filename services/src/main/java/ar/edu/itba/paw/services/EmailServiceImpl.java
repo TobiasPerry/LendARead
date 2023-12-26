@@ -1,11 +1,11 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.EmailService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,14 +63,14 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendLenderEmail(final AssetInstanceImpl assetInstance, final String borrower, final Long lendingId, final Locale locale) {
+    public void sendLenderEmail(final AssetInstance assetInstance, final String borrower, final Long lendingId, final Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
         Map<String, Object> variables = new HashMap<>();
-        UserImpl owner = assetInstance.getOwner();
-        LocationImpl location = assetInstance.getLocation();
-        BookImpl book = assetInstance.getBook();
+        User owner = assetInstance.getOwner();
+        Location location = assetInstance.getLocation();
+        Asset book = assetInstance.getBook();
         variables.put("book", book);
         variables.put("borrower", borrower);
         variables.put("owner", owner);
@@ -85,13 +85,13 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendBorrowerEmail(final AssetInstanceImpl assetInstance, final UserImpl borrower, final Long lendingId, final Locale locale) {
+    public void sendBorrowerEmail(final AssetInstance assetInstance, final User borrower, final Long lendingId, final Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
-        BookImpl book = assetInstance.getBook();
-        UserImpl owner = assetInstance.getOwner();
-        LocationImpl location = assetInstance.getLocation();
+        Asset book = assetInstance.getBook();
+        User owner = assetInstance.getOwner();
+        Location location = assetInstance.getLocation();
         Map<String, Object> variables = new HashMap<>();
         variables.put("book", book);
         variables.put("borrower", borrower.getName());
@@ -113,11 +113,11 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendRejectedEmail(AssetInstanceImpl assetInstance, UserImpl borrower, Long lendingId, Locale locale) {
+    public void sendRejectedEmail(AssetInstance assetInstance, User borrower, Long lendingId, Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
-        BookImpl book = assetInstance.getBook();
+        Asset book = assetInstance.getBook();
         Map<String, Object> variables = new HashMap<>();
         variables.put("book", book);
         variables.put("borrower", borrower);
@@ -128,12 +128,12 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendCanceledEmail(AssetInstanceImpl assetInstance, Long lendingId, Locale locale) {
+    public void sendCanceledEmail(AssetInstance assetInstance, Long lendingId, Locale locale) {
         if (assetInstance == null) {
             return;
         }
-        BookImpl book = assetInstance.getBook();
-        UserImpl owner = assetInstance.getOwner();
+        Asset book = assetInstance.getBook();
+        User owner = assetInstance.getOwner();
         Map<String, Object> variables = new HashMap<>();
         variables.put("book", book);
         variables.put("lender", owner);
@@ -144,12 +144,12 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendReviewBorrower(AssetInstanceImpl assetInstance, UserImpl borrower, UserImpl lender, Long lendingId, Locale locale) {
+    public void sendReviewBorrower(AssetInstance assetInstance, User borrower, User lender, Long lendingId, Locale locale) {
         if (assetInstance == null || borrower == null) {
             return;
         }
 
-        BookImpl book = assetInstance.getBook();
+        Asset book = assetInstance.getBook();
         Map<String, Object> variables = new HashMap<>();
         variables.put("assetInstance", assetInstance);
         variables.put("book", book);
@@ -163,12 +163,12 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendReviewLender(AssetInstanceImpl assetInstance, UserImpl lender, UserImpl borrower, Long lendingId, Locale locale) {
+    public void sendReviewLender(AssetInstance assetInstance, User lender, User borrower, Long lendingId, Locale locale) {
         if (assetInstance == null || lender == null) {
             return;
         }
 
-        BookImpl book = assetInstance.getBook();
+        Asset book = assetInstance.getBook();
         Map<String, Object> variables = new HashMap<>();
         variables.put("assetInstance", assetInstance);
         variables.put("book", book);
@@ -182,11 +182,11 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendRemindLendingToLender(LendingImpl lending, UserImpl lender, UserImpl borrower, Locale locale) {
+    public void sendRemindLendingToLender(Lending lending, User lender, User borrower, Locale locale) {
         if (lending == null) {
             return;
         }
-        BookImpl book = lending.getAssetInstance().getBook();
+        Asset book = lending.getAssetInstance().getBook();
         Map<String, Object> variables = new HashMap<>();
         variables.put("lender", lender);
         variables.put("book", book);
@@ -199,11 +199,11 @@ class EmailServiceImpl implements EmailService {
 
     @Async
     @Override
-    public void sendRemindReturnToLender(LendingImpl lending, UserImpl lender, UserImpl borrower, Locale locale) {
+    public void sendRemindReturnToLender(Lending lending, User lender, User borrower, Locale locale) {
         if (lending == null) {
             return;
         }
-        BookImpl book = lending.getAssetInstance().getBook();
+        Asset book = lending.getAssetInstance().getBook();
         Map<String, Object> variables = new HashMap<>();
         variables.put("lender", lender);
         variables.put("book", book);

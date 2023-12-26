@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "AssetInstance")
-public class AssetInstanceImpl{
+public class AssetInstance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "assetinstance_id_seq")
@@ -20,15 +20,15 @@ public class AssetInstanceImpl{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assetId", referencedColumnName = "uid", nullable = false)
-    private  BookImpl book;
+    private Asset book;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
-    private  UserImpl userReference;
+    private User userReference;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "locationId", referencedColumnName = "id")
-    private  LocationImpl location;
+    private Location location;
 
     @Column(name = "description", length = 300)
     private String description;
@@ -48,13 +48,13 @@ public class AssetInstanceImpl{
     private  boolean isReservable;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photoId", referencedColumnName = "id", nullable = false)
-    private ImageImpl image;
+    private Image image;
 
     @Formula("(SELECT COALESCE(AVG(COALESCE(asr.rating, 0)),0) FROM assetInstanceReview AS asr left outer join lendings as l on asr.lendid = l.id  WHERE l.assetinstanceid = id)")
     private Integer rating;
 
 
-    public AssetInstanceImpl(final int id,final BookImpl book,final PhysicalCondition physicalCondition,final UserImpl userReference,final LocationImpl location,final ImageImpl imageId,final AssetState as,final int maxDaysLending,final String description) {
+    public AssetInstance(final int id, final Asset book, final PhysicalCondition physicalCondition, final User userReference, final Location location, final Image imageId, final AssetState as, final int maxDaysLending, final String description) {
         this.id = (long) id;
         this.book = book;
         this.physicalCondition = physicalCondition;
@@ -65,7 +65,7 @@ public class AssetInstanceImpl{
         this.maxLendingDays = maxDaysLending;
         this.description = description;
     }
-    public AssetInstanceImpl(BookImpl book, PhysicalCondition physicalCondition, UserImpl userReference, LocationImpl location, ImageImpl imageId, AssetState as, int maxDaysLending,String description, boolean isReservable) {
+    public AssetInstance(Asset book, PhysicalCondition physicalCondition, User userReference, Location location, Image imageId, AssetState as, int maxDaysLending, String description, boolean isReservable) {
         this.book = book;
         this.physicalCondition = physicalCondition;
         this.userReference = userReference;
@@ -78,7 +78,7 @@ public class AssetInstanceImpl{
     }
 
 
-    public AssetInstanceImpl() {
+    public AssetInstance() {
 
     }
     @Override
@@ -96,7 +96,7 @@ public class AssetInstanceImpl{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AssetInstanceImpl that = (AssetInstanceImpl) o;
+        AssetInstance that = (AssetInstance) o;
 
         if (maxLendingDays != that.maxLendingDays) return false;
         if (isReservable != that.isReservable) return false;
@@ -134,15 +134,15 @@ public class AssetInstanceImpl{
         isReservable = reservable;
     }
 
-    public BookImpl getBook() {
+    public Asset getBook() {
         return book;
     }
 
-    public UserImpl getOwner() {
+    public User getOwner() {
         return userReference;
     }
 
-    public LocationImpl getLocation() {
+    public Location getLocation() {
         return location;
     }
 
@@ -154,7 +154,7 @@ public class AssetInstanceImpl{
         return this.maxLendingDays;
     }
 
-    public ImageImpl getImage() {
+    public Image getImage() {
         return image;
     }
 
@@ -170,15 +170,15 @@ public class AssetInstanceImpl{
         return physicalCondition;
     }
 
-    public void setBook(BookImpl book) {
+    public void setBook(Asset book) {
         this.book = book;
     }
 
-    public void setUserReference(UserImpl userReference) {
+    public void setUserReference(User userReference) {
         this.userReference = userReference;
     }
 
-    public void setLocation(LocationImpl location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -202,7 +202,7 @@ public class AssetInstanceImpl{
         this.maxLendingDays = maxLendingDays;
     }
 
-    public void setImage(ImageImpl image) {
+    public void setImage(Image image) {
         this.image = image;
     }
     public void setRating(Integer rating) {
