@@ -15,6 +15,7 @@ public class UserReviewForm {
 
     @Min(1)
     @Max(5)
+    @NotNull
     private Integer rating;
 
     @NotNull

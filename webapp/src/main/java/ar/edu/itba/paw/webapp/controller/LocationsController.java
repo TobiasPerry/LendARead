@@ -10,6 +10,8 @@ import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,8 @@ public class LocationsController {
 
     private final LocationsService ls;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationsController.class);
+
     @Context
     private UriInfo uriInfo;
     @Autowired
@@ -42,6 +46,7 @@ public class LocationsController {
         final List<LocationImpl> locations = ls.getLocationsById(userId);
         final List<LocationDTO> locationsDTO = new ArrayList<>();
         locations.forEach(location -> locationsDTO.add(LocationDTO.fromLocation(uriInfo, location)));
+        LOGGER.info("GET location/ userId:{}",userId);
         return Response.ok(new GenericEntity<List<LocationDTO>>(locationsDTO){}).build();
     }
     @GET
@@ -52,6 +57,7 @@ public class LocationsController {
         final LocationImpl location = ls.getLocation(locationId);
         Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
         StaticCache.setUnconditionalCache(response);
+        LOGGER.info("GET location/ id:{}",locationId);
         return response.build();
     }
     @PATCH
@@ -60,6 +66,7 @@ public class LocationsController {
     @Consumes(value = { MediaType.MULTIPART_FORM_DATA })
     public Response editLocation(@PathParam("id")final Integer locationId, @BeanParam @Valid EditLocationForm locationForm) throws LocationNotFoundException {
         LocationImpl location = ls.editLocationById(locationId, Optional.ofNullable(locationForm.getName()), Optional.ofNullable(locationForm.getLocality()), Optional.ofNullable(locationForm.getProvince()), Optional.ofNullable(locationForm.getCountry()), Optional.ofNullable(locationForm.getZipcode()));
+        LOGGER.info("PATCH location/ id:{}",locationId);
         return Response.noContent().build();
     }
     @DELETE
@@ -67,6 +74,7 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException {
         ls.deleteLocationById(locationId);
+        LOGGER.info("DELETE location/ id:{}",locationId);
         return Response.noContent().build();
     }
     @POST
@@ -77,5 +85,6 @@ public class LocationsController {
         LocationImpl location = ls.addLocation(locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(location.getId())).build();
+        LOGGER.info("POST location/ id:{}",location.getId());
         return Response.created(uri).build();    }
 }

@@ -8,6 +8,8 @@ import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import com.sun.istack.internal.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +32,7 @@ public class AssetController {
     private final AssetService as;
     @Context
     private UriInfo uriInfo;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssetController.class);
 
     @Autowired
     public AssetController(final AssetService as) {
@@ -45,6 +48,7 @@ public class AssetController {
             @QueryParam(value = "language") @Nullable final String language
     ){
         List<BookImpl> books = as.getBooks(isbn,author,title,language);
+        LOGGER.info("GET asset/ isbn:{} author:{} title:{} language:{}",isbn,author,title,language);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetDTO>>(AssetDTO.fromBooks(books,uriInfo)) {});
         return response.build();
     }
@@ -55,6 +59,7 @@ public class AssetController {
     public Response getAsset(@PathParam("id") final Integer id){
         BookImpl book = as.getBookById(id);
 
+        LOGGER.info("GET asset/ id:{}",book.getId());
         Response.ResponseBuilder response = Response.ok(AssetDTO.fromAsset(uriInfo,book));
         StaticCache.setUnconditionalCache(response);
 
@@ -65,6 +70,7 @@ public class AssetController {
     @Consumes(value = {Vnd.VND_ASSET})
     public Response createAsset(@Valid @RequestBody final AddAssetForm assetForm) throws BookAlreadyExistException {
          BookImpl book = as.addBook(assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
+         LOGGER.info("POST asset/ id:{}",book.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(book.getId())).build();
         return Response.created(uri).build();

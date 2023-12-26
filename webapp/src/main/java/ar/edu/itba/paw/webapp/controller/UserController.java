@@ -21,6 +21,8 @@ import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -42,6 +44,8 @@ public class UserController {
     private UriInfo uriInfo;
 
     private final UserReviewsService urs;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
 
     @Autowired
     public UserController (final UserService userService, final AssetExistanceService assetExistanceService, final UserReviewsService userReviewsService){
@@ -51,15 +55,16 @@ public class UserController {
 
     }
 
-
-    @PATCH
-    @Path("/{id}")
+    @PUT
+    @Path("/{id}/password")
     @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     public Response changePassword(@PathParam("id") int id, @Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
         us.changePassword(id,changePasswordForm.getPassword(),changePasswordForm.getToken());
+        LOGGER.info("PUT user/{}/password",id);
         return Response.noContent().build();
     }
+
     @POST
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
@@ -67,6 +72,7 @@ public class UserController {
         final UserImpl user = us.createUser(registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone(), registerForm.getPassword());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
+        LOGGER.info("POST user/ email:{} name:{} telephone:{}",registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone());
         return Response.created(uri).build();
     }
     @GET
@@ -75,6 +81,7 @@ public class UserController {
     public Response getById(@PathParam("id") final int id) throws UserNotFoundException {
         final UserImpl user = us.getUserById(id);
         Response.ResponseBuilder response = Response.ok(UserDTO.fromUser(uriInfo,user));
+        LOGGER.info("GET user/ id:{}",id);
         return response.build();
     }
     @POST
@@ -83,6 +90,7 @@ public class UserController {
     @Consumes(value = { Vnd.VND_RESET_PASSWORD })
     public Response createChangePasswordToken(@PathParam("id") final int id) throws UserNotFoundException {
         us.createChangePasswordToken(id);
+        LOGGER.info("POST user/{}/reset-password-token",id);
         return Response.ok().build();
     }
 
@@ -91,6 +99,7 @@ public class UserController {
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response changeUserProfilePic(@PathParam("id") final int id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
         int photoId = us.changeUserProfilePic(id,imageBytes);
+        LOGGER.info("PUT user/{}/profilePic",id);
         return Response.noContent().build();
     }
 
@@ -102,11 +111,12 @@ public class UserController {
         EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId()));
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
-
+        LOGGER.info("GET user/{}/profilePic",id);
         if (response == null) {
             Response.ResponseBuilder responseBuilder = Response.ok(user.getProfilePhoto().getPhoto()).tag(eTag);
             return responseBuilder.build();
         }
+
 
         return response.build();
     }
@@ -118,7 +128,7 @@ public class UserController {
         PagingImpl<UserReview> items =urs.getUserReviewsAsLender(page,itemsPerPage,us.getUserById(id));
         List<UserReviewsDTO> reviewsDTOS = UserReviewsDTO.fromUserReviewsList(items.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<UserReviewsDTO>>(reviewsDTOS) {});
-
+        LOGGER.info("GET user/{}/lender_reviews",id);
         PaginatedData.paginatedData(response,items,uriInfo);
         return response.build();
 
@@ -131,7 +141,7 @@ public class UserController {
         PagingImpl<UserReview> items =urs.getUserReviewsAsBorrower(page,itemsPerPage,us.getUserById(id));
         List<UserReviewsDTO> reviewsDTOS = UserReviewsDTO.fromUserReviewsList(items.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<UserReviewsDTO>>(reviewsDTOS) {});
-
+        LOGGER.info("GET user/{}/borrower_reviews",id);
         PaginatedData.paginatedData(response,items,uriInfo);
         return response.build();
     }
@@ -144,6 +154,7 @@ public class UserController {
     public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
         UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),id,lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
+        LOGGER.info("POST user/{}/lender_reviews",id);
         return Response.created(uri).build();
     }
     @POST
@@ -154,6 +165,7 @@ public class UserController {
     public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
         UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),id,borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
+        LOGGER.info("POST user/{}/borrower_reviews",id);
         return Response.created(uri).build();
     }
 
@@ -163,6 +175,7 @@ public class UserController {
     public Response getLenderReview(@PathParam("id") final int id,@PathParam("reviewId") final int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
         UserReview userReview = urs.getUserReviewAsLender(id,reviewId);
         UserReviewsDTO userReviewsDTO = UserReviewsDTO.fromUserReview(userReview,uriInfo);
+        LOGGER.info("GET user/{}/lender_reviews/{}",id,reviewId);
         return Response.ok( new GenericEntity<UserReviewsDTO>(userReviewsDTO){}).build();
     }
     @GET
@@ -171,6 +184,7 @@ public class UserController {
     public Response getBorrowerReview(@PathParam("id") final int id,@PathParam("reviewId") final int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
         UserReview userReview = urs.getUserReviewAsBorrower(id,reviewId);
         UserReviewsDTO userReviewsDTO = UserReviewsDTO.fromUserReview(userReview,uriInfo);
+        LOGGER.info("GET user/{}/borrower_reviews/{}",id,reviewId);
         return Response.ok( new GenericEntity<UserReviewsDTO>(userReviewsDTO){}).build();
     }
 

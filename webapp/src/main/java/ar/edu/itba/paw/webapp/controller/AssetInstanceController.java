@@ -20,6 +20,8 @@ import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import com.sun.istack.internal.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
@@ -42,26 +44,22 @@ import java.util.Optional;
 public class AssetInstanceController {
 
 
-    private final UserAssetInstanceService uais;
     private final AssetInstanceService ais;
 
     private final AssetExistanceService aes;
 
-    private final LocationsService ls;
 
-    private final UserService us;
     private final AssetInstanceReviewsService air;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AssetInstanceController.class);
 
     @Context
     private UriInfo uriInfo;
 
     @Autowired
-    public AssetInstanceController(final UserAssetInstanceService uais, final AssetInstanceService ais,final AssetExistanceService aes,final LocationsService ls,final UserService us,final AssetInstanceReviewsService air) {
-        this.uais = uais;
+    public AssetInstanceController(final AssetInstanceService ais,final AssetExistanceService aes,final AssetInstanceReviewsService air) {
         this.ais = ais;
         this.aes = aes;
-        this.ls = ls;
-        this.us = us;
         this.air = air;
     }
 
@@ -70,6 +68,7 @@ public class AssetInstanceController {
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response getUserAssetsInstances(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
         final AssetInstanceImpl assetInstance = ais.getAssetInstance(id);
+        LOGGER.info("GET assetInstances/{}",id);
         AssetsInstancesDTO assetDTO = AssetsInstancesDTO.fromAssetInstance(uriInfo,assetInstance);
         Response.ResponseBuilder response = Response.ok(assetDTO);
         StaticCache.setUnconditionalCache(response);
@@ -84,7 +83,7 @@ public class AssetInstanceController {
         EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage().getId()));
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
-
+        LOGGER.info("GET assetInstances/{}/image",id);
         if (response == null) {
             Response.ResponseBuilder responseBuilder = Response.ok(assetInstance.getImage().getPhoto()).tag(eTag);
             return responseBuilder.build();
@@ -119,6 +118,7 @@ public class AssetInstanceController {
                         )
         );
         List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getBooks());
+        LOGGER.info("GET assetInstances/ search:{} physicalConditions:{} languages:{} sort:{} sortDirection:{} page:{} itemsPerPage:{} minRating:{} maxRating:{} userId:{}",search,physicalConditions,languages,sort,sortDirection,currentPage,itemsPerPage,minRating,maxRating,userId);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetsInstancesDTO>>(assetsInstancesDTO) {});
         PaginatedData.paginatedData(response, page, uriInfo);
 
@@ -130,6 +130,7 @@ public class AssetInstanceController {
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException {
         AssetInstanceImpl assetInstance = aes.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
+        LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
         return Response.created(uri).build();
@@ -141,6 +142,7 @@ public class AssetInstanceController {
     @Path("/{id}")
     public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstancePatchForm assetInstancePatchForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
         ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getState()));
+        LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
     }
 
@@ -151,6 +153,7 @@ public class AssetInstanceController {
         PagingImpl<AssetInstanceReview> reviews = air.getAssetInstanceReviewsById(page, itemsPerPage,id);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetInstanceReviewDTO>>(AssetInstanceReviewDTO.fromAssetInstanceReviews(reviews.getList(),uriInfo)) {});
         PaginatedData.paginatedData(response, reviews, uriInfo);
+        LOGGER.info("GET assetInstances/{}/reviews page:{} itemsPerPage:{}",id,page,itemsPerPage);
         return response.build();
     }
     @POST
@@ -162,20 +165,23 @@ public class AssetInstanceController {
         AssetInstanceReview review = air.addReview(id,assetInstanceReviewForm.getLendingId(),assetInstanceReviewForm.getReview(),assetInstanceReviewForm.getRating());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(review.getId())).build();
+        LOGGER.info("POST assetInstances/{}/reviews id:{}",id,review.getId());
         return Response.created(uri).build();
     }
 
     @GET
     @Path("/{id}/reviews/{idReview}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
-    public Response getAssetInstanceReview(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws AssetInstanceNotFoundException, AssetInstanceReviewNotFoundException {
+    public Response getAssetInstanceReview(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws  AssetInstanceReviewNotFoundException {
         AssetInstanceReview review = air.getReviewById(idReview);
+        LOGGER.info("GET assetInstances/{}/reviews/{}",id,idReview);
         return Response.ok(AssetInstanceReviewDTO.fromAssetInstanceReview(review,uriInfo)).build();
     }
     @DELETE
     @Path("/{id}/reviews/{idReview}")
-    public Response deleteReviewById(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws AssetInstanceNotFoundException, AssetInstanceReviewNotFoundException {
+    public Response deleteReviewById(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws AssetInstanceReviewNotFoundException {
         air.deleteReviewById(idReview);
+        LOGGER.info("DELETE assetInstances/{}/reviews/{}",id,idReview);
         return Response.noContent().build();
     }
 }
