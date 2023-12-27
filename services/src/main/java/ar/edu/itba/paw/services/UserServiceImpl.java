@@ -151,9 +151,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
-
     @Override
     @Transactional
     public int changeUserProfilePic(final int id, byte[] parsedImage) throws UserNotFoundException {

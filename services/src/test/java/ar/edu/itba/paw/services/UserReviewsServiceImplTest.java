@@ -53,7 +53,7 @@ public class UserReviewsServiceImplTest {
     private static final User USER_DIFFERENT = new User(USER_ID + 1, EMAIL_DIFFERENT, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
 
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
-            new Asset(0, "", "", "", ""),
+            new Asset((long)0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
             new Location(0,"", "", "", "", "", null),

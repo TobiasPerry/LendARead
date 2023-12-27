@@ -1,16 +1,19 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class AssetDaoJpa implements AssetDao {
@@ -45,8 +48,8 @@ public class AssetDaoJpa implements AssetDao {
     }
 
     @Override
-    public List<Asset> getBooks(String isbn, String author, String title, String language) {
-        StringBuilder sb = new StringBuilder("SELECT b FROM BookImpl b ");
+    public PagingImpl<Asset> getBooks(final int page,final int itemPerPage,final String isbn,final String author,final String title,final String language) {
+        StringBuilder sb = new StringBuilder("SELECT uid FROM book b ");
         boolean first = true;
         if (isbn != null) {
             sb.append("WHERE b.isbn = :isbn ");
@@ -64,26 +67,56 @@ public class AssetDaoJpa implements AssetDao {
         }
         if (language != null) {
             sb.append(first ? "WHERE " : "AND ");
-            sb.append("b.language = :language ");
+            sb.append("b.lang = :language ");
         }
-        TypedQuery<Asset> query = em.createQuery(sb.toString(), Asset.class);
+        final int offset = (page - 1) * itemPerPage;
+        String pagination = " LIMIT :limit OFFSET :offset ";
+        final Query queryCount = em.createNativeQuery(sb.toString());
+        sb.append(pagination);
+        final Query queryNative  = em.createNativeQuery(sb.toString());
+
         if (isbn != null) {
-            query.setParameter("isbn", isbn);
+            queryNative.setParameter("isbn", isbn);
+            queryCount.setParameter("isbn", isbn);
+
         }
         if (author != null) {
-            query.setParameter("author", author);
+            queryNative.setParameter("author", author);
+            queryCount.setParameter("author", author);
         }
         if (title != null) {
-            query.setParameter("title", title);
+            queryNative.setParameter("title", title);
+            queryCount.setParameter("title", title);
         }
         if (language != null) {
-            query.setParameter("language", language);
+            queryNative.setParameter("language", language);
+            queryCount.setParameter("language", language);
         }
-        return query.getResultList();
+        queryNative.setParameter("limit", itemPerPage);
+        queryNative.setParameter("offset", offset);
+        @SuppressWarnings("unchecked")
+        final List<Long> ids = (List<Long>) queryCount.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        final int totalPages = (int) Math.ceil((double) ((Number) ids.size()).longValue() / itemPerPage);
+
+        @SuppressWarnings("unchecked")
+        List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+
+        // In case of empty result -> Return a Page with empty lists
+        if (list.isEmpty())
+            return new PagingImpl<Asset>(new ArrayList<>(), 0, 0);
+
+        // Get the AssetInstances that match those IDs for given page
+        final TypedQuery<Asset> query = em.createQuery("FROM Asset as a  WHERE a.id IN (:ids) ORDER BY a.title" , Asset.class);
+        query.setParameter("ids", list);
+        List<Asset> assets = query.getResultList();
+
+        return new PagingImpl<>(assets, page, totalPages);
     }
 
     @Override
-    public Asset getBookById(int id) {
+    public Asset getBookById(Long id) {
         return em.find(Asset.class, id);
     }
 

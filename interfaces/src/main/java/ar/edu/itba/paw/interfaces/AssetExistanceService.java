@@ -9,6 +9,6 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 
 public interface AssetExistanceService {
 
-    AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final int assetId, byte[] fileByteArray) throws InternalErrorException, UserNotFoundException, LocationNotFoundException;
+    AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws InternalErrorException, UserNotFoundException, LocationNotFoundException;
 
 }

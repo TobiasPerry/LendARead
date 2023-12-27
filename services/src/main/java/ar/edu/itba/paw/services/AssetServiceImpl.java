@@ -2,13 +2,12 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class AssetServiceImpl implements AssetService {
@@ -24,8 +23,8 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Asset> getBooks(String isbn, String author, String title, String language) {
-        return ad.getBooks(isbn, author, title, language);
+    public PagingImpl<Asset> getBooks(final int page, final int itemsPerPage, final String isbn, final String author, final String title, final String language) {
+        return ad.getBooks(page,itemsPerPage,isbn, author, title, language);
     }
 
     @Transactional
@@ -42,7 +41,7 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional(readOnly = true)
     @Override
-    public Asset getBookById(int id) {
+    public Asset getBookById(Long id) {
         return ad.getBookById(id);
     }
 }

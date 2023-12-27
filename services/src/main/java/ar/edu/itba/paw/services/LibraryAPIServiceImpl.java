@@ -22,7 +22,7 @@ public class LibraryAPIServiceImpl implements LibraryAPIService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryAPIServiceImpl.class);
 
-    private static final int DEFAULT_ID = -1;
+    private static final long DEFAULT_ID = -1;
     @Override
     public Asset getBookByISBN(final String isbn) throws IOException {
         String apiUrl = "https://openlibrary.org/isbn/" + isbn + ".json";
