@@ -35,7 +35,7 @@ public class LocationDTO {
         return dto;
     }
     public static String reference(UriInfo url, Location location) {
-        return url.getBaseUriBuilder().path("locations").path(String.valueOf(location.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/locations").path(String.valueOf(location.getId())).build().toString();
     }
 
 }

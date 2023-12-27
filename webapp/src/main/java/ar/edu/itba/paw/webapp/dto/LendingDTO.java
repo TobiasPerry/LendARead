@@ -53,6 +53,6 @@ public class LendingDTO {
 
 
     public static String reference(UriInfo url, Lending lending) {
-        return url.getBaseUriBuilder().path("lending").path(String.valueOf(lending.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/lending").path(String.valueOf(lending.getId())).build().toString();
     }
 }

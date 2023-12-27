@@ -38,7 +38,7 @@ public class UserDTO {
         return dto;
     }
     public static String reference(UriInfo url, User user) {
-        return url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).build().toString();
     }
 
 }
