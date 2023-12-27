@@ -31,8 +31,12 @@ public class RegisterForm {
     @NotEmpty
     @Size(max = 100)
     private String repeatPassword;
+
     @NotEmpty
     @Size(min = 3, max = 100)
     private String name;
+
+    @NotEmpty
+    private String telephone;
 
 }

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -23,7 +24,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
     }
 
     @Override
-    public double getRating(AssetInstanceImpl assetInstance) {
+    public double getRating(AssetInstance assetInstance) {
         try {
             String hql = "SELECT AVG(r.rating) FROM AssetInstanceReview as r WHERE r.lending.assetInstance.id = :assetInstanceId";
             return (Double) em.createQuery(hql)
@@ -37,7 +38,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstanceImpl assetInstance) {
+    public PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstance assetInstance) {
 
         final Query queryNative = em.createNativeQuery("SELECT r.id FROM AssetInstanceReview as r JOIN lendings l on r.lendid = l.id JOIN assetinstance a on a.id = l.assetinstanceid WHERE a.id = :assetInstance ORDER BY r.id DESC LIMIT :limit OFFSET :offset");
 
@@ -63,5 +64,27 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
 
         return new PagingImpl<>(reviewList, pageNum, totalPages);
     }
+
+    @Override
+    public Optional<AssetInstanceReview> getReviewById(int reviewId) {
+        final  TypedQuery<AssetInstanceReview>  query = em.createQuery("SELECT r FROM AssetInstanceReview r WHERE r.id= :reviewId",AssetInstanceReview.class);
+        query.setParameter("reviewId", (long) reviewId);
+        List<AssetInstanceReview> assetInstanceReviews = query.getResultList();
+        return assetInstanceReviews.stream().findFirst();
+    }
+
+    @Override
+    public void deleteReview(AssetInstanceReview assetInstanceReview) {
+        em.remove(assetInstanceReview);
+    }
+
+    @Override
+    public Optional<AssetInstanceReview> getReviewByLendingId(int lendingId) {
+        final  TypedQuery<AssetInstanceReview>  query = em.createQuery("SELECT r FROM AssetInstanceReview r WHERE r.lending.id= :lendingId",AssetInstanceReview.class);
+        query.setParameter("lendingId", (long) lendingId);
+        List<AssetInstanceReview> assetInstanceReviews = query.getResultList();
+        return assetInstanceReviews.stream().findFirst();
+    }
+
 
 }

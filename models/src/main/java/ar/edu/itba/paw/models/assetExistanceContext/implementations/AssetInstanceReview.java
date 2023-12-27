@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.models.assetExistanceContext.implementations;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 
 import javax.persistence.*;
 
@@ -11,13 +11,13 @@ public class AssetInstanceReview {
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="lendId", referencedColumnName = "id", nullable = false)
-    private LendingImpl lending;
+    private Lending lending;
 
     @Column(length = 500, nullable = false)
     private String review;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
-    private UserImpl reviewer;
+    private User reviewer;
     @Column(nullable = false)
     private int rating;
 
@@ -26,14 +26,14 @@ public class AssetInstanceReview {
     @SequenceGenerator(sequenceName = "assetinstancereview_id_seq", name = "assetinstancereview_id_seq", allocationSize = 1)
     private Long id;
 
-    public AssetInstanceReview(final LendingImpl lending, String message, final UserImpl reviewer, int rating) {
+    public AssetInstanceReview(final Lending lending, String message, final User reviewer, int rating) {
         this.lending = lending;
         this.review = message;
         this.reviewer = reviewer;
         this.rating = rating;
     }
 
-    public LendingImpl getLending() {
+    public Lending getLending() {
         return lending;
     }
 
@@ -41,7 +41,7 @@ public class AssetInstanceReview {
         return review;
     }
 
-    public UserImpl getReviewer() {
+    public User getReviewer() {
         return reviewer;
     }
 
@@ -53,7 +53,7 @@ public class AssetInstanceReview {
         return id;
     }
 
-    public void setLending(LendingImpl lending) {
+    public void setLending(Lending lending) {
         this.lending = lending;
     }
 
@@ -61,7 +61,7 @@ public class AssetInstanceReview {
         this.review = review;
     }
 
-    public void setReviewer(UserImpl reviewer) {
+    public void setReviewer(User reviewer) {
         this.reviewer = reviewer;
     }
 

@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.exceptions.InternalErrorException;
@@ -6,7 +7,6 @@ import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
 import ar.edu.itba.paw.webapp.form.ChangeProfilePicForm;
-import ar.edu.itba.paw.webapp.miscellaneous.FormFactoryAddAssetView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -84,3 +84,4 @@ public class UserProfileViewController {
         model.addAttribute("path", "userView");
     }
 }
+*/

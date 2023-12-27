@@ -1,11 +1,12 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LocationsServiceImpl implements LocationsService {
@@ -31,70 +33,80 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public void addLocation(LocationImpl lc) {
+    public void addLocation(Location lc) {
          locationsDao.addLocation(lc);
     }
 
     @Override
     @Transactional
-    public void addLocation(int id, String name, String locality, String province, String country, String zipcode, UserImpl user) throws UserNotFoundException {
-       if (user.getBehavior().equals(Behaviour.BORROWER)) {
-           userService.changeRole(user.getEmail(), Behaviour.LENDER);
-           LOGGER.info("User {} changed role to Lender", user.getId());
-       }
-        if(id == -1) {
-            LocationImpl newLocation = new LocationImpl(name, zipcode, locality, province, country, user);
-            addLocation(newLocation);
-            LOGGER.info("Location {} added for user {}", newLocation.getId(), user.getId());
-        } else {
-            LocationImpl newLocation = new LocationImpl(id, name, zipcode, locality, province, country, user);
-            editLocation(newLocation);
-            LOGGER.info("Location {} modified for user {}", newLocation.getId(), user.getId());
+    public Location addLocation(String name, String locality, String province, String country, String zipcode) throws UserNotFoundException {
+       User user = userService.getUser(userService.getCurrentUser());
+       Location newLocation = new Location(name, zipcode, locality, province, country, user);
+       addLocation(newLocation);
+       LOGGER.info("Location {} added for user {}", newLocation.getId(), user.getId());
+       return newLocation;
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Location getLocation(int locationId) throws LocationNotFoundException {
+        Location location= locationsDao.getLocation(locationId);
+        if (location == null) {
+            throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
+        return location;
     }
 
-    @Override
-    @Transactional
-    public LocationImpl getLocation(int locationId) {
-        return locationsDao.getLocation(locationId);
-    }
 
     @Override
-    @Transactional
-    public List<LocationImpl> getLocations(UserImpl user) {
+    @Transactional(readOnly = true)
+    public List<Location> getLocations(User user) {
         return locationsDao.getLocations(user);
     }
 
     @Override
     @Transactional
-    public void editLocation(LocationImpl lc) {
+    public void editLocation(Location lc) {
          locationsDao.editLocation(lc);
     }
 
     @Override
     @Transactional
-    public void deleteLocation(LocationImpl lc) {
+    public void deleteLocation(Location lc) {
             locationsDao.deleteLocation(lc);
             LOGGER.info("Location {} deleted for user {}", lc.getId(), lc.getUser().getId());
     }
 
     @Override
-    @Transactional
-    public List<LocationImpl> getLocationsById(int userId) throws UserNotFoundException {
+    @Transactional(readOnly = true)
+    public List<Location> getLocationsById(int userId) throws UserNotFoundException {
         return locationsDao.getLocations(userService.getUserById(userId));
     }
 
     @Override
     @Transactional
-    public LocationImpl editLocationById(int locationId) {
-        LocationImpl location = locationsDao.editLocation(locationsDao.getLocation(locationId));
-        LOGGER.info("Location {} modified for user {}", location.getId(), location.getUser().getId());
-        return  location;
+    public Location editLocationById(int locationId, Optional<String> name, Optional<String> locality, Optional<String> province, Optional<String> country, Optional<String> zipcode) throws LocationNotFoundException {
+        Location location = locationsDao.getLocation(locationId);
+        name.ifPresent(location::setName);
+        locality.ifPresent(location::setLocality);
+        province.ifPresent(location::setProvince);
+        country.ifPresent(location::setCountry);
+        zipcode.ifPresent(location::setZipcode);
+        editLocation(location);
+        return location;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Location> getLocations() {
+        //return locationsDao.getAllLocations();
+        return null;
     }
 
     @Override
     @Transactional
-    public void deleteLocationById(int locationId) throws UserNotFoundException {
+    public void deleteLocationById(int locationId) throws  LocationNotFoundException {
         if(locationId != -1) {
             deleteLocation(getLocation(locationId));
             LOGGER.info("Location {} deleted", locationId);

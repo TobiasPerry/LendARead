@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy= IsbnImpl.class)
 public @interface Isbn {
-    String message() default "Please enter a valid ISBN";
+    String message() default "{isbn.validation}";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy= EmailNotExistenceImpl.class)
 public @interface EmailNotExistence {
 
-    String message() default "{auth.register.error}";
+    String message() default "{email.not.existence.validation}";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

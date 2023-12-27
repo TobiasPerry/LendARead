@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
@@ -80,7 +80,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
     }
 
     @Override
-    public PageUserAssets<LendingImpl> getLendedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
+    public PageUserAssets<Lending> getLendedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
         StringBuilder queryIds = new StringBuilder("SELECT  l.id FROM lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN  book b ON ai.assetid = b.uid JOIN    users u ON l.borrowerid = u.id JOIN users owner ON ai.owner = owner.id WHERE owner.mail = :email ");
         StringBuilder queryCount = new StringBuilder("SELECT count(l.id) FROM lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN    book b ON ai.assetid = b.uid JOIN    users u ON l.borrowerid = u.id JOIN users owner ON ai.owner = owner.id WHERE owner.mail = :email ");
 
@@ -111,7 +111,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
             return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
 
-        String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids ";
+        String query = "SELECT l FROM Lending l WHERE l.id in :ids ";
 
         if (!matchSortAttribuiteJpa(sortAtribuite).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
@@ -120,7 +120,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
             }
         }
 
-        List<LendingImpl> list2 = em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
+        List<Lending> list2 = em.createQuery(query, Lending.class).setParameter("ids", list).getResultList();
 
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
@@ -129,7 +129,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
     }
 
     @Override
-    public PageUserAssets<LendingImpl> getBorrowedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
+    public PageUserAssets<Lending> getBorrowedAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
 
         StringBuilder queryIds = new StringBuilder("SELECT l.id FROM    lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN  book b ON ai.assetid = b.uid JOIN users u ON l.borrowerid = u.id JOIN  users owner ON ai.owner = owner.id WHERE  u.mail = :email ");
         StringBuilder queryCount = new StringBuilder("SELECT count(l.id) FROM    lendings l JOIN    assetinstance ai ON l.assetinstanceid = ai.id JOIN  book b ON ai.assetid = b.uid JOIN users u ON l.borrowerid = u.id JOIN  users owner ON ai.owner = owner.id WHERE  u.mail = :email ");
@@ -161,7 +161,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
             return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
 
-        String query = "SELECT l FROM LendingImpl l WHERE l.id in :ids";
+        String query = "SELECT l FROM Lending l WHERE l.id in :ids";
 
         if (!matchSortAttribuiteJpa(sortAtribuite).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuiteJpa(sortAtribuite);
@@ -169,7 +169,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
                 query += " " + direction;
             }
         }
-        List<LendingImpl> list2 = em.createQuery(query, LendingImpl.class).setParameter("ids", list).getResultList();
+        List<Lending> list2 = em.createQuery(query, Lending.class).setParameter("ids", list).getResultList();
 
 
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
@@ -199,7 +199,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
     }
 
     @Override
-    public PageUserAssets<AssetInstanceImpl> getUsersAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
+    public PageUserAssets<AssetInstance> getUsersAssets(int pageNumber, int itemsPerPage, String email, String filterAtribuite, String filterValue, String sortAtribuite, String direction) {
         StringBuilder queryIds = new StringBuilder("SELECT ai.id FROM assetinstance ai join users u on ai.owner = u.id JOIN book b ON ai.assetid = b.uid WHERE u.mail = :email AND ai.status IN ('PUBLIC', 'PRIVATE')");
 
         StringBuilder queryCount = new StringBuilder("SELECT count(ai.id) FROM assetinstance ai join users u on ai.owner = u.id WHERE u.mail = :email AND ai.status IN ('PUBLIC', 'PRIVATE')");
@@ -239,7 +239,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         if (list.isEmpty())
             return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
-        String query = "SELECT a FROM AssetInstanceImpl a WHERE a.id in :ids ";
+        String query = "SELECT a FROM AssetInstance a WHERE a.id in :ids ";
 
         if (!matchSortAttribuiteUserAssetJpa(sortAtribuite).equalsIgnoreCase("none")) {
             query += " ORDER BY " + matchSortAttribuiteUserAssetJpa(sortAtribuite);
@@ -248,16 +248,16 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
             }
         }
 
-        List<AssetInstanceImpl> assetInstanceList = em.createQuery(query, AssetInstanceImpl.class).setParameter("ids", list).getResultList();
+        List<AssetInstance> assetInstanceList = em.createQuery(query, AssetInstance.class).setParameter("ids", list).getResultList();
         final int totalPages = (int) Math.ceil((double) ((Number) queryCountNative.getSingleResult()).longValue() / itemsPerPage);
 
         return new PagingImpl<>(assetInstanceList, pageNumber, totalPages);
     }
 
     @Override
-    public Optional<LendingImpl> getBorrowedAsset(int lendingId) {
-        String query = "SELECT l FROM LendingImpl l WHERE l.id = :lendingId";
-        List<LendingImpl> list = em.createQuery(query, LendingImpl.class).setParameter("lendingId", new Long(lendingId)).getResultList();
+    public Optional<Lending> getBorrowedAsset(int lendingId) {
+        String query = "SELECT l FROM Lending l WHERE l.id = :lendingId";
+        List<Lending> list = em.createQuery(query, Lending.class).setParameter("lendingId", new Long(lendingId)).getResultList();
         return list.stream().findFirst();
     }
 }

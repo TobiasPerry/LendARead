@@ -3,10 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.PasswordResetToken;
+import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
@@ -55,22 +56,22 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserImpl getUser(final String email) throws UserNotFoundException {
-        Optional<UserImpl> user = userDao.getUser(email);
+    public User getUser(final String email) throws UserNotFoundException {
+        Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("Failed to get user {}", email);
-            throw new UserNotFoundException("The user was not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         return user.get();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public UserImpl getUserById(int id) throws UserNotFoundException {
-        Optional<UserImpl> user = userDao.getUser(id);
+    public User getUserById(int id) throws UserNotFoundException {
+        Optional<User> user = userDao.getUser(id);
         if (!user.isPresent()) {
             LOGGER.error("User with id {} not found", id);
-            throw new UserNotFoundException("The user with id " + id + " not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
 
         return user.get();
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserImpl createUser(final String email, String name, final String telephone, final String password) {
+    public User createUser(final String email, String name, final String telephone, final String password) {
         return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
 
@@ -87,7 +88,7 @@ public class UserServiceImpl implements UserService {
     public void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException {
         boolean changed = userDao.changeRole(email, behaviour);
         if (!changed)
-            throw new UserNotFoundException("The user was not founded");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
         actualAuthorities.add(new SimpleGrantedAuthority("ROLE_" + behaviour.toString()));
@@ -119,22 +120,22 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createChangePasswordToken(final String email) {
+    public void createChangePasswordToken(final int id) throws UserNotFoundException {
         String token = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-        Optional<UserImpl> user = userDao.getUser(email);
+        Optional<User> user = userDao.getUser(id);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
-            return;
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
-        PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token, user.get().getId(), LocalDate.now().plusDays(1));
-        emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken(), new Locale(user.get().getLocale()));
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user.get().getId(), LocalDate.now().plusDays(1));
+        emailService.sendForgotPasswordEmail(user.get().getEmail(), passwordResetToken.getToken(), new Locale(user.get().getLocale()));
         userDao.setForgotPasswordToken(passwordResetToken);
     }
 
     @Transactional
     @Override
-    public void changePassword(final String token, final String password) {
-        Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
+    public void changePassword(final int id,final String token, final String password) {
+        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
         if (!passwordResetToken.isPresent())
             return;
         if (!isTokenValid(token))
@@ -146,13 +147,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public boolean isTokenValid(final String token) {
-        Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
+        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
         return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
     }
 
     @Override
     public void logInUser(final String email, final String password) {
-        Optional<UserImpl> user = userDao.getUser(email);
+        Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
             return;
@@ -167,7 +168,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isCurrent(final int userId) {
-        Optional<UserImpl> user = userDao.getUser(userId);
+        Optional<User> user = userDao.getUser(userId);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
             return false;
@@ -180,18 +181,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException {
-        Optional<UserImpl> maybeUser = userDao.getUser(userId);
+    public int changeUserProfilePic(final int id, byte[] parsedImage) throws UserNotFoundException {
+        Optional<User> maybeUser = userDao.getUser(id);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
 
-        ImageImpl image = this.imagesDao.addPhoto(parsedImage);
-        LOGGER.debug("New profile image created for user id {}", userId);
-        UserImpl user = maybeUser.get();
+        Image image = this.imagesDao.addPhoto(parsedImage);
+        LOGGER.debug("New profile image created for user email {}", maybeUser.get().getEmail());
+        User user = maybeUser.get();
         user.setProfilePhoto(image);
         LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
+        return image.getId();
     }
 
     @Override

@@ -12,8 +12,9 @@ public class SearchQueryImpl implements SearchQuery {
     private final SortDirection sortDirection;
     private final int minRating;
     private final int maxRating;
+    private final int userId;
 
-    public SearchQueryImpl(List<String> languages, List<String>physicalConditions, String search, int minRating, int maxRating){
+    public SearchQueryImpl(List<String> languages, List<String>physicalConditions, String search, int minRating, int maxRating, int userId){
         this.languages = languages;
         this.physicalConditions = physicalConditions;
         this.search = search;
@@ -21,9 +22,10 @@ public class SearchQueryImpl implements SearchQuery {
         this.sortDirection = null;
         this.minRating = minRating;
         this.maxRating = maxRating;
+        this.userId = userId;
     }
 
-    public SearchQueryImpl(List<String> languages, List<String>physicalConditions, String search, Sort sort, SortDirection sortDirection, int minRating, int maxRating){
+    public SearchQueryImpl(List<String> languages, List<String>physicalConditions, String search, Sort sort, SortDirection sortDirection, int minRating, int maxRating, int userId){
         this.languages = languages;
         this.physicalConditions = physicalConditions;
         this.search = search;
@@ -31,6 +33,8 @@ public class SearchQueryImpl implements SearchQuery {
         this.sortDirection = sortDirection;
         this.minRating = minRating;
         this.maxRating = maxRating;
+        this.userId = userId;
+
     }
 
     @Override
@@ -66,6 +70,11 @@ public class SearchQueryImpl implements SearchQuery {
     @Override
     public int getMaxRating(){
         return  maxRating;
+    }
+
+    @Override
+    public int getUserId() {
+        return this.userId;
     }
 
 }

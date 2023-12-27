@@ -1,14 +1,14 @@
 package ar.edu.itba.paw.persistence;
 
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
@@ -43,13 +43,13 @@ public class AssetInstanceDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "",1 ,5);
-    private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5);
+    private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "",1 ,5,-1);
+    private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5,-1);
 
-    private final static UserImpl USER = new UserImpl(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
-    private final static BookImpl BOOK = new BookImpl(0, "ISBN", "AUTHOR", "TITLE", "LANGUAGE");
-    private final static LocationImpl LOCATION = new LocationImpl(0, "NAME","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
-    private final static AssetInstanceImpl ASSET_INSTANCE_TO_CREATE = new AssetInstanceImpl(BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION",true);
+    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static Asset BOOK = new Asset(0, "ISBN", "AUTHOR", "TITLE", "LANGUAGE");
+    private final static Location LOCATION = new Location(0, "NAME","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
+    private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstance(BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION",true);
     private final static String BOOK_TITLE_ALREADY_EXIST = "TITLE";
     private JdbcTemplate jdbcTemplate;
 
@@ -63,7 +63,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAssetInstanceTest(){
         //2
-       Optional<AssetInstanceImpl> assetInstance = assetInstanceDaoJpa.getAssetInstance(0);
+       Optional<AssetInstance> assetInstance = assetInstanceDaoJpa.getAssetInstance(0);
        //3
         Assert.assertTrue(assetInstance.isPresent());
         Assert.assertEquals(0,assetInstance.get().getId());
@@ -72,13 +72,13 @@ public class AssetInstanceDaoTest {
     @Rollback
     @Test
     public void addAssetInstanceTest(){
-        ASSET_INSTANCE_TO_CREATE.setLocation(em.find(LocationImpl.class,0));
-        ASSET_INSTANCE_TO_CREATE.setUserReference(em.find(UserImpl.class,0L));
-        ASSET_INSTANCE_TO_CREATE.setBook(em.find(BookImpl.class,0));
-        ASSET_INSTANCE_TO_CREATE.setImage(em.find(ImageImpl.class,0));
+        ASSET_INSTANCE_TO_CREATE.setLocation(em.find(Location.class,0));
+        ASSET_INSTANCE_TO_CREATE.setUserReference(em.find(User.class,0L));
+        ASSET_INSTANCE_TO_CREATE.setBook(em.find(Asset.class,0));
+        ASSET_INSTANCE_TO_CREATE.setImage(em.find(Image.class,0));
 
         //2
-        AssetInstanceImpl assetInstance = assetInstanceDaoJpa.addAssetInstance(ASSET_INSTANCE_TO_CREATE);
+        AssetInstance assetInstance = assetInstanceDaoJpa.addAssetInstance(ASSET_INSTANCE_TO_CREATE);
         //3
         Assert.assertEquals(1,assetInstance.getId());
     }
@@ -86,7 +86,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAssetInstanceNotExistsTest(){
         //2
-        Optional<AssetInstanceImpl> assetInstance = assetInstanceDaoJpa.getAssetInstance(2);
+        Optional<AssetInstance> assetInstance = assetInstanceDaoJpa.getAssetInstance(2);
         //3
         Assert.assertFalse(assetInstance.isPresent());
     }
@@ -108,7 +108,7 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesButEmptyTest() {
         //1
-        em.createQuery("UPDATE FROM AssetInstanceImpl SET assetState = 'DELETED' WHERE id = 0").executeUpdate();
+        em.createQuery("UPDATE FROM AssetInstance SET assetState = 'DELETED' WHERE id = 0").executeUpdate();
         //2
         Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3

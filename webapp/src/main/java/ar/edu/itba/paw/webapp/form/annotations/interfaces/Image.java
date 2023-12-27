@@ -10,12 +10,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD})
+import static java.lang.annotation.ElementType.PARAMETER;
+
+@Target({ElementType.FIELD,PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy= ImageValidatorImpl.class)
 public @interface Image {
 
-    String message() default "Invalid image";
+    String message() default "{image.validation}";
 
     Class<?>[] groups() default {};
 
