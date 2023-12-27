@@ -1,8 +1,4 @@
-import {Fragment, useState} from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+//import {useTranslation} from "react-i18next";
 import './styles/navBar.css';
 import './styles/searchBar.css';
 
@@ -13,22 +9,22 @@ function classNames(...classes) {
 
 export default function NavBar() {
 
-    const { t, i18n } = useTranslation();
-    const [language, setLanguage] = useState('en');
+    // const { t, i18n } = useTranslation();
+    //const [language, setLanguage] = useState('en');
 
-    const toggleLanguage = () => {
-        const next_language = language === 'en' ? 'es' : 'en';
-        i18n.changeLanguage(next_language);
-        setLanguage(next_language);
-    };
-    const navigation = [
-        { name: t('Explore'), href: '/discovery', current: true },
-        { name: t('Lend book'), href: '/', current: false },
-    ]
+    // const toggleLanguage = () => {
+    //     const next_language = language === 'en' ? 'es' : 'en';
+    //     i18n.changeLanguage(next_language);
+    //     setLanguage(next_language);
+    // };
+    // const navigation = [
+    //     { name: t('Explore'), href: '/discovery', current: true },
+    //     { name: t('Lend book'), href: '/', current: false },
+    // ]
 
-    const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
-    };
+    // const changeLanguage = (lng: string) => {
+    //     i18n.changeLanguage(lng);
+    // };
 
     return (
         <>

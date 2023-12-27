@@ -1,7 +1,6 @@
 import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
-import NavBar from "../components/NavBar.tsx";
-import {Link} from "react-router-dom";
+
 
 export default function Landing(){
     return (

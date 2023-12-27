@@ -1,40 +1,25 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/system/Stack';
-import { styled } from '@mui/system';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Filters from '../components/Filters';
 import BookCard from '../components/BookCard';
 
-const bull = (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      •
-    </Box>
-  );
+// const bull = (
+//     <Box
+//       component="span"
+//       sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
+//     >
+//       •
+//     </Box>
+//   );
 
-var label = "Search"
 
-const searchBarStyle: React.CSSProperties = {
-
-}
 
 
 const DiscoveryView = () => {
 
-    const Item = styled('div')(({ theme }) => ({
-        // backgroundColor: theme.palette.mode === 'dark' ? '#262B32' : '#fff',
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        borderRadius: 15,
-      }));
+    // const Item = styled('div')(({ theme }) => ({
+    //     // backgroundColor: theme.palette.mode === 'dark' ? '#262B32' : '#fff',
+    //     padding: theme.spacing(2),
+    //     textAlign: 'center',
+    //     borderRadius: 15,
+    //   }));
 
     return (
         <>
@@ -73,7 +58,7 @@ const DiscoveryView = () => {
                             <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
 
                                 <input className="form-check-input" type="checkbox" value="" />
-                                <label className="form-check-label languageLabel" for="language-${status.index}"
+                                <label className="form-check-label languageLabel" 
                                     id="language-${status.index}-label"><span className="d-inline-block text-truncate"
                                                                                 style={{maxWidth: '150px'}}>text</span></label>
                                 <br/>
@@ -87,7 +72,7 @@ const DiscoveryView = () => {
                                 <input className="form-check-input" type="checkbox" value=""
                                     id="physicalCondition-${status.index}"/>
                                 <label className="form-check-label physicalConditionLabel"
-                                    for="physicalCondition-${status.index}"
+                                    
                                     id="physicalCondition-${status.index}-label"
                                     >
                                         <span className="d-inline-block text-truncate" style={{maxWidth: '150px'}}>
@@ -101,7 +86,7 @@ const DiscoveryView = () => {
 
                         <h5>text</h5>
                         <div style={{width: '90%', margin: '10px auto'}}>
-                            <label className="form-label d-flex justify-content-center" for="customRange3" id="customRange3Id">?★ - ?★</label>
+                            <label className="form-label d-flex justify-content-center" id="customRange3Id">?★ - ?★</label>
                             <input type="range" className="form-range custom-range" min="1" max="5" step="1" id="customRange3" value="${actualMinRating}"/>
                         </div>
 
