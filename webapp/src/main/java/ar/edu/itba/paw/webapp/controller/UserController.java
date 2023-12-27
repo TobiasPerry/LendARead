@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
@@ -59,7 +58,7 @@ public class UserController {
     @Path("/{id}/password")
     @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
-    public Response changePassword(@PathParam("id") int id, @Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
+    public Response changePassword(@PathParam("id") int id, @Valid   final ChangePasswordForm changePasswordForm){
         us.changePassword(id,changePasswordForm.getPassword(),changePasswordForm.getToken());
         LOGGER.info("PUT user/{}/password",id);
         return Response.noContent().build();
@@ -68,7 +67,7 @@ public class UserController {
     @POST
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
-    public Response createUser(@Valid @NotEmpty final RegisterForm registerForm) {
+    public Response createUser(@Valid  final RegisterForm registerForm) {
         final User user = us.createUser(registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone(), registerForm.getPassword());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();

@@ -119,7 +119,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
                  // User endpoints
-                .antMatchers(HttpMethod.GET,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.DELETE,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.PATCH,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/reset-password-token").access(ACCESS_CONTROL_USER)

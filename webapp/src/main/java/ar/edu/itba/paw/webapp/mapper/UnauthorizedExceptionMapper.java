@@ -25,7 +25,7 @@ public class UnauthorizedExceptionMapper implements ExceptionMapper<AccessDenied
     }
     @Override
     public Response toResponse(AccessDeniedException e) {
-        return Response.status(Response.Status.UNAUTHORIZED).entity(ErrorDTO.fromError(messageSource.getMessage("exception.accessDenied", null, LocaleContextHolder.getLocale()))).build();
+        return Response.status(Response.Status.UNAUTHORIZED).entity(ErrorDTO.fromError(messageSource.getMessage("exception.accessDenied", null, LocaleContextHolder.getLocale()),null)).build();
 
     }
 }
