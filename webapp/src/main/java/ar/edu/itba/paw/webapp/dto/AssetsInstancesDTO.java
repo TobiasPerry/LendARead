@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AssetsInstancesDTO {
-    private int id;
 
     private String assetReference;
 
@@ -39,7 +38,6 @@ public class AssetsInstancesDTO {
 
     public static AssetsInstancesDTO fromAssetInstance(UriInfo url, AssetInstance assetInstance) {
         AssetsInstancesDTO dto = new AssetsInstancesDTO();
-        dto.id = assetInstance.getId();
         dto.assetReference =  AssetDTO.reference(url, assetInstance.getBook());
         dto.status = assetInstance.getAssetState().toString();
         dto.userReference = UserDTO.reference(url, assetInstance.getOwner());

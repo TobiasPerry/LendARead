@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AssetDTO {
-    private int id;
     private String isbn;
     private String author;
     private String title;
@@ -21,7 +20,6 @@ public class AssetDTO {
 
     public static AssetDTO fromAsset(UriInfo url, Asset asset) {
         AssetDTO assetDTO = new AssetDTO();
-        assetDTO.id = asset.getId();
         assetDTO.isbn = asset.getIsbn();
         assetDTO.author = asset.getAuthor();
         assetDTO.title = asset.getName();

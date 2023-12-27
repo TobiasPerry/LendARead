@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 @Setter
 public class LendingDTO {
 
-    private Long id;
 
     private String assetInstance;
 
@@ -32,7 +31,6 @@ public class LendingDTO {
     private String selfUrl;
     public static LendingDTO fromLending(Lending lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();
-        dto.id = lending.getId();
         dto.assetInstance = AssetsInstancesDTO.reference(url, lending.getAssetInstance());
         dto.userReference = UserDTO.reference(url, lending.getUserReference());
         dto.lendDate = lending.getLendDate().toString();
