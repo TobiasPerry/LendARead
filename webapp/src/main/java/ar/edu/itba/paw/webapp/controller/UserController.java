@@ -13,6 +13,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
 import ar.edu.itba.paw.webapp.dto.UserReviewsDTO;
 import ar.edu.itba.paw.webapp.form.ChangePasswordForm;
+import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
@@ -61,6 +62,15 @@ public class UserController {
     public Response changePassword(@PathParam("id") int id, @Valid   final ChangePasswordForm changePasswordForm){
         us.changePassword(id,changePasswordForm.getPassword(),changePasswordForm.getToken());
         LOGGER.info("PUT user/{}/password",id);
+        return Response.noContent().build();
+    }
+    @PATCH
+    @Path("/{id}")
+    @Produces(value = { Vnd.VND_USER })
+    @Consumes(value = { Vnd.VND_USER })
+    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException {
+        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole());
+        LOGGER.info("PUT user/ id:{}",id);
         return Response.noContent().build();
     }
 
