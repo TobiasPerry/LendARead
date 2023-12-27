@@ -1,14 +1,36 @@
 import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
+import {useEffect, useState} from "react";
 
 
 export default function Landing(){
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8080/web/api/assetInstances');
+                if (!response.ok) {
+                    setData(null)
+                    // throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     return (
         <>
             <section id="hero" style={{backgroundColor: '#D0DCD0', paddingBottom: '100px',}}>
                 <div className="container" style={{textAlign: 'start'}}>
                     <div className="text-container">
-                        <h1>title</h1>
+                        <h1>{data[0].id}</h1>
                         <h2>subtitle</h2>
 
                         <div className="d-flex justify-content-center mt-4">
