@@ -17,6 +17,7 @@ import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
+import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -30,8 +31,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -104,7 +107,7 @@ public class UserController {
     }
 
     @PUT
-    @Path("/{id}/profilePic")
+    @Path("/{id}/image")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response changeUserProfilePic(@PathParam("id") final int id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
         int photoId = us.changeUserProfilePic(id,imageBytes);
@@ -113,16 +116,20 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}/profilePic")
+    @Path("/{id}/image")
     @Produces(value = {"image/webp"})
-    public Response getUserProfilePic(@PathParam("id") final int id,@Context javax.ws.rs.core.Request request) throws UserNotFoundException {
+    public Response getUserProfilePic(@PathParam("id") final int id,
+                                      @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
+                                      @Context javax.ws.rs.core.Request request) throws UserNotFoundException, IOException {
         final User user = us.getUserById(id);
-        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId()));
+        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId())+size);
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         LOGGER.info("GET user/{}/profilePic",id);
         if (response == null) {
-            Response.ResponseBuilder responseBuilder = Response.ok(user.getProfilePhoto().getPhoto()).tag(eTag);
+            ImagesSizes imagesSizes = ImagesSizes.valueOf(size);
+            byte[] image = imagesSizes.resizeImage(user.getProfilePhoto().getPhoto());
+            Response.ResponseBuilder responseBuilder = Response.ok(image).tag(eTag);
             return responseBuilder.build();
         }
 
