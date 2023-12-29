@@ -62,7 +62,8 @@ export class Api {
         } finally {
             clearTimeout(timer);
         }
-    }    static async get(url: string) {
+    }
+    static async get(url: string) {
         return await Api.fetch(url, {});
     }
 

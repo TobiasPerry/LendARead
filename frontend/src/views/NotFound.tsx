@@ -33,7 +33,7 @@ export default function NotFound(){
         <>
             <div style={heroStyle}>
                 <div style={imageContainer}>
-                    <img style={imgStyle} src="../../public/broken_lendaread.png" alt="Broken book"></img>
+                    <img style={imgStyle} src="/broken_lendaread.png" alt="Broken book"></img>
                 </div>
                 <div style={textContainer}>
                     <h1 className="font-primary text-primary">Titulo</h1>

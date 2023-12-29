@@ -30,7 +30,7 @@ export default function NavBar() {
         <>
             <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711'}} data-bs-theme="dark">
                 <div className="container-fluid">
-                    <a href="/" className="nav-icon"><img src="../../public/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></a>
+                    <a href="/" className="nav-icon"><img src="/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -64,9 +64,9 @@ export default function NavBar() {
                                 <li className="nav-item d-flex align-items-center">
                                     <a className="nav-link navItem" id="userView"  aria-current="page" href="/user">
                                         
-                                        <a className="navbar-brand" href="/user">
+                                        <span className="navbar-brand">
                                             <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/70" className="rounded-circle" width="30" height="30" alt="logo"/>
-                                        </a>
+                                        </span>
                                     
                                     </a>
                                 </li>

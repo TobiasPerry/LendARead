@@ -1,25 +1,22 @@
 import BookCard from '../components/BookCard';
+import useAssetInstance from "../hooks/useAssetInstance.ts";
+import {useEffect, useState} from "react";
 
-// const bull = (
-//     <Box
-//       component="span"
-//       sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-//     >
-//       •
-//     </Box>
-//   );
+const DiscoveryView =  () => {
 
 
+    const [data, setData] = useState("vacio")
+    const {handleAllAssetInstances} = useAssetInstance()
 
-
-const DiscoveryView = () => {
-
-    // const Item = styled('div')(({ theme }) => ({
-    //     // backgroundColor: theme.palette.mode === 'dark' ? '#262B32' : '#fff',
-    //     padding: theme.spacing(2),
-    //     textAlign: 'center',
-    //     borderRadius: 15,
-    //   }));
+    useEffect(()=>{
+        const fetchData = async () => {
+            const _data = await handleAllAssetInstances();
+            setData(_data)
+            console.log(data);
+          //  setData("algo")
+        };
+        fetchData();
+    })
 
     return (
         <>
@@ -31,8 +28,8 @@ const DiscoveryView = () => {
                             <div className="form">
                                 <i className="fa fa-search"></i>
                                 <input type="text" className="form-control form-input"
-                                    placeholder="placeholder" id="search-bar"
-                                    value="value"/>
+                                       placeholder="placeholder" id="search-bar"
+                                       value="value"/>
                             </div>
                         </div>
                     </div>
@@ -53,41 +50,44 @@ const DiscoveryView = () => {
                             </ul>
                         </div>
 
-                        <h5>text</h5>
+                        <h5>aca: {data}text</h5>
                         <ul>
                             <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
 
-                                <input className="form-check-input" type="checkbox" value="" />
-                                <label className="form-check-label languageLabel" 
-                                    id="language-${status.index}-label"><span className="d-inline-block text-truncate"
-                                                                                style={{maxWidth: '150px'}}>text</span></label>
+                                <input className="form-check-input" type="checkbox" value=""/>
+                                <label className="form-check-label languageLabel"
+                                       id="language-${status.index}-label"><span
+                                    className="d-inline-block text-truncate"
+                                    style={{maxWidth: '150px'}}>text</span></label>
                                 <br/>
-                                
+
                             </ul>
                         </ul>
                         <h5>text</h5>
                         <ul>
                             <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
-                            
+
                                 <input className="form-check-input" type="checkbox" value=""
-                                    id="physicalCondition-${status.index}"/>
+                                       id="physicalCondition-${status.index}"/>
                                 <label className="form-check-label physicalConditionLabel"
-                                    
-                                    id="physicalCondition-${status.index}-label"
-                                    >
+
+                                       id="physicalCondition-${status.index}-label"
+                                >
                                         <span className="d-inline-block text-truncate" style={{maxWidth: '150px'}}>
                                         text
                                         </span>
                                 </label>
                                 <br/>
-                                
+
                             </ul>
                         </ul>
 
                         <h5>text</h5>
                         <div style={{width: '90%', margin: '10px auto'}}>
-                            <label className="form-label d-flex justify-content-center" id="customRange3Id">?★ - ?★</label>
-                            <input type="range" className="form-range custom-range" min="1" max="5" step="1" id="customRange3" value="${actualMinRating}"/>
+                            <label className="form-label d-flex justify-content-center" id="customRange3Id">?★ -
+                                ?★</label>
+                            <input type="range" className="form-range custom-range" min="1" max="5" step="1"
+                                   id="customRange3" value="${actualMinRating}"/>
                         </div>
 
 
@@ -114,69 +114,86 @@ const DiscoveryView = () => {
 
                         </form:form> */}
 
-                        <div className="container-row-wrapped" style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
+                        <div className="container-row-wrapped"
+                             style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
                             <input className="btn btn-light mx-2" type="submit" value="value"
-                                id="submit-filter" style={{margin: '10px', width: '100px'}}/>
+                                   id="submit-filter" style={{margin: '10px', width: '100px'}}/>
                             <a href="/discovery">
                                 <input type="button" className="btn btn-outline-dark mx-2"
-                                    value="value" style={{margin: '10px', width: '100px'}}/>
+                                       value="value" style={{margin: '10px', width: '100px'}}/>
                             </a>
                         </div>
                     </div>
 
                     <div className="container-column" style={{flex: '0 1 85%'}}>
-                        
-                            <div className="container-row-wrapped placeholder-group"
-                                style={{margin: '20px auto', paddingTop: '20px', backgroundColor: "rgba(255, 255, 255, 0.3)", borderRadius: '20px', width: '90%'}}>
-                                <BookCard/>
+
+                        <div className="container-row-wrapped placeholder-group"
+                             style={{
+                                 margin: '20px auto',
+                                 paddingTop: '20px',
+                                 backgroundColor: "rgba(255, 255, 255, 0.3)",
+                                 borderRadius: '20px',
+                                 width: '90%'
+                             }}>
+                            <BookCard/>
+                        </div>
+
+                        <div className="container-row-wrapped"
+                             style={{
+                                 margin: '20px auto',
+                                 paddingTop: '20px',
+                                 backgroundColor: "rgba(255, 255, 255, 0.3)",
+                                 borderRadius: '20px',
+                                 width: '90%'
+                             }}>
+                            <BookCard></BookCard>
+                        </div>
+
+
+                        <div className="container-row-wrapped"
+                             style={{marginTop: '25px', marginBottom: '25px', width: '100%'}}>
+                            <div>
+                                <nav aria-label="Page navigation example">
+                                    <ul className="pagination justify-content-center align-items-center">
+                                        <li className="page-item">
+                                            <button type="button"
+                                                    className="btn mx-5 pagination-button"
+                                                    id="previousPageButton"
+                                                    style={{borderColor: "rgba(255, 255, 255, 0)"}}>
+                                                <i className="bi bi-chevron-left"></i>
+                                                text
+                                            </button>
+                                        </li>
+
+                                        <li>
+                                            current / total
+                                        </li>
+
+                                        <li className="page-item">
+                                            <button type="button"
+                                                    className="btn mx-5 pagination-button"
+                                                    id="nextPageButton"
+                                                    style={{borderColor: "rgba(255, 255, 255, 0)"}}> text <i
+                                                className="bi bi-chevron-right"></i>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
+                        </div>
 
-                            <div className="container-row-wrapped"
-                                style={{margin: '20px auto', paddingTop: '20px', backgroundColor: "rgba(255, 255, 255, 0.3)", borderRadius: '20px', width: '90%'}}>
-                                <BookCard></BookCard>
-                            </div>
+                        <div className="container-row-wrapped" style={{marginTop: '50px', width: '100%'}}>
+                            <h1>text</h1>
+                        </div>
+                        <div className="container-row-wrapped" style={{marginTop: '20px', width: '100%'}}>
+                            <a href="/discovery">
+                                <button type="button" className="btn btn-outline-secondary btn-lg">text</button>
+                            </a>
+                        </div>
 
-
-                            <div className="container-row-wrapped" style={{marginTop: '25px', marginBottom: '25px', width: '100%'}}>
-                                <div>
-                                    <nav aria-label="Page navigation example">
-                                        <ul className="pagination justify-content-center align-items-center">
-                                            <li className="page-item">
-                                                <button type="button"
-                                                        className="btn mx-5 pagination-button"
-                                                        id="previousPageButton" style={{borderColor: "rgba(255, 255, 255, 0)"}}>
-                                                    <i className="bi bi-chevron-left"></i> 
-                                                    text
-                                                </button>
-                                            </li>
-
-                                            <li>
-                                                current / total
-                                            </li>
-
-                                            <li className="page-item">
-                                                <button type="button"
-                                                        className="btn mx-5 pagination-button"
-                                                        id="nextPageButton" style={{borderColor: "rgba(255, 255, 255, 0)"}}> text <i className="bi bi-chevron-right"></i>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-
-                            <div className="container-row-wrapped" style={{marginTop: '50px', width: '100%'}}>
-                                <h1>text</h1>
-                            </div>
-                            <div className="container-row-wrapped" style={{marginTop: '20px', width: '100%'}}>
-                                <a href="/discovery">
-                                    <button type="button" className="btn btn-outline-secondary btn-lg">text</button>
-                                </a>
-                            </div>
-                        
                     </div>
                 </div>
-                </div>
+            </div>
 
 
         </>
