@@ -65,7 +65,7 @@ export class Api {
         }
     }
     static async get(url: string, headers?: any) {
-        return await fetch(url, {headers: headers, method: "GET"});
+        return await fetch(this.baseUrl + url, {method: "GET", headers: headers});
     }
 
     static async post(url: string, data: object, rememberMe: boolean = false, headers?: any) {
