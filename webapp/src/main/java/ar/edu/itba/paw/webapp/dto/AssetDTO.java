@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AssetDTO {
-    private int id;
     private String isbn;
     private String author;
     private String title;
@@ -21,7 +20,6 @@ public class AssetDTO {
 
     public static AssetDTO fromAsset(UriInfo url, Asset asset) {
         AssetDTO assetDTO = new AssetDTO();
-        assetDTO.id = asset.getId();
         assetDTO.isbn = asset.getIsbn();
         assetDTO.author = asset.getAuthor();
         assetDTO.title = asset.getName();
@@ -30,7 +28,7 @@ public class AssetDTO {
         return assetDTO;
     }
     public static String reference(UriInfo url, Asset asset) {
-        return url.getBaseUriBuilder().path("assets").path(String.valueOf(asset.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/assets").path(String.valueOf(asset.getId())).build().toString();
     }
     public static List<AssetDTO> fromBooks(final List<Asset> books, final UriInfo uriInfo) {
         return books.stream().map(book -> fromAsset(uriInfo, book)).collect(java.util.stream.Collectors.toList());

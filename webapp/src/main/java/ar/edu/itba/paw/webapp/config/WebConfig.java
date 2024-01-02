@@ -105,22 +105,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return multipartResolver;
     }
 
-//    @Bean
-//    public ViewResolver viewResolver() {
-//        final InternalResourceViewResolver vr = new InternalResourceViewResolver();
-//
-//        vr.setViewClass(JstlView.class);
-//        vr.setPrefix("/WEB-INF/jsp/");
-//        vr.setSuffix(".jsp");
-//        vr.setContentType("text/html;charset=UTF-8");
-//        return vr;
-//    }
-
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        super.addResourceHandlers(registry);
-//        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
-//    }
 
     @Bean
     public DataSource dataSource() {

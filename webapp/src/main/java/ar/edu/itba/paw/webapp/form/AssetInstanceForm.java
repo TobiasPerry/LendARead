@@ -22,7 +22,7 @@ public class AssetInstanceForm {
     @NotNull
     @Min(value = 1)
     @FormDataParam("assetId")
-    private Integer assetId;
+    private Long assetId;
 
     @NotNull
     @Min(value = 1)

@@ -62,7 +62,7 @@ public class AssetAvailabilityServiceImplTest {
     private static final LocalDate DEVOLUTION_DATE_FOUR_WEEK = LocalDate.now().plusDays(28);
     private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
-            new Asset(0, "", "", "", ""),
+            new Asset((long)0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
             new Location(0,"", "", "", "", "", null),

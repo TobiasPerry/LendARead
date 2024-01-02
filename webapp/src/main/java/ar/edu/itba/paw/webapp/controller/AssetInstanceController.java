@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.*;
+import ar.edu.itba.paw.interfaces.AssetExistanceService;
+import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
+import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
@@ -16,6 +18,7 @@ import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.form.AssetInstancePatchForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
+import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -34,6 +37,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,15 +81,19 @@ public class AssetInstanceController {
     @GET
     @Path("/{id}/image")
     @Produces(value = {"image/webp"})
-    public Response getImage(@PathParam("id") final int id,@Context javax.ws.rs.core.Request request) throws AssetInstanceNotFoundException {
+    public Response getImage(@PathParam("id") final int id,
+                             @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
+                             @Context javax.ws.rs.core.Request request) throws AssetInstanceNotFoundException, IOException {
         final AssetInstance assetInstance = ais.getAssetInstance(id);
 
-        EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage().getId()));
+        EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage().getId()) + size);
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         LOGGER.info("GET assetInstances/{}/image",id);
         if (response == null) {
-            Response.ResponseBuilder responseBuilder = Response.ok(assetInstance.getImage().getPhoto()).tag(eTag);
+            ImagesSizes imagesSizes = ImagesSizes.valueOf(size);
+            byte[] image = imagesSizes.resizeImage(assetInstance.getImage().getPhoto());
+            Response.ResponseBuilder responseBuilder = Response.ok(image).tag(eTag);
             return responseBuilder.build();
         }
 

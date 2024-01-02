@@ -10,9 +10,12 @@ public class ErrorDTO {
 
     private String message;
 
-    public static ErrorDTO fromError( String message) {
+    private String field;
+
+    public static ErrorDTO fromError( String message, String field) {
         ErrorDTO errorValidationDto = new ErrorDTO();
         errorValidationDto.message = message;
+        errorValidationDto.field = field;
         return errorValidationDto;
     }
 

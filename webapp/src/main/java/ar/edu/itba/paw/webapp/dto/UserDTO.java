@@ -34,11 +34,11 @@ public class UserDTO {
         dto.ratingAsBorrower = user.getRatingAsBorrower();
         dto.ratingAsLender = user.getRatingAsLender();
         dto.selfUrl = reference(url, user);
-        dto.image = url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).path("image").build().toString();
+        dto.image = url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
     }
     public static String reference(UriInfo url, User user) {
-        return url.getBaseUriBuilder().path("users").path(String.valueOf(user.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).build().toString();
     }
 
 }

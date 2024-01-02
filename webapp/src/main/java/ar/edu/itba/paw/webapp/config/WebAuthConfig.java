@@ -110,7 +110,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(final HttpSecurity http)	throws	Exception {
-        http.sessionManagement()
+        http.cors().and().csrf().disable()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
@@ -119,9 +120,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
                  // User endpoints
-                .antMatchers(HttpMethod.GET,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.DELETE,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.PATCH,"/api/users/{id}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT,"/api/users/{id}/password").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/reset-password-token").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.PUT,"/api/users/{id}/profilePic").access(ACCESS_CONTROL_USER)
 
@@ -135,10 +136,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 // AssetInstance endpoints
                 .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
                 .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
-
-
-                .and().cors().and().csrf().disable()
-                .addFilterBefore(
+                .and().addFilterBefore(
                         basicTokenFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(

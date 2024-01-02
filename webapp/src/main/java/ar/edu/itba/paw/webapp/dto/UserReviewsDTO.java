@@ -30,7 +30,7 @@ public class UserReviewsDTO {
           return userReviews.stream().map(userReview -> fromUserReview(userReview, uriInfo)).collect(java.util.stream.Collectors.toList());
       }
       public static String reference(UriInfo url, UserReview userReview) {
-            return url.getBaseUriBuilder().path("user").path(String.valueOf(userReview.getRecipient().getId())).path("reviews").path(String.valueOf(userReview.getId())).build().toString();
+            return url.getBaseUriBuilder().path("/api/user").path(String.valueOf(userReview.getRecipient().getId())).path("reviews").path(String.valueOf(userReview.getId())).build().toString();
       }
 
 }

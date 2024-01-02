@@ -32,7 +32,7 @@ public class AssetDaoImplTest {
     private final static String LANGUAGE = "LANGUAGE";
     private final static String ISBN_ALREADY_EXIST = "ISBN";
     private final static Asset book = new Asset( ISBN, AUTHOR, TITLE, LANGUAGE);
-    private final static Asset DUPLICATED_BOOK = new Asset(-1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
+    private final static Asset DUPLICATED_BOOK = new Asset((long) -1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
 
 
     @Rollback

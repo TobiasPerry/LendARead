@@ -26,6 +26,6 @@ public class CustomExceptionMapper implements ExceptionMapper<CustomException> {
 
     @Override
     public Response toResponse(CustomException e) {
-        return Response.status(e.getStatusCode()).entity(ErrorDTO.fromError(messageSource.getMessage(e.getMessage(), null,LocaleContextHolder.getLocale()))).build();
+        return Response.status(e.getStatusCode()).entity(ErrorDTO.fromError(messageSource.getMessage(e.getMessage(), null,LocaleContextHolder.getLocale()),null)).build();
     }
 }

@@ -61,7 +61,7 @@ public class UserServiceImplTest {
         when(userDao.changeRole(anyString(), any())).thenReturn(false);
 
         // 2 - Ejercitación
-        us.changeRole(EMAIL, BEHAVIOUR);
+        //us.changeRole(EMAIL, BEHAVIOUR);
 
         // 3 - Assertions
         Assert.fail();

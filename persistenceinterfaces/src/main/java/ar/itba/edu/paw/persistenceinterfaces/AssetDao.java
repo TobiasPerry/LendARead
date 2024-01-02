@@ -1,6 +1,7 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 
 import java.util.List;
@@ -13,8 +14,8 @@ public interface AssetDao {
 
     Optional<Asset> getBookByIsbn(final String isbn);
 
-    List<Asset> getBooks(final String isbn, final String author, final String title, final String language);
+    PagingImpl<Asset> getBooks(final int page,final int itemsPerPage,final String isbn, final String author, final String title, final String language);
 
-    Asset getBookById(final int id);
+    Asset getBookById(final Long id);
 
 }

@@ -84,9 +84,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Override
-    public void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException {
-        boolean changed = userDao.changeRole(email, behaviour);
+    public void changeRole(final User user, final Behaviour behaviour) throws UserNotFoundException {
+        boolean changed = userDao.changeRole(user.getEmail(), behaviour);
         if (!changed)
             throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -151,33 +150,6 @@ public class UserServiceImpl implements UserService {
         return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
     }
 
-    @Override
-    public void logInUser(final String email, final String password) {
-        Optional<User> user = userDao.getUser(email);
-        if (!user.isPresent()) {
-            LOGGER.error("User not found");
-            return;
-        }
-        final Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(ROLE + user.get().getBehavior().toString()));
-        org.springframework.security.core.userdetails.User userDetails =
-                new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(), authorities);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    @Override
-    public boolean isCurrent(final int userId) {
-        Optional<User> user = userDao.getUser(userId);
-        if (!user.isPresent()) {
-            LOGGER.error("User not found");
-            return false;
-        }
-
-        String current = getCurrentUser();
-        LOGGER.debug("Current User: {}", current);
-        return current.equals(user.get().getEmail());
-    }
 
     @Override
     @Transactional
@@ -194,6 +166,27 @@ public class UserServiceImpl implements UserService {
         user.setProfilePhoto(image);
         LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
         return image.getId();
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(int id, String username, String telephone, String role) throws UserNotFoundException {
+        Optional<User> maybeUser = userDao.getUser(id);
+        if (!maybeUser.isPresent()) {
+            LOGGER.error("User not found");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
+        }
+        User user = maybeUser.get();
+        if (username != null) {
+            user.setName(username);
+        }
+        if (telephone != null) {
+            user.setTelephone(telephone);
+        }
+        if (role != null) {
+            this.changeRole(user,Behaviour.valueOf(role));
+        }
+
     }
 
     @Override

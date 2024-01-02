@@ -10,7 +10,6 @@ import javax.ws.rs.core.UriInfo;
 @Setter
 public class LocationDTO {
 
-    private int id;
     private String name;
     private String address;
     private String zipcode;
@@ -23,7 +22,6 @@ public class LocationDTO {
 
     public static LocationDTO fromLocation(UriInfo url, Location location) {
         LocationDTO dto = new LocationDTO();
-        dto.id = location.getId();
         dto.name = location.getName();
         dto.address = location.getAddress();
         dto.zipcode = location.getZipcode();
@@ -35,7 +33,7 @@ public class LocationDTO {
         return dto;
     }
     public static String reference(UriInfo url, Location location) {
-        return url.getBaseUriBuilder().path("locations").path(String.valueOf(location.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/locations").path(String.valueOf(location.getId())).build().toString();
     }
 
 }

@@ -15,6 +15,12 @@ public class RegisterRepeatPasswordImpl implements ConstraintValidator<RepeatPas
 
     @Override
     public boolean isValid(RegisterForm value, ConstraintValidatorContext constraintValidatorContext) {
+        if(value == null) {
+            return false;
+        }
+        if (value.getPassword() == null || value.getRepeatPassword() == null) {
+            return false;
+        }
         return value.getPassword().equals(value.getRepeatPassword());
     }
 }

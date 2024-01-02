@@ -13,9 +13,11 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
 import ar.edu.itba.paw.webapp.dto.UserReviewsDTO;
 import ar.edu.itba.paw.webapp.form.ChangePasswordForm;
+import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
+import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -29,9 +31,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -59,16 +62,25 @@ public class UserController {
     @Path("/{id}/password")
     @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
     @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
-    public Response changePassword(@PathParam("id") int id, @Valid  @NotEmpty final ChangePasswordForm changePasswordForm){
+    public Response changePassword(@PathParam("id") int id, @Valid   final ChangePasswordForm changePasswordForm){
         us.changePassword(id,changePasswordForm.getPassword(),changePasswordForm.getToken());
         LOGGER.info("PUT user/{}/password",id);
+        return Response.noContent().build();
+    }
+    @PATCH
+    @Path("/{id}")
+    @Produces(value = { Vnd.VND_USER })
+    @Consumes(value = { Vnd.VND_USER })
+    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException {
+        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole());
+        LOGGER.info("PUT user/ id:{}",id);
         return Response.noContent().build();
     }
 
     @POST
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
-    public Response createUser(@Valid @NotEmpty final RegisterForm registerForm) {
+    public Response createUser(@Valid  final RegisterForm registerForm) {
         final User user = us.createUser(registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone(), registerForm.getPassword());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
@@ -95,7 +107,7 @@ public class UserController {
     }
 
     @PUT
-    @Path("/{id}/profilePic")
+    @Path("/{id}/image")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response changeUserProfilePic(@PathParam("id") final int id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
         int photoId = us.changeUserProfilePic(id,imageBytes);
@@ -104,16 +116,20 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}/profilePic")
+    @Path("/{id}/image")
     @Produces(value = {"image/webp"})
-    public Response getUserProfilePic(@PathParam("id") final int id,@Context javax.ws.rs.core.Request request) throws UserNotFoundException {
+    public Response getUserProfilePic(@PathParam("id") final int id,
+                                      @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
+                                      @Context javax.ws.rs.core.Request request) throws UserNotFoundException, IOException {
         final User user = us.getUserById(id);
-        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId()));
+        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId())+size);
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         LOGGER.info("GET user/{}/profilePic",id);
         if (response == null) {
-            Response.ResponseBuilder responseBuilder = Response.ok(user.getProfilePhoto().getPhoto()).tag(eTag);
+            ImagesSizes imagesSizes = ImagesSizes.valueOf(size);
+            byte[] image = imagesSizes.resizeImage(user.getProfilePhoto().getPhoto());
+            Response.ResponseBuilder responseBuilder = Response.ok(image).tag(eTag);
             return responseBuilder.build();
         }
 

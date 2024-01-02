@@ -24,9 +24,9 @@ public class Asset {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_uid_seq")
     @SequenceGenerator(sequenceName = "book_uid_seq", name = "book_uid_seq", allocationSize = 1)
     @Column(name = "uid")
-    private  int id;
+    private  Long id;
 
-    public Asset(final int id, final String isbn, final String author, final String title, final String language) {
+    public Asset(final Long id, final String isbn, final String author, final String title, final String language) {
         this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
@@ -65,7 +65,7 @@ public class Asset {
         result = 31 * result + (author != null ? author.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (language != null ? language.hashCode() : 0);
-        result = 31 * result + id;
+        result = (int) (31 * result + id);
         return result;
     }
 
@@ -112,7 +112,7 @@ public class Asset {
         return this.author;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 

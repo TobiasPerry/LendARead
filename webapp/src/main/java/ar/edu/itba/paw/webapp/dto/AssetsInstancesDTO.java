@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AssetsInstancesDTO {
-    private int id;
 
     private String assetReference;
 
@@ -39,7 +38,6 @@ public class AssetsInstancesDTO {
 
     public static AssetsInstancesDTO fromAssetInstance(UriInfo url, AssetInstance assetInstance) {
         AssetsInstancesDTO dto = new AssetsInstancesDTO();
-        dto.id = assetInstance.getId();
         dto.assetReference =  AssetDTO.reference(url, assetInstance.getBook());
         dto.status = assetInstance.getAssetState().toString();
         dto.userReference = UserDTO.reference(url, assetInstance.getOwner());
@@ -50,14 +48,14 @@ public class AssetsInstancesDTO {
         dto.maxLendingDays = assetInstance.getMaxDays();
         dto.isReservable = assetInstance.getIsReservable();
         dto.selfUrl = reference(url, assetInstance);
-        dto.reviewsReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("reviews").build().toString();
-        dto.imageReference = url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
+        dto.reviewsReference = url.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(assetInstance.getId())).path("reviews").build().toString();
+        dto.imageReference = url.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
         return dto;
     }
     public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstance> assetInstances) {
        return assetInstances.stream().map(assetInstance -> fromAssetInstance(url, assetInstance)).collect(java.util.stream.Collectors.toList());
     }
     public static String reference(UriInfo url, AssetInstance assetInstance) {
-        return url.getBaseUriBuilder().path("assetInstances").path(String.valueOf(assetInstance.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(assetInstance.getId())).build().toString();
     }
 }
