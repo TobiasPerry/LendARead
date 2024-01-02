@@ -19,5 +19,10 @@
     "forgotPassword": "Forgot Password?",
     "rememberMe": "Remember Me",
     "loginError": "Invalid username or password"
+  },
+  "forgotpassword": {
+    "title": "Forgot Password",
+    "changePasswordButton": "Change Password",
+    "emailPlaceholder": "Email"
   }
 }

@@ -19,5 +19,10 @@
     "forgotPassword": "¿Olvidaste la contraseña?",
     "rememberMe": "Recuérdame",
     "loginError": "Usuario o contraseña inválidos"
+  },
+  "forgotpassword": {
+    "title": "Olvidé mi Contraseña",
+    "changePasswordButton": "Cambiar Contraseña",
+    "emailPlaceholder": "Correo Electrónico"
   }
 }

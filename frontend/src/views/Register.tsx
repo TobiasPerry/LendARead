@@ -6,7 +6,7 @@ import logo from '../assets/logo-oscuro.png';
 // @ts-ignore
 
 import loginBg from '../assets/login-bg.jpg';
-import useRegister from "../hooks/useRegister.ts";
+import useRegister from "../hooks/users/useRegister.ts";
 
 const RegisterView = () => {
     const { t } = useTranslation();

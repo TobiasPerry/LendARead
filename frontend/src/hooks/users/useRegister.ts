@@ -1,4 +1,4 @@
-import { Api } from './api/api';
+import { Api } from '../api/api.ts';
 
 const useRegister = () => {
     const register = async (email: string, password: string, repeatPassword: string, name: string) => {

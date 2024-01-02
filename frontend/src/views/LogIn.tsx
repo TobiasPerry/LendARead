@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '../assets/logo-claro.png'; // Adjust path as necessary
 // @ts-ignore
 import loginBg from '../assets/login-bg.jpg';
-import useLogin from "../hooks/useLogin";
+import useLogin from "../hooks/users/useLogin.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react"; // Adjust path as necessary
 
@@ -49,18 +49,18 @@ const LoginView = () => {
                             <form onSubmit={handleLogin} style={{ width: '23rem', margin: '0 auto' }}>
                                 <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('auth.login')}</h2>
 
-                                <div className="form-outline mb-4" style={{ width: '100%' }}>
-                                    <label>
-                                        {t('auth.email')}
-                                        <input className="form-control" type="text" name="email" value={email} onChange={handleEmailChange} />
+                                <div className="form-outline mb-4">
+                                    <label className="form-label" style={{ display: 'block', textAlign: 'left' }}>
+                                    {t('auth.email')}
                                     </label>
+                                    <input className="form-control" type="text" name="email" value={email} onChange={handleEmailChange} />
                                 </div>
 
                                 <div className="form-outline mb-4">
-                                    <label>
+                                    <label className="form-label" style={{ display: 'block', textAlign: 'left' }}>
                                         {t('auth.password')}
-                                        <input className="form-control" name="password" type="password" value={password} onChange={handlePasswordChange} />
                                     </label>
+                                    <input className="form-control" name="password" type="password" value={password} onChange={handlePasswordChange} />
                                     {loginError && <label style={{ color: 'red' }}>{t('auth.loginError')}</label>}
                                 </div>
 
