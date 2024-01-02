@@ -6,6 +6,7 @@ import logo from '../assets/logo-oscuro.png';
 // @ts-ignore
 
 import loginBg from '../assets/login-bg.jpg';
+import useRegister from "../hooks/useRegister.ts";
 
 const RegisterView = () => {
     const { t } = useTranslation();
@@ -15,12 +16,14 @@ const RegisterView = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const { register} = useRegister();
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        // Add your registration logic here
-        // On successful registration, navigate to a different route, e.g., login page
-        navigate('/login');
+        const successfulRegister = await register(email, password, repeatPassword, name)
+        if(successfulRegister)
+            navigate('/login');
+           //login form?
     };
 
     return (
@@ -35,48 +38,44 @@ const RegisterView = () => {
                         </div>
 
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                            <form onSubmit={handleSubmit} style={{ width: '23rem', margin: '0 auto' }}>
+                            <form onSubmit={handleSubmit}>
                                 <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('auth.register')}</h2>
 
-                                {/* Name Input */}
                                 <div className="form-outline mb-4">
-                                    <label>
+                                    <label className="form-label" style={{ display: 'block', textAlign: 'left' }}>
                                         {t('auth.username')}
-                                        <input className="form-control" type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
                                     </label>
+                                    <input className="form-control" type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
                                 </div>
 
-                                {/* Email Input */}
                                 <div className="form-outline mb-4">
-                                    <label>
+                                    <label className="form-label" style={{ display: 'block', textAlign: 'left' }}>
                                         {t('auth.email')}
-                                        <input className="form-control" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                                     </label>
+                                    <input className="form-control" type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                                 </div>
 
-                                {/* Password Input */}
                                 <div className="form-outline mb-4">
-                                    <label>
+                                    <label className="form-label" style={{ display: 'block', textAlign: 'left' }}>
                                         {t('auth.password')}
+                                    </label>
                                         <input className="form-control" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                                    </label>
                                 </div>
 
-                                {/* Repeat Password Input */}
                                 <div className="form-outline mb-4">
-                                    <label>
-                                        {t('auth.repeatPassword')}
-                                        <input className="form-control" name="repeatPassword" type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} required />
+                                    <label className="form-label" style={{ display: 'block', textAlign: 'left' }}>
+
+                                    {t('auth.repeatPassword')}
                                     </label>
+                                        <input className="form-control" name="repeatPassword" type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} required />
+
                                 </div>
 
-                                {/* Submit Button */}
                                 <div className="form-outline mb-4 text-center">
                                     <input className="btn btn-light" type="submit" value={t('auth.registerBtn')} />
                                 </div>
 
-                                {/* Link to Login */}
-                                <div className="pt-1 mb-4 text-center">
+                                <div className="pt-1 mb-4">
                                     <a href="/login" className="text-muted">{t('auth.alreadyHaveAccount')}</a>
                                 </div>
                             </form>
