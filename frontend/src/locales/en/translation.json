@@ -7,12 +7,17 @@
   "Calendar": "Calendar",
   "auth": {
     "login": "Login",
+    "register": "Register",
+    "username": "Username",
     "email": "Email",
     "password": "Password",
-    "loginError": "Incorrect email or password",
-    "rememberMe": "Remember me",
+    "repeatPassword": "Repeat Password",
     "logInBtn": "Log In",
-    "doNotHaveAccount": "Don't have an account? Sign up",
-    "forgotPassword": "Forgot password?"
+    "registerBtn": "Register",
+    "doNotHaveAccount": "Don't have an account? Register",
+    "alreadyHaveAccount": "Already have an account? Login",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "loginError": "Invalid username or password"
   }
 }

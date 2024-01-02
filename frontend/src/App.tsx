@@ -6,6 +6,7 @@ import NotFound from "./views/NotFound.tsx";
 
 
 import LoginView from "./views/LogIn";
+import Register from "./views/Register.tsx";
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Landing />} />
                     <Route path="about" element={<About />} />
+                    <Route path="register" element={<Register />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />

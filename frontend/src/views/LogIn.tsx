@@ -21,8 +21,10 @@ const LoginView = () => {
     const handleLogin = async (e: any) => {
         e.preventDefault()
         const loginSuccess = await login(email, password)
-        if(loginSuccess) navigate('/')
-        else setLoginError(true)
+        if(loginSuccess)
+            navigate('/')
+        else
+            setLoginError(true)
     }
     const handlePasswordChange = (e: any) => {
         setPassword(e.target.value);
