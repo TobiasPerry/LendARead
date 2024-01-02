@@ -34,7 +34,7 @@ export class Api {
 
     static handleNewToken(method: string, headers: any, rememberMe: boolean) {
         if (method === "POST" && headers.has('Authorization')) {
-            Api.saveToken(headers.get('Authorization'), rememberMe);
+            Api.saveToken(headers.get('JWT'), rememberMe);
         }
     }
 
@@ -48,9 +48,9 @@ export class Api {
             init.headers['Authorization'] = `bearer ${this.token}`;
         }
 
-        const controller = new AbortController();
-        init.signal = controller.signal;
-        const timer = setTimeout(() => controller.abort(), Api.timeout);
+        // const controller = new AbortController();
+        // init.signal = controller.signal;
+        // const timer = setTimeout(() => controller.abort(), Api.timeout);
 
         try {
             const response = await fetch(url, init);
@@ -61,11 +61,11 @@ export class Api {
         } catch (error: any) {
             if (error.code) throw error;
         } finally {
-            clearTimeout(timer);
+            // clearTimeout(timer);
         }
     }
     static async get(url: string, headers?: any) {
-        return await Api.fetch(url, {headers: headers, method: "GET"});
+        return await fetch(url, {headers: headers, method: "GET"});
     }
 
     static async post(url: string, data: object, rememberMe: boolean = false, headers?: any) {

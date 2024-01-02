@@ -9,7 +9,7 @@ const useAssetInstance = () => {
             const data = await Api.get("/assetInstances/1")
             console.log(data)
             return data
-        }catch (error){
+        } catch (error){
             console.log("Error")
             return null;
         }
