@@ -1,12 +1,12 @@
 
-import {Api} from "./api/api";
+import {Api} from "../api/api.ts";
 
 const useAssetInstance = () => {
 
     const handleAllAssetInstances = async () => {
 
         try {
-            const data = await Api.get("/assetInstances/1")
+            const data = await Api.get("/assetInstances")
             console.log(data)
             return data
         } catch (error){

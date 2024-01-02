@@ -1,5 +1,5 @@
 import BookCard from '../components/BookCard';
-import useAssetInstance from "../hooks/useAssetInstance.ts";
+import useAssetInstance from "../hooks/AssetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
 
 const DiscoveryView =  () => {
