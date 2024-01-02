@@ -7,7 +7,7 @@ export class Api {
     private static authenticated: Boolean = false;
 
     static get baseUrl() {
-        return "http://127.0.0.1:8080/api";
+        return "http://127.0.0.1:8082/api";
     }
 
     static get timeout() {
@@ -18,6 +18,7 @@ export class Api {
         this.token = token;
         if (remember) {
             localStorage.setItem('apiToken', token);
+            console.log("saved token")
         } else {
             sessionStorage.setItem('apiToken', token);
         }
@@ -63,8 +64,8 @@ export class Api {
             clearTimeout(timer);
         }
     }
-    static async get(url: string) {
-        return await Api.fetch(url, {});
+    static async get(url: string, headers?: any) {
+        return await Api.fetch(url, {headers: headers, method: "GET"});
     }
 
     static async post(url: string, data: object, rememberMe: boolean = false, headers?: any) {

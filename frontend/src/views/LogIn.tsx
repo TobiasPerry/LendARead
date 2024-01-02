@@ -2,12 +2,34 @@ import { useTranslation } from 'react-i18next';
 // @ts-ignore
 import logo from '../assets/logo-claro.png'; // Adjust path as necessary
 // @ts-ignore
-import loginBg from '../assets/logo-claro.png';
-import useLogin from "../hooks/useLogin"; // Adjust path as necessary
+import loginBg from '../assets/login-bg.jpg';
+import useLogin from "../hooks/useLogin";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react"; // Adjust path as necessary
 
 const LoginView = () => {
     const { t } = useTranslation();
-    const { email, handleEmailChange, password, handlePasswordChange, handleLogin, loginError, rememberMe, setRememberMe } = useLogin();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loginError, setLoginError] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const { login } = useLogin();
+    const handleEmailChange = (e: any) => {
+        setEmail(e.target.value);
+    };
+
+    const handleLogin = async (e: any) => {
+        e.preventDefault()
+        const loginSuccess = await login(email, password)
+        if(loginSuccess) navigate('/')
+        else setLoginError(true)
+    }
+    const handlePasswordChange = (e: any) => {
+        setPassword(e.target.value);
+    };
+
+
+    const navigate = useNavigate();
 
 
     return (
@@ -22,7 +44,7 @@ const LoginView = () => {
                         </div>
 
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                            <form onSubmit={handleLogin} style={{ width: '23rem' }}>
+                            <form onSubmit={handleLogin} style={{ width: '23rem', margin: '0 auto' }}>
                                 <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('auth.login')}</h2>
 
                                 <div className="form-outline mb-4" style={{ width: '100%' }}>

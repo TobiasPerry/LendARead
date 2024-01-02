@@ -1,47 +1,26 @@
 
-import { useState } from 'react';
 import {Api} from "./api/api";
 
 const useLogin = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginError, setLoginError] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
 
-    const handleEmailChange = (e: any) => {
-        setEmail(e.target.value);
-    };
-
-    const handlePasswordChange = (e: any) => {
-        setPassword(e.target.value);
-    };
-
-    const handleLogin = async (e: any) => {
-        e.preventDefault();
-        setLoginError(false); // Reset the login error state
+    const login = async (email: string, password: string) => {
 
         try {
-            const response: any = Api.post("/users", {  }, rememberMe,
-                {"Authorization": "Basic" + btoa(email + ':' + password)})
+            const response: any = await Api.get("/users",
+                    {"Authorization": "Basic " + btoa(`${email}:${password}`)})
             console.log('Logging in with', email, password);
             console.log('response', response);
+            return true;
 
-            // On successful login, redirect or change the app state as needed
         } catch (error) {
             // Handle errors (e.g., incorrect credentials, network issues)
-            setLoginError(true);
+            console.log("error")
+            return false
         }
     };
 
     return {
-        email,
-        handleEmailChange,
-        password,
-        handlePasswordChange,
-        handleLogin,
-        loginError,
-        rememberMe,
-        setRememberMe
+      login
     };
 };
 
