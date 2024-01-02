@@ -15,7 +15,7 @@ const useLogin = () => {
             console.log('response', response);
 
             // Correct way to access a specific header
-            const jwt = response.headers.get('JWT');
+            const jwt = response.headers.get('jwt');
             console.log('jwt', jwt);
 
             // Iterate through the headers and log each one
