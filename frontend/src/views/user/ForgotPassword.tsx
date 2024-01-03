@@ -1,9 +1,9 @@
 import  { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 // @ts-ignore
-import logo from '../assets/logo-oscuro.png';
+import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
-import loginBg from '../assets/login-bg.jpg';
+import loginBg from '../../assets/login-bg.jpg';
 
 const ForgotPasswordView = () => {
     const { t } = useTranslation();

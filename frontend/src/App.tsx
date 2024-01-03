@@ -5,9 +5,10 @@ import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./views/NotFound.tsx";
 
 
-import LoginView from "./views/LogIn";
-import Register from "./views/Register.tsx";
-import ForgotPassword from "./views/ForgotPassword.tsx";
+import LoginView from "./views/user/LogIn.tsx";
+import Register from "./views/user/Register.tsx";
+import ForgotPassword from "./views/user/ForgotPassword.tsx";
+import UserHome from "./views/user/UserHome.tsx";
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Landing />} />
                     <Route path="login" element={<LoginView />} />
+                    <Route path="userHome" element={<UserHome />} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
                     <Route path="about" element={<About />} />
                     <Route path="register" element={<Register />} />

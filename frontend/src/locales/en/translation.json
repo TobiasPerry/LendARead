@@ -24,5 +24,14 @@
     "title": "Forgot Password",
     "changePasswordButton": "Change Password",
     "emailPlaceholder": "Email"
+  },
+  "userHome": {
+    "head": {
+      "title": "User Home"
+    },
+    "greeting": "Welcome, {{userEmail}}",
+    "my_books": "My Books",
+    "lended_books": "Lended Books",
+    "borrowed_books": "Borrowed Books"
   }
 }

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 // @ts-ignore
-import logo from '../assets/logo-claro.png'; // Adjust path as necessary
+import logo from '../../assets/logo-claro.png'; // Adjust path as necessary
 // @ts-ignore
-import loginBg from '../assets/login-bg.jpg';
-import useLogin from "../hooks/users/useLogin.ts";
+import loginBg from '../../assets/login-bg.jpg';
+import useLogin from "../../hooks/users/useLogin.ts";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react"; // Adjust path as necessary
 

@@ -24,5 +24,14 @@
     "title": "Olvidé mi Contraseña",
     "changePasswordButton": "Cambiar Contraseña",
     "emailPlaceholder": "Correo Electrónico"
+  },
+  "userHome": {
+    "head": {
+      "title": "Inicio de Usuario"
+    },
+    "greeting": "Bienvenido/a, {{userEmail}}",
+    "my_books": "Mis Libros",
+    "lended_books": "Libros Prestados",
+    "borrowed_books": "Libros Tomados en Préstamo"
   }
 }

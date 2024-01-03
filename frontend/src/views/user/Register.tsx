@@ -2,11 +2,11 @@ import  { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 // @ts-ignore
-import logo from '../assets/logo-oscuro.png';
+import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
 
-import loginBg from '../assets/login-bg.jpg';
-import useRegister from "../hooks/users/useRegister.ts";
+import loginBg from '../../assets/login-bg.jpg';
+import useRegister from "../../hooks/users/useRegister.ts";
 
 const RegisterView = () => {
     const { t } = useTranslation();
@@ -22,7 +22,7 @@ const RegisterView = () => {
         e.preventDefault();
         const successfulRegister = await register(email, password, repeatPassword, name)
         if(successfulRegister)
-            navigate('/login');
+            navigate('/');
            //login form?
     };
 
