@@ -12,7 +12,6 @@ import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.PatchLendingForm;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
-import com.sun.istack.internal.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +52,10 @@ public class LendingsController {
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
     public Response getLendings(@QueryParam("page")@DefaultValue("1") Integer page,
                                 @QueryParam("itemsPerPage")@DefaultValue("1") Integer itemsPerPage,
-                                @QueryParam("assetInstanceId") @Nullable Integer assetInstanceId,
-                                @QueryParam("borrowerId")@Nullable Integer borrowerId,
-                                @QueryParam("state")@Nullable @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED") String state,
-                                @QueryParam("lenderId")@Nullable Integer lenderId) {
+                                @QueryParam("assetInstanceId")  Integer assetInstanceId,
+                                @QueryParam("borrowerId") Integer borrowerId,
+                                @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED") String state,
+                                @QueryParam("lenderId") Integer lenderId) {
         PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
 

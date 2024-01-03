@@ -9,7 +9,6 @@ import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
-import com.sun.istack.internal.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +44,12 @@ public class AssetController {
     @GET
     @Produces(value = {Vnd.VND_ASSET})
     public Response getAssets(
-            @QueryParam(value = "page") @Nullable @Min(1)  @DefaultValue("1") final int page,
-            @QueryParam(value = "itemsPerPage") @Nullable @Min(1) @DefaultValue("10") final int itemsPerPage,
-            @QueryParam(value = "isbn") @Nullable final String isbn,
-            @QueryParam(value = "author") @Nullable final String author,
-            @QueryParam(value = "title") @Nullable final String title,
-            @QueryParam(value = "language") @Nullable final String language
+            @QueryParam(value = "page")  @Min(1)  @DefaultValue("1") final int page,
+            @QueryParam(value = "itemsPerPage")  @Min(1) @DefaultValue("10") final int itemsPerPage,
+            @QueryParam(value = "isbn")  final String isbn,
+            @QueryParam(value = "author")  final String author,
+            @QueryParam(value = "title")  final String title,
+            @QueryParam(value = "language")  final String language
     ){
         PagingImpl<Asset> books = as.getBooks(page,itemsPerPage,isbn,author,title,language);
         LOGGER.info("GET asset/ isbn:{} author:{} title:{} language:{}",isbn,author,title,language);
