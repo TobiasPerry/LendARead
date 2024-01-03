@@ -73,9 +73,13 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public void deleteLocation(Location lc) {
-            locationsDao.deleteLocation(lc);
-            LOGGER.info("Location {} deleted for user {}", lc.getId(), lc.getUser().getId());
+    public void deleteLocation(Location lc) throws LocationNotFoundException {
+       Location location = getLocation(lc.getId());
+       if (!location.isActive()) {
+           throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
+       }
+       location.setActive(false);
+       LOGGER.info("Location {} deleted for user {}", lc.getId(), lc.getUser().getId());
     }
 
     @Override
