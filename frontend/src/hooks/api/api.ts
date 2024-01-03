@@ -34,7 +34,6 @@ export class Api {
     }
 
     static handleNewToken(method: string, headers: any, rememberMe: boolean) {
-        console.log('saving token!! befoere')
 
         if (method === "GET" && headers.has('JWT')) {
             console.log('saving token!!')

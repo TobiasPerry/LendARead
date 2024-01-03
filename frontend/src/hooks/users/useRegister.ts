@@ -13,12 +13,11 @@ const useRegister = () => {
             };
 
             const response = await Api.post('/users', userData, false,{ 'Content-Type': 'application/vnd.user.v1+json' });
-            console.log('Register response', response);
 
-            return response.status === 200;
+            // @ts-ignore
+            return response.status === 201;
 
         } catch (error) {
-            console.error('Register error', error);
             return false;
         }
     };
