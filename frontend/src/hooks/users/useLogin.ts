@@ -2,30 +2,31 @@
 import {Api} from "../api/api.ts";
 
 const useLogin = () => {
-    const login = async (email: string, password: string, path: string = "/assets") => {
+    const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets") => {
         try {
-            const response: any = await fetch("http://127.0.0.1:8082/api" + path, {
+            const responseBare: any = await fetch("http://127.0.0.1:8082/api" + path, {
                 method: "GET",
                 headers: {
                     "Authorization": "Basic " + btoa(`${email}:${password}`)
                 }
             });
 
-            console.log('Logging in with', email, password);
+            const response: any = await Api.get(path,
+                {
+                     "Authorization": "Basic " + btoa(`${email}:${password}`)
+                },
+                rememberMe
+            );
+
+
             console.log('response', response);
 
-            // Correct way to access a specific header
             const jwt = response.headers.get('jwt');
-            console.log('jwt', jwt);
+            console.log('jwt Api', jwt);
 
-            // Iterate through the headers and log each one
-            response.headers.forEach((value: any, name: any) => {
-                console.log(`${name}: ${value}`);
-            });
+            const jwt2 = responseBare.headers.get('jwt');
+            console.log('jwt Barebones', jwt2);
 
-            // Assuming the response is JSON
-            const responseBody = await response.json();
-            console.log('body', responseBody);
 
             return true;
         } catch (error) {

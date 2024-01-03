@@ -20,7 +20,7 @@ const LoginView = () => {
 
     const handleLogin = async (e: any) => {
         e.preventDefault()
-        const loginSuccess = await login(email, password)
+        const loginSuccess = await login(email, password, rememberMe)
         if(loginSuccess)
             navigate('/')
         else

@@ -25,6 +25,7 @@ export class Api {
     }
 
     static retrieveToken() {
+        if(this.authenticated) return
         const token = localStorage.getItem('apiToken') || sessionStorage.getItem('apiToken');
         if (token) {
             this.token = token;
@@ -33,7 +34,10 @@ export class Api {
     }
 
     static handleNewToken(method: string, headers: any, rememberMe: boolean) {
-        if (method === "POST" && headers.has('Authorization')) {
+        console.log('saving token!! befoere')
+
+        if (method === "GET" && headers.has('JWT')) {
+            console.log('saving token!!')
             Api.saveToken(headers.get('JWT'), rememberMe);
         }
     }
@@ -48,24 +52,29 @@ export class Api {
             init.headers['Authorization'] = `bearer ${this.token}`;
         }
 
-        // const controller = new AbortController();
-        // init.signal = controller.signal;
-        // const timer = setTimeout(() => controller.abort(), Api.timeout);
+        const controller = new AbortController();
+        init.signal = controller.signal;
+        const timer = setTimeout(() => controller.abort(), Api.timeout);
 
         try {
-            const response = await fetch(url, init);
-            const text = await response.text();
-            const data = text ? JSON.parse(text) : {};
+            const response = await fetch(this.baseUrl + url, init);
             this.handleNewToken(init.method, response.headers, rememberMe);
-            return data;
+            return response;
         } catch (error: any) {
             if (error.code) throw error;
         } finally {
-            // clearTimeout(timer);
+            clearTimeout(timer);
         }
     }
-    static async get(url: string, headers?: any) {
-        return await fetch(this.baseUrl + url, {method: "GET", headers: headers});
+    static async get(url: string, headers?: any, rememberMe: boolean = false) {
+        return await Api.fetch(
+             url ,
+            {
+                method: "GET",
+                headers: headers,
+            },
+            rememberMe
+        );
     }
 
     static async post(url: string, data: object, rememberMe: boolean = false, headers?: any) {
