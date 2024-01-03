@@ -1,6 +1,7 @@
 //import {useTranslation} from "react-i18next";
 import './styles/navBar.css';
 import './styles/searchBar.css';
+import {Link} from "react-router-dom";
 
 // @ts-ignore
 function classNames(...classes) {
@@ -30,7 +31,7 @@ export default function NavBar() {
         <>
             <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711'}} data-bs-theme="dark">
                 <div className="container-fluid">
-                    <a href="/" className="nav-icon"><img src="/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></a>
+                    <Link to="/" className="nav-icon"><img src="/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -50,30 +51,30 @@ export default function NavBar() {
                             
 
                             <li className="nav-item  d-flex align-items-center">
-                                <a className="nav-link navItem" id="home" aria-current="page" href="/discovery">text</a>
+                                <Link className="nav-link navItem" id="home" aria-current="page" to="/discovery">text</Link>
                             </li>
                             <li className="nav-item  d-flex align-items-center">
-                                <a className="nav-link navItem"  id="addAsset" aria-current="page" href="/addAssetView">text</a>
+                                <Link className="nav-link navItem"  id="addAsset" aria-current="page" to="/addAssetView">text</Link>
                             </li>
                             
                             <li className="nav-item d-flex align-items-center">
-                                <a className="nav-link navItem" id="userHome"  aria-current="page" href="/userHome">
+                                <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/userHome">
                                     text
-                                </a>
+                                </Link>
                             </li>
                                 <li className="nav-item d-flex align-items-center">
-                                    <a className="nav-link navItem" id="userView"  aria-current="page" href="/user">
+                                    <Link className="nav-link navItem" id="userView"  aria-current="page" to="/user">
                                         
                                         <span className="navbar-brand">
                                             <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/70" className="rounded-circle" width="30" height="30" alt="logo"/>
                                         </span>
                                     
-                                    </a>
+                                    </Link>
                                 </li>
                             <li className="nav-item d-flex align-items-center">
-                                <a className="nav-link navItem" id="logout"  aria-current="page" href="/logout">
+                                <Link className="nav-link navItem" id="logout"  aria-current="page" to="/logout">
                                     <i className="fas fa-sign-out-alt"></i>
-                                </a>
+                                </Link>
                             </li>                            
                         </ul>
                     </div>

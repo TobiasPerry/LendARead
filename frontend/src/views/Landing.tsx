@@ -1,5 +1,6 @@
 import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
+import {Link} from "react-router-dom";
 
 
 export default function Landing(){
@@ -13,7 +14,7 @@ export default function Landing(){
                         <h2>subtitle</h2>
 
                         <div className="d-flex justify-content-center mt-4">
-                            <a href="/discovery" className="btn-get-started scrollto" style={{textDecoration: 'none'}}>text</a>
+                            <Link to="/discovery" className="btn-get-started scrollto" style={{textDecoration: 'none'}}>text</Link>
                         </div>
                     </div>
                     <div className="image-container">
