@@ -4,11 +4,12 @@ import react from '@vitejs/plugin-react-swc'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build:{
-    rollupOptions:{
-      output:{
+  build: {
+    rollupOptions: {
+      output: {
         assetFileNames: 'public/[name][extname]'
       }
     }
-  }
+  },
+  base: '/webapp_war/'
 })

@@ -11,9 +11,9 @@ const DiscoveryView =  () => {
     useEffect(()=>{
         const fetchData = async () => {
             const _data = await handleAllAssetInstances();
-            setData(_data)
-            console.log(data);
-          //  setData("algo")
+            //setData(_data)
+            console.log(_data);
+            setData("algo")
         };
         fetchData();
     })
