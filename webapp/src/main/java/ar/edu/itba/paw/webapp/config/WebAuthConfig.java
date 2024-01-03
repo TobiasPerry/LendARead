@@ -130,12 +130,19 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)
                 .antMatchers(HttpMethod.DELETE,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)
 
+
                 // Lendings endpoints
                 .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").access(ACCESS_CONTROL_LENDINGS)
 
                 // AssetInstance endpoints
                 .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
                 .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
+
+
+                .antMatchers(HttpMethod.POST,"/api/assetInstances").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/locations").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/lendings").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and().addFilterBefore(
                         basicTokenFilter,
                         UsernamePasswordAuthenticationFilter.class)

@@ -42,10 +42,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        // Get jwt.salt token and validate
         final String token = header.split(" ")[1].trim();
         try {
-            jwtTokenUtil.validateJwtToken(token);
+            if (!jwtTokenUtil.validateJwtToken(token)) {
+                chain.doFilter(request, response);
+                return;
+            }
         }
         catch(Exception e){
             chain.doFilter(request, response);
@@ -68,7 +70,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        response.setHeader(HttpHeaders.AUTHORIZATION, header);
+        response.setHeader("JWT", token);
         chain.doFilter(request, response);
     }
 }
