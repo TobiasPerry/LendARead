@@ -39,9 +39,6 @@ public class LocationsDaoJpaImpl implements LocationDao {
         return entityManager.merge(lc);
     }
 
-    @Override
-    public void deleteLocation(Location lc) {
-        lc.setActive(false);
-    }
+
 
 }

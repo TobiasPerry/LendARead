@@ -153,6 +153,13 @@ public class AssetInstanceController {
         LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
     }
+    @DELETE
+    @Path("/{id}")
+    public Response deleteAssetInstance(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
+        ais.removeAssetInstance(id);
+        LOGGER.info("DELETE assetInstances/ id:{}",id);
+        return Response.noContent().build();
+    }
 
     @GET
     @Path("/{id}/reviews")

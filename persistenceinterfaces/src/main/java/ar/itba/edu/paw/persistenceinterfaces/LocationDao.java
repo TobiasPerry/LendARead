@@ -15,5 +15,4 @@ public interface LocationDao {
 
     Location editLocation(Location lc);
 
-    void deleteLocation(Location lc);
 }

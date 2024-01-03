@@ -18,7 +18,7 @@ public interface LocationsService {
 
     void editLocation(final Location lc);
 
-    void deleteLocation(final Location lc);
+    void deleteLocation(final Location lc) throws LocationNotFoundException;
 
      List<Location> getLocationsById(final int userId) throws UserNotFoundException;
 

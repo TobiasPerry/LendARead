@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -21,11 +23,13 @@ public class JwtTokenUtil {
 
     private final int JWT_VALID_PIRIOD = 7 * 24 * 60 * 60 * 1000;
 
+    @Autowired
     public JwtTokenUtil(Resource jwtKeyResource) throws IOException {
         this.jwtSecret = Keys.hmacShaKeyFor(
                 FileCopyUtils.copyToString(new InputStreamReader(jwtKeyResource.getInputStream()))
                         .getBytes(StandardCharsets.UTF_8)
         );
+
     }
     public String generateJwtToken(Authentication authentication, String userReference) {
         PawUserDetails userPrincipal = (PawUserDetails) authentication.getPrincipal();
@@ -49,7 +53,7 @@ public class JwtTokenUtil {
     }
 
     public boolean validateJwtToken(String authToken) {
-        Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
-        return true;
+        final Claims claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken).getBody();
+        return !claims.getExpiration().before(new Date());
     }
 }
