@@ -22,7 +22,6 @@ import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
-import com.sun.istack.internal.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,15 +101,15 @@ public class AssetInstanceController {
 
     @GET
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_SEARCH})
-    public Response getAssetsInstances( @QueryParam("search") @Nullable @Size(min = 1, max = 100) String search,
-                                         @QueryParam("physicalConditions")@Nullable  List<String> physicalConditions,
-                                         @QueryParam("languages") @Nullable List<String> languages,
-                                         @QueryParam("sort")  @Nullable @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT|DEFAULT") String sort,
-                                         @QueryParam("sortDirection")  @Nullable @Pattern(regexp = "ASCENDING|DESCENDING|DEFAULT") String sortDirection,
-                                         @QueryParam("page") @Nullable @DefaultValue("1")  @Min(1) int currentPage,
-                                         @QueryParam("minRating") @Nullable @DefaultValue("1")@Min(1) @Max(5) int minRating,
-                                         @QueryParam("maxRating") @Nullable @DefaultValue("5") @Min(1) @Max(5)int maxRating,
-                                         @QueryParam("itemsPerPage")@Nullable @DefaultValue("10") int itemsPerPage,
+    public Response getAssetsInstances( @QueryParam("search")  @Size(min = 1, max = 100) String search,
+                                         @QueryParam("physicalConditions")  List<String> physicalConditions,
+                                         @QueryParam("languages")  List<String> languages,
+                                         @QueryParam("sort")   @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT|DEFAULT") String sort,
+                                         @QueryParam("sortDirection")   @Pattern(regexp = "ASCENDING|DESCENDING|DEFAULT") String sortDirection,
+                                         @QueryParam("page")  @DefaultValue("1")  @Min(1) int currentPage,
+                                         @QueryParam("minRating")  @DefaultValue("1")@Min(1) @Max(5) int minRating,
+                                         @QueryParam("maxRating")  @DefaultValue("5") @Min(1) @Max(5)int maxRating,
+                                         @QueryParam("itemsPerPage") @DefaultValue("10") int itemsPerPage,
                                         @QueryParam("userId")  @DefaultValue("-1") int userId)  {
         Page page = ais.getAllAssetsInstances(
                 currentPage, itemsPerPage,
@@ -164,7 +163,7 @@ public class AssetInstanceController {
     @GET
     @Path("/{id}/reviews")
     @Produces(value ={Vnd.VND_ASSET_INSTANCE_REVIEW})
-    public Response getAssetInstanceReviews(@PathParam("id") final int id, @QueryParam("page") @Nullable @DefaultValue("1") final int page, @QueryParam("itemsPerPage")@Nullable @DefaultValue("4") final int itemsPerPage) throws AssetInstanceNotFoundException {
+    public Response getAssetInstanceReviews(@PathParam("id") final int id, @QueryParam("page")  @DefaultValue("1") final int page, @QueryParam("itemsPerPage") @DefaultValue("4") final int itemsPerPage) throws AssetInstanceNotFoundException {
         PagingImpl<AssetInstanceReview> reviews = air.getAssetInstanceReviewsById(page, itemsPerPage,id);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetInstanceReviewDTO>>(AssetInstanceReviewDTO.fromAssetInstanceReviews(reviews.getList(),uriInfo)) {});
         PaginatedData.paginatedData(response, reviews, uriInfo);
