@@ -25,13 +25,33 @@
     "changePasswordButton": "Change Password",
     "emailPlaceholder": "Email"
   },
-  "userHome": {
-    "head": {
-      "title": "User Home"
-    },
     "greeting": "Welcome, {{userEmail}}",
-    "my_books": "My Books",
-    "lended_books": "Lended Books",
-    "borrowed_books": "Borrowed Books"
+  "my_books": "My Books",
+  "lended_books": "Lended Books",
+  "borrowed_books": "Borrowed Books",
+  "image": "Image",
+  "book_name": "Book Name",
+  "author": "Author",
+  "language": "Language",
+  "state": "State",
+  "no_books": "No books available",
+  "become_lender": {
+    "title": "Become a Lender",
+    "subtitle": "Start lending your books today!",
+    "button": "Become Lender"
+  },
+  "filter_option": {
+    "all": "All",
+    "public": "Public",
+    "private": "Private"
+  },
+  "user_home_view": {
+    "all": "All",
+    "public": "Public",
+    "private": "Private"
+  },
+  "enum": {
+    "available": "Available",
+    "lent": "Lent"
   }
 }

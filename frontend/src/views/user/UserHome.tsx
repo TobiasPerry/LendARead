@@ -14,7 +14,7 @@ const UserHomeView = () => {
         // Fetch data here and update state
     }, []);
 
-    const handleTableChange = (newTable) => {
+    const handleTableChange = (newTable: any) => {
         setTable(newTable);
         // Additional logic if needed
     };

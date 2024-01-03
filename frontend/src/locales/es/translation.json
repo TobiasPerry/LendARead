@@ -25,13 +25,32 @@
     "changePasswordButton": "Cambiar Contraseña",
     "emailPlaceholder": "Correo Electrónico"
   },
-  "userHome": {
-    "head": {
-      "title": "Inicio de Usuario"
-    },
-    "greeting": "Bienvenido/a, {{userEmail}}",
-    "my_books": "Mis Libros",
-    "lended_books": "Libros Prestados",
-    "borrowed_books": "Libros Tomados en Préstamo"
+  "my_books": "Mis Libros",
+  "lended_books": "Libros Prestados",
+  "borrowed_books": "Libros Tomados en Préstamo",
+  "image": "Imagen",
+  "book_name": "Nombre del Libro",
+  "author": "Autor",
+  "language": "Idioma",
+  "state": "Estado",
+  "no_books": "No hay libros disponibles",
+  "become_lender": {
+    "title": "Conviértete en Prestador",
+    "subtitle": "¡Comienza a prestar tus libros hoy!",
+    "button": "Ser Prestador"
+  },
+  "filter_option": {
+    "all": "Todas",
+    "public": "Público",
+    "private": "Privado"
+  },
+  "user_home_view": {
+    "all": "Todas",
+    "public": "Público",
+    "private": "Privado"
+  },
+  "enum": {
+    "available": "Disponible",
+    "lent": "Prestado"
   }
 }
