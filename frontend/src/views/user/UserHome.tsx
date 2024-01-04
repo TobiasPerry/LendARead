@@ -21,12 +21,11 @@ const UserHomeView = () => {
 
     return (
         <div>
-            <div className="container">
-                <div className="container-flex">
-                    <h1>{t('greeting', { userEmail: 'user@example.com' })}</h1> {/* Replace with actual user email */}
-                    <div className="row">
-                        <div className="sidebar table-selector">
-                            <div className="list-group">
+            <div  style={{width: '1000px', margin: 'auto', paddingBottom: '50px', paddingTop: '50px'}}>
+                <h1>{t('greeting', { userEmail: 'user@example.com' })}</h1>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <div style={{ flex: 1, marginRight: '20px' }}>
+                        <div className="list-group">
                                 <button onClick={() => handleTableChange('my_books')} className={`list-group-item list-group-item-action button-select ${table === 'my_books' ? 'button-select-active' : ''}`}>
                                     {t('my_books')}
                                 </button>
@@ -38,15 +37,13 @@ const UserHomeView = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="content">
+                    <div style={{ flex: 3 }}>
                             {table === 'my_books' && <MyBooksTable userAssets={userAssets} />}
                             {/*{table === 'lended_books' && <LendedBooksTable isLender={isLender} userAssets={userAssets} />}*/}
                             {/*{table === 'borrowed_books' && <BorrowedBooksTable userAssets={userAssets} />}*/}
                         </div>
                     </div>
                 </div>
-            </div>
-
             {/*<DeleteBookModal modalType={modalType} assetId={assetId} />*/}
         </div>
     );

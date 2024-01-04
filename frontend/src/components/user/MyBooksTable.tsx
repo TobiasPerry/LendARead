@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import SortButton from './SortButton'; // Create a component for sorting
 import FilterButton from './FilterButton'; // Create a component for filtering
 
-const MyBooksTable = ({ isLender , userAssets }: any) => {
+const MyBooksTable = ({ userAssets }: any) => {
     const { t } = useTranslation();
 
     // Assuming you have a way to fetch or receive these properties
@@ -12,6 +12,8 @@ const MyBooksTable = ({ isLender , userAssets }: any) => {
     const [filterAttribute, setFilterAttribute] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1); // Set accordingly based on your data
+
+    const isLender = true
 
     useEffect(() => {
         // Fetch or update data here as necessary
