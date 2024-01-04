@@ -1,6 +1,7 @@
 import BookCard from '../components/BookCard';
 import useAssetInstance from "../hooks/AssetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
 const DiscoveryView =  () => {
 
@@ -22,9 +23,9 @@ const DiscoveryView =  () => {
         <>
             <div className="main-class">
 
-                <div className="container my-4">
+                <div className="container">
                     <div className="row height d-flex justify-content-center align-items-center">
-                        <div className="">
+                        <div className="mt-4" >
                             <div className="form">
                                 <i className="fa fa-search"></i>
                                 <input type="text" className="form-control form-input"
@@ -118,10 +119,11 @@ const DiscoveryView =  () => {
                              style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
                             <input className="btn btn-light mx-2" type="submit" value="value"
                                    id="submit-filter" style={{margin: '10px', width: '100px'}}/>
-                            <a href="/discovery">
+                            {/*<a href="/discovery">*/}
+                            <Link to="/discovery">
                                 <input type="button" className="btn btn-outline-dark mx-2"
                                        value="value" style={{margin: '10px', width: '100px'}}/>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
@@ -186,9 +188,11 @@ const DiscoveryView =  () => {
                             <h1>text</h1>
                         </div>
                         <div className="container-row-wrapped" style={{marginTop: '20px', width: '100%'}}>
-                            <a href="/discovery">
+
+                            <Link to="/discovery">
                                 <button type="button" className="btn btn-outline-secondary btn-lg">text</button>
-                            </a>
+                            </Link>
+
                         </div>
 
                     </div>

@@ -1,5 +1,6 @@
 
 import './styles/bookCard.css';
+import {Link} from "react-router-dom";
 
 const BookCard = () => {
   return (
@@ -17,7 +18,10 @@ const BookCard = () => {
           objectFit: 'cover',
         }}          >
 
-    <a href="/" id="infoRef" style={{textDecoration: 'none'}} >
+
+    <Link to="/" id="infoRef" style={{textDecoration: 'none'}} >
+
+
 
         <img className="card-img d-none" src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/61" alt="Book title" />
 
@@ -37,8 +41,8 @@ const BookCard = () => {
                 </div>
             </div>
         </div>
+    </Link>
 
-    </a>
 
 </div>
     </>
