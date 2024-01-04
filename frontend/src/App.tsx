@@ -9,12 +9,12 @@ import LoginView from "./views/user/LogIn.tsx";
 import Register from "./views/user/Register.tsx";
 import ForgotPassword from "./views/user/ForgotPassword.tsx";
 import UserHome from "./views/user/UserHome.tsx";
+import {AuthProvider} from "./contexts/authContext.tsx";
 
 
 export default function App() {
     return (
-        <div>
-            
+            <AuthProvider>
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Landing />} />
@@ -32,8 +32,7 @@ export default function App() {
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
-            
-        </div>
+            </AuthProvider>
     );
 }
 function Layout() {

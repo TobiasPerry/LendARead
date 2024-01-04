@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import logo from '../../assets/logo-claro.png'; // Adjust path as necessary
 // @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
-import useLogin from "../../hooks/users/useLogin.ts";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react"; // Adjust path as necessary
+import {useContext, useState} from "react";
+import {AuthContext} from "../../contexts/authContext.tsx"; // Adjust path as necessary
 
 const LoginView = () => {
     const { t } = useTranslation();
@@ -13,7 +13,7 @@ const LoginView = () => {
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const { login } = useLogin();
+    const { login } = useContext(AuthContext);
     const handleEmailChange = (e: any) => {
         setEmail(e.target.value);
     };

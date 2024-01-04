@@ -1,7 +1,10 @@
-import  { useState, useEffect } from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
 import MyBooksTable from '../../components/user/MyBooksTable.tsx';
+import {AuthContext} from "../../contexts/authContext.tsx";
+
 const UserHomeView = () => {
+
     const { t } = useTranslation();
     const [table, setTable] = useState('my_books');
     const [userAssets, setUserAssets] = useState([]); // Assuming this is some data you fetch

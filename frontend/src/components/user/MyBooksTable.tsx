@@ -3,7 +3,7 @@ import useAssetInstances from '../../hooks/AssetInstance/useUserAssetInstances.t
 
 const MyBooksTable = () => {
     const { t } = useTranslation();
-    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books,setBooks } = useAssetInstances();
+    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances();
 
     const handleFilterChange = (newFilter: string) => {
         setFilter(newFilter);
