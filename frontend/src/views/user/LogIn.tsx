@@ -22,7 +22,7 @@ const LoginView = () => {
         e.preventDefault()
         const loginSuccess = await login(email, password, rememberMe)
         if(loginSuccess)
-            navigate('/')
+            navigate('/userHome')
         else
             setLoginError(true)
     }
