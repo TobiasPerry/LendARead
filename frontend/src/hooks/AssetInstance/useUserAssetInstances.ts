@@ -1,5 +1,6 @@
 // useAssetInstances.js
 import { useState } from 'react';
+import {Api} from "../api/api.ts";
 
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) => {
     const [filter, setFilter] = useState('all');
@@ -11,6 +12,9 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) 
 
     const applyFilterAndSort = (newPage: number, newSort: any, newFilter: string, books: any) => {
         console.log(newSort, newFilter, newPage)
+        // const userId =
+        //
+        // const response = Api.get(`/assetInstances?userId=${userId}`)
     };
 
     // Function to change the page
