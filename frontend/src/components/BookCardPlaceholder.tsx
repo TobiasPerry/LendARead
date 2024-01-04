@@ -22,13 +22,13 @@ const BookCardPlaceholder = () => {
 
                 <div className="card-img-overlay d-flex flex-column">
                     <div className="card-body">
-                        <small className="card-meta mb-2 text-truncate">
+                        <small className="card-meta mb-2 text-truncate placeholder-glow">
                             <span className="placeholder col-7"></span>
                         </small>
-                        <h3 className="card-title mt-0 text-white truncate-3-lines">
+                        <h3 className="card-title mt-0 text-white truncate-3-lines placeholder-glow">
                             <span className="placeholder col-10"></span>
                         </h3>
-                        <small className="text-white"><i className="bi bi-book-half text-white"></i>
+                        <small className="text-white placeholder-glow"><i className="bi bi-book-half text-white "></i>
                             <span className="placeholder col-3 mx-2"></span>
                         </small>
                     </div>
@@ -36,12 +36,12 @@ const BookCardPlaceholder = () => {
                         <div className="media">
                             <img className="mr-3 rounded-circle" src="/profile_placeholder.jpeg" style={{width:'50px', height: '50px'}}/>
                             <div className="media-body">
-                                <h6 className="my-0 text-white d-block text-truncate">
+                                <h6 className="my-0 text-white d-block text-truncate placeholder-glow">
                                     <span className="placeholder col-7"></span>
                                 </h6>
-                                <small className="text-white truncate-3-lines">
+                                <small className="text-white truncate-3-lines placeholder-glow">
                                     <span className="placeholder col-2"></span> <span
-                                    className="placeholder col-3"></span> <span className="placeholder col-2"></span>
+                                    className="placeholder col-3"></span> <span className="placeholder col-3"></span>
                                 </small>
                             </div>
                         </div>
