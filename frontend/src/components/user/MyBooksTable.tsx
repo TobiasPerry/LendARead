@@ -1,9 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import useAssetInstances from '../../hooks/AssetInstance/useUserAssetInstances.ts'; // Path to your custom hook
+import useAssetInstances from '../../hooks/AssetInstance/useUserAssetInstances.ts';
+import {useContext} from "react";
+import {AuthContext} from "../../contexts/authContext.tsx"; // Path to your custom hook
 
 const MyBooksTable = () => {
     const { t } = useTranslation();
-    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances();
+    const {user} = useContext(AuthContext)
+    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances(user);
 
     const handleFilterChange = (newFilter: string) => {
         setFilter(newFilter);
