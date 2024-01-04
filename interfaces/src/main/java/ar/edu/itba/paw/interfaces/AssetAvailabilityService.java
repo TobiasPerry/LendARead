@@ -16,19 +16,21 @@ public interface AssetAvailabilityService {
 
     void changeReservability(final int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException;
 
-    void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
-    void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
-    User getLender(final int lendingId) throws AssetInstanceNotFoundException;
+    User getLender(final int lendingId) throws LendingNotFoundException;
 
-    void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
-    void changeLending(final int lendingId,final String state) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void changeLending(final int lendingId,final String state) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
     List<Lending> getActiveLendings(final AssetInstance ai);
     PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId);
 
-     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    User getBorrower(final int lendingId) throws  LendingNotFoundException;
+
+     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
     boolean haveActiveLendings(final AssetInstance ai);
     void notifyNewLendings();

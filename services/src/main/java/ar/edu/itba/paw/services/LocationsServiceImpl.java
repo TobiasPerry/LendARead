@@ -40,7 +40,7 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public Location addLocation(String name, String locality, String province, String country, String zipcode) throws UserNotFoundException {
-       User user = userService.getUser(userService.getCurrentUser());
+       User user = userService.getCurrentUser();
        Location newLocation = new Location(name, zipcode, locality, province, country, user);
        addLocation(newLocation);
        LOGGER.info("Location {} added for user {}", newLocation.getId(), user.getId());

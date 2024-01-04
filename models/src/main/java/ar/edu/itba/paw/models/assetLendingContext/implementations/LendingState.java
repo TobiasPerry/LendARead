@@ -20,8 +20,23 @@ public enum LendingState {
         @Override
         public boolean getIsRejected() {
             return true;
+        };
+
+
+    }, CANCEL() {
+        @Override
+        public boolean getIsCancel() {
+            return true;
+        }
+        @Override
+        public boolean lenderStates() {
+            return false;
         }
     };
+
+    public static void main(String[] args) {
+
+    }
 
     public boolean getIsDelivered() { return false; }
     public boolean getIsActive() { return false; }
@@ -29,6 +44,9 @@ public enum LendingState {
     public boolean getIsFinished() { return false; }
 
     public boolean getIsRejected() { return false; }
+    public boolean getIsCancel() { return false; }
+
+    public boolean lenderStates() { return true; }
     public static LendingState fromString(String value) {
         if (value != null) {
             for (LendingState condition : LendingState.values()) {

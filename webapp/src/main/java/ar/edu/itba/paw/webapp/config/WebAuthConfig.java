@@ -66,7 +66,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ACCESS_CONTROL_LOCATIONS = "@accessFunctions.locationOwner(request, #id)";
 
-    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingOwner(request, #id)";
+    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingLenderOrBorrower(request, #id)";
 
     private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner(request, #id)";
     @Bean

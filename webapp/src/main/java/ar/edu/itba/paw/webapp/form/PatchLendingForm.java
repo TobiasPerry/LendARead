@@ -11,6 +11,6 @@ import javax.validation.constraints.Pattern;
 public class PatchLendingForm {
 
     @NotNull
-    @Pattern(regexp = "DELIVERED|REJECTED|FINISHED")
+    @Pattern(regexp = "DELIVERED|REJECTED|FINISHED|CANCEL", message = "{lending.state.invalid}")
     private String state;
 }

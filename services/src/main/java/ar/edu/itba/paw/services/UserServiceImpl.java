@@ -100,12 +100,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public String getCurrentUser() {
+    public User getCurrentUser() throws UserNotFoundException {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
             org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return userDetails.getUsername();
+            return getUser(userDetails.getUsername());
         }
-        return "anonymousUser";
+        return null;
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface UserService {
 
     boolean getCurrentUserIsBorrower();
 
-    String getCurrentUser();
+    User getCurrentUser() throws UserNotFoundException;
 
     Collection
             <? extends GrantedAuthority> getCurrentRoles();
