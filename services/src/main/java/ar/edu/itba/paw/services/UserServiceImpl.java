@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,19 +36,16 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
-    private final AuthenticationManager authenticationManager;
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
 
-    private static final String ROLE = "ROLE_";
 
     @Autowired
-    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager, final ImagesDao imagesDao) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final ImagesDao imagesDao) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
-        this.authenticationManager = authenticationManager;
         this.imagesDao = imagesDao;
     }
 
@@ -119,35 +115,35 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createChangePasswordToken(final int id) throws UserNotFoundException {
+    public void createChangePasswordToken(final String email) throws UserNotFoundException {
         String token = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-        Optional<User> user = userDao.getUser(id);
+        Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
             throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, user.get().getId(), LocalDate.now().plusDays(1));
+        userDao.deletePasswordRestToken(user.get().getId());
         emailService.sendForgotPasswordEmail(user.get().getEmail(), passwordResetToken.getToken(), new Locale(user.get().getLocale()));
         userDao.setForgotPasswordToken(passwordResetToken);
     }
 
-    @Transactional
+
+    @Transactional(readOnly = true)
     @Override
-    public void changePassword(final int id,final String token, final String password) {
+    public boolean isTokenValid(final int userId,final String token) {
+
         Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
-        if (!passwordResetToken.isPresent())
-            return;
-        if (!isTokenValid(token))
-            return;
-        userDao.deletePasswordRestToken(token);
-        userDao.changePassword(passwordResetToken.get(), passwordEncoder.encode(password));
+
+        return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false) && passwordResetToken.get().getUserId() == userId;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isTokenValid(final String token) {
-        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
-        return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
+    public String getUserResetPasswordToken(String email) throws UserNotFoundException {
+        User user = this.getUser(email);
+        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestTokenOfUser(user.getId());
+        return passwordResetToken.map(PasswordResetToken::getToken).orElse(null);
     }
 
 
@@ -170,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(int id, String username, String telephone, String role) throws UserNotFoundException {
+    public void updateUser(final int id, final String username, final String telephone,final String role,final String password) throws UserNotFoundException {
         Optional<User> maybeUser = userDao.getUser(id);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
@@ -186,7 +182,16 @@ public class UserServiceImpl implements UserService {
         if (role != null) {
             this.changeRole(user,Behaviour.valueOf(role));
         }
+        if (password != null) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
 
+    }
+
+    @Transactional
+    @Override
+    public void deleteToken(String token) {
+        userDao.deletePasswordRestToken(token);
     }
 
     @Override

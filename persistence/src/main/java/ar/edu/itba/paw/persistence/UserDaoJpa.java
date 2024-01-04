@@ -81,6 +81,21 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
+    public int deletePasswordRestToken(int userId) {
+        return em.createQuery("delete from PasswordResetToken p where p.user=:userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+    }
+
+    @Override
+    public Optional<PasswordResetToken> getPasswordRestTokenOfUser(int userId) {
+        TypedQuery<PasswordResetToken> query = em.createQuery("SELECT p FROM PasswordResetToken p WHERE p.user = :userId", PasswordResetToken.class);
+        query.setParameter("userId", userId);
+        List<PasswordResetToken> passwordResetTokenList = query.getResultList();
+        return passwordResetTokenList.stream().findFirst();
+    }
+
+    @Override
     public void deletePasswordRecoveryTokensOnDay(LocalDate date) {
         em.createQuery("delete from PasswordResetToken p where  p.expiryDate = :date").setParameter("date", date).executeUpdate();
     }

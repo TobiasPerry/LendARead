@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth.filters;
 
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
@@ -60,28 +61,35 @@ public class BasicTokenFilter extends OncePerRequestFilter {
         }
         byte[] base64Token = header.split(" ")[1].trim().getBytes(StandardCharsets.UTF_8);
         final String username;
-        final String password;
+        final String posiblePassword;
         byte[] decoded;
         try {
             decoded = Base64.decode(base64Token);
             String token = new String(decoded, StandardCharsets.UTF_8);
             username = token.split(":")[0].trim();
-            password = token.split(":")[1].trim();
+            posiblePassword = token.split(":")[1].trim();
         } catch (IllegalArgumentException e) {
             throw new BadCredentialsException("Failed to decode basic authentication token");
         }
         try{
             UserDetails userDetails;
-
+            Authentication authentication;
             userDetails = pawUserDetailsService.loadUserByUsername(username);
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        password,
-                        userDetails.getAuthorities()
-                )
+            if(this.isTokenReset(username,posiblePassword)){
+                 authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }else {
+                 authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                posiblePassword,
+                                userDetails.getAuthorities()
+                        )
 
                 );
+            }
         User user = userService.getUser(username);
         response.setHeader("JWT", jwtTokenUtil.generateJwtToken(authentication,baseUrl + "api/users/" + user.getId()));
 
@@ -93,5 +101,14 @@ public class BasicTokenFilter extends OncePerRequestFilter {
             return;
         }
         chain.doFilter(request, response);
+    }
+    private boolean isTokenReset(String email,String posiblePassword) throws UserNotFoundException {
+        User user = userService.getUser(email);
+        String token = userService.getUserResetPasswordToken(email);
+        boolean isValid =  token != null && token.equals(posiblePassword) && userService.isTokenValid(user.getId(), token);
+        if(isValid){
+            userService.deleteToken(token);
+        }
+        return isValid;
     }
 }
