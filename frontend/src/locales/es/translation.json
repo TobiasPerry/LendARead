@@ -130,6 +130,10 @@
         "apply": "Aplicar",
         "clear": "Limpiar"
       }
+    },
+    "no_books": {
+      "title": "No hay libros disponibles",
+      "btn": "Limpiar búsqueda"
     }
   }
 }

@@ -132,7 +132,10 @@
         "apply": "Apply",
         "clear": "Clear"
       }
+    },
+    "no_books": {
+      "title": "No books available",
+      "btn": "Clear search"
     }
-
   }
 }

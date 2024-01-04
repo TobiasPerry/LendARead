@@ -3,6 +3,7 @@ import useAssetInstance from "../hooks/AssetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
 const DiscoveryView =  () => {
 
@@ -19,6 +20,15 @@ const DiscoveryView =  () => {
         };
         fetchData();
     })
+
+    let currentPage = -1;
+    let totalPages = 12;
+    let booksPerPage = 12;
+
+    // Generate an array of length totalPages
+    const placeholders = Array.from({ length: booksPerPage }, (_, index) => (
+        <BookCardPlaceholder key={index} />
+    ));
 
     return (
         <>
@@ -152,7 +162,7 @@ const DiscoveryView =  () => {
                                  borderRadius: '20px',
                                  width: '90%'
                              }}>
-                            <BookCard></BookCard>
+                            {placeholders}
                         </div>
 
 
@@ -167,20 +177,21 @@ const DiscoveryView =  () => {
                                                     id="previousPageButton"
                                                     style={{borderColor: "rgba(255, 255, 255, 0)"}}>
                                                 <i className="bi bi-chevron-left"></i>
-                                                text
+                                                {t('discovery.pagination.previous')}
                                             </button>
                                         </li>
 
                                         <li>
-                                            current / total
+                                            {currentPage} / {totalPages}
                                         </li>
 
                                         <li className="page-item">
                                             <button type="button"
                                                     className="btn mx-5 pagination-button"
                                                     id="nextPageButton"
-                                                    style={{borderColor: "rgba(255, 255, 255, 0)"}}> text <i
-                                                className="bi bi-chevron-right"></i>
+                                                    style={{borderColor: "rgba(255, 255, 255, 0)"}}>
+                                                {t('discovery.pagination.next')}
+                                                <i className="bi bi-chevron-right"></i>
                                             </button>
                                         </li>
                                     </ul>
@@ -189,12 +200,14 @@ const DiscoveryView =  () => {
                         </div>
 
                         <div className="container-row-wrapped" style={{marginTop: '50px', width: '100%'}}>
-                            <h1>text</h1>
+                            <h1>{t('discovery.no_books.title')}</h1>
                         </div>
                         <div className="container-row-wrapped" style={{marginTop: '20px', width: '100%'}}>
 
                             <Link to="/discovery">
-                                <button type="button" className="btn btn-outline-secondary btn-lg">text</button>
+                                <button type="button" className="btn btn-outline-secondary btn-lg">
+                                    {t('discovery.no_books.btn')}
+                                </button>
                             </Link>
 
                         </div>
