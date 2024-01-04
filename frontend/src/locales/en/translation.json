@@ -53,5 +53,18 @@
   "enum": {
     "available": "Available",
     "lent": "Lent"
-  }
+  },
+  "all": "All",
+  "pending": "Pending",
+  "delivered": "Delivered",
+  "overdue": "Overdue",
+  "rejected": "Rejected",
+  "finished": "Finished",
+  "title": "Title",
+  "start_date": "Start Date",
+  "return_date": "Return Date",
+  "user": "User",
+  "no_books_available": "No books available",
+  "previous": "Previous",
+  "next": "Next"
 }

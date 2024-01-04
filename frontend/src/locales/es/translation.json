@@ -52,5 +52,18 @@
   "enum": {
     "available": "Disponible",
     "lent": "Prestado"
-  }
+  },
+  "all": "Todos",
+  "pending": "Pendiente",
+  "delivered": "Entregado",
+  "overdue": "Retrasado",
+  "rejected": "Rechazado",
+  "finished": "Terminado",
+  "title": "Título",
+  "start_date": "Fecha de inicio",
+  "return_date": "Fecha de devolución",
+  "user": "Usuario",
+  "no_books_available": "No hay libros disponibles",
+  "previous": "Anterior",
+  "next": "Siguiente"
 }

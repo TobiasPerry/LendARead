@@ -1,77 +1,74 @@
-import { useState, useEffect } from 'react';
+import  { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SortButton from './SortButton'; // Create a component for sorting
-import FilterButton from './FilterButton'; // Create a component for filtering
+import useAssetInstances from '../../hooks/AssetInstance/useUserAssetInstances.ts'; // Path to your custom hook
 
-const MyBooksTable = ({ userAssets }: any) => {
+const MyBooksTable = () => {
     const { t } = useTranslation();
+    const [books, setBooks] = useState([]); // This will be your books data
+    const { setFilter, filter, applyFilterAndSort, sort, setSort } = useAssetInstances(setBooks);
 
-    // Assuming you have a way to fetch or receive these properties
-    const [sortAttribute, setSortAttribute] = useState('');
-    const [filterValue, setFilterValue] = useState('');
-    const [filterAttribute, setFilterAttribute] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1); // Set accordingly based on your data
+    const handleFilterChange = (newFilter: string) => {
+        setFilter(newFilter);
+        applyFilterAndSort(sort, newFilter, books);
+    };
 
-    const isLender = true
+    const handleSortChange = (column: string) => {
+        const isAsc = sort.column === column && sort.order === 'asc';
+        const newSort = { column, order: isAsc ? 'desc' : 'asc' }
+        setSort(newSort);
+        applyFilterAndSort(newSort, filter, books);
+    };
 
-    useEffect(() => {
-        // Fetch or update data here as necessary
-    }, [sortAttribute, filterValue, currentPage]);
+    const renderSortIcon = (column: string) => {
+        return sort.column === column ? (sort.order === 'asc' ? '↑' : '↓') : '';
+    };
 
     return (
-        <div>
-            {isLender ? (
-                <div className="table-title">
-                    {/* Table Header */}
-                    <h2>{t('my_books')}</h2>
-                    <div>
-                        {/* Filter and Sort Buttons */}
-                        <FilterButton title="filterOption.all" buttonText="userHomeView.all" />
-                        <FilterButton title="filterOption.public" buttonText="userHomeView.public" />
-                        <FilterButton title="filterOption.private" buttonText="userHomeView.private" />
-                    </div>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th>{t('image')}</th>
-                            <SortButton title="book_name" />
-                            <SortButton title="author" />
-                            <SortButton title="language" />
-                            <SortButton title="userDetailView.state" />
+        <div className="container mt-3">
+            <h2>{t('borrowed_books')}</h2>
+            <div className="btn-group mb-3" role="group">
+                <button onClick={() => handleFilterChange('all')} className="btn btn-outline-primary">{t('all')}</button>
+                <button onClick={() => handleFilterChange('pending')} className="btn btn-outline-primary">{t('pending')}</button>
+                <button onClick={() => handleFilterChange('delivered')} className="btn btn-outline-primary">{t('delivered')}</button>
+                <button onClick={() => handleFilterChange('overdue')} className="btn btn-outline-primary">{t('overdue')}</button>
+                <button onClick={() => handleFilterChange('rejected')} className="btn btn-outline-primary">{t('rejected')}</button>
+                <button onClick={() => handleFilterChange('finished')} className="btn btn-outline-primary">{t('finished')}</button>
+            </div>
+            <table className="table table-hover">
+                <thead className="table-light">
+                <tr>
+                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} {renderSortIcon('image')}</th>
+                    <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
+                    <th scope="col" onClick={() => handleSortChange('startDate')}>{t('start_date')} {renderSortIcon('startDate')}</th>
+                    <th scope="col" onClick={() => handleSortChange('returnDate')}>{t('return_date')} {renderSortIcon('returnDate')}</th>
+                    <th scope="col" onClick={() => handleSortChange('user')}>{t('user')} {renderSortIcon('user')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {books.length === 0 ? (
+                    <tr>
+                        <td colSpan="5" className="text-center">{t('no_books_available')}</td>
+                    </tr>
+                ) : (
+                    books.map((book, index) => (
+                        <tr key={index}>
+                            <td>{/* Place an image here */}</td>
+                            <td>{book.title}</td>
+                            <td>{book.startDate}</td>
+                            <td>{book.returnDate}</td>
+                            <td>{book.user}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {userAssets.map((asset, index) => (
-                            <tr key={index} className="table-row-clickable" onClick={() => window.location.href = `/myBookDetails/${asset.id}`}>
-                                <td>
-                                    <img style={{ height: '125px', width: '75px', objectFit: 'cover' }} src={`/getImage/${asset.image.id}`} alt={asset.book.name} />
-                                </td>
-                                <td>{asset.book.name}</td>
-                                <td>{asset.book.author}</td>
-                                <td>{asset.book.language}</td>
-                                <td>{t(`enum.${asset.assetState}`)}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    {userAssets.length === 0 && (
-                        <div className="container-row-wrapped" style={{ marginTop: '50px', width: '100%' }}>
-                            <h4>{t('discovery.noBooks')}</h4>
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div className="promo-box">
-                    <h2>{t('become_lender.title')}</h2>
-                    <p>{t('become_lender.subtitle')}</p>
-                    <a href="/addAssetView" className="button-status" style={{ color: '#2B3B2B', fontWeight: 'bold' }}>
-                        {t('become_lender.button')}
-                    </a>
-                </div>
-            )}
-
-
+                    ))
+                )}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul className="pagination">
+                    <li className="page-item"><a className="page-link" href="#">{t('previous')}</a></li>
+                    {/* Add page numbers here */}
+                    <li className="page-item"><a className="page-link" href="#">{t('next')}</a></li>
+                </ul>
+            </nav>
         </div>
     );
 };
