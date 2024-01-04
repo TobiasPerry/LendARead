@@ -14,11 +14,7 @@ public interface AssetAvailabilityService {
 
     Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
-    void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException;
-
     void changeReservability(final int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException;
-
-    void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException;
 
     void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
 
