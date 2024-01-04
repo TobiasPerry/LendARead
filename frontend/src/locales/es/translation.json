@@ -103,5 +103,33 @@
     "searchbar": {
       "placeholder": "Buscar por Titulo o Autor"
     }
+  },
+
+  "discovery": {
+    "searchbar": {
+      "placeholder": "Buscar por Titulo o Autor"
+    },
+    "pagination": {
+      "next": "Siguiente",
+      "previous": "Anterior"
+    },
+    "sorting":  {
+      "sort_by": "Ordenar Por:",
+      "most_recent": " Más Reciente",
+      "least_recent": "Más Antiguo",
+      "title_asc": "Título A-Z",
+      "title_des": "Título Z-A",
+      "author_asc": "Autor A-Z",
+      "author_des": "Autor Z-A"
+    },
+    "filters": {
+      "language": "Idioma",
+      "physical_condition": "Condición Física",
+      "book_rating": "Calificación del libro",
+      "btn": {
+        "apply": "Aplicar",
+        "clear": "Limpiar"
+      }
+    }
   }
 }

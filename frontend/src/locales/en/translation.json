@@ -105,5 +105,34 @@
     "searchbar": {
       "placeholder": "Search by Author or Title"
     }
+  },
+
+  "discovery": {
+    "searchbar": {
+      "placeholder": "Search by Author or Title"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "sorting":  {
+      "sort_by": "Sort By:",
+      "most_recent": "Most Recent",
+      "least_recent": "Least Recent",
+      "title_asc": "Title Ascending",
+      "title_des": "Title Descending",
+      "author_asc": "Author Ascending",
+      "author_des": "Author Descending"
+    },
+    "filters": {
+      "language": "Language",
+      "physical_condition": "Physical Condition",
+      "book_rating": "Book Rating",
+      "btn": {
+        "apply": "Apply",
+        "clear": "Clear"
+      }
+    }
+
   }
 }

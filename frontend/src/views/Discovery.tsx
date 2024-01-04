@@ -2,12 +2,13 @@ import BookCard from '../components/BookCard';
 import useAssetInstance from "../hooks/AssetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const DiscoveryView =  () => {
 
-
-    const [data, setData] = useState("vacio")
-    const {handleAllAssetInstances} = useAssetInstance()
+    const {t} = useTranslation();
+    const [data, setData] = useState("vacio");
+    const {handleAllAssetInstances} = useAssetInstance();
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -29,8 +30,8 @@ const DiscoveryView =  () => {
                             <div className="form">
                                 <i className="fa fa-search"></i>
                                 <input type="text" className="form-control form-input"
-                                       placeholder="placeholder" id="search-bar"
-                                       value="value"/>
+                                       placeholder={t('discovery.searchbar.placeholder')} id="search-bar"
+                                       />
                             </div>
                         </div>
                     </div>
@@ -43,15 +44,19 @@ const DiscoveryView =  () => {
                         <div className="btn-group mx-2 mb-4 mt-2" role="group">
                             <button type="button" className="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false" style={{backgroundColor: "rgba(255, 255, 255, 0.3)"}}>
-                                text
+                                {t('discovery.sorting.sort_by')}
                             </button>
                             <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" id="mostRecent">text</a></li>
-                                <li><a className="dropdown-item" id="leastRecent">text</a></li>
+                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.most_recent')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.least_recent')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.title_asc')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.title_des')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.author_asc')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.author_des')}</a></li>
                             </ul>
                         </div>
 
-                        <h5>aca: {data}text</h5>
+                        <h5>{t('discovery.filters.language')}</h5>
                         <ul>
                             <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
 
@@ -64,7 +69,7 @@ const DiscoveryView =  () => {
 
                             </ul>
                         </ul>
-                        <h5>text</h5>
+                        <h5>{t('discovery.filters.physical_condition')}</h5>
                         <ul>
                             <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
 
@@ -83,7 +88,7 @@ const DiscoveryView =  () => {
                             </ul>
                         </ul>
 
-                        <h5>text</h5>
+                        <h5>{t('discovery.filters.book_rating')}</h5>
                         <div style={{width: '90%', margin: '10px auto'}}>
                             <label className="form-label d-flex justify-content-center" id="customRange3Id">?★ -
                                 ?★</label>
@@ -117,12 +122,11 @@ const DiscoveryView =  () => {
 
                         <div className="container-row-wrapped"
                              style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
-                            <input className="btn btn-light mx-2" type="submit" value="value"
+                            <input className="btn btn-light mx-2" type="submit" value={t('discovery.filters.btn.apply')}
                                    id="submit-filter" style={{margin: '10px', width: '100px'}}/>
-                            {/*<a href="/discovery">*/}
                             <Link to="/discovery">
                                 <input type="button" className="btn btn-outline-dark mx-2"
-                                       value="value" style={{margin: '10px', width: '100px'}}/>
+                                       value={t('discovery.filters.btn.clear')} style={{margin: '10px', width: '100px'}}/>
                             </Link>
                         </div>
                     </div>
