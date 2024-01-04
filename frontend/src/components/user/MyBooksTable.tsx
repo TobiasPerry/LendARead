@@ -27,9 +27,9 @@ const MyBooksTable = () => {
     return (
         <div className="container mt-3">
             <div className="d-flex justify-content-between align-items-center">
-                <h2>{t('borrowed_books')}</h2>
+                <h2 className="m-1">{t('borrowed_books')}</h2>
                 <div className="btn-group">
-                <button onClick={() => handleFilterChange('all')} className="btn btn-outline-primary">{t('all')}</button>
+                <button style={{}} onClick={() => handleFilterChange('all')} className="btn btn-outline-primary">{t('all')}</button>
                 <button onClick={() => handleFilterChange('pending')} className="btn btn-outline-primary">{t('pending')}</button>
                 <button onClick={() => handleFilterChange('delivered')} className="btn btn-outline-primary">{t('delivered')}</button>
                 <button onClick={() => handleFilterChange('overdue')} className="btn btn-outline-primary">{t('overdue')}</button>
@@ -37,7 +37,7 @@ const MyBooksTable = () => {
                 <button onClick={() => handleFilterChange('finished')} className="btn btn-outline-primary">{t('finished')}</button>
             </div>
             </div>
-            <table className="table table-hover">
+            <table className="table table-hover mt-2 mb-3">
                 <thead className="table-light">
                 <tr>
                     <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} {renderSortIcon('image')}</th>

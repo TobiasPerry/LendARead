@@ -9,6 +9,7 @@ export const AuthProvider = (props: any) => {
     const [user, setUser] = useState(-1);
 
     const extractUserId = (jwt: string): number => {
+        console.log(jwt)
         const decoded = jwtDecode(jwt).userReference;
         const pattern = /\/(\d+)(?=\/?$)/;
         const match = decoded.match(pattern);
