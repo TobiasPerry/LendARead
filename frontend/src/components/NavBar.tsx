@@ -2,6 +2,7 @@
 import './styles/navBar.css';
 import './styles/searchBar.css';
 import {Link} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 // @ts-ignore
 function classNames(...classes) {
@@ -10,7 +11,7 @@ function classNames(...classes) {
 
 export default function NavBar() {
 
-    // const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     //const [language, setLanguage] = useState('en');
 
     // const toggleLanguage = () => {
@@ -43,7 +44,7 @@ export default function NavBar() {
                                 <i className="fa fa-search fa-search-class" ></i>
                                 <input type="text" className="form-input" name="search"
                                     style={{marginLeft: '4px'}}
-                                    placeholder="placeholder" id="nav-bar-search-bar"
+                                    placeholder={t('navbar.searchbar.placeholder')} id="nav-bar-search-bar"
                                 />
                                 
                             </div>
@@ -51,15 +52,15 @@ export default function NavBar() {
                             
 
                             <li className="nav-item  d-flex align-items-center">
-                                <Link className="nav-link navItem" id="home" aria-current="page" to="/discovery">text</Link>
+                                <Link className="nav-link navItem" id="home" aria-current="page" to="/discovery">{t('navbar.explore')}</Link>
                             </li>
                             <li className="nav-item  d-flex align-items-center">
-                                <Link className="nav-link navItem"  id="addAsset" aria-current="page" to="/addAssetView">text</Link>
+                                <Link className="nav-link navItem"  id="addAsset" aria-current="page" to="/addAssetView">{t('navbar.lend')}</Link>
                             </li>
                             
                             <li className="nav-item d-flex align-items-center">
                                 <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/userHome">
-                                    text
+                                    {t('navbar.login')}
                                 </Link>
                             </li>
                                 <li className="nav-item d-flex align-items-center">

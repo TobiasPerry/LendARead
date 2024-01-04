@@ -96,5 +96,14 @@
         "subtitle": "Get the book by meeting the owner of the book"
       }
     }
+  },
+
+  "navbar": {
+    "explore": "Explore",
+    "lend": "Lend Book",
+    "login": "Log In",
+    "searchbar": {
+      "placeholder": "Search by Author or Title"
+    }
   }
 }

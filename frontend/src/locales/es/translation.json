@@ -94,5 +94,14 @@
         "subtitle": "Obtené el libro encontrándote con el dueño"
       }
     }
+  },
+
+  "navbar": {
+    "explore": "Explorar",
+    "lend": "Prestar Libro",
+    "login": "iniciar Sesión",
+    "searchbar": {
+      "placeholder": "Buscar por Titulo o Autor"
+    }
   }
 }
