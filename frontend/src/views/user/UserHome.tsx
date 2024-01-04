@@ -1,7 +1,6 @@
 import {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
 import MyBooksTable from '../../components/user/MyBooksTable.tsx';
-import {AuthContext} from "../../contexts/authContext.tsx";
 
 const UserHomeView = () => {
 

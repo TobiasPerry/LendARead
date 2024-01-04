@@ -11,11 +11,13 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) 
     const [totalPages, setTotalPages] = useState(20); // To be set when data is fetched
     const [books, setBooks] = useState([])
 
-    const { userId, login, logout } = useContext(AuthContext);
+    const { user, login, logout } = useContext(AuthContext);
 
-    const applyFilterAndSort = (newPage: number, newSort: any, newFilter: string, books: any) => {
+    const applyFilterAndSort = async (newPage: number, newSort: any, newFilter: string, books: any) => {
+        console.log(user)
         console.log(newSort, newFilter, newPage)
-        const response = Api.get(`/assetInstances?userId=${userId}`)
+        const response = await Api.get(`/assetInstances?userId=${user}`)
+        console.log(response)
     };
 
     // Function to change the page
