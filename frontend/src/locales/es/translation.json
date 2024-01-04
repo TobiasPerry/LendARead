@@ -65,5 +65,34 @@
   "user": "Usuario",
   "no_books_available": "No hay libros disponibles",
   "previous": "Anterior",
-  "next": "Siguiente"
+  "next": "Siguiente",
+  "landing": {
+    "hero": {
+      "title": "La nueva era de los libros",
+      "subtitle": "Un libro compartido es una historia multiplicada",
+      "btn": "Explorar"
+    },
+    "recent": {
+      "title": "Libros añadidos recientemente"
+    },
+    "instructions": {
+      "title": "¿Buscas una nueva lectura?",
+      "search": {
+        "title": "Buscar",
+        "subtitle": "Explora y encontrá el libro que más te guste"
+      },
+      "request": {
+        "title": "Solicitar",
+        "subtitle": "Solicita un préstamo del libro\n\n"
+      },
+      "contact": {
+        "title": "Contactar",
+        "subtitle": "Póngase en contacto con el dueño del libro\n\n"
+      },
+      "meet": {
+        "title": "Encuentro",
+        "subtitle": "Obtené el libro encontrándote con el dueño"
+      }
+    }
+  }
 }

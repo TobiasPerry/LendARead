@@ -66,5 +66,35 @@
   "user": "User",
   "no_books_available": "No books available",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+
+  "landing": {
+    "hero": {
+      "title": "The new era of reading",
+      "subtitle": "A shared book is a multiplied story",
+      "btn": "Discover"
+    },
+    "recent": {
+      "title": "\nRecently added books\n"
+    },
+    "instructions": {
+      "title": "Looking for a new read?",
+      "search": {
+        "title": "Search",
+        "subtitle": "Explore and find the book you like the most"
+      },
+      "request": {
+        "title": "Request",
+        "subtitle": "Request a book loan"
+      },
+      "contact": {
+        "title": "Contact",
+        "subtitle": "Get in touch with the owner of the book"
+      },
+      "meet": {
+        "title": "Meet",
+        "subtitle": "Get the book by meeting the owner of the book"
+      }
+    }
+  }
 }
