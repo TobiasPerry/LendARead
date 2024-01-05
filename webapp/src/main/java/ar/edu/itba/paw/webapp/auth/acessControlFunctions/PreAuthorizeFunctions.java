@@ -43,7 +43,7 @@ public class PreAuthorizeFunctions {
     public boolean borrowerCanAssetInstanceReview(final int assetInstanceId,final AssetInstanceReview assetInstanceReview){
         try {
             return assetInstanceReviewsService.canReview(assetInstanceId,Math.toIntExact(assetInstanceReview.getId()));
-        }catch (LendingNotFoundException e){
+        }catch (LendingNotFoundException | UserNotFoundException e){
             return false;
         }
     }

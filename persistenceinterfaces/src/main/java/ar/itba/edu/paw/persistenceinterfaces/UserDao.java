@@ -24,5 +24,8 @@ public interface UserDao {
 
     int deletePasswordRestToken(String token);
 
+    int deletePasswordRestToken(int userId);
+    Optional<PasswordResetToken> getPasswordRestTokenOfUser (int userId);
+
     void deletePasswordRecoveryTokensOnDay(LocalDate data);
 }

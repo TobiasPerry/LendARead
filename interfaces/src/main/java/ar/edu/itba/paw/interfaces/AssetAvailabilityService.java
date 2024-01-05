@@ -14,25 +14,23 @@ public interface AssetAvailabilityService {
 
     Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
-    void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException;
-
     void changeReservability(final int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException;
 
-    void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException;
+    void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
-    void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
-    void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    User getLender(final int lendingId) throws LendingNotFoundException;
 
-    User getLender(final int lendingId) throws AssetInstanceNotFoundException;
+    void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
-    void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
-
-    void changeLending(final int lendingId,final String state) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    void changeLending(final int lendingId,final String state) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
     List<Lending> getActiveLendings(final AssetInstance ai);
     PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId);
 
-     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException;
+    User getBorrower(final int lendingId) throws  LendingNotFoundException;
+
+     void cancelAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException;
 
     boolean haveActiveLendings(final AssetInstance ai);
     void notifyNewLendings();

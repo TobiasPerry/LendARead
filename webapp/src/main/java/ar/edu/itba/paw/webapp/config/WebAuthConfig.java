@@ -66,7 +66,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ACCESS_CONTROL_LOCATIONS = "@accessFunctions.locationOwner(request, #id)";
 
-    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingOwner(request, #id)";
+    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingLenderOrBorrower(request, #id)";
 
     private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner(request, #id)";
     @Bean
@@ -123,7 +123,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.PATCH,"/api/users/{id}").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.PUT,"/api/users/{id}/password").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.POST,"/api/users/{id}/reset-password-token").access(ACCESS_CONTROL_USER)
                 .antMatchers(HttpMethod.PUT,"/api/users/{id}/profilePic").access(ACCESS_CONTROL_USER)
 
                 // Location endpoints
@@ -140,7 +139,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers(HttpMethod.POST,"/api/assetInstances").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/locations").authenticated()
+                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/lendings").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and().addFilterBefore(

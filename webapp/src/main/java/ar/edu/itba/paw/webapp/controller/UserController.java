@@ -12,10 +12,7 @@ import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
 import ar.edu.itba.paw.webapp.dto.UserReviewsDTO;
-import ar.edu.itba.paw.webapp.form.ChangePasswordForm;
-import ar.edu.itba.paw.webapp.form.EditUserForm;
-import ar.edu.itba.paw.webapp.form.RegisterForm;
-import ar.edu.itba.paw.webapp.form.UserReviewForm;
+import ar.edu.itba.paw.webapp.form.*;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
 import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
@@ -58,21 +55,13 @@ public class UserController {
 
     }
 
-    @PUT
-    @Path("/{id}/password")
-    @Produces(value = { Vnd.VND_USER_CHANGE_PASSWORD })
-    @Consumes(value = { Vnd.VND_USER_CHANGE_PASSWORD })
-    public Response changePassword(@PathParam("id") int id, @Valid   final ChangePasswordForm changePasswordForm){
-        us.changePassword(id,changePasswordForm.getPassword(),changePasswordForm.getToken());
-        LOGGER.info("PUT user/{}/password",id);
-        return Response.noContent().build();
-    }
+
     @PATCH
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
     public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException {
-        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole());
+        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole(),userUpdateForm.getPassword());
         LOGGER.info("PUT user/ id:{}",id);
         return Response.noContent().build();
     }
@@ -97,13 +86,12 @@ public class UserController {
         return response.build();
     }
     @POST
-    @Path("/{id}/reset-password-token")
     @Produces(value = { Vnd.VND_RESET_PASSWORD })
     @Consumes(value = { Vnd.VND_RESET_PASSWORD })
-    public Response createChangePasswordToken(@PathParam("id") final int id) throws UserNotFoundException {
-        us.createChangePasswordToken(id);
-        LOGGER.info("POST user/{}/reset-password-token",id);
-        return Response.ok().build();
+    public Response createChangePasswordToken(@Valid ResetPasswordTokenForm passwordTokenForm) throws UserNotFoundException {
+        us.createChangePasswordToken(passwordTokenForm.getEmail());
+        LOGGER.info("POST user/{}/reset-password-token",passwordTokenForm.getEmail());
+        return Response.noContent().build();
     }
 
     @PUT
