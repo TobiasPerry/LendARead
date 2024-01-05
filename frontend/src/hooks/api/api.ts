@@ -7,7 +7,7 @@ export class Api {
     private static authenticated: Boolean = false;
 
     static get baseUrl() {
-        return "http://127.0.0.1:8080/api";
+        return "http://127.0.0.1:8082/api";
     }
 
     static get timeout() {

@@ -12,14 +12,13 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
         id: location.id || -1,
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
-        console.log(formData);
-        handleClose();
+        handleSave(formData);
     };
 
     const modalStyle = {

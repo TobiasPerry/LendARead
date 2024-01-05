@@ -1,22 +1,28 @@
-import React, {useState, useEffect, useContext} from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
 import LocationModal from "../../components/locations/LocationModal.tsx";
 import Location from "../../components/locations/Location.tsx";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useLocations from "../../hooks/locations/useLocations.ts";
 
+export interface LocationType {
+    name: string | null,
+    province: string,
+    country: string,
+    locality: string,
+    zipcode: number
+}
 const LocationsPage = () => {
     const { t } = useTranslation();
-    const [locations, setLocations] = useState([{}]); // Assuming locations are fetched from an API or similar
+    const [locations, setLocations] = useState([{}]);
     const [showModal, setShowModal] = useState(false);
-    const [editingLocation, setEditingLocation] = useState({});
+    const [editingLocation, setEditingLocation] = useState({name: null, province: "", country: "", locality: "", zipcode: 0});
 
     const {user} = useContext(AuthContext)
     const { editLocation, deleteLocation, getLocations, addLocation} = useLocations()
 
     useEffect(() => {
-        setLocations(getLocations(user));
+        // setLocations(getLocations(user));
     }, []);
 
     const handleEdit = (location: any) => {
@@ -35,7 +41,11 @@ const LocationsPage = () => {
 
     const handleSave = (updatedLocation: any) => {
         setShowModal(false);
-        editLocation(updatedLocation)
+
+        // if(editingLocation.name !== null)
+        //     editLocation(updatedLocation)
+        // else
+            addLocation(updatedLocation)
 
         //display new location
         const updated = locations
@@ -44,7 +54,6 @@ const LocationsPage = () => {
     };
 
     const handleAddNew = () => {
-        setEditingLocation({ id: null, name: '', locality: '', province: '', country: '', zipcode: '' });
         setShowModal(true);
     };
 
@@ -53,8 +62,8 @@ const LocationsPage = () => {
             <div className="container">
                 <h2 style={{ padding: '20px' }}>{t('locations.title')}</h2>
                 <div className="container-row-wrapped" style={{ backgroundColor: '#D0DCD0', borderRadius: '20px', padding: '20px' }}>
-                    {locations.map((location, i) => (
-                        <Location location={locations[i]} handleEdit={() => handleEdit(location)} handleDelete={() => handleDelete(i)}/>
+                    {locations.map((location , i) => (
+                        <Location key={i} location={locations[i]} handleEdit={() => handleEdit(location)} handleDelete={() => handleDelete(i)}/>
                     ))}
                     {locations.length <= 5 && (
                         <div className="info-container m-3 add-new-location btn-icon add-button" onClick={handleAddNew}

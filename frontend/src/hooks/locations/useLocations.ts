@@ -1,4 +1,5 @@
 import {Api} from "../api/api.ts";
+import {LocationType} from "../../views/user/Locations.tsx";
 
 const useLocations = () => {
 
@@ -10,10 +11,11 @@ const useLocations = () => {
 
     }
 
-    const getLocations = (userId: number): Array<any> => {
+    const getLocations = async (userId: number) : Array<any>=> {
         try {
             const response = await Api.get(`/locations?userId=${user}`)
             console.log(response)
+            return []
         } catch {
 
             return []
@@ -21,8 +23,14 @@ const useLocations = () => {
 
     }
 
-    const addLocation = (location: any, userId: number) => {
-
+    const addLocation = async (location: LocationType) => {
+        console.log("posting the location", location)
+        try {
+            const response = await Api.post(`/locations?userId=${user}`, {location})
+            console.log(response)
+        } catch (e) {
+            console.log('error', e)
+        }
     }
 
     return {
