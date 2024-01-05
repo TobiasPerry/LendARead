@@ -26,7 +26,7 @@ const useLocations = () => {
     const addLocation = async (location: LocationType) => {
         console.log("posting the location", location)
         try {
-            const response = await Api.post(`/locations?userId=${user}`, {location})
+            const response = await Api.post(`/locations`, {...location}, false, {"Content-Type": "application/vnd.location.v1+json"})
             console.log(response)
         } catch (e) {
             console.log('error', e)

@@ -48,7 +48,7 @@ export class Api {
 
         if (this.authenticated) {
             if (!init.headers) init.headers = {};
-            init.headers['Authorization'] = `bearer ${this.token}`;
+            init.headers['Authorization'] = `Bearer ${this.token}`;
         }
 
         const controller = new AbortController();
