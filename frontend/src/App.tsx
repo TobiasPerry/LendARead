@@ -10,6 +10,7 @@ import Register from "./views/user/Register.tsx";
 import ForgotPassword from "./views/user/ForgotPassword.tsx";
 import UserHome from "./views/user/UserHome.tsx";
 import {AuthProvider} from "./contexts/authContext.tsx";
+import Locations from "./views/user/Locations.tsx";
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Landing />} />
                     <Route path="login" element={<LoginView />} />
+                    <Route path="locations" element={<Locations />} />
                     <Route path="userHome" element={<UserHome />} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
                     <Route path="about" element={<About />} />

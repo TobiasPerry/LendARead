@@ -137,5 +137,28 @@
       "title": "No books available",
       "btn": "Clear search"
     }
+  },
+  "addAssetView": {
+    "titleLabel": "Title",
+    "nameLabel": "Name",
+    "localityLabel": "Locality",
+    "provinceLabel": "Province",
+    "countryLabel": "Country",
+    "zipcodeLabel": "Zip Code"
+  },
+  "errorMessages": {
+    "name": "Name is required.",
+    "locality": "Locality is required.",
+    "province": "Province is required.",
+    "country": "Country is required.",
+    "zipcode": "Zip code is required."
+  },
+  "modalTitle": "Location Details",
+  "save": "Save",
+  "locations": {
+    "title": "Locations",
+    "addLocation": "Add Location",
+    "edit": "Edit",
+    "delete": "Delete"
   }
 }

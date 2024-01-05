@@ -135,5 +135,28 @@
       "title": "No hay libros disponibles",
       "btn": "Limpiar búsqueda"
     }
+  },
+  "addAssetView": {
+    "titleLabel": "Título",
+    "nameLabel": "Nombre",
+    "localityLabel": "Localidad",
+    "provinceLabel": "Provincia",
+    "countryLabel": "País",
+    "zipcodeLabel": "Código Postal"
+  },
+  "errorMessages": {
+    "name": "El nombre es obligatorio.",
+    "locality": "La localidad es obligatoria.",
+    "province": "La provincia es obligatoria.",
+    "country": "El país es obligatorio.",
+    "zipcode": "El código postal es obligatorio."
+  },
+  "modalTitle": "Detalles de la Ubicación",
+  "save": "Guardar",
+  "locations": {
+    "title": "Ubicaciones",
+    "addLocation": "Añadir Ubicación",
+    "edit": "Editar",
+    "delete": "Eliminar"
   }
 }
