@@ -139,7 +139,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers(HttpMethod.POST,"/api/assetInstances").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/locations").authenticated()
+                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/lendings").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and().addFilterBefore(
