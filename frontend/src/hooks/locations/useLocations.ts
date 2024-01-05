@@ -11,17 +11,16 @@ const useLocations = () => {
 
     }
 
-    const getLocations = async (userId: number) : Array<any>=> {
+    const getLocations = async (userId: any) => {
         try {
-            const response = await Api.get(`/locations?userId=${user}`)
-            console.log(response)
+            const response = await Api.get(`/locations?userId=${userId}`);
+            console.log(response);
+            // @ts-ignore
             return []
-        } catch {
-
+        } catch (error) {
             return []
         }
-
-    }
+    };
 
     const addLocation = async (location: LocationType) => {
         console.log("posting the location", location)

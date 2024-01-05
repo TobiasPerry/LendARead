@@ -22,8 +22,16 @@ const LocationsPage = () => {
     const { editLocation, deleteLocation, getLocations, addLocation} = useLocations()
 
     useEffect(() => {
-        // setLocations(getLocations(user));
+        (async () => {
+            try {
+                const response = await getLocations(user);
+                setLocations(response);
+            } catch (error) {
+                console.error("Failed to fetch locations:", error);
+            }
+        })();
     }, []);
+
 
     const handleEdit = (location: any) => {
         setEditingLocation(location);
