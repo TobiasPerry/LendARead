@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const LocationModal = ({ location, showModal, handleClose }: any) => {
+const LocationModal = ({ handleSave, location, showModal, handleClose }: any) => {
     const { t } = useTranslation();
     const [formData, setFormData] = useState({
-        name: '',
-        locality: '',
-        province: '',
-        country: '',
-        zipcode: '',
-        id: -1
+        name: location.name || '',
+        locality: location.locality || '',
+        province: location.province || '',
+        country: location.country || '',
+        zipcode: location.zipcode || '',
+        id: location.id || -1,
     });
 
     const handleChange = (e) => {
@@ -130,7 +130,7 @@ const LocationModal = ({ location, showModal, handleClose }: any) => {
                                 />
                             </div>
                             <input type="hidden" name="id" value={formData.id} />
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" className="btn btn-primary" onClick={() => handleSave(formData)}>
                                 {t('save')}
                             </button>
                         </form>

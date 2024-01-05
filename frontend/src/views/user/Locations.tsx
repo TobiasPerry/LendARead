@@ -26,11 +26,23 @@ const LocationsPage = () => {
 
     const handleDelete = (locationId: any) => {
         // Handle deletion logic
+
+        //delete from api
+
+        //delete from locations
+        const updated = locations
+        updated.filter(idx => idx != editingLocation)
+        setLocations(updated)
     };
 
     const handleSave = (updatedLocation: any) => {
-        // Handle save logic
         setShowModal(false);
+        //store the new location into the api
+
+        //display new location
+        const updated = locations
+        updated.push(editingLocation)
+        setLocations(updated)
     };
 
     const handleAddNew = () => {
@@ -56,7 +68,7 @@ const LocationsPage = () => {
                     )}
                 </div>
             </div>
-            <LocationModal  showModal={showModal} handleClose={() => setShowModal(false)} > </LocationModal>
+            <LocationModal location={editingLocation} showModal={showModal} handleClose={() => setShowModal(false)} handleSave={handleSave}> </LocationModal>
         </div>
     );
 };
