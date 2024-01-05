@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
@@ -36,33 +37,45 @@ public class AccessFunctions {
     public boolean checkUser(HttpServletRequest request, int id) {
         try {
             User user = userService.getUserById(id);
-            if (userService.getCurrentUser().equals("anonymousUser"))
+            if (userService.getCurrentUser() == null)
                 return false;
-            return userService.getUser(userService.getCurrentUser()).getId() == user.getId();
+            return userService.getCurrentUser().getId() == user.getId();
         }catch (UserNotFoundException e){
             return true;
         }
     }
     public boolean locationOwner(HttpServletRequest request, Integer id) {
         try {
-            return locationsService.getLocation(id).getUser().getEmail().equals(userService.getCurrentUser());
+            if (userService.getCurrentUser() == null)
+                return false;
+            return locationsService.getLocation(id).getUser().getEmail().equals(userService.getCurrentUser().getEmail());
         }catch (LocationNotFoundException e){
             return true;
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public boolean lendingOwner(HttpServletRequest request, Integer id)  {
+    public boolean lendingLenderOrBorrower(HttpServletRequest request, Integer id)  {
         try {
-            return assetAvailabilityService.getLender(id).getEmail().equals(userService.getCurrentUser());
-        }catch (AssetInstanceNotFoundException e){
+            if (userService.getCurrentUser() == null)
+                return false;
+            return assetAvailabilityService.getLender(id).getEmail().equals(userService.getCurrentUser().getEmail()) || assetAvailabilityService.getBorrower(id).getEmail().equals(userService.getCurrentUser().getEmail());
+        }catch (LendingNotFoundException e){
             return true;
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
     public boolean assetInstanceOwner(HttpServletRequest request, Integer id){
         try {
-            return assetInstanceService.isOwner(id, userService.getCurrentUser());
+            if  (userService.getCurrentUser() == null)
+                return false;
+            return assetInstanceService.isOwner(id, userService.getCurrentUser().getEmail());
         }catch (AssetInstanceNotFoundException e){
             return true;
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

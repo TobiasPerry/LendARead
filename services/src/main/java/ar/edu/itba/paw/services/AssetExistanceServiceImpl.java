@@ -49,7 +49,7 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
     public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws InternalErrorException, UserNotFoundException, LocationNotFoundException {
 
         Asset book = assetService.getBookById(assetId);
-        User user = userService.getUser(userService.getCurrentUser());
+        User user = userService.getCurrentUser();
         Location location = locationsService.getLocation(locationId);
         Image image = photosDao.addPhoto(fileByteArray);
         AssetInstance assetInstance = new AssetInstance();

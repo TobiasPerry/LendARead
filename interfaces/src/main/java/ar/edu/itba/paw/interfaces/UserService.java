@@ -17,22 +17,23 @@ public interface UserService {
 
     boolean getCurrentUserIsBorrower();
 
-    String getCurrentUser();
+    User getCurrentUser() throws UserNotFoundException;
 
     Collection
             <? extends GrantedAuthority> getCurrentRoles();
 
-    void createChangePasswordToken(final int id) throws UserNotFoundException;
+    void createChangePasswordToken(final String email) throws UserNotFoundException;
 
-    void changePassword(final int id,final String token, final String password);
 
-    boolean isTokenValid(final String token);
+    boolean isTokenValid(final int userId,final String token);
 
+    String getUserResetPasswordToken(final String email) throws UserNotFoundException;
 
     int changeUserProfilePic(final int id, byte[] parsedImage) throws UserNotFoundException;
 
-    void updateUser(final int id,final String username,final String telephone,final String role) throws UserNotFoundException;
+    void updateUser(final int id,final String username,final String telephone,final String role,final String password) throws UserNotFoundException;
 
+    void deleteToken(final String token);
     @Scheduled
     void deletePastChangePasswordTokens();
 }

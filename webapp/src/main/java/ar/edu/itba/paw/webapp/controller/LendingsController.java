@@ -54,7 +54,7 @@ public class LendingsController {
                                 @QueryParam("itemsPerPage")@DefaultValue("1") Integer itemsPerPage,
                                 @QueryParam("assetInstanceId")  Integer assetInstanceId,
                                 @QueryParam("borrowerId") Integer borrowerId,
-                                @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED") String state,
+                                @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED|CANCALE",message = "{lending.state.invalid}") String state,
                                 @QueryParam("lenderId") Integer lenderId) {
         PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
@@ -68,7 +68,7 @@ public class LendingsController {
     @Path("/")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
-      Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
+      Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser().getEmail(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       LOGGER.info("POST lendings/ assetInstanceId:{}",borrowAssetForm.getAssetInstanceId());
       return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
     }
@@ -84,7 +84,7 @@ public class LendingsController {
     @PATCH
     @Path("/{id}")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
-    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
+    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException {
         aas.changeLending(id, patchLendingForm.getState());
         LOGGER.info("PATCH lendings/ id:{} state:{}",id,patchLendingForm.getState());
         return Response.noContent().build();

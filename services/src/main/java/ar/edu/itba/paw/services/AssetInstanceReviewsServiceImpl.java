@@ -51,7 +51,7 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
         if(lending.getAssetInstance().getId() != assetId){
             throw new LendingNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
-        AssetInstanceReview assetInstanceReview = new AssetInstanceReview(lending, review, userService.getUser(userService.getCurrentUser()),rating) ;
+        AssetInstanceReview assetInstanceReview = new AssetInstanceReview(lending, review, userService.getCurrentUser(),rating) ;
        assetInstanceReviewsDao.addReview(assetInstanceReview);
        LOGGER.info("Asset review added for lending {}", assetInstanceReview.getLending().getId());
        return assetInstanceReview;
@@ -83,10 +83,10 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     }
 
     @Override
-    public boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException {
+    public boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException, UserNotFoundException {
         Optional<AssetInstanceReview> assetInstanceReview = assetInstanceReviewsDao.getReviewByLendingId(lendingId);
         Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser()) && lending.getAssetInstance().getId() == assetInstanceId;
+        return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser().getEmail()) && lending.getAssetInstance().getId() == assetInstanceId;
 
     }
     @Transactional(readOnly = true)

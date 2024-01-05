@@ -69,7 +69,7 @@ public class UserReviewsServiceImplTest {
     public void lenderCanReviewTrueTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
-        when(userService.getCurrentUser()).thenReturn(USER.getEmail());
+        when(userService.getCurrentUser()).thenReturn(new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, Behaviour.LENDER));
         when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
@@ -84,7 +84,7 @@ public class UserReviewsServiceImplTest {
     public void lenderCanReviewAlreadyReviewedFalseTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
-        when(userService.getCurrentUser()).thenReturn(USER.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER);
 //        when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.of(USER_REVIEW));
 
@@ -99,7 +99,7 @@ public class UserReviewsServiceImplTest {
     public void lenderCanReviewDifferentUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
-        when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT);
         when(userService.getUser(anyString())).thenReturn(USER_DIFFERENT);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
@@ -114,7 +114,7 @@ public class UserReviewsServiceImplTest {
     public void lenderCanReviewNotFinishedUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING_NOT_FINISHED);
-        when(userService.getCurrentUser()).thenReturn(USER.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER);
         when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
@@ -131,7 +131,7 @@ public class UserReviewsServiceImplTest {
     public void borrowerCanReviewTrueTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
-        when(userService.getCurrentUser()).thenReturn(USER.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER);
         when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
@@ -146,7 +146,7 @@ public class UserReviewsServiceImplTest {
     public void borrowerCanReviewAlreadyReviewedFalseTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
-        when(userService.getCurrentUser()).thenReturn(USER.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER);
         //when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.of(USER_REVIEW));
 
@@ -161,7 +161,7 @@ public class UserReviewsServiceImplTest {
     public void borrowerCanReviewDifferentUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
-        when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT);
         when(userService.getUser(anyString())).thenReturn(USER_DIFFERENT);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 
@@ -176,7 +176,7 @@ public class UserReviewsServiceImplTest {
     public void borrowerCanReviewNotFinishedUserTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceServiceImpl.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING_NOT_FINISHED);
-        when(userService.getCurrentUser()).thenReturn(USER.getEmail());
+        when(userService.getCurrentUser()).thenReturn(USER);
         when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
 

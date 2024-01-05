@@ -1,4 +1,5 @@
 package ar.edu.itba.paw.webapp.oldControllers;
+/*
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
@@ -26,3 +27,4 @@ public class UserDataControllerAdvice {
         return userService.getUser(userService.getCurrentUser());
     }
 }
+*/
