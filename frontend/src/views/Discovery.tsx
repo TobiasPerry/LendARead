@@ -12,24 +12,27 @@ const DiscoveryView =  () => {
     let booksPerPage = 12;
 
     const {t} = useTranslation();
-    const [data, setData] = useState("vacio");
+
 
     const {handleAllAssetInstances} = useAssetInstance();
 
+    let books = Array.from({ length: booksPerPage }, (_, index) => (
+        <BookCardPlaceholder key={index} />
+    ));
+
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(()=>{
-        console.log("USE EFFECT")
         const fetchData = async () => {
             const _data = await handleAllAssetInstances();
             const body = await _data?.json()
             console.log(body)
             setData(body)
+            setLoading(false)
         };
         fetchData();
     }, [])
-
-    let books = Array.from({ length: booksPerPage }, (_, index) => (
-        <BookCardPlaceholder key={index} />
-    ));
 
     //books = []
 
@@ -110,30 +113,6 @@ const DiscoveryView =  () => {
                                    id="customRange3" value="${actualMinRating}"/>
                         </div>
 
-
-                        {/*
-                        FORM
-                         <c:url value="/discovery" var="discoveryPageUrl"/>
-                        <form:form method="get" accept-charset="UTF-8" action="${discoveryPageUrl}"
-                                modelAttribute="searchFilterSortForm" id="springForm">
-                            <input type="hidden" name="currentPage" id="currentPageID" value="${currentPage}"/>
-
-                            <input type="hidden" name="sort" id="sort" value="${sort}"/>
-                            <input type="hidden" name="sortDirection" id="sortDirection" value="${sortDirection}"/>
-
-                            <c:forEach var="language" items="${languagesFiltered}" varStatus="status">
-                                <input type="hidden" name="languages[${status.index}]" value="${language}"/>
-                            </c:forEach>
-
-                            <c:forEach var="physicalCondition" items="${physicalConditionsFiltered}" varStatus="status">
-                                <input type="hidden" name="physicalConditions[${status.index}]" value="${physicalCondition}"/>
-                            </c:forEach>
-
-                            <input type="hidden" name="minRating" id="minRating" value="${actualMinRating}"/>
-                            <input type="hidden" name="maxRating" id="maxRating" value="${actualMaxRating}"/>
-
-                        </form:form> */}
-
                         <div className="container-row-wrapped"
                              style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
                             <input className="btn btn-light mx-2" type="submit" value={t('discovery.filters.btn.apply')}
@@ -147,7 +126,7 @@ const DiscoveryView =  () => {
 
                     <div className="container-column" style={{flex: '0 1 85%'}}>
                         { /* If books is empty show message and btn action to clear filters */
-                            books.length === 0 ? (
+                            !loading && data.length === 0 ? (
                                     <div className="mb-2">
                                         <div className="container-row-wrapped" style={{width: '100%'}}>
                                             <h1>{t('discovery.no_books.title')}</h1>
@@ -171,7 +150,7 @@ const DiscoveryView =  () => {
                                              width: '90%'
                                          }}>
                                         {
-                                            data.map((book, index) => (<BookCard book={book}/> ))
+                                            data.length === 0 ? books : data.map((book, index) => (<BookCard book={book}/> ))
                                         }
                                     </div>
                                     <div className="container-row-wrapped"
