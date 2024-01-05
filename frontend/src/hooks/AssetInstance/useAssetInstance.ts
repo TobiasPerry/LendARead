@@ -7,7 +7,8 @@ const useAssetInstance = () => {
 
         try {
             const data = await Api.get("/assetInstances")
-            console.log(data)
+            // const body = await data.json()
+            // console.log(body)
             return data
         } catch (error){
             console.log("Error")

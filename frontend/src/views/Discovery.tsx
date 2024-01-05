@@ -7,28 +7,32 @@ import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
 const DiscoveryView =  () => {
 
-    const {t} = useTranslation();
-    const [data, setData] = useState("vacio");
-    const {handleAllAssetInstances} = useAssetInstance();
-
-    useEffect(()=>{
-        const fetchData = async () => {
-            const _data = await handleAllAssetInstances();
-            setData(_data)
-            console.log(data);
-          //  setData("algo")
-        };
-        fetchData();
-    })
-
     let currentPage = -1;
     let totalPages = 12;
     let booksPerPage = 12;
 
-    // Generate an array of length totalPages
-    const placeholders = Array.from({ length: booksPerPage }, (_, index) => (
+    const {t} = useTranslation();
+    const [data, setData] = useState("vacio");
+
+    const {handleAllAssetInstances} = useAssetInstance();
+
+    useEffect(()=>{
+        console.log("USE EFFECT")
+        const fetchData = async () => {
+            const _data = await handleAllAssetInstances();
+            const body = await _data?.json()
+            console.log(body)
+            setData(body)
+        };
+        fetchData();
+    }, [])
+
+    let books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
     ));
+
+    //books = []
+
 
     return (
         <>
@@ -142,81 +146,72 @@ const DiscoveryView =  () => {
                     </div>
 
                     <div className="container-column" style={{flex: '0 1 85%'}}>
+                        { /* If books is empty show message and btn action to clear filters */
+                            books.length === 0 ? (
+                                    <div className="mb-2">
+                                        <div className="container-row-wrapped" style={{width: '100%'}}>
+                                            <h1>{t('discovery.no_books.title')}</h1>
+                                        </div>
+                                        <div className="container-row-wrapped mt-3" style={{width: '100%'}}>
+                                            <Link to="/discovery">
+                                                <button type="button" className="btn btn-outline-secondary btn-lg">
+                                                    {t('discovery.no_books.btn')}
+                                                </button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                            ) : (
+                                <>
+                                    <div className="container-row-wrapped"
+                                         style={{
+                                             margin: '20px auto',
+                                             paddingTop: '20px',
+                                             backgroundColor: "rgba(255, 255, 255, 0.3)",
+                                             borderRadius: '20px',
+                                             width: '90%'
+                                         }}>
+                                        {
+                                            data.map((book, index) => (<BookCard book={book}/> ))
+                                        }
+                                    </div>
+                                    <div className="container-row-wrapped"
+                                         style={{marginTop: '25px', marginBottom: '25px', width: '100%'}}>
+                                        <div>
+                                            <nav aria-label="Page navigation example">
+                                                <ul className="pagination justify-content-center align-items-center">
+                                                    <li className="page-item">
+                                                        <button type="button"
+                                                                className="btn mx-5 pagination-button"
+                                                                id="previousPageButton"
+                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}>
+                                                            <i className="bi bi-chevron-left"></i>
+                                                            {t('discovery.pagination.previous')}
+                                                        </button>
+                                                    </li>
 
-                        <div className="container-row-wrapped placeholder-group"
-                             style={{
-                                 margin: '20px auto',
-                                 paddingTop: '20px',
-                                 backgroundColor: "rgba(255, 255, 255, 0.3)",
-                                 borderRadius: '20px',
-                                 width: '90%'
-                             }}>
-                            <BookCard/>
-                        </div>
+                                                    <li>
+                                                        {currentPage} / {totalPages}
+                                                    </li>
 
-                        <div className="container-row-wrapped"
-                             style={{
-                                 margin: '20px auto',
-                                 paddingTop: '20px',
-                                 backgroundColor: "rgba(255, 255, 255, 0.3)",
-                                 borderRadius: '20px',
-                                 width: '90%'
-                             }}>
-                            {placeholders}
-                        </div>
-
-
-                        <div className="container-row-wrapped"
-                             style={{marginTop: '25px', marginBottom: '25px', width: '100%'}}>
-                            <div>
-                                <nav aria-label="Page navigation example">
-                                    <ul className="pagination justify-content-center align-items-center">
-                                        <li className="page-item">
-                                            <button type="button"
-                                                    className="btn mx-5 pagination-button"
-                                                    id="previousPageButton"
-                                                    style={{borderColor: "rgba(255, 255, 255, 0)"}}>
-                                                <i className="bi bi-chevron-left"></i>
-                                                {t('discovery.pagination.previous')}
-                                            </button>
-                                        </li>
-
-                                        <li>
-                                            {currentPage} / {totalPages}
-                                        </li>
-
-                                        <li className="page-item">
-                                            <button type="button"
-                                                    className="btn mx-5 pagination-button"
-                                                    id="nextPageButton"
-                                                    style={{borderColor: "rgba(255, 255, 255, 0)"}}>
-                                                {t('discovery.pagination.next')}
-                                                <i className="bi bi-chevron-right"></i>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-
-                        <div className="container-row-wrapped" style={{marginTop: '50px', width: '100%'}}>
-                            <h1>{t('discovery.no_books.title')}</h1>
-                        </div>
-                        <div className="container-row-wrapped" style={{marginTop: '20px', width: '100%'}}>
-
-                            <Link to="/discovery">
-                                <button type="button" className="btn btn-outline-secondary btn-lg">
-                                    {t('discovery.no_books.btn')}
-                                </button>
-                            </Link>
-
-                        </div>
-
+                                                    <li className="page-item">
+                                                        <button type="button"
+                                                                className="btn mx-5 pagination-button"
+                                                                id="nextPageButton"
+                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}>
+                                                            {t('discovery.pagination.next')}
+                                                            <i className="bi bi-chevron-right"></i>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        }
                     </div>
                 </div>
             </div>
-
-
         </>
     );
 };

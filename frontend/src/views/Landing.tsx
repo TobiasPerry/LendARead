@@ -2,6 +2,7 @@ import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
 
 export default function Landing(){
@@ -32,7 +33,8 @@ export default function Landing(){
                     <h1>{t('landing.recent.title')}</h1>
                 </div>
                 <div className="container-row-wrapped" style={{margin: '20px auto', paddingTop: '20px', backgroundColor: '#FFFFFF', borderRadius: '20px', width: '90%'}}>
-                    <BookCard></BookCard>                    
+                    {/*<BookCard book={}></BookCard>*/}
+                    <BookCardPlaceholder/>
                 </div>
             </section>
             

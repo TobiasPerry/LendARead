@@ -2,10 +2,21 @@
 import './styles/bookCard.css';
 import {Link} from "react-router-dom";
 
-const BookCard = () => {
+const BookCard = ({ book }) => {
+    // const {
+    //     backgroundImageUrl,
+    //     bookImageUrl,
+    //     author,
+    //     title,
+    //     physicalCondition,
+    //     userImageUrl,
+    //     username,
+    //     location,
+    // } = book;
+    console.log(book)
   return (
     <>
-      <div className="card text-white card-has-bg click-col cardBook" 
+      <div className="card text-white card-has-bg click-col cardBook"
         style=
         {{  
           backgroundImage: "url('http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/71')",
