@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const Location = ({ handleEdit, handleDelete, location, locationIdError, showError }: any) => {
+const Location = ({ handleEdit, handleDelete, location }: any) => {
     const { t } = useTranslation();
 
     const textStyle = {
@@ -10,11 +9,13 @@ const Location = ({ handleEdit, handleDelete, location, locationIdError, showErr
         border: '1px solid #ced4da',
         borderRadius: '0.25rem',
         backgroundColor: '#f8f9fa', // light background to mimic input field
+        fontSize: '3rem'
     };
 
     const labelStyle = {
         marginBottom: '0.5rem',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: '16px'
     };
 
     const buttonStyle = {
@@ -32,7 +33,7 @@ const Location = ({ handleEdit, handleDelete, location, locationIdError, showErr
         <div key={location.id} className="info-container m-3" style={{ maxWidth: '600px', minWidth: '300px', minHeight: '300px' }}>
             <div className="form-group m-2">
                 <label style={labelStyle}>{t('addAssetView.titleLabel')}</label>
-                <div style={textStyle}>{location.name}</div>
+                <div style={textStyle}>{location.name ? location.name : ""}</div>
             </div>
             <div className="d-flex flex-row">
                 <div className="form-group m-2">
