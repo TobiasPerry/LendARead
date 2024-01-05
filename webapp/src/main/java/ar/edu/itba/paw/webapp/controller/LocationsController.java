@@ -63,8 +63,8 @@ public class LocationsController {
     @PATCH
     @Path("/{id}")
     @Produces(value = { Vnd.VND_LOCATION })
-    @Consumes(value = { MediaType.MULTIPART_FORM_DATA })
-    public Response editLocation(@PathParam("id")final Integer locationId, @BeanParam @Valid EditLocationForm locationForm) throws LocationNotFoundException {
+    @Consumes(value = { Vnd.VND_LOCATION })
+    public Response editLocation(@PathParam("id")final Integer locationId, @Valid EditLocationForm locationForm) throws LocationNotFoundException {
         Location location = ls.editLocationById(locationId, Optional.ofNullable(locationForm.getName()), Optional.ofNullable(locationForm.getLocality()), Optional.ofNullable(locationForm.getProvince()), Optional.ofNullable(locationForm.getCountry()), Optional.ofNullable(locationForm.getZipcode()));
         LOGGER.info("PATCH location/ id:{}",locationId);
         return Response.noContent().build();
@@ -78,10 +78,8 @@ public class LocationsController {
         return Response.noContent().build();
     }
     @POST
-    @Path("/")
-    @Produces(value = { Vnd.VND_LOCATION })
-    @Consumes(value = { MediaType.MULTIPART_FORM_DATA })
-    public Response addLocation(@BeanParam @Valid LocationForm locationForm) throws UserNotFoundException {
+    @Consumes(value = { Vnd.VND_LOCATION })
+    public Response addLocation(@Valid LocationForm locationForm) throws UserNotFoundException {
         Location location = ls.addLocation(locationForm.getName(), locationForm.getLocality(), locationForm.getProvince(), locationForm.getCountry(), locationForm.getZipcode());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(location.getId())).build();
