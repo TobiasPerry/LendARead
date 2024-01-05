@@ -18,7 +18,10 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,6 @@ public class LocationsController {
     }
 
     @GET
-    @Path("/")
     @Produces(value = { Vnd.VND_LOCATION })
     public Response getLocation(@QueryParam("userId")@NotNull final Integer userId) throws UserNotFoundException {
         final List<Location> locations = ls.getLocationsById(userId);

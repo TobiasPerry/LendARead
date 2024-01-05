@@ -48,7 +48,6 @@ public class LendingsController {
     }
 
     @GET
-    @Path("/")
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
     public Response getLendings(@QueryParam("page")@DefaultValue("1") Integer page,
                                 @QueryParam("itemsPerPage")@DefaultValue("1") Integer itemsPerPage,
@@ -65,8 +64,8 @@ public class LendingsController {
         return response.build();
     }
     @POST
-    @Path("/")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
+    @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
       Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser().getEmail(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       LOGGER.info("POST lendings/ assetInstanceId:{}",borrowAssetForm.getAssetInstanceId());
@@ -84,6 +83,7 @@ public class LendingsController {
     @PATCH
     @Path("/{id}")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
+    @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException {
         aas.changeLending(id, patchLendingForm.getState());
         LOGGER.info("PATCH lendings/ id:{} state:{}",id,patchLendingForm.getState());
