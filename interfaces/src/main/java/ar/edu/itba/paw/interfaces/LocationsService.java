@@ -3,9 +3,8 @@ package ar.edu.itba.paw.interfaces;
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface LocationsService {
@@ -13,16 +12,9 @@ public interface LocationsService {
 
     Location addLocation(final String name, final String locality, final String province, final String country, final String zipcode) throws UserNotFoundException;
     Location getLocation(final int locationId) throws LocationNotFoundException;
-
-    List<Location> getLocations(final User user);
-
     void editLocation(final Location lc);
-
     void deleteLocation(final Location lc) throws LocationNotFoundException;
-
-     List<Location> getLocationsById(final int userId) throws UserNotFoundException;
-
-    Location editLocationById(int locationId, Optional<String> name, Optional<String> locality, Optional<String> province, Optional<String> country, Optional<String> zipcode) throws LocationNotFoundException;
-    List<Location> getLocations();
+    Location editLocationById(final int locationId, final Optional<String> name,final Optional<String> locality,final Optional<String> province,final Optional<String> country,final Optional<String> zipcode) throws LocationNotFoundException;
+    PagingImpl<Location> getLocations(final Integer userId, final int page, final int itemsPerPage) ;
     void deleteLocationById(final int locationId) throws  LocationNotFoundException;
 }

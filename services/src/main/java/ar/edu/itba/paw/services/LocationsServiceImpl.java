@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,11 +59,6 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Location> getLocations(User user) {
-        return locationsDao.getLocations(user);
-    }
 
     @Override
     @Transactional
@@ -82,11 +77,7 @@ public class LocationsServiceImpl implements LocationsService {
        LOGGER.info("Location {} deleted for user {}", lc.getId(), lc.getUser().getId());
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Location> getLocationsById(int userId) throws UserNotFoundException {
-        return locationsDao.getLocations(userService.getUserById(userId));
-    }
+
 
     @Override
     @Transactional
@@ -101,12 +92,12 @@ public class LocationsServiceImpl implements LocationsService {
         return location;
     }
 
-    @Override
     @Transactional(readOnly = true)
-    public List<Location> getLocations() {
-        //return locationsDao.getAllLocations();
-        return null;
+    @Override
+    public PagingImpl<Location> getLocations(final Integer userId, final int page, final int itemsPerPage) {
+        return locationsDao.getLocations(userId, page, itemsPerPage);
     }
+
 
     @Override
     @Transactional

@@ -1,15 +1,13 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
 import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.userContext.implementations.User;
-
-import java.util.List;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface LocationDao {
 
     Location addLocation(Location lc);
 
-    List<Location> getLocations(User user);
+    PagingImpl<Location> getLocations(final Integer userId, final int page, final int itemsPerPage);
 
     Location getLocation(int location);
 
