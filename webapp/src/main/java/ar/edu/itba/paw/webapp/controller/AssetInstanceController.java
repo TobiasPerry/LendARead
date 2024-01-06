@@ -39,6 +39,7 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +75,6 @@ public class AssetInstanceController {
         LOGGER.info("GET assetInstances/{}",id);
         AssetsInstancesDTO assetDTO = AssetsInstancesDTO.fromAssetInstance(uriInfo,assetInstance);
         Response.ResponseBuilder response = Response.ok(assetDTO);
-        StaticCache.setUnconditionalCache(response);
         return response.build();
     }
     @GET
@@ -85,7 +85,7 @@ public class AssetInstanceController {
                              @Context javax.ws.rs.core.Request request) throws AssetInstanceNotFoundException, IOException {
         final AssetInstance assetInstance = ais.getAssetInstance(id);
 
-        EntityTag eTag = new EntityTag(String.valueOf(assetInstance.getImage().getId()) + size);
+        EntityTag eTag = new EntityTag(Arrays.hashCode(assetInstance.getImage().getPhoto()) + size);
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         LOGGER.info("GET assetInstances/{}/image",id);

@@ -65,7 +65,6 @@ public class LocationsController {
 
         final Location location = ls.getLocation(locationId);
         Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
-        StaticCache.setUnconditionalCache(response);
         LOGGER.info("GET location/ id:{}",locationId);
         return response.build();
     }
