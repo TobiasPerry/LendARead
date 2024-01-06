@@ -37,6 +37,8 @@ const DiscoveryView =  () => {
 
     useEffect(()=>{
         const fetchData = async () => {
+            setLoading(true)
+            setData([])
             const books = await handleAllAssetInstances(currentPage, booksPerPage)
             setData(books)
             setLoading(false)
