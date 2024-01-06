@@ -7,7 +7,7 @@ export class Api {
     private static authenticated: Boolean = false;
 
     static get baseUrl() {
-        return "http://127.0.0.1:8082/api";
+        return "http://127.0.0.1:8080/api";
     }
 
     static get timeout() {
@@ -41,7 +41,7 @@ export class Api {
         }
     }
 
-    static async fetch(url: any, init: any = {}, rememberMe: boolean = false) {
+    static async fetch(url: any, init: any = {}, rememberMe: boolean = false, fullUrl: boolean = false) {
         if (!this.token) {
             this.retrieveToken();
         }
@@ -56,7 +56,7 @@ export class Api {
         const timer = setTimeout(() => controller.abort(), Api.timeout);
 
         try {
-            const response = await fetch(this.baseUrl + url, init);
+            const response = await fetch((fullUrl) ? url : this.baseUrl + url, init);
             this.handleNewToken(init.method, response.headers, rememberMe);
             return response;
         } catch (error: any) {
@@ -65,18 +65,19 @@ export class Api {
             clearTimeout(timer);
         }
     }
-    static async get(url: string, headers?: any, rememberMe: boolean = false) {
+    static async get(url: string, headers?: any, rememberMe: boolean = false, fullUrl: boolean = false) {
         return await Api.fetch(
              url ,
             {
                 method: "GET",
                 headers: headers,
             },
-            rememberMe
+            undefined,
+            fullUrl
         );
     }
 
-    static async post(url: string, data: object, rememberMe: boolean = false, headers?: any) {
+    static async post(url: string, data: object, rememberMe: boolean = false, headers?: any, fullUrl: boolean = false) {
         return await Api.fetch(
             url,
             {
@@ -84,11 +85,12 @@ export class Api {
                 headers: headers,
                 body: JSON.stringify(data),
             },
-            rememberMe
+            undefined,
+            fullUrl
         );
     }
 
-    static async put(url: string , data: object,headers?: any) {
+    static async put(url: string , data: object,headers?: any, fullUrl: boolean = false) {
         return await Api.fetch(
             url,
             {
@@ -96,17 +98,19 @@ export class Api {
                 headers: headers,
                 body: JSON.stringify(data),
             },
-
+undefined,
+            fullUrl
         );
     }
 
-    static async delete(url: string) {
+    static async delete(url: string, fullUrl: boolean = false) {
         return await Api.fetch(
             url,
             {
                 method: "DELETE",
             },
-
+            undefined,
+            fullUrl
         );
     }
 }

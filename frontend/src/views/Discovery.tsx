@@ -7,28 +7,31 @@ import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
 const DiscoveryView =  () => {
 
-    let currentPage = -1;
-    let totalPages = 12;
-    let booksPerPage = 12;
+
+
+
 
     const {t} = useTranslation();
 
 
     const {handleAllAssetInstances} = useAssetInstance();
 
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setPage] = useState(1);
+    const [booksPerPage, setBooksPerPage] = useState(12);
+    const [totalPages, setTotalPages] = useState(1);
+
     let books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
     ));
-
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
         const fetchData = async () => {
             const _data = await handleAllAssetInstances();
             const body = await _data?.json()
-            console.log(body)
             setData(body)
+
             setLoading(false)
         };
         fetchData();
