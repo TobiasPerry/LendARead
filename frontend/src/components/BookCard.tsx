@@ -3,23 +3,26 @@ import './styles/bookCard.css';
 import {Link} from "react-router-dom";
 
 const BookCard = ({ book }) => {
-    // const {
-    //     backgroundImageUrl,
-    //     bookImageUrl,
-    //     author,
-    //     title,
-    //     physicalCondition,
-    //     userImageUrl,
-    //     username,
-    //     location,
-    // } = book;
-    console.log(book)
+    const {
+        title,
+        author,
+        language,
+        image,
+        physicalCondition,
+        userImage,
+        userName,
+        country,
+        province,
+        locality
+    } = book;
+
+    const url_book_image = "url('" + image + "')"
   return (
     <>
       <div className="card text-white card-has-bg click-col cardBook"
         style=
         {{  
-          backgroundImage: "url('http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/71')",
+          backgroundImage: url_book_image,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -38,16 +41,16 @@ const BookCard = ({ book }) => {
 
         <div className="card-img-overlay d-flex flex-column">
             <div className="card-body">
-                <small className="card-meta mb-2 text-truncate">Phill Knight</small>
-                <h3 className="card-title mt-0 text-white truncate-3-lines">Shoe Dog</h3>
-                <small className="text-white"><i className="bi bi-book-half text-white"></i> Physical condition </small>
+                <small className="card-meta mb-2 text-truncate">{author}</small>
+                <h3 className="card-title mt-0 text-white truncate-3-lines">{title}</h3>
+                <small className="text-white"><i className="bi bi-book-half text-white"></i> {physicalCondition} (i18n!!) </small>
             </div>
             <div className="card-footer">
                 <div className="media">
-                    <img className="mr-3 rounded-circle" src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/61  " style={{width:'50px', height: '50px'}}/>
+                    <img className="mr-3 rounded-circle" src={userImage} style={{width:'50px', height: '50px'}}/>
                     <div className="media-body">
-                        <h6 className="my-0 text-white d-block text-truncate">Usuario</h6>
-                        <small className="text-white truncate-3-lines"> Localidad, Provincia, Pais </small>
+                        <h6 className="my-0 text-white d-block text-truncate">{userName}</h6>
+                        <small className="text-white truncate-3-lines"> {locality}, {province}, {country} </small>
                     </div>
                 </div>
             </div>

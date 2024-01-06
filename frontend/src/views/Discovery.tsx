@@ -28,10 +28,13 @@ const DiscoveryView =  () => {
 
     useEffect(()=>{
         const fetchData = async () => {
-            const _data = await handleAllAssetInstances();
-            const body = await _data?.json()
-            setData(body)
-
+            // const _data = await handleAllAssetInstances();
+            // const body = await _data?.json()
+            // setData(body)
+            //
+            // setLoading(false)
+            const books = await handleAllAssetInstances()
+            setData(books)
             setLoading(false)
         };
         fetchData();
@@ -153,7 +156,7 @@ const DiscoveryView =  () => {
                                              width: '90%'
                                          }}>
                                         {
-                                            data.length === 0 ? books : data.map((book, index) => (<BookCard book={book}/> ))
+                                            data.length === 0 ? books : data.map((book, index) => (<BookCard key={index} book={book}/> ))
                                         }
                                     </div>
                                     <div className="container-row-wrapped"
