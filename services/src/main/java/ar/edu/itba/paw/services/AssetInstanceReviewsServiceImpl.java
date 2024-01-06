@@ -76,12 +76,14 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
         return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
     }
 
+    @Transactional
     @Override
     public void deleteReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
-        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.BAD_REQUEST));
+        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
         assetInstanceReviewsDao.deleteReview(assetInstanceReview);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException, UserNotFoundException {
         Optional<AssetInstanceReview> assetInstanceReview = assetInstanceReviewsDao.getReviewByLendingId(lendingId);

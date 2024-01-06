@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces;
 
+import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
@@ -12,5 +13,5 @@ public interface AssetService {
 
     Asset getBookByIsbn(final String isbn);
 
-    Asset getBookById(final Long id);
+    Asset getBookById(final Long id) throws AssetNotFoundException;
 }

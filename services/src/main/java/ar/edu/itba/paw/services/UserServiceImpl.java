@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> maybeUser = userDao.getUser(id);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
-            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
 
         Image image = this.imagesDao.addPhoto(parsedImage);
@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> maybeUser = userDao.getUser(id);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
-            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         User user = maybeUser.get();
         if (username != null) {

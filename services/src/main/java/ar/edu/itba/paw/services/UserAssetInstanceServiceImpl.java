@@ -2,9 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
@@ -27,26 +25,6 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
         this.userAssetsDao = userAssetsDao;
     }
 
-
-    @Transactional(readOnly = true)
-    @Override
-    public PageUserAssets<AssetInstance> getUserAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
-
-        return userAssetsDao.getUsersAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
-
-    }
-    @Transactional(readOnly = true)
-    @Override
-    public PageUserAssets<Lending> getUserBorrowedAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
-
-        return userAssetsDao.getBorrowedAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
-
-    }
-    @Transactional(readOnly = true)
-    @Override
-    public PageUserAssets<Lending> getUserLentAssetsInstances(final int pageNumber, final int itemsPerPage, final String email, final String filterAtribuite, final String filterValue, final String sortAtribuite, final String direction) {
-        return userAssetsDao.getLendedAssets(pageNumber, itemsPerPage, email, filterAtribuite, filterValue, sortAtribuite, direction);
-    }
 
     @Transactional(readOnly = true)
     @Override

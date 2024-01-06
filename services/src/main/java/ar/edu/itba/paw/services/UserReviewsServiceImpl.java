@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.CustomException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
@@ -42,9 +43,17 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional
     @Override
     public UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException {
-        Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        Lending lending ;
+        User recipientUser ;
+        try{
+            lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+            recipientUser = userService.getUserById(recipient);
+        }catch (CustomException e) {
+            LOGGER.error("Error adding review: {}", e.getMessage());
+            e.setStatusCode(HttpStatusCodes.BAD_REQUEST);
+            throw e;
+        }
         User reviewerUser = userService.getCurrentUser();
-        User recipientUser = userService.getUserById(recipient);
         UserReview userReview = new UserReview( review, rating,  reviewerUser,recipientUser, lending);
         userReviewsDao.addReview(userReview);
         LOGGER.info("Review added");

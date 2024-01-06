@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +23,7 @@ public class LanguagesServiceImpl implements LanguagesService {
         languageDao = langDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Language> getLanguages() {
         Optional<List<Language>> langsOpt = this.languageDao.getLanguages();
