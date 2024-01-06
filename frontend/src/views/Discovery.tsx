@@ -18,30 +18,28 @@ const DiscoveryView =  () => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentPage, setPage] = useState(1);
-    const [booksPerPage, setBooksPerPage] = useState(12);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [booksPerPage, setBooksPerPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
     let books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
     ));
+    const previousPage = () => {
+        setCurrentPage(currentPage - 1)
+    }
+    const nextPage = () => {
+        setCurrentPage(currentPage + 1)
+    }
 
     useEffect(()=>{
         const fetchData = async () => {
-            // const _data = await handleAllAssetInstances();
-            // const body = await _data?.json()
-            // setData(body)
-            //
-            // setLoading(false)
-            const books = await handleAllAssetInstances()
+            const books = await handleAllAssetInstances(currentPage, booksPerPage)
             setData(books)
             setLoading(false)
         };
         fetchData();
-    }, [])
-
-    //books = []
-
+    }, [currentPage, booksPerPage])
 
     return (
         <>
@@ -168,7 +166,9 @@ const DiscoveryView =  () => {
                                                         <button type="button"
                                                                 className="btn mx-5 pagination-button"
                                                                 id="previousPageButton"
-                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}>
+                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
+                                                                onClick={previousPage}
+                                                        >
                                                             <i className="bi bi-chevron-left"></i>
                                                             {t('discovery.pagination.previous')}
                                                         </button>
@@ -182,7 +182,9 @@ const DiscoveryView =  () => {
                                                         <button type="button"
                                                                 className="btn mx-5 pagination-button"
                                                                 id="nextPageButton"
-                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}>
+                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
+                                                                onClick={nextPage}
+                                                        >
                                                             {t('discovery.pagination.next')}
                                                             <i className="bi bi-chevron-right"></i>
                                                         </button>
