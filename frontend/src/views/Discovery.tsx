@@ -20,16 +20,19 @@ const DiscoveryView =  () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage, setBooksPerPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const [totalPages, setTotalPages] = useState("?");
 
     let books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
     ));
     const previousPage = () => {
-        setCurrentPage(currentPage - 1)
+        currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
     }
     const nextPage = () => {
         setCurrentPage(currentPage + 1)
+    }
+    const clearSearch = () => {
+        setCurrentPage(1)
     }
 
     useEffect(()=>{
@@ -136,11 +139,9 @@ const DiscoveryView =  () => {
                                             <h1>{t('discovery.no_books.title')}</h1>
                                         </div>
                                         <div className="container-row-wrapped mt-3" style={{width: '100%'}}>
-                                            <Link to="/discovery">
-                                                <button type="button" className="btn btn-outline-secondary btn-lg">
-                                                    {t('discovery.no_books.btn')}
-                                                </button>
-                                            </Link>
+                                            <button type="button" className="btn btn-outline-secondary btn-lg" onClick={clearSearch}>
+                                                {t('discovery.no_books.btn')}
+                                            </button>
                                         </div>
                                     </div>
                             ) : (
