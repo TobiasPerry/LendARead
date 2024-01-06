@@ -50,7 +50,7 @@ public class LendingsController {
     @GET
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
     public Response getLendings(@QueryParam("page")@DefaultValue("1") Integer page,
-                                @QueryParam("itemsPerPage")@DefaultValue("1") Integer itemsPerPage,
+                                @QueryParam("itemsPerPage")@DefaultValue("4") Integer itemsPerPage,
                                 @QueryParam("assetInstanceId")  Integer assetInstanceId,
                                 @QueryParam("borrowerId") Integer borrowerId,
                                 @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED|CANCALE",message = "{lending.state.invalid}") String state,

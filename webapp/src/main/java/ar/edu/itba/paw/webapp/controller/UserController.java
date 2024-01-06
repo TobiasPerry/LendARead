@@ -110,7 +110,7 @@ public class UserController {
                                       @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
                                       @Context javax.ws.rs.core.Request request) throws UserNotFoundException, IOException {
         final User user = us.getUserById(id);
-        EntityTag eTag = new EntityTag(String.valueOf(user.getProfilePhoto().getId())+size);
+        EntityTag eTag = new EntityTag(user.getProfilePhoto().getId() +size);
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         LOGGER.info("GET user/{}/profilePic",id);

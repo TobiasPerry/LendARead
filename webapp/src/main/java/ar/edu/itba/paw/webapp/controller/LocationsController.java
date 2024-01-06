@@ -73,7 +73,6 @@ public class LocationsController {
     }
     @DELETE
     @Path("/{id}")
-    @Produces(value = { Vnd.VND_LOCATION })
     public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException {
         ls.deleteLocationById(locationId);
         LOGGER.info("DELETE location/ id:{}",locationId);
