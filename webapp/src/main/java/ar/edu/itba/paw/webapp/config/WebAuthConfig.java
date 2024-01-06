@@ -138,13 +138,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
 
 
-                .antMatchers(HttpMethod.POST,"/api/assetInstances").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/locations").authenticated()
-                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/lendings").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews","/api/assetInstances/{id}/reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews","/api/users/{id}/lender_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews","/api/users/{id}/borrower_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").authenticated()
+                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}","/api/lendings/{id}/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/lendings","/api/lendings/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and().addFilterBefore(
                         basicTokenFilter,

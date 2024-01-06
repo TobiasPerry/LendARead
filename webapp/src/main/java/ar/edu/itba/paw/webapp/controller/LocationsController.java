@@ -5,9 +5,11 @@ import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LocationDTO;
 import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
+import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
@@ -16,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,14 +44,19 @@ public class LocationsController {
     }
 
     @GET
-    @Path("/")
     @Produces(value = { Vnd.VND_LOCATION })
-    public Response getLocation(@QueryParam("userId")@NotNull final Integer userId) throws UserNotFoundException {
-        final List<Location> locations = ls.getLocationsById(userId);
-        final List<LocationDTO> locationsDTO = new ArrayList<>();
-        locations.forEach(location -> locationsDTO.add(LocationDTO.fromLocation(uriInfo, location)));
+    public Response getLocation(
+            @QueryParam(value = "page")  @Min(1)  @DefaultValue("1") final Integer page,
+            @QueryParam(value = "itemsPerPage")  @Min(1) @DefaultValue("10") final Integer itemsPerPage,
+            @QueryParam("userId") final Integer userId
+    ) {
+        final PagingImpl<Location> locations = ls.getLocations(userId, page, itemsPerPage);
+
         LOGGER.info("GET location/ userId:{}",userId);
-        return Response.ok(new GenericEntity<List<LocationDTO>>(locationsDTO){}).build();
+        List<LocationDTO> locationDTOS = LocationDTO.fromLocations(locations.getList(),uriInfo);
+        Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LocationDTO>>(locationDTOS) {});
+        PaginatedData.paginatedData(response, locations, uriInfo);
+        return response.build();
     }
     @GET
     @Path("/{id}")
@@ -56,7 +65,6 @@ public class LocationsController {
 
         final Location location = ls.getLocation(locationId);
         Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
-        StaticCache.setUnconditionalCache(response);
         LOGGER.info("GET location/ id:{}",locationId);
         return response.build();
     }
@@ -71,7 +79,6 @@ public class LocationsController {
     }
     @DELETE
     @Path("/{id}")
-    @Produces(value = { Vnd.VND_LOCATION })
     public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException {
         ls.deleteLocationById(locationId);
         LOGGER.info("DELETE location/ id:{}",locationId);
