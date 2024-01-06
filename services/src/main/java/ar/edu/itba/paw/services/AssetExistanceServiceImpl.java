@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.InternalErrorException;
-import ar.edu.itba.paw.exceptions.LocationNotFoundException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.interfaces.LocationsService;
@@ -14,6 +12,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.slf4j.Logger;
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-final public class AssetExistanceServiceImpl implements AssetExistanceService {
+public class AssetExistanceServiceImpl implements AssetExistanceService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private final AssetService assetService;
@@ -46,11 +45,18 @@ final public class AssetExistanceServiceImpl implements AssetExistanceService {
 
     @Override
     @Transactional
-    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws InternalErrorException, UserNotFoundException, LocationNotFoundException {
-
-        Asset book = assetService.getBookById(assetId);
+    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws UserNotFoundException, AssetNotFoundException, LocationNotFoundException {
+        Asset book ;
+        Location location;
+        try {
+           book = assetService.getBookById(assetId);
+           location =   locationsService.getLocation(locationId);
+        }
+        catch (CustomException e) {
+             e.setStatusCode(HttpStatusCodes.BAD_REQUEST);
+             throw e;
+        }
         User user = userService.getCurrentUser();
-        Location location = locationsService.getLocation(locationId);
         Image image = photosDao.addPhoto(fileByteArray);
         AssetInstance assetInstance = new AssetInstance();
         assetInstance.setBook(book);

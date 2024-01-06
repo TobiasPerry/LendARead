@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,11 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional(readOnly = true)
     @Override
-    public Asset getBookById(Long id) {
-        return ad.getBookById(id);
+    public Asset getBookById(Long id) throws AssetNotFoundException {
+        Asset asset =  ad.getBookById(id);
+        if (asset == null) {
+            throw new AssetNotFoundException(HttpStatusCodes.NOT_FOUND);
+        }
+        return asset;
     }
 }

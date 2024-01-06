@@ -83,6 +83,9 @@ public class LocationsServiceImpl implements LocationsService {
     @Transactional
     public Location editLocationById(int locationId, Optional<String> name, Optional<String> locality, Optional<String> province, Optional<String> country, Optional<String> zipcode) throws LocationNotFoundException {
         Location location = locationsDao.getLocation(locationId);
+        if (location == null) {
+            throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
+        }
         name.ifPresent(location::setName);
         locality.ifPresent(location::setLocality);
         province.ifPresent(location::setProvince);

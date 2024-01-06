@@ -4,7 +4,6 @@ import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
@@ -14,7 +13,6 @@ import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
-import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.slf4j.Logger;
@@ -33,7 +31,6 @@ import java.util.stream.Collectors;
 public class AssetInstanceServiceImpl implements AssetInstanceService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
-    private final AssetDao assetDao;
 
     private final AssetInstanceDao assetInstanceDao;
 
@@ -42,15 +39,12 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     private final LocationsService locationsService;
 
-    private final ImageService imageService;
 
     @Autowired
-    public AssetInstanceServiceImpl(final AssetDao assetDao, final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final ImageService imageService) {
-        this.assetDao = assetDao;
+    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService) {
         this.assetInstanceDao = assetInstanceDao;
         this.imagesDao = imagesDao;
         this.locationsService = locationsService;
-        this.imageService = imageService;
     }
 
     @Transactional(readOnly = true)
@@ -101,6 +95,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         assetInstanceDao.changeStatus(assetInstance,AssetState.DELETED);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isOwner(final AssetInstance assetInstance, final String email) {
         return assetInstance.getOwner().getEmail().equals(email);

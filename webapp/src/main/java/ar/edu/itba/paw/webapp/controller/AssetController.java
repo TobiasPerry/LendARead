@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
@@ -62,7 +63,7 @@ public class AssetController {
     @GET
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET})
-    public Response getAsset(@PathParam("id") final Long id){
+    public Response getAsset(@PathParam("id") final Long id) throws AssetNotFoundException {
         Asset book = as.getBookById(id);
 
         LOGGER.info("GET asset/ id:{}",book.getId());
