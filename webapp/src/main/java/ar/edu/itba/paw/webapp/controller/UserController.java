@@ -122,8 +122,6 @@ public class UserController {
             Response.ResponseBuilder responseBuilder = Response.ok(image).tag(eTag);
             return responseBuilder.build();
         }
-
-
         return response.build();
     }
 
