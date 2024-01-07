@@ -13,7 +13,8 @@ const BookCard = ({ book }) => {
         userName,
         country,
         province,
-        locality
+        locality,
+        assetInstanceNumber,
     } = book;
 
     const url_book_image = "url('" + image + "')"
@@ -33,7 +34,7 @@ const BookCard = ({ book }) => {
         }}          >
 
 
-    <Link to="/book/1" id="infoRef" style={{textDecoration: 'none'}} >
+    <Link to={"/book/" + assetInstanceNumber} id="infoRef" style={{textDecoration: 'none'}} >
 
 
 

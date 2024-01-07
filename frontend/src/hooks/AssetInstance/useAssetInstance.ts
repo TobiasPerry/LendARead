@@ -20,10 +20,17 @@ const useAssetInstance = () => {
                 const body_instance = await response_instance.json()
                 const body_location = await response_location.json()
                 const body_user = await response_user.json()
+
+                const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
+                const num = tmp ? parseInt(tmp[1], 10) : null
+                // // Check if there's a match, and return the captured number
+                //return num ? parseInt(num[1], 10) : null;
+
                 const book = {
                     title: body_asset.title,
                     author: body_asset.author,
                     language: body_asset.language,
+                    assetInstanceNumber: num,
                     image: body_instance.imageReference,
                     physicalCondition: body_instance.physicalCondition,
                     userImage: body_user.image,

@@ -7,12 +7,7 @@ import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
 const DiscoveryView =  () => {
 
-
-
-
-
     const {t} = useTranslation();
-
 
     const {handleAllAssetInstances} = useAssetInstance();
 
