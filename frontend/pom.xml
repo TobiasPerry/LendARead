@@ -11,7 +11,6 @@
     <groupId>ar.edu.itba.paw</groupId>
     <artifactId>frontend</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
     <name>frontend</name>
 
@@ -20,6 +19,9 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
+                <configuration>
+                    <workingDirectory>.</workingDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <id>install node and npm</id>
@@ -40,6 +42,7 @@
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
+                        <phase>generate-resources</phase>
                     </execution>
                     <execution>
                         <id>npm run build</id>
@@ -49,6 +52,7 @@
                         <configuration>
                             <arguments>run build</arguments>
                         </configuration>
+                        <phase>compile</phase>
                     </execution>
                 </executions>
             </plugin>

@@ -386,7 +386,9 @@
   </dependencyManagement>
     
   <modules>
-        
+
+    <module>frontend</module>
+
     <module>webapp</module>
         
     <module>persistence</module>
@@ -399,7 +401,6 @@
         
     <module>persistenceinterfaces</module>
 
-    <module>frontend</module>
 
   </modules>
 
