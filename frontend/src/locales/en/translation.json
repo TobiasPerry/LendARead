@@ -160,5 +160,9 @@
     "addLocation": "Add Location",
     "edit": "Edit",
     "delete": "Delete"
+  },
+  "not_found": {
+    "title": "We're sorry",
+    "subtitle": "We could not find what you were looking for"
   }
 }

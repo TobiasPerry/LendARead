@@ -158,5 +158,9 @@
     "addLocation": "Añadir Ubicación",
     "edit": "Editar",
     "delete": "Eliminar"
+  },
+  "not_found": {
+    "title": "Lo sentimos",
+    "subtitle": "No hemos encontrado lo que buscabas"
   }
 }
