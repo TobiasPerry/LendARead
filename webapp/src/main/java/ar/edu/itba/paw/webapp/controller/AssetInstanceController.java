@@ -118,7 +118,7 @@ public class AssetInstanceController {
                         (physicalConditions != null) ? physicalConditions : new ArrayList<>(),
                         (search != null) ? search : "",
                         (sort != null) ? Sort.fromString(sort) : Sort.RECENT,
-                        (sortDirection != null) ? SortDirection.fromString(sort) : SortDirection.DESCENDING,
+                        (sortDirection != null) ? SortDirection.fromString(sortDirection) : SortDirection.DESCENDING,
                         minRating,
                         maxRating,
                         userId
