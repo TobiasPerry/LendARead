@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import LocationModal from "./LocationModal.tsx";
 
 const Location = ({ handleEdit, handleDelete, location }: any) => {
     const { t } = useTranslation();
