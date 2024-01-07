@@ -1,25 +1,11 @@
-
 import {Api} from "../api/api.ts";
+import {Simulate} from "react-dom/test-utils";
 
 const useAssetInstance = () => {
 
     const handleAllAssetInstances = async (page = 1, itemsPerPage = 12) => {
         const books = []
 
-        //     "description": "",
-        //     "locationReference": "http://localhost:8080/api/locations/1",
-        //     "maxLendingDays": 31,
-        //     "rating": 0,
-        //     "reservable": true,
-        //     "reviewsReference": "http://localhost:8080/api/assetInstances/2/reviews",
-        //     "selfUrl": "http://localhost:8080/api/assetInstances/2",
-        //     "status": "PUBLIC",
-        //     "userReference": "http://localhost:8080/api/users/1"
-        // },
-
-        //     "imageReference": "http://localhost:8080/api/assetInstances/2/image",
-        //     "assetReference": "http://localhost:8080/api/assets/2",
-        //     "physicalCondition": "BINDINGCOPY",
         try {
             const data = await Api.get(`/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}`)
             const body = await data.json()
@@ -55,8 +41,42 @@ const useAssetInstance = () => {
             return null;
         }
     }
+
+    const handleAssetInstance = async (assetInstanceNumber) => {
+        try{
+            const response_instance = await Api.get(`/assetInstances/${assetInstanceNumber}`);
+            const body_instance = await response_instance.json()
+            const response_asset = await Api.get(body_instance.assetReference, undefined, undefined, true)
+            const response_reviews = await Api.get(body_instance.reviewsReference, undefined, undefined, true);
+            const response_location = await Api.get(body_instance.locationReference, undefined, undefined, true);
+            const response_user = await Api.get(body_instance.userReference, undefined, undefined, true);
+            const body_asset = await response_asset.json();
+            const body_reviews = await response_reviews.json();
+            const body_location = await response_location.json();
+            const body_user = await response_user.json();
+
+            return {
+                title: body_asset.title,
+                author: body_asset.author,
+                physicalCondition: body_instance.physicalCondition,
+                language: body_asset.language,
+                isbn: body_asset.isbn,
+                image: body_instance.imageReference,
+                description: body_instance.description,
+                userName: body_user.userName,
+                userImage: body_user.image,
+                location: body_location,
+                reviews: body_reviews,
+            };
+        }catch (e){
+            console.log("error");
+            return null;
+        }
+    }
+
     return {
-        handleAllAssetInstances
+        handleAllAssetInstances,
+        handleAssetInstance
     };
 }
 

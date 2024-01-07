@@ -33,7 +33,7 @@ const BookCard = ({ book }) => {
         }}          >
 
 
-    <Link to="/" id="infoRef" style={{textDecoration: 'none'}} >
+    <Link to="/book/1" id="infoRef" style={{textDecoration: 'none'}} >
 
 
 
