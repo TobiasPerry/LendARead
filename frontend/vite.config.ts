@@ -10,6 +10,5 @@ export default defineConfig({
         assetFileNames: 'public/[name][extname]'
       }
     }
-  },
-  base: '/webapp_war/'
+  }
 })

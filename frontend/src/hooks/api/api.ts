@@ -113,5 +113,18 @@ undefined,
             fullUrl
         );
     }
+
+    static async patch(url: string , data: object,headers?: any, fullUrl: boolean = false) {
+        return await Api.fetch(
+            url,
+            {
+                method: "PATCH",
+                headers: headers,
+                body: JSON.stringify(data),
+            },
+            undefined,
+            fullUrl
+        );
+    }
 }
 

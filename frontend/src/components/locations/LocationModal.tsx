@@ -1,16 +1,28 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 
 const LocationModal = ({ handleSave, location, showModal, handleClose }: any) => {
     const { t } = useTranslation();
     const [formData, setFormData] = useState({
-        name: location.name || '',
-        locality: location.locality || '',
-        province: location.province || '',
-        country: location.country || '',
-        zipcode: location.zipcode || '',
-        selfUrl: location.selfUrl || -1,
+        name: '',
+        locality: '',
+        province: '',
+        country: '',
+        zipcode: '',
+        selfUrl: '',
     });
+
+    // Update formData state when location prop changes
+    useEffect(() => {
+        setFormData({
+            name: location.name || '',
+            locality: location.locality || '',
+            province: location.province || '',
+            country: location.country || '',
+            zipcode: location.zipcode || '',
+            selfUrl: location.selfUrl || '',
+        });
+    }, [location]);
 
     // Styles
     const labelStyle = {

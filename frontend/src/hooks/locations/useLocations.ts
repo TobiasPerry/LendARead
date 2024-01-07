@@ -3,8 +3,16 @@ import {LocationType} from "../../views/user/Locations.tsx";
 
 const useLocations = () => {
 
-    const editLocation = (location: any) => {
-
+    const editLocation = async (location: any) => {
+        console.log(location)
+        try {
+            const response = await Api.patch(location.selfUrl, location, {}, true)
+            console.log(response)
+            // @ts-ignore
+            return true
+        } catch (error) {
+            return false
+        }
     }
 
     const deleteLocation = async (location: any) => {

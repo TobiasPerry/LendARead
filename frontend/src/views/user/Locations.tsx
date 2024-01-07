@@ -37,8 +37,8 @@ const LocationsPage = () => {
         }
     }
 
-    const handleEdit = (location: any) => {
-        setEditingLocation(location);
+    const handleEdit = async (location: any) => {
+        await setEditingLocation(location);
         setShowModal(true);
     };
 
