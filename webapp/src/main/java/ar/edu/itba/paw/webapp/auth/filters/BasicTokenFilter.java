@@ -9,7 +9,6 @@ import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,8 +67,9 @@ public class BasicTokenFilter extends OncePerRequestFilter {
             String token = new String(decoded, StandardCharsets.UTF_8);
             username = token.split(":")[0].trim();
             posiblePassword = token.split(":")[1].trim();
-        } catch (IllegalArgumentException e) {
-            throw new BadCredentialsException("Failed to decode basic authentication token");
+        } catch (Exception e) {
+            chain.doFilter(request, response);
+            return;
         }
         try{
             UserDetails userDetails;
