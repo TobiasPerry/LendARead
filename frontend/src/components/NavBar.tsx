@@ -3,6 +3,8 @@ import './styles/navBar.css';
 import './styles/searchBar.css';
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {useContext} from "react";
+import {AuthContext} from "../contexts/authContext.tsx";
 
 // @ts-ignore
 function classNames(...classes) {
@@ -12,6 +14,7 @@ function classNames(...classes) {
 export default function NavBar() {
 
     const { t, i18n } = useTranslation();
+    const {user, logout} = useContext(AuthContext)
     //const [language, setLanguage] = useState('en');
 
     // const toggleLanguage = () => {
@@ -57,26 +60,29 @@ export default function NavBar() {
                             <li className="nav-item  d-flex align-items-center">
                                 <Link className="nav-link navItem"  id="addAsset" aria-current="page" to="/addAssetView">{t('navbar.lend')}</Link>
                             </li>
-                            
+
+                            { user === -1 &&
                             <li className="nav-item d-flex align-items-center">
-                                <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/userHome">
+                                <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/login">
                                     {t('navbar.login')}
                                 </Link>
-                            </li>
-                                <li className="nav-item d-flex align-items-center">
-                                    <Link className="nav-link navItem" id="userView"  aria-current="page" to="/user">
-                                        
+                            </li> }
+                            { user !== -1 &&
+                            <li className="nav-item d-flex align-items-center">
+                                <Link className="nav-link navItem" id="userView"  aria-current="page" to="/user">
+
                                         <span className="navbar-brand">
                                             <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/70" className="rounded-circle" width="30" height="30" alt="logo"/>
                                         </span>
-                                    
-                                    </Link>
-                                </li>
-                            <li className="nav-item d-flex align-items-center">
-                                <Link className="nav-link navItem" id="logout"  aria-current="page" to="/logout">
-                                    <i className="fas fa-sign-out-alt"></i>
+
                                 </Link>
-                            </li>                            
+                            </li> }
+                            { user !== -1 &&
+                                <li className="nav-item d-flex align-items-center">
+                                <button className="nav-link navItem" id="logout"  aria-current="page" onClick={logout}>
+                                    <i className="fas fa-sign-out-alt " style={{color: "white"}}></i>
+                                </button>
+                            </li> }
                         </ul>
                     </div>
                 </div>
