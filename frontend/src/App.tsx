@@ -2,7 +2,7 @@ import NavBar from "./components/NavBar.tsx";
 import { Routes, Route, Outlet } from "react-router-dom";
 import Landing from "./views/Landing.tsx";
 import DiscoveryView from "./views/Discovery.tsx";
-import NotFound from "./views/NotFound.tsx";
+import NotFound from "./components/NotFound.tsx";
 
 
 import LoginView from "./views/user/LogIn.tsx";
@@ -50,6 +50,8 @@ function Layout() {
         </div>
     );
 }
+
+
 
 function About() {
     return (
