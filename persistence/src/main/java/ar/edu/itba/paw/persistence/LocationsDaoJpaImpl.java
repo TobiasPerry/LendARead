@@ -26,9 +26,9 @@ public class LocationsDaoJpaImpl implements LocationDao {
 
     @Override
     public PagingImpl<Location> getLocations(final Integer userId,final int page,final int itemsPerPage) {
-        StringBuilder sb = new StringBuilder("SELECT id FROM location l ");
+        StringBuilder sb = new StringBuilder("SELECT id FROM location l WHERE l.active = TRUE ");
         if(userId != null){
-            sb.append("WHERE l.owner= :userId ");
+            sb.append("AND l.owner= :userId ");
         }
         final int offset = (page - 1) * itemsPerPage;
         String pagination = " LIMIT :limit OFFSET :offset ";
