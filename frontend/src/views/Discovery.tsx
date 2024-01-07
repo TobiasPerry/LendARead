@@ -5,9 +5,35 @@ import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
+const SORT_TYPES = {
+    AUTHOR: "AUTHOR_NAME",
+    TITLE: "TITLE_NAME",
+    RECENT: "RECENT"
+};
+
+const SORT_DIRECTIONS = {
+    ASC: "ASCENDING",
+    DES: "DESCENDING"
+};
+
+
+
 const DiscoveryView =  () => {
 
     const {t} = useTranslation();
+
+    const sortingi18n = (sort, sortDirection) => {
+        switch (sort){
+            case SORT_TYPES.AUTHOR:
+                return (sortDirection === SORT_DIRECTIONS.ASC) ? t("discovery.sorting.author_asc") : t("discovery.sorting.author_des")
+            case SORT_TYPES.TITLE:
+                return (sortDirection === SORT_DIRECTIONS.ASC) ? t("discovery.sorting.title_asc") : t("discovery.sorting.title_des")
+            case SORT_TYPES.RECENT:
+                return (sortDirection === SORT_DIRECTIONS.ASC) ? t("discovery.sorting.least_recent") : t("discovery.sorting.most_recent")
+            default:
+                return ""
+        }
+    }
 
     const {handleAllAssetInstances} = useAssetInstance();
 
@@ -17,9 +43,30 @@ const DiscoveryView =  () => {
     const [booksPerPage, setBooksPerPage] = useState(1);
     const [totalPages, setTotalPages] = useState("?");
 
+    // Filters and sorting
+    const [sort, setSort] = useState(SORT_TYPES.RECENT);
+    const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DES);
+    const [search, setSearch] = useState("");
+
+
     let books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
     ));
+
+    const clickSearch = (event) => {
+        // Get the value of the search input
+        const searchInput = document.getElementById('search-bar');
+        if (searchInput) {
+            setSearch(searchInput.value)
+        }
+    };
+    const handleSearch = (event) => {
+        if (event.key === 'Enter'){
+            setSearch(event.target.value)
+            setCurrentPage(1)
+        }
+    }
+
     const previousPage = () => {
         currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
     }
@@ -27,32 +74,42 @@ const DiscoveryView =  () => {
         setCurrentPage(currentPage + 1)
     }
     const clearSearch = () => {
-        setCurrentPage(1)
+        setSearch("");
+        setCurrentPage(1);
+        // Clear the value of the search input
+        const searchInput = document.getElementById('search-bar');
+        if (searchInput) {
+            searchInput.value = '';
+        }
     }
 
+    const fetchData = async () => {
+        setLoading(true)
+        setData([])
+        const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search)
+        setData(books)
+        setLoading(false)
+    };
     useEffect(()=>{
-        const fetchData = async () => {
-            setLoading(true)
-            setData([])
-            const books = await handleAllAssetInstances(currentPage, booksPerPage)
-            setData(books)
-            setLoading(false)
-        };
         fetchData();
-    }, [currentPage, booksPerPage])
+    }, [currentPage, booksPerPage, sort, sortDirection, search])
 
     return (
         <>
             <div className="main-class">
-
                 <div className="container">
                     <div className="row height d-flex justify-content-center align-items-center">
                         <div className="mt-4" >
                             <div className="form">
-                                <i className="fa fa-search"></i>
-                                <input type="text" className="form-control form-input"
-                                       placeholder={t('discovery.searchbar.placeholder')} id="search-bar"
-                                       />
+                                <div className="input-group mb-3">
+                                    <input type="text" className="form-control form-input"
+                                           placeholder={t('discovery.searchbar.placeholder')} id="search-bar"
+                                           onKeyPress={handleSearch}
+                                           />
+                                    <button className="btn btn-light" type="button" onClick={clickSearch}>
+                                        <i className="bi bi-search bi-lg"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -65,15 +122,15 @@ const DiscoveryView =  () => {
                         <div className="btn-group mx-2 mb-4 mt-2" role="group">
                             <button type="button" className="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false" style={{backgroundColor: "rgba(255, 255, 255, 0.3)"}}>
-                                {t('discovery.sorting.sort_by')}
+                                {t('discovery.sorting.sort_by')} {sortingi18n(sort, sortDirection)}
                             </button>
                             <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.most_recent')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.least_recent')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.title_asc')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.title_des')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.author_asc')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent">{t('discovery.sorting.author_des')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.RECENT); setSortDirection(SORT_DIRECTIONS.DES)}}>{t('discovery.sorting.most_recent')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.RECENT); setSortDirection(SORT_DIRECTIONS.ASC)}}>{t('discovery.sorting.least_recent')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.TITLE); setSortDirection(SORT_DIRECTIONS.ASC)}}>{t('discovery.sorting.title_asc')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.TITLE); setSortDirection(SORT_DIRECTIONS.DES)}}>{t('discovery.sorting.title_des')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.AUTHOR); setSortDirection(SORT_DIRECTIONS.ASC)}}>{t('discovery.sorting.author_asc')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.AUTHOR); setSortDirection(SORT_DIRECTIONS.DES)}}>{t('discovery.sorting.author_des')}</a></li>
                             </ul>
                         </div>
 

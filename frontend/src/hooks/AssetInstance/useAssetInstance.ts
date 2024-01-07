@@ -3,11 +3,17 @@ import {Simulate} from "react-dom/test-utils";
 
 const useAssetInstance = () => {
 
-    const handleAllAssetInstances = async (page = 1, itemsPerPage = 12) => {
+    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search) => {
         const books = []
 
         try {
-            const data = await Api.get(`/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}`)
+            let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}`
+            if(search !== ""){
+                url += `&search=${search}`
+            }
+            console.log(url)
+            const data = await Api.get(url)
+
             const body = await data.json()
 
 
