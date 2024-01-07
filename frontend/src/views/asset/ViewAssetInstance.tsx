@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/AssetInstance/useAssetInstance.ts";
 import {keyframes} from "@emotion/react";
+import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 
 const ViewAssetInstance = (book = {
     title: "tmp",
@@ -48,14 +49,7 @@ const ViewAssetInstance = (book = {
         <>
             {
                  loading ? (
-                     <div className="main-class" style={{
-                         display: 'flex',
-                         justifyContent: 'center',
-                         alignItems: 'center',
-                         height: '100vh'
-                     }}>
-                        <img src="/favicon-claro-bg.ico" alt="Animated Image" className="fade-in-out"/>
-                     </div>
+                     <LoadingAnimation/>
                  ) : (
                      <>
                          <div className="main-class"

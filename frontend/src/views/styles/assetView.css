@@ -202,19 +202,3 @@ li > button:hover {
     margin-inline: 0;
     margin-block: 2vh;
 }
-
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
-.fade-in-out {
-    animation: fadeInOut 2s ease-in-out infinite; /* You can adjust the duration and timing function */
-}
