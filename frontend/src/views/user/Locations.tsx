@@ -22,17 +22,18 @@ const LocationsPage = () => {
     const { editLocation, deleteLocation, getLocations, addLocation} = useLocations()
 
     useEffect(() => {
-        (async () => {
-            try {
-                const response = await getLocations(user);
-                setLocations(response);
-            } catch (error) {
-                console.error("Failed to fetch locations:", error);
-            }
-        })();
+       fetchLocation()
     }, []);
 
 
+    const fetchLocation = async () => {
+        try {
+            const response = await getLocations(user);
+            setLocations(response);
+        } catch (error) {
+            console.error("Failed to fetch locations:", error);
+        }
+    }
     const handleEdit = (location: any) => {
         setEditingLocation(location);
         setShowModal(true);
@@ -47,18 +48,16 @@ const LocationsPage = () => {
         setLocations(updated)
     };
 
-    const handleSave = (updatedLocation: any) => {
+    const handleSave = async (updatedLocation: any) => {
         setShowModal(false);
 
         // if(editingLocation.name !== null)
         //     editLocation(updatedLocation)
         // else
-            addLocation(updatedLocation)
 
-        //display new location
-        const updated = locations
-        updated.push(editingLocation)
-        setLocations(updated)
+        await addLocation(updatedLocation)
+
+       await fetchLocation()
     };
 
     const handleAddNew = () => {

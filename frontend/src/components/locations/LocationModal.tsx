@@ -72,7 +72,7 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
                         </button>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={handleSubmit}>
+                        <div>
                             <div className="form-group">
                                 <label htmlFor="name-modal">{t('addAssetView.nameLabel')}</label>
                                 <input
@@ -129,10 +129,10 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
                                 />
                             </div>
                             <input type="hidden" name="id" value={formData.id} />
-                            <button type="submit" className="btn btn-primary" onClick={() => handleSave(formData)}>
+                            <button className="btn btn-primary" onClick={() => handleSave(formData)}>
                                 {t('save')}
                             </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
