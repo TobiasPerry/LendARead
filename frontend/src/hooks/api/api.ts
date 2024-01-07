@@ -1,7 +1,5 @@
 
-/**
- * TODO: DEBERIA ESTAR EN UN CONTEXT? ME PUEDE LLEGAR A JODER MUCHAS INSTANCIAS DE ESTO.
- * */
+
 export class Api {
     private static token: string = "";
     private static authenticated: Boolean = false;

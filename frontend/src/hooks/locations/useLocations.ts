@@ -6,7 +6,7 @@ const useLocations = () => {
     const editLocation = async (location: any) => {
         console.log(location)
         try {
-            const response = await Api.patch(location.selfUrl, location, {}, true)
+            const response = await Api.patch(location.selfUrl, location, {"Content-Type": "application/vnd.location.v1+json"}, true)
             console.log(response)
             // @ts-ignore
             return true
