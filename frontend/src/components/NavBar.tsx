@@ -69,7 +69,7 @@ export default function NavBar() {
                             </li> }
                             { user !== -1 &&
                             <li className="nav-item d-flex align-items-center">
-                                <Link className="nav-link navItem" id="userView"  aria-current="page" to="/user">
+                                <Link className="nav-link navItem" id="userView"  aria-current="page" to="/userHome">
 
                                         <span className="navbar-brand">
                                             <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/70" className="rounded-circle" width="30" height="30" alt="logo"/>

@@ -14,7 +14,7 @@ export interface LocationType {
 }
 const LocationsPage = () => {
     const { t } = useTranslation();
-    const [locations, setLocations] = useState([{}]);
+    const [locations, setLocations] = useState([{name: null, province: "", country: "", locality: "", zipcode: 0}]);
     const [showModal, setShowModal] = useState(false);
     const [editingLocation, setEditingLocation] = useState({name: null, province: "", country: "", locality: "", zipcode: 0});
 
