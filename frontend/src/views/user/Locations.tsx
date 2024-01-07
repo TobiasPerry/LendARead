@@ -54,9 +54,7 @@ const LocationsPage = () => {
         // if(editingLocation.name !== null)
         //     editLocation(updatedLocation)
         // else
-
-        await addLocation(updatedLocation)
-
+       await addLocation(updatedLocation)
        await fetchLocation()
     };
 

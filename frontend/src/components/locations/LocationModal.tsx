@@ -12,13 +12,20 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
         id: location.id || -1,
     });
 
-    const handleChange = (e: any) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Styles
+    const labelStyle = {
+        marginBottom: '0.5rem',
+        fontWeight: 'bold',
     };
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        handleSave(formData);
+    const formControlStyle = {
+        width: '100%',
+        padding: '10px',
+        margin: '5px',
+        border: '1px solid #ced4da',
+        borderRadius: '0.25rem',
+        background: 'white',
+        color: 'black'
     };
 
     const modalStyle = {
@@ -47,15 +54,33 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
         border: 'none',
         background: 'none',
         fontSize: '1.5rem',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: 'black'
     };
 
-    const formControlStyle = {
-        width: '100%',
-        padding: '10px',
-        margin: '5px 0',
-        border: '1px solid #ced4da',
-        borderRadius: '0.25rem'
+    const handleChange = (e: any) => {
+
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleSave(formData);
+    };
+
+    const formGroupStyleWithMargin = {
+        ...formControlStyle,
+        marginRight: '15px', // Adds space between form groups in the same row
+    };
+
+    const buttonStyle = {
+        backgroundColor: '#16df7e',
+        color: 'white',
+        padding: '0.5rem 1rem',
+        border: 'none',
+        borderRadius: '0.25rem',
+        cursor: 'pointer',
+        margin: '5px'
     };
 
     return (
@@ -63,76 +88,45 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
             <div style={modalDialogStyle} role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="modal-title">
+                        <h2 className="modal-title" id="modal-title">
                             <i className="fas fa-map-marked-alt" style={{ marginRight: '10px' }}></i>
                             {t('modalTitle')}
-                        </h5>
+                        </h2>
                         <button type="button" style={closeButtonStyle} onClick={handleClose} aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div className="modal-body">
-                        <div>
-                            <div className="form-group">
-                                <label htmlFor="name-modal">{t('addAssetView.nameLabel')}</label>
-                                <input
-                                    type="text"
-                                    style={formControlStyle}
-                                    name="name"
-                                    id="name-modal"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                />
+                        <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-center">
+                            <div className="form-group" style={{ marginBottom: '15px' }}>
+                                <label htmlFor="name-modal" style={labelStyle}>{t('addAssetView.nameLabel')}</label>
+                                <input type="text" style={formControlStyle} name="name" id="name-modal" value={formData.name} onChange={handleChange} />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="locality-modal">{t('addAssetView.localityLabel')}</label>
-                                <input
-                                    type="text"
-                                    style={formControlStyle}
-                                    name="locality"
-                                    id="locality-modal"
-                                    value={formData.locality}
-                                    onChange={handleChange}
-                                />
+                            <div className="d-flex flex-row" style={{ marginBottom: '15px' }}>
+                                <div className="form-group flex-1" style={{ marginRight: '15px' }}>
+                                    <label htmlFor="locality-modal" style={labelStyle}>{t('addAssetView.localityLabel')}</label>
+                                    <input type="text" style={formGroupStyleWithMargin} name="locality" id="locality-modal" value={formData.locality} onChange={handleChange} />
+                                </div>
+                                <div className="form-group flex-1">
+                                    <label htmlFor="province-modal" style={labelStyle}>{t('addAssetView.provinceLabel')}</label>
+                                    <input type="text" style={formControlStyle} name="province" id="province-modal" value={formData.province} onChange={handleChange} />
+                                </div>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="province-modal">{t('addAssetView.provinceLabel')}</label>
-                                <input
-                                    type="text"
-                                    style={formControlStyle}
-                                    name="province"
-                                    id="province-modal"
-                                    value={formData.province}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="country-modal">{t('addAssetView.countryLabel')}</label>
-                                <input
-                                    type="text"
-                                    style={formControlStyle}
-                                    name="country"
-                                    id="country-modal"
-                                    value={formData.country}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="zipcode-modal">{t('addAssetView.zipcodeLabel')}</label>
-                                <input
-                                    type="text"
-                                    style={formControlStyle}
-                                    name="zipcode"
-                                    id="zipcode-modal"
-                                    value={formData.zipcode}
-                                    onChange={handleChange}
-                                />
+                            <div className="d-flex flex-row" style={{ marginBottom: '15px' }}>
+                                <div className="form-group flex-1" style={{ marginRight: '15px' }}>
+                                    <label htmlFor="country-modal" style={labelStyle}>{t('addAssetView.countryLabel')}</label>
+                                    <input type="text" style={formGroupStyleWithMargin} name="country" id="country-modal" value={formData.country} onChange={handleChange} />
+                                </div>
+                                <div className="form-group flex-1">
+                                    <label htmlFor="zipcode-modal" style={labelStyle}>{t('addAssetView.zipcodeLabel')}</label>
+                                    <input type="text" style={formControlStyle} name="zipcode" id="zipcode-modal" value={formData.zipcode} onChange={handleChange} />
+                                </div>
                             </div>
                             <input type="hidden" name="id" value={formData.id} />
-                            <button className="btn btn-primary" onClick={() => handleSave(formData)}>
+                            <button className="btn btn-primary" type="submit" style={{...buttonStyle, width: '100px', margin: "5px auto"}}>
                                 {t('save')}
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
