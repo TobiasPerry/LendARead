@@ -13,15 +13,15 @@ const useLocations = () => {
 
     const getLocations = async (userId: any) => {
         try {
-            const response = await Api.get(`/locations?userId=${userId}`);
-            console.log(response);
+            const response = await Api.get(`/locations?userId=2`);
             // @ts-ignore
-            return []
+            return await response.json()
         } catch (error) {
             return []
         }
     };
 
+    //need to add constraints to the form in jsx, like countyr more than 3 chars!
     const addLocation = async (location: LocationType) => {
         console.log("posting the location", location)
         try {

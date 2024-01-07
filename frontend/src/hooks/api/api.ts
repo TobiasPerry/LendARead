@@ -56,7 +56,7 @@ export class Api {
         const timer = setTimeout(() => controller.abort(), Api.timeout);
 
         try {
-            const response = await fetch((fullUrl) ? url : this.baseUrl + url, init);
+            const response = await fetch( this.baseUrl + url, init);
             this.handleNewToken(init.method, response.headers, rememberMe);
             return response;
         } catch (error: any) {
