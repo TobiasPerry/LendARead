@@ -6,17 +6,19 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import useLocations from "../../hooks/locations/useLocations.ts";
 
 export interface LocationType {
-    name: string | null,
+    name: string,
     province: string,
     country: string,
     locality: string,
-    zipcode: number
+    zipcode: number,
+    selfUrl: string
 }
 const LocationsPage = () => {
+    const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const { t } = useTranslation();
-    const [locations, setLocations] = useState([{name: null, province: "", country: "", locality: "", zipcode: 0}]);
+    const [locations, setLocations] = useState([emptyLocation]);
     const [showModal, setShowModal] = useState(false);
-    const [editingLocation, setEditingLocation] = useState({name: null, province: "", country: "", locality: "", zipcode: 0});
+    const [editingLocation, setEditingLocation] = useState(emptyLocation);
 
     const {user} = useContext(AuthContext)
     const { editLocation, deleteLocation, getLocations, addLocation} = useLocations()
@@ -34,27 +36,25 @@ const LocationsPage = () => {
             console.error("Failed to fetch locations:", error);
         }
     }
+
     const handleEdit = (location: any) => {
         setEditingLocation(location);
         setShowModal(true);
     };
 
-    const handleDelete = (locationId: any) => {
-       deleteLocation(locationId)
-
-        //delete from locations
-        const updated = locations
-        updated.filter(idx => idx != locationId)
-        setLocations(updated)
+    const handleDelete = async (locationId: any) => {
+        await deleteLocation(locationId)
+        await fetchLocation()
     };
 
     const handleSave = async (updatedLocation: any) => {
         setShowModal(false);
 
-        // if(editingLocation.name !== null)
-        //     editLocation(updatedLocation)
-        // else
-       await addLocation(updatedLocation)
+        if(editingLocation.id !== -1)
+            await editLocation(updatedLocation)
+        else
+            await addLocation(updatedLocation)
+
        await fetchLocation()
     };
 
@@ -68,7 +68,7 @@ const LocationsPage = () => {
                 <h2 style={{ padding: '20px' }}>{t('locations.title')}</h2>
                 <div className="container-row-wrapped" style={{ backgroundColor: '#D0DCD0', borderRadius: '20px', padding: '20px' }}>
                     {locations.map((location , i) => (
-                        <Location key={i} location={locations[i]} handleEdit={() => handleEdit(location)} handleDelete={() => handleDelete(i)}/>
+                        <Location key={i} location={locations[i]} handleEdit={() => handleEdit(location)} handleDelete={() => handleDelete(location)}/>
                     ))}
                     {locations.length <= 5 && (
                         <div className="info-container m-3 add-new-location btn-icon add-button" onClick={handleAddNew}

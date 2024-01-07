@@ -7,8 +7,15 @@ const useLocations = () => {
 
     }
 
-    const deleteLocation = (location: any) => {
-
+    const deleteLocation = async (location: any) => {
+        try {
+            const response = await Api.delete(location.selfUrl, true)
+            console.log(response)
+            // @ts-ignore
+            return true
+        } catch (error) {
+            return false
+        }
     }
 
     const getLocations = async (userId: any) => {
@@ -23,12 +30,10 @@ const useLocations = () => {
 
     //need to add constraints to the form in jsx, like countyr more than 3 chars!
     const addLocation = async (location: LocationType) => {
-        console.log("posting the location", location)
         try {
             const response = await Api.post(`/locations`, {...location}, false, {"Content-Type": "application/vnd.location.v1+json"})
-            console.log(response)
         } catch (e) {
-            console.log('error', e)
+            return false
         }
     }
 

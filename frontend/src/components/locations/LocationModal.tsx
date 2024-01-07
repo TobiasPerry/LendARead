@@ -9,7 +9,7 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
         province: location.province || '',
         country: location.country || '',
         zipcode: location.zipcode || '',
-        id: location.id || -1,
+        selfUrl: location.selfUrl || -1,
     });
 
     // Styles
@@ -59,13 +59,13 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
     };
 
     const handleChange = (e: any) => {
-
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         handleSave(formData);
+        setFormData({name: "", province: "", country: "", locality: "", zipcode: "", id: -1})
     };
 
     const formGroupStyleWithMargin = {
@@ -122,7 +122,7 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
                                     <input type="text" style={formControlStyle} name="zipcode" id="zipcode-modal" value={formData.zipcode} onChange={handleChange} />
                                 </div>
                             </div>
-                            <input type="hidden" name="id" value={formData.id} />
+                            <input type="hidden" name="id" value={formData.selfUrl} />
                             <button className="btn btn-primary" type="submit" style={{...buttonStyle, width: '100px', margin: "5px auto"}}>
                                 {t('save')}
                             </button>
