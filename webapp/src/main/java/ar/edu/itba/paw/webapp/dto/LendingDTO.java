@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +37,10 @@ public class LendingDTO {
         dto.state = lending.getActive().toString();
         if (lending.getUserReviews() != null)
             dto.userReviews = lending.getUserReviews().stream().map(userReview -> UserReviewsDTO.reference(url, userReview)).collect(Collectors.toList());
-        else dto.userReviews = new ArrayList<>();
+        else dto.userReviews = null;
         if (lending.getAssetInstanceReview() != null)
             dto.assetInstanceReview = AssetInstanceReviewDTO.reference(url, lending.getAssetInstanceReview());
-        else dto.assetInstanceReview = "";
+        else dto.assetInstanceReview = null;
         dto.selfUrl = reference(url, lending);
         return dto;
     }
@@ -51,6 +50,6 @@ public class LendingDTO {
 
 
     public static String reference(UriInfo url, Lending lending) {
-        return url.getBaseUriBuilder().path("/api/lending").path(String.valueOf(lending.getId())).build().toString();
+        return url.getBaseUriBuilder().path("/api/lendings").path(String.valueOf(lending.getId())).build().toString();
     }
 }
