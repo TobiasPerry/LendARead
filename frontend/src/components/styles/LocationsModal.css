@@ -9,10 +9,12 @@
     align-items: center;
     justify-content: center;
     z-index: 1050;
+    border: none;
 }
 
 .modal.show {
     display: flex;
+    border: none;
 }
 
 .modal-dialog {
@@ -21,16 +23,18 @@
     padding: 20px;
     max-width: 500px;
     width: 100%;
+    border: none;
 }
 
 .modal-content {
-    /* Additional styling if needed */
+    border: none;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: none;
 }
 
 .close-button {
@@ -46,6 +50,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border: none ;
 }
 
 .form-group {
@@ -56,7 +61,6 @@
     width: 100%;
     padding: 10px;
     margin: 5px;
-    border: 1px solid #ced4da;
     border-radius: 0.25rem;
     background: white;
     color: black;

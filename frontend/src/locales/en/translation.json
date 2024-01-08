@@ -164,5 +164,10 @@
   "not_found": {
     "title": "We're sorry",
     "subtitle": "We could not find what you were looking for"
-  }
+  },
+  "zipcodeValidationError": "Zipcode must be alphanumeric and between 1 to 100 characters.",
+  "localityValidationError": "Locality must be between 1 to 100 characters.",
+  "provinceValidationError": "Province must be between 4 to 100 characters.",
+  "countryValidationError": "Country must be between 4 to 100 characters.",
+  "nameValidationError": "Name must be between 1 to 100 characters."
 }

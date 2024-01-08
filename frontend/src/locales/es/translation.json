@@ -162,5 +162,10 @@
   "not_found": {
     "title": "Lo sentimos",
     "subtitle": "No hemos encontrado lo que buscabas"
-  }
+  },
+  "zipcodeValidationError": "El código postal debe ser alfanumérico y tener entre 1 y 100 caracteres.",
+  "localityValidationError": "La localidad debe tener entre 1 y 100 caracteres.",
+  "provinceValidationError": "La provincia debe tener entre 4 y 100 caracteres.",
+  "countryValidationError": "El país debe tener entre 4 y 100 caracteres.",
+  "nameValidationError": "El nombre debe tener entre 1 y 100 caracteres."
 }
