@@ -23,7 +23,7 @@ const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'as
     const changePage = (newPage: number) => {
         setCurrentPage(newPage);
         // Re-apply filter and sort whenever page changes
-        applyFilterAndSort(newPage, sort, filter, books);
+        await applyFilterAndSort(newPage, sort, filter, books);
     };
 
 
@@ -31,18 +31,3 @@ const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'as
 };
 
 export default useUserAssetInstances;
-
-/*
-
-curl --location 'http://localhost:8082/api/assetInstances' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZWxsb0BnbWFpbC5jb20iLCJpYXQiOjE3MDQzOTgwNDAsImV4cCI6MTcwNTAwMjg0MCwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfQk9SUk9XRVIifV0sInVzZXJSZWZlcmVuY2UiOiJodHRwOi8vcGF3c2VydmVyLml0Lml0YmEuZWR1LmFyL3Bhdy0yMDIzYS0wMy9hcGkvdXNlcnMvMiJ9.rurA9hspHmDZUBmIjmdeW6MigGqRUt4_o8F4xyy8R-o' \
---header 'Accept-Language: es' \
---form 'physicalCondition="ASNEW"' \
---form 'locationId="1"' \
---form 'description="aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"' \
---form 'maxDays="5"' \
---form 'isReservable="true"' \
---form 'image=@"/Users/marcoscilipoti/Downloads/Arborio (611).jpg"' \
---form 'state="PUBLIC"' \
---form 'assetId="3"'
- */
