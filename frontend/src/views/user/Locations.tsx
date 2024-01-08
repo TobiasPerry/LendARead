@@ -31,7 +31,7 @@ const LocationsPage = () => {
     const fetchLocation = async () => {
         try {
             const response = await getLocations(user);
-            setLocations(response);
+            await setLocations(response);
         } catch (error) {
             console.error("Failed to fetch locations:", error);
         }
