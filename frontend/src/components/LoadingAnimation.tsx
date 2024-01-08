@@ -8,7 +8,7 @@ const LoadingAnimation = () => {
                 alignItems: 'center',
                 height: '100vh'
             }}>
-                <img src="/favicon-claro-bg.ico" alt="Animated Image" className="fade-in-out"/>
+                <img src="/static/favicon-claro-bg.ico" alt="Animated Image" className="fade-in-out"/>
             </div>
         </>
     )

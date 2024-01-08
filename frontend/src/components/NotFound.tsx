@@ -10,7 +10,7 @@ const NotFound = () => {
             alignItems: 'center',
             height: '100vh'
         }}>
-            <img src="/broken_lendaread.png" alt="Animated Image" style={{height: '300px'}}/>
+            <img src="/static/broken_lendaread.png" alt="Animated Image" style={{height: '300px'}}/>
             <span>
                 <h1>{t('not_found.title')}</h1>
                 <br/>
