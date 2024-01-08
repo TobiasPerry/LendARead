@@ -23,7 +23,7 @@ const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'as
     const changePage = (newPage: number) => {
         setCurrentPage(newPage);
         // Re-apply filter and sort whenever page changes
-        await applyFilterAndSort(newPage, sort, filter, books);
+        applyFilterAndSort(newPage, sort, filter, books);
     };
 
 
