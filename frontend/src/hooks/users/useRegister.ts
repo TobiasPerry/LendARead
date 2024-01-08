@@ -1,4 +1,4 @@
-import { Api } from '../api/api.ts';
+import {api } from '../api/api.ts';
 
 const useRegister = () => {
     const register = async (email: string, password: string, repeatPassword: string, name: string) => {
@@ -12,7 +12,7 @@ const useRegister = () => {
                 "name": name
             };
 
-            const response = await Api.post('/users', userData, false,{ 'Content-Type': 'application/vnd.user.v1+json' });
+            const response = await api.post('/users', { body: userData, headers: { 'Content-Type': 'application/vnd.user.v1+json' }});
 
             // @ts-ignore
             return response.status === 201;

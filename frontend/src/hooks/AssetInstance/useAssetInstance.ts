@@ -1,4 +1,4 @@
-import {Api} from "../api/api.ts";
+import {api, api_} from "../api/api.ts";
 import {Simulate} from "react-dom/test-utils";
 
 const useAssetInstance = () => {
@@ -12,20 +12,20 @@ const useAssetInstance = () => {
                 url += `&search=${search}`
             }
             console.log(url)
-            const data = await Api.get(url)
+            const data = await api.get(url)
 
-            const body = await data.json()
+            const body =  data.data
 
 
             for (const assetInstance of body) {
-                const response_asset = await Api.get(assetInstance.assetReference, undefined, undefined, true)
-                const response_instance = await Api.get(assetInstance.selfUrl, undefined, undefined, true)
-                const response_location = await Api.get(assetInstance.locationReference, undefined, undefined, true)
-                const response_user = await Api.get(assetInstance.userReference, undefined, undefined, true)
-                const body_asset = await response_asset.json()
-                const body_instance = await response_instance.json()
-                const body_location = await response_location.json()
-                const body_user = await response_user.json()
+                const response_asset = await api_.get(assetInstance.assetReference)
+                const response_instance = await api_.get(assetInstance.selfUrl)
+                const response_location = await api_.get(assetInstance.locationReference)
+                const response_user = await api_.get(assetInstance.userReference)
+                const body_asset =  response_asset.data
+                const body_instance =  response_instance.data
+                const body_location =  response_location.data
+                const body_user =  response_user.data
 
                 const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
                 const num = tmp ? parseInt(tmp[1], 10) : null
@@ -57,16 +57,16 @@ const useAssetInstance = () => {
 
     const handleAssetInstance = async (assetInstanceNumber) => {
         try{
-            const response_instance = await Api.get(`/assetInstances/${assetInstanceNumber}`);
-            const body_instance = await response_instance.json()
-            const response_asset = await Api.get(body_instance.assetReference, undefined, undefined, true)
-            const response_reviews = await Api.get(body_instance.reviewsReference, undefined, undefined, true);
-            const response_location = await Api.get(body_instance.locationReference, undefined, undefined, true);
-            const response_user = await Api.get(body_instance.userReference, undefined, undefined, true);
-            const body_asset = await response_asset.json();
-            const body_reviews = await response_reviews.json();
-            const body_location = await response_location.json();
-            const body_user = await response_user.json();
+            const response_instance = await api.get(`/assetInstances/${assetInstanceNumber}`);
+            const body_instance =  response_instance.data
+            const response_asset = await api_.get(body_instance.assetReference, undefined)
+            const response_reviews = await api_.get(body_instance.reviewsReference, undefined);
+            const response_location = await api_.get(body_instance.locationReference, undefined);
+            const response_user = await api_.get(body_instance.userReference, undefined);
+            const body_asset = response_asset.data
+            const body_reviews = response_reviews.data
+            const body_location =  response_location.data
+            const body_user =  response_user.data
 
             return {
                 title: body_asset.title,

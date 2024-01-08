@@ -1,12 +1,26 @@
-import { createContext, useState } from 'react';
-import {Api} from "../hooks/api/api.ts";
+import {useState} from "react";
+import React from "react";
 import {jwtDecode} from "jwt-decode";
+import {api, api_} from "../hooks/api/api";
 
-export const AuthContext = createContext({login:  async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets"): Promise<boolean> => { return false}, user: -1, logout: () => {}});
+export const AuthContext = React.createContext({
+    isLoggedIn: false,
+    logout: () => {
+    },
+    login: async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets")  => {
+        return false
+    },
+    user: -1,
+});
 
-export const AuthProvider = (props: any) => {
+const AuthContextProvider = (props) => {
+    const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
+    const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || sessionStorage.hasOwnProperty("userAuthToken"));
+    const token = isInLocalStorage ? JSON.parse(localStorage.getItem("userAuthToken")) : JSON.parse(sessionStorage.getItem("userAuthToken"))
+    const [authKey, setAuthKey] = useState(token);
 
-    const [user, setUser] = useState(-1);
+    api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userAuthToken")) || JSON.parse(sessionStorage.getItem("userAuthToken")) || ''}`;
+    api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
     const extractUserId = (jwt: string): number => {
         console.log(jwt)
@@ -17,33 +31,52 @@ export const AuthProvider = (props: any) => {
         console.log(out)
         return out
     }
+
+    const [user, setUser] = useState(-1);
+
+    const logout = () => {
+        localStorage.removeItem("userAuthToken");
+        sessionStorage.removeItem("userAuthToken");
+        setLoggedIn(false);
+        setAuthKey('');
+        setUser(-1);
+    }
+
+
     const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets"): Promise<boolean> => {
         try {
 
-            const response: any = await Api.get(path,
+            const response: any = await api.get(path,
                 {
-                    "Authorization": "Basic " + btoa(`${email}:${password}`)
-                },
-                rememberMe
+                    headers: { "Authorization": "Basic " + btoa(`${email}:${password}`) }
+                }
             );
 
-            setUser(extractUserId(response.headers.get('jwt')))
+            if(response.headers.has('jwt')) {
+                setUser(extractUserId(response.headers.get('jwt')))
+                setAuthKey(authKey);
+                setLoggedIn(true);
+                api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
+                api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
+                return true
+            }
 
-
-            return response.headers.has('jwt')
+            return false
         } catch (error) {
             console.log("error raised", error);
             return false;
         }
     };
 
-    const logout = () => {
-        // Implement logout logic here
-    };
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout }}>
-            {props.children}
-        </AuthContext.Provider>
-    );
-};
+
+    return <AuthContext.Provider
+        value={{
+            isLoggedIn,
+            login,
+            logout,
+            user,
+        }}>{props.children}</AuthContext.Provider>
+}
+
+export default AuthContextProvider;

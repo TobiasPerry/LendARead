@@ -1,4 +1,4 @@
-import {Api} from "../api/api.ts";
+import {api, api_} from "../api/api.ts";
 import {LocationType} from "../../views/user/Locations.tsx";
 
 const useLocations = () => {
@@ -6,7 +6,11 @@ const useLocations = () => {
     const editLocation = async (location: any) => {
         console.log(location)
         try {
-            const response = await Api.patch(location.selfUrl, location, {"Content-Type": "application/vnd.location.v1+json"}, true)
+            const response = await api_.patch(location.selfUrl, {
+                    body: location,
+                    headers: {"Content-Type": "application/vnd.location.v1+json"}
+                }
+            )
             console.log(response)
             // @ts-ignore
             return true
@@ -17,7 +21,7 @@ const useLocations = () => {
 
     const deleteLocation = async (location: any) => {
         try {
-            const response = await Api.delete(location.selfUrl, true)
+            const response = await api_.delete(location.selfUrl)
             console.log(response)
             // @ts-ignore
             return true
@@ -28,7 +32,7 @@ const useLocations = () => {
 
     const getLocations = async (userId: any) => {
         try {
-            const response = await Api.get(`/locations?userId=2`);
+            const response = await api.get(`/locations?userId=2`);
             // @ts-ignore
             return await response.json()
         } catch (error) {
@@ -39,7 +43,11 @@ const useLocations = () => {
     //need to add constraints to the form in jsx, like countyr more than 3 chars!
     const addLocation = async (location: LocationType) => {
         try {
-            const response = await Api.post(`/locations`, {...location}, false, {"Content-Type": "application/vnd.location.v1+json"})
+            const response = await api.post(`/locations`,
+                {
+                    body: {...location},
+                    headers: {"Content-Type": "application/vnd.location.v1+json"}
+                })
         } catch (e) {
             return false
         }

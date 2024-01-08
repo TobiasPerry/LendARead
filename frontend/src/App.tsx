@@ -9,7 +9,7 @@ import LoginView from "./views/user/LogIn.tsx";
 import Register from "./views/user/Register.tsx";
 import ForgotPassword from "./views/user/ForgotPassword.tsx";
 import UserHome from "./views/user/UserHome.tsx";
-import {AuthProvider} from "./contexts/authContext.tsx";
+import AuthProvider from "./contexts/authContext.tsx";
 import Locations from "./views/user/Locations.tsx";
 import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
 

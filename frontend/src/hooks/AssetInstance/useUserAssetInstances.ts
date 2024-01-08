@@ -1,6 +1,6 @@
 // useAssetInstances.js
 import {useContext, useState} from 'react';
-import {Api} from "../api/api.ts";
+import {api} from "../api/api.ts";
 import {AuthContext} from "../../contexts/authContext.tsx";
 
 const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'asc' }) => {
@@ -14,7 +14,7 @@ const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'as
 
     const applyFilterAndSort =  async (newPage: number, newSort: any, newFilter: string, books: any) => {
         console.log(newSort, newFilter, newPage)
-        const response = await Api.get(`/assetInstances?userId=${user}`)
+        const response = await api.get(`/assetInstances?userId=${user}`)
         //need to have some assetInstances added first, waiting for frontend of adding assetinstances to be done
         console.log(response)
     };

@@ -5,7 +5,7 @@ import logo from '../../assets/logo-claro.png'; // Adjust path as necessary
 import loginBg from '../../assets/login-bg.jpg';
 import {useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
-import {AuthContext} from "../../contexts/authContext.tsx"; // Adjust path as necessary
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const LoginView = () => {
     const { t } = useTranslation();
