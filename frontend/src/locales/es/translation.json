@@ -6,6 +6,10 @@
   "Projects": "Proyectos",
   "Calendar": "Calendario",
   "auth": {
+      "emailValidationError": "El correo electrónico debe ser válido y tener entre 3 y 100 caracteres.",
+      "passwordValidationError": "La contraseña debe contener al menos una letra minúscula, una mayúscula, un número, tener al menos 8 caracteres de longitud e incluir un carácter especial.",
+      "repeatPasswordValidationError": "Las contraseñas no coinciden.",
+      "nameValidationError": "El nombre debe tener entre 3 y 100 caracteres.",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "username": "Nombre de usuario",

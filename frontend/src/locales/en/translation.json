@@ -18,7 +18,11 @@
     "alreadyHaveAccount": "Already have an account? Login",
     "forgotPassword": "Forgot Password?",
     "rememberMe": "Remember Me",
-    "loginError": "Invalid username or password"
+    "loginError": "Invalid username or password",
+    "emailValidationError": "Email must be valid and between 3 to 100 characters long.",
+    "passwordValidationError": "Password must contain at least one lowercase letter, one uppercase letter, one digit, be at least 8 characters long, and include a special character.",
+    "repeatPasswordValidationError": "Passwords do not match.",
+    "nameValidationError": "Name must be between 3 to 100 characters long."
   },
   "forgotpassword": {
     "title": "Forgot Password",
