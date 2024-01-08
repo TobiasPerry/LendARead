@@ -1,7 +1,8 @@
-import {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import '../styles/LocationsModal.css'; // Import the external CSS file
 
-const LocationModal = ({ handleSave, location, showModal, handleClose }: any) => {
+const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
     const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
@@ -11,8 +12,8 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
         zipcode: '',
         selfUrl: '',
     });
+    const [formErrors, setFormErrors] = useState({});
 
-    // Update formData state when location prop changes
     useEffect(() => {
         setFormData({
             name: location.name || '',
@@ -24,118 +25,106 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
         });
     }, [location]);
 
-    // Styles
-    const labelStyle = {
-        marginBottom: '0.5rem',
-        fontWeight: 'bold',
+    const validateForm = () => {
+        let errors = {};
+
+        // Validation for zipcode (alphanumeric, 1-100 characters)
+        if (!formData.zipcode.match(/^[a-zA-Z0-9]+$/) || formData.zipcode.length < 1 || formData.zipcode.length > 100) {
+            errors.zipcode = t('zipcodeValidationError');
+        }
+
+        // Validation for locality (1-100 characters)
+        if (formData.locality.length < 1 || formData.locality.length > 100) {
+            errors.locality = t('localityValidationError');
+        }
+
+        // Validation for province (4-100 characters)
+        if (formData.province.length < 4 || formData.province.length > 100) {
+            errors.province = t('provinceValidationError');
+        }
+
+        // Validation for country (4-100 characters)
+        if (formData.country.length < 4 || formData.country.length > 100) {
+            errors.country = t('countryValidationError');
+        }
+
+        // Validation for name (1-100 characters)
+        if (formData.name.length < 1 || formData.name.length > 100) {
+            errors.name = t('nameValidationError');
+        }
+
+        return errors;
     };
 
-    const formControlStyle = {
-        width: '100%',
-        padding: '10px',
-        margin: '5px',
-        border: '1px solid #ced4da',
-        borderRadius: '0.25rem',
-        background: 'white',
-        color: 'black'
-    };
 
-    const modalStyle = {
-        display: showModal ? 'flex' : 'none',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1050
-    };
-
-    const modalDialogStyle = {
-        backgroundColor: 'white',
-        borderRadius: '5px',
-        padding: '20px',
-        maxWidth: '500px',
-        width: '100%'
-    };
-
-    const closeButtonStyle = {
-        cursor: 'pointer',
-        border: 'none',
-        background: 'none',
-        fontSize: '1.5rem',
-        fontWeight: 'bold',
-        color: 'black'
-    };
-
-    const handleChange = (e: any) => {
+    const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        handleSave(formData);
-        setFormData({name: "", province: "", country: "", locality: "", zipcode: "", id: -1})
+        const errors = validateForm();
+        if (Object.keys(errors).length === 0) {
+            handleSave(formData);
+            setFormData({ name: "", locality: "", province: "", country: "", zipcode: "", selfUrl: "" });
+        } else {
+            setFormErrors(errors);
+        }
     };
-
-    const formGroupStyleWithMargin = {
-        ...formControlStyle,
-        marginRight: '15px', // Adds space between form groups in the same row
-    };
-
-    const buttonStyle = {
-        backgroundColor: '#16df7e',
-        color: 'white',
-        padding: '0.5rem 1rem',
-        border: 'none',
-        borderRadius: '0.25rem',
-        cursor: 'pointer',
-        margin: '5px'
-    };
-
     return (
-        <div style={modalStyle} tabIndex="-1" role="dialog" aria-labelledby="modalTitle">
-            <div style={modalDialogStyle} role="document">
+        <div className={`modal ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" aria-labelledby="modalTitle">
+            <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h2 className="modal-title" id="modal-title">
-                            <i className="fas fa-map-marked-alt" style={{ marginRight: '10px' }}></i>
                             {t('modalTitle')}
                         </h2>
-                        <button type="button" style={closeButtonStyle} onClick={handleClose} aria-label="Close">
+                        <button type="button" className="close-button" onClick={handleClose} aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={handleSubmit} className="d-flex flex-column justify-content-center">
-                            <div className="form-group" style={{ marginBottom: '15px' }}>
-                                <label htmlFor="name-modal" style={labelStyle}>{t('addAssetView.nameLabel')}</label>
-                                <input type="text" style={formControlStyle} name="name" id="name-modal" value={formData.name} onChange={handleChange} />
+                        <form onSubmit={handleSubmit}>
+                            {/* Name Field */}
+                            <div className="form-group">
+                                <label htmlFor="name-modal">{t('addAssetView.nameLabel')}</label>
+                                <input type="text" className="form-control" name="name" id="name-modal" value={formData.name} onChange={handleChange} />
+                                {formErrors.name && <div className="error">{formErrors.name}</div>}
                             </div>
-                            <div className="d-flex flex-row" style={{ marginBottom: '15px' }}>
-                                <div className="form-group flex-1" style={{ marginRight: '15px' }}>
-                                    <label htmlFor="locality-modal" style={labelStyle}>{t('addAssetView.localityLabel')}</label>
-                                    <input type="text" style={formGroupStyleWithMargin} name="locality" id="locality-modal" value={formData.locality} onChange={handleChange} />
-                                </div>
-                                <div className="form-group flex-1">
-                                    <label htmlFor="province-modal" style={labelStyle}>{t('addAssetView.provinceLabel')}</label>
-                                    <input type="text" style={formControlStyle} name="province" id="province-modal" value={formData.province} onChange={handleChange} />
-                                </div>
+
+                            {/* Locality Field */}
+                            <div className="form-group">
+                                <label htmlFor="locality-modal">{t('addAssetView.localityLabel')}</label>
+                                <input type="text" className="form-control" name="locality" id="locality-modal" value={formData.locality} onChange={handleChange} />
+                                {formErrors.locality && <div className="error">{formErrors.locality}</div>}
                             </div>
-                            <div className="d-flex flex-row" style={{ marginBottom: '15px' }}>
-                                <div className="form-group flex-1" style={{ marginRight: '15px' }}>
-                                    <label htmlFor="country-modal" style={labelStyle}>{t('addAssetView.countryLabel')}</label>
-                                    <input type="text" style={formGroupStyleWithMargin} name="country" id="country-modal" value={formData.country} onChange={handleChange} />
-                                </div>
-                                <div className="form-group flex-1">
-                                    <label htmlFor="zipcode-modal" style={labelStyle}>{t('addAssetView.zipcodeLabel')}</label>
-                                    <input type="text" style={formControlStyle} name="zipcode" id="zipcode-modal" value={formData.zipcode} onChange={handleChange} />
-                                </div>
+
+                            {/* Province Field */}
+                            <div className="form-group">
+                                <label htmlFor="province-modal">{t('addAssetView.provinceLabel')}</label>
+                                <input type="text" className="form-control" name="province" id="province-modal" value={formData.province} onChange={handleChange} />
+                                {formErrors.province && <div className="error">{formErrors.province}</div>}
                             </div>
-                            <input type="hidden" name="id" value={formData.selfUrl} />
-                            <button className="btn btn-primary" type="submit" style={{...buttonStyle, width: '100px', margin: "5px auto"}}>
+
+                            {/* Country Field */}
+                            <div className="form-group">
+                                <label htmlFor="country-modal">{t('addAssetView.countryLabel')}</label>
+                                <input type="text" className="form-control" name="country" id="country-modal" value={formData.country} onChange={handleChange} />
+                                {formErrors.country && <div className="error">{formErrors.country}</div>}
+                            </div>
+
+                            {/* Zipcode Field */}
+                            <div className="form-group">
+                                <label htmlFor="zipcode-modal">{t('addAssetView.zipcodeLabel')}</label>
+                                <input type="text" className="form-control" name="zipcode" id="zipcode-modal" value={formData.zipcode} onChange={handleChange} />
+                                {formErrors.zipcode && <div className="error">{formErrors.zipcode}</div>}
+                            </div>
+
+                            {/* Hidden Field for selfUrl */}
+                            <input type="hidden" name="selfUrl" value={formData.selfUrl} />
+
+                            {/* Submit Button */}
+                            <button className="submit-button" type="submit">
                                 {t('save')}
                             </button>
                         </form>
@@ -144,6 +133,7 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }: any) =>
             </div>
         </div>
     );
+
 };
 
 export default LocationModal;

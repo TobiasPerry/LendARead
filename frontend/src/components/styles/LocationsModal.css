@@ -1,0 +1,88 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-dialog {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-content {
+    /* Additional styling if needed */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    background: white;
+    color: black;
+}
+
+.error {
+    color: red;
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+
+.submit-button {
+    background-color: #16df7e;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    margin: 5px auto;
+    display: block;
+}
+
+/* Media query for responsiveness (optional) */
+@media (max-width: 600px) {
+    .modal-dialog {
+        width: 90%;
+        padding: 10px;
+    }
+}
