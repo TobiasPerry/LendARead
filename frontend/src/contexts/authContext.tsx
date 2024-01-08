@@ -16,23 +16,39 @@ export const AuthContext = React.createContext({
 const AuthContextProvider = (props) => {
     const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
     const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || sessionStorage.hasOwnProperty("userAuthToken"));
-    const token = isInLocalStorage ? JSON.parse(localStorage.getItem("userAuthToken")) : JSON.parse(sessionStorage.getItem("userAuthToken"))
+    const token = isInLocalStorage ?localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
     const [authKey, setAuthKey] = useState(token);
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem("userAuthToken")) || JSON.parse(sessionStorage.getItem("userAuthToken")) || ''}`;
+    api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
+    const [user, setUser] = useState(-1);
+
     const extractUserId = (jwt: string): number => {
-        console.log(jwt)
+        //@ts-ignore
         const decoded = jwtDecode(jwt).userReference;
         const pattern = /\/(\d+)(?=\/?$)/;
         const match = decoded.match(pattern);
         const out = match ? match[1] : -1;
-        console.log(out)
         return out
     }
 
-    const [user, setUser] = useState(-1);
+    const handleJWT = (jwt: string, rememberMe): boolean => {
+        if(jwt === undefined || jwt === null)
+            return false
+
+        if(rememberMe)
+            localStorage.setItem("userAuthToken", jwt)
+        else
+            sessionStorage.setItem("userAuthToken", jwt)
+
+        setUser(extractUserId(jwt))
+        setAuthKey(jwt);
+        setLoggedIn(true);
+        api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+        api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+        return true
+    }
 
     const logout = () => {
         localStorage.removeItem("userAuthToken");
@@ -52,16 +68,7 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            if(response.headers.has('jwt')) {
-                setUser(extractUserId(response.headers.get('jwt')))
-                setAuthKey(authKey);
-                setLoggedIn(true);
-                api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
-                api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
-                return true
-            }
-
-            return false
+            return handleJWT(response.headers.get('jwt'), rememberMe)
         } catch (error) {
             console.log("error raised", error);
             return false;

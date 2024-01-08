@@ -6,8 +6,8 @@ const useLocations = () => {
     const editLocation = async (location: any) => {
         console.log(location)
         try {
-            const response = await api_.patch(location.selfUrl, {
-                    body: location,
+            const response = await api_.patch(location.selfUrl, location,
+                {
                     headers: {"Content-Type": "application/vnd.location.v1+json"}
                 }
             )
@@ -33,8 +33,7 @@ const useLocations = () => {
     const getLocations = async (userId: any) => {
         try {
             const response = await api.get(`/locations?userId=2`);
-            // @ts-ignore
-            return await response.json()
+            return await response.data
         } catch (error) {
             return []
         }
@@ -43,11 +42,9 @@ const useLocations = () => {
     //need to add constraints to the form in jsx, like countyr more than 3 chars!
     const addLocation = async (location: LocationType) => {
         try {
-            const response = await api.post(`/locations`,
-                {
-                    body: {...location},
-                    headers: {"Content-Type": "application/vnd.location.v1+json"}
-                })
+            const response = api.post('/locations', location, {
+                headers: { "Content-Type": "application/vnd.location.v1+json" }
+            });
         } catch (e) {
             return false
         }

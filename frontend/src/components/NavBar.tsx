@@ -1,9 +1,9 @@
 //import {useTranslation} from "react-i18next";
 import './styles/navBar.css';
 import './styles/searchBar.css';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "../contexts/authContext.tsx";
 
 // @ts-ignore
@@ -15,22 +15,27 @@ export default function NavBar() {
 
     const { t, i18n } = useTranslation();
     const {user, logout} = useContext(AuthContext)
-    //const [language, setLanguage] = useState('en');
+    const [language, setLanguage] = useState('en');
+    const navigate = useNavigate();
 
-    // const toggleLanguage = () => {
-    //     const next_language = language === 'en' ? 'es' : 'en';
-    //     i18n.changeLanguage(next_language);
-    //     setLanguage(next_language);
-    // };
-    // const navigation = [
-    //     { name: t('Explore'), href: '/discovery', current: true },
-    //     { name: t('Lend book'), href: '/', current: false },
-    // ]
+    const toggleLanguage = () => {
+        const next_language = language === 'en' ? 'es' : 'en';
+        i18n.changeLanguage(next_language);
+        setLanguage(next_language);
+    };
+    const navigation = [
+        { name: t('Explore'), href: '/discovery', current: true },
+        { name: t('Lend book'), href: '/', current: false },
+    ]
 
-    // const changeLanguage = (lng: string) => {
-    //     i18n.changeLanguage(lng);
-    // };
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
 
+    const handleLogout = () => {
+        logout()
+        navigate('/')
+    }
     return (
         <>
             <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711'}} data-bs-theme="dark">
@@ -79,10 +84,11 @@ export default function NavBar() {
                             </li> }
                             { user !== -1 &&
                                 <li className="nav-item d-flex align-items-center">
-                                <button className="nav-link navItem" id="logout"  aria-current="page" onClick={logout}>
-                                    <i className="fas fa-sign-out-alt " style={{color: "white"}}></i>
-                                </button>
-                            </li> }
+                                    <button className="nav-link navItem" id="logout" aria-current="page" onClick={handleLogout}>
+                                        <i className="fas fa-sign-out-alt fa-x" ></i>
+                                    </button>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
