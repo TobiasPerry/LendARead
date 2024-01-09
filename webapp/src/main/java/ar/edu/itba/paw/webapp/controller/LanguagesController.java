@@ -4,17 +4,18 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.LanguagesDTO;
+import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Component
@@ -22,17 +23,23 @@ import java.util.List;
 public class LanguagesController {
 
     private final LanguagesService ls;
-
+    @Context
+    private UriInfo uriInfo;
     @Autowired
     public LanguagesController(final LanguagesService ls) {
         this.ls = ls;
     }
     @GET
     @Produces(value = {Vnd.VND_LANGUAGE})
-    public Response getUserAssetsInstances()  {
-        List<Language> languages = ls.getLanguages();
-        List<LanguagesDTO> languagesDTOS = LanguagesDTO.fromLanguages(languages);
-        return Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {}).build();
+    public Response getUserAssetsInstances(final @QueryParam("page") @DefaultValue("1") int page,
+                                           final @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                           final @QueryParam("isUsed") Boolean isUsed
+                                           ) {
+        AbstractPage<Language> languages = ls.getLanguages(page, pageSize, isUsed);
+        List<LanguagesDTO> languagesDTOS = LanguagesDTO.fromLanguages(languages.getList());
+        Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {});
+        PaginatedData.paginatedData(response, languages, uriInfo);
+        return response.build();
     }
     @GET
     @Path("/{code}")

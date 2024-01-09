@@ -10,11 +10,11 @@ public interface AbstractPage<T> {
     int getTotalPages();
 
     default boolean nextPage() {
-        return  getCurrentPage() != getTotalPages();
+        return  getCurrentPage() < getTotalPages();
     }
 
     default boolean previousPage() {
-        return getCurrentPage() > 1;
+        return getCurrentPage() > 1 ;
     }
 
     default int getFirstPage() {return 1;}

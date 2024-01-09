@@ -165,7 +165,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return Optional.of(new PagingImpl<>(new ArrayList<>(), 0, 0));
+            return Optional.of(new PagingImpl<>(new ArrayList<>(), pageNum, totalPages));
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<AssetInstance> query = em.createQuery("FROM AssetInstance AS ai WHERE id IN (:ids) " + orderByORM, AssetInstance.class);

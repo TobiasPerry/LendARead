@@ -3,6 +3,8 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.LanguageDao;
 import org.slf4j.Logger;
@@ -27,16 +29,10 @@ public class LanguagesServiceImpl implements LanguagesService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Language> getLanguages() {
-        Optional<List<Language>> langsOpt = this.languageDao.getLanguages();
-        if (!langsOpt.isPresent()) {
-            LOGGER.error("Couldn't load languages");
-            throw new RuntimeException("Couldn't load languages");
-        }
+    public AbstractPage<Language> getLanguages(final int page, final int itemsPerPage, final Boolean isUsed) {
+      return this.languageDao.getLanguages(page, itemsPerPage, isUsed);
 
-        List<Language> languages = langsOpt.get();
-        languages.sort(Comparator.comparing(Language::getName));
-        return languages;
+
     }
 
     @Transactional(readOnly = true)
