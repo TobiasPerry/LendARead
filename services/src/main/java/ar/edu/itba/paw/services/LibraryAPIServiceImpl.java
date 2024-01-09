@@ -56,8 +56,8 @@ public class LibraryAPIServiceImpl implements LibraryAPIService {
             bookInfo.put("author", getAuthorNames(authorsArray));
             bookInfo.put("language", getLanguages(languagesArray));
 
-            Asset book = new Asset(DEFAULT_ID,bookInfo.get("ISBN"), bookInfo.get("author"), bookInfo.get("title"),bookInfo.get("language"));
-            return book;
+            //Asset book = new Asset(DEFAULT_ID,bookInfo.get("ISBN"), bookInfo.get("author"), bookInfo.get("title"),bookInfo.get("language"));
+            return null;
         } else {
             throw new IOException("Failed to get book information. Response Code: " + responseCode);
         }

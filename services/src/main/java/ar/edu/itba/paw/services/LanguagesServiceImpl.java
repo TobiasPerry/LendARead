@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.LanguageDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,5 +37,14 @@ public class LanguagesServiceImpl implements LanguagesService {
         List<Language> languages = langsOpt.get();
         languages.sort(Comparator.comparing(Language::getName));
         return languages;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Language getLanguage(String code) throws LanguageNotFoundException {
+       Optional<Language> langOpt = this.languageDao.getLanguage(code);
+       LOGGER.debug("Language with code {} ", code);
+       langOpt.orElseThrow(() -> new LanguageNotFoundException(HttpStatusCodes.NOT_FOUND));
+       return langOpt.get();
     }
 }

@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface LanguageDao {
     Optional<List<Language>> getLanguages();
+    Optional<Language> getLanguage(String code);
 }

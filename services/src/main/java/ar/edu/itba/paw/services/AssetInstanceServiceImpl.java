@@ -126,6 +126,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional(readOnly = true)
     @Override
     public List<AssetInstance> getSimilarAssetsInstances(AssetInstance ai, int pageNum, int iteamPerPage) {
-        return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5,-1)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
+        return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage().getCode())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5,-1)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
     }
 }

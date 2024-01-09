@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
@@ -42,7 +43,7 @@ public class AssetAvailabilityDaoTest {
     @PersistenceContext
     private EntityManager em;
     private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
-    private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", "LANGUAGE");
+    private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", new Language());
     private final static Location LOCATION = new Location(0, "LOCATION","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
     private final static AssetInstance ASSET_INSTANCE = new AssetInstance(0,BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION");
     private final static LocalDate borrowDate = LocalDate.now();

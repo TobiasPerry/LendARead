@@ -22,4 +22,10 @@ public class LanguagesDaoJpa implements LanguageDao {
         List<Language> languages = query.getResultList();
         return Optional.ofNullable(languages);
     }
+
+    @Override
+    public Optional<Language> getLanguage(String code) {
+        return Optional.ofNullable(em.find(Language.class, code));
+    }
+
 }

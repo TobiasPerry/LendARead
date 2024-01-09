@@ -200,12 +200,12 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         final TypedQuery<AssetInstance> query = em.createQuery("FROM AssetInstance AS ai WHERE id IN (:ids) " + orderByORM, AssetInstance.class);
         query.setParameter("ids", list);
         List<AssetInstance> assetInstances = query.getResultList();
-
+        //TODO sacar el traer los idios las physical conditions y esas cosas.
         return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(ids), getPhysicalConditions(ids)));
     }
 
     private List<String> getLanguages(List<Long> ids){
-        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstance AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
+        String queryString = "SELECT DISTINCT ai.book.language.code FROM AssetInstance AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
         query.setParameter("ids", ids);

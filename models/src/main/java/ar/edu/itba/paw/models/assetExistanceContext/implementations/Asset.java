@@ -16,8 +16,9 @@ public class Asset {
     @Column(length = 100, nullable = false)
     private  String title;
 
-    @Column(length = 100, nullable = false, name = "lang")
-    private String language;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "lang", referencedColumnName = "id", nullable = false)
+    private Language language;
 
 
     @Id
@@ -26,14 +27,14 @@ public class Asset {
     @Column(name = "uid")
     private  Long id;
 
-    public Asset(final Long id, final String isbn, final String author, final String title, final String language) {
+    public Asset(final Long id, final String isbn, final String author, final String title, final Language language) {
         this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
         this.language = language;
         this.id = id;
     }
-    public Asset(final String isbn, final String author, final String title, final String language) {
+    public Asset(final String isbn, final String author, final String title, final Language language) {
         this.isbn = convertToISBN13(isbn);
         this.author = author;
         this.title = title;
@@ -104,7 +105,7 @@ public class Asset {
         return this.isbn;
     }
 
-    public String getLanguage() {
+    public Language getLanguage() {
         return this.language;
     }
 
@@ -120,7 +121,7 @@ public class Asset {
         this.author = author;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 
