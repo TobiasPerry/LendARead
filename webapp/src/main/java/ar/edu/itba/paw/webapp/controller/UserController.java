@@ -56,7 +56,6 @@ public class UserController {
 
     }
 
-
     @PATCH
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
@@ -111,7 +110,9 @@ public class UserController {
                                       @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
                                       @Context javax.ws.rs.core.Request request) throws UserNotFoundException, IOException {
         final User user = us.getUserById(id);
-
+        if (user.getProfilePhoto() == null) {
+            return Response.ok().build();
+        }
         EntityTag eTag = new EntityTag(Arrays.hashCode(user.getProfilePhoto().getPhoto()) + size);
 
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
@@ -191,7 +192,4 @@ public class UserController {
         LOGGER.info("GET user/{}/borrower_reviews/{}",id,reviewId);
         return Response.ok( new GenericEntity<UserReviewsDTO>(userReviewsDTO){}).build();
     }
-
-
-
 }

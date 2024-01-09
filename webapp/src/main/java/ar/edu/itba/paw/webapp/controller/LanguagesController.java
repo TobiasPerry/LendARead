@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.LanguagesDTO;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,8 @@ public class LanguagesController {
     public Response getUserAssetsInstances(final @PathParam("code") String code) throws LanguageNotFoundException {
         Language language = ls.getLanguage(code);
         LanguagesDTO languagesDTO = LanguagesDTO.fromLanguage(language);
-        return Response.ok(languagesDTO).build();
+        Response.ResponseBuilder response = Response.ok(languagesDTO);
+        StaticCache.setUnconditionalCache(response);
+        return response.build();
     }
 }
