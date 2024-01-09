@@ -1,7 +1,10 @@
 package ar.edu.itba.paw.models.viewsContext.interfaces;
 
-public interface AbstractPage {
+import java.util.List;
 
+public interface AbstractPage<T> {
+
+     List<T> getList();
     int getCurrentPage();
 
     int getTotalPages();

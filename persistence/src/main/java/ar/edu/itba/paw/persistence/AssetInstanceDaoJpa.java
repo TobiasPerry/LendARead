@@ -5,10 +5,10 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCond
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.stereotype.Repository;
@@ -87,7 +87,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
-    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
+    public Optional<AbstractPage<AssetInstance>> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
         // Base query for getting the assets IDs for a given page
         StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai " +
@@ -194,14 +194,13 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            return Optional.of(new PagingImpl<>(new ArrayList<>(), 0, 0));
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<AssetInstance> query = em.createQuery("FROM AssetInstance AS ai WHERE id IN (:ids) " + orderByORM, AssetInstance.class);
         query.setParameter("ids", list);
         List<AssetInstance> assetInstances = query.getResultList();
-        //TODO sacar el traer los idios las physical conditions y esas cosas.
-        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(ids), getPhysicalConditions(ids)));
+        return Optional.of(new PagingImpl<>(assetInstances, pageNum, totalPages));
     }
 
     private List<String> getLanguages(List<Long> ids){

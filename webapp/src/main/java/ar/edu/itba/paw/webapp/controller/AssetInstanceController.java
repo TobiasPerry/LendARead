@@ -12,7 +12,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.AssetInstanceReviewDTO;
 import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
@@ -111,7 +111,7 @@ public class AssetInstanceController {
                                          @QueryParam("maxRating")  @DefaultValue("5") @Min(1) @Max(5)int maxRating,
                                          @QueryParam("itemsPerPage") @DefaultValue("10") int itemsPerPage,
                                         @QueryParam("userId")  @DefaultValue("-1") int userId)  {
-        Page page = ais.getAllAssetsInstances(
+        AbstractPage<AssetInstance> page = ais.getAllAssetsInstances(
                 currentPage, itemsPerPage,
                 new SearchQueryImpl(
                         (languages != null) ? languages : new ArrayList<>(),
@@ -124,11 +124,10 @@ public class AssetInstanceController {
                         userId
                         )
         );
-        List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getBooks());
+        List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getList());
         LOGGER.info("GET assetInstances/ search:{} physicalConditions:{} languages:{} sort:{} sortDirection:{} page:{} itemsPerPage:{} minRating:{} maxRating:{} userId:{}",search,physicalConditions,languages,sort,sortDirection,currentPage,itemsPerPage,minRating,maxRating,userId);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetsInstancesDTO>>(assetsInstancesDTO) {});
         PaginatedData.paginatedData(response, page, uriInfo);
-
         return response.build();
     }
 

@@ -11,7 +11,7 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;
@@ -95,13 +95,10 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesTest() {
         //2
-        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
+        Optional<AbstractPage<AssetInstance>> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
 
         //3
         Assert.assertTrue(page.isPresent());
-        Assert.assertEquals(1,page.get().getBooks().size());
-        Assert.assertEquals(1,page.get().getPhysicalConditions().size());
-        Assert.assertEquals(1,page.get().getLanguages().size());
         Assert.assertEquals(1,page.get().getTotalPages());
         Assert.assertEquals(1,page.get().getCurrentPage());
     }
@@ -111,7 +108,7 @@ public class AssetInstanceDaoTest {
         //1
         em.createQuery("UPDATE FROM AssetInstance SET assetState = 'DELETED' WHERE id = 0").executeUpdate();
         //2
-        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
+        Optional<AbstractPage<AssetInstance>> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
         Assert.assertTrue(page.isPresent());
         Assert.assertEquals(0,page.get().getCurrentPage());

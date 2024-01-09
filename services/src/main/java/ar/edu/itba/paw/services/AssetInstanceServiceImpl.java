@@ -8,9 +8,9 @@ import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
@@ -58,32 +58,27 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         return assetInstanceOpt.get();
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Page getAllAssetsInstances(final int pageNum, final int itemsPerPage) {
-        return getAllAssetsInstances(pageNum, itemsPerPage, new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1));
-    }
 
     @Transactional(readOnly = true)
     @Override
-    public Page getAllAssetsInstances(final int pageNum, final int itemsPerPage, SearchQuery searchQuery) {
+    public AbstractPage<AssetInstance> getAllAssetsInstances(final int pageNum, final int itemsPerPage, SearchQuery searchQuery) {
 
         if (pageNum < 0 || itemsPerPage <= 0)
-            return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
         if (searchQuery == null)
             searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
 
 
-        Optional<Page> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
+        Optional<AbstractPage<AssetInstance>> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
 
-        Page page;
+        AbstractPage<AssetInstance> page;
 
         if (optionalPage.isPresent()) {
             page = optionalPage.get();
             return page;
         }
-        return new PageImpl(new ArrayList<>(), 1, 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        return new PagingImpl<AssetInstance>(new ArrayList<>(), 1, 1);
     }
 
     @Transactional
@@ -123,9 +118,4 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<AssetInstance> getSimilarAssetsInstances(AssetInstance ai, int pageNum, int iteamPerPage) {
-        return this.getAllAssetsInstances(1,4,new SearchQueryImpl(new ArrayList<>(Collections.singleton(ai.getBook().getLanguage().getCode())),new ArrayList<>(Collections.singleton(ai.getPhysicalCondition().toString())),ai.getBook().getName(),1,5,-1)).getBooks().stream().filter(assetInstance -> assetInstance.getId() != ai.getId()).collect(Collectors.toList());
-    }
 }
