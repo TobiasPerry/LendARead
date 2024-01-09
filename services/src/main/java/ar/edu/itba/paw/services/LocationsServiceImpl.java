@@ -31,18 +31,13 @@ public class LocationsServiceImpl implements LocationsService {
         this.userService = userService;
     }
 
-    @Override
-    @Transactional
-    public void addLocation(Location lc) {
-         locationsDao.addLocation(lc);
-    }
 
     @Override
     @Transactional
     public Location addLocation(String name, String locality, String province, String country, String zipcode) throws UserNotFoundException {
        User user = userService.getCurrentUser();
        Location newLocation = new Location(name, zipcode, locality, province, country, user);
-       addLocation(newLocation);
+       locationsDao.addLocation(newLocation);
        LOGGER.info("Location {} added for user {}", newLocation.getId(), user.getId());
        return newLocation;
 

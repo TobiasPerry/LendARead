@@ -92,11 +92,6 @@ public class UserServiceImpl implements UserService {
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public boolean getCurrentUserIsBorrower() {
-        return getCurrentRoles().contains(new SimpleGrantedAuthority(BORROWER_ROLE));
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -108,10 +103,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getCurrentRoles() {
-        return SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-    }
 
     @Transactional
     @Override

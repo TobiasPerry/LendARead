@@ -10,10 +10,6 @@ import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 public interface AssetService {
 
     PagingImpl<Asset> getBooks(final int page,final int itemsPerPage,final String isbn, final String author, final String title, final String language);
-
     Asset addBook(final String isbn, final String author, final String title, final String language) throws BookAlreadyExistException, LanguageNotFoundException, AssetAlreadyExistException;
-
-    Asset getBookByIsbn(final String isbn);
-
     Asset getBookById(final Long id) throws AssetNotFoundException;
 }

@@ -81,12 +81,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isOwner(final AssetInstance assetInstance, final String email) {
-        return assetInstance.getOwner().getEmail().equals(email);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException {
         AssetInstance assetInstance = getAssetInstance(id);
         return assetInstance.getOwner().getEmail().equals(email);

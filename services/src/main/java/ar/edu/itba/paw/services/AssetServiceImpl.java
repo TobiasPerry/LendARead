@@ -28,7 +28,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
 
-
     @Transactional(readOnly = true)
     @Override
     public PagingImpl<Asset> getBooks(final int page, final int itemsPerPage, final String isbn, final String author, final String title, final String language) {
@@ -51,11 +50,6 @@ public class AssetServiceImpl implements AssetService {
         }
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Asset getBookByIsbn(String isbn) {
-        return ad.getBookByIsbn(isbn).orElse(null);
-    }
 
     @Transactional(readOnly = true)
     @Override

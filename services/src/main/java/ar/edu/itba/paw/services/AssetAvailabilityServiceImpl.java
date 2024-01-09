@@ -118,22 +118,6 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
         return false;
     }
-
-
-    @Transactional
-    @Override
-    public void changeReservability(int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException {
-        AssetInstance assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException(HttpStatusCodes.NOT_FOUND));
-        if (this.getActiveLendings(assetInstance).size() > 0) {
-            LOGGER.error("Cannot change reservability of {}", assetId);
-            throw new AssetInstanceBorrowException(HttpStatusCodes.BAD_REQUEST);
-        }
-        assetInstanceDao.setReservability(assetInstance, !assetInstance.getIsReservable());
-        LOGGER.info("Asset {} has been chaned its reservability", assetId);
-    }
-
-
-
     @Transactional
     @Override
     public void returnAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
@@ -200,11 +184,6 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
        }
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<Lending> getActiveLendings(final AssetInstance ai) {
-        return lendingDao.getActiveLendings(ai);
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -229,12 +208,6 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         }
         lendingDao.changeLendingStatus(lending, LendingState.CANCEL);
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public boolean haveActiveLendings(AssetInstance ai) {
-        return getActiveLendings(ai).size() > 0;
     }
 
     @Scheduled(cron = "0 0 0 * * *")
