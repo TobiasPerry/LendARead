@@ -12,7 +12,13 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
         zipcode: '',
         selfUrl: '',
     });
-    const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({
+        name: '',
+        locality: '',
+        province: '',
+        country: '',
+        zipcode: '',
+    });
 
     useEffect(() => {
         setFormData({
@@ -26,7 +32,13 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
     }, [location]);
 
     const validateForm = () => {
-        let errors = {};
+        let errors = {
+            name: '',
+            locality: '',
+            province: '',
+            country: '',
+            zipcode: '',
+        };
 
         // Validation for zipcode (alphanumeric, 1-100 characters)
         if (!formData.zipcode.match(/^[a-zA-Z0-9]+$/) || formData.zipcode.length < 1 || formData.zipcode.length > 100) {
@@ -72,7 +84,7 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
         }
     };
     return (
-        <div className={`modal ${showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" aria-labelledby="modalTitle">
+        <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">

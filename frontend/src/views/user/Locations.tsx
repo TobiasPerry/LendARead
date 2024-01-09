@@ -80,7 +80,7 @@ const LocationsPage = () => {
                     )}
                 </div>
             </div>
-            <LocationModal location={editingLocation} showModal={showModal} handleClose={() => setShowModal(false)} handleSave={handleSave}> </LocationModal>
+            <LocationModal location={editingLocation} showModal={showModal} handleClose={() => setShowModal(false)} handleSave={handleSave}/>
         </div>
     );
 };

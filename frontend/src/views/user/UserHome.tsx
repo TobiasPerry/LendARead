@@ -40,7 +40,7 @@ const UserHomeView = () => {
                             </div>
                         </div>
                     <div style={{ flex: 3 }}>
-                            {table === 'my_books' && <MyBooksTable userAssets={userAssets} />}
+                            {table === 'my_books' && <MyBooksTable />}
                             {/*{table === 'lended_books' && <LendedBooksTable isLender={isLender} userAssets={userAssets} />}*/}
                             {/*{table === 'borrowed_books' && <BorrowedBooksTable userAssets={userAssets} />}*/}
                         </div>

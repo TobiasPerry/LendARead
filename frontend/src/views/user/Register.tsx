@@ -8,6 +8,12 @@ import logo from '../../assets/logo-oscuro.png';
 import loginBg from '../../assets/login-bg.jpg';
 import useRegister from "../../hooks/users/useRegister.ts";
 
+interface FormErrors {
+    email: string,
+    password: string,
+    repeatPassword: string,
+    name: string
+}
 const RegisterView = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -17,10 +23,18 @@ const RegisterView = () => {
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const { register} = useRegister();
-    const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState<FormErrors>({
+        email: "",
+        password: "",
+        repeatPassword: "",
+        name:""
+    });
 
     const validateForm = () => {
-        let errors = {};
+        let errors = { email: "",
+            password: "",
+            repeatPassword: "",
+            name:"" };
 
         // Validate email
         if (!email.match(/^\S+@\S+\.\S+$/) || email.length < 3 || email.length > 100) {

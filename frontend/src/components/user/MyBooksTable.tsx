@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import useAssetInstances from '../../hooks/AssetInstance/useUserAssetInstances.ts';
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx"; // Path to your custom hook
 
 const MyBooksTable = () => {
     const { t } = useTranslation();
-    const {user} = useContext(AuthContext)
-    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances(user);
+    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances();
+
+    useEffect(() => {
+        applyFilterAndSort(currentPage, sort, filter, books)
+    }, [])
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
@@ -74,7 +77,7 @@ const MyBooksTable = () => {
                 <tbody>
                 {books.length === 0 ? (
                     <tr>
-                        <td colSpan="5" className="text-center">{t('no_books_available')}</td>
+                        <td className="text-center">{t('no_books_available')}</td>
                     </tr>
                 ) : (
                     books.map((book, index) => (

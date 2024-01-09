@@ -1,9 +1,10 @@
 // useAssetInstances.js
 import {useContext, useState} from 'react';
 import {api} from "../api/api.ts";
-import {AuthContext} from "../../contexts/authContext.tsx";
+import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 
-const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'asc' }) => {
+const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) => {
+    const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
     const [sort, setSort] = useState(initialSort);
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,10 +14,10 @@ const useUserAssetInstances = (user, initialSort = { column: 'title', order: 'as
 
 
     const applyFilterAndSort =  async (newPage: number, newSort: any, newFilter: string, books: any) => {
-        console.log(newSort, newFilter, newPage)
         const response = await api.get(`/assetInstances?userId=${user}`)
         //need to have some assetInstances added first, waiting for frontend of adding assetinstances to be done
-        console.log(response)
+        console.log(response.data)
+        console.log(user)
     };
 
     // Function to change the page
