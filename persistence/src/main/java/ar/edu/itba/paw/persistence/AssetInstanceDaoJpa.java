@@ -32,8 +32,6 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return ai;
     }
 
-
-
     @Override
     public Optional<AssetInstance> getAssetInstance(int assetId) {
         String queryString = "FROM AssetInstance as ai WHERE ai.id = :id";
@@ -47,12 +45,6 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     public void changeStatus(AssetInstance assetInstance, AssetState as) {
         assetInstance.setAssetState(as);
         em.persist(assetInstance);
-    }
-
-    @Override
-    public void setReservability(AssetInstance ai, boolean value) {
-        ai.setReservable(value);
-        em.persist(ai);
     }
 
 

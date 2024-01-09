@@ -20,12 +20,7 @@ public class AssetDaoJpa implements AssetDao {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public Optional<List<Asset>> getAssets() {
-        TypedQuery<Asset> query = em.createQuery("SELECT b FROM Asset b", Asset.class);
-        List<Asset> books = query.getResultList();
-        return books.isEmpty() ? Optional.empty() : Optional.of(new ArrayList<>(books));
-    }
+
 
     @Override
     public Asset addAsset(Asset bi) throws BookAlreadyExistException {

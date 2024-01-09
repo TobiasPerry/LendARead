@@ -10,8 +10,6 @@ public interface AssetInstanceReviewsDao {
 
     void addReview(final AssetInstanceReview assetInstanceReview);
 
-    double getRating(final AssetInstance assetInstance);
-
     PagingImpl<AssetInstanceReview> getAssetInstanceReviews(int pageNum, int itemsPerPage, AssetInstance assetInstance);
 
     Optional<AssetInstanceReview> getReviewById(final int reviewId);
