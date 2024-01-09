@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -38,7 +38,7 @@ public class AssetInstanceServiceImplTest {
     @Test
     public void getAllAssetsInstancesEmptyDBTest(){
         // 1 - Precondiciones
-        when(assetInstanceDao.getAllAssetInstances(anyInt(), anyInt(), any())).thenReturn(Optional.empty());
+        when(assetInstanceDao.getAllAssetInstances(anyInt(), anyInt(), any())).thenReturn(new PagingImpl<>(new ArrayList<>(), 1, 1));
 
         // 2 - Ejercitación
         AbstractPage page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE, SEARCH_QUERY);

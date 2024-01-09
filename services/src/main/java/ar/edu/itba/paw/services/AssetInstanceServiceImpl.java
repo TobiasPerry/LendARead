@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AssetInstanceServiceImpl implements AssetInstanceService {
@@ -70,15 +67,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
 
 
-        Optional<AbstractPage<AssetInstance>> optionalPage = assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
-
-        AbstractPage<AssetInstance> page;
-
-        if (optionalPage.isPresent()) {
-            page = optionalPage.get();
-            return page;
-        }
-        return new PagingImpl<AssetInstance>(new ArrayList<>(), 1, 1);
+        return assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
     }
 
     @Transactional

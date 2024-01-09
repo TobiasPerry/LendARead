@@ -105,7 +105,7 @@ public class AssetDaoJpa implements AssetDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return new PagingImpl<Asset>(new ArrayList<>(), page, totalPages);
+            return new PagingImpl<>(new ArrayList<>(), page, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<Asset> query = em.createQuery("FROM Asset as a  WHERE a.id IN (:ids) ORDER BY a.title" , Asset.class);

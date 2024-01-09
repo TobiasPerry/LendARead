@@ -95,12 +95,11 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesTest() {
         //2
-        Optional<AbstractPage<AssetInstance>> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
+        AbstractPage<AssetInstance> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
 
         //3
-        Assert.assertTrue(page.isPresent());
-        Assert.assertEquals(1,page.get().getTotalPages());
-        Assert.assertEquals(1,page.get().getCurrentPage());
+        Assert.assertEquals(1,page.getTotalPages());
+        Assert.assertEquals(1,page.getCurrentPage());
     }
     @Rollback
     @Test
@@ -108,11 +107,10 @@ public class AssetInstanceDaoTest {
         //1
         em.createQuery("UPDATE FROM AssetInstance SET assetState = 'DELETED' WHERE id = 0").executeUpdate();
         //2
-        Optional<AbstractPage<AssetInstance>> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
+        AbstractPage<AssetInstance> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
-        Assert.assertTrue(page.isPresent());
-        Assert.assertEquals(0,page.get().getCurrentPage());
-        Assert.assertEquals(0,page.get().getTotalPages());
+        Assert.assertEquals(0,page.getCurrentPage());
+        Assert.assertEquals(0,page.getTotalPages());
     }
 
 }
