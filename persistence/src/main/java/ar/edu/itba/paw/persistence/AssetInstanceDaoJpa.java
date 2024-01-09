@@ -3,8 +3,6 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.Image;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
@@ -34,30 +32,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return ai;
     }
 
-    @Override
-    public void changePhysicalCondition(final AssetInstance ai, final PhysicalCondition physicalCondition) {
-        ai.setPhysicalCondition(physicalCondition);
-        em.persist(ai);
-    }
 
-    @Override
-    public void changeLocation(final AssetInstance ai, final Location location) {
-        ai.setLocation(location);
-        em.persist(ai);
-    }
-
-    @Override
-    public void changeImage(final AssetInstance ai, final Image image) {
-        ai.setImage(image);
-        em.persist(ai);
-    }
-
-    @Override
-    public void changeMaxLendingDays(final AssetInstance ai, final int maxLendingDays) {
-
-        ai.setMaxLendingDays(maxLendingDays);
-        em.persist(ai);
-    }
 
     @Override
     public Optional<AssetInstance> getAssetInstance(int assetId) {
@@ -80,11 +55,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         em.persist(ai);
     }
 
-    @Override
-    public void changeStatusByLendingId(AssetInstance ai, AssetState as) {
-        ai.setAssetState(as);
-        em.persist(ai);
-    }
+
 
     @Override
     public Optional<AbstractPage<AssetInstance>> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
