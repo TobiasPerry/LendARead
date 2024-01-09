@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/AssetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/AssetInstance/useAssetInstance.ts";
-import {keyframes} from "@emotion/react";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import NotFound from "../../components/NotFound.tsx";
 
