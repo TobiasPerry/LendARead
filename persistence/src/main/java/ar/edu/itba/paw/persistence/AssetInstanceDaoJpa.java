@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
@@ -29,59 +29,59 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     private EntityManager em;
 
     @Override
-    public AssetInstanceImpl addAssetInstance(AssetInstanceImpl ai) {
+    public AssetInstance addAssetInstance(AssetInstance ai) {
         em.persist(ai);
         return ai;
     }
 
     @Override
-    public void changePhysicalCondition(final AssetInstanceImpl ai, final PhysicalCondition physicalCondition) {
+    public void changePhysicalCondition(final AssetInstance ai, final PhysicalCondition physicalCondition) {
         ai.setPhysicalCondition(physicalCondition);
         em.persist(ai);
     }
 
     @Override
-    public void changeLocation(final AssetInstanceImpl ai, final LocationImpl location) {
+    public void changeLocation(final AssetInstance ai, final Location location) {
         ai.setLocation(location);
         em.persist(ai);
     }
 
     @Override
-    public void changeImage(final AssetInstanceImpl ai, final ImageImpl image) {
+    public void changeImage(final AssetInstance ai, final Image image) {
         ai.setImage(image);
         em.persist(ai);
     }
 
     @Override
-    public void changeMaxLendingDays(final AssetInstanceImpl ai, final int maxLendingDays) {
+    public void changeMaxLendingDays(final AssetInstance ai, final int maxLendingDays) {
 
         ai.setMaxLendingDays(maxLendingDays);
         em.persist(ai);
     }
 
     @Override
-    public Optional<AssetInstanceImpl> getAssetInstance(int assetId) {
-        String queryString = "FROM AssetInstanceImpl as ai WHERE ai.id = :id";
-        TypedQuery<AssetInstanceImpl> query = em.createQuery(queryString, AssetInstanceImpl.class);
+    public Optional<AssetInstance> getAssetInstance(int assetId) {
+        String queryString = "FROM AssetInstance as ai WHERE ai.id = :id";
+        TypedQuery<AssetInstance> query = em.createQuery(queryString, AssetInstance.class);
         query.setParameter("id", (long) assetId);
-        List<AssetInstanceImpl> list = query.getResultList();
+        List<AssetInstance> list = query.getResultList();
         return list.stream().findFirst();
     }
 
     @Override
-    public void changeStatus(AssetInstanceImpl assetInstance, AssetState as) {
+    public void changeStatus(AssetInstance assetInstance, AssetState as) {
         assetInstance.setAssetState(as);
         em.persist(assetInstance);
     }
 
     @Override
-    public void setReservability(AssetInstanceImpl ai, boolean value) {
+    public void setReservability(AssetInstance ai, boolean value) {
         ai.setReservable(value);
         em.persist(ai);
     }
 
     @Override
-    public void changeStatusByLendingId(AssetInstanceImpl ai, AssetState as) {
+    public void changeStatusByLendingId(AssetInstance ai, AssetState as) {
         ai.setAssetState(as);
         em.persist(ai);
     }
@@ -127,6 +127,9 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if (!searchQuery.getPhysicalConditions().isEmpty()) {
             queryFilters.append(" AND ai.physicalCondition IN (:physicalConditions) ");
         }
+        if (searchQuery.getUserId() != -1) {
+            queryFilters.append(" AND ai.owner = :userId ");
+        }
 
         // If there's a rating filter parameter
         queryFilters.append(" AND COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
@@ -163,7 +166,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             queryNative.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
             queryCount.setParameter("physicalConditions", searchQuery.getPhysicalConditions());
         }
-
+        if (searchQuery.getUserId() != -1) {
+            queryNative.setParameter("userId", searchQuery.getUserId());
+            queryCount.setParameter("userId", searchQuery.getUserId());
+        }
         queryNative.setParameter("min_rating", searchQuery.getMinRating());
         queryNative.setParameter("max_rating", searchQuery.getMaxRating());
 
@@ -191,15 +197,15 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
         // Get the AssetInstances that match those IDs for given page
-        final TypedQuery<AssetInstanceImpl> query = em.createQuery("FROM AssetInstanceImpl AS ai WHERE id IN (:ids) " + orderByORM, AssetInstanceImpl.class);
+        final TypedQuery<AssetInstance> query = em.createQuery("FROM AssetInstance AS ai WHERE id IN (:ids) " + orderByORM, AssetInstance.class);
         query.setParameter("ids", list);
-        List<AssetInstanceImpl> assetInstances = query.getResultList();
+        List<AssetInstance> assetInstances = query.getResultList();
 
         return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(ids), getPhysicalConditions(ids)));
     }
 
     private List<String> getLanguages(List<Long> ids){
-        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
+        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstance AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
         query.setParameter("ids", ids);
@@ -210,7 +216,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     private List<String> getPhysicalConditions(List<Long> ids){
-        String queryString = "SELECT DISTINCT ai.physicalCondition FROM AssetInstanceImpl AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
+        String queryString = "SELECT DISTINCT ai.physicalCondition FROM AssetInstance AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
 
         TypedQuery<PhysicalCondition> query = em.createQuery(queryString, PhysicalCondition.class);
         query.setParameter("ids", ids);

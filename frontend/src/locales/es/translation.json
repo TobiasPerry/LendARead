@@ -1,0 +1,175 @@
+{
+  "Open main menu": "Abrir menu principal",
+  "Your profile": "Tu perfil",
+  "Dashboard": "Dashboard",
+  "Team": "Equipo",
+  "Projects": "Proyectos",
+  "Calendar": "Calendario",
+  "auth": {
+      "emailValidationError": "El correo electrónico debe ser válido y tener entre 3 y 100 caracteres.",
+      "passwordValidationError": "La contraseña debe contener al menos una letra minúscula, una mayúscula, un número, tener al menos 8 caracteres de longitud e incluir un carácter especial.",
+      "repeatPasswordValidationError": "Las contraseñas no coinciden.",
+      "nameValidationError": "El nombre debe tener entre 3 y 100 caracteres.",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "username": "Nombre de usuario",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "repeatPassword": "Repetir contraseña",
+    "logInBtn": "Iniciar sesión",
+    "registerBtn": "Registrarse",
+    "doNotHaveAccount": "¿No tienes una cuenta? Regístrate",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta? Inicia sesión",
+    "forgotPassword": "¿Olvidaste la contraseña?",
+    "rememberMe": "Recuérdame",
+    "loginError": "Usuario o contraseña inválidos"
+  },
+  "forgotpassword": {
+    "title": "Olvidé mi Contraseña",
+    "changePasswordButton": "Cambiar Contraseña",
+    "emailPlaceholder": "Correo Electrónico"
+  },
+  "my_books": "Mis Libros",
+  "lended_books": "Libros Prestados",
+  "borrowed_books": "Libros Tomados en Préstamo",
+  "image": "Imagen",
+  "book_name": "Nombre del Libro",
+  "author": "Autor",
+  "language": "Idioma",
+  "state": "Estado",
+  "no_books": "No hay libros disponibles",
+  "become_lender": {
+    "title": "Conviértete en Prestador",
+    "subtitle": "¡Comienza a prestar tus libros hoy!",
+    "button": "Ser Prestador"
+  },
+  "filter_option": {
+    "all": "Todas",
+    "public": "Público",
+    "private": "Privado"
+  },
+  "user_home_view": {
+    "all": "Todas",
+    "public": "Público",
+    "private": "Privado"
+  },
+  "enum": {
+    "available": "Disponible",
+    "lent": "Prestado"
+  },
+  "all": "Todos",
+  "pending": "Pendiente",
+  "delivered": "Entregado",
+  "overdue": "Retrasado",
+  "rejected": "Rechazado",
+  "finished": "Terminado",
+  "title": "Título",
+  "start_date": "Fecha de inicio",
+  "return_date": "Fecha de devolución",
+  "user": "Usuario",
+  "no_books_available": "No hay libros disponibles",
+  "previous": "Anterior",
+  "next": "Siguiente",
+  "landing": {
+    "hero": {
+      "title": "La nueva era de los libros",
+      "subtitle": "Un libro compartido es una historia multiplicada",
+      "btn": "Explorar"
+    },
+    "recent": {
+      "title": "Libros añadidos recientemente"
+    },
+    "instructions": {
+      "title": "¿Buscas una nueva lectura?",
+      "search": {
+        "title": "Buscar",
+        "subtitle": "Explora y encontrá el libro que más te guste"
+      },
+      "request": {
+        "title": "Solicitar",
+        "subtitle": "Solicita un préstamo del libro\n\n"
+      },
+      "contact": {
+        "title": "Contactar",
+        "subtitle": "Póngase en contacto con el dueño del libro\n\n"
+      },
+      "meet": {
+        "title": "Encuentro",
+        "subtitle": "Obtené el libro encontrándote con el dueño"
+      }
+    }
+  },
+
+  "navbar": {
+    "explore": "Explorar",
+    "lend": "Prestar Libro",
+    "login": "iniciar Sesión",
+    "searchbar": {
+      "placeholder": "Buscar por Titulo o Autor"
+    }
+  },
+
+  "discovery": {
+    "searchbar": {
+      "placeholder": "Buscar por Titulo o Autor"
+    },
+    "pagination": {
+      "next": "Siguiente",
+      "previous": "Anterior"
+    },
+    "sorting":  {
+      "sort_by": "Ordenar Por:",
+      "most_recent": " Más Reciente",
+      "least_recent": "Más Antiguo",
+      "title_asc": "Título A-Z",
+      "title_des": "Título Z-A",
+      "author_asc": "Autor A-Z",
+      "author_des": "Autor Z-A"
+    },
+    "filters": {
+      "language": "Idioma",
+      "physical_condition": "Condición Física",
+      "book_rating": "Calificación del libro",
+      "btn": {
+        "apply": "Aplicar",
+        "clear": "Limpiar"
+      }
+    },
+    "no_books": {
+      "title": "No hay libros disponibles",
+      "btn": "Limpiar búsqueda"
+    }
+  },
+  "addAssetView": {
+    "titleLabel": "Título",
+    "nameLabel": "Nombre",
+    "localityLabel": "Localidad",
+    "provinceLabel": "Provincia",
+    "countryLabel": "País",
+    "zipcodeLabel": "Código Postal"
+  },
+  "errorMessages": {
+    "name": "El nombre es obligatorio.",
+    "locality": "La localidad es obligatoria.",
+    "province": "La provincia es obligatoria.",
+    "country": "El país es obligatorio.",
+    "zipcode": "El código postal es obligatorio."
+  },
+  "modalTitle": "Detalles de la Ubicación",
+  "save": "Guardar",
+  "locations": {
+    "title": "Ubicaciones",
+    "addLocation": "Añadir Ubicación",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "not_found": {
+    "title": "Lo sentimos",
+    "subtitle": "No hemos encontrado lo que buscabas"
+  },
+  "zipcodeValidationError": "El código postal debe ser alfanumérico y tener entre 1 y 100 caracteres.",
+  "localityValidationError": "La localidad debe tener entre 1 y 100 caracteres.",
+  "provinceValidationError": "La provincia debe tener entre 4 y 100 caracteres.",
+  "countryValidationError": "El país debe tener entre 4 y 100 caracteres.",
+  "nameValidationError": "El nombre debe tener entre 1 y 100 caracteres."
+}

@@ -3,10 +3,11 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.PasswordResetToken;
+import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,41 +36,38 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
-    private final AuthenticationManager authenticationManager;
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
     private static final String BORROWER_ROLE = "ROLE_BORROWER";
 
-    private static final String ROLE = "ROLE_";
 
     @Autowired
-    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final AuthenticationManager authenticationManager, final ImagesDao imagesDao) {
+    public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final ImagesDao imagesDao) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
         this.emailService = emailService;
-        this.authenticationManager = authenticationManager;
         this.imagesDao = imagesDao;
     }
 
 
     @Transactional(readOnly = true)
     @Override
-    public UserImpl getUser(final String email) throws UserNotFoundException {
-        Optional<UserImpl> user = userDao.getUser(email);
+    public User getUser(final String email) throws UserNotFoundException {
+        Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("Failed to get user {}", email);
-            throw new UserNotFoundException("The user was not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         return user.get();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public UserImpl getUserById(int id) throws UserNotFoundException {
-        Optional<UserImpl> user = userDao.getUser(id);
+    public User getUserById(int id) throws UserNotFoundException {
+        Optional<User> user = userDao.getUser(id);
         if (!user.isPresent()) {
             LOGGER.error("User with id {} not found", id);
-            throw new UserNotFoundException("The user with id " + id + " not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
 
         return user.get();
@@ -78,16 +75,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserImpl createUser(final String email, String name, final String telephone, final String password) {
+    public User createUser(final String email, String name, final String telephone, final String password) {
         return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
     }
 
     @Transactional
-    @Override
-    public void changeRole(final String email, final Behaviour behaviour) throws UserNotFoundException {
-        boolean changed = userDao.changeRole(email, behaviour);
+    public void changeRole(final User user, final Behaviour behaviour) throws UserNotFoundException {
+        boolean changed = userDao.changeRole(user.getEmail(), behaviour);
         if (!changed)
-            throw new UserNotFoundException("The user was not founded");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         HashSet<GrantedAuthority> actualAuthorities = new HashSet<>();
         actualAuthorities.add(new SimpleGrantedAuthority("ROLE_" + behaviour.toString()));
@@ -104,12 +100,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public String getCurrentUser() {
+    public User getCurrentUser() throws UserNotFoundException {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
             org.springframework.security.core.userdetails.User userDetails = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return userDetails.getUsername();
+            return getUser(userDetails.getUsername());
         }
-        return "anonymousUser";
+        return null;
     }
 
     @Override
@@ -119,79 +115,83 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createChangePasswordToken(final String email) {
+    public void createChangePasswordToken(final String email) throws UserNotFoundException {
         String token = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-        Optional<UserImpl> user = userDao.getUser(email);
+        Optional<User> user = userDao.getUser(email);
         if (!user.isPresent()) {
             LOGGER.error("User not found");
-            return;
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
-        PasswordResetTokenImpl passwordResetToken = new PasswordResetTokenImpl(token, user.get().getId(), LocalDate.now().plusDays(1));
-        emailService.sendForgotPasswordEmail(email, passwordResetToken.getToken(), new Locale(user.get().getLocale()));
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user.get().getId(), LocalDate.now().plusDays(1));
+        userDao.deletePasswordRestToken(user.get().getId());
+        emailService.sendForgotPasswordEmail(user.get().getEmail(), passwordResetToken.getToken(), new Locale(user.get().getLocale()));
         userDao.setForgotPasswordToken(passwordResetToken);
     }
 
-    @Transactional
+
+    @Transactional(readOnly = true)
     @Override
-    public void changePassword(final String token, final String password) {
-        Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
-        if (!passwordResetToken.isPresent())
-            return;
-        if (!isTokenValid(token))
-            return;
-        userDao.deletePasswordRestToken(token);
-        userDao.changePassword(passwordResetToken.get(), passwordEncoder.encode(password));
+    public boolean isTokenValid(final int userId,final String token) {
+
+        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestToken(token);
+
+        return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false) && passwordResetToken.get().getUserId() == userId;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean isTokenValid(final String token) {
-        Optional<PasswordResetTokenImpl> passwordResetToken = userDao.getPasswordRestToken(token);
-        return passwordResetToken.map(resetToken -> resetToken.getExpiryDate().isAfter(LocalDate.now())).orElse(false);
+    public String getUserResetPasswordToken(String email) throws UserNotFoundException {
+        User user = this.getUser(email);
+        Optional<PasswordResetToken> passwordResetToken = userDao.getPasswordRestTokenOfUser(user.getId());
+        return passwordResetToken.map(PasswordResetToken::getToken).orElse(null);
     }
 
-    @Override
-    public void logInUser(final String email, final String password) {
-        Optional<UserImpl> user = userDao.getUser(email);
-        if (!user.isPresent()) {
-            LOGGER.error("User not found");
-            return;
-        }
-        final Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(ROLE + user.get().getBehavior().toString()));
-        org.springframework.security.core.userdetails.User userDetails =
-                new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(), authorities);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
 
     @Override
-    public boolean isCurrent(final int userId) {
-        Optional<UserImpl> user = userDao.getUser(userId);
-        if (!user.isPresent()) {
+    @Transactional
+    public int changeUserProfilePic(final int id, byte[] parsedImage) throws UserNotFoundException {
+        Optional<User> maybeUser = userDao.getUser(id);
+        if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
-            return false;
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
 
-        String current = getCurrentUser();
-        LOGGER.debug("Current User: {}", current);
-        return current.equals(user.get().getEmail());
+        Image image = this.imagesDao.addPhoto(parsedImage);
+        LOGGER.debug("New profile image created for user email {}", maybeUser.get().getEmail());
+        User user = maybeUser.get();
+        user.setProfilePhoto(image);
+        LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
+        return image.getId();
     }
 
     @Override
     @Transactional
-    public void changeUserProfilePic(int userId, byte[] parsedImage) throws UserNotFoundException {
-        Optional<UserImpl> maybeUser = userDao.getUser(userId);
+    public void updateUser(final int id, final String username, final String telephone,final String role,final String password) throws UserNotFoundException {
+        Optional<User> maybeUser = userDao.getUser(id);
         if (!maybeUser.isPresent()) {
             LOGGER.error("User not found");
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException(HttpStatusCodes.NOT_FOUND);
+        }
+        User user = maybeUser.get();
+        if (username != null) {
+            user.setName(username);
+        }
+        if (telephone != null) {
+            user.setTelephone(telephone);
+        }
+        if (role != null) {
+            this.changeRole(user,Behaviour.valueOf(role));
+        }
+        if (password != null) {
+            user.setPassword(passwordEncoder.encode(password));
         }
 
-        ImageImpl image = this.imagesDao.addPhoto(parsedImage);
-        LOGGER.debug("New profile image created for user id {}", userId);
-        UserImpl user = maybeUser.get();
-        user.setProfilePhoto(image);
-        LOGGER.debug("User {} changed it profile picture with photo_id {}", user.getEmail(), image.getId());
+    }
+
+    @Transactional
+    @Override
+    public void deleteToken(String token) {
+        userDao.deletePasswordRestToken(token);
     }
 
     @Override

@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
@@ -149,7 +150,7 @@ final public class UserAssetDetailsController {
             return changeAsset(id, assetInstanceForm);
         }
         LocationImpl location = locationsService.getLocation(assetInstanceForm.getId());
-        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(), location, assetInstanceForm.getImage().getBytes(), assetInstanceForm.getDescription());
+        assetInstanceService.changeAssetInstance(id, PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()), assetInstanceForm.getMaxDays(), location, assetInstanceForm.getImage(), assetInstanceForm.getDescription());
         return new ModelAndView("redirect:/myBookDetails/" + id);
     }
 
@@ -168,3 +169,4 @@ final public class UserAssetDetailsController {
     }
 
 }
+*/

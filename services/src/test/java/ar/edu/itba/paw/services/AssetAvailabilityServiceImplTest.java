@@ -3,16 +3,16 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
 import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.BookImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
@@ -60,20 +60,20 @@ public class AssetAvailabilityServiceImplTest {
     private static final LocalDate BORROW_DATE_THREE_WEEK = LocalDate.now().plusDays(21);
     private static final LocalDate DEVOLUTION_DATE_ONE_WEEK = LocalDate.now().plusDays(7);
     private static final LocalDate DEVOLUTION_DATE_FOUR_WEEK = LocalDate.now().plusDays(28);
-    private static final UserImpl USER = new UserImpl(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
-    private static final AssetInstanceImpl ASSET_INSTANCE = new AssetInstanceImpl(
-            new BookImpl(0, "", "", "", ""),
+    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
+    private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
+            new Asset((long)0, "", "", "", ""),
             PhysicalCondition.ASNEW,
             USER,
-            new LocationImpl(0,"", "", "", "", "", null),
-            new ImageImpl(),
+            new Location(0,"", "", "", "", "", null),
+            new Image(),
             AssetState.PUBLIC,
             10,"DESC", false
     );
 
-    private static final List<LendingImpl> LENDING_LIST = new ArrayList<>(Arrays.asList(
-            new LendingImpl(ASSET_INSTANCE, USER, BORROW_DATE_TODAY, DEVOLUTION_DATE_ONE_WEEK, LendingState.ACTIVE),
-            new LendingImpl(ASSET_INSTANCE, USER, BORROW_DATE_THREE_WEEK, DEVOLUTION_DATE_FOUR_WEEK, LendingState.ACTIVE)
+    private static final List<Lending> LENDING_LIST = new ArrayList<>(Arrays.asList(
+            new Lending(ASSET_INSTANCE, USER, BORROW_DATE_TODAY, DEVOLUTION_DATE_ONE_WEEK, LendingState.ACTIVE),
+            new Lending(ASSET_INSTANCE, USER, BORROW_DATE_THREE_WEEK, DEVOLUTION_DATE_FOUR_WEEK, LendingState.ACTIVE)
     )
     );
 

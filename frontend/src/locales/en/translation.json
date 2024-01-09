@@ -1,0 +1,177 @@
+{
+  "Open main menu": "Open main menu",
+  "Your profile": "Your Profile",
+  "Dashboard": "Dashboard",
+  "Team": "Team",
+  "Projects": "Projects",
+  "Calendar": "Calendar",
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "repeatPassword": "Repeat Password",
+    "logInBtn": "Log In",
+    "registerBtn": "Register",
+    "doNotHaveAccount": "Don't have an account? Register",
+    "alreadyHaveAccount": "Already have an account? Login",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "loginError": "Invalid username or password",
+    "emailValidationError": "Email must be valid and between 3 to 100 characters long.",
+    "passwordValidationError": "Password must contain at least one lowercase letter, one uppercase letter, one digit, be at least 8 characters long, and include a special character.",
+    "repeatPasswordValidationError": "Passwords do not match.",
+    "nameValidationError": "Name must be between 3 to 100 characters long."
+  },
+  "forgotpassword": {
+    "title": "Forgot Password",
+    "changePasswordButton": "Change Password",
+    "emailPlaceholder": "Email"
+  },
+    "greeting": "Welcome, {{userEmail}}",
+  "my_books": "My Books",
+  "lended_books": "Lended Books",
+  "borrowed_books": "Borrowed Books",
+  "image": "Image",
+  "book_name": "Book Name",
+  "author": "Author",
+  "language": "Language",
+  "state": "State",
+  "no_books": "No books available",
+  "become_lender": {
+    "title": "Become a Lender",
+    "subtitle": "Start lending your books today!",
+    "button": "Become Lender"
+  },
+  "filter_option": {
+    "all": "All",
+    "public": "Public",
+    "private": "Private"
+  },
+  "user_home_view": {
+    "all": "All",
+    "public": "Public",
+    "private": "Private"
+  },
+  "enum": {
+    "available": "Available",
+    "lent": "Lent"
+  },
+  "all": "All",
+  "pending": "Pending",
+  "delivered": "Delivered",
+  "overdue": "Overdue",
+  "rejected": "Rejected",
+  "finished": "Finished",
+  "title": "Title",
+  "start_date": "Start Date",
+  "return_date": "Return Date",
+  "user": "User",
+  "no_books_available": "No books available",
+  "previous": "Previous",
+  "next": "Next",
+
+  "landing": {
+    "hero": {
+      "title": "The new era of reading",
+      "subtitle": "A shared book is a multiplied story",
+      "btn": "Discover"
+    },
+    "recent": {
+      "title": "\nRecently added books\n"
+    },
+    "instructions": {
+      "title": "Looking for a new read?",
+      "search": {
+        "title": "Search",
+        "subtitle": "Explore and find the book you like the most"
+      },
+      "request": {
+        "title": "Request",
+        "subtitle": "Request a book loan"
+      },
+      "contact": {
+        "title": "Contact",
+        "subtitle": "Get in touch with the owner of the book"
+      },
+      "meet": {
+        "title": "Meet",
+        "subtitle": "Get the book by meeting the owner of the book"
+      }
+    }
+  },
+
+  "navbar": {
+    "explore": "Explore",
+    "lend": "Lend Book",
+    "login": "Log In",
+    "searchbar": {
+      "placeholder": "Search by Author or Title"
+    }
+  },
+
+  "discovery": {
+    "searchbar": {
+      "placeholder": "Search by Author or Title"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "sorting":  {
+      "sort_by": "Sort By:",
+      "most_recent": "Most Recent",
+      "least_recent": "Least Recent",
+      "title_asc": "Title Ascending",
+      "title_des": "Title Descending",
+      "author_asc": "Author Ascending",
+      "author_des": "Author Descending"
+    },
+    "filters": {
+      "language": "Language",
+      "physical_condition": "Physical Condition",
+      "book_rating": "Book Rating",
+      "btn": {
+        "apply": "Apply",
+        "clear": "Clear"
+      }
+    },
+    "no_books": {
+      "title": "No books available",
+      "btn": "Clear search"
+    }
+  },
+  "addAssetView": {
+    "titleLabel": "Title",
+    "nameLabel": "Name",
+    "localityLabel": "Locality",
+    "provinceLabel": "Province",
+    "countryLabel": "Country",
+    "zipcodeLabel": "Zip Code"
+  },
+  "errorMessages": {
+    "name": "Name is required.",
+    "locality": "Locality is required.",
+    "province": "Province is required.",
+    "country": "Country is required.",
+    "zipcode": "Zip code is required."
+  },
+  "modalTitle": "Location Details",
+  "save": "Save",
+  "locations": {
+    "title": "Locations",
+    "addLocation": "Add Location",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "not_found": {
+    "title": "We're sorry",
+    "subtitle": "We could not find what you were looking for"
+  },
+  "zipcodeValidationError": "Zipcode must be alphanumeric and between 1 to 100 characters.",
+  "localityValidationError": "Locality must be between 1 to 100 characters.",
+  "provinceValidationError": "Province must be between 4 to 100 characters.",
+  "countryValidationError": "Country must be between 4 to 100 characters.",
+  "nameValidationError": "Name must be between 1 to 100 characters."
+}

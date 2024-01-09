@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models.userContext.implementations;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 
 import javax.persistence.*;
 
@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class UserReview {
 
 
-    public UserReview(final String review, final int rating, final UserImpl reviewer, final UserImpl recipient,final LendingImpl lending) {
+    public UserReview(final String review, final int rating, final User reviewer, final User recipient, final Lending lending) {
         this.review = review;
         this.rating = rating;
         this.recipient = recipient;
@@ -33,15 +33,15 @@ public class UserReview {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewer", referencedColumnName = "id", nullable = false)
-    private UserImpl reviewer;
+    private User reviewer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient", referencedColumnName = "id", nullable = false)
-    private UserImpl recipient;
+    private User recipient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lendId", referencedColumnName = "id", nullable = false)
-    private LendingImpl lending;
+    private Lending lending;
     public Long getId() {
         return id;
     }
@@ -54,11 +54,15 @@ public class UserReview {
         return rating;
     }
 
-    public UserImpl getReviewer() {
+    public User getReviewer() {
         return reviewer;
     }
 
-    public UserImpl getRecipient() {
+    public User getRecipient() {
         return recipient;
+    }
+
+    public Lending getLending() {
+        return lending;
     }
 }

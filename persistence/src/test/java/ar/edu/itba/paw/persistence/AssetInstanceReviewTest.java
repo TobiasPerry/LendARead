@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;
@@ -41,8 +41,8 @@ public class AssetInstanceReviewTest{
     }
     @Test
     public void testAddReview() {
-        LendingImpl lending = entityManager.find(LendingImpl.class, 0L);
-        UserImpl user = entityManager.find(UserImpl.class, 0L);
+        Lending lending = entityManager.find(Lending.class, 0L);
+        User user = entityManager.find(User.class, 0L);
         AssetInstanceReview assetInstanceReview = new AssetInstanceReview();
         assetInstanceReview.setLending(lending);
         assetInstanceReview.setRating(5);
@@ -60,10 +60,10 @@ public class AssetInstanceReviewTest{
 
     @Test
     public void testGetRating() {
-        UserImpl user = entityManager.find(UserImpl.class, 0L);
+        User user = entityManager.find(User.class, 0L);
 
         AssetInstanceReview review1 = new AssetInstanceReview();
-        LendingImpl lending = entityManager.find(LendingImpl.class, 0L);
+        Lending lending = entityManager.find(Lending.class, 0L);
         review1.setLending(lending);
         review1.setRating(5);
         review1.setReviewer(user);
@@ -87,8 +87,8 @@ public class AssetInstanceReviewTest{
 
     @Test
     public void testGetAssetInstanceReviews() {
-        LendingImpl lending = entityManager.find(LendingImpl.class, 0L);
-        UserImpl user = entityManager.find(UserImpl.class, 0L);
+        Lending lending = entityManager.find(Lending.class, 0L);
+        User user = entityManager.find(User.class, 0L);
         AssetInstanceReview review1 = new AssetInstanceReview();
         review1.setLending(lending);
         review1.setRating(5);

@@ -1,28 +1,31 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
 import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.PasswordResetTokenImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.PasswordResetToken;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 public interface UserDao {
-    UserImpl addUser(Behaviour behavior, String email, String name, String telephone, String password);
+    User addUser(Behaviour behavior, String email, String name, String telephone, String password);
 
-    boolean changePassword(PasswordResetTokenImpl passwordResetToken, String newPassword);
+    boolean changePassword(PasswordResetToken passwordResetToken, String newPassword);
 
-    Optional<UserImpl> getUser(String email);
+    Optional<User> getUser(String email);
 
     boolean changeRole(String email, Behaviour behaviour);
 
-    Optional<UserImpl> getUser(int id);
+    Optional<User> getUser(int id);
 
-    PasswordResetTokenImpl setForgotPasswordToken(PasswordResetTokenImpl passwordResetToken);
+    PasswordResetToken setForgotPasswordToken(PasswordResetToken passwordResetToken);
 
-    Optional<PasswordResetTokenImpl> getPasswordRestToken(String token);
+    Optional<PasswordResetToken> getPasswordRestToken(String token);
 
     int deletePasswordRestToken(String token);
+
+    int deletePasswordRestToken(int userId);
+    Optional<PasswordResetToken> getPasswordRestTokenOfUser (int userId);
 
     void deletePasswordRecoveryTokensOnDay(LocalDate data);
 }

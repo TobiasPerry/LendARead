@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.stereotype.Repository;
@@ -25,73 +25,112 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     private EntityManager em;
 
     @Override
-    public LendingImpl borrowAssetInstance(AssetInstanceImpl assetInstance, UserImpl user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState) {
-        LendingImpl lending = new LendingImpl(assetInstance, user, borrowDate, devolutionDate, lendingState);
+    public Lending borrowAssetInstance(AssetInstance assetInstance, User user, LocalDate borrowDate, LocalDate devolutionDate, LendingState lendingState) {
+        Lending lending = new Lending(assetInstance, user, borrowDate, devolutionDate, lendingState);
         em.persist(lending);
         return lending;
     }
 
     @Override
-    public List<LendingImpl> getActiveLendings(AssetInstanceImpl ai) {
-        return em.createQuery("from LendingImpl as l where l.assetInstance = :ai and l.active != :active and l.active != :rejected", LendingImpl.class)
+    public List<Lending> getActiveLendings(AssetInstance ai) {
+        return em.createQuery("from Lending as l where l.assetInstance = :ai and l.active != :active and l.active != :rejected and l.active != :cancel", Lending.class)
                 .setParameter("ai", ai)
                 .setParameter("active", LendingState.FINISHED)
                 .setParameter("rejected", LendingState.REJECTED)
+                .setParameter("cancel", LendingState.CANCEL)
                 .getResultList();
     }
 
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLending(final AssetInstanceImpl ai, final int pageNum, final int itemsPerPage) {
+    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId) {
 
-        final Query queryNative = em.createNativeQuery("select l.id from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected order by l.lenddate limit :limit offset :offset");
+        final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id ");
 
-        final Query queryCount = em.createNativeQuery("select Count(l.id) from lendings as l where l.assetinstanceid = :ai and l.active != :active and l.active != :rejected");
+        boolean first = true;
+        if (lenderId != null){
+            queryNativeStringBuilder.append("WHERE a.owner = :lenderId ");
+            first = false;
+        }
+        if (lendingState != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.active = :active ");
+            first = false;
+        }
+        if(aiId != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.assetinstanceid = :ai");
+            first = false;
+
+        }
+        if(borrowerId != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
+            first = false;
+        }
+        queryNativeStringBuilder.append("group by l.id,l.lenddate order by l.lenddate limit :limit offset :offset");
+
+        final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
+
 
         final int offset = (pageNum - 1) * itemsPerPage;
+        if (lenderId != null){
+            queryNative.setParameter("lenderId", lenderId);
+        }
+        if (lendingState != null){
+            queryNative.setParameter("active", lendingState.toString());
+        }
+        if(aiId != null){
+            queryNative.setParameter("ai", aiId);
+        }
+        if(borrowerId != null){
+            queryNative.setParameter("borrowerId", borrowerId);
+        }
 
-        queryCount.setParameter("ai", ai.getId());
-        queryCount.setParameter("active", "FINISHED");
-        queryCount.setParameter("rejected", "REJECTED");
-        queryNative.setParameter("ai", ai.getId());
+
         queryNative.setParameter("limit", itemsPerPage);
         queryNative.setParameter("offset", offset);
-        queryNative.setParameter("active", "FINISHED");
-        queryNative.setParameter("rejected", "REJECTED");
 
-        final int totalPages = (int) Math.ceil((double) ((Number) queryCount.getSingleResult()).longValue() / itemsPerPage);
 
         @SuppressWarnings("unchecked")
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
+
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
-        final TypedQuery<LendingImpl> query = em.createQuery("FROM LendingImpl AS l WHERE id IN (:ids) ORDER BY l.lendDate", LendingImpl.class);
+            return new PagingImpl<>(new ArrayList<>(), pageNum, 1);
+
+        final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) ORDER BY l.lendDate", Lending.class);
         query.setParameter("ids", list);
-        List<LendingImpl> reviewList = query.getResultList();
+        List<Lending> reviewList = query.getResultList();
 
         return new PagingImpl<>(reviewList, pageNum, totalPages);
     }
 
     @Override
-    public void changeLendingStatus(LendingImpl lending, LendingState lendingState) {
+    public void changeLendingStatus(Lending lending, LendingState lendingState) {
         lending.setActive(lendingState);
         em.persist(lending);
     }
 
     @Override
-    public Optional<List<LendingImpl>> getActiveLendingsStartingOn(LocalDate date) {
-        TypedQuery<LendingImpl> lendingsQuery = em.createQuery("FROM LendingImpl l WHERE l.lendDate = :date AND l.active = 'ACTIVE'", LendingImpl.class);
+    public Optional<List<Lending>> getActiveLendingsStartingOn(LocalDate date) {
+        TypedQuery<Lending> lendingsQuery = em.createQuery("FROM Lending l WHERE l.lendDate = :date AND l.active = 'ACTIVE'", Lending.class);
         lendingsQuery.setParameter("date", date);
-        List<LendingImpl> lendings = lendingsQuery.getResultList();
+        List<Lending> lendings = lendingsQuery.getResultList();
         return Optional.of(lendings);
     }
 
     @Override
-    public Optional<List<LendingImpl>> getActiveLendingEndingOn(LocalDate date) {
-        TypedQuery<LendingImpl> lendingsQuery = em.createQuery("FROM LendingImpl l WHERE l.devolutionDate = :date AND l.active = 'ACTIVE'", LendingImpl.class);
+    public Optional<List<Lending>> getActiveLendingEndingOn(LocalDate date) {
+        TypedQuery<Lending> lendingsQuery = em.createQuery("FROM Lending l WHERE l.devolutionDate = :date AND l.active = 'ACTIVE'", Lending.class);
         lendingsQuery.setParameter("date", date);
-        List<LendingImpl> lendings = lendingsQuery.getResultList();
+        List<Lending> lendings = lendingsQuery.getResultList();
         return Optional.of(lendings);
+    }
+
+    @Override
+    public Optional<Lending> getLendingById(int lendingId) {
+        return Optional.ofNullable(em.find(Lending.class, lendingId));
     }
 }
 

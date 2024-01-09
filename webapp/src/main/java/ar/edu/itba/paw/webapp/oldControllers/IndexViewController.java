@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
@@ -109,3 +110,4 @@ public class IndexViewController {
     }
 
 }
+*/

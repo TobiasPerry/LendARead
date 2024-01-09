@@ -1,25 +1,20 @@
 package ar.edu.itba.paw.interfaces;
 
+import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.userContext.implementations.LocationImpl;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface LocationsService {
-    void addLocation(final LocationImpl lc);
+    void addLocation(final Location lc);
 
-    void addLocation(final int id, final String name, final String locality, final String province, final String country, final String zipcode, final UserImpl user) throws UserNotFoundException;
-    LocationImpl getLocation(final int locationId);
-
-    List<LocationImpl> getLocations(final UserImpl user);
-
-    void editLocation(final LocationImpl lc);
-
-    void deleteLocation(final LocationImpl lc);
-
-    public List<LocationImpl> getLocationsById(final int userId) throws UserNotFoundException;
-
-    LocationImpl editLocationById(final int locationId);
-    void deleteLocationById(final int locationId) throws UserNotFoundException;
+    Location addLocation(final String name, final String locality, final String province, final String country, final String zipcode) throws UserNotFoundException;
+    Location getLocation(final int locationId) throws LocationNotFoundException;
+    void editLocation(final Location lc);
+    void deleteLocation(final Location lc) throws LocationNotFoundException;
+    Location editLocationById(final int locationId, final Optional<String> name,final Optional<String> locality,final Optional<String> province,final Optional<String> country,final Optional<String> zipcode) throws LocationNotFoundException;
+    PagingImpl<Location> getLocations(final Integer userId, final int page, final int itemsPerPage) ;
+    void deleteLocationById(final int locationId) throws  LocationNotFoundException;
 }

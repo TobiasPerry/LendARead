@@ -3,12 +3,14 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
 import ar.edu.itba.paw.interfaces.EmailService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceImpl;
+import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingImpl;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.UserImpl;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
@@ -16,7 +18,6 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -41,61 +42,65 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     private final EmailService emailService;
 
-    private UserAssetsDao userAssetsDao;
+    private final UserAssetsDao userAssetsDao;
+
+    private final UserService userService;
 
     @Autowired
-    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao) {
+    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao,final UserService userService) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
         this.emailService = emailService;
         this.userAssetsDao = userAssetsDao;
+        this.userService = userService;
     }
 
     @Transactional
     @Override
-    public void borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
-        Optional<AssetInstanceImpl> ai = assetInstanceDao.getAssetInstance(assetId);
-        Optional<UserImpl> user = userDao.getUser(borrower);
+    public Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException {
+        Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
+        Optional<User> user = userDao.getUser(borrower);
 
         if (!ai.isPresent()) {
             LOGGER.error("AssetInstance not found with id {}", assetId);
-            throw new AssetInstanceBorrowException("The assetInstance or the user not found");
+            throw new AssetInstanceBorrowException(HttpStatusCodes.BAD_REQUEST);
         }
         if (!user.isPresent()) {
             LOGGER.error("User not found: {}", borrower);
-            throw new UserNotFoundException("The user not found");
+            throw new UserNotFoundException(HttpStatusCodes.BAD_REQUEST);
         }
         if (!ai.get().getAssetState().isPublic()) {
             LOGGER.error("AssetInstance is not public with id {}", assetId);
-            throw new AssetInstanceBorrowException("The assetInstance is not public");
+            throw new AssetInstanceBorrowException(HttpStatusCodes.BAD_REQUEST);
         }
         if (borrowDate.plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
-            throw new DayOutOfRangeException();
+            throw new DayOutOfRangeException(HttpStatusCodes.BAD_REQUEST);
         }
         if (!ai.get().getIsReservable() && !borrowDate.isEqual(LocalDate.now())) {
             LOGGER.error("AssetInstance is not reservable with id {}", assetId);
-            throw new AssetInstanceBorrowException("The assetInstance is not reservable");
+            throw new AssetInstanceBorrowException(HttpStatusCodes.BAD_REQUEST);
         }
 
         if (!ai.get().getIsReservable()) {
             ai.get().setAssetState(AssetState.PRIVATE);
         } else {
-            List<LendingImpl> lending = lendingDao.getActiveLendings(ai.get());
+            List<Lending> lending = lendingDao.getActiveLendings(ai.get());
             if (checkOverlapping(borrowDate, devolutionDate, lending)) {
                 LOGGER.error("AssetInstance is not available with id {}", assetId);
-                throw new AssetInstanceBorrowException("The assetInstance is not available");
+                throw new AssetInstanceBorrowException(HttpStatusCodes.BAD_REQUEST);
             }
         }
-        LendingImpl lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
+        Lending lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), new Locale(user.get().getLocale()));
         emailService.sendLenderEmail(ai.get(), borrower, lending.getId(), new Locale(ai.get().getOwner().getLocale()));
         LOGGER.info("Asset {} has been borrow", assetId);
+        return lending;
     }
 
-    public static boolean checkOverlapping(LocalDate fechaInicial, LocalDate fechaFinal, List<LendingImpl> lendings) {
-        for (LendingImpl lending : lendings) {
+    public static boolean checkOverlapping(LocalDate fechaInicial, LocalDate fechaFinal, List<Lending> lendings) {
+        for (Lending lending : lendings) {
             LocalDate borrowDate = lending.getLendDate();
             LocalDate devolutionDate = lending.getDevolutionDate();
             if ((borrowDate.isAfter(fechaInicial) || borrowDate.isEqual(fechaInicial))
@@ -114,39 +119,29 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         return false;
     }
 
-    @Transactional
-    @Override
-    public void setAssetPrivate(final int assetId) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
-        assetInstanceDao.changeStatus(assetInstance, AssetState.PRIVATE);
-        LOGGER.info("Asset {} has been set private", assetId);
-    }
 
     @Transactional
     @Override
     public void changeReservability(int assetId) throws AssetInstanceNotFoundException, AssetInstanceBorrowException {
-
-        AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
+        AssetInstance assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException(HttpStatusCodes.NOT_FOUND));
         if (this.getActiveLendings(assetInstance).size() > 0) {
             LOGGER.error("Cannot change reservability of {}", assetId);
-            throw new AssetInstanceBorrowException("The assetInstance is not available");
+            throw new AssetInstanceBorrowException(HttpStatusCodes.BAD_REQUEST);
         }
         assetInstanceDao.setReservability(assetInstance, !assetInstance.getIsReservable());
         LOGGER.info("Asset {} has been chaned its reservability", assetId);
     }
 
+
+
     @Transactional
     @Override
-    public void setAssetPublic(final int assetId) throws AssetInstanceNotFoundException {
-        AssetInstanceImpl assetInstance = assetInstanceDao.getAssetInstance(assetId).orElseThrow(() -> new AssetInstanceNotFoundException("Asset instance not found with id: " + assetId));
-        assetInstanceDao.changeStatus(assetInstance, AssetState.PUBLIC);
-        LOGGER.info("Asset {} has been set public", assetId);
-    }
-
-    @Transactional()
-    @Override
-    public void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+    public void returnAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+        Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
+        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+        if (lending.getActive() != LendingState.DELIVERED)
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         if (!lending.getAssetInstance().getIsReservable())
             assetInstanceDao.changeStatus(lending.getAssetInstance(), AssetState.PRIVATE);
         lendingDao.changeLendingStatus(lending, LendingState.FINISHED);
@@ -156,48 +151,89 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void confirmAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+    public void confirmAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+        Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
+        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+        if (lending.getActive() != LendingState.ACTIVE )
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getLender(int lendingId) throws LendingNotFoundException {
+        return lendingDao.getLendingById(lendingId).orElseThrow(() -> new LendingNotFoundException(HttpStatusCodes.NOT_FOUND)).getAssetInstance().getOwner();
     }
 
     @Transactional
     @Override
-    public void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+    public void rejectAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+        Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
+        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         if (lending.getActive() != LendingState.ACTIVE) {
-            throw new LendingCompletionUnsuccessfulException("Can't cancel non-active lending");
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }
         lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
         emailService.sendRejectedEmail(lending.getAssetInstance(), lending.getUserReference(), lending.getId(), new Locale(lending.getUserReference().getLocale()));
     }
 
+    @Transactional
+    @Override
+    public void changeLending(final int lendingId, final String state) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+       switch (state) {
+           case "DELIVERED":
+               confirmAsset(lendingId);
+               break;
+           case "REJECTED":
+               rejectAsset(lendingId);
+               break;
+           case "FINISHED":
+               returnAsset(lendingId);
+               break;
+           case "CANCEL":
+                cancelAsset(lendingId);
+                break;
+           default:
+               throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+       }
+    }
+
     @Transactional(readOnly = true)
     @Override
-    public List<LendingImpl> getActiveLendings(final AssetInstanceImpl ai) {
+    public List<Lending> getActiveLendings(final AssetInstance ai) {
         return lendingDao.getActiveLendings(ai);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<LendingImpl> getPagingActiveLendings(final AssetInstanceImpl ai, final int page, final int size) {
-        return lendingDao.getPagingActiveLending(ai, page, size);
+    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId) {
+        return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getBorrower(int lendingId) throws LendingNotFoundException {
+        return lendingDao.getLendingById(lendingId).orElseThrow(() -> new LendingNotFoundException(HttpStatusCodes.NOT_FOUND)).getUserReference();
     }
 
     @Transactional
     @Override
-    public void cancelAsset(int lendingId) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException {
-        LendingImpl lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException("Lending not found for lendingId: " + lendingId));
+    public void cancelAsset(int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+        Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST));
+        if (!lending.getUserReference().equals(userService.getCurrentUser()))
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         if (lending.getActive() != LendingState.ACTIVE) {
-            throw new LendingCompletionUnsuccessfulException("Can't cancel non-active lending");
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }
-        lendingDao.changeLendingStatus(lending, LendingState.REJECTED);
+        lendingDao.changeLendingStatus(lending, LendingState.CANCEL);
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public boolean haveActiveLendings(AssetInstanceImpl ai) {
+    public boolean haveActiveLendings(AssetInstance ai) {
         return getActiveLendings(ai).size() > 0;
     }
 
@@ -205,16 +241,16 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     @Async
     @Override
     public void notifyNewLendings() {
-        Optional<List<LendingImpl>> maybeNewLendingList = lendingDao.getActiveLendingsStartingOn(LocalDate.now());
+        Optional<List<Lending>> maybeNewLendingList = lendingDao.getActiveLendingsStartingOn(LocalDate.now());
         if (maybeNewLendingList.isPresent()) {
-            for (LendingImpl lending : maybeNewLendingList.get()) {
+            for (Lending lending : maybeNewLendingList.get()) {
                 emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
             }
         }
 
-        Optional<List<LendingImpl>> maybeReturnLendingList = lendingDao.getActiveLendingEndingOn(LocalDate.now());
+        Optional<List<Lending>> maybeReturnLendingList = lendingDao.getActiveLendingEndingOn(LocalDate.now());
         if (maybeReturnLendingList.isPresent()) {
-            for (LendingImpl lending : maybeReturnLendingList.get()) {
+            for (Lending lending : maybeReturnLendingList.get()) {
                 emailService.sendRemindReturnToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
             }
         }

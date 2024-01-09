@@ -21,4 +21,6 @@ public interface SearchQuery {
 
     int getMaxRating();
 
+    int getUserId();
+
 }

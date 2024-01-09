@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = NotEmptyImpl.class)
 public @interface NotEmpty {
-    String message() default "The field cannot be empty";
+    String message() default "{not.empty.validation}";
 
     Class<?>[] groups() default {};
 

@@ -1,0 +1,204 @@
+.textOverflow-container {
+    width: 100%;
+}
+
+.textOverflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.container-map {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    margin: 30px;
+}
+
+.user-profile-reviews-pane {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.user-profile-reviews-pane > .profile-review-card {
+    /*width: 45%;*/
+    max-width: 50%;
+    margin: 1vh;
+}
+
+.box-map {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
+    background: #0057e3;
+}
+
+.overlay-map {
+    z-index: 9;
+    margin: 30px;
+    background: #009938;
+}
+
+
+.img-hover-click {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.img-hover-click:hover {
+    border: 2px solid green;
+}
+
+.asset-details-row {
+    display: flex;
+    padding-top: 3%;
+    padding-inline: 10%;
+    justify-content: space-between;
+}
+
+.island {
+    background: #ececec;
+    border-radius: 20px;
+    padding: 1vw;
+    box-shadow: 0 0 15px lightgray;
+}
+
+.asset-instance-info {
+    flex: 1;
+    display: flex;
+    flex-flow: row;
+    margin-right: 2vw;
+    width: fit-content;
+}
+
+.asset-instance-info > img {
+    max-width: 20vw;
+    border-radius: 2px;
+}
+
+.future-lending-island {
+    width: 100%;
+    margin-bottom: 4vh;
+}
+
+.asset-instance-text {
+    max-width: 100%;
+}
+
+.asset-instances-menu-column {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.status-menu {
+    height: 100%;
+    margin-bottom: 10%;
+}
+
+.options-island {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+}
+
+.options-menu-container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.future-lending-list {
+    background: #f0f5f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.future-lending-card {
+    display: flex;
+    align-items: center;
+    padding-inline: 1vw;
+    transition: all 0.2s ease-in-out;
+}
+
+.future-lending-card-wrapper:not(:last-child) {
+    border-bottom: red 1px solid;
+}
+
+.future-lending-card:hover {
+    transform: scale(1.01);
+    background: #d2e1d2;
+}
+
+.future-lending-card > h4 {
+    margin-block: 0;
+}
+
+.future-lending-img-wrapper {
+    width: 5%;
+    display: flex;
+    margin-right: 1vw;
+    margin-block: 1vh;
+    align-content: center;
+    justify-content: center;
+}
+
+.future-lending-img-wrapper > img {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 100%;
+    object-fit: cover;
+    -webkit-box-shadow: 0 0 3px black;
+    box-shadow: 0 0 3px black;
+}
+
+.to_end {
+    margin-left: auto !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.future-lending-card-title {
+    margin-right: 1vw;
+}
+
+.vertical-div {
+    width: 1px;
+    height: 100%;
+    margin-inline: 2vw;
+}
+
+li > button:hover {
+    background: #f0f5f0 !important;
+}
+
+.future-lending-buttons {
+    margin-block: 2vw;
+}
+
+.future-lendings-empty {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.future-lendings-empty > h3 {
+    color: #9ca3af;
+    margin-inline: 0;
+    margin-block: 2vh;
+}

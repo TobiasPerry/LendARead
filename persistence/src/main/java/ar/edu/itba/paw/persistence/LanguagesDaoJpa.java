@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.LanguageImpl;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.itba.edu.paw.persistenceinterfaces.LanguageDao;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +17,9 @@ public class LanguagesDaoJpa implements LanguageDao {
     private EntityManager em;
 
     @Override
-    public Optional<List<LanguageImpl>> getLanguages() {
-        TypedQuery<LanguageImpl> query = em.createQuery("from LanguageImpl", LanguageImpl.class);
-        List<LanguageImpl> languages = query.getResultList();
+    public Optional<List<Language>> getLanguages() {
+        TypedQuery<Language> query = em.createQuery("from Language", Language.class);
+        List<Language> languages = query.getResultList();
         return Optional.ofNullable(languages);
     }
 }

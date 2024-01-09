@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.miscellaneous.ImageImpl;
+import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +15,8 @@ public class ImagesDaoJpa implements ImagesDao {
     private EntityManager entityManager;
 
     @Override
-    public ImageImpl addPhoto(byte[] photo) {
-        ImageImpl image = new ImageImpl(photo);
+    public Image addPhoto(byte[] photo) {
+        Image image = new Image(photo);
         entityManager.persist(image);
         entityManager.flush();
         return image;
@@ -24,8 +24,13 @@ public class ImagesDaoJpa implements ImagesDao {
 
     @Override
     public Optional<byte[]> getPhoto(int id) {
-        ImageImpl image = entityManager.find(ImageImpl.class, id);
-        return Optional.ofNullable(image).map(ImageImpl::getPhoto);
+        Image image = entityManager.find(Image.class, id);
+        return Optional.ofNullable(image).map(Image::getPhoto);
+    }
+
+    @Override
+    public Image getImage(int id) {
+        return entityManager.find(Image.class, id);
     }
 }
 

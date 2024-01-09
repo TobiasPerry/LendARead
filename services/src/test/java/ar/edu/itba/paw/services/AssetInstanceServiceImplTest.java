@@ -32,7 +32,7 @@ public class AssetInstanceServiceImplTest {
     private static final int PAGE_NAME_INVALID = -1;
     private static final int ITEMS_PER_PAGE = 15;
     private static final int ITEMS_PER_PAGE_INVALID = 0;
-    private static final SearchQuery SEARCH_QUERY = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5);
+    private static final SearchQuery SEARCH_QUERY = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
 
     @Test
     public void getAllAssetsInstancesEmptyDBTest(){
