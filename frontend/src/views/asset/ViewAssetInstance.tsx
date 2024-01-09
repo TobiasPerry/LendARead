@@ -2,28 +2,36 @@ import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/AssetInstance/useAssetInstance.ts";
+import {AssetData} from "../../hooks/AssetInstance/useAssetInstance.ts";
 import {keyframes} from "@emotion/react";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import NotFound from "../../components/NotFound.tsx";
 
-const ViewAssetInstance = (book = {
-    title: "tmp",
-    author: "tmp",
-    language: "tmp",
-    image: "tmp",
-    physicalCondition: "tmp",
-    userImage: "tmp",
-    userName: "tmp",
-    country: "tmp",
-    province: "tmp",
-    locality: "tmp"
-}) => {
+const ViewAssetInstance = () => {
 
-    const { bookNumber } = useParams<{ bookNumber: number}>()
+    const book : AssetData = {
+        title: "",
+        author: "",
+        language: "",
+        image: "",
+        physicalCondition: "",
+        userImage: "",
+        userName: "",
+        isbn: "",
+        location: {
+            zipcode: "",
+            locality: "",
+            province: "",
+            country: "",
+        },
+        reviews: undefined,
+    }
+
+    const { bookNumber } = useParams<{ bookNumber: string}>()
 
     const {handleAssetInstance} = useAssetInstance()
 
-    const [data, setData] = useState({})
+    const [data, setData] = useState(book)
     const [loading, setLoading] = useState(true)
     const [found, setFound] = useState(false)
 
@@ -36,8 +44,8 @@ const ViewAssetInstance = (book = {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            setData({})
-            const res = await handleAssetInstance(bookNumber)
+            setData(book)
+            const res: AssetData = await handleAssetInstance(bookNumber)
             setFound((!(res === null || res === undefined)))
             console.log(res)
             setHasUserImage(true)

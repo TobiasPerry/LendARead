@@ -54,8 +54,8 @@ const DiscoveryView =  () => {
     ));
 
     const clickSearch = (event) => {
-        // Get the value of the search input
-        const searchInput = document.getElementById('search-bar');
+        // Get the value of the search input - Need to be an HTMLInputElement so that TS knows it has the value property
+        const searchInput = document.getElementById('search-bar') as HTMLInputElement;
         if (searchInput) {
             setSearch(searchInput.value)
         }
@@ -77,7 +77,7 @@ const DiscoveryView =  () => {
         setSearch("");
         setCurrentPage(1);
         // Clear the value of the search input
-        const searchInput = document.getElementById('search-bar');
+        const searchInput = document.getElementById('search-bar')  as HTMLInputElement;;
         if (searchInput) {
             searchInput.value = '';
         }

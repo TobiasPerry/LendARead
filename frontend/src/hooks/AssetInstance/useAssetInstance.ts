@@ -1,5 +1,25 @@
 import {api, api_} from "../api/api.ts";
-import {Simulate} from "react-dom/test-utils";
+
+// Define the interface for the data object
+export interface AssetData {
+    title: string;
+    author: string;
+    language: string;
+    image: string;
+    physicalCondition: string;
+    userImage: string;
+    userName: string;
+    isbn: string;
+    location: {
+        zipcode: string;
+        locality: string;
+        province: string;
+        country: string;
+    },
+    reviews: any;
+    // Add other properties as needed
+}
+
 
 const useAssetInstance = () => {
 
@@ -55,7 +75,7 @@ const useAssetInstance = () => {
         }
     }
 
-    const handleAssetInstance = async (assetInstanceNumber) => {
+    const handleAssetInstance = async (assetInstanceNumber): Promise<AssetData> => {
         try{
             const response_instance = await api.get(`/assetInstances/${assetInstanceNumber}`);
             const body_instance =  response_instance.data
@@ -69,17 +89,17 @@ const useAssetInstance = () => {
             const body_user =  response_user.data
 
             return {
-                title: body_asset.title,
                 author: body_asset.author,
-                physicalCondition: body_instance.physicalCondition,
-                language: body_asset.language,
-                isbn: body_asset.isbn,
                 image: body_instance.imageReference,
-                description: body_instance.description,
-                userName: body_user.userName,
-                userImage: body_user.image,
+                isbn: body_asset.isbn,
+                language: body_asset.language,
                 location: body_location,
-                reviews: body_reviews,
+                //location: {country: "", locality: "", province: "", zipcode: ""},
+                physicalCondition: body_instance.physicalCondition,
+                title: body_asset.title,
+                userImage: body_user.image,
+                userName: body_user.userName,
+                reviews: body_reviews
             };
         }catch (e){
             console.log("error");
