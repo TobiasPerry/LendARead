@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import Landing from "./views/Landing.tsx";
 import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./components/NotFound.tsx";
+import AddAsset from "./views/addAsset.tsx";
 
 
 import LoginView from "./views/user/LogIn.tsx";
@@ -30,6 +31,7 @@ export default function App() {
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance />} />
+                    <Route path="addbook" element={<AddAsset />} />
                     {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
