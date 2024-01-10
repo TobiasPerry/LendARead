@@ -20,12 +20,7 @@ public class AssetDaoJpa implements AssetDao {
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public Optional<List<Asset>> getAssets() {
-        TypedQuery<Asset> query = em.createQuery("SELECT b FROM Asset b", Asset.class);
-        List<Asset> books = query.getResultList();
-        return books.isEmpty() ? Optional.empty() : Optional.of(new ArrayList<>(books));
-    }
+
 
     @Override
     public Asset addAsset(Asset bi) throws BookAlreadyExistException {
@@ -105,7 +100,7 @@ public class AssetDaoJpa implements AssetDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return new PagingImpl<Asset>(new ArrayList<>(), 0, 0);
+            return new PagingImpl<>(new ArrayList<>(), page, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<Asset> query = em.createQuery("FROM Asset as a  WHERE a.id IN (:ids) ORDER BY a.title" , Asset.class);

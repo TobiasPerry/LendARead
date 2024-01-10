@@ -29,49 +29,6 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         em.persist(newReview);
     }
 
-    @Override
-    public double getRating(final User user) {
-        try {
-            String jql = "SELECT AVG(r.rating) FROM UserReview r WHERE r.recipient = :userId";
-            return (Double) em.createQuery(jql)
-                    .setParameter("userId", user)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return -1;
-        }
-    }
-
-    @Override
-    public double getRatingAsLender(final User user) {
-        try {
-            String hql = "SELECT AVG(ur.rating) AS average_rating " +
-                    "FROM userreview AS ur " +
-                    "JOIN lendings AS l ON ur.lendId = l.id " +
-                    "JOIN AssetInstance AS ai ON l.assetInstanceId = ai.id " +
-                    "WHERE ur.recipient = :userId AND ai.owner = :userId";
-            BigDecimal avg = (BigDecimal) em.createNativeQuery(hql)
-                    .setParameter("userId", user.getId())
-                    .getSingleResult();
-            return avg == null ? -1 : avg.doubleValue();
-        } catch (NoResultException e) {
-            return -1;
-        }
-    }
-
-
-    @Override
-    public double getRatingAsBorrower(final User user) {
-        try {
-            String hql = "SELECT AVG(ur.rating) AS average_rating " +
-                    "FROM userreview AS ur " +
-                    "JOIN lendings AS l ON ur.lendId = l.id " +
-                    "WHERE ur.recipient = :userId AND l.borrowerid = :userId";
-            BigDecimal avg = (BigDecimal) (em.createNativeQuery(hql).setParameter("userId", user.getId()).getSingleResult());
-            return avg == null ? -1 : avg.doubleValue();
-        } catch (NoResultException e) {
-            return -1;
-        }
-    }
 
     @Override
     @SuppressWarnings("unchecked")

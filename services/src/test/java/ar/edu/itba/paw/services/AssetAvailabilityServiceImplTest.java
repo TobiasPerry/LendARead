@@ -3,8 +3,9 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
 import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
@@ -29,7 +30,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -62,7 +64,7 @@ public class AssetAvailabilityServiceImplTest {
     private static final LocalDate DEVOLUTION_DATE_FOUR_WEEK = LocalDate.now().plusDays(28);
     private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
-            new Asset((long)0, "", "", "", ""),
+            new Asset((long)0, "", "", "", new Language()),
             PhysicalCondition.ASNEW,
             USER,
             new Location(0,"", "", "", "", "", null),

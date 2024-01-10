@@ -15,7 +15,7 @@ import javax.ws.rs.ext.Provider;
 @Singleton
 @Component
 @Provider
-public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
+public class    NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
     private final MessageSource messageSource;
     @Autowired
     public NotFoundExceptionMapper(MessageSource messageSource){

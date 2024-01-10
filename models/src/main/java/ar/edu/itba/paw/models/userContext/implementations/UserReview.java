@@ -65,4 +65,10 @@ public class UserReview {
     public Lending getLending() {
         return lending;
     }
+    public boolean isLenderReview(){
+        return recipient.getEmail().equals(lending.getAssetInstance().getOwner().getEmail());
+    }
+    public boolean isBorrowerReview(){
+        return recipient.getEmail().equals(lending.getUserReference().getEmail());
+    }
 }

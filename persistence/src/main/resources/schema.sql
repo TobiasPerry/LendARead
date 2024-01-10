@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS book(
     isbn varchar(100) not null unique,
     author varchar(100) not null,
     title text not null,
-    lang varchar(100) not null
+    lang varchar(100) not null references languages(id)
 );
 
 CREATE TABLE IF NOT EXISTS photos(

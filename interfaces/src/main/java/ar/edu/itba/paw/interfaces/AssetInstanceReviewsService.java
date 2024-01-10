@@ -10,10 +10,6 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 public interface AssetInstanceReviewsService {
 
     AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException;
-    double getRating(final int assetInstanceId) throws AssetInstanceNotFoundException;
-
-    double getRatingById(final int assetInstanceId) throws AssetInstanceNotFoundException;
-
     AssetInstanceReview getReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
 
     void deleteReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;

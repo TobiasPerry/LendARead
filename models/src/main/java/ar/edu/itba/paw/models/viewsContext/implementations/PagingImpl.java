@@ -1,10 +1,10 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
-import ar.edu.itba.paw.models.viewsContext.interfaces.PageUserAssets;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 
 import java.util.List;
 
-public class PagingImpl<T> implements PageUserAssets<T> {
+public class PagingImpl<T> implements AbstractPage<T> {
 
     private final List<T> userAssets;
     private  int currentPage;

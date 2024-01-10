@@ -8,7 +8,6 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import java.util.Optional;
 
 public interface LocationsService {
-    void addLocation(final Location lc);
 
     Location addLocation(final String name, final String locality, final String province, final String country, final String zipcode) throws UserNotFoundException;
     Location getLocation(final int locationId) throws LocationNotFoundException;

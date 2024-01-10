@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.services;
 
 
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.junit.Assert;
@@ -13,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -37,19 +38,16 @@ public class AssetInstanceServiceImplTest {
     @Test
     public void getAllAssetsInstancesEmptyDBTest(){
         // 1 - Precondiciones
-        when(assetInstanceDao.getAllAssetInstances(anyInt(), anyInt(), any())).thenReturn(Optional.empty());
+        when(assetInstanceDao.getAllAssetInstances(anyInt(), anyInt(), any())).thenReturn(new PagingImpl<>(new ArrayList<>(), 1, 1));
 
         // 2 - Ejercitación
-        Page page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE, SEARCH_QUERY);
+        AbstractPage page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE, SEARCH_QUERY);
 
         // 3 - Assertions
         Assert.assertNotNull(page);
         Assert.assertEquals(page.getCurrentPage(), 1);
         Assert.assertEquals(page.getTotalPages(), 1);
-        Assert.assertTrue(page.getBooks().isEmpty());
-        Assert.assertTrue(page.getLanguages().isEmpty());
-        Assert.assertTrue(page.getPhysicalConditions().isEmpty());
-        Assert.assertTrue(page.getAuthors().isEmpty());
+
     }
 
     @Test
@@ -57,16 +55,13 @@ public class AssetInstanceServiceImplTest {
         // 1 - Precondiciones
 
         // 2 - Ejercitación
-        Page page = assetInstanceService.getAllAssetsInstances(PAGE_NAME_INVALID, ITEMS_PER_PAGE, SEARCH_QUERY);
+        AbstractPage page = assetInstanceService.getAllAssetsInstances(PAGE_NAME_INVALID, ITEMS_PER_PAGE, SEARCH_QUERY);
 
         // 3 - Assertions
         Assert.assertNotNull(page);
         Assert.assertEquals(page.getCurrentPage(), 1);
         Assert.assertEquals(page.getTotalPages(), 1);
-        Assert.assertTrue(page.getBooks().isEmpty());
-        Assert.assertTrue(page.getLanguages().isEmpty());
-        Assert.assertTrue(page.getPhysicalConditions().isEmpty());
-        Assert.assertTrue(page.getAuthors().isEmpty());
+
     }
 
     @Test
@@ -74,16 +69,12 @@ public class AssetInstanceServiceImplTest {
         // 1 - Precondiciones
 
         // 2 - Ejercitación
-        Page page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE_INVALID, SEARCH_QUERY);
+        AbstractPage<AssetInstance> page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE_INVALID, SEARCH_QUERY);
 
         // 3 - Assertions
         Assert.assertNotNull(page);
         Assert.assertEquals(page.getCurrentPage(), 1);
         Assert.assertEquals(page.getTotalPages(), 1);
-        Assert.assertTrue(page.getBooks().isEmpty());
-        Assert.assertTrue(page.getLanguages().isEmpty());
-        Assert.assertTrue(page.getPhysicalConditions().isEmpty());
-        Assert.assertTrue(page.getAuthors().isEmpty());
     }
 
 }

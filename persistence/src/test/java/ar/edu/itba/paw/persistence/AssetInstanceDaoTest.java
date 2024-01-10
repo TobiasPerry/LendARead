@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.Image;
@@ -10,7 +11,7 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;
@@ -47,7 +48,7 @@ public class AssetInstanceDaoTest {
     private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5,-1);
 
     private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
-    private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", "LANGUAGE");
+    private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", new Language());
     private final static Location LOCATION = new Location(0, "NAME","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
     private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstance(BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION",true);
     private final static String BOOK_TITLE_ALREADY_EXIST = "TITLE";
@@ -94,15 +95,11 @@ public class AssetInstanceDaoTest {
     @Test
     public void getAllAssetInstancesTest() {
         //2
-        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
+        AbstractPage<AssetInstance> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
 
         //3
-        Assert.assertTrue(page.isPresent());
-        Assert.assertEquals(1,page.get().getBooks().size());
-        Assert.assertEquals(1,page.get().getPhysicalConditions().size());
-        Assert.assertEquals(1,page.get().getLanguages().size());
-        Assert.assertEquals(1,page.get().getTotalPages());
-        Assert.assertEquals(1,page.get().getCurrentPage());
+        Assert.assertEquals(1,page.getTotalPages());
+        Assert.assertEquals(1,page.getCurrentPage());
     }
     @Rollback
     @Test
@@ -110,11 +107,10 @@ public class AssetInstanceDaoTest {
         //1
         em.createQuery("UPDATE FROM AssetInstance SET assetState = 'DELETED' WHERE id = 0").executeUpdate();
         //2
-        Optional<Page> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
+        AbstractPage<AssetInstance> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
-        Assert.assertTrue(page.isPresent());
-        Assert.assertEquals(0,page.get().getCurrentPage());
-        Assert.assertEquals(0,page.get().getTotalPages());
+        Assert.assertEquals(0,page.getCurrentPage());
+        Assert.assertEquals(0,page.getTotalPages());
     }
 
 }

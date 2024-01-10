@@ -23,7 +23,7 @@ public class AssetDTO {
         assetDTO.isbn = asset.getIsbn();
         assetDTO.author = asset.getAuthor();
         assetDTO.title = asset.getName();
-        assetDTO.language = asset.getLanguage();
+        assetDTO.language = LanguagesDTO.reference(url,asset.getLanguage());
         assetDTO.selfUrl = reference(url, asset);
         return assetDTO;
     }
