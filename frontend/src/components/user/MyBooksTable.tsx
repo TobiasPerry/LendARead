@@ -69,9 +69,9 @@ const MyBooksTable = () => {
                 <tr>
                     <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} {renderSortIcon('image')}</th>
                     <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
-                    <th scope="col" onClick={() => handleSortChange('startDate')}>{t('start_date')} {renderSortIcon('startDate')}</th>
-                    <th scope="col" onClick={() => handleSortChange('returnDate')}>{t('return_date')} {renderSortIcon('returnDate')}</th>
-                    <th scope="col" onClick={() => handleSortChange('user')}>{t('user')} {renderSortIcon('user')}</th>
+                    <th scope="col" onClick={() => handleSortChange('author')}>{t('author')} {renderSortIcon('author')}</th>
+                    <th scope="col" onClick={() => handleSortChange('language')}>{t('language')} {renderSortIcon('language')}</th>
+                    <th scope="col" onClick={() => handleSortChange('state')}>{t('state')} {renderSortIcon('state')}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,10 +82,12 @@ const MyBooksTable = () => {
                 ) : (
                     books.map((book, index) => (
                         <tr key={index}>
-                            <td>{/* Place an image here */}</td>
+                            <td>
+                                <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
+                            </td>
                             <td>{book.title}</td>
-                            <td>{book.startDate}</td>
-                            <td>{book.returnDate}</td>
+                            <td>{book.author}</td>
+                            <td>{book.language}</td>
                             <td>{book.user}</td>
                         </tr>
                     ))

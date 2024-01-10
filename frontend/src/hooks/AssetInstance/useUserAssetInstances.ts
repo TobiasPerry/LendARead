@@ -42,11 +42,15 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) 
 
         const booksRetrieved = []
         for (const assetinstance of assetinstances.data) {
-           const asset: Asset = await api_.get(assetinstance.assetReference).data
+            const assetResponse = await api_.get(assetinstance.assetReference)
+            const asset: Asset = assetResponse.data
             console.log('asset', asset)
             booksRetrieved.push({
                 title: asset.title,
-
+                author: asset.author,
+                language: asset.language,
+                state: assetinstance.physicalCondition,
+                imageUrl: assetinstance.imageUrl
             })
         }
 
