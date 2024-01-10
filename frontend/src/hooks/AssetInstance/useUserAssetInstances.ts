@@ -32,17 +32,26 @@ const sortColumnsApi = {
 }
 
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 10
+    const PAGE_SIZE = 1
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
     const [sort, setSort] = useState(initialSort);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10); // Or whatever default you prefer
-    const [totalPages, setTotalPages] = useState(20); // To be set when data is fetched
+    const [totalPages, setTotalPages] = useState(1);
     const [books, setBooks] = useState([])
 
-
+    const extractTotalPages = (linkHeader) => {
+        const links = linkHeader.split(',').map(a => a.split(';'));
+        const lastLink = links.find(link => link[1].includes('rel="last"'));
+        if (lastLink) {
+            const lastPageUrl = lastLink[0].trim().slice(1, -1);
+            const urlParams = new URLSearchParams(lastPageUrl);
+            const lastPage = urlParams.get('page');
+            return parseInt(lastPage, 10);
+        }
+        return 1;
+    };
 
     const applyFilterAndSort =  async (newPage: number, newSort: any, newFilter: string, books: any) => {
         const assetinstances = await api.get(`/assetInstances?userId=${user}`,
@@ -55,6 +64,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
             }
         })
         console.log('assetinstance', assetinstances.data)
+
+        setTotalPages(extractTotalPages(assetinstances.headers["link"]))
 
         const booksRetrieved = []
         for (const assetinstance of assetinstances.data) {
