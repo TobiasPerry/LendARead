@@ -6,22 +6,22 @@ import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstanc
 
 const LendedBooksTable = ({isLender}) => {
     const { t } = useTranslation();
-    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useUserAssetInstances();
+    const { setFilter, filter, fetchLendings, sort, setSort, currentPage, changePage, totalPages, books} = useUserAssetInstances();
 
     useEffect(() => {
-        applyFilterAndSort(currentPage, sort, filter, books)
+        fetchLendings(currentPage, sort, filter, isLender)
     }, [])
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
-        await applyFilterAndSort(currentPage, sort, newFilter, books);
+        await fetchLendings(currentPage, sort, filter, isLender)
     };
 
     const handleSortChange = async (column: string) => {
         const isAsc = sort.column === column && sort.order === 'ASCENDING';
         const newSort = { column, order: isAsc ? 'DESCENDING' : 'ASCENDING' }
         setSort(newSort);
-        await applyFilterAndSort(currentPage, newSort, filter, books);
+        await fetchLendings(currentPage, sort, filter, isLender)
     };
 
     const renderSortIcon = (column: string) => {

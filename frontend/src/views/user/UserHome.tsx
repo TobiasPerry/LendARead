@@ -7,15 +7,6 @@ const UserHomeView = () => {
 
     const { t } = useTranslation();
     const [table, setTable] = useState('my_books');
-    const [userAssets, setUserAssets] = useState([]); // Assuming this is some data you fetch
-    const [isLender, setIsLender] = useState(false); // Adjust according to your logic
-    const [modalType, setModalType] = useState(''); // Set accordingly
-    const [assetId, setAssetId] = useState(''); // Set accordingly
-
-    // Example of fetching data, adjust this to suit your actual data fetching
-    useEffect(() => {
-        // Fetch data here and update state
-    }, []);
 
     const handleTableChange = (newTable: any) => {
         setTable(newTable);
@@ -26,7 +17,7 @@ const UserHomeView = () => {
         <div>
             <div  style={{width: '1000px', margin: 'auto', paddingBottom: '50px', paddingTop: '50px'}}>
                 <h1>{t('greeting', { userEmail: 'user@example.com' })}</h1>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', marginBottom: "20px" }}>
                     <div style={{ flex: 1, marginRight: '20px' }}>
                         <div className="list-group">
                                 <button onClick={() => handleTableChange('my_books')} className={`list-group-item list-group-item-action button-select ${table === 'my_books' ? 'button-select-active' : ''}`}>

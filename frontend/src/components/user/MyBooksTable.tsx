@@ -52,7 +52,7 @@ const MyBooksTable = () => {
     }
 
     return (
-        <div className="container mt-3">
+        <div className="container">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{t('my_books')}</h2>
                 <div className="btn-group">

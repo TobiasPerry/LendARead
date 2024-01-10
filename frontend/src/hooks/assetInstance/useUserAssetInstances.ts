@@ -3,7 +3,7 @@ import {useContext, useState} from 'react';
 import {api, api_} from "../api/api.ts";
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 
-interface Asset {
+export interface AssetApi {
     author: string,
     isbn: string,
     language: string,
@@ -11,7 +11,17 @@ interface Asset {
     title: string
 }
 
-interface AssetInstance {
+export interface LendingApi {
+    assetInstance: string,
+    devolutionDate: string,
+    lendDate: string,
+    selfUrl: string,
+    state: string,
+    userReference: string,
+    userReviews: Array<any>
+}
+
+export interface AssetInstanceApi {
     assetReference : string,
     description : string,
     imageReference: string,
@@ -53,7 +63,29 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return 1;
     };
 
-    const applyFilterAndSort =  async (newPage: number, newSort: any, newFilter: string, books: any) => {
+   const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
+
+       const queryparams = {
+           'page': newPage,
+           'itemsPerPage': PAGE_SIZE,
+       }
+
+       if(isLender)
+           queryparams['lenderId'] = user
+       else
+           queryparams['borrowerId'] = user
+
+       const lendings = await api.get(`/lendings`,
+           {
+               params: queryparams
+           })
+
+       console.log('lendings',lendings.data)
+   }
+
+
+    const fetchMyBooks =  async (newPage: number, newSort: any, newFilter: string) => {
+
         const assetinstances = await api.get(`/assetInstances?userId=${user}`,
             {
             params: {
@@ -63,14 +95,13 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                 'sortDirection': newSort.order,
             }
         })
-        console.log('assetinstance', assetinstances.data)
 
         setTotalPages(extractTotalPages(assetinstances.headers["link"]))
 
         const booksRetrieved = []
         for (const assetinstance of assetinstances.data) {
             const assetResponse = await api_.get(assetinstance.assetReference)
-            const asset: Asset = assetResponse.data
+            const asset: AssetApi = assetResponse.data
 
             const languageResponse = await api_.get(asset.language)
             const lang = languageResponse.data
@@ -83,7 +114,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
             })
         }
 
-        console.log(booksRetrieved)
         setBooks(booksRetrieved)
     };
 
@@ -91,11 +121,11 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
     const changePage = (newPage: number) => {
         setCurrentPage(newPage);
         // Re-apply filter and sort whenever page changes
-        applyFilterAndSort(newPage, sort, filter, books);
+        fetchMyBooks(newPage, sort, filter, books);
     };
 
 
-    return { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books, setBooks};
+    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePage, totalPages, books, setBooks, fetchLendings};
 };
 
 export default useUserAssetInstances;
