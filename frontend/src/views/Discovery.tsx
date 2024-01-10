@@ -1,5 +1,5 @@
 import BookCard from '../components/BookCard';
-import useAssetInstance from "../hooks/AssetInstance/useAssetInstance.ts";
+import useAssetInstance from "../hooks/assetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";

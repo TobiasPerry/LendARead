@@ -180,5 +180,7 @@
   "POOR": "Pobre",
   "EXLIBRARY": "De biblioteca",
   "BOOKCLUB": "Club de libro",
-  "BINDINGCOPY": "Copia de encuadernación"
+  "BINDINGCOPY": "Copia de encuadernación",
+  "private": "Privado",
+  "public": "Publico"
 }

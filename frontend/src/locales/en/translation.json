@@ -59,6 +59,8 @@
     "lent": "Lent"
   },
   "all": "All",
+  "private": "Private",
+  "public": "Public",
   "pending": "Pending",
   "delivered": "Delivered",
   "overdue": "Overdue",
