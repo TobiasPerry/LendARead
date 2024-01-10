@@ -1,7 +1,30 @@
 // useAssetInstances.js
 import {useContext, useState} from 'react';
-import {api} from "../api/api.ts";
+import {api, api_} from "../api/api.ts";
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
+
+interface Asset {
+    author: string,
+    isbn: string,
+    language: string,
+    selfUrl: string,
+    title: string
+}
+
+interface AssetInstance {
+    assetReference : string,
+    description : string,
+    imageReference: string,
+    locationReference: string
+    maxLendingDays: number,
+    physicalCondition: string,
+    rating: number,
+    reservable: boolean,
+    reviewsReference: string,
+    selfUrl: string,
+    status: string,
+    userReference: string
+}
 
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) => {
     const {user} = useContext(AuthContext)
@@ -14,10 +37,20 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) 
 
 
     const applyFilterAndSort =  async (newPage: number, newSort: any, newFilter: string, books: any) => {
-        const response = await api.get(`/assetInstances?userId=${user}`)
-        //need to have some assetInstances added first, waiting for frontend of adding assetinstances to be done
-        console.log(response.data)
-        console.log(user)
+        const assetinstances = await api.get(`/assetInstances?userId=${user}`)
+        console.log('assetinstance', assetinstances.data)
+
+        const booksRetrieved = []
+        for (const assetinstance of assetinstances.data) {
+           const asset: Asset = await api_.get(assetinstance.assetReference).data
+            console.log('asset', asset)
+            booksRetrieved.push({
+                title: asset.title,
+
+            })
+        }
+
+        setBooks(booksRetrieved)
     };
 
     // Function to change the page
