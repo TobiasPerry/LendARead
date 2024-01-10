@@ -26,7 +26,14 @@ interface AssetInstance {
     userReference: string
 }
 
-const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) => {
+const sortColumnsApi = {
+    title: "TITLE_NAME",
+    author: "AUTHOR_NAME",
+}
+
+const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
+    const PAGE_SIZE = 10
+
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
     const [sort, setSort] = useState(initialSort);
@@ -36,8 +43,17 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'asc' }) 
     const [books, setBooks] = useState([])
 
 
+
     const applyFilterAndSort =  async (newPage: number, newSort: any, newFilter: string, books: any) => {
-        const assetinstances = await api.get(`/assetInstances?userId=${user}`)
+        const assetinstances = await api.get(`/assetInstances?userId=${user}`,
+            {
+            params: {
+                'page': newPage,
+                'itemsPerPage': PAGE_SIZE,
+                'sort': sortColumnsApi[`${newSort.column}`] === undefined ? "" : sortColumnsApi[`${newSort.column}`],
+                'sortDirection': newSort.order,
+            }
+        })
         console.log('assetinstance', assetinstances.data)
 
         const booksRetrieved = []

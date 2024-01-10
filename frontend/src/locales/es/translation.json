@@ -171,5 +171,14 @@
   "localityValidationError": "La localidad debe tener entre 1 y 100 caracteres.",
   "provinceValidationError": "La provincia debe tener entre 4 y 100 caracteres.",
   "countryValidationError": "El país debe tener entre 4 y 100 caracteres.",
-  "nameValidationError": "El nombre debe tener entre 1 y 100 caracteres."
+  "nameValidationError": "El nombre debe tener entre 1 y 100 caracteres.",
+  "ASNEW": "Como nuevo",
+  "FINE": "Excelente",
+  "VERYGOOD": "Muy bueno",
+  "GOOD": "Bueno",
+  "FAIR": "Aceptable",
+  "POOR": "Pobre",
+  "EXLIBRARY": "De biblioteca",
+  "BOOKCLUB": "Club de libro",
+  "BINDINGCOPY": "Copia de encuadernación"
 }

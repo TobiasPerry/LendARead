@@ -173,5 +173,14 @@
   "localityValidationError": "Locality must be between 1 to 100 characters.",
   "provinceValidationError": "Province must be between 4 to 100 characters.",
   "countryValidationError": "Country must be between 4 to 100 characters.",
-  "nameValidationError": "Name must be between 1 to 100 characters."
+  "nameValidationError": "Name must be between 1 to 100 characters.",
+  "ASNEW": "As new",
+  "FINE": "Fine",
+  "VERYGOOD": "Very good",
+  "GOOD": "Good",
+  "FAIR": "Fair",
+  "POOR": "Poor",
+  "EXLIBRARY": "Ex library",
+  "BOOKCLUB": "Bookclub",
+  "BINDINGCOPY": "Binding copy"
 }

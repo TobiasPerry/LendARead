@@ -17,14 +17,14 @@ const MyBooksTable = () => {
     };
 
     const handleSortChange = async (column: string) => {
-        const isAsc = sort.column === column && sort.order === 'asc';
-        const newSort = { column, order: isAsc ? 'desc' : 'asc' }
+        const isAsc = sort.column === column && sort.order === 'ASCENDING';
+        const newSort = { column, order: isAsc ? 'DESCENDING' : 'ASCENDING' }
         setSort(newSort);
         await applyFilterAndSort(currentPage, newSort, filter, books);
     };
 
     const renderSortIcon = (column: string) => {
-        return sort.column === column ? (sort.order === 'asc' ? '↑' : '↓') : '';
+        return sort.column === column ? (sort.order === 'ASCENDING' ? '↑' : '↓') : '';
     };
 
     const buttonStyle = (filter_: string) => {
@@ -88,7 +88,7 @@ const MyBooksTable = () => {
                             <td>{book.title}</td>
                             <td>{book.author}</td>
                             <td>{book.language}</td>
-                            <td>{book.user}</td>
+                            <td>{t(`${book.state}`)}</td>
                         </tr>
                     ))
                 )}
