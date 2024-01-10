@@ -1,10 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
-import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.User;
@@ -12,7 +10,10 @@ import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.UserDTO;
 import ar.edu.itba.paw.webapp.dto.UserReviewsDTO;
-import ar.edu.itba.paw.webapp.form.*;
+import ar.edu.itba.paw.webapp.form.EditUserForm;
+import ar.edu.itba.paw.webapp.form.RegisterForm;
+import ar.edu.itba.paw.webapp.form.ResetPasswordTokenForm;
+import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
 import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
@@ -40,7 +41,6 @@ import java.util.List;
 @Component
 public class UserController {
     private final UserService us;
-    private final AssetExistanceService ais;
     @Context
     private UriInfo uriInfo;
 
@@ -49,13 +49,11 @@ public class UserController {
 
 
     @Autowired
-    public UserController (final UserService userService, final AssetExistanceService assetExistanceService, final UserReviewsService userReviewsService){
+    public UserController (final UserService userService, final UserReviewsService userReviewsService){
         this.us = userService;
-        this.ais = assetExistanceService;
         this.urs = userReviewsService;
 
     }
-
     @PATCH
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
@@ -98,7 +96,7 @@ public class UserController {
     @Path("/{id}/image")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response changeUserProfilePic(@PathParam("id") final int id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
-        int photoId = us.changeUserProfilePic(id,imageBytes);
+        us.changeUserProfilePic(id,imageBytes);
         LOGGER.info("PUT user/{}/profilePic",id);
         return Response.noContent().build();
     }
@@ -156,7 +154,7 @@ public class UserController {
     @PreAuthorize("@preAuthorizeFunctions.borrowerCanUserReview(#id,#lenderReviewForm)")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
+    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, LendingNotFoundException {
         UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),id,lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/lender_reviews",id);
@@ -167,7 +165,7 @@ public class UserController {
     @PreAuthorize("@preAuthorizeFunctions.lenderCanUserReview(#id,#borrowerReviewForm)")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, AssetInstanceNotFoundException, LendingNotFoundException {
+    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, LendingNotFoundException {
         UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),id,borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/borrower_reviews",id);

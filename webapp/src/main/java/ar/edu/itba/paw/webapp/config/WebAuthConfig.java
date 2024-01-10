@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.webapp.auth.AuthSuccessHandler;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.UnauthorizedRequest;
 import ar.edu.itba.paw.webapp.auth.UnauthorizedRequestHandler;
@@ -53,10 +52,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private AuthSuccessHandler authSuccessHandler;
-
-
-    @Autowired
     private JwtTokenFilter jwtTokenFilter;
     @Autowired
     private BasicTokenFilter basicTokenFilter;
@@ -69,6 +64,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingLenderOrBorrower(request, #id)";
 
     private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner(request, #id)";
+    private static final String ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER= "@accessFunctions.assetInstanceReviewOwner(request, #id, #idReview)";
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -137,6 +133,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
                 .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
 
+                // Review endpoints
+                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}/reviews/{idReview}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
+
 
                 .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews","/api/assetInstances/{id}/reviews/").authenticated()
@@ -166,10 +165,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }
-    @Bean
-    public AuthSuccessHandler authSuccessHandler() {
-        return new AuthSuccessHandler();
     }
 
     @Override
