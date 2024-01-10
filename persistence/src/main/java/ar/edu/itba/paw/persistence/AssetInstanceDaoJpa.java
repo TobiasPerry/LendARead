@@ -139,8 +139,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         queryCount.setParameter("min_rating", searchQuery.getMinRating());
         queryCount.setParameter("max_rating", searchQuery.getMaxRating());
 
-        queryNative.setParameter("state", "PUBLIC");
-        queryCount.setParameter("state", "PUBLIC");
+        queryNative.setParameter("state",searchQuery.getAssetState().toString() );
+        queryCount.setParameter("state",searchQuery.getAssetState().toString()  );
 
         queryNative.setParameter("limit", limit);
         queryNative.setParameter("offset", offset);

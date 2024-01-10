@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.models.viewsContext.interfaces;
 
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 
@@ -22,5 +23,7 @@ public interface SearchQuery {
     int getMaxRating();
 
     int getUserId();
+
+    AssetState getAssetState();
 
 }

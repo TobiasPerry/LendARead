@@ -98,12 +98,14 @@ public class AssetInstanceController {
 
     @GET
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_SEARCH})
+    @PreAuthorize("@preAuthorizeFunctions.searchPrivateAssetInstances(#userId,#status)")
     public Response getAssetsInstances( @QueryParam("search")  @Size(min = 1, max = 100) String search,
                                          @QueryParam("physicalConditions")  List<String> physicalConditions,
                                          @QueryParam("languages")  List<String> languages,
-                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT") String sort,
-                                         @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING") String sortDirection,
+                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT",message = "{pattern.sort.AssetInstance}") String sort,
+                                         @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
                                          @QueryParam("page")  @DefaultValue("1")  @Min(1) int currentPage,
+                                         @QueryParam("status") @DefaultValue("PUBLIC") @Pattern(regexp = "PUBLIC|PRIVATE",message = "{pattern.status}") String status,
                                          @QueryParam("minRating")  @DefaultValue("1")@Min(1) @Max(5) int minRating,
                                          @QueryParam("maxRating")  @DefaultValue("5") @Min(1) @Max(5)int maxRating,
                                          @QueryParam("itemsPerPage") @DefaultValue("10") int itemsPerPage,
@@ -118,7 +120,8 @@ public class AssetInstanceController {
                         (sortDirection != null) ? SortDirection.fromString(sortDirection) : SortDirection.DESCENDING,
                         minRating,
                         maxRating,
-                        userId
+                        userId,
+                        AssetState.fromString(status)
                         )
         );
         List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getList());

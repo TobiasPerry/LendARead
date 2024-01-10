@@ -64,7 +64,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
         if (searchQuery == null)
-            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
+            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1,AssetState.PUBLIC);
 
 
         return assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);

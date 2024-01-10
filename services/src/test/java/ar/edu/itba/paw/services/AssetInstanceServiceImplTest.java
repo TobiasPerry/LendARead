@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
@@ -33,7 +34,7 @@ public class AssetInstanceServiceImplTest {
     private static final int PAGE_NAME_INVALID = -1;
     private static final int ITEMS_PER_PAGE = 15;
     private static final int ITEMS_PER_PAGE_INVALID = 0;
-    private static final SearchQuery SEARCH_QUERY = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
+    private static final SearchQuery SEARCH_QUERY = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1, AssetState.PUBLIC);
 
     @Test
     public void getAllAssetsInstancesEmptyDBTest(){
