@@ -10,7 +10,6 @@ import ar.edu.itba.paw.webapp.dto.LocationDTO;
 import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
-import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +72,7 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     @Consumes(value = { Vnd.VND_LOCATION })
     public Response editLocation(@PathParam("id")final Integer locationId, @Valid EditLocationForm locationForm) throws LocationNotFoundException {
-        Location location = ls.editLocationById(locationId, Optional.ofNullable(locationForm.getName()), Optional.ofNullable(locationForm.getLocality()), Optional.ofNullable(locationForm.getProvince()), Optional.ofNullable(locationForm.getCountry()), Optional.ofNullable(locationForm.getZipcode()));
+        ls.editLocationById(locationId, Optional.ofNullable(locationForm.getName()), Optional.ofNullable(locationForm.getLocality()), Optional.ofNullable(locationForm.getProvince()), Optional.ofNullable(locationForm.getCountry()), Optional.ofNullable(locationForm.getZipcode()));
         LOGGER.info("PATCH location/ id:{}",locationId);
         return Response.noContent().build();
     }

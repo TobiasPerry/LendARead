@@ -59,19 +59,6 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
 
     @Transactional(readOnly = true)
     @Override
-    public double getRating(final int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
-        return assetInstanceReviewsDao.getRating(assetInstance);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public double getRatingById(int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
-        return assetInstanceReviewsDao.getRating(assetInstance);
-    }
-
-    @Override
     public AssetInstanceReview getReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
         return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
     }

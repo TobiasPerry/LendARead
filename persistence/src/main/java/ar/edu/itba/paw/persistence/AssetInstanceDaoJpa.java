@@ -3,12 +3,10 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.miscellaneous.Image;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.viewsContext.implementations.PageImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
-import ar.edu.itba.paw.models.viewsContext.interfaces.Page;
+import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import org.springframework.stereotype.Repository;
@@ -35,31 +33,6 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
     }
 
     @Override
-    public void changePhysicalCondition(final AssetInstance ai, final PhysicalCondition physicalCondition) {
-        ai.setPhysicalCondition(physicalCondition);
-        em.persist(ai);
-    }
-
-    @Override
-    public void changeLocation(final AssetInstance ai, final Location location) {
-        ai.setLocation(location);
-        em.persist(ai);
-    }
-
-    @Override
-    public void changeImage(final AssetInstance ai, final Image image) {
-        ai.setImage(image);
-        em.persist(ai);
-    }
-
-    @Override
-    public void changeMaxLendingDays(final AssetInstance ai, final int maxLendingDays) {
-
-        ai.setMaxLendingDays(maxLendingDays);
-        em.persist(ai);
-    }
-
-    @Override
     public Optional<AssetInstance> getAssetInstance(int assetId) {
         String queryString = "FROM AssetInstance as ai WHERE ai.id = :id";
         TypedQuery<AssetInstance> query = em.createQuery(queryString, AssetInstance.class);
@@ -74,20 +47,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         em.persist(assetInstance);
     }
 
-    @Override
-    public void setReservability(AssetInstance ai, boolean value) {
-        ai.setReservable(value);
-        em.persist(ai);
-    }
+
 
     @Override
-    public void changeStatusByLendingId(AssetInstance ai, AssetState as) {
-        ai.setAssetState(as);
-        em.persist(ai);
-    }
-
-    @Override
-    public Optional<Page> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
+    public AbstractPage<AssetInstance> getAllAssetInstances(int pageNum, int itemsPerPage, SearchQuery searchQuery) {
 
         // Base query for getting the assets IDs for a given page
         StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai " +
@@ -194,18 +157,17 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return Optional.of(new PageImpl(new ArrayList<>(), 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<AssetInstance> query = em.createQuery("FROM AssetInstance AS ai WHERE id IN (:ids) " + orderByORM, AssetInstance.class);
         query.setParameter("ids", list);
         List<AssetInstance> assetInstances = query.getResultList();
-
-        return Optional.of(new PageImpl(assetInstances, pageNum, totalPages, new ArrayList<>(), getLanguages(ids), getPhysicalConditions(ids)));
+        return new PagingImpl<>(assetInstances, pageNum, totalPages);
     }
 
     private List<String> getLanguages(List<Long> ids){
-        String queryString = "SELECT DISTINCT ai.book.language FROM AssetInstance AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
+        String queryString = "SELECT DISTINCT ai.book.language.code FROM AssetInstance AS ai WHERE ai.assetState = :state AND ai.id IN (:ids)";
 
         TypedQuery<String> query = em.createQuery(queryString, String.class);
         query.setParameter("ids", ids);

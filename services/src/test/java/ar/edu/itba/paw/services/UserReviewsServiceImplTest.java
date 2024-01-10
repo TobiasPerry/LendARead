@@ -2,8 +2,9 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
@@ -52,7 +53,7 @@ public class UserReviewsServiceImplTest {
     private static final User USER_DIFFERENT = new User(USER_ID + 1, EMAIL_DIFFERENT, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
 
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
-            new Asset((long)0, "", "", "", ""),
+            new Asset((long)0, "", "", "", new Language()),
             PhysicalCondition.ASNEW,
             USER,
             new Location(0,"", "", "", "", "", null),

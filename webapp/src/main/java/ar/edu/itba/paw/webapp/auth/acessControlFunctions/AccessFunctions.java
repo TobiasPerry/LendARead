@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.LendingNotFoundException;
-import ar.edu.itba.paw.exceptions.LocationNotFoundException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 public class AccessFunctions {
 
 
-    private final UserReviewsService userReviewsService;
 
     private final LocationsService locationsService;
     private final UserService userService;
@@ -23,13 +19,16 @@ public class AccessFunctions {
 
     private final AssetInstanceService assetInstanceService;
 
+    private final AssetInstanceReviewsService assetInstanceReviewsService;
+
+
     @Autowired
-    public AccessFunctions(UserReviewsService userReviewsService, UserService userService, LocationsService locationsService, AssetAvailabilityService assetAvailabilityService, AssetInstanceService assetInstanceService) {
-        this.userReviewsService = userReviewsService;
+    public AccessFunctions( UserService userService, LocationsService locationsService, AssetAvailabilityService assetAvailabilityService, AssetInstanceService assetInstanceService, AssetInstanceReviewsService assetInstanceReviewsService) {
         this.userService = userService;
         this.locationsService = locationsService;
         this.assetAvailabilityService = assetAvailabilityService;
         this.assetInstanceService = assetInstanceService;
+        this.assetInstanceReviewsService = assetInstanceReviewsService;
     }
 
 
@@ -78,6 +77,16 @@ public class AccessFunctions {
             throw new RuntimeException(e);
         }
     }
-
+    public boolean assetInstanceReviewOwner(HttpServletRequest request, Integer lending_id, Integer idReview){
+        try {
+            if  (userService.getCurrentUser() == null)
+                return false;
+            return assetInstanceReviewsService.getReviewById(idReview).getReviewer().getEmail().equals(userService.getCurrentUser().getEmail());
+        } catch (AssetInstanceReviewNotFoundException e) {
+            return true;
+        } catch (UserNotFoundException e) {
+            return false;
+        }
+    }
 
 }

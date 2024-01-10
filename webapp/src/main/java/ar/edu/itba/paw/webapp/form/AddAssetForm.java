@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Isbn;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.Language;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +30,8 @@ public class AddAssetForm {
     private String isbn;
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 3)
+    @Language
     private String language;
 
 }

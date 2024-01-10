@@ -7,7 +7,7 @@ import javax.ws.rs.core.UriInfo;
 
 public class PaginatedData {
 
-    public static void paginatedData(final Response.ResponseBuilder response,final AbstractPage page,final UriInfo uriInfo)  {
+    public static <T> void  paginatedData(final Response.ResponseBuilder response,final AbstractPage<T> page,final UriInfo uriInfo) {
         if (page.nextPage()) {
             response.link(uriInfo.getRequestUriBuilder().replaceQueryParam("page", page.getCurrentPage() + 1).build().toString(), "next");
         }

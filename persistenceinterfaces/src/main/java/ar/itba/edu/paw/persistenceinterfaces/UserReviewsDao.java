@@ -10,12 +10,6 @@ public interface UserReviewsDao {
 
     void addReview(final UserReview newReview);
 
-    double getRating(final User user);
-
-    double getRatingAsLender(User user);
-
-    double getRatingAsBorrower(User user);
-
     Optional<UserReview> getUserReviewsByLendingIdAndUser(final int lendingId, final String user);
 
     PagingImpl<UserReview> getUserReviewsAsBorrower(int pageNum, int itemsPerPage, final User recipient);

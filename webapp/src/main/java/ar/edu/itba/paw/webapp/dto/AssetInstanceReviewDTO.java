@@ -31,7 +31,7 @@ public class AssetInstanceReviewDTO {
           return reviews.stream().map(review -> fromAssetInstanceReview(review, uriInfo)).collect(java.util.stream.Collectors.toList());
         }
         public static String reference(final UriInfo uriInfo, final AssetInstanceReview review) {
-            return uriInfo.getBaseUriBuilder().path("/api/assetInstance").path(String.valueOf(review.getLending().getAssetInstance().getId())).path("reviews").path(String.valueOf(review.getId())).build().toString();
+            return uriInfo.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(review.getLending().getAssetInstance().getId())).path("reviews").path(String.valueOf(review.getId())).build().toString();
         }
 
 

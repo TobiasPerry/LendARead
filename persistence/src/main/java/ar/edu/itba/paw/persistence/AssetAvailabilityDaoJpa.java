@@ -97,7 +97,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
 
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, 1);
+            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
 
         final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) ORDER BY l.lendDate", Lending.class);
         query.setParameter("ids", list);

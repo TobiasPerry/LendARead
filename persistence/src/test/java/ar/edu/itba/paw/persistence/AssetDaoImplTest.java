@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
@@ -31,8 +32,9 @@ public class AssetDaoImplTest {
     private final static String TITLE = "TITLE";
     private final static String LANGUAGE = "LANGUAGE";
     private final static String ISBN_ALREADY_EXIST = "ISBN";
-    private final static Asset book = new Asset( ISBN, AUTHOR, TITLE, LANGUAGE);
-    private final static Asset DUPLICATED_BOOK = new Asset((long) -1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
+
+    private final static Asset book = new Asset( ISBN, AUTHOR, TITLE,new Language() );
+    private final static Asset DUPLICATED_BOOK = new Asset((long) -1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, new Language());
 
 
     @Rollback
