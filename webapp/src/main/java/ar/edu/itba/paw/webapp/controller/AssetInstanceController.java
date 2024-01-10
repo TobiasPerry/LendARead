@@ -18,10 +18,7 @@ import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.form.AssetInstancePatchForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
-import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
-import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
-import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
-import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
+import ar.edu.itba.paw.webapp.miscellaneous.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Path("/api/assetInstances")
+@Path(EndpointsUrl.AssetInstances_URL)
 public class AssetInstanceController {
 
 

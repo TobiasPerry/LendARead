@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,7 +32,7 @@ public class AssetInstanceReviewDTO {
           return reviews.stream().map(review -> fromAssetInstanceReview(review, uriInfo)).collect(java.util.stream.Collectors.toList());
         }
         public static String reference(final UriInfo uriInfo, final AssetInstanceReview review) {
-            return uriInfo.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(review.getLending().getAssetInstance().getId())).path("reviews").path(String.valueOf(review.getId())).build().toString();
+            return uriInfo.getBaseUriBuilder().path(EndpointsUrl.AssetInstances_URL).path(String.valueOf(review.getLending().getAssetInstance().getId())).path("reviews").path(String.valueOf(review.getId())).build().toString();
         }
 
 

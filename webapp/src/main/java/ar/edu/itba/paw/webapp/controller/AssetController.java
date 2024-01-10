@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.AssetDTO;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -29,7 +30,7 @@ import java.net.URI;
 import java.util.List;
 
 @Component
-@Path("/api/assets")
+@Path(EndpointsUrl.Assets_URL)
 public class AssetController {
 
 

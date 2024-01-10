@@ -78,7 +78,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         return  webExpressionVoter;
     }
     @Bean
-    public JwtTokenUtil jwtTokenUtil(@Value("classpath:jwt.salt") Resource jwtKeyResource) throws IOException {
+    public JwtTokenUtil jwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
         return new JwtTokenUtil(jwtKeyResource);
     }
     @Bean

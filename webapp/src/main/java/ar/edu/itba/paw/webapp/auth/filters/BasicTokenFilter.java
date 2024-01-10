@@ -7,7 +7,6 @@ import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,14 +37,12 @@ public class BasicTokenFilter extends OncePerRequestFilter {
 
     private final PawUserDetailsService pawUserDetailsService;
 
-    private final String baseUrl;
     @Autowired
-    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService, UserService userService,final @Qualifier("baseUrl") String baseUrl) {
+    public BasicTokenFilter(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, PawUserDetailsService pawUserDetailsService, UserService userService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
         this.pawUserDetailsService = pawUserDetailsService;
         this.userService = userService;
-        this.baseUrl = baseUrl;
     }
 
     @Override
@@ -91,7 +88,7 @@ public class BasicTokenFilter extends OncePerRequestFilter {
                 );
             }
         User user = userService.getUser(username);
-        response.setHeader("JWT", jwtTokenUtil.generateJwtToken(authentication,baseUrl + "api/users/" + user.getId()));
+        response.setHeader("JWT", jwtTokenUtil.generateJwtToken(authentication,getBaseUrl(request) + "/api/users/" + user.getId()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -101,6 +98,9 @@ public class BasicTokenFilter extends OncePerRequestFilter {
             return;
         }
         chain.doFilter(request, response);
+    }
+    public String getBaseUrl(HttpServletRequest request){
+        return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
     }
     private boolean isTokenReset(String email,String posiblePassword) throws UserNotFoundException {
         User user = userService.getUser(email);

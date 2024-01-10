@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,14 +49,14 @@ public class AssetsInstancesDTO {
         dto.maxLendingDays = assetInstance.getMaxDays();
         dto.isReservable = assetInstance.getIsReservable();
         dto.selfUrl = reference(url, assetInstance);
-        dto.reviewsReference = url.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(assetInstance.getId())).path("reviews").build().toString();
-        dto.imageReference = url.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(assetInstance.getId())).path("image").build().toString();
+        dto.reviewsReference = url.getBaseUriBuilder().path(EndpointsUrl.AssetInstances_URL).path(String.valueOf(assetInstance.getId())).path("reviews").build().toString();
+        dto.imageReference = url.getBaseUriBuilder().path(EndpointsUrl.AssetInstances_URL).path(String.valueOf(assetInstance.getId())).path("image").build().toString();
         return dto;
     }
     public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstance> assetInstances) {
        return assetInstances.stream().map(assetInstance -> fromAssetInstance(url, assetInstance)).collect(java.util.stream.Collectors.toList());
     }
     public static String reference(UriInfo url, AssetInstance assetInstance) {
-        return url.getBaseUriBuilder().path("/api/assetInstances").path(String.valueOf(assetInstance.getId())).build().toString();
+        return url.getBaseUriBuilder().path(EndpointsUrl.AssetInstances_URL).path(String.valueOf(assetInstance.getId())).build().toString();
     }
 }

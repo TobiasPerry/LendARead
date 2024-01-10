@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.LanguagesDTO;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -20,7 +21,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Component
-@Path("/api/languages")
+@Path(EndpointsUrl.Languages_URL)
 public class LanguagesController {
 
     private final LanguagesService ls;

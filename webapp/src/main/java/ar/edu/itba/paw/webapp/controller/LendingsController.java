@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.PatchLendingForm;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-@Path("/api/lendings")
+@Path(EndpointsUrl.Lendings_URL)
 @Component
 public class LendingsController {
 

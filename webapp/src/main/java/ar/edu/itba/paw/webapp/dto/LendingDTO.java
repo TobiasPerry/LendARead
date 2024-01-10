@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,6 +51,6 @@ public class LendingDTO {
 
 
     public static String reference(UriInfo url, Lending lending) {
-        return url.getBaseUriBuilder().path("/api/lendings").path(String.valueOf(lending.getId())).build().toString();
+        return url.getBaseUriBuilder().path(EndpointsUrl.Lendings_URL).path(String.valueOf(lending.getId())).build().toString();
     }
 }
