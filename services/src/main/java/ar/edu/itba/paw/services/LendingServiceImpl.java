@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.LendingService;
 import ar.edu.itba.paw.interfaces.EmailService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
@@ -28,9 +28,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
-public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
+public class LendingServiceImpl implements LendingService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssetAvailabilityServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LendingServiceImpl.class);
     private final AssetAvailabilityDao lendingDao;
 
     private final AssetInstanceDao assetInstanceDao;
@@ -43,7 +43,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
 
     @Autowired
-    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao) {
+    public LendingServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;

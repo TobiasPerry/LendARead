@@ -35,7 +35,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AssetAvailabilityServiceImplTest {
+public class LendingServiceImplTest {
 
     @Mock
     private UserDao userDao;
@@ -45,7 +45,7 @@ public class AssetAvailabilityServiceImplTest {
     private AssetAvailabilityDao lendingDao;
 
     @InjectMocks
-    private AssetAvailabilityServiceImpl assetAvailabilityService;
+    private LendingServiceImpl assetAvailabilityService;
 
     private static final int USER_ID = 0;
     private static final int ASSET_ID = 0;

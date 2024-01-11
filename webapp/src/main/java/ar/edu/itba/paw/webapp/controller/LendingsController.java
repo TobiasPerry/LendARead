@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.LendingService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
@@ -32,7 +32,7 @@ import java.util.List;
 @Component
 public class LendingsController {
 
-    private final AssetAvailabilityService aas;
+    private final LendingService aas;
 
     private final UserService us;
     private final UserAssetInstanceService uais;
@@ -43,8 +43,8 @@ public class LendingsController {
     private UriInfo uriInfo;
 
     @Autowired
-    public LendingsController(final AssetAvailabilityService assetAvailabilityService, final UserService userService, final UserAssetInstanceService userAssetInstanceService){
-        this.aas = assetAvailabilityService;
+    public LendingsController(final LendingService lendingService, final UserService userService, final UserAssetInstanceService userAssetInstanceService){
+        this.aas = lendingService;
         this.us = userService;
         this.uais = userAssetInstanceService;
     }

@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.time.LocalDate;
 
-public interface AssetAvailabilityService {
+public interface LendingService {
 
     Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate)  throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException;
 
