@@ -9,7 +9,7 @@ public class SearchQueryImpl implements SearchQuery {
     private final List<String> languages;
     private final List<String> physicalConditions;
     private final String search;
-    private final Sort sort;
+    private final AssetInstanceSort assetInstanceSort;
     private final SortDirection sortDirection;
     private final int minRating;
     private final int maxRating;
@@ -21,7 +21,7 @@ public class SearchQueryImpl implements SearchQuery {
         this.languages = languages;
         this.physicalConditions = physicalConditions;
         this.search = search;
-        this.sort = null;
+        this.assetInstanceSort = null;
         this.sortDirection = null;
         this.minRating = minRating;
         this.maxRating = maxRating;
@@ -30,11 +30,11 @@ public class SearchQueryImpl implements SearchQuery {
 
     }
 
-    public SearchQueryImpl(List<String> languages, List<String>physicalConditions, String search, Sort sort, SortDirection sortDirection, int minRating, int maxRating, int userId, AssetState assetState){
+    public SearchQueryImpl(List<String> languages, List<String>physicalConditions, String search, AssetInstanceSort assetInstanceSort, SortDirection sortDirection, int minRating, int maxRating, int userId, AssetState assetState){
         this.languages = languages;
         this.physicalConditions = physicalConditions;
         this.search = search;
-        this.sort = sort;
+        this.assetInstanceSort = assetInstanceSort;
         this.sortDirection = sortDirection;
         this.minRating = minRating;
         this.maxRating = maxRating;
@@ -59,8 +59,8 @@ public class SearchQueryImpl implements SearchQuery {
     }
 
     @Override
-    public Sort getSort() {
-        return sort;
+    public AssetInstanceSort getSort() {
+        return assetInstanceSort;
     }
 
     @Override

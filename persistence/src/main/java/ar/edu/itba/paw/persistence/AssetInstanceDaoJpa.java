@@ -4,7 +4,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.viewsContext.implementations.AssetInstanceSort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
@@ -192,10 +192,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return list.stream().map(PhysicalCondition::fromString).collect(Collectors.toList());
     }
 
-    private String getPostgresFromSort(Sort sort) {
-        if (sort == null)
+    private String getPostgresFromSort(AssetInstanceSort assetInstanceSort) {
+        if (assetInstanceSort == null)
             return "ai.id";
-        switch (sort) {
+        switch (assetInstanceSort) {
             case TITLE_NAME:
                 return "b.title";
             case AUTHOR_NAME:
@@ -206,10 +206,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return "ai.id";
     }
 
-    private String getOrmFromSort(Sort sort) {
-        if (sort == null)
+    private String getOrmFromSort(AssetInstanceSort assetInstanceSort) {
+        if (assetInstanceSort == null)
             return "ai.id";
-        switch (sort) {
+        switch (assetInstanceSort) {
             case TITLE_NAME:
                 return "ai.book.title";
             case AUTHOR_NAME:

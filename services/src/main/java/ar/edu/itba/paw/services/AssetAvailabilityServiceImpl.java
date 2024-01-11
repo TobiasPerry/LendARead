@@ -185,8 +185,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId) {
-        return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId);
+    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection) {
+        return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId, sort, sortDirection);
     }
 
     @Transactional(readOnly = true)

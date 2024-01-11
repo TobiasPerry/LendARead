@@ -8,9 +8,9 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.viewsContext.implementations.AssetInstanceSort;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.AssetInstanceReviewDTO;
@@ -116,7 +116,7 @@ public class AssetInstanceController {
                         (languages != null) ? languages : new ArrayList<>(),
                         (physicalConditions != null) ? physicalConditions : new ArrayList<>(),
                         (search != null) ? search : "",
-                        (sort != null) ? Sort.fromString(sort) : Sort.RECENT,
+                        (sort != null) ? AssetInstanceSort.fromString(sort) : AssetInstanceSort.RECENT,
                         (sortDirection != null) ? SortDirection.fromString(sortDirection) : SortDirection.DESCENDING,
                         minRating,
                         maxRating,

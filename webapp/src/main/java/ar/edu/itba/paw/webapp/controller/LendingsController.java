@@ -54,9 +54,11 @@ public class LendingsController {
                                 @QueryParam("itemsPerPage")@DefaultValue("4") Integer itemsPerPage,
                                 @QueryParam("assetInstanceId")  Integer assetInstanceId,
                                 @QueryParam("borrowerId") Integer borrowerId,
+                                @QueryParam("sort") @Pattern(regexp = "TITLE|LENDDATE|DEVOLUTIONDATE|BORROWER_USER|LENDER_USER|LENDING_STATUS",message = "{pattern.lendingSort}") String sort,
+                                @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
                                 @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED|CANCALE",message = "{lending.state.invalid}") String state,
                                 @QueryParam("lenderId") Integer lenderId) {
-        PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
+        PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId, sort, sortDirection);
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
 
         LOGGER.info("GET lendings/ page:{} itemsPerPage:{} assetInstanceId:{} borrowerId:{} state:{} lenderId:{}",page,itemsPerPage,assetInstanceId,borrowerId,state,lenderId);

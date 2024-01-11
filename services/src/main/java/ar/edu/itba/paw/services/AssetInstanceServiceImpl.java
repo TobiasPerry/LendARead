@@ -48,7 +48,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
-        if (!assetInstanceOpt.isPresent()) {
+        if (!assetInstanceOpt.isPresent()||assetInstanceOpt.get().getAssetState()==AssetState.DELETED) {
             LOGGER.error("Failed to find the asset instance");
             throw new AssetInstanceNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
