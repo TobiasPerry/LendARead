@@ -56,7 +56,7 @@ public class AssetInstanceServiceImplTest {
         // 1 - Precondiciones
 
         // 2 - Ejercitación
-        AbstractPage page = assetInstanceService.getAllAssetsInstances(PAGE_NAME_INVALID, ITEMS_PER_PAGE, SEARCH_QUERY);
+        AbstractPage<AssetInstance> page = assetInstanceService.getAllAssetsInstances(PAGE_NAME_INVALID, ITEMS_PER_PAGE, SEARCH_QUERY);
 
         // 3 - Assertions
         Assert.assertNotNull(page);
