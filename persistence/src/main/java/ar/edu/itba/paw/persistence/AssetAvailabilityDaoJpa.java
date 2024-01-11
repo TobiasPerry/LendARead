@@ -38,7 +38,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
                 .setParameter("ai", ai)
                 .setParameter("active", LendingState.FINISHED)
                 .setParameter("rejected", LendingState.REJECTED)
-                .setParameter("cancel", LendingState.CANCEL)
+                .setParameter("cancel", LendingState.CANCELED)
                 .getResultList();
     }
 

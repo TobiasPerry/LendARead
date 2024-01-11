@@ -204,7 +204,7 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }
-        lendingDao.changeLendingStatus(lending, LendingState.CANCEL);
+        lendingDao.changeLendingStatus(lending, LendingState.CANCELED);
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
     }
 
