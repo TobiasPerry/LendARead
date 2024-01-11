@@ -8,10 +8,11 @@ import NotFound from "./components/NotFound.tsx";
 import LoginView from "./views/user/LogIn.tsx";
 import Register from "./views/user/Register.tsx";
 import ForgotPassword from "./views/user/ForgotPassword.tsx";
-import UserHome from "./views/user/UserHome.tsx";
+import UserHome from "./views/userAssets/UserHome.tsx";
 import AuthProvider from "./contexts/authContext.tsx";
 import Locations from "./views/user/Locations.tsx";
 import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
+import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance />} />
+                    <Route path="userBook/:bookNumber" element={<UserAssetInstance />} />
                     {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}

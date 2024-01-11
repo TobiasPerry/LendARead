@@ -110,7 +110,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                params: queryparams
        })
 
-       console.log('lendings',lendings.data)
 
        const lendedBooksPromises =  lendings.data.map(async (lending: LendingApi) => {
            const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data
@@ -143,8 +142,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
             }
         }
 
-        console.log('filter', newFilter)
-
         if(statusAdapterApi[`${newFilter}`] !== undefined)
             params.params['status'] =  statusAdapterApi[`${newFilter}`]
 
@@ -174,11 +171,9 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         setBooks(booksRetrieved)
     };
 
-    // Function to change the page
-    const changePage = (newPage: number) => {
+    const changePage = async (newPage: number) => {
         setCurrentPage(newPage);
-        // Re-apply filter and sort whenever page changes
-        fetchMyBooks(newPage, sort, filter, books);
+        await fetchMyBooks(newPage, sort, filter);
     };
 
 
