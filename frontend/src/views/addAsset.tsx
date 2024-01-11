@@ -28,15 +28,28 @@ const AddAsset = () => {
         }
     ]
 
+    const showImage = () => {
+        const image = document.querySelector('.image-container img') as HTMLImageElement;
+        const input = document.querySelector('#uploadImage') as HTMLInputElement;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            image.src = e.target.result as string;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+
     // TODO Check classes
     return (
-        <div className="container">
+        <div className="addasset-container">
             <h1 className="text-center mb-5">Do you want to borrow a book?</h1>
             <div className="p-4 container flex-container">
                 <div className='flex-container'>
                     <div className="image-wrapper">
                         <label htmlFor='uploadImage' className='image-container position-relative'>
                             <img src="/static/no_image_placeholder.jpg" alt="Book Cover" className="img-fluid object-fit-cover" />
+                            <div className='img-hover-text'>
+                                <i className="bi bi-cloud-upload"></i>
+                            </div>
                         </label>
                     </div>
 
@@ -94,7 +107,7 @@ const AddAsset = () => {
                         <fieldset>
 
                         </fieldset>
-                        <input type="file" className='d-none' accept="image/*" name="file" id="uploadImage" />
+                        <input type="file" className='d-none' accept="image/*" name="file" id="uploadImage" onChange={showImage}/>
                     </form>
                 </div>
             </div>
