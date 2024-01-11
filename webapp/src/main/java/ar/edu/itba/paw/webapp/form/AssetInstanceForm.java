@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class AssetInstanceForm {
 
     @NotNull
-    @Pattern(regexp = "ASNEW|FINE|VERYGOOD|GOOD|FAIR|POOR|EXLIBRARY|BOOKCLUB|BINDINGCOPY")
+    @Pattern(regexp = "ASNEW|FINE|VERYGOOD|GOOD|FAIR|POOR|EXLIBRARY|BOOKCLUB|BINDINGCOPY", message = "{Pattern.assetInstanceForm.physicalCondition}")
     @FormDataParam("physicalCondition")
     private String physicalCondition;
 
@@ -44,7 +44,7 @@ public class AssetInstanceForm {
     private Boolean isReservable;
 
     @NotNull
-    @Pattern(regexp = "PRIVATE|PUBLIC")
+    @Pattern(regexp = "PRIVATE|PUBLIC", message = "{Pattern.assetInstanceForm.visibility}")
     @FormDataParam("state")
     private String state;
 

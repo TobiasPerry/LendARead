@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class EditLocationForm {
 
         @Size(min = 1, max = 100)
-        @Pattern(regexp = "^[a-zA-Z0-9]+$")
+        @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{Pattern.locationForm.zipcode}")
         private String zipcode;
 
         @Size(min = 1, max = 100)
