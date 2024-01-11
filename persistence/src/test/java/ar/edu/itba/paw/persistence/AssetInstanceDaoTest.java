@@ -75,7 +75,7 @@ public class AssetInstanceDaoTest {
     public void addAssetInstanceTest(){
         ASSET_INSTANCE_TO_CREATE.setLocation(em.find(Location.class,0));
         ASSET_INSTANCE_TO_CREATE.setUserReference(em.find(User.class,0L));
-        ASSET_INSTANCE_TO_CREATE.setBook(em.find(Asset.class,0));
+        ASSET_INSTANCE_TO_CREATE.setBook(em.find(Asset.class,0L));
         ASSET_INSTANCE_TO_CREATE.setImage(em.find(Image.class,0));
 
         //2
@@ -109,7 +109,7 @@ public class AssetInstanceDaoTest {
         //2
         AbstractPage<AssetInstance> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
-        Assert.assertEquals(0,page.getCurrentPage());
+        Assert.assertEquals(1,page.getCurrentPage());
         Assert.assertEquals(0,page.getTotalPages());
     }
 

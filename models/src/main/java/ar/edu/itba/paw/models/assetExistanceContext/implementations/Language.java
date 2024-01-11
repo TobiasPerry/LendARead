@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "languages")
@@ -37,4 +38,17 @@ public class Language {
     public String toString() {
         return "Code: " + this.code + " - Name:" + this.name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Language language = (Language) o;
+
+        if (!Objects.equals(code, language.code)) return false;
+        return Objects.equals(name, language.name);
+    }
+
+
 }

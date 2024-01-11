@@ -34,6 +34,8 @@ public class TestConfig {
     @Value("classpath:inserts.sql")
     private Resource inserts;
 
+    @Value("classpath:languages.sql")
+    private Resource insertsLanguage;
     @Bean
     public DataSource dataSource() {
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
@@ -59,6 +61,7 @@ public class TestConfig {
 
         dbp.addScript(hsqldb);
         dbp.addScript(schemaSql);
+        dbp.addScript(insertsLanguage);
         dbp.addScript(inserts);
 
         return dbp;
