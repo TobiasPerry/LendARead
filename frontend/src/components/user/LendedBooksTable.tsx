@@ -14,14 +14,14 @@ const LendedBooksTable = ({isLender}) => {
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
-        await fetchLendings(currentPage, sort, filter, isLender)
+        await fetchLendings(currentPage, sort, newFilter, isLender)
     };
 
     const handleSortChange = async (column: string) => {
         const isAsc = sort.column === column && sort.order === 'ASCENDING';
         const newSort = { column, order: isAsc ? 'DESCENDING' : 'ASCENDING' }
         setSort(newSort);
-        await fetchLendings(currentPage, sort, filter, isLender)
+        await fetchLendings(currentPage, newSort, filter, isLender)
     };
 
     const renderSortIcon = (column: string) => {
@@ -60,7 +60,7 @@ const LendedBooksTable = ({isLender}) => {
                     <button style={buttonStyle('all')} onClick={() => handleFilterChange('all')} className="btn btn-outline-primary">{t('all')}</button>
                     <button style={buttonStyle('pending')}  onClick={() => handleFilterChange('pending')} className="btn btn-outline-primary">{t('pending')}</button>
                     <button style={buttonStyle('delivered')}  onClick={() => handleFilterChange('delivered')} className="btn btn-outline-primary">{t('delivered')}</button>
-                    <button style={buttonStyle('overdue')}  onClick={() => handleFilterChange('overdue')} className="btn btn-outline-primary">{t('overdue')}</button>
+                    <button style={buttonStyle('canceled')}  onClick={() => handleFilterChange('canceled')} className="btn btn-outline-primary">{t('canceled')}</button>
                     <button style={buttonStyle('rejected')}  onClick={() => handleFilterChange('rejected')} className="btn btn-outline-primary">{t('rejected')}</button>
                     <button style={buttonStyle('finished')}  onClick={() => handleFilterChange('finished')} className="btn btn-outline-primary">{t('finished')}</button>
                 </div>

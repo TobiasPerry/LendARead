@@ -37,15 +37,25 @@ export interface AssetInstanceApi {
 }
 
 const sortAdapterApi = {
-    title: "TITLE_NAME",
+    title: "TITLE",
     author: "AUTHOR_NAME",
     language: "LANGUAGE",
-    state: "STATE"
+    state: "STATE",
+    start_date: "LENDDATE",
+    return_date: "DEVOLUTIONDATE",
 }
 
 const statusAdapterApi = {
     private: "PRIVATE",
-    public: "PUBLIC"
+    public: "PUBLIC",
+}
+
+const lendingStatusAdapterApi = {
+    pending: "ACTIVE",
+    delivered: "DELIVERED",
+    canceled: "CANCELED", //new
+    rejected: "REJECTED",
+    finished: "FINISHED"
 }
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
     const PAGE_SIZE = 1
@@ -74,12 +84,27 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
        const queryparams = {
            'page': newPage,
            'itemsPerPage': PAGE_SIZE,
+           'sortDirection': newSort.order,
        }
 
        if(isLender)
            queryparams['lenderId'] = user
        else
            queryparams['borrowerId'] = user
+
+       if(lendingStatusAdapterApi[`${newFilter}`] !== undefined)
+           queryparams['state'] =  lendingStatusAdapterApi[`${newFilter}`]
+
+       if(sortAdapterApi[`${newSort.column}`] !== undefined && newSort.column !== "user")
+           queryparams['sort'] = sortAdapterApi[`${newSort.column}`]
+
+       if(newSort.column === "user") {
+           if(isLender)
+               queryparams['sort'] = 'LENDER_USER'
+           else
+               queryparams['sort'] = 'BORROWER_USER'
+       }
+
 
        const lendings = await api.get(`/lendings`, {
                params: queryparams
@@ -96,7 +121,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                title: asset.title,
                start_date: lending.lendDate,
                return_date: lending.devolutionDate,
-               user: isLender ?  lending.userReference : assetinstance.userReference
+               user: isLender ?  lending.userReference : assetinstance.userReference,
+               state: assetinstance.physicalCondition
            }
        })
 
