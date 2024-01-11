@@ -54,6 +54,14 @@ public class Lending {
         this.devolutionDate = devolutionDate;
         this.active = active;
     }
+    public Lending(Long id,AssetInstance assetInstance, User userReference, LocalDate lendDate, LocalDate devolutionDate, LendingState active) {
+        this.assetInstance = assetInstance;
+        this.userReference = userReference;
+        this.lendDate = lendDate;
+        this.devolutionDate = devolutionDate;
+        this.active = active;
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

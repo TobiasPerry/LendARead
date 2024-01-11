@@ -43,7 +43,8 @@ public class AssetAvailabilityDaoTest {
     @PersistenceContext
     private EntityManager em;
     private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
-    private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", new Language());
+    private final static Language LANGUAGE = new Language("spa", "Español");
+    private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", LANGUAGE);
     private final static Location LOCATION = new Location(0, "LOCATION","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
     private final static AssetInstance ASSET_INSTANCE = new AssetInstance(0,BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION");
     private final static LocalDate borrowDate = LocalDate.now();
@@ -57,6 +58,7 @@ public class AssetAvailabilityDaoTest {
     }
 
 
+    @Rollback
     @Test
     public void testBorrowAssetInstance() {
 
@@ -78,6 +80,7 @@ public class AssetAvailabilityDaoTest {
         Assert.assertEquals(devolutionDate, retrievedLending.getDevolutionDate());
         Assert.assertEquals(lendingState, retrievedLending.getActive());
     }
+    @Rollback
     @Test
     public void testGetActiveLendings() {
 
@@ -90,24 +93,27 @@ public class AssetAvailabilityDaoTest {
         em.persist(activeLending2);
         em.persist(finishedLending);
 
+
         List<Lending> activeLendings = assetAvailabilityDao.getActiveLendings(ASSET_INSTANCE);
 
-        Assert.assertEquals(3, activeLendings.size());
+        Assert.assertEquals(4, activeLendings.size());
         Assert.assertTrue(activeLendings.contains(activeLending1));
         Assert.assertTrue(activeLendings.contains(activeLending2));
         Assert.assertFalse(activeLendings.contains(finishedLending));
     }
+    @Rollback
     @Test
     public void testChangeLendingStatus() {
-        Lending lending = new Lending(ASSET_INSTANCE, USER, borrowDate, devolutionDate, LendingState.ACTIVE);
+        Lending lending = new Lending(ASSET_INSTANCE, USER, borrowDate.plusDays(2), devolutionDate, LendingState.ACTIVE);
 
         em.persist(lending);
+
+
 
         LendingState newLendingState = LendingState.FINISHED;
         assetAvailabilityDao.changeLendingStatus(lending, newLendingState);
 
-        em.flush();
-        em.clear();
+
 
         Lending retrievedLending = em.find(Lending.class, lending.getId());
         Assert.assertNotNull(retrievedLending);
