@@ -6,6 +6,8 @@ public enum AssetInstanceSort {
     TITLE_NAME(),
     RECENT(),
 
+    STATE(),
+
     LANGUAGE();
 
     public static AssetInstanceSort fromString(String value) {
