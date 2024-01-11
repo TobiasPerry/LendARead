@@ -68,7 +68,7 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            return handleJWT(response.headers.get('jwt'), rememberMe)
+            return handleJWT(response.headers.get('x-jwt'), rememberMe)
         } catch (error) {
             console.log("error raised", error);
             return false;

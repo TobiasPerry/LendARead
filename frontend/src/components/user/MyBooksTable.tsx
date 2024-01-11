@@ -8,19 +8,19 @@ const MyBooksTable = () => {
     const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances();
 
     useEffect(() => {
-        applyFilterAndSort(currentPage, sort, filter, books)
+        applyFilterAndSort(currentPage, sort, filter)
     }, [])
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
-        await applyFilterAndSort(currentPage, sort, newFilter, books);
+        await applyFilterAndSort(currentPage, sort, newFilter);
     };
 
     const handleSortChange = async (column: string) => {
         const isAsc = sort.column === column && sort.order === 'ASCENDING';
         const newSort = { column, order: isAsc ? 'DESCENDING' : 'ASCENDING' }
         setSort(newSort);
-        await applyFilterAndSort(currentPage, newSort, filter, books);
+        await applyFilterAndSort(currentPage, newSort, filter);
     };
 
     const renderSortIcon = (column: string) => {

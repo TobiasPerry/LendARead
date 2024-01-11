@@ -36,11 +36,17 @@ export interface AssetInstanceApi {
     userReference: string
 }
 
-const sortColumnsApi = {
+const sortAdapterApi = {
     title: "TITLE_NAME",
     author: "AUTHOR_NAME",
+    language: "LANGUAGE",
+    state: "STATE"
 }
 
+const statusAdapterApi = {
+    private: "PRIVATE",
+    public: "PUBLIC"
+}
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
     const PAGE_SIZE = 1
 
@@ -75,26 +81,51 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
        else
            queryparams['borrowerId'] = user
 
-       const lendings = await api.get(`/lendings`,
-           {
+       const lendings = await api.get(`/lendings`, {
                params: queryparams
-           })
+       })
 
        console.log('lendings',lendings.data)
+
+       const lendedBooksPromises =  lendings.data.map(async (lending: LendingApi) => {
+           const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data
+           const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data
+
+           return {
+               imageUrl: assetinstance.imageReference,
+               title: asset.title,
+               start_date: lending.lendDate,
+               return_date: lending.devolutionDate,
+               user: isLender ?  lending.userReference : assetinstance.userReference
+           }
+       })
+
+       const lendedBooks = await Promise.all(lendedBooksPromises);
+       setBooks(lendedBooks)
+
    }
 
 
     const fetchMyBooks =  async (newPage: number, newSort: any, newFilter: string) => {
 
-        const assetinstances = await api.get(`/assetInstances?userId=${user}`,
-            {
+        const params = {
             params: {
+                'userId': user,
                 'page': newPage,
                 'itemsPerPage': PAGE_SIZE,
-                'sort': sortColumnsApi[`${newSort.column}`] === undefined ? "" : sortColumnsApi[`${newSort.column}`],
                 'sortDirection': newSort.order,
             }
-        })
+        }
+
+        console.log('filter', newFilter)
+
+        if(statusAdapterApi[`${newFilter}`] !== undefined)
+            params.params['status'] =  statusAdapterApi[`${newFilter}`]
+
+        if(sortAdapterApi[`${newSort.column}`] !== undefined)
+            params.params['sort'] = sortAdapterApi[`${newSort.column}`]
+
+        const assetinstances = await api.get(`/assetInstances`, params )
 
         setTotalPages(extractTotalPages(assetinstances.headers["link"]))
 
