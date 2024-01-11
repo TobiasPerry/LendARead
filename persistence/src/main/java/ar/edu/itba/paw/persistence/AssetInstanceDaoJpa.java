@@ -202,6 +202,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
                 return "b.author";
             case RECENT:
                 return "ai.id";
+            case LANGUAGE:
+                return "b.lang";
         }
         return "ai.id";
     }

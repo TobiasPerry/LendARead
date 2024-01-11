@@ -4,7 +4,9 @@ public enum AssetInstanceSort {
 
     AUTHOR_NAME(),
     TITLE_NAME(),
-    RECENT();
+    RECENT(),
+
+    LANGUAGE();
 
     public static AssetInstanceSort fromString(String value) {
         if (value != null) {
