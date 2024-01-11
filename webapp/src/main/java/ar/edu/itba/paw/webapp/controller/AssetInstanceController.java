@@ -102,7 +102,7 @@ public class AssetInstanceController {
     public Response getAssetsInstances( @QueryParam("search")  @Size(min = 1, max = 100) String search,
                                          @QueryParam("physicalConditions")  List<String> physicalConditions,
                                          @QueryParam("languages")  List<String> languages,
-                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT|LANGUAGE|STATE",message = "{pattern.sort.AssetInstance}") String sort,
+                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE|RECENT|LANGUAGE|STATE",message = "{pattern.sort.AssetInstance}") String sort,
                                          @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
                                          @QueryParam("page")  @DefaultValue("1")  @Min(1) int currentPage,
                                          @QueryParam("status") @DefaultValue("PUBLIC") @Pattern(regexp = "PUBLIC|PRIVATE",message = "{pattern.status}") String status,

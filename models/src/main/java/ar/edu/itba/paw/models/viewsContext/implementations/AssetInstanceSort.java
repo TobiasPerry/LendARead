@@ -3,7 +3,7 @@ package ar.edu.itba.paw.models.viewsContext.implementations;
 public enum AssetInstanceSort {
 
     AUTHOR_NAME(),
-    TITLE_NAME(),
+    TITLE(),
     RECENT(),
 
     STATE(),

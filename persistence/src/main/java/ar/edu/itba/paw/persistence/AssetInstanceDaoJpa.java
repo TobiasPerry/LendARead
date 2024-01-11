@@ -196,7 +196,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if (assetInstanceSort == null)
             return "ai.id";
         switch (assetInstanceSort) {
-            case TITLE_NAME:
+            case TITLE:
                 return "b.title";
             case AUTHOR_NAME:
                 return "b.author";
@@ -214,7 +214,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if (assetInstanceSort == null)
             return "ai.id";
         switch (assetInstanceSort) {
-            case TITLE_NAME:
+            case TITLE:
                 return "ai.book.title";
             case AUTHOR_NAME:
                 return "ai.book.author";
