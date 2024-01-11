@@ -40,9 +40,9 @@ const AddAsset = () => {
 
     // TODO Check classes
     return (
-        <div className="addasset-container">
+        <div className="addasset-container flex-column">
             <h1 className="text-center mb-5">Do you want to borrow a book?</h1>
-            <div className="p-4 container flex-container">
+            <div className="p-4 addasset-container flex-container">
                 <div className='flex-container'>
                     <div className="image-wrapper">
                         <label htmlFor='uploadImage' className='image-container position-relative'>
