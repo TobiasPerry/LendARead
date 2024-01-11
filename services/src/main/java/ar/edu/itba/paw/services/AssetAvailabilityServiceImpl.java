@@ -118,10 +118,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     }
     @Transactional
     @Override
-    public void returnAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void returnAsset(final int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
-        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
         if (lending.getActive() != LendingState.DELIVERED)
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         if (!lending.getAssetInstance().getIsReservable())
@@ -133,12 +132,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void confirmAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void confirmAsset(final int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
-        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
-        if (lending.getActive() != LendingState.ACTIVE )
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
+        if (lending.getActive() != LendingState.ACTIVE || userAssetsDao.getActiveLendingsCount(lending.getAssetInstance().getId()) >= 1 )
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST );
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
     }
 
@@ -150,10 +148,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void rejectAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void rejectAsset(final int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
-        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }
@@ -197,10 +194,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void cancelAsset(int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void cancelAsset(int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST));
-        if (!lending.getUserReference().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }

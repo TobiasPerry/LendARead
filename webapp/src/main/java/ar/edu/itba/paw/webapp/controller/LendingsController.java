@@ -16,6 +16,7 @@ import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -95,6 +96,7 @@ public class LendingsController {
     @Path("/{id}")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
+    @PreAuthorize("@preAuthorizeFunctions.canChangeLendingStatus(#id,#patchLendingForm.state)")
     public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException {
         aas.changeLending(id, patchLendingForm.getState());
         LOGGER.info("PATCH lendings/ id:{} state:{}",id,patchLendingForm.getState());
