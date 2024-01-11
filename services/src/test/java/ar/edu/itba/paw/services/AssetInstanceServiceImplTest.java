@@ -42,7 +42,7 @@ public class AssetInstanceServiceImplTest {
         when(assetInstanceDao.getAllAssetInstances(anyInt(), anyInt(), any())).thenReturn(new PagingImpl<>(new ArrayList<>(), 1, 1));
 
         // 2 - Ejercitación
-        AbstractPage page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE, SEARCH_QUERY);
+        AbstractPage<AssetInstance> page = assetInstanceService.getAllAssetsInstances(PAGE_NAME, ITEMS_PER_PAGE, SEARCH_QUERY);
 
         // 3 - Assertions
         Assert.assertNotNull(page);
