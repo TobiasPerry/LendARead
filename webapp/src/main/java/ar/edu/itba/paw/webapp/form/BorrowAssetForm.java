@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.DateCheckValidation;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.DayCheckOverlap;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@DayCheckOverlap
 public class BorrowAssetForm {
 
     @DateCheckValidation
