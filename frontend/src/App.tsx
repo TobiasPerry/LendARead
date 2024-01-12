@@ -31,7 +31,7 @@ export default function App() {
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance />} />
-                    <Route path="userBook/:bookNumber" element={<UserAssetInstance />} />
+                    <Route path="userBook/:id" element={<UserAssetInstance />} />
                     {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}

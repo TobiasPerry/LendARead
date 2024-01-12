@@ -68,12 +68,10 @@ const MyBooksTable = ({handleRowClicked}) => {
                 </thead>
                 <tbody>
                 {books.length === 0 ? (
-                    <tr>
-                        <td className="text-center">{t('no_books_available')}</td>
-                    </tr>
+                        <h5 className="text-center">{t('no_books_available')}</h5>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index} onClick={() => handleRowClicked(book, false)}>
+                        <tr key={index} onClick={() => handleRowClicked(book, false)} style={{ cursor: "pointer"}}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>
@@ -86,6 +84,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                 )}
                 </tbody>
             </table>
+            {totalPages > 1 &&
                 <nav aria-label="Page navigation example" className="d-flex justify-content-center">
                     <ul className="pagination">
                         {currentPage > 1 && (
@@ -103,6 +102,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                         )}
                     </ul>
                 </nav>
+            }
         </div>
     );
 };
