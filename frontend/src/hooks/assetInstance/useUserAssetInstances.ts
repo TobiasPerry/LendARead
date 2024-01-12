@@ -79,6 +79,11 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return 1;
     };
 
+    const extractId = (url: string) => {
+        const pattern = /\/(\d+)(?=\/?$)/;
+        const match = url.match(pattern);
+        return  match ? match[1] : -1;
+    }
    const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
 
        const queryparams = {
@@ -121,7 +126,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                start_date: lending.lendDate,
                return_date: lending.devolutionDate,
                user: isLender ?  lending.userReference : assetinstance.userReference,
-               state: assetinstance.physicalCondition
+               state: assetinstance.physicalCondition,
+               id: extractId(lending.selfUrl)
            }
        })
 
@@ -164,7 +170,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                 author: asset.author,
                 language: lang.name,
                 state: assetinstance.physicalCondition,
-                imageUrl: assetinstance.imageReference
+                imageUrl: assetinstance.imageReference,
+                id: extractId(assetinstance.selfUrl)
             })
         }
 

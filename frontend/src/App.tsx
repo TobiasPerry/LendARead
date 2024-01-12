@@ -8,7 +8,7 @@ import NotFound from "./components/NotFound.tsx";
 import LoginView from "./views/user/LogIn.tsx";
 import Register from "./views/user/Register.tsx";
 import ForgotPassword from "./views/user/ForgotPassword.tsx";
-import UserHome from "./views/userAssets/UserHome.tsx";
+import UserHome from "./views/userAssets/UserAssets.tsx";
 import AuthProvider from "./contexts/authContext.tsx";
 import Locations from "./views/user/Locations.tsx";
 import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";

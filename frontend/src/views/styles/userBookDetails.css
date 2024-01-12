@@ -1,4 +1,10 @@
-/* main.css */
+.back-click:hover {
+    cursor: pointer; /* Changes the cursor to a pointer */
+    color: #7f8d7f; /* New background color on hover */
+}
+
+/* Optional: CSS for the icon and text to change color on hover */
+
 .main-container {
     padding: 2rem;
 }

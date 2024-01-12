@@ -1,15 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.ts';
 import {useContext, useEffect} from "react";
-import {AuthContext} from "../../contexts/authContext.tsx"; // Path to your custom hook
+import {AuthContext} from "../../contexts/authContext.tsx";
+import {useNavigate} from "react-router-dom"; // Path to your custom hook
 
-const MyBooksTable = () => {
+const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
     const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances();
+
+
 
     useEffect(() => {
         applyFilterAndSort(currentPage, sort, filter)
     }, [])
+
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
@@ -28,21 +32,12 @@ const MyBooksTable = () => {
     };
 
     const buttonStyle = (filter_: string) => {
-        if(filter === filter_)
-            return {
-                backgroundColor:  "#7f8d7f",
+        return {
+                backgroundColor: filter === filter_ ? "#7f8d7f" : '#d2e1d2',
                 color: 'white',
                 border: 'gray',
                 fontWeight: 'bold'
             }
-        else
-            return {
-            backgroundColor:  '#d2e1d2',
-            color: 'white',
-            border: 'gray',
-            fontWeight: 'bold'
-        }
-
     }
 
     const paginationStyle = {
@@ -78,7 +73,7 @@ const MyBooksTable = () => {
                     </tr>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={() => handleRowClicked(book, false)}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>

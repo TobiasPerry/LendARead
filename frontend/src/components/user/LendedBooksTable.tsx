@@ -4,7 +4,7 @@ import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstances.ts"; // Path to your custom hook
 
-const LendedBooksTable = ({isLender}) => {
+const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { t } = useTranslation();
     const { setFilter, filter, fetchLendings, sort, setSort, currentPage, changePage, totalPages, books} = useUserAssetInstances();
 
@@ -83,7 +83,7 @@ const LendedBooksTable = ({isLender}) => {
                     </tr>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={() => handleRowClicked(book, true)}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>

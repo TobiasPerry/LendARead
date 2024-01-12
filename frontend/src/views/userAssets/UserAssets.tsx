@@ -2,16 +2,23 @@ import {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
 import MyBooksTable from '../../components/user/MyBooksTable.tsx';
 import LendedBooksTable from "../../components/user/LendedBooksTable.tsx";
+import {useNavigate} from "react-router-dom";
 
-const UserHomeView = () => {
+const UserAssetsView = () => {
 
     const { t } = useTranslation();
     const [table, setTable] = useState('my_books');
 
+    const navigate = useNavigate()
+
     const handleTableChange = (newTable: any) => {
         setTable(newTable);
-        // Additional logic if needed
     };
+
+
+    const handleRowClicked = (book, isLending) => {
+        navigate(`/userBook/${book.id}?isLending=${isLending}`)
+    }
 
     return (
         <div>
@@ -32,9 +39,9 @@ const UserHomeView = () => {
                             </div>
                         </div>
                     <div style={{ flex: 3 }}>
-                            {table === 'my_books' && <MyBooksTable />}
-                            {table === 'lended_books' && <LendedBooksTable isLender={true}/>}
-                            {table === 'borrowed_books' && <LendedBooksTable isLender={false}/>}
+                            {table === 'my_books' && <MyBooksTable handleRowClicked={handleRowClicked}/>}
+                            {table === 'lended_books' && <LendedBooksTable isLender={true} handleRowClicked={handleRowClicked} />}
+                            {table === 'borrowed_books' && <LendedBooksTable isLender={false} handleRowClicked={handleRowClicked}/>}
                         </div>
                     </div>
                 </div>
@@ -42,4 +49,4 @@ const UserHomeView = () => {
     );
 };
 
-export default UserHomeView;
+export default UserAssetsView;
