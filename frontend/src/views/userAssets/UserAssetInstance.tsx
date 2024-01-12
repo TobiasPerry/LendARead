@@ -31,9 +31,7 @@ const UserAssetInstance = () => {
             </h3>
             </div>
             <div className="content-container" style={{ display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: '1rem' }}>
-                <div className="book-details-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <BookDetails book={assetDetails}/>
-                </div>
+                <BookDetails data={assetDetails}/>
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
                     <BookOptions />
