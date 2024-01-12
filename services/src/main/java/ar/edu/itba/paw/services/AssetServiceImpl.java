@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class AssetServiceImpl implements AssetService {
 
@@ -59,5 +61,27 @@ public class AssetServiceImpl implements AssetService {
             throw new AssetNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
         return asset;
+    }
+
+    @Transactional
+    @Override
+    public void updateBook(Long id, String isbn, String author, String title, String language) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
+        Asset asset = getBookById(id);
+        Optional<Asset> assetWithSameIsbn = ad.getBookByIsbn(isbn);
+        if (isbn != null) {
+            if (assetWithSameIsbn.isPresent() && !assetWithSameIsbn.get().getId().equals(asset.getId()) && assetWithSameIsbn.get().getIsbn().equals(isbn)) {
+                throw new AssetAlreadyExistException(HttpStatusCodes.CONFLICT);
+            }
+            asset.setIsbn(isbn);
+        }
+        if (author != null) {
+            asset.setAuthor(author);
+        }
+        if (title != null) {
+            asset.setTitle(title);
+        }
+        if (language != null) {
+            asset.setLanguage(ls.getLanguage(language));
+        }
     }
 }

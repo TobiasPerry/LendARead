@@ -12,4 +12,5 @@ public interface AssetService {
     PagingImpl<Asset> getBooks(final int page,final int itemsPerPage,final String isbn, final String author, final String title, final String language);
     Asset addBook(final String isbn, final String author, final String title, final String language) throws BookAlreadyExistException, LanguageNotFoundException, AssetAlreadyExistException;
     Asset getBookById(final Long id) throws AssetNotFoundException;
+    void updateBook(final Long id, final String isbn, final String author, final String title, final String language) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException;
 }

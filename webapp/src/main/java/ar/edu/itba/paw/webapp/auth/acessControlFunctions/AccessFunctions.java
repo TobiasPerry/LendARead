@@ -51,7 +51,7 @@ public class AccessFunctions {
         }catch (LocationNotFoundException e){
             return true;
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
@@ -63,7 +63,7 @@ public class AccessFunctions {
         }catch (LendingNotFoundException e){
             return true;
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
     public boolean assetInstanceOwner(HttpServletRequest request, Integer id){
@@ -74,7 +74,7 @@ public class AccessFunctions {
         }catch (AssetInstanceNotFoundException e){
             return true;
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
     public boolean assetInstanceReviewOwner(HttpServletRequest request, Integer lending_id, Integer idReview){

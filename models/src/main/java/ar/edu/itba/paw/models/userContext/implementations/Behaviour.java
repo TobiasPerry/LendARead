@@ -2,7 +2,8 @@ package ar.edu.itba.paw.models.userContext.implementations;
 
 public enum Behaviour {
     LENDER(),
-    BORROWER();
+    BORROWER(),
+    ADMIN();
 
     public static Behaviour fromString(String value) {
         if (value != null) {

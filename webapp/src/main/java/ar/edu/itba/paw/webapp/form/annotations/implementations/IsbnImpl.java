@@ -10,7 +10,7 @@ public class IsbnImpl implements ConstraintValidator<Isbn, String> {
     public boolean isValid(String isbn, ConstraintValidatorContext constraintValidatorContext) {
                 // Check if the input string is null or empty
                 if (isbn == null || isbn.length() == 0) {
-                    return false;
+                    return true;
                 }
                 // Remove any hyphens or spaces from the input string
                 isbn = isbn.replace("-", "").replace(" ", "");

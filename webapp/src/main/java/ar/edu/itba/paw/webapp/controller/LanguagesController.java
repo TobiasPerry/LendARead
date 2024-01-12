@@ -41,6 +41,7 @@ public class LanguagesController {
         List<LanguagesDTO> languagesDTOS = LanguagesDTO.fromLanguages(languages.getList());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {});
         PaginatedData.paginatedData(response, languages, uriInfo);
+        StaticCache.setUnconditionalCache(response);
         return response.build();
     }
     @GET
