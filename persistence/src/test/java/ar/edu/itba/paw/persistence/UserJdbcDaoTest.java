@@ -74,7 +74,7 @@ public class UserJdbcDaoTest {
     public void testRegister(){
 
         //2
-        final User user = userDao.addUser(Behaviour.BORROWER,EMAIL, NAME, TELEPHONE,PASSWORD,LOCALE);
+        final User user = userDao.addUser(Behaviour.BORROWER,EMAIL, NAME, TELEPHONE,PASSWORD,"LOCALE" );
         em.flush();
 
         //3

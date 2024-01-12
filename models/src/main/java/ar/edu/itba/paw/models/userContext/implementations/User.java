@@ -48,6 +48,7 @@ final public class User {
         this.telephone = telephone;
         this.behavior = behaviour;
         this.password = password;
+        this.locale = locale;
         this.profilePhoto = null;
     }
 
