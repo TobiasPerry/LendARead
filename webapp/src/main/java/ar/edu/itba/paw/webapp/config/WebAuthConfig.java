@@ -141,11 +141,12 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}/reviews/{idReview}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
 
                 .antMatchers(HttpMethod.PATCH,"/api/assets/{id}").hasRole(Behaviour.ADMIN.toString())
-                .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").hasRole(Behaviour.LENDER.toString())
+                .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").hasRole(Behaviour.LENDER.toString())
+
                 .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews","/api/assetInstances/{id}/reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews","/api/users/{id}/lender_reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews","/api/users/{id}/borrower_reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").authenticated()
                 .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}","/api/lendings/{id}/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/lendings","/api/lendings/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
