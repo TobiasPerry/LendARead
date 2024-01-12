@@ -53,11 +53,13 @@ public class UserReviewsServiceImplTest {
     private static final String EMAIL_DIFFERENT = "userother@domain.com";
 
     private static final String NAME = "John Doe";
+
+    private static final String LOCALE = "LOCALE";
     private static final String TELEPHONE = "";
     private static final String PASSWORD_ENCODED = "";
     private static final Behaviour BEHAVIOUR = Behaviour.BORROWER;
-    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
-    private static final User USER_DIFFERENT = new User(USER_ID + 1, EMAIL_DIFFERENT, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
+    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR, LOCALE);
+    private static final User USER_DIFFERENT = new User(USER_ID + 1, EMAIL_DIFFERENT, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR, LOCALE);
 
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
             new Asset((long)0, "", "", "", new Language()),
@@ -75,7 +77,7 @@ public class UserReviewsServiceImplTest {
     @Test
     public void lenderCanReviewTrueTest() throws UserNotFoundException, LendingNotFoundException {
         // 1 - Precondiciones
-        when(userService.getCurrentUser()).thenReturn(new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, Behaviour.LENDER));
+        when(userService.getCurrentUser()).thenReturn(new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, Behaviour.LENDER, LOCALE));
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
         when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
 

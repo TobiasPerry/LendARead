@@ -42,7 +42,7 @@ final public class User {
     @Column(name = "id")
     private Long id;
 
-    public User(String email, String name, String telephone, String password, Behaviour behaviour) {
+    public User(String email, String name, String telephone, String password, Behaviour behaviour,String locale) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
@@ -51,23 +51,15 @@ final public class User {
         this.profilePhoto = null;
     }
 
-    public User(int id, String email, String name, String telephone, String password, Behaviour behaviour) {
+    public User(int id, String email, String name, String telephone, String password, Behaviour behaviour,String locale) {
         this.email = email;
         this.name = name;
         this.telephone = telephone;
-        this.id = Long.valueOf(id);
+        this.id = (long) id;
         this.behavior = behaviour;
         this.password = password;
+        this.locale = locale;
         this.profilePhoto = null;
-    }
-
-    public User(String email, String name, String telephone, String password, Behaviour behaviour, Image profilePhoto) {
-        this.email = email;
-        this.name = name;
-        this.telephone = telephone;
-        this.behavior = behaviour;
-        this.password = password;
-        this.profilePhoto = profilePhoto;
     }
 
     public User() {

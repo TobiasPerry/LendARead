@@ -42,7 +42,7 @@ public class AssetAvailabilityDaoTest {
 
     @PersistenceContext
     private EntityManager em;
-    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER,"LOCALE");
     private final static Language LANGUAGE = new Language("spa", "Español");
     private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", LANGUAGE);
     private final static Location LOCATION = new Location(0, "LOCATION","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);

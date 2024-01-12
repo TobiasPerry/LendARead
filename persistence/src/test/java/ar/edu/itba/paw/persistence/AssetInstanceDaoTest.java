@@ -47,7 +47,7 @@ public class AssetInstanceDaoTest {
     private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "",1 ,5,-1,AssetState.PUBLIC);
     private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5,-1,AssetState.PUBLIC);
 
-    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER,"LOCALE");
     private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", new Language());
     private final static Location LOCATION = new Location(0, "NAME","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
     private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstance(BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION",true);

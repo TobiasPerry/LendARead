@@ -52,6 +52,7 @@ public class LendingServiceImplTest {
     private static final String EMAIL = "user@domain.com";
     private static final String NAME = "John Doe";
     private static final String TELEPHONE = "";
+    private static final String LOCALE = "LOCALE";
     private static final String PASSWORD_ENCODED = "";
     private static final Behaviour BEHAVIOUR = Behaviour.BORROWER;
     private static final LocalDate BORROW_DATE_TODAY = LocalDate.now();
@@ -62,7 +63,7 @@ public class LendingServiceImplTest {
     private static final LocalDate BORROW_DATE_THREE_WEEK = LocalDate.now().plusDays(21);
     private static final LocalDate DEVOLUTION_DATE_ONE_WEEK = LocalDate.now().plusDays(7);
     private static final LocalDate DEVOLUTION_DATE_FOUR_WEEK = LocalDate.now().plusDays(28);
-    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
+    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR, LOCALE);
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
             new Asset((long)0, "", "", "", new Language()),
             PhysicalCondition.ASNEW,

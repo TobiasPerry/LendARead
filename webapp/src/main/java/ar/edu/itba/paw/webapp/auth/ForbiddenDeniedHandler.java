@@ -14,6 +14,8 @@ public class ForbiddenDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON);
-        response.getWriter().write(String.format("{\n \"message\": \"%s\"\n}", e.getMessage()));
+        response.getWriter().write(String.format("{\n" +
+                " \"message\": " +
+                "\"%s\"\n}", e.getMessage()));
     }
 }
