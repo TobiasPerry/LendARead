@@ -29,6 +29,23 @@
     "changePasswordButton": "Change Password",
     "emailPlaceholder": "Email"
   },
+  "userHomeView": {
+    "minText": "Minimum Text: ",
+    "pending": "Pending",
+    "inProgress": "In Progress",
+    "verifyBook": "Verify Book",
+    "rejectAssetTitle": "Reject Asset",
+    "confirmReturn": "Confirm Return"
+  },
+  "makeReview": "Make a Review",
+  "userBookDetails": {
+    "makePrivate": "Make Private",
+    "makePublic": "Make Public"
+  },
+  "edit": "Edit",
+  "delete": "Delete",
+  "not_reservable": "Not Reservable",
+  "reservable": "Reservable",
     "greeting": "Welcome, {{userEmail}}",
   "my_books": "My Books",
   "lended_books": "Lended Books",

@@ -70,6 +70,23 @@
   "no_books_available": "No hay libros disponibles",
   "previous": "Anterior",
   "next": "Siguiente",
+  "userHomeView": {
+    "minText": "Texto Mínimo: ",
+    "pending": "Pendiente",
+    "inProgress": "En Progreso",
+    "verifyBook": "Verificar Libro",
+    "rejectAssetTitle": "Rechazar Activo",
+    "confirmReturn": "Confirmar Devolución"
+  },
+  "makeReview": "Hacer una Reseña",
+  "userBookDetails": {
+    "makePrivate": "Hacer Privado",
+    "makePublic": "Hacer Público"
+  },
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "not_reservable": "No Reservable",
+  "reservable": "Reservable",
   "landing": {
     "hero": {
       "title": "La nueva era de los libros",

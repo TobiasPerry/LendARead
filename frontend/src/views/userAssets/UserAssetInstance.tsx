@@ -6,13 +6,19 @@ import "../styles/userBookDetails.css"
 import {useTranslation} from "react-i18next";
 import useUserAssetInstance from "../../hooks/assetInstance/useUserAssetInstance.ts";
 import {useEffect} from "react";
+import MyBooksOptions from "../../components/user/MyBooksOptions.tsx";
+import LendedBooksOptions from "../../components/user/LendedBooksOptions.tsx";
 const UserAssetInstance = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
     const { id } = useParams();
     const { t } = useTranslation();
-    const {assetDetails, fetchUserAssetDetails} = useUserAssetInstance(location, id)
+    const {
+        assetDetails,
+        fetchUserAssetDetails,
+        isLending
+    } = useUserAssetInstance(location, id)
 
     const handleBackClick = () => {
         navigate("/userHome")
@@ -34,7 +40,8 @@ const UserAssetInstance = () => {
                 <BookDetails data={assetDetails}/>
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
-                    <BookOptions />
+                    {!isLending && <MyBooksOptions asset={assetDetails} haveActiveLendings={true} /> }
+                    {isLending && <LendedBooksOptions lending={assetDetails} canReview={false} /> }
                 </div>
             </div>
         </div>

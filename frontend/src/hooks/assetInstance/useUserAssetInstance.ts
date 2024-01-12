@@ -25,7 +25,7 @@ const useUserAssetInstance = (location, id) => {
     }
 
     return {
-        assetDetails, fetchUserAssetDetails
+        assetDetails, fetchUserAssetDetails, isLending
     }
 }
 
