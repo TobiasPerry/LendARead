@@ -1,6 +1,6 @@
 import {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
-import LocationModal from "../../components/locations/LocationModal.tsx";
+import LocationModal from "../../components/modals/LocationModal.tsx";
 import Location from "../../components/locations/Location.tsx";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useLocations from "../../hooks/locations/useLocations.ts";

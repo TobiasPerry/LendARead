@@ -35,7 +35,18 @@
     "inProgress": "In Progress",
     "verifyBook": "Verify Book",
     "rejectAssetTitle": "Reject Asset",
-    "confirmReturn": "Confirm Return"
+    "confirmReturn": "Confirm Return",
+    "changeVisibilityTitle": "Change Visibility",
+    "changeVisibilityTextPublic": "Would you like to make this asset public?",
+    "changeVisibilityTextPrivate": "Would you like to make this asset private?",
+    "changeVisibityPublic": {
+      "button": "Make Public"
+    },
+    "changeVisibityPrivate": {
+      "button": "Make Private"
+    },
+    "makePrivate": "Make Private",
+    "makePublic": "Make Public"
   },
   "makeReview": "Make a Review",
   "userBookDetails": {

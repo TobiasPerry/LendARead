@@ -7,6 +7,9 @@ export const isRejected = (lending: any) => {
 export const isPublic = (lending: any) => {
     return lending === "PUBLIC "
 }
+export const isPrivate = (lending: any) => {
+    return lending === "PRIVATE "
+}
 export const isFinished = (lending: string) => {
     return lending === "FINISHED"
 }
@@ -29,9 +32,9 @@ function LendedBooksOptions({ lending, canReview }) {
             width: '50%'
         }}>
             <h3>Lended Book actions</h3>
-            {!isRejected(lending) && !isFinished(lending) && (
+            {!isRejected(lending.state) && !isFinished(lending.state) && (
                 <div className="options-menu">
-                    {isActive(lending) && (
+                    {isActive(lending.state) && (
                         <>
                             <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
                                 {t('userHomeView.minText')} {t('userHomeView.pending')}
@@ -44,7 +47,7 @@ function LendedBooksOptions({ lending, canReview }) {
                             </button>
                         </>
                     )}
-                    {isDelivered(lending) && (
+                    {isDelivered(lending.state) && (
                         <>
                             <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
                                 {t('userHomeView.minText')} {t('userHomeView.inProgress')}

@@ -17,7 +17,8 @@ const UserAssetInstance = () => {
     const {
         assetDetails,
         fetchUserAssetDetails,
-        isLending
+        isLending,
+        hasActiveLendings
     } = useUserAssetInstance(location, id)
 
     const handleBackClick = () => {
@@ -43,8 +44,8 @@ const UserAssetInstance = () => {
                 <BookDetails data={assetDetails}/>
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
-                    {!isLending && <MyBooksOptions asset={assetDetails} haveActiveLendings={true} /> }
-                    {isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }
+                     <MyBooksOptions asset={assetDetails} haveActiveLendings={hasActiveLendings} />
+                    {/*{isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }*/}
                 </div>
             </div>
         </div>

@@ -1,21 +1,39 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPublic} from "./LendedBooksOptions.tsx";
+import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
 
 function AssetOptionsMenu({ asset, haveActiveLendings }) {
     const { t } = useTranslation();
 
+    const handleSetPublic = async () => {
+
+    }
+
+    const handleSetPrivate = async () => {
+
+    }
+
     return (
-        <div className="options-menu">
+        <div style={{
+            backgroundColor: '#f0f5f0',
+            padding: '10px',
+            borderRadius: '20px',
+            width: '50%',
+            display: "flex",
+            alignContent: "center",
+        }} className="flex-column">
+        <h3>Lended Book actions</h3>
+        <div className="options-menu m-auto">
             {!(asset.reservable && haveActiveLendings) && (
-                <button id="privatePublicBtn" className="btn btn-green" type="submit">
+                <button id="privatePublicBtn" className="btn btn-green" >
                     {isPublic(asset.status) ? (
                         <>
-                            <i className="fas fa-eye-slash fa-lg"></i> {t('userBookDetails.makePrivate')}
+                            <i className="fas fa-eye-slash fa-lg" onClick={handleSetPrivate} ></i> {t('userBookDetails.makePrivate')}
                         </>
                     ) : (
                         <>
-                            <i className="fas fa-eye fa-lg"></i> {t('userBookDetails.makePublic')}
+                            <i className="fas fa-eye fa-lg" onClick={handleSetPublic} ></i> {t('userBookDetails.makePublic')}
                         </>
                     )}
                 </button>
@@ -26,7 +44,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
             </a>
             {!haveActiveLendings && (
                 <button id="changeIsReservable" className="btn btn-green" style={{ marginTop: '5px' }} type="submit">
-                    {asset.isReservable ? (
+                    {asset.reservable ? (
                         <>
                             <i className="fas fa-calendar-times"></i> {t('not_reservable')}
                         </>
@@ -43,8 +61,9 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
             </button>
             {/* Include modal components here */}
             {/* <DeleteBookModal asset={asset} />
-      <ChangeStatusModal asset={asset} />
       <ChangeReservabilityModal asset={asset} /> */}
+            <ChangeStatusModal asset={asset} />
+        </div>
         </div>
     );
 }

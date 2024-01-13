@@ -71,6 +71,18 @@
   "previous": "Anterior",
   "next": "Siguiente",
   "userHomeView": {
+    "changeVisibilityTitle": "Cambiar Visibilidad",
+    "changeVisibilityTextPublic": "¿Quieres hacer este activo público?",
+    "changeVisibilityTextPrivate": "¿Quieres hacer este activo privado?",
+    "changeVisibityPublic": {
+      "button": "Hacer Público"
+    },
+    "changeVisibityPrivate": {
+      "button": "Hacer Privado"
+    },
+    "makePrivate": "Hacer Privado",
+    "makePublic": "Hacer Público",
+
     "minText": "Texto Mínimo: ",
     "pending": "Pendiente",
     "inProgress": "En Progreso",
