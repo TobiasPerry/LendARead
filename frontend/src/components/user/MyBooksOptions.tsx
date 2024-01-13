@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPublic} from "./LendedBooksOptions.tsx";
 import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
@@ -6,12 +6,11 @@ import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
 function AssetOptionsMenu({ asset, haveActiveLendings }) {
     const { t } = useTranslation();
 
-    const handleSetPublic = async () => {
+    const [showModalVisibility, setShowModalVisibility] = useState(false);
 
-    }
 
-    const handleSetPrivate = async () => {
-
+    const handleSubmitVisibilityModal = async () => {
+        setShowModalVisibility(false)
     }
 
     return (
@@ -26,14 +25,14 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
         <h3>Lended Book actions</h3>
         <div className="options-menu m-auto">
             {!(asset.reservable && haveActiveLendings) && (
-                <button id="privatePublicBtn" className="btn btn-green" >
+                <button id="privatePublicBtn" className="btn btn-green" onClick={() => setShowModalVisibility(true)}>
                     {isPublic(asset.status) ? (
                         <>
-                            <i className="fas fa-eye-slash fa-lg" onClick={handleSetPrivate} ></i> {t('userBookDetails.makePrivate')}
+                            <i className="fas fa-eye-slash fa-lg"  ></i> {t('userBookDetails.makePrivate')}
                         </>
                     ) : (
                         <>
-                            <i className="fas fa-eye fa-lg" onClick={handleSetPublic} ></i> {t('userBookDetails.makePublic')}
+                            <i className="fas fa-eye fa-lg" ></i> {t('userBookDetails.makePublic')}
                         </>
                     )}
                 </button>
@@ -62,7 +61,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
             {/* Include modal components here */}
             {/* <DeleteBookModal asset={asset} />
       <ChangeReservabilityModal asset={asset} /> */}
-            <ChangeStatusModal asset={asset} />
+            <ChangeStatusModal handleSubmitModal={handleSubmitVisibilityModal} asset={asset} showModal={showModalVisibility} handleCloseModal={() => setShowModalVisibility(false)}d />
         </div>
         </div>
     );

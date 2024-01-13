@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPrivate, isPublic} from "../user/LendedBooksOptions.tsx";
 
-function ChangeStatusModal({ asset }) {
+function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
     const { t } = useTranslation();
-    const [showModal, setShowModal] = useState(false);
-
-    const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
 
     return (
         <>
-            <button id="privatePublicBtn" className="btn btn-green" onClick={handleShowModal}>
-                {isPublic(asset.state) ? t('userHomeView.makePrivate') : t('userHomeView.makePublic')}
-            </button>
 
             <div className={`modal ${showModal ? 'show' : ''}`}  role="dialog" aria-labelledby="modalTitle">
                 <div className="modal-dialog" role="document">
@@ -29,11 +22,9 @@ function ChangeStatusModal({ asset }) {
                             </p>
                         </div>
                         <div className="modal-footer">
-                            <form action={`/changeStatus/${asset.id}`} method="post">
-                                <button type="submit" className="btn btn-primary">
-                                    {isPrivate(asset.state) ? t('userHomeView.changeVisibityPublic.button') : t('userHomeView.changeVisibityPrivate.button')}
-                                </button>
-                            </form>
+                            <button type="submit" className="btn btn-primary" onClick={handleSubmitModal}>
+                                {isPrivate(asset.state) ? t('userHomeView.changeVisibityPublic.button') : t('userHomeView.changeVisibityPrivate.button')}
+                            </button>
                             <button onClick={handleCloseModal} className="btn btn-secondary">
                                 Close
                             </button>
