@@ -59,7 +59,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         }
         if(aiId != null){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
-            queryNativeStringBuilder.append(" l.assetinstanceid = :ai");
+            queryNativeStringBuilder.append(" l.assetinstanceid = :ai ");
             first = false;
 
         }
