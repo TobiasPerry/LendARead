@@ -7,10 +7,16 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
     const { t } = useTranslation();
 
     const [showModalVisibility, setShowModalVisibility] = useState(false);
-
+    const [showModalEdit, setShowModalEdit] = useState(false);
+    const [showModalDelete, setShowModalDelete] = useState(false);
+    const [showModalReservable, setShowModalReservable] = useState(false)
 
     const handleSubmitVisibilityModal = async () => {
         setShowModalVisibility(false)
+    }
+
+    const handleEditAsset = () => {
+
     }
 
     return (
@@ -24,8 +30,9 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
         }} className="flex-column">
         <h3>Lended Book actions</h3>
         <div className="options-menu m-auto">
+            <div className="d-flex flex-row">
             {!(asset.reservable && haveActiveLendings) && (
-                <button id="privatePublicBtn" className="btn btn-green" onClick={() => setShowModalVisibility(true)}>
+                <button id="privatePublicBtn" className="btn btn-green m-1" onClick={() => setShowModalVisibility(true)}>
                     {isPublic(asset.status) ? (
                         <>
                             <i className="fas fa-eye-slash fa-lg"  ></i> {t('userBookDetails.makePrivate')}
@@ -37,12 +44,9 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
                     )}
                 </button>
             )}
-            <a className="btn btn-green" href={`/editAsset/${asset.id}`} style={{ marginTop: '5px', textDecoration: 'none' }}>
-                <i className="fas fa-pencil-alt"></i>
-                {t('edit')}
-            </a>
+
             {!haveActiveLendings && (
-                <button id="changeIsReservable" className="btn btn-green" style={{ marginTop: '5px' }} type="submit">
+                <button id="changeIsReservable" className="btn btn-green m-1" style={{ marginTop: '5px' }} onClick={() => setShowModalReservable(true)}>
                     {asset.reservable ? (
                         <>
                             <i className="fas fa-calendar-times"></i> {t('not_reservable')}
@@ -53,15 +57,21 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
                         </>
                     )}
                 </button>
-            )}
-            <button id="deleteBtn" className="btn btn-red" style={{ marginTop: '5px' }} type="submit">
-                <i className="fas fa-trash"></i>
-                {t('delete')}
-            </button>
+            )}  </div>
+            <div className="d-flex flex-row">
+                <button className="btn btn-green m-1"  style={{ marginTop: '5px', textDecoration: 'none' }} onClick={() => setShowModalEdit(true)}>
+                    <i className="fas fa-pencil-alt"></i>
+                    {t('edit')}
+                </button>
+                <button id="deleteBtn" className="btn btn-red m-1" style={{ marginTop: '5px' }} onClick={() => setShowModalDelete(true)}>
+                    <i className="fas fa-trash"></i>
+                    {t('delete')}
+                </button>
+            </div>
             {/* Include modal components here */}
             {/* <DeleteBookModal asset={asset} />
       <ChangeReservabilityModal asset={asset} /> */}
-            <ChangeStatusModal handleSubmitModal={handleSubmitVisibilityModal} asset={asset} showModal={showModalVisibility} handleCloseModal={() => setShowModalVisibility(false)}d />
+            <ChangeStatusModal handleSubmitModal={handleSubmitVisibilityModal} asset={asset} showModal={showModalVisibility} handleCloseModal={() => setShowModalVisibility(false)} />
         </div>
         </div>
     );
