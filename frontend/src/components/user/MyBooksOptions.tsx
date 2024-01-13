@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import {isPublic} from "./LendedBooksOptions.tsx";
 
 function AssetOptionsMenu({ asset, haveActiveLendings }) {
     const { t } = useTranslation();
@@ -8,7 +9,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
         <div className="options-menu">
             {!(asset.reservable && haveActiveLendings) && (
                 <button id="privatePublicBtn" className="btn btn-green" type="submit">
-                    {asset.assetState.isPublic ? (
+                    {isPublic(asset.status) ? (
                         <>
                             <i className="fas fa-eye-slash fa-lg"></i> {t('userBookDetails.makePrivate')}
                         </>

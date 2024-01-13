@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
 }
-
+export const isPublic = (lending: any) => {
+    return lending === "PUBLIC "
+}
 export const isFinished = (lending: string) => {
     return lending === "FINISHED"
 }

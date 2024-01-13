@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {useParams} from "react-router-dom";
 import {AssetApi, AssetInstanceApi, LendingApi} from "./useUserAssetInstances.ts";
 import {api, api_} from "../api/api.ts";
 
@@ -8,45 +7,38 @@ const useUserAssetInstance = (location, id) => {
     const queryParams = new URLSearchParams(location.search);
     const isLending = queryParams.get('isLending');
     const [assetDetails, setAssetDetails] = useState({})
+    const [hasActiveLendings, setHasActiveLendings] = useState(false)
 
-    const fetchUserAssetDetails2 = async () => {
+    const fetchUserAssetDetails = async () => {
         const assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
         const asset: AssetApi = (await api_.get(assetinstace.assetReference)).data
         const lang  = (await api_.get(asset.language)).data
+        const lending: Array<LendingApi> = (await api.get(`/lendings/${id}`)).data
 
-        return {
+        const assetDetails_ = {
             title: asset.title,
             author: asset.author,
             condition: assetinstace.physicalCondition,
             language: lang.name,
             isbn: asset.isbn,
             imageUrl: assetinstace.imageReference,
-            isReservable: assetinstace.reservable
+            isReservable: assetinstace.reservable,
+            status: assetinstace.status
         }
-    }
 
-    const fetchUserLendingDetails = async () => {
-        const lending: LendingApi = (await api.get(`lendings/${id}`)).data
-        return {
-           ...lending
-        }
-    }
+        if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
+            setHasActiveLendings(true)
 
-    const fetchUserAssetDetails = async () => {
         if(isLending)
-            return {...await fetchUserLendingDetails(), ...await fetchUserLendingDetails()}
-        else
-            return await fetchUserAssetDetails2()
+            await setAssetDetails({...assetDetails_, ...lending})
+
+        await setAssetDetails({assetDetails_})
     }
 
-    //need to add it to the api or do it here
-    const hasActiveLendings = async () => {
-        return true
-    }
 
 
     return {
-        assetDetails, fetchUserAssetDetails, isLending
+        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings
     }
 }
 
