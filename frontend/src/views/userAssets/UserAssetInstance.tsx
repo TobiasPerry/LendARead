@@ -28,6 +28,9 @@ const UserAssetInstance = () => {
         fetchUserAssetDetails().then()
     }, [])
 
+    //need to make api post to review service, this makes a link to that page
+    const canReview = false
+
     return (
         <div className="main-container" style={{ padding: '2rem' }}>
             <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
@@ -41,7 +44,7 @@ const UserAssetInstance = () => {
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
                     {!isLending && <MyBooksOptions asset={assetDetails} haveActiveLendings={true} /> }
-                    {isLending && <LendedBooksOptions lending={assetDetails} canReview={false} /> }
+                    {isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
 
     return (
         <div className="options-menu">
-            {!(asset.getIsReservable && haveActiveLendings) && (
+            {!(asset.reservable && haveActiveLendings) && (
                 <button id="privatePublicBtn" className="btn btn-green" type="submit">
                     {asset.assetState.isPublic ? (
                         <>

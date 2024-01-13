@@ -1,6 +1,21 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+export const isRejected = (lending: any) => {
+    return lending === "REJECTED"
+}
+
+export const isFinished = (lending: string) => {
+    return lending === "FINISHED"
+}
+
+export const isActive = (lending: string) => {
+    return lending === "ACTIVE"
+}
+export const isDelivered = (lending: string) => {
+    return lending === "DELIVERED"
+}
+
 function LendedBooksOptions({ lending, canReview }) {
     const { t } = useTranslation();
 
@@ -9,13 +24,12 @@ function LendedBooksOptions({ lending, canReview }) {
             backgroundColor: '#f0f5f0',
             padding: '100px',
             borderRadius: '20px',
-            padding: '20px',
             width: '50%'
         }}>
             <h3>Lended Book actions</h3>
-            {/*{!lending.active.getIsRejected && !lending.active.getIsFinished && (*/}
+            {!isRejected(lending) && !isFinished(lending) && (
                 <div className="options-menu">
-                    {/*{lending.active.getIsActive && (*/}
+                    {isActive(lending) && (
                         <>
                             <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
                                 {t('userHomeView.minText')} {t('userHomeView.pending')}
@@ -27,8 +41,8 @@ function LendedBooksOptions({ lending, canReview }) {
                                 {t('userHomeView.rejectAssetTitle')}
                             </button>
                         </>
-                    {/*)}*/}
-                    {/*{lending.active.getIsDelivered && (*/}
+                    )}
+                    {isDelivered(lending) && (
                         <>
                             <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
                                 {t('userHomeView.minText')} {t('userHomeView.inProgress')}
@@ -37,9 +51,9 @@ function LendedBooksOptions({ lending, canReview }) {
                                 {t('userHomeView.confirmReturn')}
                             </button>
                         </>
-                    {/*)}*/}
+                    )}
                 </div>
-            {/*)}*/}
+            )}
             {canReview && (
                 <a className="btn btn-green mt-3" href={`/review/lender/${lending.id}`}>
                     {t('makeReview')}
