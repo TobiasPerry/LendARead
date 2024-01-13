@@ -13,7 +13,7 @@ const useUserAssetInstance = (location, id) => {
         const assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
         const asset: AssetApi = (await api_.get(assetinstace.assetReference)).data
         const lang  = (await api_.get(asset.language)).data
-        const lending: Array<LendingApi> = (await api.get(`/lendings/${id}`)).data
+
 
         const assetDetails_ = {
             title: asset.title,
@@ -26,13 +26,22 @@ const useUserAssetInstance = (location, id) => {
             status: assetinstace.status
         }
 
-        if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
-            setHasActiveLendings(true)
+        let lending: Array<LendingApi>= []
+        try {
+             const lending_  = await api.get(`/lendings/${id}`)
+            lending = lending_.data
+            if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
+                setHasActiveLendings(true)
+        } catch (e) {
+
+        }
+
 
         if(isLending)
             await setAssetDetails({...assetDetails_, ...lending})
 
-        await setAssetDetails({assetDetails_})
+        console.log(assetDetails_)
+        await setAssetDetails(assetDetails_)
     }
 
 
