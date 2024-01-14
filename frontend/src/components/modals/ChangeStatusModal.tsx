@@ -7,11 +7,13 @@ function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitMod
 
     return (
         <>
-
             <div className={`modal ${showModal ? 'show' : ''}`}  role="dialog" aria-labelledby="modalTitle">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
+                            <div className="icon-box">
+                                <i className="fas fa-eye-slash fa-lg"></i>
+                            </div>
                             <h2 className="modal-title" id="modalTitle">
                                 {t('userHomeView.changeVisibilityTitle')}
                             </h2>
