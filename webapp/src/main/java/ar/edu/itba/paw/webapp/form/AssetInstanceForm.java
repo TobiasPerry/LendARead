@@ -49,6 +49,7 @@ public class AssetInstanceForm {
     private String state;
 
     @Image
+    @NotNull
     @FormDataParam("image")
     private FormDataBodyPart image;
 
