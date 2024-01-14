@@ -36,8 +36,8 @@ public class AssetInstancePatchForm {
     private Boolean isReservable;
 
     @Pattern(regexp = "PRIVATE|PUBLIC", message = "{Pattern.assetInstanceForm.visibility}")
-    @FormDataParam("state")
-    private String state;
+    @FormDataParam("status")
+    private String status;
 
     @Image
     @FormDataParam("image")

@@ -194,32 +194,32 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
     private String getPostgresFromSort(AssetInstanceSort assetInstanceSort) {
         if (assetInstanceSort == null)
-            return "ai.id";
+            return " ai.id ";
         switch (assetInstanceSort) {
             case TITLE:
-                return "b.title";
+                return " b.title ";
             case AUTHOR_NAME:
-                return "b.author";
+                return " b.author ";
             case RECENT:
-                return "ai.id";
+                return " ai.id ";
             case LANGUAGE:
-                return "b.lang";
+                return " b.lang ";
             case STATE:
-                return "ai.physicalcondition";
+                return " ai.physicalcondition ";
         }
         return "ai.id";
     }
 
     private String getOrmFromSort(AssetInstanceSort assetInstanceSort) {
         if (assetInstanceSort == null)
-            return "ai.id";
+            return " ai.id ";
         switch (assetInstanceSort) {
             case TITLE:
-                return "ai.book.title";
+                return " ai.book.title ";
             case AUTHOR_NAME:
-                return "ai.book.author";
+                return " ai.book.author ";
             case RECENT:
-                return "ai.id";
+                return " ai.id ";
         }
         return "ai.id";
     }
@@ -229,11 +229,11 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             return "ASC";
         switch (sortDirection) {
             case ASCENDING:
-                return "ASC";
+                return " ASC";
             case DESCENDING:
-                return "DESC";
+                return " DESC";
         }
-        return "ASC";
+        return " ASC";
     }
 
     private String getOrmFromSortDirection(SortDirection sortDirection) {

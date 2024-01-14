@@ -144,7 +144,7 @@ public class AssetInstanceController {
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
     public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstancePatchForm assetInstancePatchForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
-        ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getState()));
+        ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getStatus()));
         LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
     }
