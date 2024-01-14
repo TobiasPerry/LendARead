@@ -5,6 +5,7 @@ import ar.edu.itba.paw.webapp.form.annotations.interfaces.DayCheckOverlap;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -21,5 +22,6 @@ public class BorrowAssetForm {
     LocalDate devolutionDate;
 
     @NotNull
+    @Min(1)
     Integer assetInstanceId;
 }
