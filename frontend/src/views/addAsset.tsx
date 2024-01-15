@@ -257,7 +257,7 @@ const AddAsset = () => {
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='physicalCondition' className='form-label'>Physical Condition</label>
-                                    <select id='physicalCondition' className='form-control'>
+                                    <select id='physicalCondition' className='form-control round'>
                                         {states.map((state) => {
                                             return <option key={state[0]} value={state[0]}>{state[1]}</option>
                                         })}
@@ -271,7 +271,7 @@ const AddAsset = () => {
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='language' className='form-label'>Language</label>
-                                    <input type='text' className='form-control' id='language' placeholder='Language' readOnly />
+                                    <input type='text' className='form-control round' id='language' placeholder='Language' readOnly />
                                 </div>
                             </div>
                             <div className="button-container">
