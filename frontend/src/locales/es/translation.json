@@ -79,6 +79,9 @@
     "changeReservabilityYes": "Este activo actualmente no se puede reservar. ¿Deseas hacerlo reservable?",
     "makeReservableNo": "Hacer No Reservable",
     "makeReservableYes": "Hacer Reservable",
+    "deleteTitle": "Eliminar Activo",
+    "deleteAssetText": "¿Estás seguro de que quieres eliminar este activo? Esta acción no es reversible.",
+    "deleteAsset": "Eliminar",
     "changeVisibityPublic": {
       "button": "Hacer Público"
     },
