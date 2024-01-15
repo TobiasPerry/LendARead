@@ -20,12 +20,12 @@ function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitMod
                         </div>
                         <div className="modal-body">
                             <p>
-                                {isPrivate(asset.state) ? t('userHomeView.changeVisibilityTextPublic') : t('userHomeView.changeVisibilityTextPrivate')}
+                                {!isPrivate(asset.state) ? t('userHomeView.changeVisibilityTextPublic') : t('userHomeView.changeVisibilityTextPrivate')}
                             </p>
                         </div>
                         <div className="modal-footer">
                             <button type="submit" className="btn btn-primary" onClick={handleSubmitModal}>
-                                {isPrivate(asset.state) ? t('userHomeView.changeVisibityPublic.button') : t('userHomeView.changeVisibityPrivate.button')}
+                                {isPrivate(asset.state) ? t('userHomeView.makePrivate') : t('userHomeView.makePublic')}
                             </button>
                             <button onClick={handleCloseModal} className="btn btn-secondary">
                                 Close

@@ -5,10 +5,10 @@ export const isRejected = (lending: any) => {
     return lending === "REJECTED"
 }
 export const isPublic = (lending: any) => {
-    return lending === "PUBLIC "
+    return lending === "PUBLIC"
 }
 export const isPrivate = (lending: any) => {
-    return lending === "PRIVATE "
+    return lending === "PRIVATE"
 }
 export const isFinished = (lending: string) => {
     return lending === "FINISHED"

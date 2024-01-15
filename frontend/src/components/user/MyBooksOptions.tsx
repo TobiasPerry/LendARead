@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPublic} from "./LendedBooksOptions.tsx";
 import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
@@ -21,6 +21,10 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
     const handleEditAsset = () => {
 
     }
+
+    useEffect(() => {
+        console.log(asset)
+    }, [asset])
 
     return (
         <div style={{
