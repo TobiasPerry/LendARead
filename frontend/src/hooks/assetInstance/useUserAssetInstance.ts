@@ -58,8 +58,11 @@ const useUserAssetInstance = (location, id) => {
     }
 
     const editAssetReservability = async (asset: any) => {
-        console.log('current reservable', asset.reservable)
-        await api.patch(`/assetInstances/${asset.id}`, {isReservable: !asset.reservable },
+        console.log('current reservable', asset.assetinstance.reservable)
+        const data = {...asset.assetinstance}
+        data.reservable = !data.reservable
+
+        await api.patch(`/assetInstances/${asset.id}`, data,
             {headers: {"Content-type": "multipart/form-data"}})
         await fetchUserAssetDetails()
     }
