@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPrivate, isPublic} from "../user/LendedBooksOptions.tsx";
 
@@ -8,7 +8,6 @@ function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitMod
     return (
         <>
             <div className={`modal ${showModal ? 'show' : ''}`}  role="dialog" aria-labelledby="modalTitle">
-
                     <div className="modal-dialog modal-content" style={{
                         backgroundColor: '#f0f5f0',
                         borderRadius: '20px',
@@ -27,7 +26,7 @@ function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitMod
                         </div>
                         <div className="modal-body">
                             <p>
-                                {!isPrivate(asset.state) ? t('userHomeView.changeVisibilityTextPublic') : t('userHomeView.changeVisibilityTextPrivate')}
+                                {isPrivate(asset.state) ? t('userHomeView.changeVisibilityTextPrivate'): t('userHomeView.changeVisibilityTextPublic') }
                             </p>
                         </div>
                             <button type="submit" className="btn btn-green" onClick={handleSubmitModal}>

@@ -30,6 +30,11 @@
     "emailPlaceholder": "Email"
   },
   "userHomeView": {
+    "changeReservability": "Change Reservability",
+    "changeReservabilityNo": "This asset is currently reservable. Do you want to make it non-reservable?",
+    "changeReservabilityYes": "This asset is currently not reservable. Do you want to make it reservable?",
+    "makeReservableNo": "Make Non-Reservable",
+    "makeReservableYes": "Make Reservable",
     "minText": "Minimum Text: ",
     "pending": "Pending",
     "inProgress": "In Progress",

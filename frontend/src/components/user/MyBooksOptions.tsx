@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {isPublic} from "./LendedBooksOptions.tsx";
 import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
 import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
+import ChangeReservabilityModal from "../modals/ChangeReservabilityModal.tsx";
 
 function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handleDelete, editAssetReservability}) {
     const { t } = useTranslation();
@@ -18,8 +19,13 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
         await editAssetVisbility(asset)
     }
 
-    const handleEditAsset = () => {
+    const handleSubmitReservabilityModal = async () => {
+        setShowModalReservable(true);
+        await editAssetReservability(asset);
+    }
 
+    const handleEditAsset = () => {
+        setShowModalEdit(true);
     }
 
     useEffect(() => {
@@ -89,7 +95,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
             {/* <DeleteBookModal asset={asset} />
       <ChangeReservabilityModal asset={asset} /> */}
             <ChangeStatusModal handleSubmitModal={handleSubmitVisibilityModal} asset={asset} showModal={showModalVisibility} handleCloseModal={() => setShowModalVisibility(false)} />
-
+            <ChangeReservabilityModal handleSubmitModal={handleSubmitReservabilityModal} asset={asset} showModal={showModalReservable} handleCloseModal={() => setShowModalReservable(false)} />
         </div>
     );
 }

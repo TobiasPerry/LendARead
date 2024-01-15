@@ -74,6 +74,11 @@
     "changeVisibilityTitle": "Cambiar Visibilidad",
     "changeVisibilityTextPublic": "Este activo es privado ¿Quieres hacer este activo público?",
     "changeVisibilityTextPrivate": "Este activo es publico ¿Quieres hacer este activo privado?",
+    "changeReservability": "Cambiar Reservabilidad",
+    "changeReservabilityNo": "Este activo actualmente se puede reservar. ¿Deseas hacerlo no reservable?",
+    "changeReservabilityYes": "Este activo actualmente no se puede reservar. ¿Deseas hacerlo reservable?",
+    "makeReservableNo": "Hacer No Reservable",
+    "makeReservableYes": "Hacer Reservable",
     "changeVisibityPublic": {
       "button": "Hacer Público"
     },
