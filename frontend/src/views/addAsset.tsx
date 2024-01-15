@@ -239,7 +239,7 @@ const AddAsset = () => {
                         </div>
                         <fieldset className="info-container">
                             <h2>ISBN</h2>
-                            <p> We need the ISBN to get info about the book. If there's missing parts, you'll be asked to complete it.</p>
+                            <p>We need the ISBN to get info about the book. If there's missing parts, you'll be asked to complete it.</p>
                             <input type="text" placeholder="ISBN" className='form-control' id='isbn' />
                             <small id='isbn-error' className="text-danger small d-none">Please input a valid ISBN</small>
                             <div className="button-container">

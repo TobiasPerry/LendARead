@@ -171,5 +171,31 @@
   "localityValidationError": "La localidad debe tener entre 1 y 100 caracteres.",
   "provinceValidationError": "La provincia debe tener entre 4 y 100 caracteres.",
   "countryValidationError": "El país debe tener entre 4 y 100 caracteres.",
-  "nameValidationError": "El nombre debe tener entre 1 y 100 caracteres."
+  "nameValidationError": "El nombre debe tener entre 1 y 100 caracteres.",
+  "addAsset": {
+    "title": "¿Quieres prestar un libro?",
+    "isbn": {
+        "ISBN": "ISBN",
+        "validation-error": "Por favor, ingrese un ISBN válido.",
+        "explanation": "Necesitamos el ISBN para obtener información sobre el libro. Si faltan partes, se le pedirá que lo complete."
+    },
+    "bookInfo": {
+        "detail": "Detalles del Libro",
+        "title": "Título",
+        "author": "Autor",
+        "language": "Idioma",
+        "physicalCondition": "Condición Física",
+        "title-validation-error": "Por favor, ingrese un título válido.",
+        "author-validation-error": "Por favor, ingrese un autor válido.",
+        "language-validation-error": "Por favor, ingrese un idioma válido.",
+        "physicalCondition-validation-error": "Por favor, ingrese una condición física válida."
+    },
+    "duration": {
+        "lendFor": "Prestar por",
+        "days": "día/s",
+        "months": "mes/es",
+        "years": "año/s",
+        "validation-error": "Por favor, ingrese una duración válida."
+    }
+  }
 }
