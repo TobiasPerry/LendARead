@@ -18,9 +18,17 @@ const UserAssetInstance = () => {
         assetDetails,
         fetchUserAssetDetails,
         isLending,
-        hasActiveLendings
+        hasActiveLendings,
+        editAssetVisbility,
+        editAssetReservability,
+        deleteAssetInstance
     } = useUserAssetInstance(location, id)
 
+
+    const handleDelete = async (asset: any) => {
+        await deleteAssetInstance(asset)
+        handleBackClick()
+    }
     const handleBackClick = () => {
         navigate("/userHome")
     }
@@ -44,7 +52,13 @@ const UserAssetInstance = () => {
                 <BookDetails data={assetDetails}/>
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
-                     <MyBooksOptions asset={assetDetails} haveActiveLendings={hasActiveLendings} />
+                     <MyBooksOptions
+                         asset={assetDetails}
+                         haveActiveLendings={hasActiveLendings}
+                         handleDelete={handleDelete}
+                         editAssetReservability={editAssetReservability}
+                         editAssetVisbility={editAssetVisbility}
+                     />
                     {/*{isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }*/}
                 </div>
             </div>

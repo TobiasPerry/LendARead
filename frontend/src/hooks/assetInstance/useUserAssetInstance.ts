@@ -23,7 +23,9 @@ const useUserAssetInstance = (location, id) => {
             isbn: asset.isbn,
             imageUrl: assetinstace.imageReference,
             isReservable: assetinstace.reservable,
-            status: assetinstace.status
+            status: assetinstace.status,
+            id: id,
+            assetinstance: assetinstace
         }
 
         let lending: Array<LendingApi>= []
@@ -36,7 +38,6 @@ const useUserAssetInstance = (location, id) => {
 
         }
 
-
         if(isLending)
             await setAssetDetails({...assetDetails_, ...lending})
 
@@ -44,10 +45,31 @@ const useUserAssetInstance = (location, id) => {
         await setAssetDetails(assetDetails_)
     }
 
+    const editAssetVisbility = async (asset: any) => {
+        console.log('current state', asset.status)
+        const data = {...asset.assetinstance}
+        data.status = data.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"
 
+        await api.patch(`/assetInstances/${asset.id}`, data,
+            {
+                headers: {"Content-type": "multipart/form-data"}
+            })
+        await fetchUserAssetDetails()
+    }
+
+    const editAssetReservability = async (asset: any) => {
+        console.log('current reservable', asset.reservable)
+        await api.patch(`/assetInstances/${asset.id}`, {isReservable: !asset.reservable },
+            {headers: {"Content-type": "multipart/form-data"}})
+        await fetchUserAssetDetails()
+    }
+
+    const deleteAssetInstance = async (asset: any) => {
+        await api.delete(`/assetInstances/${asset.id}`)
+    }
 
     return {
-        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings
+        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, editAssetVisbility, editAssetReservability, deleteAssetInstance
     }
 }
 

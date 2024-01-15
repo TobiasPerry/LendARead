@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPublic} from "./LendedBooksOptions.tsx";
 import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
+import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
 
-function AssetOptionsMenu({ asset, haveActiveLendings }) {
+function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handleDelete, editAssetReservability}) {
     const { t } = useTranslation();
 
     const [showModalVisibility, setShowModalVisibility] = useState(false);
@@ -11,8 +12,10 @@ function AssetOptionsMenu({ asset, haveActiveLendings }) {
     const [showModalDelete, setShowModalDelete] = useState(false);
     const [showModalReservable, setShowModalReservable] = useState(false)
 
+    // const {editAssetVisbility} = userUserAssetInstanceOptions()
     const handleSubmitVisibilityModal = async () => {
-        setShowModalVisibility(false)
+        setShowModalVisibility(false);
+        await editAssetVisbility(asset)
     }
 
     const handleEditAsset = () => {
