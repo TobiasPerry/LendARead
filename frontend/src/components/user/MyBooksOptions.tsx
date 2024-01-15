@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {isPublic} from "./LendedBooksOptions.tsx";
 import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
-import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
 import ChangeReservabilityModal from "../modals/ChangeReservabilityModal.tsx";
 import DeleteModal from "../modals/DeleteModal.tsx";
+import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
 
 function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handleDelete, editAssetReservability}) {
     const { t } = useTranslation();
@@ -26,6 +26,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
     }
     const handleDeleteModal = async () => {
         setShowModalDelete(true);
+        await handleDelete(asset)
     }
     const handleEditAsset = () => {
         setShowModalEdit(true);
@@ -94,12 +95,10 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
                 </button>
             </div>
             </div>
-            {/* Include modal components here */}
-            {/* <DeleteBookModal asset={asset} />
-      <ChangeReservabilityModal asset={asset} /> */}
             <ChangeStatusModal handleSubmitModal={handleSubmitVisibilityModal} asset={asset} showModal={showModalVisibility} handleCloseModal={() => setShowModalVisibility(false)} />
             <ChangeReservabilityModal handleSubmitModal={handleSubmitReservabilityModal} asset={asset} showModal={showModalReservable} handleCloseModal={() => setShowModalReservable(false)} />
             <DeleteModal handleSubmitModal={handleDeleteModal} asset={asset} showModal={showModalDelete} handleCloseModal={() => setShowModalDelete(false)} />
+            <EditAssetInstanceModal handleSave={handleEditAsset} showModal={showModalEdit} assetInstance={asset} handleClose={() => setShowModalEdit(false)} />
         </div>
     );
 }
