@@ -72,8 +72,8 @@
   "next": "Siguiente",
   "userHomeView": {
     "changeVisibilityTitle": "Cambiar Visibilidad",
-    "changeVisibilityTextPublic": "¿Quieres hacer este activo público?",
-    "changeVisibilityTextPrivate": "¿Quieres hacer este activo privado?",
+    "changeVisibilityTextPublic": "Este activo es privado ¿Quieres hacer este activo público?",
+    "changeVisibilityTextPrivate": "Este activo es publico ¿Quieres hacer este activo privado?",
     "changeVisibityPublic": {
       "button": "Hacer Público"
     },

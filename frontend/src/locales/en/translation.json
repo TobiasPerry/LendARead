@@ -37,8 +37,8 @@
     "rejectAssetTitle": "Reject Asset",
     "confirmReturn": "Confirm Return",
     "changeVisibilityTitle": "Change Visibility",
-    "changeVisibilityTextPublic": "Would you like to make this asset public?",
-    "changeVisibilityTextPrivate": "Would you like to make this asset private?",
+    "changeVisibilityTextPublic": "This asset is private. Would you like to make this asset public?",
+    "changeVisibilityTextPrivate": "This asset is public. Would you like to make this asset private?",
     "changeVisibityPublic": {
       "button": "Make Public"
     },
