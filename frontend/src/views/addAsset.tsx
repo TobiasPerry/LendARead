@@ -150,9 +150,7 @@ const AddAsset = () => {
             document.getElementById('isbn-error')?.classList.remove('d-none');
             return false;
         }
-
-        isbnInput.classList.remove('is-invalid');
-        isbnInput.classList.add('is-loading');
+        isbnInput.classList.add('loading');
 
         const nextBtn = document.getElementById('isbn-next-btn') as HTMLInputElement;
         nextBtn.disabled = true;
@@ -184,6 +182,8 @@ const AddAsset = () => {
 
 
         nextBtn.disabled = false;
+        isbnInput.classList.remove('loading');
+        document.getElementById('isbn-error')?.classList.add('d-none');
         return true;
 
 

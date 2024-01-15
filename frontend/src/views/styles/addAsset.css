@@ -7,6 +7,13 @@ input[readonly] {
     box-shadow: none;
 }
 
+input[type="text"].loading {
+    background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODk0ZGE1ZWExMGIyNDIwNWZiZTgyZmM3YmNiMTlhNzlkNmRiYmI5ZiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PXM/kSaZVSQFpTdle527cm/giphy.gif');
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    background-size: 20px 20px;
+}
+
 .image-wrapper {
     display: flex;
     flex-direction: column;
