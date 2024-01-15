@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleClose }) => {
     const { t } = useTranslation();
+    const [imagePreview, setImagePreview] = useState(assetInstance.imageUrl);
     const [formData, setFormData] = useState({
         physicalCondition: '',
         maxDays: '',
@@ -78,47 +79,99 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
         }
     };
 
+
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let img = e.target.files[0];
+            setFormData({ ...formData, image: img });
+            setImagePreview(URL.createObjectURL(img));
+        }
+    };
+
     return (
         <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle">
-            <div className="modal-body" style={{
-                backgroundColor: '#f0f5f0',
-                borderRadius: '20px',
-            }}>
-                <form onSubmit={handleSubmit}>
-
-                    <div className="form-group">
-                        <label htmlFor="locationId-modal">{t('locationIdLabel')}</label>
-                        <input type="number" className="form-control" name="locationId" id="locationId-modal" value={formData.locationId} onChange={handleChange} />
-                        {formErrors.locationId && <div className="error">{formErrors.locationId}</div>}
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        {/* Modal Header Content */}
+                        <h2 className="modal-title" id="modalTitle">{t('editAsset')}</h2>
+                        <button type="button" className="close" onClick={handleClose} aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    {/* Is Reservable Checkbox */}
-                    <div className="form-group">
-                        <label htmlFor="isReservable-modal">{t('isReservableLabel')}</label>
-                        <input type="checkbox" className="form-control" name="isReservable" id="isReservable-modal" checked={formData.isReservable} onChange={handleChange} />
-                    </div>
+                    <div className="modal-body">
+                        <form onSubmit={handleSubmit}>
+                            <div className="d-flex flex-row">
+                            {/* Image Upload and Preview */}
+                            <div className="image-wrapper">
+                                <label htmlFor="image-modal" className={`image-container position-relative ${formErrors.image ? 'image-border-error' : ''}`}>
+                                    <img src={imagePreview || 'default-placeholder-image-path'} alt="Book Cover" className="img-fluid" id="bookImage" style={{minWidth: '100px', height: 'auto', maxHeight: '1000px', objectFit: 'cover'}} />
+                                    <div className="img-hover-text">
+                                        <i className="fas fa-pencil-alt" style={{color: '#D1E9C3'}}></i>
+                                        {t('editAssetView.changeImage')}
+                                    </div>
+                                </label>
+                                <input type="file" accept="image/*" name="file" id="image-modal" style={{display:'none'}} onChange={handleImageChange} />
+                                {formErrors.image && <div className="error">{formErrors.image}</div>}
+                            </div>
+                                <div>
+                            {/* Physical Condition Dropdown */}
+                            <div className="form-group">
+                                <label htmlFor="physicalCondition-modal">{t('physicalConditionLabel')}</label>
+                                <select className="form-control" name="physicalCondition" id="physicalCondition-modal" value={formData.physicalCondition} onChange={handleChange}>
+                                    <option value="ASNEW">{t('enum.ASNEW')}</option>
+                                    {/* ... other options ... */}
+                                </select>
+                                {formErrors.physicalCondition && <div className="error">{formErrors.physicalCondition}</div>}
+                            </div>
 
-                    {/* Status Field */}
-                    <div className="form-group">
-                        <label htmlFor="status-modal">{t('statusLabel')}</label>
-                        <select className="form-control" name="status" id="status-modal" value={formData.status} onChange={handleChange}>
-                            <option value="PRIVATE">{t('private')}</option>
-                            <option value="PUBLIC">{t('public')}</option>
-                        </select>
-                        {formErrors.status && <div className="error">{formErrors.status}</div>}
-                    </div>
+                            {/* Max Days Input */}
+                            <div className="form-group">
+                                <label htmlFor="maxDays-modal">{t('maxDaysLabel')}</label>
+                                <input type="number" className="form-control" name="maxDays" id="maxDays-modal" value={formData.maxDays} onChange={handleChange} />
+                                {formErrors.maxDays && <div className="error">{formErrors.maxDays}</div>}
+                            </div>
 
-                    {/* Image Upload Field */}
-                    <div className="form-group">
-                        <label htmlFor="image-modal">{t('imageLabel')}</label>
-                        <input type="file" className="form-control" name="image" id="image-modal" onChange={handleChange} />
-                        {formErrors.image && <div className="error">{formErrors.image}</div>}
-                    </div>
+                            {/* Description Textarea */}
+                            <div className="form-group">
+                                <label htmlFor="description-modal">{t('descriptionLabel')}</label>
+                                <textarea className="form-control" name="description" id="description-modal" value={formData.description} onChange={handleChange}></textarea>
+                                {formErrors.description && <div className="error">{formErrors.description}</div>}
+                            </div>
 
-                    {/* Submit Button */}
-                    <button className="submit-button" type="submit">
-                        {t('save')}
-                    </button>
-                </form>
+
+
+                            {/* Is Reservable Checkbox */}
+                            <div className="form-group">
+                                <label htmlFor="isReservable-modal">{t('isReservableLabel')}</label>
+                                <input type="checkbox" className="form-control" name="isReservable" id="isReservable-modal" checked={formData.isReservable} onChange={handleChange} />
+                            </div>
+
+                            {/* Status Field */}
+                            <div className="form-group">
+                                <label htmlFor="status-modal">{t('statusLabel')}</label>
+                                <select className="form-control" name="status" id="status-modal" value={formData.status} onChange={handleChange}>
+                                    <option value="PRIVATE">{t('private')}</option>
+                                    <option value="PUBLIC">{t('public')}</option>
+                                </select>
+                                {formErrors.status && <div className="error">{formErrors.status}</div>}
+                            </div>
+                            {/* Location ID Field */}
+                            <div className="form-group">
+                                <label htmlFor="locationId-modal">{t('locationIdLabel')}</label>
+                                <input type="number" className="form-control" name="locationId" id="locationId-modal" value={formData.locationId} onChange={handleChange} />
+                                {formErrors.locationId && <div className="error">{formErrors.locationId}</div>}
+                            </div>
+
+                            {/* Submit Button */}
+                            <div className="form-group">
+                                <button className="submit-button btn btn-primary" type="submit">
+                                    {t('save')}
+                                </button>
+                            </div> </div> </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     );
