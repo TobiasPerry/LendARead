@@ -67,18 +67,7 @@ const useUserAssetInstance = (location, id) => {
     }
 
     const editAsset = async (asset: any) => {
-        /*
-        *   physicalCondition: '', DONE
-        maxDays: '', DONE
-        description: '', DONE
-        locationId: '',
-        isReservable: false, DONE
-        status: '', DONE
-        image: null
-        * */
 
-
-        console.log('post edit asset!', asset)
         const newImageUrl = assetDetails.imageUrl
 
         await api.patch(assetDetails.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},

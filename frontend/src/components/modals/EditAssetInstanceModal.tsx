@@ -72,12 +72,8 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
     const handleSubmit = (e) => {
         e.preventDefault();
         const errors = validateForm();
-        console.log('submitt')
 
-        if ( formErrors.physicalCondition === "" &&
-            formErrors.locationId === "" && formErrors.status === "" && formErrors.description === "" && formErrors.maxDays === "") {
-            console.log('guardeee')
-            console.log('formdate', formData)
+        if ( formErrors.physicalCondition === "" && formErrors.locationId === "" && formErrors.status === "" && formErrors.description === "" && formErrors.maxDays === "") {
             handleSave(formData);
         } else {
             console.log(errors)
