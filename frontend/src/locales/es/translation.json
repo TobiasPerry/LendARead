@@ -70,6 +70,13 @@
   "no_books_available": "No hay libros disponibles",
   "previous": "Anterior",
   "next": "Siguiente",
+  "editAsset": "Editar Activo",
+  "editAssetView.changeImage": "Cambiar Imagen",
+  "physicalConditionLabel": "Condición Física",
+  "maxDaysLabel": "Días Máximos",
+  "descriptionLabel": "Descripción",
+  "isReservableLabel": "Es Reservable",
+  "statusLabel": "Estado",
   "userHomeView": {
     "changeVisibilityTitle": "Cambiar Visibilidad",
     "changeVisibilityTextPublic": "Este activo es privado ¿Quieres hacer este activo público?",

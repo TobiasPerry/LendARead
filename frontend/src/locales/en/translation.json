@@ -29,6 +29,13 @@
     "changePasswordButton": "Change Password",
     "emailPlaceholder": "Email"
   },
+  "editAsset": "Edit Asset",
+  "editAssetView.changeImage": "Change Image",
+  "physicalConditionLabel": "Physical Condition",
+  "maxDaysLabel": "Maximum Days",
+  "descriptionLabel": "Description",
+  "isReservableLabel": "Is Reservable",
+  "statusLabel": "Status",
   "userHomeView": {
     "changeReservability": "Change Reservability",
     "changeReservabilityNo": "This asset is currently reservable. Do you want to make it non-reservable?",

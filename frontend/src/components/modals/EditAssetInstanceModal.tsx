@@ -89,9 +89,12 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
     };
 
     return (
-        <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
+        <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle" >
+            <div className="modal-dialog modal-content" role="document"  style={{
+                backgroundColor: '#f0f5f0',
+                borderRadius: '20px',
+                width: "1000px"
+            }}>
                     <div className="modal-header">
                         {/* Modal Header Content */}
                         <h2 className="modal-title" id="modalTitle">{t('editAsset')}</h2>
@@ -103,9 +106,9 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                         <form onSubmit={handleSubmit}>
                             <div className="d-flex flex-row">
                             {/* Image Upload and Preview */}
-                            <div className="image-wrapper">
+                            <div className="image-wrapper" style={{padding: "20px 0px"}}>
                                 <label htmlFor="image-modal" className={`image-container position-relative ${formErrors.image ? 'image-border-error' : ''}`}>
-                                    <img src={imagePreview || 'default-placeholder-image-path'} alt="Book Cover" className="img-fluid" id="bookImage" style={{minWidth: '100px', height: 'auto', maxHeight: '1000px', objectFit: 'cover'}} />
+                                    <img src={imagePreview || 'default-placeholder-image-path'} alt="Book Cover" className="img-fluid" id="bookImage" style={{minWidth: '100px', height: 'auto', maxHeight: '1200px', objectFit: 'cover'}} />
                                     <div className="img-hover-text">
                                         <i className="fas fa-pencil-alt" style={{color: '#D1E9C3'}}></i>
                                         {t('editAssetView.changeImage')}
@@ -114,13 +117,20 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                                 <input type="file" accept="image/*" name="file" id="image-modal" style={{display:'none'}} onChange={handleImageChange} />
                                 {formErrors.image && <div className="error">{formErrors.image}</div>}
                             </div>
-                                <div>
+                            <div style={{padding: "0 20px", width: "500px"}}>
                             {/* Physical Condition Dropdown */}
                             <div className="form-group">
                                 <label htmlFor="physicalCondition-modal">{t('physicalConditionLabel')}</label>
                                 <select className="form-control" name="physicalCondition" id="physicalCondition-modal" value={formData.physicalCondition} onChange={handleChange}>
-                                    <option value="ASNEW">{t('enum.ASNEW')}</option>
-                                    {/* ... other options ... */}
+                                    <option value="ASNEW">{t('ASNEW')}</option>
+                                    <option value="VERYGOOD">{t('VERYGOOD')}</option>
+                                    <option value="GOOD">{t('GOOD')}</option>
+                                    <option value="FINE">{t('FINE')}</option>
+                                    <option value="FAIR">{t('FAIR')}</option>
+                                    <option value="POOR">{t('POOR')}</option>
+                                    <option value="EXLIBRARY">{t('EXLIBRARY')}</option>
+                                    <option value="BOOKCLUB">{t('BOOKCLUB')}</option>
+                                    <option value="BINDINGCOPY">{t('BINDINGCOPY')}</option>
                                 </select>
                                 {formErrors.physicalCondition && <div className="error">{formErrors.physicalCondition}</div>}
                             </div>
@@ -144,10 +154,18 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                             {/* Is Reservable Checkbox */}
                             <div className="form-group">
                                 <label htmlFor="isReservable-modal">{t('isReservableLabel')}</label>
-                                <input type="checkbox" className="form-control" name="isReservable" id="isReservable-modal" checked={formData.isReservable} onChange={handleChange} />
+                                <input
+                                    type="checkbox"
+                                    className="form-control"
+                                    name="isReservable"
+                                    id="isReservable-modal"
+                                    checked={formData.isReservable}
+                                    onChange={handleChange}
+                                />
                             </div>
 
-                            {/* Status Field */}
+
+                                    {/* Status Field */}
                             <div className="form-group">
                                 <label htmlFor="status-modal">{t('statusLabel')}</label>
                                 <select className="form-control" name="status" id="status-modal" value={formData.status} onChange={handleChange}>
@@ -156,23 +174,19 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                                 </select>
                                 {formErrors.status && <div className="error">{formErrors.status}</div>}
                             </div>
-                            {/* Location ID Field */}
-                            <div className="form-group">
-                                <label htmlFor="locationId-modal">{t('locationIdLabel')}</label>
-                                <input type="number" className="form-control" name="locationId" id="locationId-modal" value={formData.locationId} onChange={handleChange} />
-                                {formErrors.locationId && <div className="error">{formErrors.locationId}</div>}
-                            </div>
+
 
                             {/* Submit Button */}
                             <div className="form-group">
                                 <button className="submit-button btn btn-primary" type="submit">
                                     {t('save')}
                                 </button>
-                            </div> </div> </div>
+                            </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
-            </div>
         </div>
     );
 };
