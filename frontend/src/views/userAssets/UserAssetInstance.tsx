@@ -53,15 +53,15 @@ const UserAssetInstance = () => {
                 <BookDetails data={assetDetails}/>
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
-                     <MyBooksOptions
+                    {!isLending && <MyBooksOptions
                          asset={assetDetails}
                          haveActiveLendings={hasActiveLendings}
                          handleDelete={handleDelete}
                          editAssetReservability={editAssetReservability}
                          editAssetVisbility={editAssetVisbility}
                          editAsset={editAsset}
-                     />
-                    {/*{isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }*/}
+                     /> }
+                    {isLending && <LendedBooksOptions asset={assetDetails} canReview={canReview} /> }
                 </div>
             </div>
         </div>

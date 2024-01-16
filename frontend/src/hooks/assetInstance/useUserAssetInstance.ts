@@ -5,7 +5,7 @@ import {api, api_} from "../api/api.ts";
 const useUserAssetInstance = (location, id) => {
 
     const queryParams = new URLSearchParams(location.search);
-    const isLending = queryParams.get('isLending');
+    const isLending = queryParams.get('isLending') === "true";
     const [assetDetails, setAssetDetails] = useState({})
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
 
@@ -41,10 +41,9 @@ const useUserAssetInstance = (location, id) => {
         }
 
         if(isLending)
-            await setAssetDetails({...assetDetails_, ...lending})
-
-        console.log(assetDetails_)
-        await setAssetDetails(assetDetails_)
+            await setAssetDetails({...assetDetails_, lending: lending})
+        else
+            await setAssetDetails(assetDetails_)
     }
 
     const editAssetVisbility = async (asset: any) => {

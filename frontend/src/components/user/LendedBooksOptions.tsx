@@ -21,9 +21,10 @@ export const isDelivered = (lending: string) => {
     return lending === "DELIVERED"
 }
 
-function LendedBooksOptions({ lending, canReview }) {
+function LendedBooksOptions({ asset, canReview }) {
     const { t } = useTranslation();
 
+    console.log(asset)
     return (
         <div style={{
             backgroundColor: '#f0f5f0',
@@ -32,9 +33,9 @@ function LendedBooksOptions({ lending, canReview }) {
             width: '50%'
         }}>
             <h3>Lended Book actions</h3>
-            {!isRejected(lending.state) && !isFinished(lending.state) && (
+            {!isRejected(asset.lending.state) && !isFinished(asset.lending.state) && (
                 <div className="options-menu">
-                    {isActive(lending.state) && (
+                    {isActive(asset.lending.state) && (
                         <>
                             <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
                                 {t('userHomeView.minText')} {t('userHomeView.pending')}
@@ -47,7 +48,7 @@ function LendedBooksOptions({ lending, canReview }) {
                             </button>
                         </>
                     )}
-                    {isDelivered(lending.state) && (
+                    {isDelivered(asset.lending.state) && (
                         <>
                             <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
                                 {t('userHomeView.minText')} {t('userHomeView.inProgress')}
@@ -60,7 +61,7 @@ function LendedBooksOptions({ lending, canReview }) {
                 </div>
             )}
             {canReview && (
-                <a className="btn btn-green mt-3" href={`/review/lender/${lending.id}`}>
+                <a className="btn btn-green mt-3" href={`/review/lender/${asset.lending.id}`}>
                     {t('makeReview')}
                 </a>
             )}
