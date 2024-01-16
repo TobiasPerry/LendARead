@@ -48,11 +48,7 @@ const useUserAssetInstance = (location, id) => {
     }
 
     const editAssetVisbility = async (asset: any) => {
-        console.log('current state', asset.status)
-        const data = {...asset.assetinstance}
-        data.status = data.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"
-
-        await api.patch(data.selfUrl, data,
+        await api.patch(asset.assetinstance.selfUrl, { status:  asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
             {
                 headers: {"Content-type": "multipart/form-data"}
             })
@@ -60,18 +56,37 @@ const useUserAssetInstance = (location, id) => {
     }
 
     const editAssetReservability = async (asset: any) => {
-        console.log("change asset reservability!!!")
-        const data = {...asset.assetinstance, isReservable: !asset.isReservable}
-        console.log('modified asset', data)
 
-        await api.patch(data.selfUrl, data,
-            {headers: {"Content-type": "multipart/form-data"}
+        await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
+            {
+                headers: {"Content-type": "multipart/form-data"
+                }
             })
 
         await fetchUserAssetDetails()
     }
 
     const editAsset = async (asset: any) => {
+        /*
+        *   physicalCondition: '', DONE
+        maxDays: '', DONE
+        description: '', DONE
+        locationId: '',
+        isReservable: false, DONE
+        status: '', DONE
+        image: null
+        * */
+
+
+        console.log('post edit asset!', asset)
+        const newImageUrl = assetDetails.imageUrl
+
+        await api.patch(assetDetails.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, image: newImageUrl, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
+            {
+                headers: {"Content-type": "multipart/form-data"
+                }
+            })
+        await fetchUserAssetDetails()
 
     }
 

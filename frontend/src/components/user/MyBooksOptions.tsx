@@ -28,9 +28,10 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
         setShowModalDelete(true);
         await handleDelete(asset)
     }
-    const handleEditAsset = async (editedAset) => {
+    const handleEditAsset = async (editedAsset) => {
         setShowModalEdit(true);
-        await editAsset(editedAset)
+        console.log('editedAsset', editedAsset)
+        await editAsset(editedAsset)
     }
 
     useEffect(() => {

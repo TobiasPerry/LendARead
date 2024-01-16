@@ -32,6 +32,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
             status: assetInstance.status || '',
             image: null
         });
+        setImagePreview(assetInstance.imageUrl)
     }, [assetInstance]);
 
     const validateForm = () => {
@@ -72,6 +73,8 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
         e.preventDefault();
         const errors = validateForm();
         if (Object.keys(errors).length === 0) {
+            console.log('guardeee')
+            console.log('formdate', formData)
             handleSave(formData);
         } else {
             // @ts-ignore
@@ -108,7 +111,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                             {/* Image Upload and Preview */}
                             <div className="image-wrapper" style={{padding: "20px 0px"}}>
                                 <label htmlFor="image-modal" className={`image-container position-relative ${formErrors.image ? 'image-border-error' : ''}`}>
-                                    <img src={imagePreview || 'default-placeholder-image-path'} alt="Book Cover" className="img-fluid" id="bookImage" style={{maxWidth: '100%', minWidth: '100px', height: 'auto', maxHeight: '1000px', objectFit: 'cover'}} />
+                                    <img src={imagePreview} alt="Book Cover" className="img-fluid" id="bookImage" style={{maxWidth: '100%', minWidth: '100px', height: 'auto', maxHeight: '1000px', objectFit: 'cover'}} />
                                     <div className="img-hover-text">
                                         <i className="fas fa-pencil-alt" style={{color: '#D1E9C3'}}></i>
                                         {t('editAssetView.changeImage')}
@@ -176,7 +179,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
 
                             {/* Submit Button */}
                             <div className="form-group">
-                                <button className="submit-button btn btn-primary" type="submit">
+                                <button className="submit-button btn btn-primary"  onClick={handleSave}>
                                     {t('save')}
                                 </button>
                             </div>
