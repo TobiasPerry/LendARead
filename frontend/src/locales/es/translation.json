@@ -82,6 +82,8 @@
     "deleteTitle": "Eliminar Activo",
     "deleteAssetText": "¿Estás seguro de que quieres eliminar este activo? Esta acción no es reversible.",
     "deleteAsset": "Eliminar",
+    "makeNotReservable": "Hacer no reservable",
+    "makeReservable": "Hacer reservable",
     "changeVisibityPublic": {
       "button": "Hacer Público"
     },

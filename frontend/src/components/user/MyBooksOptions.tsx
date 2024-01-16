@@ -62,13 +62,13 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
 
             {!haveActiveLendings && (
                 <button id="changeIsReservable" className="btn btn-green m-1" style={{ marginTop: '5px' }} onClick={() => setShowModalReservable(true)}>
-                    {asset.reservable ? (
+                    {asset.isReservable ? (
                         <>
-                            <i className="fas fa-calendar-times"></i> {t('not_reservable')}
+                            <i className="fas fa-calendar-times"></i> {t('userHomeView.makeNotReservable')}
                         </>
                     ) : (
                         <>
-                            <i className="fas fa-calendar-alt"></i> {t('reservable')}
+                            <i className="fas fa-calendar-alt"></i> {t('userHomeView.makeReservable')}
                         </>
                     )}
                 </button>

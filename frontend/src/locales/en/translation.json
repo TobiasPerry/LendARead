@@ -40,6 +40,8 @@
     "deleteTitle": "Delete Asset",
     "deleteAssetText": "Are you sure you want to delete this asset? This action is not reversible.",
     "deleteAsset": "Delete",
+    "makeNotReservable": "Make non reservable",
+    "makeReservable": "Make reservable",
     "inProgress": "In Progress",
     "verifyBook": "Verify Book",
     "rejectAssetTitle": "Reject Asset",

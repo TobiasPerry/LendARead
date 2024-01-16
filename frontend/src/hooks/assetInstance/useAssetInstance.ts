@@ -27,6 +27,7 @@ const useAssetInstance = () => {
         const books = []
 
         try {
+            //TODO: ippo fijate de que axios tiene un argumento para pasar esto automaticamente, tipo un objeto y te lo hace query params
             let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}`
             if(search !== ""){
                 url += `&search=${search}`

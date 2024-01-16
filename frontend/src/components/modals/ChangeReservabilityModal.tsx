@@ -13,7 +13,7 @@ function ChangeReservabilityModal({ asset, showModal, handleCloseModal, handleSu
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
-                        {asset.reservable ? (
+                        {asset.isReservable ? (
                                 <i className="fas fa-calendar-times"></i>
                         ) : (
                                 <i className="fas fa-calendar-alt"></i>
@@ -28,11 +28,11 @@ function ChangeReservabilityModal({ asset, showModal, handleCloseModal, handleSu
                     </div>
                     <div className="modal-body">
                         <p>
-                            {asset.reservable ? t('userHomeView.changeReservabilityNo'): t('userHomeView.changeReservabilityYes') }
+                            {asset.isReservable ? t('userHomeView.changeReservabilityNo'): t('userHomeView.changeReservabilityYes') }
                         </p>
                     </div>
                     <button type="submit" className="btn btn-green" onClick={handleSubmitModal}>
-                        {asset.reservable ? t('userHomeView.makeReservableNo') : t('userHomeView.makeReservableYes')}
+                        {asset.isReservable ? t('userHomeView.makeReservableNo') : t('userHomeView.makeReservableYes')}
                     </button>
                 </div>
             </div>
