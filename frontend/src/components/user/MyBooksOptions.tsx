@@ -21,7 +21,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
     }
 
     const handleSubmitReservabilityModal = async () => {
-        setShowModalReservable(true);
+        setShowModalReservable(false);
         await editAssetReservability(asset);
     }
     const handleDeleteModal = async () => {

@@ -50,7 +50,7 @@ const useUserAssetInstance = (location, id) => {
         const data = {...asset.assetinstance}
         data.status = data.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"
 
-        await api.patch(`/assetInstances/${asset.id}`, data,
+        await api.patch(data.selfUrl, data,
             {
                 headers: {"Content-type": "multipart/form-data"}
             })
@@ -58,17 +58,19 @@ const useUserAssetInstance = (location, id) => {
     }
 
     const editAssetReservability = async (asset: any) => {
-        console.log('current reservable', asset.assetinstance.reservable)
-        const data = {...asset.assetinstance}
-        data.reservable = !data.reservable
+        console.log("change asset reservability!!!")
+        const data = {...asset.assetinstance, isReservable: !asset.isReservable}
+        console.log('modified asset', data)
 
-        await api.patch(`/assetInstances/${asset.id}`, data,
-            {headers: {"Content-type": "multipart/form-data"}})
+        await api.patch(data.selfUrl, data,
+            {headers: {"Content-type": "multipart/form-data"}
+            })
+
         await fetchUserAssetDetails()
     }
 
     const deleteAssetInstance = async (asset: any) => {
-        await api.delete(`/assetInstances/${asset.id}`)
+        await api.delete(asset.selfUrl)
     }
 
     return {
