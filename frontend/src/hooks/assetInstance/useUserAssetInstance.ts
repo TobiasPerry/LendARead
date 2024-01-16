@@ -81,7 +81,7 @@ const useUserAssetInstance = (location, id) => {
         console.log('post edit asset!', asset)
         const newImageUrl = assetDetails.imageUrl
 
-        await api.patch(assetDetails.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, image: newImageUrl, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
+        await api.patch(assetDetails.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
             {
                 headers: {"Content-type": "multipart/form-data"
                 }

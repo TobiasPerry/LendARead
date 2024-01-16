@@ -72,11 +72,16 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
     const handleSubmit = (e) => {
         e.preventDefault();
         const errors = validateForm();
-        if (Object.keys(errors).length === 0) {
+        console.log('submitt')
+
+        if ( formErrors.physicalCondition === "" &&
+            formErrors.locationId === "" && formErrors.status === "" && formErrors.description === "" && formErrors.maxDays === "") {
             console.log('guardeee')
             console.log('formdate', formData)
             handleSave(formData);
         } else {
+            console.log(errors)
+
             // @ts-ignore
             setFormErrors(errors);
         }
@@ -106,7 +111,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                         </button>
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <div className="d-flex flex-row">
                             {/* Image Upload and Preview */}
                             <div className="image-wrapper" style={{padding: "20px 0px"}}>
@@ -179,7 +184,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
 
                             {/* Submit Button */}
                             <div className="form-group">
-                                <button className="submit-button btn btn-primary"  onClick={handleSave}>
+                                <button className="submit-button btn btn-primary" onClick={handleSubmit}>
                                     {t('save')}
                                 </button>
                             </div>
