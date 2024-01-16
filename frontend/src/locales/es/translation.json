@@ -228,5 +228,29 @@
   "BOOKCLUB": "Club de libro",
   "BINDINGCOPY": "Copia de encuadernación",
   "private": "Privado",
-  "public": "Publico"
+  "public": "Publico",
+  "reviews": {
+    "lender": {
+      "user": {
+        "title": "¿Como calificas a {{user}} como prestatario/a de libros?",
+        "placeholder": "Añade una breve descripción",
+        "error_stars": "Agregá una puntuación",
+        "error_text": "Este campo es obligatorio"
+      }
+    },
+    "borrower": {
+      "user": {
+        "title": "¿Como calificas a {{user}} como prestador/a de libros?",
+        "placeholder": "Add a short description",
+        "error_stars": "Agregá una puntuación",
+        "error_text": "Este campo es obligatorio"
+      },
+      "book": {
+        "title": "¿Como calificarías el libro y su condition física?",
+        "placeholder": "el libro me gusto/no me gusto, la portada estaba dañada",
+        "error_stars": "Agregá una puntuación",
+        "error_text": "Este campo es obligatorio"
+      }
+    }
+  }
 }

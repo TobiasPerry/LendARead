@@ -1,10 +1,15 @@
 import "../styles/starRating.css"
-const ReviewCard = () => {
+const ReviewCard = ({
+                        title = "",
+                        placeholder  = "",
+                        error_stars  = "",
+                        error_description  = ""
+                    }) => {
     return (
         <>
             <div style={{backgroundColor: '#f0f5f0', borderRadius: '20px', margin: '20px', padding: '20px'}}>
                 <h2>
-                    Text + username
+                    {title}
                 </h2>
                 <div className="rating-wrapper">
 
@@ -42,12 +47,12 @@ const ReviewCard = () => {
                     </label>
                 </div>
                 <p className="error">
-                    Text error
+                    {error_stars}
                 </p>
                 <textarea className="form-control" aria-label="With textarea" id="review-area"
-                          placeholder="placeholder"></textarea>
+                          placeholder={placeholder}></textarea>
                 <p className="error">
-                    Text error
+                    {error_description}
                 </p>
             </div>
         </>

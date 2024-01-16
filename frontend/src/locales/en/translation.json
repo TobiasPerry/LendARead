@@ -229,5 +229,29 @@
   "POOR": "Poor",
   "EXLIBRARY": "Ex library",
   "BOOKCLUB": "Bookclub",
-  "BINDINGCOPY": "Binding copy"
+  "BINDINGCOPY": "Binding copy",
+  "reviews": {
+    "lender": {
+      "user": {
+        "title": "How do you rate {{user}} as a book borrower?",
+        "placeholder": "Add a short description",
+        "error_stars": "Add a rating",
+        "error_text": "The field is mandatory"
+      }
+    },
+    "borrower": {
+      "user": {
+        "title": "How do you rate {{user}} as a book lender? ",
+        "placeholder": "Add a short description",
+        "error_stars": "Add a rating",
+        "error_text": "The field is mandatory"
+      },
+      "book": {
+        "title": "How do you rate the book and its physical condition?",
+        "placeholder": "I loved/hated the book, the cover was damaged",
+        "error_stars": "Add a rating",
+        "error_text": "The field is mandatory"
+      }
+    }
+  }
 }
