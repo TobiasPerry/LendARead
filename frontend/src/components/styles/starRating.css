@@ -1,0 +1,40 @@
+
+.rating-wrapper {
+    align-self: center;
+    border-radius: 5rem;
+    display: inline-flex;
+    direction: rtl !important;
+    padding: 0.5rem 1.5rem;
+    margin-left: auto;
+}
+
+.rating-wrapper label {
+    color: #E1E6F6;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 3rem;
+    padding: 1rem 0.6rem;
+    transition: color 0.5s;
+}
+
+.rating-wrapper svg {
+    -webkit-text-fill-color: transparent;
+    -webkit-filter: drop-shadow(4px 1px 6px rgba(198, 206, 237, 1));
+    filter: drop-shadow(5px 1px 3px rgba(198, 206, 237, 1));
+}
+
+.rating-wrapper input {
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+
+.rating-wrapper label:hover,
+.rating-wrapper label:hover ~ label,
+.rating-wrapper input:checked ~ label {
+    color: #34AC9E;
+}
+
+.star{
+    font-size: 30px
+}

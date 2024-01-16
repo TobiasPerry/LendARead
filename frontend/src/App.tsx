@@ -13,6 +13,8 @@ import AuthProvider from "./contexts/authContext.tsx";
 import Locations from "./views/user/Locations.tsx";
 import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
 import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
+import ReviewLender from "./views/reviews/ReviewLender.tsx";
+import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
 
 
 export default function App() {
@@ -32,6 +34,8 @@ export default function App() {
                     <Route path="user" element={<LoginView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance />} />
                     <Route path="userBook/:id" element={<UserAssetInstance />} />
+                    <Route path="review/lender/:id" element={<ReviewLender />} />
+                    <Route path="review/borrower/:id" element={<ReviewBorrower />} />
                     {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
