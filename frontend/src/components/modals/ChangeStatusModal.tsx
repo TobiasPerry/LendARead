@@ -30,7 +30,7 @@ function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitMod
                             </p>
                         </div>
                             <button type="submit" className="btn btn-green" onClick={handleSubmitModal}>
-                                {isPrivate(asset.state) ? t('userHomeView.makePrivate') : t('userHomeView.makePublic')}
+                                {isPrivate(asset.state) ? t('userHomeView.makePublic'): t('userHomeView.makePrivate') }
                             </button>
 
                 </div>
