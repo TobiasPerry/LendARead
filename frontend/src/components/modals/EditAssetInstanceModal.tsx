@@ -24,7 +24,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
 
     useEffect(() => {
         setFormData({
-            physicalCondition: assetInstance.physicalCondition || '',
+            physicalCondition: assetInstance.condition || '',
             maxDays: assetInstance.maxDays || '',
             description: assetInstance.description || '',
             locationId: assetInstance.locationId || '',
@@ -108,7 +108,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                             {/* Image Upload and Preview */}
                             <div className="image-wrapper" style={{padding: "20px 0px"}}>
                                 <label htmlFor="image-modal" className={`image-container position-relative ${formErrors.image ? 'image-border-error' : ''}`}>
-                                    <img src={imagePreview || 'default-placeholder-image-path'} alt="Book Cover" className="img-fluid" id="bookImage" style={{minWidth: '100px', height: 'auto', maxHeight: '1200px', objectFit: 'cover'}} />
+                                    <img src={imagePreview || 'default-placeholder-image-path'} alt="Book Cover" className="img-fluid" id="bookImage" style={{maxWidth: '100%', minWidth: '100px', height: 'auto', maxHeight: '1000px', objectFit: 'cover'}} />
                                     <div className="img-hover-text">
                                         <i className="fas fa-pencil-alt" style={{color: '#D1E9C3'}}></i>
                                         {t('editAssetView.changeImage')}
@@ -156,9 +156,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                                 <label htmlFor="isReservable-modal">{t('isReservableLabel')}</label>
                                 <input
                                     type="checkbox"
-                                    className="form-control"
                                     name="isReservable"
-                                    id="isReservable-modal"
                                     checked={formData.isReservable}
                                     onChange={handleChange}
                                 />

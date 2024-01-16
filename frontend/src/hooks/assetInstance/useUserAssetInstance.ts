@@ -19,12 +19,14 @@ const useUserAssetInstance = (location, id) => {
             title: asset.title,
             author: asset.author,
             condition: assetinstace.physicalCondition,
+            description: assetinstace.description,
             language: lang.name,
             isbn: asset.isbn,
             imageUrl: assetinstace.imageReference,
             isReservable: assetinstace.reservable,
             status: assetinstace.status,
             id: id,
+            maxDays: assetinstace.maxLendingDays,
             assetinstance: assetinstace
         }
 
