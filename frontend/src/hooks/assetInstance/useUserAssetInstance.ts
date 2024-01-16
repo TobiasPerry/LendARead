@@ -71,12 +71,16 @@ const useUserAssetInstance = (location, id) => {
         await fetchUserAssetDetails()
     }
 
+    const editAsset = async (asset: any) => {
+
+    }
+
     const deleteAssetInstance = async (asset: any) => {
         await api.delete(asset.selfUrl)
     }
 
     return {
-        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, editAssetVisbility, editAssetReservability, deleteAssetInstance
+        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, editAssetVisbility, editAssetReservability, deleteAssetInstance, editAsset
     }
 }
 

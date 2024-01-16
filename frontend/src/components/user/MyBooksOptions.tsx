@@ -6,7 +6,7 @@ import ChangeReservabilityModal from "../modals/ChangeReservabilityModal.tsx";
 import DeleteModal from "../modals/DeleteModal.tsx";
 import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
 
-function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handleDelete, editAssetReservability}) {
+function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handleDelete, editAssetReservability, editAsset}) {
     const { t } = useTranslation();
 
     const [showModalVisibility, setShowModalVisibility] = useState(false);
@@ -28,8 +28,9 @@ function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handl
         setShowModalDelete(true);
         await handleDelete(asset)
     }
-    const handleEditAsset = () => {
+    const handleEditAsset = async (editedAset) => {
         setShowModalEdit(true);
+        await editAsset(editedAset)
     }
 
     useEffect(() => {

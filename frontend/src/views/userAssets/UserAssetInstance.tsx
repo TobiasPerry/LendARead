@@ -21,7 +21,8 @@ const UserAssetInstance = () => {
         hasActiveLendings,
         editAssetVisbility,
         editAssetReservability,
-        deleteAssetInstance
+        deleteAssetInstance,
+        editAsset
     } = useUserAssetInstance(location, id)
 
 
@@ -58,6 +59,7 @@ const UserAssetInstance = () => {
                          handleDelete={handleDelete}
                          editAssetReservability={editAssetReservability}
                          editAssetVisbility={editAssetVisbility}
+                         editAsset={editAsset}
                      />
                     {/*{isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }*/}
                 </div>
