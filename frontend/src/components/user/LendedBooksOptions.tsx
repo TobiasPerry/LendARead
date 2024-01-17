@@ -24,31 +24,33 @@ export const isDelivered = (lending: string) => {
 }
 
 function LendedBooksOptions({ asset, canReview }) {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
-    useEffect( () => {
+    useEffect(() => {
 
         console.log(asset)
     }, [asset])
     return (
-        <>
+        <div style={{
+            backgroundColor: '#f0f5f0',
+            padding: '25px',
+            borderRadius: '20px',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        }} className="flex-column">
             {!(asset === undefined || asset.lending === undefined) && (
-                <div style={{
-                    backgroundColor: '#f0f5f0',
-                    padding: '10px',
-                    borderRadius: '20px',
-                    display: "flex",
-                    alignContent: "center",
-                }} className="flex-column">
-                    <h3>Lended Book actions</h3>
+                <div>
+                    <h3 >Lended Book actions</h3>
                     {!isRejected(asset.lending.state) && !isFinished(asset.lending.state) && (
-                        <div className="options-menu">
+                        <div className="options-menu"
+                             style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                             {isActive(asset.lending.state) && (
                                 <>
-                                    <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
+                                    <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", margin: "15px 0"}}>
                                         {t('userHomeView.pendingText')}
                                     </h6>
-                                    <div className=" d-flex flex-center m-auto">
+                                    <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
                                         <button id="confirmAssetBtn" className="btn btn-green" type="submit">
                                             {t('userHomeView.verifyBook')}
                                         </button>
@@ -60,10 +62,11 @@ function LendedBooksOptions({ asset, canReview }) {
                             )}
                             {isDelivered(asset.lending.state) && (
                                 <>
-                                    <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
+                                    <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center'}}>
                                         {t('userHomeView.inProgress')}
                                     </h6>
-                                    <button id="returnAssetBtn" className="btn btn-green" type="submit">
+                                    <button id="returnAssetBtn" className="btn btn-green" type="submit"
+                                            style={{marginTop: '10px', alignSelf: 'center'}}>
                                         {t('userHomeView.confirmReturn')}
                                     </button>
                                 </>
@@ -71,18 +74,17 @@ function LendedBooksOptions({ asset, canReview }) {
                         </div>
                     )}
                     {canReview && (
-                        <Link className="btn btn-green mt-3" to="/reviews">
+                        <Link className="btn btn-green mt-3" to="/reviews" style={{alignSelf: 'center'}}>
                             {t('makeReview')}
                         </Link>
                     )}
                     {/* Include modal components here */}
                     {/* <ReturnModal lending={lending} />
-      <ConfirmModal lending={lending} />
-      <RejectModal lending={lending} /> */}
+                <ConfirmModal lending={lending} />
+                <RejectModal lending={lending} /> */}
                 </div>
             )}
-        </>
+        </div>
     );
 }
-
-export default LendedBooksOptions;
+    export default LendedBooksOptions;
