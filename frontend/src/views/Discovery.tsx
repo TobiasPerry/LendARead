@@ -91,7 +91,12 @@ const DiscoveryView =  () => {
         setLoading(false)
     };
     useEffect(()=>{
+        document.title = t('discovery.title')
         fetchData();
+        // for when it unmounts
+        return () => {
+            document.title = "Lend a Read"
+        }
     }, [currentPage, booksPerPage, sort, sortDirection, search])
 
     return (

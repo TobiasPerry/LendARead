@@ -5,6 +5,7 @@ import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import NotFound from "../../components/NotFound.tsx";
+import {useTranslation} from "react-i18next";
 
 const ViewAssetInstance = () => {
 
@@ -26,6 +27,8 @@ const ViewAssetInstance = () => {
         reviews: undefined,
     }
 
+    const {t} = useTranslation()
+
     const { bookNumber } = useParams<{ bookNumber: string}>()
 
     const {handleAssetInstance} = useAssetInstance()
@@ -41,6 +44,7 @@ const ViewAssetInstance = () => {
     const [ownerRating, setOwnerRating] = useState(3)
 
     useEffect(() => {
+        document.title = "Book"
         const fetchData = async () => {
             setLoading(true);
             setData(book)
@@ -51,6 +55,11 @@ const ViewAssetInstance = () => {
             setLoading(false)
         };
         fetchData()
+        document.title = t('view_asset.title', {title: data.title, author: data.author})
+        // for when it unmounts
+        return () => {
+            document.title = "Lend a Read"
+        }
     }, []);
 
 

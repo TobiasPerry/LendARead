@@ -159,6 +159,7 @@
   },
 
   "discovery": {
+    "title": "Explore books",
     "searchbar": {
       "placeholder": "Search by Author or Title"
     },
@@ -231,6 +232,7 @@
   "BOOKCLUB": "Bookclub",
   "BINDINGCOPY": "Binding copy",
   "reviews": {
+    "title": "Make a review",
     "lender": {
       "user": {
         "title": "How do you rate {{user}} as a book borrower?",
@@ -253,5 +255,8 @@
         "error_text": "The field is mandatory"
       }
     }
+  },
+  "view_asset": {
+    "title": "{{title}} by {{author}}"
   }
 }

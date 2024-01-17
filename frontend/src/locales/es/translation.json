@@ -156,6 +156,7 @@
   },
 
   "discovery": {
+    "title": "Explorar Libros",
     "searchbar": {
       "placeholder": "Buscar por Titulo o Autor"
     },
@@ -230,6 +231,7 @@
   "private": "Privado",
   "public": "Publico",
   "reviews": {
+    "title": "Reseña",
     "lender": {
       "user": {
         "title": "¿Como calificas a {{user}} como prestatario/a de libros?",
@@ -252,5 +254,8 @@
         "error_text": "Este campo es obligatorio"
       }
     }
+  },
+  "view_asset": {
+    "title": "{{title}} por {{author}}"
   }
 }
