@@ -34,8 +34,8 @@ export default function App() {
                     <Route path="user" element={<LoginView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance />} />
                     <Route path="userBook/:id" element={<UserAssetInstance />} />
-                    <Route path="review/lender/:id" element={<ReviewLender />} />
-                    <Route path="review/borrower/:id" element={<ReviewBorrower />} />
+                    <Route path="review/lender/:lendingNumber" element={<ReviewLender />} />
+                    <Route path="review/borrower/:lendingNumber" element={<ReviewBorrower />} />
                     {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}

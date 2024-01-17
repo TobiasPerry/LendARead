@@ -46,7 +46,6 @@ const ViewAssetInstance = () => {
             setData(book)
             const res: AssetData = await handleAssetInstance(bookNumber)
             setFound((!(res === null || res === undefined)))
-            console.log(res)
             setHasUserImage(true)
             setData(res)
             setLoading(false)

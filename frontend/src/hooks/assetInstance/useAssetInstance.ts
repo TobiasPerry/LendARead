@@ -28,11 +28,12 @@ const useAssetInstance = () => {
 
         try {
             //TODO: ippo fijate de que axios tiene un argumento para pasar esto automaticamente, tipo un objeto y te lo hace query params
+            // TODO: Joya grax Scili
             let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}`
             if(search !== ""){
                 url += `&search=${search}`
             }
-            console.log(url)
+
             const data = await api.get(url)
 
             const body =  data.data
