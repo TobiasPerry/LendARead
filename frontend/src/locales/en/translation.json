@@ -37,6 +37,7 @@
   "isReservableLabel": "Is Reservable",
   "statusLabel": "Status",
   "userHomeView": {
+    "pendingText": "This asset has an open lending request. Do you want to confirm or reject the lending request?",
     "changeReservability": "Change Reservability",
     "changeReservabilityNo": "This asset is currently reservable. Do you want to make it non-reservable?",
     "changeReservabilityYes": "This asset is currently not reservable. Do you want to make it reservable?",

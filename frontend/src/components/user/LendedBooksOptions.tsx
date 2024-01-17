@@ -1,6 +1,7 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import { useTranslation } from 'react-i18next';
 import {Link} from "react-router-dom";
+import LoadingAnimation from "../LoadingAnimation.tsx";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -30,50 +31,57 @@ function LendedBooksOptions({ asset, canReview }) {
         console.log(asset)
     }, [asset])
     return (
-        <div style={{
-            backgroundColor: '#f0f5f0',
-            padding: '100px',
-            borderRadius: '20px',
-            width: '50%'
-        }}>
-            <h3>Lended Book actions</h3>
-            {!isRejected(asset.lending.state) && !isFinished(asset.lending.state) && (
-                <div className="options-menu">
-                    {isActive(asset.lending.state) && (
-                        <>
-                            <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
-                                {t('userHomeView.minText')} {t('userHomeView.pending')}
-                            </h6>
-                            <button id="confirmAssetBtn" className="btn btn-green" type="submit">
-                                {t('userHomeView.verifyBook')}
-                            </button>
-                            <button id="rejectAssetBtn" className="btn btn-red-outline mt-2" type="submit">
-                                {t('userHomeView.rejectAssetTitle')}
-                            </button>
-                        </>
+        <>
+            {!(asset === undefined || asset.lending === undefined) && (
+                <div style={{
+                    backgroundColor: '#f0f5f0',
+                    padding: '10px',
+                    borderRadius: '20px',
+                    display: "flex",
+                    alignContent: "center",
+                }} className="flex-column">
+                    <h3>Lended Book actions</h3>
+                    {!isRejected(asset.lending.state) && !isFinished(asset.lending.state) && (
+                        <div className="options-menu">
+                            {isActive(asset.lending.state) && (
+                                <>
+                                    <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
+                                        {t('userHomeView.pendingText')}
+                                    </h6>
+                                    <div className=" d-flex flex-center m-auto">
+                                        <button id="confirmAssetBtn" className="btn btn-green" type="submit">
+                                            {t('userHomeView.verifyBook')}
+                                        </button>
+                                        <button id="rejectAssetBtn" className="btn btn-red-outline mt-2" type="submit">
+                                            {t('userHomeView.rejectAssetTitle')}
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                            {isDelivered(asset.lending.state) && (
+                                <>
+                                    <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
+                                        {t('userHomeView.inProgress')}
+                                    </h6>
+                                    <button id="returnAssetBtn" className="btn btn-green" type="submit">
+                                        {t('userHomeView.confirmReturn')}
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     )}
-                    {isDelivered(asset.lending.state) && (
-                        <>
-                            <h6 style={{ color: '#7d7c7c', fontWeight: 'bold' }}>
-                                {t('userHomeView.minText')} {t('userHomeView.inProgress')}
-                            </h6>
-                            <button id="returnAssetBtn" className="btn btn-green" type="submit">
-                                {t('userHomeView.confirmReturn')}
-                            </button>
-                        </>
+                    {canReview && (
+                        <Link className="btn btn-green mt-3" to="/reviews">
+                            {t('makeReview')}
+                        </Link>
                     )}
-                </div>
-            )}
-            {canReview && (
-                <Link className="btn btn-green mt-3" to="/reviews">
-                    {t('makeReview')}
-                </Link>
-            )}
-            {/* Include modal components here */}
-            {/* <ReturnModal lending={lending} />
+                    {/* Include modal components here */}
+                    {/* <ReturnModal lending={lending} />
       <ConfirmModal lending={lending} />
       <RejectModal lending={lending} /> */}
-        </div>
+                </div>
+            )}
+        </>
     );
 }
 
