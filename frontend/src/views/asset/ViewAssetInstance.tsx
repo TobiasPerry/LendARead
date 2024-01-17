@@ -25,6 +25,7 @@ const ViewAssetInstance = () => {
             country: "",
         },
         reviews: undefined,
+        description: ""
     }
 
     const {t} = useTranslation()
@@ -44,18 +45,28 @@ const ViewAssetInstance = () => {
     const [ownerRating, setOwnerRating] = useState(3)
 
     useEffect(() => {
-        document.title = "Book"
         const fetchData = async () => {
             setLoading(true);
             setData(book)
             const res: AssetData = await handleAssetInstance(bookNumber)
             setFound((!(res === null || res === undefined)))
-            setHasUserImage(true)
+            if((!(res === null || res === undefined))) {
+                setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
+                setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
+            }else{
+                setHasUserImage(false)
+                setHasDescription(false)
+            }
             setData(res)
+            if((!(res === null || res === undefined))) {
+                document.title = t('view_asset.title', {title: res.title, author: res.author})
+            }else{
+                document.title = " Not Found "
+            }
             setLoading(false)
         };
         fetchData()
-        document.title = t('view_asset.title', {title: data.title, author: data.author})
+
         // for when it unmounts
         return () => {
             document.title = "Lend a Read"
@@ -102,7 +113,7 @@ const ViewAssetInstance = () => {
 
 
                                                  <h3 className="textOverflow" id="authorClick" data-author="data-author">
-                                                     text
+                                                     {t('view_asset.by')}:
                                                      <span className="text-clickable">
                                                 {data.author}
                                             </span>
@@ -115,11 +126,11 @@ const ViewAssetInstance = () => {
 
                                                  <h6 id="languageClick" data-language="data-language"
                                                      style={{color: '#7d7c7c'}}>
-                                                     text: <span className="text-clickable"> {data.language} </span>
+                                                     {t('view_asset.language')}: <span className="text-clickable"> {data.language} </span>
                                                  </h6>
 
                                                  <h6 style={{color: '#7d7c7c'}}>
-                                                     text: {data.isbn} </h6>
+                                                     {t('view_asset.isbn')}: {data.isbn} </h6>
 
 
                                                  <div className="container-row" style={{justifyContent: 'start'}}>
@@ -195,31 +206,31 @@ const ViewAssetInstance = () => {
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
                                                  <div className="card-body">
                                                      <h5 className="card-title" style={{textAlign: 'center'}}>
-                                                         text
+                                                         {t('view_asset.location.title')}
                                                      </h5>
                                                      <p className="card-text" style={{marginBottom: '-5px'}}>
-                                                         text
+                                                         {t('view_asset.location.zip_code')}
                                                      </p>
                                                      <h3 className="textOverflow">
                                                          {data.location.zipcode}
                                                      </h3>
 
                                                      <p className="card-text" style={{marginBottom: '-5px'}}>
-                                                         text
+                                                         {t('view_asset.location.locality')}
                                                      </p>
                                                      <h3 className="textOverflow">
                                                          {data.location.locality}
                                                      </h3>
 
                                                      <p className="card-text" style={{marginBottom: '-5px'}}>
-                                                         text
+                                                         {t('view_asset.location.province')}
                                                      </p>
                                                      <h3 className="textOverflow">
                                                          {data.location.province}
                                                      </h3>
 
                                                      <p className="card-text" style={{marginBottom: '-5px'}}>
-                                                         text
+                                                         {t('view_asset.location.country')}
                                                      </p>
                                                      <h3 className="textOverflow">
                                                          {data.location.country}
@@ -235,7 +246,7 @@ const ViewAssetInstance = () => {
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
                                                  <div className="card-body">
                                                      <h5 className="card-title" style={{textAlign: 'center'}}>
-                                                         text
+                                                         {t('view_asset.description.title')}
                                                      </h5>
                                                      {hasDescription ? (
                                                          <p style={{
@@ -244,14 +255,14 @@ const ViewAssetInstance = () => {
                                                              maxHeight: '200px',
                                                              overflowY: 'auto'
                                                          }}>
-                                                             text
+                                                             {data.description}
                                                          </p>
                                                      ) : (
                                                          <>
                                                              <h1 className="text-muted text-center mt-5"><i
                                                                  className="bi bi-x-circle"></i></h1>
                                                              <h6 className="text-muted text-center mb-5">
-                                                                 text
+                                                                 {t('view_asset.description.no_description')}
                                                              </h6>
                                                          </>
                                                      )
@@ -260,48 +271,7 @@ const ViewAssetInstance = () => {
                                              </div>
                                          </div>
                                      </div>
-                                     {
-                                         hasDescription ? (
-                                             <div className="container-row" style={{width: '50 %', marginBottom: '20px'}}>
-                                                 <div className="container-column" style={{flex: '0 0 100%'}}>
-                                                     <div className="card" style={{
-                                                         backgroundColor: '#e3e6e3',
-                                                         height: 'fit-content',
-                                                         borderRadius: '25px'
-                                                     }}>
-                                                         <div className="card-body">
-                                                             <h5 className="card-title" style={{textAlign: 'center'}}>
-                                                                 text
-                                                             </h5>
-                                                             <div className="container-row-wrapped">
 
-                                                                 {/*<c:forEach var="assetInstance" items="${assetInstances}">*/}
-                                                                 {/*    <*/}
-                                                                 {/*    % request.setCharacterEncoding("utf-8"); %>*/}
-                                                                 {/*    <jsp:include page="../components/bookCard.jsp">*/}
-                                                                 {/*        <jsp:param name="id" value="${assetInstance.id}"/>*/}
-                                                                 {/*        <jsp:param name="bookTitle" value="${assetInstance.book.name}"/>*/}
-                                                                 {/*        <jsp:param name="bookAuthor" value="${assetInstance.book.author}"/>*/}
-                                                                 {/*        <jsp:param name="imageId" value="${assetInstance.image.id}"/>*/}
-                                                                 {/*        <jsp:param name="user" value="${assetInstance.owner.name}"/>*/}
-                                                                 {/*        <jsp:param name="userPhoto"*/}
-                                                                 {/*                   value="${assetInstance.owner.profilePhoto == null? -1:assetInstance.owner.profilePhoto.id}"/>*/}
-                                                                 {/*        <jsp:param name="locality" value="${assetInstance.location.locality}"/>*/}
-                                                                 {/*        <jsp:param name="province" value="${assetInstance.location.province}"/>*/}
-                                                                 {/*        <jsp:param name="country" value="${assetInstance.location.country}"/>*/}
-                                                                 {/*        <jsp:param name="physicalCondition"*/}
-                                                                 {/*                   value="${assetInstance.physicalCondition}"/>*/}
-                                                                 {/*    </jsp:include>*/}
-                                                                 {/*</c:forEach>*/}
-                                                             </div>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         ) : (
-                                             <></>
-                                         )
-                                     }
 
 
                                      <div className="container-row" style={{width: '50 %', marginBottom: '20px'}}>
@@ -321,7 +291,7 @@ const ViewAssetInstance = () => {
                                                              <h1 className="text-muted text-center mt-5"><i
                                                                  className="bi bi-x-circle"></i></h1>
                                                              <h6 className="text-muted text-center mb-5">
-                                                                 text
+                                                                 {t('view_asset.reviews.no_reviews')}
                                                              </h6>
                                                              {/*        {*/}
                                                              {/*            hasReviews ? (<></>) : (<></>)*/}

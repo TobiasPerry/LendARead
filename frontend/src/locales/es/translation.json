@@ -256,6 +256,23 @@
     }
   },
   "view_asset": {
-    "title": "{{title}} por {{author}}"
+    "title": "{{title}} por {{author}}",
+    "by": "Por",
+    "language": "Idioma",
+    "isbn": "ISBN",
+    "location": {
+      "title": "¿Donde esta este libro?\n",
+      "zip_code": "Código postal",
+      "locality": "Localidad",
+      "province": "Provincia",
+      "country": "País"
+    },
+    "description": {
+      "title": "Descripción de la publicación",
+      "no_description": "No hay descripción para esta publicación"
+    },
+    "reviews": {
+      "no_reviews": "No hay reseñas para este libro"
+    }
   }
 }

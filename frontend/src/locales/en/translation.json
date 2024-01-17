@@ -257,6 +257,23 @@
     }
   },
   "view_asset": {
-    "title": "{{title}} by {{author}}"
+    "title": "{{title}} by {{author}}",
+    "by": "By",
+    "language": "Language",
+    "isbn": "ISBN",
+    "location": {
+      "title": "Where is this book?",
+      "zip_code": "Zip Code",
+      "locality": "Locality",
+      "province": "Province",
+      "country": "Country"
+    },
+    "description": {
+      "title": "Lending Description",
+      "no_description": "There is no description for this publication"
+    },
+    "reviews": {
+      "no_reviews": "There are no reviews for this book"
+    }
   }
 }

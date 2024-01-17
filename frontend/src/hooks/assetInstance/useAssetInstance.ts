@@ -17,6 +17,7 @@ export interface AssetData {
         country: string;
     },
     reviews: any;
+    description: string;
     // Add other properties as needed
 }
 
@@ -101,7 +102,8 @@ const useAssetInstance = () => {
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
-                reviews: body_reviews
+                reviews: body_reviews,
+                description: body_instance.description
             };
         }catch (e){
             console.log("error");
