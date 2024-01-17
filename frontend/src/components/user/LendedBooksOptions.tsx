@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useTranslation } from 'react-i18next';
+import {Link} from "react-router-dom";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -24,7 +25,10 @@ export const isDelivered = (lending: string) => {
 function LendedBooksOptions({ asset, canReview }) {
     const { t } = useTranslation();
 
-    console.log(asset)
+    useEffect( () => {
+
+        console.log(asset)
+    }, [asset])
     return (
         <div style={{
             backgroundColor: '#f0f5f0',
@@ -61,9 +65,9 @@ function LendedBooksOptions({ asset, canReview }) {
                 </div>
             )}
             {canReview && (
-                <a className="btn btn-green mt-3" href={`/review/lender/${asset.lending.id}`}>
+                <Link className="btn btn-green mt-3" to="/reviews">
                     {t('makeReview')}
-                </a>
+                </Link>
             )}
             {/* Include modal components here */}
             {/* <ReturnModal lending={lending} />
