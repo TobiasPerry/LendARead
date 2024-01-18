@@ -37,6 +37,9 @@
   "isReservableLabel": "Is Reservable",
   "statusLabel": "Status",
   "userHomeView": {
+    "confirmReturnTitle": "Confirm Return",
+    "confirmReturnText": "By now you should make arrangements for delivery or have delivered the asset. Do you happen to have the book back?",
+    "confirmReturnButton": "Confirm Return",
     "rejectLendingTitle": "Reject lending",
     "rejectLendingText": "Rejecting the lending request is non-reversible. Do you want to reject the lending request?",
     "rejectLendingButton": "Reject Lending",

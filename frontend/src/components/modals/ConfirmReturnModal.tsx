@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import {isPrivate, isPublic} from "../user/LendedBooksOptions.tsx";
 
-function ConfirmLendingModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
+function ConfirmReturnModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
     const { t } = useTranslation();
 
     return (
@@ -13,7 +12,7 @@ function ConfirmLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
                 }}>
                     <div className="modal-header">
                         <h2 className="modal-title" id="modalTitle">
-                            {t('userHomeView.verifyLendingTitle')}
+                            {t('userHomeView.confirmReturnTitle')}
                         </h2>
 
                         <button onClick={handleCloseModal} className="btn btn-secondary">
@@ -22,11 +21,11 @@ function ConfirmLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
                     </div>
                     <div className="modal-body">
                         <p>
-                            {t('userHomeView.verifyLendingText') }
+                            {t('userHomeView.confirmReturnText') }
                         </p>
                     </div>
                     <button type="submit" className="btn btn-green" onClick={handleSubmitModal}>
-                        {t('userHomeView.verifyLendingButton')}
+                        {t('userHomeView.confirmReturnButton')}
                     </button>
 
                 </div>
@@ -35,4 +34,4 @@ function ConfirmLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
     );
 }
 
-export default ConfirmLendingModal;
+export default ConfirmReturnModal;

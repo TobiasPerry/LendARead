@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import LoadingAnimation from "../LoadingAnimation.tsx";
 import ConfirmLendingModal from "../modals/ConfirmLendingModal.tsx";
 import RejectLendingModal from "../modals/RejectLendingModal.tsx";
+import ConfirmReturnModal from "../modals/ConfirmReturnModal.tsx";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -30,6 +31,10 @@ function LendedBooksOptions({ asset, canReview }) {
 
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
+    const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
+    const handleReturnAsset = async () => {
+        setShowRejectAssetModal(false)
+    }
     const handleRejectAsset = async () => {
         setShowRejectAssetModal(false)
     }
@@ -89,15 +94,18 @@ function LendedBooksOptions({ asset, canReview }) {
                     )}
                     {/* Include modal components here */}
                     {/* <ReturnModal lending={lending} /> */}
-                <ConfirmLendingModal showModal={showConfirmAssetModal}
-                                     handleCloseModal={() => setShowConfirmAssetModal(false)}
-                                     asset={asset}
-                                     handleSubmitModal={handleConfirmAsset}
-                                     />
+                    <ConfirmLendingModal showModal={showConfirmAssetModal}
+                                         handleCloseModal={() => setShowConfirmAssetModal(false)}
+                                        asset={asset}
+                                        handleSubmitModal={handleConfirmAsset} />
                     <RejectLendingModal showModal={showRejectAssetModal}
                                         handleCloseModal={() => setShowRejectAssetModal(false)}
                                         asset={asset}
                                         handleSubmitModal={handleRejectAsset} />
+                    <ConfirmReturnModal showModal={showReturnAssetModal}
+                                        handleCloseModal={() => setShowReturnAssetModal(false)}
+                                        asset={asset}
+                                        handleSubmitModal={handleReturnAsset} />
                 </div>
             )}
         </div>
