@@ -5,6 +5,8 @@ import LoadingAnimation from "../LoadingAnimation.tsx";
 import ConfirmLendingModal from "../modals/ConfirmLendingModal.tsx";
 import RejectLendingModal from "../modals/RejectLendingModal.tsx";
 import ConfirmReturnModal from "../modals/ConfirmReturnModal.tsx";
+import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
+import useUserLendedBooksOptions from "../../hooks/assetInstance/useUserLendedBooksOptions.ts";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -26,22 +28,26 @@ export const isDelivered = (lending: string) => {
     return lending === "DELIVERED"
 }
 
-function LendedBooksOptions({ asset, canReview }) {
+function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
     const {t} = useTranslation();
 
 
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
+    const {rejectLending, returnLending, confirmLending} = useUserLendedBooksOptions(fetchUserAssetDetails)
     const handleReturnAsset = async () => {
         setShowRejectAssetModal(false)
+        await returnLending(asset)
     }
     const handleRejectAsset = async () => {
         setShowRejectAssetModal(false)
+        await rejectLending(asset)
     }
 
     const handleConfirmAsset = async () => {
         setShowConfirmAssetModal(false)
+        await confirmLending(asset)
     }
 
 

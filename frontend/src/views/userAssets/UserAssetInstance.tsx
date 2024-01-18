@@ -56,7 +56,7 @@ const UserAssetInstance = () => {
                          handleDelete={handleDelete}
                          fetchUserAssetDetails={fetchUserAssetDetails}
                      /> }
-                    {isLending && <LendedBooksOptions asset={assetDetails} canReview={canReview} /> }
+                    {isLending && <LendedBooksOptions asset={assetDetails} canReview={canReview} fetchUserAssetDetails={fetchUserAssetDetails} /> }
                 </div>
             </div>
         </div>
