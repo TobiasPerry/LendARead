@@ -29,6 +29,7 @@ export const isDelivered = (lending: string) => {
 function LendedBooksOptions({ asset, canReview }) {
     const {t} = useTranslation();
 
+
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
@@ -79,8 +80,8 @@ function LendedBooksOptions({ asset, canReview }) {
                                     <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center'}}>
                                         {t('userHomeView.inProgress')}
                                     </h6>
-                                    <button id="returnAssetBtn" className="btn btn-green" type="submit"
-                                            style={{marginTop: '10px', alignSelf: 'center'}}>
+                                    <button id="returnAssetBtn" className="btn btn-green"
+                                            style={{marginTop: '10px', alignSelf: 'center'}} onClick={() => setShowReturnAssetModal(true)}>
                                         {t('userHomeView.confirmReturn')}
                                     </button>
                                 </>

@@ -46,44 +46,13 @@ const useUserAssetInstance = (location, id) => {
             await setAssetDetails(assetDetails_)
     }
 
-    const editAssetVisbility = async (asset: any) => {
-        await api.patch(asset.assetinstance.selfUrl, { status:  asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
-            {
-                headers: {"Content-type": "multipart/form-data"}
-            })
-        await fetchUserAssetDetails()
-    }
-
-    const editAssetReservability = async (asset: any) => {
-
-        await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
-            {
-                headers: {"Content-type": "multipart/form-data"
-                }
-            })
-
-        await fetchUserAssetDetails()
-    }
-
-    const editAsset = async (asset: any) => {
-
-        const newImageUrl = assetDetails.imageUrl
-
-        await api.patch(assetDetails.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
-            {
-                headers: {"Content-type": "multipart/form-data"
-                }
-            })
-        await fetchUserAssetDetails()
-
-    }
-
     const deleteAssetInstance = async (asset: any) => {
         await api.delete(asset.selfUrl)
     }
 
+
     return {
-        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, editAssetVisbility, editAssetReservability, deleteAssetInstance, editAsset
+        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, deleteAssetInstance
     }
 }
 
