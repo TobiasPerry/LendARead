@@ -1,7 +1,8 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {Link} from "react-router-dom";
 import LoadingAnimation from "../LoadingAnimation.tsx";
+import ConfirmLendingModal from "../modals/ConfirmLendingModal.tsx";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -26,10 +27,17 @@ export const isDelivered = (lending: string) => {
 function LendedBooksOptions({ asset, canReview }) {
     const {t} = useTranslation();
 
-    useEffect(() => {
+    const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
+    const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
+    const handleRejectAsset = async () => {
 
-        console.log(asset)
-    }, [asset])
+    }
+
+    const handleConfirmAsset = async () => {
+
+    }
+
+
     return (
         <div style={{
             backgroundColor: '#f0f5f0',
@@ -52,7 +60,7 @@ function LendedBooksOptions({ asset, canReview }) {
                                     </h6>
                                     <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
                                         <button id="confirmAssetBtn" className="btn btn-green" type="submit">
-                                            {t('userHomeView.verifyBook')}
+                                            {t('userHomeView.confirmBook')}
                                         </button>
                                         <button id="rejectAssetBtn" className="btn btn-red-outline mt-2" type="submit">
                                             {t('userHomeView.rejectAssetTitle')}
@@ -82,6 +90,11 @@ function LendedBooksOptions({ asset, canReview }) {
                     {/* <ReturnModal lending={lending} />
                 <ConfirmModal lending={lending} />
                 <RejectModal lending={lending} /> */}
+                <ConfirmLendingModal showModal={setShowConfirmAssetModal}
+                                     handleCloseModal={() => setShowConfirmAssetModal(false)}
+                                     asset={asset}
+                                     handleSubmitModal={handleConfirmAsset}
+                                     />
                 </div>
             )}
         </div>

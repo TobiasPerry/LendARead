@@ -37,6 +37,10 @@
   "isReservableLabel": "Is Reservable",
   "statusLabel": "Status",
   "userHomeView": {
+    "verifyLendingTitle": "Verify lending",
+    "verifyLendingText": "Confirming the lending request means you accept to give the book the user that asked for it. Do you want to confirm the lending request?",
+    "verifyLendingButton": "Confirm lending",
+    "confirmBook": "Confirm Asset",
     "pendingText": "This asset has an open lending request. Do you want to confirm or reject the lending request?",
     "changeReservability": "Change Reservability",
     "changeReservabilityNo": "This asset is currently reservable. Do you want to make it non-reservable?",
