@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import {isPrivate, isPublic} from "../user/LendedBooksOptions.tsx";
 
-function VerfifyLendingModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
+function RejectLendingModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
     const { t } = useTranslation();
 
     return (
@@ -13,7 +13,7 @@ function VerfifyLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
                 }}>
                     <div className="modal-header">
                         <h2 className="modal-title" id="modalTitle">
-                            {t('userHomeView.verifyLendingTitle')}
+                            {t('userHomeView.rejectLendingTitle')}
                         </h2>
 
                         <button onClick={handleCloseModal} className="btn btn-secondary">
@@ -22,11 +22,11 @@ function VerfifyLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
                     </div>
                     <div className="modal-body">
                         <p>
-                            {t('userHomeView.verifyLendingText') }
+                            {t('userHomeView.rejectLendingText') }
                         </p>
                     </div>
-                    <button type="submit" className="btn btn-green" onClick={handleSubmitModal}>
-                        {t('userHomeView.verifyLendingButton')}
+                    <button type="submit" className="btn btn-red" onClick={handleSubmitModal}>
+                        {t('userHomeView.rejectLendingButton')}
                     </button>
 
                 </div>
@@ -35,4 +35,4 @@ function VerfifyLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
     );
 }
 
-export default VerfifyLendingModal;
+export default RejectLendingModal;

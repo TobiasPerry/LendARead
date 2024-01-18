@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {Link} from "react-router-dom";
 import LoadingAnimation from "../LoadingAnimation.tsx";
 import ConfirmLendingModal from "../modals/ConfirmLendingModal.tsx";
+import RejectLendingModal from "../modals/RejectLendingModal.tsx";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -30,7 +31,7 @@ function LendedBooksOptions({ asset, canReview }) {
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const handleRejectAsset = async () => {
-
+        setShowRejectAssetModal(false)
     }
 
     const handleConfirmAsset = async () => {
@@ -59,10 +60,10 @@ function LendedBooksOptions({ asset, canReview }) {
                                         {t('userHomeView.pendingText')}
                                     </h6>
                                     <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
-                                        <button id="confirmAssetBtn" className="btn btn-green" type="submit" onClick={() => setShowConfirmAssetModal(true)}>
+                                        <button id="confirmAssetBtn" className="btn btn-green" onClick={() => setShowConfirmAssetModal(true)}>
                                             {t('userHomeView.confirmBook')}
                                         </button>
-                                        <button id="rejectAssetBtn" className="btn btn-red-outline mt-2" type="submit">
+                                        <button id="rejectAssetBtn" className="btn btn-red-outline" onClick={() => setShowRejectAssetModal(true)}>
                                             {t('userHomeView.rejectAssetTitle')}
                                         </button>
                                     </div>
@@ -87,14 +88,16 @@ function LendedBooksOptions({ asset, canReview }) {
                         </Link>
                     )}
                     {/* Include modal components here */}
-                    {/* <ReturnModal lending={lending} />
-                <ConfirmModal lending={lending} />
-                <RejectModal lending={lending} /> */}
+                    {/* <ReturnModal lending={lending} /> */}
                 <ConfirmLendingModal showModal={showConfirmAssetModal}
                                      handleCloseModal={() => setShowConfirmAssetModal(false)}
                                      asset={asset}
                                      handleSubmitModal={handleConfirmAsset}
                                      />
+                    <RejectLendingModal showModal={showRejectAssetModal}
+                                        handleCloseModal={() => setShowRejectAssetModal(false)}
+                                        asset={asset}
+                                        handleSubmitModal={handleRejectAsset} />
                 </div>
             )}
         </div>

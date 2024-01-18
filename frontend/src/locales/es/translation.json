@@ -78,6 +78,13 @@
   "isReservableLabel": "Es Reservable",
   "statusLabel": "Estado",
   "userHomeView": {
+    "rejectLendingTitle": "Rechazar préstamo",
+    "rejectLendingText": "Rechazar la solicitud de préstamo es irreversible. ¿Desea rechazar la solicitud de préstamo?",
+    "rejectLendingButton": "Rechazar Préstamo",
+    "verifyLendingTitle": "Verificar préstamo",
+    "verifyLendingText": "Confirmar la solicitud de préstamo significa que acepta dar el libro al usuario que lo solicitó. ¿Desea confirmar la solicitud de préstamo?",
+    "verifyLendingButton": "Confirmar préstamo",
+    "confirmBook": "Confirmar Préstamo",
     "changeVisibilityTitle": "Cambiar Visibilidad",
     "changeVisibilityTextPublic": "Este activo es privado ¿Quieres hacer este activo público?",
     "changeVisibilityTextPrivate": "Este activo es publico ¿Quieres hacer este activo privado?",
