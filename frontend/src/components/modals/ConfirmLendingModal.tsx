@@ -28,7 +28,7 @@ function VerfifyLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
                             {t('userHomeView.verifyLendingText') }
                         </p>
                     </div>
-                    <button type="submit" className="btn btn-red" onClick={handleSubmitModal}>
+                    <button type="submit" className="btn btn-green" onClick={handleSubmitModal}>
                         {t('userHomeView.verifyLendingButton')}
                     </button>
 

@@ -34,7 +34,7 @@ function LendedBooksOptions({ asset, canReview }) {
     }
 
     const handleConfirmAsset = async () => {
-
+        setShowConfirmAssetModal(false)
     }
 
 
@@ -59,7 +59,7 @@ function LendedBooksOptions({ asset, canReview }) {
                                         {t('userHomeView.pendingText')}
                                     </h6>
                                     <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
-                                        <button id="confirmAssetBtn" className="btn btn-green" type="submit">
+                                        <button id="confirmAssetBtn" className="btn btn-green" type="submit" onClick={() => setShowConfirmAssetModal(true)}>
                                             {t('userHomeView.confirmBook')}
                                         </button>
                                         <button id="rejectAssetBtn" className="btn btn-red-outline mt-2" type="submit">
@@ -90,7 +90,7 @@ function LendedBooksOptions({ asset, canReview }) {
                     {/* <ReturnModal lending={lending} />
                 <ConfirmModal lending={lending} />
                 <RejectModal lending={lending} /> */}
-                <ConfirmLendingModal showModal={setShowConfirmAssetModal}
+                <ConfirmLendingModal showModal={showConfirmAssetModal}
                                      handleCloseModal={() => setShowConfirmAssetModal(false)}
                                      asset={asset}
                                      handleSubmitModal={handleConfirmAsset}
