@@ -9,7 +9,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { setFilter, filter, fetchLendings, sort, setSort, currentPage, changePage, totalPages, books} = useUserAssetInstances();
 
     useEffect(() => {
-        fetchLendings(currentPage, sort, filter, isLender)
+        fetchLendings(currentPage, sort, filter, isLender).then()
     }, [])
 
     const handleFilterChange = async(newFilter: string) => {

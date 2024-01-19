@@ -43,7 +43,7 @@
     "rejectLendingTitle": "Reject lending",
     "rejectLendingText": "Rejecting the lending request is non-reversible. Do you want to reject the lending request?",
     "rejectLendingButton": "Reject Lending",
-    "verifyLendingTitle": "Verify lending",
+    "verifyLendingTitle": "Confirme lending",
     "verifyLendingText": "Confirming the lending request means you accept to give the book the user that asked for it. Do you want to confirm the lending request?",
     "verifyLendingButton": "Confirm lending",
     "confirmBook": "Confirm Lending",
