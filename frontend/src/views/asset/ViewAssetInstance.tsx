@@ -120,7 +120,7 @@ const ViewAssetInstance = () => {
                                                  </h3>
                                                  <h6 id="physicalConditionClick" className="text-clickable">
                                                      <i><u>
-                                                         {data.physicalCondition}
+                                                         {t(data.physicalCondition)}
                                                      </u></i>
                                                  </h6>
 
