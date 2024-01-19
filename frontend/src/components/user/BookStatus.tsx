@@ -6,11 +6,17 @@ const BookStatus = ({asset}) => {
 
     return (
         <>
+        {/*Lended/Borrowed asset instance*/}
         {!(asset === undefined || asset.lending === undefined) &&
         <div className="loan-status card p-5">
             <h5 className="card-title">{t('status')}:{asset.lending.state}</h5>
-        </div>
-        }
+        </div> }
+            {/* User asset instance*/}
+            {(asset !== undefined && asset.lending === undefined) &&
+                <div className="loan-status card p-5">
+                    <h5 className="card-title">{t('maxDays')}:{asset.maxDays}</h5>
+                </div>
+            }
         </>
     );
 };
