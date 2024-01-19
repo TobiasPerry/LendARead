@@ -8,6 +8,7 @@ import useUserAssetInstance from "../../hooks/assetInstance/useUserAssetInstance
 import {useEffect} from "react";
 import MyBooksOptions from "../../components/user/MyBooksOptions.tsx";
 import LendedBooksOptions from "../../components/user/LendedBooksOptions.tsx";
+import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 const UserAssetInstance = () => {
 
     const navigate = useNavigate();
@@ -19,7 +20,8 @@ const UserAssetInstance = () => {
         fetchUserAssetDetails,
         hasActiveLendings,
         deleteAssetInstance,
-        state
+        state,
+        isLoading
     } = useUserAssetInstance(location, id)
 
 
@@ -39,30 +41,40 @@ const UserAssetInstance = () => {
     const canReview = false
 
     return (
-        <div className="main-container" style={{ padding: '2rem' }}>
-            <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
-                <i className="fas fa-arrow-left mb-1"></i>
-            <h3 className="ms-3">
-                {state === "owned" ? t('my_books') : state === "lended" ? t('lended_books'): t('borrowed_books')}
-            </h3>
-            </div>
-            <div className="content-container" style={{ display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: '1rem' }}>
-                <BookDetails data={assetDetails}/>
-                <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <BookStatus />
-                    {state === "owned" && <MyBooksOptions
-                         asset={assetDetails}
-                         haveActiveLendings={hasActiveLendings}
-                         handleDelete={handleDelete}
-                         fetchUserAssetDetails={fetchUserAssetDetails}
-                     /> }
-                    {state === "lended" && <LendedBooksOptions
-                        asset={assetDetails}
-                        canReview={canReview}
-                        fetchUserAssetDetails={fetchUserAssetDetails} /> }
+        <>
+        {isLoading ?
+            <LoadingAnimation/>
+            :
+            <div className="main-container" style={{padding: '2rem'}}>
+                    <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
+                        <i className="fas fa-arrow-left mb-1"></i>
+                        <h3 className="ms-3">
+                            {state === "owned" ? t('my_books') : state === "lended" ? t('lended_books') : t('borrowed_books')}
+                        </h3>
+                    </div>
+                    <div className="content-container"
+                         style={{display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: '1rem'}}>
+                        <BookDetails data={assetDetails}/>
+                        <div className="loan-container"
+                             style={{flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <BookStatus
+                                asset={assetDetails}
+                            />
+                            {state === "owned" && <MyBooksOptions
+                                asset={assetDetails}
+                                haveActiveLendings={hasActiveLendings}
+                                handleDelete={handleDelete}
+                                fetchUserAssetDetails={fetchUserAssetDetails}
+                            />}
+                            {state === "lended" && <LendedBooksOptions
+                                asset={assetDetails}
+                                canReview={canReview}
+                                fetchUserAssetDetails={fetchUserAssetDetails}/>}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+        }
+        </>
     );
 };
 

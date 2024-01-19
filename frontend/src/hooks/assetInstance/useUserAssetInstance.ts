@@ -8,8 +8,10 @@ const useUserAssetInstance = (location, id) => {
     const state = queryParams.get('state');
     const [assetDetails, setAssetDetails] = useState({})
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchUserAssetDetails = async () => {
+        setIsLoading(true)
         let assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
         let lending = {}
 
@@ -43,10 +45,13 @@ const useUserAssetInstance = (location, id) => {
             assetinstance: assetinstace
         }
 
+
         if(state === "lended" || state === "borrowed")
             await setAssetDetails({...assetDetails_, lending: lending})
         else
             await setAssetDetails(assetDetails_)
+
+        setIsLoading(false)
     }
 
     const deleteAssetInstance = async (asset: any) => {
@@ -55,7 +60,7 @@ const useUserAssetInstance = (location, id) => {
 
 
     return {
-        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance
+        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance, isLoading
     }
 }
 
