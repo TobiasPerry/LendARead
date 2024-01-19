@@ -67,7 +67,6 @@ const useAssetInstance = () => {
             const data_page = await api.get(page_url)
             const body_page : language[] = data_page.data
             if(body_page.length === 0){
-                console.log("listo")
                 emptyResponse = true
             }
             languages.push(...body_page)

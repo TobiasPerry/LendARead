@@ -176,7 +176,7 @@ const DiscoveryView =  () => {
                             <ul className="list-group" style={{maxHeight: '200px', overflowY: 'scroll'}}>
                                 {
                                     languages.map((language, item) => (
-                                        <>
+                                        <div key={item}>
                                             <li className="list-group-item m-1 clickable"
                                                 style={
                                                     languages_filters.includes(language.code) ?
@@ -189,7 +189,7 @@ const DiscoveryView =  () => {
                                                     {language.name}
                                                 </span>
                                             </li>
-                                        </>
+                                        </div>
                                     ))
                                 }
                             </ul>
@@ -199,7 +199,7 @@ const DiscoveryView =  () => {
                             <ul className="list-group" style={{maxHeight: '200px', overflowY: 'scroll'}}>
                                 {
                                     physical_conditions.map((physical_condition, item) => (
-                                        <>
+                                        <div key={item}>
                                             <li className="list-group-item m-1 clickable"
                                                 style={
                                                     physicalConditions_filters.includes(physical_condition) ? {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
@@ -211,7 +211,7 @@ const DiscoveryView =  () => {
                                                     {t(physical_condition)}
                                                 </span>
                                             </li>
-                                        </>
+                                        </div>
                                         )
                                     )
                                 }

@@ -34,7 +34,7 @@ const BookCardPlaceholder = () => {
                     </div>
                     <div className="card-footer">
                         <div className="media">
-                            <img className="mr-3 rounded-circle" src="/profile_placeholder.jpeg" style={{width:'50px', height: '50px'}}/>
+                            <img className="mr-3 rounded-circle" src="/static/profile_placeholder.jpeg" style={{width:'50px', height: '50px'}} alt="placeholder"/>
                             <div className="media-body">
                                 <h6 className="my-0 text-white d-block text-truncate placeholder-glow">
                                     <span className="placeholder col-7"></span>
