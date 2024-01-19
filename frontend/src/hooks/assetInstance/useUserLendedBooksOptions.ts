@@ -3,10 +3,8 @@ import {isActive} from "../../components/user/LendedBooksOptions.tsx";
 
 const useUserLendedBooksOptions = (fetchUserAssetInstance) => {
 
-    const rejectLending = async (asset) => {
-        const url = asset.lending.selfUrl
-        console.log("rejected lending", url)
-        await api_.patch(url, {state: "REJECTED"},
+    const updateState = async (url, state) => {
+        await api_.patch(url, {state: state},
             {
                 headers: {
                     "Content-type": "application/vnd.assetInstanceLendingState.v1+json"
@@ -15,12 +13,16 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance) => {
         await fetchUserAssetInstance()
     }
 
-    const confirmLending = async (asset) => {
+    const rejectLending = async (asset) => {
+        await updateState(asset.lending.selfUrl, "REJECTED")
+    }
 
+    const confirmLending = async (asset) => {
+        await updateState(asset.lending.selfUrl, "DELIVERED")
     }
 
     const returnLending = async (asset) => {
-
+        await updateState(asset.lending.selfUrl, "FINISHED")
     }
 
     return {
