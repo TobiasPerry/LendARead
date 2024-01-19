@@ -3,7 +3,8 @@ import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.t
 import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {useNavigate} from "react-router-dom";
-import LoadingAnimation from "../LoadingAnimation.tsx"; // Path to your custom hook
+import LoadingAnimation from "../LoadingAnimation.tsx";
+import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx"; // Path to your custom hook
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
@@ -61,7 +62,7 @@ const MyBooksTable = ({handleRowClicked}) => {
     return (
         <>
             {isLoading ?
-                <LoadingAnimation /> :
+                <LoadingAnimationWhite /> :
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{t('my_books')}</h2>

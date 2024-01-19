@@ -30,7 +30,7 @@ const UserAssetInstance = () => {
         handleBackClick()
     }
     const handleBackClick = () => {
-        navigate("/userHome")
+        navigate(`/userHome?table=${state}_books`)
     }
 
     useEffect(() => {
