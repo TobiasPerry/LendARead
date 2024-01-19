@@ -1,15 +1,40 @@
 import {api} from "../api/api.ts";
-import {isPublic} from "../../components/user/LendedBooksOptions.tsx";
 
-const userUserAssetInstanceOptions = () => {
+const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
     const editAssetVisbility = async (asset: any) => {
-
-        await api.patch(`/assetInstances/${asset.id}`, {state: asset.status === "PUBLIC" ? "PRIVATE" : "PUBLIC" })
+        await api.patch(asset.assetinstance.selfUrl, { status:  asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
+            {
+                headers: {"Content-type": "multipart/form-data"}
+            })
+        await fetchUserAssetDetails()
     }
 
+    const editAssetReservability = async (asset: any) => {
+
+        await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
+            {
+                headers: {"Content-type": "multipart/form-data"
+                }
+            })
+
+        await fetchUserAssetDetails()
+    }
+
+    const editAsset = async (asset: any) => {
+
+        await api.patch(asset.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
+            {
+                headers: {"Content-type": "multipart/form-data"
+                }
+            })
+        await fetchUserAssetDetails()
+
+    }
+
+
     return {
-        editAssetVisbility
+        editAssetVisbility, editAssetReservability, editAsset
     }
 }
 

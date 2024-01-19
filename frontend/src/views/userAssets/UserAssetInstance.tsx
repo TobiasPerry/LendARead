@@ -19,10 +19,7 @@ const UserAssetInstance = () => {
         fetchUserAssetDetails,
         isLending,
         hasActiveLendings,
-        editAssetVisbility,
-        editAssetReservability,
-        deleteAssetInstance,
-        editAsset
+        deleteAssetInstance
     } = useUserAssetInstance(location, id)
 
 
@@ -53,15 +50,13 @@ const UserAssetInstance = () => {
                 <BookDetails data={assetDetails}/>
                 <div className="loan-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <BookStatus />
-                     <MyBooksOptions
+                    {!isLending && <MyBooksOptions
                          asset={assetDetails}
                          haveActiveLendings={hasActiveLendings}
                          handleDelete={handleDelete}
-                         editAssetReservability={editAssetReservability}
-                         editAssetVisbility={editAssetVisbility}
-                         editAsset={editAsset}
-                     />
-                    {/*{isLending && <LendedBooksOptions lending={assetDetails} canReview={canReview} /> }*/}
+                         fetchUserAssetDetails={fetchUserAssetDetails}
+                     /> }
+                    {isLending && <LendedBooksOptions asset={assetDetails} canReview={canReview} fetchUserAssetDetails={fetchUserAssetDetails} /> }
                 </div>
             </div>
         </div>

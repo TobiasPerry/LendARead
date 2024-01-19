@@ -5,14 +5,16 @@ import ChangeStatusModal from "../modals/ChangeStatusModal.tsx";
 import ChangeReservabilityModal from "../modals/ChangeReservabilityModal.tsx";
 import DeleteModal from "../modals/DeleteModal.tsx";
 import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
+import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
 
-function AssetOptionsMenu({ asset, haveActiveLendings, editAssetVisbility, handleDelete, editAssetReservability, editAsset}) {
+function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAssetDetails}) {
     const { t } = useTranslation();
 
     const [showModalVisibility, setShowModalVisibility] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalDelete, setShowModalDelete] = useState(false);
     const [showModalReservable, setShowModalReservable] = useState(false)
+    const {editAssetVisbility, editAssetReservability, editAsset} = userUserAssetInstanceOptions(fetchUserAssetDetails)
 
     // const {editAssetVisbility} = userUserAssetInstanceOptions()
     const handleSubmitVisibilityModal = async () => {
