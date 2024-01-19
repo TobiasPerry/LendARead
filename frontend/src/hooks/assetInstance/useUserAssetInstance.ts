@@ -10,7 +10,19 @@ const useUserAssetInstance = (location, id) => {
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
 
     const fetchUserAssetDetails = async () => {
-        const assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
+        let assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
+        let lending: Array<LendingApi>= []
+
+        if(isLending) {
+            const lending_ = await api.get(`/lendings/${id}`)
+            lending = lending_.data
+            console.log(lending)
+            assetinstace = (await api_.get(lending.assetInstance)).data
+            // if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
+            if(lending.state == "ACTIVE")
+                setHasActiveLendings(true)
+        }
+
         const asset: AssetApi = (await api_.get(assetinstace.assetReference)).data
         const lang  = (await api_.get(asset.language)).data
 
@@ -28,16 +40,6 @@ const useUserAssetInstance = (location, id) => {
             id: id,
             maxDays: assetinstace.maxLendingDays,
             assetinstance: assetinstace
-        }
-
-        let lending: Array<LendingApi>= []
-        try {
-             const lending_  = await api.get(`/lendings/${id}`)
-            lending = lending_.data
-            if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
-                setHasActiveLendings(true)
-        } catch (e) {
-
         }
 
         if(isLending)

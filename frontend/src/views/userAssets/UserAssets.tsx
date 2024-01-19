@@ -17,6 +17,7 @@ const UserAssetsView = () => {
 
 
     const handleRowClicked = (book, isLending) => {
+        console.log(book)
         navigate(`/userBook/${book.id}?isLending=${isLending}`)
     }
 
