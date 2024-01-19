@@ -1,9 +1,9 @@
 import BookCard from '../components/BookCard';
 import useAssetInstance, {language} from "../hooks/assetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
+import "./styles/discovery.css"
 
 const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
@@ -49,6 +49,7 @@ const DiscoveryView =  () => {
     const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DES);
     const [physicalConditions_filters, setPhysicalConditions_filters] = useState([])
     const [languages_filters, setLanguages_filters] = useState([])
+    const [minRating, setMinRating] = useState(1)
     const [search, setSearch] = useState("");
 
 
@@ -68,6 +69,10 @@ const DiscoveryView =  () => {
             setSearch(event.target.value)
             setCurrentPage(1)
         }
+    }
+
+    const changeRating = (event) => {
+        setMinRating(parseInt(event.target.value, 10))
     }
 
     const clickPhysicalCondition = (physicalCondition : string) => {
@@ -109,9 +114,9 @@ const DiscoveryView =  () => {
     const fetchData = async () => {
         setLoading(true)
         setData([])
-        const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters)
+        const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating)
         setData(books)
-        const languages = await handleGetLanguages(false)
+        const languages = await handleGetLanguages(true)
         setLanguages(languages)
         setLoading(false)
     };
@@ -122,7 +127,7 @@ const DiscoveryView =  () => {
         return () => {
             document.title = "Lend a Read"
         }
-    }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters])
+    }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating])
 
     return (
         <>
@@ -214,20 +219,21 @@ const DiscoveryView =  () => {
 
                         <h5>{t('discovery.filters.book_rating')}</h5>
                         <div style={{width: '90%', margin: '10px auto'}}>
-                            <label className="form-label d-flex justify-content-center" id="customRange3Id">?★ -
-                                ?★</label>
+                            <label className="form-label d-flex justify-content-center" id="customRange3Id">
+                                {minRating}★ - 5★
+                            </label>
                             <input type="range" className="form-range custom-range" min="1" max="5" step="1"
-                                   id="customRange3" value="${actualMinRating}"/>
+                                   id="customRange3"
+                                   onChange={changeRating}
+                            />
                         </div>
 
                         <div className="container-row-wrapped"
                              style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
-                            {/*<input className="btn btn-light mx-2" type="submit" value={t('discovery.filters.btn.apply')}*/}
-                            {/*       id="submit-filter" style={{margin: '10px', width: '100px'}}/>*/}
-                            <Link to="/discovery">
-                                <input type="button" className="btn btn-outline-dark mx-2"
-                                       value={t('discovery.filters.btn.clear')} style={{margin: '10px', width: '100px'}}/>
-                            </Link>
+                            <input type="button" className="btn btn-outline-dark mx-2"
+                                   value={t('discovery.filters.btn.clear')} style={{margin: '10px', width: '100px'}}
+                                   onClick={clearSearch}
+                            />
                         </div>
                     </div>
 

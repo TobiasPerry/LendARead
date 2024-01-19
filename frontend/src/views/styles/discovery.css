@@ -1,0 +1,24 @@
+/* Custom styles for the range input */
+.custom-range::-webkit-slider-thumb {
+    background-color: #2B3B2B; /* Change the thumb background color */
+}
+
+.custom-range::-moz-range-thumb {
+    background-color: #2B3B2B; /* Change the thumb background color */
+}
+
+.custom-range::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #D76D5B 20%, #E09D00 40%, #72AC7A 70%); /* Change the track color gradient */
+}
+
+.custom-range::-moz-range-track {
+    background: linear-gradient(to right, #D76D5B 20%, #E09D00 40%, #72AC7A 70%); /* Change the track color gradient */
+}
+
+.custom-range::-webkit-slider-runnable-track::-webkit-slider-thumb {
+    background-color: #2B3B2B; /* Change the thumb background color */
+}
+
+.custom-range::-moz-range-progress {
+    background-color: #2B3B2B; /* Change the thumb background color */
+}

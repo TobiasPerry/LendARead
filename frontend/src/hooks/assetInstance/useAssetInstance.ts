@@ -88,13 +88,13 @@ const useAssetInstance = () => {
         return languages
     }
 
-    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search, languages: [], physicalConditions:[]) => {
+    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search, languages: [], physicalConditions:[], minRating) => {
         const books = []
 
         try {
             //TODO: ippo fijate de que axios tiene un argumento para pasar esto automaticamente, tipo un objeto y te lo hace query params
             // TODO: Joya grax Scili
-            let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}`
+            let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}&minRating=${minRating}`
             languages.forEach((l) => {url += `&languages=${l}`})
             physicalConditions.forEach((p) => {url += `&physicalConditions=${p}`})
             if(search !== ""){
