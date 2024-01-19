@@ -81,7 +81,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                     <h5 >{t('no_books_available')}</h5>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index} onClick={() => handleRowClicked(book, true)} style={{ cursor: "pointer"}}>
+                        <tr key={index} onClick={() => handleRowClicked(book, isLender ? "lended" : "borrowed")} style={{ cursor: "pointer"}}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>

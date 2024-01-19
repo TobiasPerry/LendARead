@@ -5,7 +5,7 @@ import {api, api_} from "../api/api.ts";
 const useUserAssetInstance = (location, id) => {
 
     const queryParams = new URLSearchParams(location.search);
-    const isLending = queryParams.get('isLending') === "true";
+    const state = queryParams.get('state');
     const [assetDetails, setAssetDetails] = useState({})
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
 
@@ -13,7 +13,7 @@ const useUserAssetInstance = (location, id) => {
         let assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
         let lending: Array<LendingApi>= []
 
-        if(isLending) {
+        if(state === "lended" || state === "borrowed") {
             const lending_ = await api.get(`/lendings/${id}`)
             lending = lending_.data
             console.log(lending)
@@ -42,7 +42,7 @@ const useUserAssetInstance = (location, id) => {
             assetinstance: assetinstace
         }
 
-        if(isLending)
+        if(state === "lended" || state === "borrowed")
             await setAssetDetails({...assetDetails_, lending: lending})
         else
             await setAssetDetails(assetDetails_)
@@ -54,7 +54,7 @@ const useUserAssetInstance = (location, id) => {
 
 
     return {
-        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, deleteAssetInstance
+        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance
     }
 }
 

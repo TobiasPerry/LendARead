@@ -71,7 +71,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                         <h5 className="text-center">{t('no_books_available')}</h5>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index} onClick={() => handleRowClicked(book, false)} style={{ cursor: "pointer"}}>
+                        <tr key={index} onClick={() => handleRowClicked(book, "owned")} style={{ cursor: "pointer"}}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>
