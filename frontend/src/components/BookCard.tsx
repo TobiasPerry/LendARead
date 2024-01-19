@@ -1,8 +1,11 @@
 
 import './styles/bookCard.css';
 import {Link} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const BookCard = ({ book }) => {
+    const {t} = useTranslation()
+
     const {
         title,
         author,
@@ -37,13 +40,13 @@ const BookCard = ({ book }) => {
 
 
 
-        <img className="card-img d-none" src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/61" alt="Book title" />
+        <img className="card-img d-none" src="" alt="Book title" />
 
         <div className="card-img-overlay d-flex flex-column">
             <div className="card-body">
                 <small className="card-meta mb-2 text-truncate">{author}</small>
                 <h3 className="card-title mt-0 text-white truncate-3-lines">{title}</h3>
-                <small className="text-white"><i className="bi bi-book-half text-white"></i> {physicalCondition} (i18n!!) </small>
+                <small className="text-white"><i className="bi bi-book-half text-white"></i> {t(physicalCondition)} </small>
             </div>
             <div className="card-footer">
                 <div className="media">

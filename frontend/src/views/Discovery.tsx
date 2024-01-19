@@ -1,5 +1,5 @@
 import BookCard from '../components/BookCard';
-import useAssetInstance from "../hooks/assetInstance/useAssetInstance.ts";
+import useAssetInstance, {language} from "../hooks/assetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -17,7 +17,7 @@ const SORT_DIRECTIONS = {
 };
 
 
-
+const physical_conditions = ["ASNEW", "FINE", "VERYGOOD", "GOOD", "FAIR", "POOR", "EXLIBRARY", "BOOKCLUB", "BINDINGCOPY"]
 const DiscoveryView =  () => {
 
     const {t} = useTranslation();
@@ -35,8 +35,9 @@ const DiscoveryView =  () => {
         }
     }
 
-    const {handleAllAssetInstances} = useAssetInstance();
+    const {handleAllAssetInstances, handleGetLanguages} = useAssetInstance();
 
+    const [languages, setLanguages] = useState([])
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -46,10 +47,12 @@ const DiscoveryView =  () => {
     // Filters and sorting
     const [sort, setSort] = useState(SORT_TYPES.RECENT);
     const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DES);
+    const [physicalConditions_filters, setPhysicalConditions_filters] = useState([])
+    const [languages_filters, setLanguages_filters] = useState([])
     const [search, setSearch] = useState("");
 
 
-    let books = Array.from({ length: booksPerPage }, (_, index) => (
+    let placeholder_books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
     ));
 
@@ -67,6 +70,24 @@ const DiscoveryView =  () => {
         }
     }
 
+    const clickPhysicalCondition = (physicalCondition : string) => {
+        if(!physicalConditions_filters.includes(physicalCondition)) {
+            setPhysicalConditions_filters((prevState) => [...prevState, physicalCondition])
+        }else{
+            const new_filters: string[] = physicalConditions_filters.filter((str) => str !== physicalCondition)
+            setPhysicalConditions_filters(new_filters)
+        }
+    }
+
+    const clickLanguages = (language : language) => {
+        if(!languages_filters.includes(language.code))
+            setLanguages_filters((prevState) => [...prevState, language.code])
+        else{
+            const new_filters : string[] = languages_filters.filter((item) => item !== language.code)
+            setLanguages_filters(new_filters)
+        }
+    }
+
     const previousPage = () => {
         currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
     }
@@ -76,8 +97,10 @@ const DiscoveryView =  () => {
     const clearSearch = () => {
         setSearch("");
         setCurrentPage(1);
+        setPhysicalConditions_filters([])
+        setLanguages_filters([])
         // Clear the value of the search input
-        const searchInput = document.getElementById('search-bar')  as HTMLInputElement;;
+        const searchInput = document.getElementById('search-bar')  as HTMLInputElement;
         if (searchInput) {
             searchInput.value = '';
         }
@@ -86,8 +109,10 @@ const DiscoveryView =  () => {
     const fetchData = async () => {
         setLoading(true)
         setData([])
-        const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search)
+        const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters)
         setData(books)
+        const languages = await handleGetLanguages(false)
+        setLanguages(languages)
         setLoading(false)
     };
     useEffect(()=>{
@@ -97,7 +122,7 @@ const DiscoveryView =  () => {
         return () => {
             document.title = "Lend a Read"
         }
-    }, [currentPage, booksPerPage, sort, sortDirection, search])
+    }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters])
 
     return (
         <>
@@ -141,33 +166,49 @@ const DiscoveryView =  () => {
 
                         <h5>{t('discovery.filters.language')}</h5>
                         <ul>
-                            <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
 
-                                <input className="form-check-input" type="checkbox" value=""/>
-                                <label className="form-check-label languageLabel"
-                                       id="language-${status.index}-label"><span
-                                    className="d-inline-block text-truncate"
-                                    style={{maxWidth: '150px'}}>text</span></label>
-                                <br/>
-
+                            <ul className="list-group" style={{maxHeight: '200px', overflowY: 'scroll'}}>
+                                {
+                                    languages.map((language, item) => (
+                                        <>
+                                            <li className="list-group-item m-1 clickable"
+                                                style={
+                                                    languages_filters.includes(language.code) ?
+                                                        {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
+                                                }
+                                                onClick={() => {clickLanguages(language)}}
+                                            >
+                                                <span className="d-inline-block text-truncate"
+                                                      style={{maxWidth: '100px'}}>
+                                                    {language.name}
+                                                </span>
+                                            </li>
+                                        </>
+                                    ))
+                                }
                             </ul>
                         </ul>
                         <h5>{t('discovery.filters.physical_condition')}</h5>
                         <ul>
-                            <ul style={{maxHeight: '200px', overflowY: 'scroll'}}>
-
-                                <input className="form-check-input" type="checkbox" value=""
-                                       id="physicalCondition-${status.index}"/>
-                                <label className="form-check-label physicalConditionLabel"
-
-                                       id="physicalCondition-${status.index}-label"
-                                >
-                                        <span className="d-inline-block text-truncate" style={{maxWidth: '150px'}}>
-                                        text
-                                        </span>
-                                </label>
-                                <br/>
-
+                            <ul className="list-group" style={{maxHeight: '200px', overflowY: 'scroll'}}>
+                                {
+                                    physical_conditions.map((physical_condition, item) => (
+                                        <>
+                                            <li className="list-group-item m-1 clickable"
+                                                style={
+                                                    physicalConditions_filters.includes(physical_condition) ? {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
+                                                }
+                                                onClick={() => {clickPhysicalCondition(physical_condition)}}
+                                            >
+                                                <span className="d-inline-block text-truncate"
+                                                      style={{maxWidth: '100px'}}>
+                                                    {t(physical_condition)}
+                                                </span>
+                                            </li>
+                                        </>
+                                        )
+                                    )
+                                }
                             </ul>
                         </ul>
 
@@ -181,8 +222,8 @@ const DiscoveryView =  () => {
 
                         <div className="container-row-wrapped"
                              style={{marginTop: '10px', marginBottom: '25px', width: '100%'}}>
-                            <input className="btn btn-light mx-2" type="submit" value={t('discovery.filters.btn.apply')}
-                                   id="submit-filter" style={{margin: '10px', width: '100px'}}/>
+                            {/*<input className="btn btn-light mx-2" type="submit" value={t('discovery.filters.btn.apply')}*/}
+                            {/*       id="submit-filter" style={{margin: '10px', width: '100px'}}/>*/}
                             <Link to="/discovery">
                                 <input type="button" className="btn btn-outline-dark mx-2"
                                        value={t('discovery.filters.btn.clear')} style={{margin: '10px', width: '100px'}}/>
@@ -214,7 +255,7 @@ const DiscoveryView =  () => {
                                              width: '90%'
                                          }}>
                                         {
-                                            data.length === 0 ? books : data.map((book, index) => (<BookCard key={index} book={book}/> ))
+                                            data.length === 0 ? placeholder_books : data.map((book, index) => (<BookCard key={index} book={book}/> ))
                                         }
                                     </div>
                                     <div className="container-row-wrapped"

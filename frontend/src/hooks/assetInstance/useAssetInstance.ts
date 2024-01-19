@@ -1,5 +1,21 @@
 import {api, api_} from "../api/api.ts";
 
+const extractTotalPages = (linkHeader) => {
+    if(!linkHeader){
+        return 1;
+    }
+
+    const links = linkHeader.split(',').map(a => a.split(';'));
+    const lastLink = links.find(link => link[1].includes('rel="last"'));
+    if (lastLink) {
+        const lastPageUrl = lastLink[0].trim().slice(1, -1);
+        const urlParams = new URLSearchParams(lastPageUrl);
+        const lastPage = urlParams.get('page');
+        return parseInt(lastPage, 10);
+    }
+    return 1;
+};
+
 // Define the interface for the data object
 export interface AssetData {
     title: string;
@@ -21,16 +37,66 @@ export interface AssetData {
     // Add other properties as needed
 }
 
+export interface language {
+    code: string;
+    name: string;
+}
 
 const useAssetInstance = () => {
 
-    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search) => {
+    const handleGetLanguages = async (isUsed : boolean  = true, pageSize : number = 10) => {
+        let base_url = `/languages?pageSize=${pageSize}`
+        if(isUsed){
+            base_url += `&isUsed`
+        }
+
+        let currentPage = 1
+        const languages : language[] = []
+        const data = await api.get(base_url + `&page=${currentPage}`)
+        const body : language[] = data.data
+
+        languages.push(...body)
+
+        // TODO solve link header problem
+        // const pages = extractTotalPages(data.headers["link"])
+
+        currentPage++
+        let emptyResponse : boolean = false
+        while(!emptyResponse){
+            const page_url = base_url + `&page=${currentPage}`
+            const data_page = await api.get(page_url)
+            const body_page : language[] = data_page.data
+            if(body_page.length === 0){
+                console.log("listo")
+                emptyResponse = true
+            }
+            languages.push(...body_page)
+            currentPage++
+        }
+
+        languages.sort((a, b) => {
+            const a_to_lower = a.name.toLowerCase()
+            const b_to_lower = b.name.toLowerCase()
+            if(a_to_lower < b_to_lower){
+                return -1
+            }else if(a_to_lower > b_to_lower){
+                return 1
+            }
+            return 0
+        })
+
+        return languages
+    }
+
+    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search, languages: [], physicalConditions:[]) => {
         const books = []
 
         try {
             //TODO: ippo fijate de que axios tiene un argumento para pasar esto automaticamente, tipo un objeto y te lo hace query params
             // TODO: Joya grax Scili
             let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}`
+            languages.forEach((l) => {url += `&languages=${l}`})
+            physicalConditions.forEach((p) => {url += `&physicalConditions=${p}`})
             if(search !== ""){
                 url += `&search=${search}`
             }
@@ -113,7 +179,8 @@ const useAssetInstance = () => {
 
     return {
         handleAllAssetInstances,
-        handleAssetInstance
+        handleAssetInstance,
+        handleGetLanguages
     };
 }
 
