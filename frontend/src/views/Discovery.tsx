@@ -104,6 +104,7 @@ const DiscoveryView =  () => {
         setCurrentPage(1);
         setPhysicalConditions_filters([])
         setLanguages_filters([])
+        setMinRating(1)
         // Clear the value of the search input
         const searchInput = document.getElementById('search-bar')  as HTMLInputElement;
         if (searchInput) {
@@ -225,6 +226,7 @@ const DiscoveryView =  () => {
                             <input type="range" className="form-range custom-range" min="1" max="5" step="1"
                                    id="customRange3"
                                    onChange={changeRating}
+                                   value={minRating}
                             />
                         </div>
 
