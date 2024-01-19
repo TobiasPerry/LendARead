@@ -5,12 +5,27 @@ import {api, api_} from "../api/api.ts";
 const useUserAssetInstance = (location, id) => {
 
     const queryParams = new URLSearchParams(location.search);
-    const isLending = queryParams.get('isLending') === "true";
+    const state = queryParams.get('state');
     const [assetDetails, setAssetDetails] = useState({})
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchUserAssetDetails = async () => {
-        const assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
+        setIsLoading(true)
+        let assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
+        let lending = {}
+
+        if(state === "lended" || state === "borrowed") {
+            const lending_ = await api.get(`/lendings/${id}`)
+            lending = lending_.data
+
+            //@ts-ignore
+            assetinstace = (await api_.get(lending.assetInstance)).data
+            //@ts-ignore
+            if(lending.state == "ACTIVE")
+                setHasActiveLendings(true)
+        }
+
         const asset: AssetApi = (await api_.get(assetinstace.assetReference)).data
         const lang  = (await api_.get(asset.language)).data
 
@@ -30,20 +45,13 @@ const useUserAssetInstance = (location, id) => {
             assetinstance: assetinstace
         }
 
-        let lending: Array<LendingApi>= []
-        try {
-             const lending_  = await api.get(`/lendings/${id}`)
-            lending = lending_.data
-            if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
-                setHasActiveLendings(true)
-        } catch (e) {
 
-        }
-
-        if(isLending)
+        if(state === "lended" || state === "borrowed")
             await setAssetDetails({...assetDetails_, lending: lending})
         else
             await setAssetDetails(assetDetails_)
+
+        setIsLoading(false)
     }
 
     const deleteAssetInstance = async (asset: any) => {
@@ -52,7 +60,7 @@ const useUserAssetInstance = (location, id) => {
 
 
     return {
-        assetDetails, fetchUserAssetDetails, isLending, hasActiveLendings, deleteAssetInstance
+        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance, isLoading
     }
 }
 

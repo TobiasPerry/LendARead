@@ -2,16 +2,29 @@ import { useTranslation } from 'react-i18next';
 import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.ts';
 import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
-import {useNavigate} from "react-router-dom"; // Path to your custom hook
+import {useNavigate} from "react-router-dom";
+import LoadingAnimation from "../LoadingAnimation.tsx";
+import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx"; // Path to your custom hook
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
-    const { setFilter, filter, applyFilterAndSort, sort, setSort, currentPage, changePage, totalPages, books} = useAssetInstances();
+    const {
+        setFilter,
+        filter,
+        applyFilterAndSort,
+        sort,
+        setSort,
+        currentPage,
+        changePage,
+        totalPages,
+        books,
+        isLoading
+    } = useAssetInstances();
 
 
 
     useEffect(() => {
-        applyFilterAndSort(currentPage, sort, filter)
+        applyFilterAndSort(currentPage, sort, filter).then( )
     }, [])
 
 
@@ -47,6 +60,9 @@ const MyBooksTable = ({handleRowClicked}) => {
     }
 
     return (
+        <>
+            {isLoading ?
+                <LoadingAnimationWhite /> :
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{t('my_books')}</h2>
@@ -71,7 +87,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                         <h5 className="text-center">{t('no_books_available')}</h5>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index} onClick={() => handleRowClicked(book, false)} style={{ cursor: "pointer"}}>
+                        <tr key={index} onClick={() => handleRowClicked(book, "owned")} style={{ cursor: "pointer"}}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>
@@ -103,7 +119,8 @@ const MyBooksTable = ({handleRowClicked}) => {
                     </ul>
                 </nav>
             }
-        </div>
+        </div> }
+        </>
     );
 };
 

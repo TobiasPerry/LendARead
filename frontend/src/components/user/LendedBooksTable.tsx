@@ -2,14 +2,16 @@ import { useTranslation } from 'react-i18next';
 import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.ts';
 import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
-import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstances.ts"; // Path to your custom hook
+import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstances.ts";
+import LoadingAnimation from "../LoadingAnimation.tsx";
+import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx"; // Path to your custom hook
 
 const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { t } = useTranslation();
-    const { setFilter, filter, fetchLendings, sort, setSort, currentPage, changePage, totalPages, books} = useUserAssetInstances();
+    const { setFilter, filter, fetchLendings, sort, setSort, currentPage, changePage, totalPages, books, isLoading} = useUserAssetInstances();
 
     useEffect(() => {
-        fetchLendings(currentPage, sort, filter, isLender)
+        fetchLendings(currentPage, sort, filter, isLender).then()
     }, [])
 
     const handleFilterChange = async(newFilter: string) => {
@@ -53,6 +55,9 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
     }
 
     return (
+        <>
+            {isLoading ?
+                <LoadingAnimationWhite /> :
         <div className="container mt-3">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{isLender ? t('lended_books'): t('borrowed_books')}</h2>
@@ -81,7 +86,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                     <h5 >{t('no_books_available')}</h5>
                 ) : (
                     books.map((book, index) => (
-                        <tr key={index} onClick={() => handleRowClicked(book, true)} style={{ cursor: "pointer"}}>
+                        <tr key={index} onClick={() => handleRowClicked(book, isLender ? "lended" : "borrowed")} style={{ cursor: "pointer"}}>
                             <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>
@@ -114,7 +119,8 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                     </ul>
                 </nav>
             }
-        </div>
+        </div>}
+            </>
     );
 };
 
