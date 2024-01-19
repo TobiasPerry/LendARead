@@ -92,7 +92,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
            'sortDirection': newSort.order,
        }
 
-       if(!isLender)
+       if(isLender)
            queryparams['lenderId'] = user
        else
            queryparams['borrowerId'] = user

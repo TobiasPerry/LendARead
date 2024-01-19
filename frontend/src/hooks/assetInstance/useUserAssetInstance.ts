@@ -11,14 +11,15 @@ const useUserAssetInstance = (location, id) => {
 
     const fetchUserAssetDetails = async () => {
         let assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
-        let lending: Array<LendingApi>= []
+        let lending = {}
 
         if(state === "lended" || state === "borrowed") {
             const lending_ = await api.get(`/lendings/${id}`)
             lending = lending_.data
-            console.log(lending)
+
+            //@ts-ignore
             assetinstace = (await api_.get(lending.assetInstance)).data
-            // if(lending.filter((lending: LendingApi) => lending.state === "ACTIVE").length > 0)
+            //@ts-ignore
             if(lending.state == "ACTIVE")
                 setHasActiveLendings(true)
         }

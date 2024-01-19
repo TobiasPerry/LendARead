@@ -6,7 +6,7 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance) => {
     const rejectLending = async (asset) => {
         const url = asset.lending.selfUrl
         console.log("rejected lending", url)
-        await api_.patch(url, {state: "DELIVERED"},
+        await api_.patch(url, {state: "REJECTED"},
             {
                 headers: {
                     "Content-type": "application/vnd.assetInstanceLendingState.v1+json"
