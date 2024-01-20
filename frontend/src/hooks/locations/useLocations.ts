@@ -1,5 +1,5 @@
 import {api, api_} from "../api/api.ts";
-import {LocationType} from "../../views/user/Locations.tsx";
+import {LocationApi} from "../../views/user/Locations.tsx";
 
 const useLocations = () => {
 
@@ -39,7 +39,7 @@ const useLocations = () => {
         }
     };
 
-    const addLocation = async (location: LocationType) => {
+    const addLocation = async (location: LocationApi) => {
         try {
             const response = await api.post('/locations', location, {
                 headers: { "Content-Type": "application/vnd.location.v1+json" }

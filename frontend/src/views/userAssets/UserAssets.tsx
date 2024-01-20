@@ -9,7 +9,7 @@ const UserAssetsView = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
-    const [table, setTable] = useState('my_books');
+    const [table, setTable] = useState('owned_books');
 
     // Parse the query parameters
     const searchParams = new URLSearchParams(location.search);
@@ -42,7 +42,7 @@ const UserAssetsView = () => {
                     <div style={{ flex: 1, marginRight: '20px' }}>
                             <div className="list-group">
                                 <button
-                                    onClick={() => handleTableChange('my_books')}
+                                    onClick={() => handleTableChange('owned_books')}
                                     className={`list-group-item list-group-item-action button-select ${table === 'my_books' ? 'button-select-active' : ''}`}
                                     style={{ fontWeight: table === 'my_books' ? 'bold' : 'normal' }}>
                                     {t('my_books')}
@@ -63,7 +63,7 @@ const UserAssetsView = () => {
 
                         </div>
                     <div style={{ flex: 3 }}>
-                            {table === 'my_books' && <MyBooksTable handleRowClicked={handleRowClicked}/>}
+                            {table === 'owned_books' && <MyBooksTable handleRowClicked={handleRowClicked}/>}
                             {table === 'lended_books' && <LendedBooksTable isLender={true} handleRowClicked={handleRowClicked} />}
                             {table === 'borrowed_books' && <LendedBooksTable isLender={false} handleRowClicked={handleRowClicked}/>}
                         </div>
