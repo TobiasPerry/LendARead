@@ -207,13 +207,89 @@ const AddAsset = () => {
         isbnInput.classList.remove('loading');
         document.getElementById('isbn-error')?.classList.add('d-none');
         return true;
+    }
 
+    const validateStep2 = () => {
+        let valid = true
+        const titleInput = document.getElementById('title') as HTMLInputElement;
+        const authorInput = document.getElementById('author') as HTMLInputElement;
+        const languageInput = document.getElementById('language') as HTMLInputElement;
+        const physicalConditionInput = document.getElementById('physicalCondition') as HTMLInputElement;
 
+        if (!titleInput.value ) {
+            valid = false;
+            const error = document.getElementById('title-error') as HTMLInputElement;
+            error.classList.remove('d-none');
+        } else {
+            const error = document.getElementById('title-error') as HTMLInputElement;
+            error.classList.add('d-none');
+        }
+        if (!authorInput.value ) {
+            valid = false;
+            const error = document.getElementById('author-error') as HTMLInputElement;
+            error.classList.remove('d-none');
+        } else {
+            const error = document.getElementById('author-error') as HTMLInputElement;
+            error.classList.add('d-none');
+        }
+
+        if (!languageInput.value ) {
+            valid = false;
+            const error = document.getElementById('language-error') as HTMLInputElement;
+            error.classList.remove('d-none');
+        } else {
+            const error = document.getElementById('language-error') as HTMLInputElement;
+            error.classList.add('d-none');
+        }
+
+        if (!physicalConditionInput.value ) {
+            valid = false;
+            const error = document.getElementById('physicalCondition-error') as HTMLInputElement;
+            error.classList.remove('d-none');
+        } else {
+            const error = document.getElementById('physicalCondition-error') as HTMLInputElement;
+            error.classList.add('d-none');
+        }
+
+        if (valid) {
+            const titleError = document.getElementById('title-error') as HTMLInputElement;
+            const authorError = document.getElementById('author-error') as HTMLInputElement;
+            const languageError = document.getElementById('language-error') as HTMLInputElement;
+            const physicalConditionError = document.getElementById('physicalCondition-error') as HTMLInputElement;
+            titleError.classList.add('d-none');
+            authorError.classList.add('d-none');
+            languageError.classList.add('d-none');
+            physicalConditionError.classList.add('d-none');
+        }
+        return valid;
+    }
+
+    const validateStep3 = () => {
+        const borrowTimeQuantityInput = document.getElementById('borrow-time-quantity') as HTMLInputElement;
+        const borrowTimeTypeInput = document.getElementById('borrow-time-type') as HTMLInputElement;
+        const borrowTimeError = document.getElementById('borrow-time-error') as HTMLInputElement;
+        
+        if (!borrowTimeQuantityInput.value || parseInt(borrowTimeQuantityInput.value) <= 0) {
+            borrowTimeError.classList.remove('d-none');
+            return false;
+        }
+
+        if (!borrowTimeTypeInput.value || parseInt(borrowTimeTypeInput.value) <= 0) {
+            borrowTimeError.classList.remove('d-none');
+            return false;
+        }
+
+        borrowTimeError.classList.add('d-none');
+        return true;
     }
 
 
     const validations = [
         validateStep1,
+        validateStep2,
+        validateStep3,
+        () => { return true },
+        () => { return true },
     ]
 
     const nextStep = async () => {
@@ -276,6 +352,7 @@ const AddAsset = () => {
                                 <div className='field'>
                                     <label htmlFor='title' className='form-label'>Title</label>
                                     <input type='text' className='form-control' id='title' placeholder='Title' />
+                                    <small id='title-error' className="text-danger small d-none">Please input a valid title</small>
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='physicalCondition' className='form-label'>Physical Condition</label>
@@ -284,16 +361,19 @@ const AddAsset = () => {
                                             return <option key={state[0]} value={state[0]}>{state[1]}</option>
                                         })}
                                     </select>
+                                    <small id='physicalCondition-error' className="text-danger small d-none">Please input a valid physical condition</small>
                                 </div>
                             </div>
                             <div className='field-group'>
                                 <div className='field'>
                                     <label htmlFor='author' className='form-label'>Author</label>
                                     <input type='text' className='form-control' id='author' placeholder='Author' />
+                                    <small id='author-error' className="text-danger small d-none">Please input a valid author</small>
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='language' className='form-label'>Language</label>
                                     <input type='text' className='form-control round' id='language' placeholder='Language' />
+                                    <small id='language-error' className="text-danger small d-none">Please input a valid language</small>
                                 </div>
                             </div>
                             <div className="button-container">
@@ -313,6 +393,7 @@ const AddAsset = () => {
                                     })}
                                 </select>
                             </div>
+                            <small id='borrow-time-error' className="text-danger small d-none">Please input a valid borrow time. (Greater than zero)</small>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />
                                 <input type='button' className='next-button btn btn-outline-success mx-1' onClick={nextStep} value='Next' />
