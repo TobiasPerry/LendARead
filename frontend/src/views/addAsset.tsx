@@ -1,10 +1,14 @@
 import './styles/addAsset.css';
 import { useState } from 'react';
+import {useTranslation} from "react-i18next";
 import axios from 'axios';
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
 const AddAsset = () => {
+    
+    const {t} = useTranslation();
+
     const states = [
         ["ASNEW", "As New"],
         ["FINE", "Fine"],
@@ -18,18 +22,9 @@ const AddAsset = () => {
     ]
 
     const timeTypes = [
-        [1, "day/s"],
-        [7, "week/s"],
-        [31, "month/s"],
-    ]
-
-    const locations = [
-        {
-            locality: "Cebu City",
-            province: "Cebu",
-            country: "Philippines",
-            zipcode: "6000",
-        }
+        [1, t('addAsset.duration.days')],
+        [7, t('addAsset.duration.weeks')],
+        [31, t('addAsset.duration.months')]
     ]
 
     const [step, setStep] = useState(1);
@@ -320,7 +315,7 @@ const AddAsset = () => {
     // TODO Check classes
     return (
         <div className="addasset-container flex-column">
-            <h1 className="text-center mb-5">Do you want to borrow a book?</h1>
+            <h1 className="text-center mb-5">{t('addAsset.title')}</h1>
             <div className="p-4 addasset-container flex-container">
                 <div className='flex-container'>
                     <div className="image-wrapper">
@@ -336,8 +331,8 @@ const AddAsset = () => {
                         <div className='stepper'>
                         </div>
                         <fieldset className="info-container">
-                            <h2>ISBN</h2>
-                            <p>We need the ISBN to get info about the book. If there's missing parts, you'll be asked to complete it.</p>
+                            <h2>{t('addAsset.isbn.ISBN')}</h2>
+                            <p>{t('addAsset.isbn.explanation')}</p>
                             <input type="text" placeholder="ISBN" className='form-control' id='isbn' />
                             <small id='isbn-error' className="text-danger small d-none">Please input a valid ISBN</small>
                             <div className="button-container">
@@ -347,33 +342,33 @@ const AddAsset = () => {
                         </fieldset>
 
                         <fieldset className="d-none info-container">
-                            <h2>Book Details</h2>
+                            <h2>{t('addAsset.bookInfo.detail')}</h2>
                             <div className='field-group'>
                                 <div className='field'>
-                                    <label htmlFor='title' className='form-label'>Title</label>
+                                    <label htmlFor='title' className='form-label'>{t('addAsset.bookInfo.title')}</label>
                                     <input type='text' className='form-control' id='title' placeholder='Title' />
-                                    <small id='title-error' className="text-danger small d-none">Please input a valid title</small>
+                                    <small id='title-error' className="text-danger small d-none">{t('addAsset.bookInfo.title-validation-error')}</small>
                                 </div>
                                 <div className='field'>
-                                    <label htmlFor='physicalCondition' className='form-label'>Physical Condition</label>
+                                    <label htmlFor='physicalCondition' className='form-label'>{t('addAsset.bookInfo.physicalCondition')}</label>
                                     <select id='physicalCondition' className='form-control round'>
                                         {states.map((state) => {
                                             return <option key={state[0]} value={state[0]}>{state[1]}</option>
                                         })}
                                     </select>
-                                    <small id='physicalCondition-error' className="text-danger small d-none">Please input a valid physical condition</small>
+                                    <small id='physicalCondition-error' className="text-danger small d-none">{t('addAsset.bookInfo.physicalCondition-validation-error')}</small>
                                 </div>
                             </div>
                             <div className='field-group'>
                                 <div className='field'>
-                                    <label htmlFor='author' className='form-label'>Author</label>
+                                    <label htmlFor='author' className='form-label'>{t('addAsset.bookInfo.author')}</label>
                                     <input type='text' className='form-control' id='author' placeholder='Author' />
-                                    <small id='author-error' className="text-danger small d-none">Please input a valid author</small>
+                                    <small id='author-error' className="text-danger small d-none">{t('addAsset.bookInfo.author-validation-error')}</small>
                                 </div>
                                 <div className='field'>
-                                    <label htmlFor='language' className='form-label'>Language</label>
+                                    <label htmlFor='language' className='form-label'>{t('addAsset.bookInfo.language')}</label>
                                     <input type='text' className='form-control round' id='language' placeholder='Language' />
-                                    <small id='language-error' className="text-danger small d-none">Please input a valid language</small>
+                                    <small id='language-error' className="text-danger small d-none">{t('addAsset.bookInfo.language-validation-error')}</small>
                                 </div>
                             </div>
                             <div className="button-container">
@@ -383,9 +378,9 @@ const AddAsset = () => {
                         </fieldset>
 
                         <fieldset className="d-none info-container">
-                            <h2>Max Borrowing Period</h2>
+                            <h2>{t('addAsset.duration.detail')}</h2>
                             <div className='field-group'>
-                                <label>Lend for</label>
+                                <label>{t('addAsset.duration.lendFor')}</label>
                                 <input type='number' className='form-control' id='borrow-time-quantity' name='borrow-time-quantity' min='1' placeholder='Lend for' />
                                 <select id='borrow-time-type' className='form-select' >
                                     {timeTypes.map((timeType) => {
@@ -393,7 +388,7 @@ const AddAsset = () => {
                                     })}
                                 </select>
                             </div>
-                            <small id='borrow-time-error' className="text-danger small d-none">Please input a valid borrow time. (Greater than zero)</small>
+                            <small id='borrow-time-error' className="text-danger small d-none">{t('addAsset.duration.validation-error')}</small>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />
                                 <input type='button' className='next-button btn btn-outline-success mx-1' onClick={nextStep} value='Next' />

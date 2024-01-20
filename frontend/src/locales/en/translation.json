@@ -193,9 +193,11 @@
         "physicalCondition-validation-error": "Please enter a valid physical condition."
     },
     "duration": {
+        "detail": "Max Borrowing Period",
         "lendFor": "Lend for",
         "days": "day/s",
         "months": "month/s",
+        "weeks": "week/s",
         "years": "year/s",
         "validation-error": "Please, enter a valid duration."
     }

@@ -191,8 +191,10 @@
         "physicalCondition-validation-error": "Por favor, ingrese una condición física válida."
     },
     "duration": {
+        "detail": "Duración del Préstamo",
         "lendFor": "Prestar por",
         "days": "día/s",
+        "weeks": "semana/s",
         "months": "mes/es",
         "years": "año/s",
         "validation-error": "Por favor, ingrese una duración válida."
