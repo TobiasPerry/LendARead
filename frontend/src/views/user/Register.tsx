@@ -35,37 +35,42 @@ const RegisterView = () => {
             password: "",
             repeatPassword: "",
             name:"" };
-
+        let hasErrors : boolean = false;
         // Validate email
         if (!email.match(/^\S+@\S+\.\S+$/) || email.length < 3 || email.length > 100) {
             errors.email = t('auth.emailValidationError');
+            hasErrors = true
         }
 
         // Validate password
         if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,}$/)) {
             errors.password = t('auth.passwordValidationError');
+            hasErrors = true
         }
 
         // Validate repeatPassword
         if (password !== repeatPassword) {
             errors.repeatPassword = t('auth.repeatPasswordValidationError');
+            hasErrors = true
         }
 
         // Validate name
         if (name.length < 3 || name.length > 100) {
             errors.name = t('auth.nameValidationError');
+            hasErrors = true
         }
 
         // Validate telephone (Add your own validation logic based on your requirements)
 
-        return errors;
+        return {errors, hasErrors};
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validateForm();
+        const {errors, hasErrors} = validateForm();
 
-        if (Object.keys(errors).length === 0) {
+        if (!hasErrors) {
+            console.log("aca!")
             const successfulRegister = await register(email, password, repeatPassword, name);
             if (successfulRegister) {
                 navigate('/');
