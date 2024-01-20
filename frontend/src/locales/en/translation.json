@@ -36,6 +36,8 @@
   "descriptionLabel": "Description",
   "isReservableLabel": "Is Reservable",
   "statusLabel": "Status",
+  "shortcut": "Shortcuts",
+  "settings": "Settings",
   "userHomeView": {
     "confirmReturnTitle": "Confirm Return",
     "confirmReturnText": "Do you happen to have the book back? If so confirm it's return so you can close the lending!",
