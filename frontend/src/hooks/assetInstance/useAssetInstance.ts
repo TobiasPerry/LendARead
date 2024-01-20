@@ -89,7 +89,7 @@ const useAssetInstance = () => {
         return languages
     }
 
-    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search, languages: [], physicalConditions:[], minRating) => {
+    const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search, languages: string[], physicalConditions: string[], minRating) => {
         const books = []
 
         try {
