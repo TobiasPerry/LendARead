@@ -78,7 +78,7 @@ const ViewAssetInstance = () => {
 
 
     // These are the links to redirect to discovery with filters applied
-    const authorURL = `/discovery?author=${data.author}`
+    const authorURL = `/discovery?search=${data.author}`
     const physicalConditionURL = `/discovery?physicalCondition=${data.physicalCondition}`
     const languageURL = `/discovery?language=${data.language.code}`
 

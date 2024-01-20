@@ -46,7 +46,7 @@ const DiscoveryView =  () => {
 
     // Read the query params sent form other views (like view asset)
     const searchParams = new URLSearchParams(window.location.search)
-    const authorParam = searchParams.get('author')
+    const searchParam = searchParams.get('search')
     const languageParam = searchParams.get('language')
     const physicalConditionParam = searchParams.get('physicalCondition')
 
@@ -56,7 +56,7 @@ const DiscoveryView =  () => {
     const [physicalConditions_filters, setPhysicalConditions_filters] = useState((physicalConditionParam !== null && physicalConditionParam !== undefined) ? [physicalConditionParam] : [])
     const [languages_filters, setLanguages_filters] = useState((languageParam !== null && languageParam !== undefined) ? [languageParam] : [])
     const [minRating, setMinRating] = useState(1)
-    const [search, setSearch] = useState((authorParam !== null && authorParam !== undefined) ? authorParam : "");
+    const [search, setSearch] = useState((searchParam !== null && searchParam !== undefined) ? searchParam : "");
     const [inputValue, setInputValue] = useState(search);
 
 

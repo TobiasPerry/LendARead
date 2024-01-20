@@ -1,7 +1,7 @@
 //import {useTranslation} from "react-i18next";
 import './styles/navBar.css';
 import './styles/searchBar.css';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useContext, useState} from "react";
 import {AuthContext} from "../contexts/authContext.tsx";
@@ -16,7 +16,10 @@ export default function NavBar() {
     const { t, i18n } = useTranslation();
     const {user, logout} = useContext(AuthContext)
     const [language, setLanguage] = useState('en');
-    const navigate = useNavigate();
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const showSearchBar = location.pathname !== '/discovery'
 
     const toggleLanguage = () => {
         const next_language = language === 'en' ? 'es' : 'en';
@@ -36,9 +39,17 @@ export default function NavBar() {
         logout()
         navigate('/')
     }
+
+    const handleSearch = (event) => {
+        if (event.key === 'Enter'){
+            navigate(`/discovery?search=${event.target.value}`)
+            event.target.value = ""
+        }
+    }
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711'}} data-bs-theme="dark">
+            <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711', height: '80px'}} data-bs-theme="dark">
                 <div className="container-fluid">
                     <Link to="/" className="nav-icon"><img src="/static/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,18 +57,23 @@ export default function NavBar() {
                     </button>
                     <div className="collapse navbar-collapse d-lg-flex justify-content-lg-end align-items-center" id="navbarSupportedContent">
                         <ul className="navbar-nav mb-2 mb-lg-0">
-                            <div className="form mx-3" style={{marginBlockEnd: '0'}}>
-                                
-                                
-                                <i className="fa fa-search fa-search-class" ></i>
-                                <input type="text" className="form-input" name="search"
-                                    style={{marginLeft: '4px'}}
-                                    placeholder={t('navbar.searchbar.placeholder')} id="nav-bar-search-bar"
-                                />
-                                
-                            </div>
+                            {
+                                showSearchBar ? (
+                                    <div className="form mx-3" style={{marginBlockEnd: '0'}}>
 
-                            
+                                        <i className="fa fa-search fa-search-class" ></i>
+                                        <input type="text" className="form-input" name="search"
+                                               style={{marginLeft: '4px'}}
+                                               placeholder={t('navbar.searchbar.placeholder')} id="nav-bar-search-bar"
+                                               onKeyPress={handleSearch}
+                                        />
+
+                                    </div>
+                                    ) : (
+                                    <>
+                                    </>
+                                )
+                            }
 
                             <li className="nav-item  d-flex align-items-center">
                                 <Link className="nav-link navItem" id="home" aria-current="page" to="/discovery">{t('navbar.explore')}</Link>
