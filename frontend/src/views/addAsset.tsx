@@ -162,24 +162,46 @@ const AddAsset = () => {
         // If it is not in our API, try with OpenLibrary API
         const book = await getBookOpenLib(isbn);
 
-        if (book.title) {
+        if (book) {
             const titleInput = document.getElementById('title') as HTMLInputElement;
-            titleInput.value = book.title;
-            titleInput.readOnly = true;
-        }
-
-        if (book.author) {
+            if (book.title) {
+                titleInput.value = book.title;
+                titleInput.readOnly = true;
+            } else {
+                titleInput.value = '';
+                titleInput.readOnly = false;
+            }
+            
             const authorInput = document.getElementById('author') as HTMLInputElement;
-            authorInput.value = book.author;
-            authorInput.readOnly = true;
-        }
+            if (book.author) {
+                authorInput.value = book.author;
+                authorInput.readOnly = true;
+            } else {
+                authorInput.value = '';
+                authorInput.readOnly = false;
+            }
 
-        if (book.lang) {
             const languageInput = document.getElementById('language') as HTMLInputElement;
-            languageInput.value = book.lang;
-            languageInput.readOnly = true;
-        }
+            if (book.lang) {
+                languageInput.value = book.lang;
+                languageInput.readOnly = true;
+            } else {
+                languageInput.value = '';
+                languageInput.readOnly = false;
+                languageInput.value = '';
+            }
 
+        } else {
+            const titleInput = document.getElementById('title') as HTMLInputElement;
+            titleInput.value = '';
+            titleInput.readOnly = false;
+            const authorInput = document.getElementById('author') as HTMLInputElement;
+            authorInput.value = '';
+            authorInput.readOnly = false;
+            const languageInput = document.getElementById('language') as HTMLInputElement;
+            languageInput.value = '';
+            languageInput.readOnly = false;
+        }
 
         nextBtn.disabled = false;
         isbnInput.classList.remove('loading');
@@ -253,7 +275,7 @@ const AddAsset = () => {
                             <div className='field-group'>
                                 <div className='field'>
                                     <label htmlFor='title' className='form-label'>Title</label>
-                                    <input type='text' className='form-control' id='title' placeholder='Title' readOnly />
+                                    <input type='text' className='form-control' id='title' placeholder='Title' />
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='physicalCondition' className='form-label'>Physical Condition</label>
@@ -267,11 +289,11 @@ const AddAsset = () => {
                             <div className='field-group'>
                                 <div className='field'>
                                     <label htmlFor='author' className='form-label'>Author</label>
-                                    <input type='text' className='form-control' id='author' placeholder='Author' readOnly />
+                                    <input type='text' className='form-control' id='author' placeholder='Author' />
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='language' className='form-label'>Language</label>
-                                    <input type='text' className='form-control round' id='language' placeholder='Language' readOnly />
+                                    <input type='text' className='form-control round' id='language' placeholder='Language' />
                                 </div>
                             </div>
                             <div className="button-container">
