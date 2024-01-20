@@ -1,0 +1,7 @@
+.image-overlay {
+    background-color: rgba(0,0,0,0.3);
+}
+
+.image-container:hover .img-hover-text {
+    color: #D1E9C3;
+}
