@@ -13,8 +13,7 @@ const useLocationAsset = () => {
         selfUrl:""
     })
     const getLocation = async (locationUrl) => {
-        const location: LocationApi = (await api_.get(locationUrl)).data
-        console.log(location)
+        const location: LocationApi = (await api_.get(locationUrl.assetinstance.locationReference)).data
         setLocation(location)
     }
 
