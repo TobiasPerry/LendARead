@@ -12,7 +12,10 @@ const ViewAssetInstance = () => {
     const book : AssetData = {
         title: "",
         author: "",
-        language: "",
+        language: {
+            code: "",
+            name: ""
+        },
         image: "",
         physicalCondition: "",
         userImage: "",
@@ -151,12 +154,10 @@ const ViewAssetInstance = () => {
                                                              hasUserImage ? (
                                                                  <img className="rounded-circle img-hover-click"
                                                                       style={{width: '25px', height: '25px'}}
-                                                                     // src="<c:url value="/getImage/${assetInstance.owner.profilePhoto.id}"/>"
                                                                       src={data.userImage}
                                                                       alt="profile picture"/>
                                                              ) : (
                                                                  <img className="rounded-circle img-hover-click" style={{width: '25px'}}
-                                                                     // src="<c:url value="/static/images/user-placeholder.jpeg"/>"
                                                                       src="/static/profile_placeholder.jpeg"
                                                                       alt="profile picture"/>
                                                              )
