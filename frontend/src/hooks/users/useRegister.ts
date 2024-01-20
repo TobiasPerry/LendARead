@@ -12,11 +12,12 @@ const useRegister = () => {
                 "name": name
             };
 
-            const response = await api.post('/users', userData,{ headers: { 'Content-Type': 'application/vnd.user.v1+json' }});
+            //const response = await api.post('/users', userData,{ headers: { 'Content-Type': 'application/vnd.user.v1+json' }});
 
 
             // @ts-ignore
-            return response.status === 201;
+            //return response.status === 201;
+            return false;
 
         } catch (error) {
             return false;

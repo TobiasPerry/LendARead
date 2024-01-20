@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
+import {Link} from "react-router-dom";
 
 const ForgotPasswordView = () => {
     const { t } = useTranslation();
@@ -19,9 +20,9 @@ const ForgotPasswordView = () => {
                 <div className="row">
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">
                         <div className="px-5 ms-xl-4 mt-10">
-                            <a href="/">
+                            <Link to="/">
                                 <img src={logo} alt="Lend a read logo" style={{ width: '300px' }} />
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
@@ -46,6 +47,7 @@ const ForgotPasswordView = () => {
                                 <div className="pt-1 mb-4 text-center">
                                     <input className="btn btn-light" type="submit" value={t('forgotpassword.changePasswordButton')} />
                                 </div>
+
                             </form>
                         </div>
                     </div>

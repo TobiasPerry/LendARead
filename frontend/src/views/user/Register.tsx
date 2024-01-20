@@ -1,6 +1,6 @@
 import  { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 // @ts-ignore
 import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
@@ -74,6 +74,8 @@ const RegisterView = () => {
             const successfulRegister = await register(email, password, repeatPassword, name);
             if (successfulRegister) {
                 navigate('/');
+            }else{
+                // TODO: Error message
             }
         } else {
             setFormErrors(errors);
@@ -86,9 +88,9 @@ const RegisterView = () => {
                 <div className="row">
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">
                         <div className="px-5 ms-xl-4 mt-10">
-                            <a href="/">
+                            <Link to="/">
                                 <img src={logo} alt="Lend a read logo" style={{ width: '300px' }} />
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
@@ -138,7 +140,7 @@ const RegisterView = () => {
 
                                 {/* Already Have Account Link */}
                                 <div className="pt-1 mb-4">
-                                    <a href="/login" className="text-muted">{t('auth.alreadyHaveAccount')}</a>
+                                    <Link to="/login" className="text-muted">{t('auth.alreadyHaveAccount')}</Link>
                                 </div>
                             </form>
                         </div>

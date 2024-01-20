@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '../../assets/logo-claro.png'; // Adjust path as necessary
 // @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 
@@ -76,10 +76,10 @@ const LoginView = () => {
                                 </div>
 
                                 <div className="pt-1 mb-4 text-center">
-                                    <a href="/register" className="text-muted">{t('auth.doNotHaveAccount')}</a>
+                                    <Link to="/register" className="text-muted">{t('auth.doNotHaveAccount')}</Link>
                                 </div>
                                 <div className="pt-1 mb-4 text-center">
-                                    <a href="/forgotPassword" className="text-muted">{t('auth.forgotPassword')}</a>
+                                    <Link to="/forgotPassword" className="text-muted">{t('auth.forgotPassword')}</Link>
                                 </div>
                             </form>
                         </div>
