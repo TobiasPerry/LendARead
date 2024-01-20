@@ -288,4 +288,32 @@
       "no_reviews": "There are no reviews for this book"
     }
   }
+  "addAsset": {
+    "title": "Do you want to borrow a book?",
+    "isbn": {
+        "ISBN": "ISBN",
+        "validation-error": "Please, enter a valid ISBN.",
+        "explanation": "We need the ISBN to find the book you want to borrow. If there's missing information, you can complete it later."
+    },
+    "bookInfo": {
+        "detail": "Book details",
+        "title": "Title",
+        "author": "Author",
+        "language": "Language",
+        "physicalCondition": "Physical condition",
+        "title-validation-error": "Please, enter a valid title.",
+        "author-validation-error": "Please, enter a valid author.",
+        "language-validation-error": "Please, enter a valid language.",
+        "physicalCondition-validation-error": "Please enter a valid physical condition."
+    },
+    "duration": {
+        "detail": "Max Borrowing Period",
+        "lendFor": "Lend for",
+        "days": "day/s",
+        "months": "month/s",
+        "weeks": "week/s",
+        "years": "year/s",
+        "validation-error": "Please, enter a valid duration."
+    }
+  }
 }
