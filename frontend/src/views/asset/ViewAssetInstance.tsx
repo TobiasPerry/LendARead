@@ -147,8 +147,6 @@ const ViewAssetInstance = () => {
 
                                                  <div className="container-row" style={{justifyContent: 'start'}}>
                                                      <Link to="/">
-                                                         {/*<a href="<c:url value="/user/${assetInstance.owner.id}"/>"*/}
-                                                         {/*   style="color: inherit; text-decoration: none;">*/}
                                                          {
                                                              hasUserImage ? (
                                                                  <img className="rounded-circle img-hover-click"
@@ -159,11 +157,10 @@ const ViewAssetInstance = () => {
                                                              ) : (
                                                                  <img className="rounded-circle img-hover-click" style={{width: '25px'}}
                                                                      // src="<c:url value="/static/images/user-placeholder.jpeg"/>"
-                                                                      src="/profile_placeholder.jpeg"
+                                                                      src="/static/profile_placeholder.jpeg"
                                                                       alt="profile picture"/>
                                                              )
                                                          }
-                                                         {/*</a>*/}
                                                      </Link>
                                                      {/*<a href="<c:url value="/user/${assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">*/}
                                                      <Link to="/">
