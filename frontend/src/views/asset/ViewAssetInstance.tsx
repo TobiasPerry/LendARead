@@ -74,6 +74,11 @@ const ViewAssetInstance = () => {
     }, []);
 
 
+    // These are the links to redirect to discovery with filters applied
+    const authorURL = `/discovery?author=${data.author}`
+    const physicalConditionURL = `/discovery?physicalCondition=${data.physicalCondition}`
+    const languageURL = `/discovery?language=${data.language.code}`
+
     return (
         <>
             {
@@ -115,18 +120,25 @@ const ViewAssetInstance = () => {
                                                  <h3 className="textOverflow" id="authorClick" data-author="data-author">
                                                      {t('view_asset.by')}:
                                                      <span className="text-clickable">
-                                                {data.author}
-                                            </span>
+                                                         <Link to={authorURL} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                            {data.author}
+                                                         </Link>
+                                                    </span>
                                                  </h3>
                                                  <h6 id="physicalConditionClick" className="text-clickable">
-                                                     <i><u>
-                                                         {t(data.physicalCondition)}
-                                                     </u></i>
+                                                     <Link to={physicalConditionURL} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                         <i><u>
+                                                             {t(data.physicalCondition)}
+                                                         </u></i>
+                                                     </Link>
                                                  </h6>
 
                                                  <h6 id="languageClick" data-language="data-language"
                                                      style={{color: '#7d7c7c'}}>
-                                                     {t('view_asset.language')}: <span className="text-clickable"> {data.language} </span>
+                                                     {t('view_asset.language')}:
+                                                     <Link to={languageURL} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                        <span className="text-clickable"> {data.language.name} </span>
+                                                     </Link>
                                                  </h6>
 
                                                  <h6 style={{color: '#7d7c7c'}}>

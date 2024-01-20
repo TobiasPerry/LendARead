@@ -16,11 +16,17 @@ const extractTotalPages = (linkHeader) => {
     return 1;
 };
 
+
+export interface language {
+    code: string;
+    name: string;
+}
+
 // Define the interface for the data object
 export interface AssetData {
     title: string;
     author: string;
-    language: string;
+    language: language;
     image: string;
     physicalCondition: string;
     userImage: string;
@@ -37,10 +43,6 @@ export interface AssetData {
     // Add other properties as needed
 }
 
-export interface language {
-    code: string;
-    name: string;
-}
 
 const useAssetInstance = () => {
 
@@ -155,12 +157,14 @@ const useAssetInstance = () => {
             const body_reviews = response_reviews.data
             const body_location =  response_location.data
             const body_user =  response_user.data
+            const response_language = await api_.get(body_asset.language, undefined)
+            const body_language = response_language.data
 
             return {
                 author: body_asset.author,
                 image: body_instance.imageReference,
                 isbn: body_asset.isbn,
-                language: body_asset.language,
+                language: body_language,
                 location: body_location,
                 //location: {country: "", locality: "", province: "", zipcode: ""},
                 physicalCondition: body_instance.physicalCondition,
