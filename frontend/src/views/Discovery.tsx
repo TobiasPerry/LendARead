@@ -44,13 +44,21 @@ const DiscoveryView =  () => {
     const [booksPerPage, setBooksPerPage] = useState(1);
     const [totalPages, setTotalPages] = useState("?");
 
+    // Read the query params sent form other views (like view asset)
+    const searchParams = new URLSearchParams(window.location.search)
+    const authorParam = searchParams.get('author')
+    const languageParam = searchParams.get('language')
+    const physicalConditionParam = searchParams.get('physicalCondition')
+
     // Filters and sorting
     const [sort, setSort] = useState(SORT_TYPES.RECENT);
     const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DES);
-    const [physicalConditions_filters, setPhysicalConditions_filters] = useState([])
-    const [languages_filters, setLanguages_filters] = useState([])
+    const [physicalConditions_filters, setPhysicalConditions_filters] = useState((physicalConditionParam !== null && physicalConditionParam !== undefined) ? [physicalConditionParam] : [])
+    const [languages_filters, setLanguages_filters] = useState((languageParam !== null && languageParam !== undefined) ? [languageParam] : [])
     const [minRating, setMinRating] = useState(1)
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState((authorParam !== null && authorParam !== undefined) ? authorParam : "");
+    const [inputValue, setInputValue] = useState(search);
+
 
 
     let placeholder_books = Array.from({ length: booksPerPage }, (_, index) => (
@@ -101,6 +109,7 @@ const DiscoveryView =  () => {
     }
     const clearSearch = () => {
         setSearch("");
+        setInputValue("");
         setCurrentPage(1);
         setPhysicalConditions_filters([])
         setLanguages_filters([])
@@ -140,6 +149,8 @@ const DiscoveryView =  () => {
                                 <div className="input-group mb-3">
                                     <input type="text" className="form-control form-input"
                                            placeholder={t('discovery.searchbar.placeholder')} id="search-bar"
+                                           value={inputValue}
+                                           onChange={(e) => setInputValue(e.target.value)}
                                            onKeyPress={handleSearch}
                                            />
                                     <button className="btn btn-light" type="button" onClick={clickSearch}>
