@@ -98,7 +98,9 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
             <div className="modal-dialog modal-content" role="document"  style={{
                 backgroundColor: '#f0f5f0',
                 borderRadius: '20px',
-                width: "1000px"
+                width: "100%", // Use 100% of the container width
+                maxWidth: "900px", // Set the maximum width you desire
+                margin: 'auto' // Center the modal
             }}>
                     <div className="modal-header">
                         {/* Modal Header Content */}
@@ -117,7 +119,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                                          }}
                                          onClick={() => document.getElementById('image-modal').click()}
                                     >
-                                        <img src={imagePreview} alt="Book Cover" className="img-fluid" id="bookImage" />
+                                        <img style={{width: "500px"}} src={imagePreview} alt="Book Cover" className="img-fluid" id="bookImage" />
                                         <div className="image-overlay" style={{
                                             position: 'absolute',
                                             top: 0,
