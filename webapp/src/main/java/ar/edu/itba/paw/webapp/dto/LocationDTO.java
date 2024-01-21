@@ -14,19 +14,16 @@ import java.util.stream.Collectors;
 public class LocationDTO {
 
     private String name;
-    private String address;
     private String zipcode;
     private String locality;
     private String province;
     private String country;
     private String userReference;
-
     private String selfUrl;
 
     public static LocationDTO fromLocation(UriInfo url, Location location) {
         LocationDTO dto = new LocationDTO();
         dto.name = location.getName();
-        dto.address = location.getAddress();
         dto.zipcode = location.getZipcode();
         dto.locality = location.getLocality();
         dto.province = location.getProvince();

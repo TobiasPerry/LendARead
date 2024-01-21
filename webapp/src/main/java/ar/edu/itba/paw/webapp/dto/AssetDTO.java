@@ -15,7 +15,6 @@ public class AssetDTO {
     private String author;
     private String title;
     private String language;
-
     private String selfUrl;
 
 

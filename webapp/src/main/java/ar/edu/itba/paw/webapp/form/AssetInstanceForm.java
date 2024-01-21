@@ -45,8 +45,8 @@ public class AssetInstanceForm {
 
     @NotNull
     @Pattern(regexp = "PRIVATE|PUBLIC", message = "{Pattern.assetInstanceForm.visibility}")
-    @FormDataParam("state")
-    private String state;
+    @FormDataParam("status")
+    private String status;
 
     @Image
     @NotNull
