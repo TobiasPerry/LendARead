@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.userContext.implementations.User;
@@ -65,6 +64,7 @@ public class AssetInstanceReviewTest{
 
         AssetInstanceReview review1 = new AssetInstanceReview();
         Lending lending = entityManager.find(Lending.class, 0L);
+        Lending lending1 = entityManager.find(Lending.class, 1L);
         review1.setLending(lending);
         review1.setRating(5);
         review1.setReviewer(user);
@@ -72,18 +72,23 @@ public class AssetInstanceReviewTest{
 
 
         AssetInstanceReview review2 = new AssetInstanceReview();
-        review2.setLending(lending);
+        review2.setLending(lending1);
         review2.setRating(3);
         review2.setReviewer(user);
         review2.setReview("");
 
+
         entityManager.persist(review1);
         entityManager.persist(review2);
+        entityManager.flush();
+        entityManager.clear();
 
-        AssetInstance assetInstance = lending.getAssetInstance();
-        double rating = assetInstance.getRating();
+        Lending refreshedLending = entityManager.find(Lending.class, 0L);
+        double rating = refreshedLending.getAssetInstance().getRating();
 
+        // Cambié el tipo de la variable expectedRating a Double para mayor precisión
         double expectedRating = (review1.getRating() + review2.getRating()) / 2.0;
+
         Assert.assertEquals(expectedRating, rating, 0.01);
     }
 

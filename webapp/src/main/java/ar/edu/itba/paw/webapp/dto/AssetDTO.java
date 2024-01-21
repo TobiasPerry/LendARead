@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +29,7 @@ public class AssetDTO {
         return assetDTO;
     }
     public static String reference(UriInfo url, Asset asset) {
-        return url.getBaseUriBuilder().path("/api/assets").path(String.valueOf(asset.getId())).build().toString();
+        return url.getBaseUriBuilder().path(EndpointsUrl.Assets_URL).path(String.valueOf(asset.getId())).build().toString();
     }
     public static List<AssetDTO> fromBooks(final List<Asset> books, final UriInfo uriInfo) {
         return books.stream().map(book -> fromAsset(uriInfo, book)).collect(java.util.stream.Collectors.toList());

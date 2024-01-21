@@ -1,24 +1,27 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.DateCheckValidation;
+import ar.edu.itba.paw.webapp.form.annotations.interfaces.DayCheckOverlap;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@DayCheckOverlap
 public class BorrowAssetForm {
 
-    @NotNull
-    @DateTimeFormat
+    @DateCheckValidation
     LocalDate borrowDate;
 
-    @NotNull
-    @DateTimeFormat
+
+    @DateCheckValidation
     LocalDate devolutionDate;
 
     @NotNull
+    @Min(1)
     Integer assetInstanceId;
 }

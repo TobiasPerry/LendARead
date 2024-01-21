@@ -8,6 +8,8 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.AssetDTO;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
+import ar.edu.itba.paw.webapp.form.PatchAssetForm;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -29,7 +31,7 @@ import java.net.URI;
 import java.util.List;
 
 @Component
-@Path("/api/assets")
+@Path(EndpointsUrl.Assets_URL)
 public class AssetController {
 
 
@@ -59,6 +61,7 @@ public class AssetController {
         List<AssetDTO> assetsDTO = AssetDTO.fromBooks( books.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetDTO>>(assetsDTO) {});
         PaginatedData.paginatedData(response, books, uriInfo);
+        StaticCache.setUnconditionalCache(response);
         return response.build();
     }
 
@@ -83,6 +86,14 @@ public class AssetController {
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(book.getId())).build();
         return Response.created(uri).build();
+    }
+    @PATCH
+    @Path("/{id}")
+    @Consumes(value = {Vnd.VND_ASSET})
+    public Response updateAsset(@PathParam("id") final Long id, @Valid final PatchAssetForm assetForm) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
+         as.updateBook(id,assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
+        LOGGER.info("PATCH asset/ id:{}",id);
+        return Response.noContent().build();
     }
 
 

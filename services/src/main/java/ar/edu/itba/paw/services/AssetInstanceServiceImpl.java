@@ -1,13 +1,17 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.ImageNotFoundException;
-import ar.edu.itba.paw.exceptions.LocationNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
+import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.interfaces.LocationsService;
+import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
@@ -36,19 +40,26 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     private final LocationsService locationsService;
 
+    private final UserService userService;
+
+    private final AssetService assetService;
+
+
 
     @Autowired
-    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService) {
+    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final UserService userService,final AssetService assetService) {
         this.assetInstanceDao = assetInstanceDao;
         this.imagesDao = imagesDao;
         this.locationsService = locationsService;
+        this.userService = userService;
+        this.assetService = assetService;
     }
 
     @Transactional(readOnly = true)
     @Override
     public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
-        if (!assetInstanceOpt.isPresent()) {
+        if (!assetInstanceOpt.isPresent()||assetInstanceOpt.get().getAssetState()==AssetState.DELETED) {
             LOGGER.error("Failed to find the asset instance");
             throw new AssetInstanceNotFoundException(HttpStatusCodes.NOT_FOUND);
         }
@@ -64,7 +75,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             return new PagingImpl<>(new ArrayList<>(), 1, 1);
 
         if (searchQuery == null)
-            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1);
+            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1,AssetState.PUBLIC);
 
 
         return assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);
@@ -99,6 +110,33 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         isReservable.ifPresent(assetInstance::setIsReservable);
         state.ifPresent(s -> assetInstance.setAssetState(AssetState.fromString(s)));
 
+    }
+    @Override
+    @Transactional
+    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws UserNotFoundException, AssetNotFoundException, LocationNotFoundException {
+        Asset book ;
+        Location location;
+        try {
+            book = assetService.getBookById(assetId);
+            location =   locationsService.getLocation(locationId);
+        }
+        catch (CustomException e) {
+            e.setStatusCode(HttpStatusCodes.BAD_REQUEST);
+            throw e;
+        }
+        User user = userService.getCurrentUser();
+        Image image = imagesDao.addPhoto(fileByteArray);
+        AssetInstance assetInstance = new AssetInstance();
+        assetInstance.setBook(book);
+        assetInstance.setLocation(location);
+        assetInstance.setImage(image);
+        assetInstance.setUserReference(user);
+        assetInstance.setPhysicalCondition(physicalCondition);
+        assetInstance.setDescription(description);
+        assetInstance.setMaxLendingDays(maxDays);
+        assetInstance.setReservable(isReservable);
+        assetInstance.setAssetState(assetState);
+        return assetInstanceDao.addAssetInstance(assetInstance);
     }
 
 }

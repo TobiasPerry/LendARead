@@ -4,7 +4,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.viewsContext.implementations.AssetInstanceSort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
@@ -139,8 +139,8 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         queryCount.setParameter("min_rating", searchQuery.getMinRating());
         queryCount.setParameter("max_rating", searchQuery.getMaxRating());
 
-        queryNative.setParameter("state", "PUBLIC");
-        queryCount.setParameter("state", "PUBLIC");
+        queryNative.setParameter("state",searchQuery.getAssetState().toString() );
+        queryCount.setParameter("state",searchQuery.getAssetState().toString()  );
 
         queryNative.setParameter("limit", limit);
         queryNative.setParameter("offset", offset);
@@ -192,30 +192,34 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         return list.stream().map(PhysicalCondition::fromString).collect(Collectors.toList());
     }
 
-    private String getPostgresFromSort(Sort sort) {
-        if (sort == null)
-            return "ai.id";
-        switch (sort) {
-            case TITLE_NAME:
-                return "b.title";
+    private String getPostgresFromSort(AssetInstanceSort assetInstanceSort) {
+        if (assetInstanceSort == null)
+            return " ai.id ";
+        switch (assetInstanceSort) {
+            case TITLE:
+                return " b.title ";
             case AUTHOR_NAME:
-                return "b.author";
+                return " b.author ";
             case RECENT:
-                return "ai.id";
+                return " ai.id ";
+            case LANGUAGE:
+                return " b.lang ";
+            case STATE:
+                return " ai.physicalcondition ";
         }
         return "ai.id";
     }
 
-    private String getOrmFromSort(Sort sort) {
-        if (sort == null)
-            return "ai.id";
-        switch (sort) {
-            case TITLE_NAME:
-                return "ai.book.title";
+    private String getOrmFromSort(AssetInstanceSort assetInstanceSort) {
+        if (assetInstanceSort == null)
+            return " ai.id ";
+        switch (assetInstanceSort) {
+            case TITLE:
+                return " ai.book.title ";
             case AUTHOR_NAME:
-                return "ai.book.author";
+                return " ai.book.author ";
             case RECENT:
-                return "ai.id";
+                return " ai.id ";
         }
         return "ai.id";
     }
@@ -225,11 +229,11 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             return "ASC";
         switch (sortDirection) {
             case ASCENDING:
-                return "ASC";
+                return " ASC";
             case DESCENDING:
-                return "DESC";
+                return " DESC";
         }
-        return "ASC";
+        return " ASC";
     }
 
     private String getOrmFromSortDirection(SortDirection sortDirection) {

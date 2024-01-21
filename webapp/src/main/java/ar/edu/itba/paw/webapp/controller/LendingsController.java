@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.LendingService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
@@ -10,11 +10,13 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
 import ar.edu.itba.paw.webapp.form.PatchLendingForm;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -26,11 +28,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
-@Path("/api/lendings")
+@Path(EndpointsUrl.Lendings_URL)
 @Component
 public class LendingsController {
 
-    private final AssetAvailabilityService aas;
+    private final LendingService aas;
 
     private final UserService us;
     private final UserAssetInstanceService uais;
@@ -41,8 +43,8 @@ public class LendingsController {
     private UriInfo uriInfo;
 
     @Autowired
-    public LendingsController(final AssetAvailabilityService assetAvailabilityService, final UserService userService, final UserAssetInstanceService userAssetInstanceService){
-        this.aas = assetAvailabilityService;
+    public LendingsController(final LendingService lendingService, final UserService userService, final UserAssetInstanceService userAssetInstanceService){
+        this.aas = lendingService;
         this.us = userService;
         this.uais = userAssetInstanceService;
     }
@@ -53,9 +55,11 @@ public class LendingsController {
                                 @QueryParam("itemsPerPage")@DefaultValue("4") Integer itemsPerPage,
                                 @QueryParam("assetInstanceId")  Integer assetInstanceId,
                                 @QueryParam("borrowerId") Integer borrowerId,
-                                @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED|CANCALE",message = "{lending.state.invalid}") String state,
+                                @QueryParam("sort") @Pattern(regexp = "TITLE|LENDDATE|DEVOLUTIONDATE|BORROWER_USER|LENDER_USER|STATE",message = "{pattern.lendingSort}") String sort,
+                                @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
+                                @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED|CANCELED",message = "{lending.state.invalid}") String state,
                                 @QueryParam("lenderId") Integer lenderId) {
-        PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId);
+        PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId, sort, sortDirection);
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
 
         LOGGER.info("GET lendings/ page:{} itemsPerPage:{} assetInstanceId:{} borrowerId:{} state:{} lenderId:{}",page,itemsPerPage,assetInstanceId,borrowerId,state,lenderId);
@@ -92,6 +96,7 @@ public class LendingsController {
     @Path("/{id}")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
+    @PreAuthorize("@preAuthorizeFunctions.canChangeLendingStatus(#id,#patchLendingForm.state)")
     public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException {
         aas.changeLending(id, patchLendingForm.getState());
         LOGGER.info("PATCH lendings/ id:{} state:{}",id,patchLendingForm.getState());

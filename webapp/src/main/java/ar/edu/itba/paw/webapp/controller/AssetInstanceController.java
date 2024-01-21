@@ -1,16 +1,15 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.AssetExistanceService;
 import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.viewsContext.implementations.AssetInstanceSort;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
-import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.AssetInstanceReviewDTO;
@@ -18,10 +17,7 @@ import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
 import ar.edu.itba.paw.webapp.form.AssetInstancePatchForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
-import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
-import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
-import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
-import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
+import ar.edu.itba.paw.webapp.miscellaneous.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +40,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Path("/api/assetInstances")
+@Path(EndpointsUrl.AssetInstances_URL)
 public class AssetInstanceController {
 
 
     private final AssetInstanceService ais;
 
-    private final AssetExistanceService aes;
 
 
     private final AssetInstanceReviewsService air;
@@ -61,9 +56,8 @@ public class AssetInstanceController {
     private UriInfo uriInfo;
 
     @Autowired
-    public AssetInstanceController(final AssetInstanceService ais,final AssetExistanceService aes,final AssetInstanceReviewsService air) {
+    public AssetInstanceController(final AssetInstanceService ais,final AssetInstanceReviewsService air) {
         this.ais = ais;
-        this.aes = aes;
         this.air = air;
     }
 
@@ -101,12 +95,14 @@ public class AssetInstanceController {
 
     @GET
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_SEARCH})
+    @PreAuthorize("@preAuthorizeFunctions.searchPrivateAssetInstances(#userId,#status)")
     public Response getAssetsInstances( @QueryParam("search")  @Size(min = 1, max = 100) String search,
                                          @QueryParam("physicalConditions")  List<String> physicalConditions,
                                          @QueryParam("languages")  List<String> languages,
-                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE_NAME|RECENT") String sort,
-                                         @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING") String sortDirection,
+                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE|RECENT|LANGUAGE|STATE",message = "{pattern.sort.AssetInstance}") String sort,
+                                         @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
                                          @QueryParam("page")  @DefaultValue("1")  @Min(1) int currentPage,
+                                         @QueryParam("status") @DefaultValue("PUBLIC") @Pattern(regexp = "PUBLIC|PRIVATE",message = "{pattern.status}") String status,
                                          @QueryParam("minRating")  @DefaultValue("1")@Min(1) @Max(5) int minRating,
                                          @QueryParam("maxRating")  @DefaultValue("5") @Min(1) @Max(5)int maxRating,
                                          @QueryParam("itemsPerPage") @DefaultValue("10") int itemsPerPage,
@@ -117,11 +113,12 @@ public class AssetInstanceController {
                         (languages != null) ? languages : new ArrayList<>(),
                         (physicalConditions != null) ? physicalConditions : new ArrayList<>(),
                         (search != null) ? search : "",
-                        (sort != null) ? Sort.fromString(sort) : Sort.RECENT,
+                        (sort != null) ? AssetInstanceSort.fromString(sort) : AssetInstanceSort.RECENT,
                         (sortDirection != null) ? SortDirection.fromString(sortDirection) : SortDirection.DESCENDING,
                         minRating,
                         maxRating,
-                        userId
+                        userId,
+                        AssetState.fromString(status)
                         )
         );
         List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getList());
@@ -135,7 +132,7 @@ public class AssetInstanceController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException, AssetNotFoundException {
-        AssetInstance assetInstance = aes.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
+        AssetInstance assetInstance = ais.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
         LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
@@ -147,7 +144,7 @@ public class AssetInstanceController {
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
     public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstancePatchForm assetInstancePatchForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
-        ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getState()));
+        ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getStatus()));
         LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
     }

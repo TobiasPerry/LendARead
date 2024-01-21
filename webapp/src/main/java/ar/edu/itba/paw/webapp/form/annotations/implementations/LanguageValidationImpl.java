@@ -17,6 +17,9 @@ public class LanguageValidationImpl implements ConstraintValidator<Language,Stri
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
         try {
             languagesService.getLanguage(s);
             return true;

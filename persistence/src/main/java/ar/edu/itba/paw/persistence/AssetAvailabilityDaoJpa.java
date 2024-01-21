@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
+import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.springframework.stereotype.Repository;
 
@@ -37,14 +38,14 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
                 .setParameter("ai", ai)
                 .setParameter("active", LendingState.FINISHED)
                 .setParameter("rejected", LendingState.REJECTED)
-                .setParameter("cancel", LendingState.CANCEL)
+                .setParameter("cancel", LendingState.CANCELED)
                 .getResultList();
     }
 
     @Override
-    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId) {
+    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection) {
 
-        final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id ");
+        final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id join book as b on a.assetid = b.uid join users as borrower on l.borrowerid = borrower.id join users as owner on a.owner = owner.id ");
 
         boolean first = true;
         if (lenderId != null){
@@ -58,7 +59,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         }
         if(aiId != null){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
-            queryNativeStringBuilder.append(" l.assetinstanceid = :ai");
+            queryNativeStringBuilder.append(" l.assetinstanceid = :ai ");
             first = false;
 
         }
@@ -67,7 +68,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
             first = false;
         }
-        queryNativeStringBuilder.append("group by l.id,l.lenddate order by l.lenddate limit :limit offset :offset");
+        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active").append(getSortQueryForNativeQuery(sort, sortDirection)).append(" limit :limit offset :offset");
 
         final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
 
@@ -99,11 +100,73 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         if (list.isEmpty())
             return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
 
-        final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) ORDER BY l.lendDate", Lending.class);
+        final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) " + getSortQueryForTypedQuery(sort,sortDirection), Lending.class);
         query.setParameter("ids", list);
         List<Lending> reviewList = query.getResultList();
 
         return new PagingImpl<>(reviewList, pageNum, totalPages);
+    }
+    private String getSortQueryForTypedQuery(String sort, String sortDirection) {
+        if (sort == null || sort.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        switch (sort) {
+            case "LENDDATE":
+                sb.append( " ORDER BY l.lendDate ");
+                break;
+            case "DEVOLUTIONDATE":
+                sb.append( " ORDER BY l.devolutionDate ");
+                break;
+            case "BORROWER_USER":
+                sb.append( " ORDER BY l.userReference.name " );
+                break;
+            case "LENDER_USER":
+                sb.append( " ORDER BY l.assetInstance.userReference.name " );
+                break;
+            case "TITLE":
+                sb.append( " ORDER BY l.assetInstance.book.title " );
+                break;
+            case "LENDING_STATUS":
+                sb.append( " ORDER BY l.active " );
+                break;
+            default:
+                return "";
+        }
+        sb.append(sortDirection != null ? SortDirection.fromString(sortDirection).getValue() : "ASC");
+        return sb.toString();
+    }
+    private String getSortQueryForNativeQuery(String sort, String sortDirection) {
+        if (sort == null || sort.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        switch (sort) {
+            case "LENDDATE":
+                sb.append( " ORDER BY l.lenddate ");
+                break;
+            case "DEVOLUTIONDATE":
+                sb.append( " ORDER BY l.devolutionDate ");
+                break;
+            case "BORROWER_USER":
+                sb.append( " ORDER BY borrower.name " );
+                break;
+            case "LENDER_USER":
+                sb.append( " ORDER BY owner.name " );
+                break;
+            case "TITLE":
+                sb.append( " ORDER BY b.title " );
+                break;
+            case "LENDING_STATUS":
+                sb.append( " ORDER BY l.active " );
+                break;
+            default:
+                return "";
+        }
+        sb.append(sortDirection != null ? SortDirection.fromString(sortDirection).getValue() : "ASC");
+        return sb.toString();
+
+
     }
 
     @Override

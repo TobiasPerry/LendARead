@@ -15,10 +15,7 @@ import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordTokenForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
-import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
-import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
-import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
-import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
+import ar.edu.itba.paw.webapp.miscellaneous.*;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -37,7 +34,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-@Path("/api/users")
+@Path(EndpointsUrl.Users_URL)
 @Component
 public class UserController {
     private final UserService us;

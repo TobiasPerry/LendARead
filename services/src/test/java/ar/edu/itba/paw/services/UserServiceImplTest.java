@@ -55,17 +55,7 @@ public class UserServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = UserNotFoundException.class)
-    public void changeRoleTest() throws UserNotFoundException {
-        // 1 - Precondiciones
-        when(userDao.changeRole(anyString(), any())).thenReturn(false);
 
-        // 2 - Ejercitación
-        //us.changeRole(EMAIL, BEHAVIOUR);
-
-        // 3 - Assertions
-        Assert.fail();
-    }
 
     @Test(expected = UserNotFoundException.class)
     public void changeUserProfilePic() throws UserNotFoundException {

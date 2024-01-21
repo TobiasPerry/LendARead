@@ -16,7 +16,7 @@ public class AssetInstancePatchForm {
 
     @Size(min = 1, max = 100)
     @FormDataParam("physicalCondition")
-    @Pattern(regexp = "ASNEW|FINE|VERYGOOD|GOOD|FAIR|POOR|EXLIBRARY|BOOKCLUB|BINDINGCOPY")
+    @Pattern(regexp = "ASNEW|FINE|VERYGOOD|GOOD|FAIR|POOR|EXLIBRARY|BOOKCLUB|BINDINGCOPY", message = "{Pattern.assetInstanceForm.physicalCondition}")
     private String physicalCondition;
 
     @Min(value = 1)
@@ -35,9 +35,9 @@ public class AssetInstancePatchForm {
     @FormDataParam("isReservable")
     private Boolean isReservable;
 
-    @Pattern(regexp = "PRIVATE|PUBLIC")
-    @FormDataParam("state")
-    private String state;
+    @Pattern(regexp = "PRIVATE|PUBLIC", message = "{Pattern.assetInstanceForm.visibility}")
+    @FormDataParam("status")
+    private String status;
 
     @Image
     @FormDataParam("image")

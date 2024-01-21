@@ -30,11 +30,11 @@ public class AssetDaoImplTest {
     private final static String ISBN = "ISBN2";
     private final static String AUTHOR = "AUTHOR";
     private final static String TITLE = "TITLE";
-    private final static String LANGUAGE = "LANGUAGE";
-    private final static String ISBN_ALREADY_EXIST = "ISBN";
 
-    private final static Asset book = new Asset( ISBN, AUTHOR, TITLE,new Language() );
-    private final static Asset DUPLICATED_BOOK = new Asset((long) -1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, new Language());
+    private final static String ISBN_ALREADY_EXIST = "ISBN";
+    private final static Language LANGUAGE = new Language("spa","Español");
+    private final static Asset book = new Asset( ISBN, AUTHOR, TITLE, LANGUAGE);
+    private final static Asset DUPLICATED_BOOK = new Asset((long) -1, ISBN_ALREADY_EXIST, AUTHOR, TITLE, LANGUAGE);
 
 
     @Rollback
@@ -52,8 +52,7 @@ public class AssetDaoImplTest {
         Assert.assertEquals(AUTHOR, bookReturned.getAuthor());
         Assert.assertEquals(ISBN, bookReturned.getIsbn());
         Assert.assertEquals(TITLE, bookReturned.getName());
-        Assert.assertEquals(LANGUAGE, bookReturned.getLanguage());
-
+        Assert.assertEquals("spa", bookReturned.getLanguage().getCode());
     }
 
     @Rollback
@@ -66,6 +65,14 @@ public class AssetDaoImplTest {
             assetDao.addAsset(DUPLICATED_BOOK);
         });
     }
+    @Rollback
+    @Test
+    public void getAssetTestNotExists() {
+        //2
+        Optional<Asset> returnBook = assetDao.getBookByIsbn("ISBN_NOT_EXISTS");
+        //3
+        Assert.assertFalse(returnBook.isPresent());
+    }
 
     @Rollback
     @Test
@@ -76,7 +83,7 @@ public class AssetDaoImplTest {
         Assert.assertTrue(returnBook.isPresent());
         Assert.assertEquals(DUPLICATED_BOOK.getName(),returnBook.get().getName());
         Assert.assertEquals( DUPLICATED_BOOK.getAuthor(),returnBook.get().getAuthor());
-        Assert.assertEquals(DUPLICATED_BOOK.getLanguage(),returnBook.get().getLanguage());
+        Assert.assertEquals(DUPLICATED_BOOK.getLanguage().getCode(),returnBook.get().getLanguage().getCode());
     }
 
 }

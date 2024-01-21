@@ -13,7 +13,7 @@ import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +25,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
-@EnableScheduling
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserDao userDao;
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User createUser(final String email, String name, final String telephone, final String password) {
-        return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password));
+        return userDao.addUser(Behaviour.BORROWER, email, name, telephone, passwordEncoder.encode(password), LocaleContextHolder.getLocale().getLanguage());
     }
 
     @Transactional

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dto;
 
 
 import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,11 +35,11 @@ public class UserDTO {
         dto.ratingAsBorrower = user.getRatingAsBorrower();
         dto.ratingAsLender = user.getRatingAsLender();
         dto.selfUrl = reference(url, user);
-        dto.image = url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).path("image").build().toString();
+        dto.image = url.getBaseUriBuilder().path(EndpointsUrl.Users_URL).path(String.valueOf(user.getId())).path("image").build().toString();
         return dto;
     }
     public static String reference(UriInfo url, User user) {
-        return url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).build().toString();
+        return url.getBaseUriBuilder().path(EndpointsUrl.Users_URL).path(String.valueOf(user.getId())).build().toString();
     }
 
 }

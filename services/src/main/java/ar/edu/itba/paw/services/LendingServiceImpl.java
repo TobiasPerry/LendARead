@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.AssetAvailabilityService;
+import ar.edu.itba.paw.interfaces.LendingService;
 import ar.edu.itba.paw.interfaces.EmailService;
-import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
@@ -19,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +27,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-@EnableScheduling
 @Service
-public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
+public class LendingServiceImpl implements LendingService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AssetAvailabilityServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LendingServiceImpl.class);
     private final AssetAvailabilityDao lendingDao;
 
     private final AssetInstanceDao assetInstanceDao;
@@ -44,16 +41,14 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     private final UserAssetsDao userAssetsDao;
 
-    private final UserService userService;
 
     @Autowired
-    public AssetAvailabilityServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao,final UserService userService) {
+    public LendingServiceImpl(final AssetAvailabilityDao lendingDao, final AssetInstanceDao assetInstanceDao, final UserDao userDao, final EmailService emailService, final UserAssetsDao userAssetsDao) {
         this.lendingDao = lendingDao;
         this.assetInstanceDao = assetInstanceDao;
         this.userDao = userDao;
         this.emailService = emailService;
         this.userAssetsDao = userAssetsDao;
-        this.userService = userService;
     }
 
     @Transactional
@@ -120,10 +115,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
     }
     @Transactional
     @Override
-    public void returnAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void returnAsset(final int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
-        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
         if (lending.getActive() != LendingState.DELIVERED)
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         if (!lending.getAssetInstance().getIsReservable())
@@ -135,12 +129,11 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void confirmAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void confirmAsset(final int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
-        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
-        if (lending.getActive() != LendingState.ACTIVE )
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
+        if (lending.getActive() != LendingState.ACTIVE || userAssetsDao.getActiveLendingsCount(lending.getAssetInstance().getId()) >= 1 )
+            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST );
         lendingDao.changeLendingStatus(lending, LendingState.DELIVERED);
     }
 
@@ -152,10 +145,9 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void rejectAsset(final int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void rejectAsset(final int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.NOT_FOUND));
-        if (!lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }
@@ -187,8 +179,8 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId) {
-        return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId);
+    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection) {
+        return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId, sort, sortDirection);
     }
 
     @Transactional(readOnly = true)
@@ -199,14 +191,13 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
 
     @Transactional
     @Override
-    public void cancelAsset(int lendingId) throws LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public void cancelAsset(int lendingId) throws LendingCompletionUnsuccessfulException {
         Lending lending = userAssetsDao.getBorrowedAsset(lendingId).orElseThrow(() -> new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST));
-        if (!lending.getUserReference().equals(userService.getCurrentUser()))
-            throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
+
         if (lending.getActive() != LendingState.ACTIVE) {
             throw new LendingCompletionUnsuccessfulException(HttpStatusCodes.BAD_REQUEST);
         }
-        lendingDao.changeLendingStatus(lending, LendingState.CANCEL);
+        lendingDao.changeLendingStatus(lending, LendingState.CANCELED);
         emailService.sendCanceledEmail(lending.getAssetInstance(), lending.getId(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
     }
 
@@ -220,7 +211,6 @@ public class AssetAvailabilityServiceImpl implements AssetAvailabilityService {
                 emailService.sendRemindLendingToLender(lending, lending.getAssetInstance().getOwner(), lending.getUserReference(), new Locale(lending.getAssetInstance().getOwner().getLocale()));
             }
         }
-
         Optional<List<Lending>> maybeReturnLendingList = lendingDao.getActiveLendingEndingOn(LocalDate.now());
         if (maybeReturnLendingList.isPresent()) {
             for (Lending lending : maybeReturnLendingList.get()) {

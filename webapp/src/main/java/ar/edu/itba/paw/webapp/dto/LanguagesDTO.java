@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +24,7 @@ public class LanguagesDTO {
         return languages.stream().map(LanguagesDTO::fromLanguage).collect(java.util.stream.Collectors.toList());
     }
     public static String reference(UriInfo url, Language language) {
-        return url.getBaseUriBuilder().path("/api/languages").path(String.valueOf(language.getCode())).build().toString();
+        return url.getBaseUriBuilder().path(EndpointsUrl.Languages_URL).path(String.valueOf(language.getCode())).build().toString();
     }
 
 
