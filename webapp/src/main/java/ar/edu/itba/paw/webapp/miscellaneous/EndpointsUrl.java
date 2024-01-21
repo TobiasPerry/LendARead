@@ -11,4 +11,6 @@ public class EndpointsUrl {
 
     public static final String Languages_URL = "/api/languages";
 
+    public static final String ROOT_URL = "/api";
+
 }
