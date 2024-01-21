@@ -1,13 +1,10 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -90,15 +87,5 @@ public class PreAuthorizeFunctions {
             return false;
         }
     }
-    public boolean assetInstanceOwner(final int assetInstanceId){
-        try {
-            AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
-            if (!assetInstance.getAssetState().isPrivate())
-                return true;
-            User user = userService.getCurrentUser();
-            return user != null &&  assetInstance.getOwner().getEmail().equals(user.getEmail());
-        } catch (UserNotFoundException | AssetInstanceNotFoundException e) {
-            return true;
-        }
-    }
+
 }
