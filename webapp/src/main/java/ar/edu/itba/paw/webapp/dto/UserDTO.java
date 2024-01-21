@@ -13,13 +13,8 @@ import javax.ws.rs.core.UriInfo;
 public class UserDTO {
     private String userName;
     private String email;
-
     private String image;
-
-    private String password;
-
     private String telephone;
-
     private String role;
     private Integer rating;
     private Integer ratingAsLender;

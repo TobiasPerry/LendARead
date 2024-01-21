@@ -1,10 +1,13 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +18,8 @@ public class PreAuthorizeFunctions {
 
     private final UserReviewsService userReviewsService;
 
+    private final AssetInstanceService assetInstanceService;
+
     private final AssetInstanceReviewsService assetInstanceReviewsService;
 
     private final UserService userService;
@@ -22,11 +27,12 @@ public class PreAuthorizeFunctions {
     private final UserAssetInstanceService uais;
 
     @Autowired
-    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais) {
+    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais, AssetInstanceService assetInstanceService) {
         this.userReviewsService = userReviewsService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
         this.userService = userService;
         this.uais = uais;
+        this.assetInstanceService = assetInstanceService;
     }
 
 
@@ -82,6 +88,17 @@ public class PreAuthorizeFunctions {
             return true;
         }catch (UserNotFoundException e){
             return false;
+        }
+    }
+    public boolean assetInstanceOwner(final int assetInstanceId){
+        try {
+            AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+            if (!assetInstance.getAssetState().isPrivate())
+                return true;
+            User user = userService.getCurrentUser();
+            return user != null &&  assetInstance.getOwner().getEmail().equals(user.getEmail());
+        } catch (UserNotFoundException | AssetInstanceNotFoundException e) {
+            return true;
         }
     }
 }

@@ -80,6 +80,7 @@ public class UserController {
         LOGGER.info("GET user/ id:{}",id);
         return response.build();
     }
+
     @POST
     @Produces(value = { Vnd.VND_RESET_PASSWORD })
     @Consumes(value = { Vnd.VND_RESET_PASSWORD })

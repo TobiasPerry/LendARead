@@ -64,6 +64,7 @@ public class AssetInstanceController {
     @GET
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
+    @PreAuthorize("@preAuthorizeFunctions.assetInstanceOwner(#id)")
     public Response getUserAssetsInstances(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
         final AssetInstance assetInstance = ais.getAssetInstance(id);
         LOGGER.info("GET assetInstances/{}",id);
