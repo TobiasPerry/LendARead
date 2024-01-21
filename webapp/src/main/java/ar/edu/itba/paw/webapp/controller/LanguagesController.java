@@ -34,7 +34,7 @@ public class LanguagesController {
     @GET
     @Produces(value = {Vnd.VND_LANGUAGE})
     public Response getUserAssetsInstances(final @QueryParam("page") @DefaultValue("1") int page,
-                                           final @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                           final @QueryParam("pageSize") @DefaultValue("200") int pageSize,
                                            final @QueryParam("isUsed") Boolean isUsed
                                            ) {
         AbstractPage<Language> languages = ls.getLanguages(page, pageSize, isUsed);
