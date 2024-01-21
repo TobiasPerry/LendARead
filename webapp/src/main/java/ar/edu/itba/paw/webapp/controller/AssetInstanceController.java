@@ -132,7 +132,7 @@ public class AssetInstanceController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException, AssetNotFoundException {
-        AssetInstance assetInstance = ais.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getState()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
+        AssetInstance assetInstance = ais.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getStatus()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
         LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
