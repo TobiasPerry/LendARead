@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import MyBooksTable from '../../components/user/MyBooksTable.tsx';
 import LendedBooksTable from "../../components/user/LendedBooksTable.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const UserAssetsView = () => {
 
@@ -10,6 +11,7 @@ const UserAssetsView = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [table, setTable] = useState('owned_books');
+    const {userDetails} = useContext(AuthContext)
 
     // Parse the query parameters
     const searchParams = new URLSearchParams(location.search);
@@ -37,7 +39,7 @@ const UserAssetsView = () => {
     return (
         <div>
             <div  style={{width: '1000px', margin: 'auto', paddingBottom: '50px', paddingTop: '50px'}}>
-                <h1>{t('greeting', { userEmail: 'user@example.com' })}</h1>
+                <h1 className="mb-3">{t('greeting', { userEmail: userDetails.userName })}</h1>
                 <div style={{ display: 'flex', flexDirection: 'row', marginBottom: "20px" }}>
                     <div style={{ flex: 1, marginRight: '20px' }}>
                             <div className="list-group">
