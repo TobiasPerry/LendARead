@@ -3,6 +3,12 @@ import {useContext, useState} from 'react';
 import {api, api_} from "../api/api.ts";
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 
+export const checkFinished = (asset) => {
+    return asset !== undefined && asset.lendingStatus === "FINISHED"
+}
+export const checkRejected = (asset) => {
+    return asset !== undefined && asset.lendingStatus === "REJECTED"
+}
 export interface AssetApi {
     author: string,
     isbn: string,
@@ -121,15 +127,18 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
        const lendedBooksPromises =  lendings.data.map(async (lending: LendingApi) => {
            const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data
            const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data
-
+           const userReference =  isLender ?  lending.userReference : assetinstance.userReference
+           const user = (await api_.get(userReference)).data
+           console.log(user)
            return {
                imageUrl: assetinstance.imageReference,
                title: asset.title,
                start_date: lending.lendDate,
                return_date: lending.devolutionDate,
-               user: isLender ?  lending.userReference : assetinstance.userReference,
+               user: user.userName,
                state: assetinstance.physicalCondition,
-               id: extractId(lending.selfUrl)
+               id: extractId(lending.selfUrl),
+               lendingStatus: lending.state
            }
        })
 

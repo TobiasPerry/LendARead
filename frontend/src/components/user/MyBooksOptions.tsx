@@ -48,7 +48,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
             display: "flex",
             alignContent: "center",
         }} className="flex-column">
-        <h3>Visibility</h3>
+        <h3>{t("shortcut")}</h3>
             <div className="d-flex flex-row">
             {!(asset.reservable && haveActiveLendings) && (
                 <button id="privatePublicBtn" className="btn btn-green m-1" onClick={() => setShowModalVisibility(true)}>
@@ -81,13 +81,12 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
 
             <div style={{
                 backgroundColor: '#f0f5f0',
-                padding: '10px',
                 borderRadius: '20px',
                 display: "flex",
                 alignContent: "center",
                 marginTop: "20px"
             }} className="flex-column">
-                <h3>Settings</h3>
+                <h3>{t("settings")}</h3>
             <div className="d-flex flex-row">
                 <button className="btn btn-green m-1"  style={{ marginTop: '5px', textDecoration: 'none' }} onClick={() => setShowModalEdit(true)}>
                     <i className="fas fa-pencil-alt"></i>
