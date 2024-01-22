@@ -23,7 +23,8 @@ export interface LendingApi {
     lendDate: string,
     selfUrl: string,
     state: string,
-    userReference: string,
+    lenderUrl: string,
+    borrowerUrl: string
     userReviews: Array<any>
 }
 
@@ -124,26 +125,35 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
        })
 
 
-       const lendedBooksPromises =  lendings.data.map(async (lending: LendingApi) => {
-           const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data
-           const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data
-           const userReference =  isLender ?  lending.userReference : assetinstance.userReference
-           const user = (await api_.get(userReference)).data
-           return {
-               imageUrl: assetinstance.imageReference,
-               title: asset.title,
-               start_date: lending.lendDate,
-               return_date: lending.devolutionDate,
-               user: user.userName,
-               state: assetinstance.physicalCondition,
-               id: extractId(lending.selfUrl),
-               lendingStatus: lending.state
+       const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
+           try {
+               console.log('lending', lending);
+               const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
+               const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
+               const userReference = isLender ? lending.lenderUrl : lending.borrowerUrl;
+               const user = (await api_.get(userReference)).data;
+
+               return {
+                   imageUrl: assetinstance.imageReference,
+                   title: asset.title,
+                   start_date: lending.lendDate,
+                   return_date: lending.devolutionDate,
+                   user: user.userName,
+                   state: assetinstance.physicalCondition,
+                   id: extractId(lending.selfUrl),
+                   lendingStatus: lending.state
+               };
+           } catch (error) {
+               console.error("Error in processing lending:", lending, error);
+               return null;
            }
-       })
+       });
 
        const lendedBooks = await Promise.all(lendedBooksPromises);
+       const validLendedBooks = lendedBooks.filter(book => book !== null);
 
-       setBooks(lendedBooks)
+
+       setBooks(validLendedBooks)
         setIsLoading(false)
    }
 
