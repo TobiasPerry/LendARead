@@ -18,6 +18,8 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance) => {
     }
 
     const confirmLending = async (asset) => {
+        //chequeo no tiene otro DELIVERED
+        // const lendings = (await api_.get(asset.assetinstance.selfUrl))
         await updateState(asset.lending.selfUrl, "DELIVERED")
     }
 
