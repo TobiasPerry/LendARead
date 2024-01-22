@@ -129,7 +129,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
            const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data
            const userReference =  isLender ?  lending.userReference : assetinstance.userReference
            const user = (await api_.get(userReference)).data
-           console.log(user)
            return {
                imageUrl: assetinstance.imageReference,
                title: asset.title,
