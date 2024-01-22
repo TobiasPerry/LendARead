@@ -143,7 +143,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
 
        const lendedBooks = await Promise.all(lendedBooksPromises);
 
-       console.log(lendedBooks)
        setBooks(lendedBooks)
         setIsLoading(false)
    }

@@ -19,7 +19,6 @@ const useUserAssetInstance = (location, id) => {
             const lending_ = await api.get(`/lendings/${id}`)
             lending = lending_.data
 
-            console.log('lendinng', lending)
             assetinstace = (await api_.get(lending.assetInstance)).data
             if(lending.state == "ACTIVE")
                 setHasActiveLendings(true)
