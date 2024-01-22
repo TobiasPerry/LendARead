@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.exceptions.ImageNotExistException;
 import ar.edu.itba.paw.exceptions.UnableToChangeRoleException;
 import ar.edu.itba.paw.exceptions.UnableToCreateTokenException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void changeRole(final User user, final Behaviour behaviour) throws UserNotFoundException, UnableToChangeRoleException {
+    public void changeRole(final User user, final Behaviour behaviour) throws  UnableToChangeRoleException {
         if (user.getBehavior().equals(Behaviour.LENDER) && behaviour.equals(Behaviour.BORROWER)) {
             throw new UnableToChangeRoleException();
         }
@@ -147,14 +148,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(final int id, final String username, final String telephone,final String role,final String password) throws UserNotFoundException, UnableToChangeRoleException {
+    public void updateUser(final int id, final String username, final String telephone,final String role,final String password,final Integer imageId) throws UserNotFoundException, UnableToChangeRoleException, ImageNotExistException {
         Optional<User> maybeUser = userDao.getUser(id);
 
         User user = maybeUser.orElseThrow(() -> {
             LOGGER.error("User not found");
             return new UserNotFoundException();
         });
-
+        if (imageId != null) {
+            Image image = imagesDao.getImage(imageId).orElseThrow(() -> {
+                LOGGER.error("Image not found");
+                return new ImageNotExistException();
+            });
+            user.setProfilePhoto(image);
+        }
         if (role != null) {
             this.changeRole(user,Behaviour.valueOf(role));
         }

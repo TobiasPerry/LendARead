@@ -1,10 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.interfaces.AssetInstanceService;
-import ar.edu.itba.paw.interfaces.AssetService;
-import ar.edu.itba.paw.interfaces.LocationsService;
-import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.interfaces.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
@@ -35,8 +32,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     private final AssetInstanceDao assetInstanceDao;
 
 
-    private final ImagesDao imagesDao;
-
+    private final ImageService imageService;
     private final LocationsService locationsService;
 
     private final UserService userService;
@@ -46,9 +42,9 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
 
     @Autowired
-    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final UserService userService,final AssetService assetService) {
+    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final UserService userService,final AssetService assetService,final ImageService imageService) {
         this.assetInstanceDao = assetInstanceDao;
-        this.imagesDao = imagesDao;
+        this.imageService = imageService;
         this.locationsService = locationsService;
         this.userService = userService;
         this.assetService = assetService;
@@ -97,7 +93,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException {
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final Optional<Integer> imageId,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException {
         AssetInstance assetInstance = getAssetInstance(id);
         if (location.isPresent()) {
             Location loc;
@@ -110,8 +106,15 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             }
             assetInstance.setLocation(loc);
         }
-        if (image != null)
-            assetInstance.setImage(imagesDao.addPhoto(image));
+        if (imageId.isPresent()) {
+            Image image1;
+            try {
+                image1 = imageService.getImage(imageId.get());
+            }catch (ImageNotFoundException e) {
+                throw new ImageNotExistException();
+            }
+            assetInstance.setImage(image1);
+        }
         description.ifPresent(assetInstance::setDescription);
         physicalCondition.ifPresent(assetInstance::setPhysicalCondition);
         maxLendingDays.ifPresent(assetInstance::setMaxLendingDays);
@@ -121,7 +124,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Override
     @Transactional
-    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws UserNotFoundException, LocationNotExistException, AssetNotExistException {
+    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, final int imageId) throws UserNotFoundException, LocationNotExistException, AssetNotExistException, ImageNotExistException {
         Asset book ;
         Location location;
         try {
@@ -136,7 +139,13 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
             throw new LocationNotExistException();
         }
         User user = userService.getCurrentUser();
-        Image image = imagesDao.addPhoto(fileByteArray);
+        Image image ;
+        try {
+            image = imageService.getImage(imageId);
+        }
+        catch (ImageNotFoundException e) {
+            throw new ImageNotExistException();
+        }
         AssetInstance assetInstance = new AssetInstance();
         assetInstance.setBook(book);
         assetInstance.setLocation(location);

@@ -31,4 +31,10 @@ public class ImageServiceImpl implements ImageService {
         image.orElseThrow(ImageNotFoundException::new);
         return image.get();
     }
+
+    @Transactional
+    @Override
+    public Image addImage(byte[] image) {
+        return imagesDao.addPhoto(image);
+    }
 }

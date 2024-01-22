@@ -6,4 +6,6 @@ import ar.edu.itba.paw.models.miscellaneous.Image;
 public interface ImageService {
 
     Image getImage(int id) throws ImageNotFoundException;
+
+    Image addImage(byte[] image);
 }

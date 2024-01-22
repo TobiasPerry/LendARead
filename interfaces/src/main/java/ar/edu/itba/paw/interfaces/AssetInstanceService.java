@@ -21,8 +21,8 @@ public interface AssetInstanceService {
 
     boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException;
 
-    void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location, final byte[] image, final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException;
-     AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws UserNotFoundException, LocationNotExistException, AssetNotExistException;
+    void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location, final Optional<Integer> imageId, final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException,ImageNotExistException;
+     AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId,final int imageId) throws UserNotFoundException, LocationNotExistException, AssetNotExistException, ImageNotExistException;
 
 
     }

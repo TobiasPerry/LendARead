@@ -12,10 +12,9 @@ import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordTokenForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
-import ar.edu.itba.paw.webapp.miscellaneous.*;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
+import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +23,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.io.IOException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 @Path(EndpointsUrl.Users_URL)
@@ -53,8 +52,8 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
-    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException, UnableToChangeRoleException {
-        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole(),userUpdateForm.getPassword());
+    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException, UnableToChangeRoleException, ImageNotExistException {
+        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole(),userUpdateForm.getPassword(),userUpdateForm.getImageId());
         LOGGER.info("PUT user/ id:{}",id);
         return Response.noContent().build();
     }
@@ -88,37 +87,6 @@ public class UserController {
         return Response.noContent().build();
     }
 
-    @PUT
-    @Path("/{id}/image")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-    public Response changeUserProfilePic(@PathParam("id") final int id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
-        us.changeUserProfilePic(id,imageBytes);
-        LOGGER.info("PUT user/{}/profilePic",id);
-        return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/{id}/image")
-    @Produces(value = {"image/webp"})
-    public Response getUserProfilePic(@PathParam("id") final int id,
-                                      @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
-                                      @Context javax.ws.rs.core.Request request) throws UserNotFoundException, IOException {
-        final User user = us.getUserById(id);
-        if (user.getProfilePhoto() == null) {
-            return Response.ok().build();
-        }
-        EntityTag eTag = new EntityTag(Arrays.hashCode(user.getProfilePhoto().getPhoto()) + size);
-
-        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
-        LOGGER.info("GET user/{}/profilePic",id);
-        if (response == null) {
-            ImagesSizes imagesSizes = ImagesSizes.valueOf(size);
-            byte[] image = imagesSizes.resizeImage(user.getProfilePhoto().getPhoto());
-            Response.ResponseBuilder responseBuilder = Response.ok(image).tag(eTag);
-            return responseBuilder.build();
-        }
-        return response.build();
-    }
 
     @GET
     @Path("/{id}/lender_reviews")

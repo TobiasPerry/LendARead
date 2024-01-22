@@ -30,7 +30,8 @@ public class UserDTO {
         dto.ratingAsBorrower = user.getRatingAsBorrower();
         dto.ratingAsLender = user.getRatingAsLender();
         dto.selfUrl = reference(url, user);
-        dto.image = url.getBaseUriBuilder().path(EndpointsUrl.Users_URL).path(String.valueOf(user.getId())).path("image").build().toString();
+        if (user.getProfilePhoto() != null)
+            dto.image = url.getBaseUriBuilder().path(EndpointsUrl.IMAGE_URL).path(String.valueOf(user.getProfilePhoto().getId())).queryParam("size=PORTADA").build().toString();
         return dto;
     }
     public static String reference(UriInfo url, User user) {

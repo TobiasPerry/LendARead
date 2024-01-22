@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfaces;
 
+import ar.edu.itba.paw.exceptions.ImageNotExistException;
 import ar.edu.itba.paw.exceptions.UnableToChangeRoleException;
 import ar.edu.itba.paw.exceptions.UnableToCreateTokenException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
@@ -20,7 +21,7 @@ public interface UserService {
     boolean isTokenValid(final int userId,final String token);
     String getUserResetPasswordToken(final String email) throws UserNotFoundException;
     int changeUserProfilePic(final int id, byte[] parsedImage) throws UserNotFoundException;
-    void updateUser(final int id,final String username,final String telephone,final String role,final String password) throws UserNotFoundException, UnableToChangeRoleException;
+    void updateUser(final int id,final String username,final String telephone,final String role,final String password,final Integer imageId) throws UserNotFoundException, UnableToChangeRoleException, ImageNotExistException;
     void deleteToken(final String token);
     @Scheduled
     void deletePastChangePasswordTokens();
