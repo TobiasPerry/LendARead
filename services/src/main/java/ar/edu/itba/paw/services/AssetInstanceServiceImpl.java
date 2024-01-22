@@ -97,10 +97,19 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotFoundException {
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final byte[] image,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException {
         AssetInstance assetInstance = getAssetInstance(id);
-        if (location.isPresent())
-            assetInstance.setLocation(locationsService.getLocation(location.get()));
+        if (location.isPresent()) {
+            Location loc;
+            try {
+                loc = locationsService.getLocation(location.get());
+                if (!loc.isActive())
+                    throw new LocationNotExistException();
+            } catch (LocationNotFoundException e) {
+                throw new LocationNotExistException();
+            }
+            assetInstance.setLocation(loc);
+        }
         if (image != null)
             assetInstance.setImage(imagesDao.addPhoto(image));
         description.ifPresent(assetInstance::setDescription);
@@ -112,15 +121,19 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Override
     @Transactional
-    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws UserNotFoundException, UnableToAddAssetInstanceException {
+    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, byte[] fileByteArray) throws UserNotFoundException, LocationNotExistException, AssetNotExistException {
         Asset book ;
         Location location;
         try {
             book = assetService.getBookById(assetId);
             location =   locationsService.getLocation(locationId);
+            if (!location.isActive()) throw new LocationNotExistException();
         }
-        catch (AssetNotFoundException | LocationNotFoundException e) {
-            throw new UnableToAddAssetInstanceException();
+        catch (AssetNotFoundException e) {
+            throw new AssetNotExistException();
+        }
+        catch (LocationNotFoundException e) {
+            throw new LocationNotExistException();
         }
         User user = userService.getCurrentUser();
         Image image = imagesDao.addPhoto(fileByteArray);
