@@ -3,7 +3,6 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class UserAssetInstanceServiceImpl implements UserAssetInstanceService {
       Optional<Lending> lending = userAssetsDao.getBorrowedAsset(lendingId);
       if (!lending.isPresent()) {
           LOGGER.error("Not found borrowed asset instance with the lending lendingId: {}", lendingId);
-          throw new LendingNotFoundException(HttpStatusCodes.NOT_FOUND);
+          throw new LendingNotFoundException();
       }
       return lending.get();
     }

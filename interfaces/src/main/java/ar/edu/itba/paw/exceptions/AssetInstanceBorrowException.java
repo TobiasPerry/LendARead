@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.exceptions;
 
-public class AssetInstanceBorrowException extends CustomException{
-    public AssetInstanceBorrowException(int statusCode){
+public class AssetInstanceBorrowException extends Exception{
+    public AssetInstanceBorrowException(){
 
-        super("exception.assetInstanceBorrowed", statusCode);
+        super();
     }
 }

@@ -1,8 +1,7 @@
 package ar.edu.itba.paw.exceptions;
 
-public class AssetAlreadyExistException extends CustomException{
-
-        public AssetAlreadyExistException( int statusCode) {
-            super("exception.AssetAlreadyExists", statusCode);
+public class AssetAlreadyExistException extends Exception {
+        public AssetAlreadyExistException( ) {
+            super();
         }
 }

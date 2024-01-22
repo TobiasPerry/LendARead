@@ -7,7 +7,6 @@ import java.util.Optional;
 public interface ImagesDao {
     Image addPhoto(final byte[] photo);
 
-    Optional<byte []> getPhoto(int id);
 
-    Image getImage(int id);
+    Optional<Image> getImage(int id);
 }

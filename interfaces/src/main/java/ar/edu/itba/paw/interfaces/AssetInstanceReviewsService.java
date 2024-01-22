@@ -1,15 +1,12 @@
 package ar.edu.itba.paw.interfaces;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.AssetInstanceReviewNotFoundException;
-import ar.edu.itba.paw.exceptions.LendingNotFoundException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface AssetInstanceReviewsService {
 
-    AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException;
+    AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws  UserNotFoundException,  UnableToAddReviewException;
     AssetInstanceReview getReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
 
     void deleteReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;

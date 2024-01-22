@@ -131,7 +131,7 @@ public class AssetInstanceController {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
-    public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, InternalErrorException, LocationNotFoundException, AssetNotFoundException {
+    public Response createAssetInstance(@Valid @BeanParam final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, UnableToAddAssetInstanceException {
         AssetInstance assetInstance = ais.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getStatus()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageBytes());
         LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
@@ -143,14 +143,14 @@ public class AssetInstanceController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
-    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstancePatchForm assetInstancePatchForm) throws  AssetInstanceNotFoundException, ImageNotFoundException, LocationNotFoundException {
+    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @BeanParam final AssetInstancePatchForm assetInstancePatchForm) throws  AssetInstanceNotFoundException, LocationNotFoundException {
         ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), assetInstancePatchForm.getImageBytes(), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getStatus()));
         LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
     }
     @DELETE
     @Path("/{id}")
-    public Response deleteAssetInstance(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
+    public Response deleteAssetInstance(@PathParam("id") final int id) throws AssetInstanceNotFoundException, UnableToDeleteAssetInstanceException {
         ais.removeAssetInstance(id);
         LOGGER.info("DELETE assetInstances/ id:{}",id);
         return Response.noContent().build();
@@ -171,7 +171,7 @@ public class AssetInstanceController {
     @PreAuthorize("@preAuthorizeFunctions.borrowerCanAssetInstanceReview(#id,#assetInstanceReviewForm)")
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
-    public Response createAssetInstanceReview(@PathParam("id") final int id, @Valid @RequestBody final AssetInstanceReviewForm assetInstanceReviewForm) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException {
+    public Response createAssetInstanceReview(@PathParam("id") final int id, @Valid @RequestBody final AssetInstanceReviewForm assetInstanceReviewForm) throws UserNotFoundException, UnableToAddReviewException {
         AssetInstanceReview review = air.addReview(id,assetInstanceReviewForm.getLendingId(),assetInstanceReviewForm.getReview(),assetInstanceReviewForm.getRating());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(review.getId())).build();

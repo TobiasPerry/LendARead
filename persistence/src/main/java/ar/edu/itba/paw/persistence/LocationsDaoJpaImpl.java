@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -67,8 +68,8 @@ public class LocationsDaoJpaImpl implements LocationDao {
 
 
     @Override
-    public Location getLocation(int locationId) {
-        return entityManager.find(Location.class, locationId);
+    public Optional<Location> getLocation(int locationId) {
+        return Optional.ofNullable(entityManager.find(Location.class, locationId));
     }
 
     @Override

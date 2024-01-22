@@ -97,7 +97,7 @@ public class LendingsController {
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     @PreAuthorize("@preAuthorizeFunctions.canChangeLendingStatus(#id,#patchLendingForm.state)")
-    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws InvalidLendingStateTransitionException, UserNotFoundException, LendingNotFoundException {
         aas.changeLending(id, patchLendingForm.getState());
         LOGGER.info("PATCH lendings/ id:{} state:{}",id,patchLendingForm.getState());
         return Response.noContent().build();

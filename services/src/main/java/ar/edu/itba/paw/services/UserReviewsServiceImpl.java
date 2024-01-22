@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.CustomException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToAddReviewException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -12,7 +12,6 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.UserReviewsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,16 +41,14 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 
     @Transactional
     @Override
-    public UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException {
+    public UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws UserNotFoundException, UnableToAddReviewException {
         Lending lending ;
         User recipientUser ;
         try{
             lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
             recipientUser = userService.getUserById(recipient);
-        }catch (CustomException e) {
-            LOGGER.error("Error adding review: {}", e.getMessage());
-            e.setStatusCode(HttpStatusCodes.BAD_REQUEST);
-            throw e;
+        }catch ( UserNotFoundException | LendingNotFoundException e) {
+            throw new UnableToAddReviewException();
         }
         User reviewerUser = userService.getCurrentUser();
         UserReview userReview = new UserReview( review, rating,  reviewerUser,recipientUser, lending);
@@ -88,14 +85,14 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional(readOnly = true)
     @Override
     public UserReview getUserReviewAsLender(final int id, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
-        return userReviewsDao.getUserReviewAsLender(userService.getUserById(id).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
+        return userReviewsDao.getUserReviewAsLender(userService.getUserById(id).getId(),reviewId).orElseThrow(UserReviewNotFoundException::new);
 
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserReview getUserReviewAsBorrower(final int id, int reviewId) throws UserReviewNotFoundException, UserNotFoundException {
-        return userReviewsDao.getUserReviewAsBorrower(userService.getUserById(id).getId(),reviewId).orElseThrow(() -> new UserReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
+        return userReviewsDao.getUserReviewAsBorrower(userService.getUserById(id).getId(),reviewId).orElseThrow(UserReviewNotFoundException::new);
     }
 
 

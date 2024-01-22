@@ -111,8 +111,8 @@ public class AssetDaoJpa implements AssetDao {
     }
 
     @Override
-    public Asset getBookById(Long id) {
-        return em.find(Asset.class, id);
+    public Optional<Asset> getBookById(Long id) {
+        return Optional.ofNullable(em.find(Asset.class, id));
     }
 
 }

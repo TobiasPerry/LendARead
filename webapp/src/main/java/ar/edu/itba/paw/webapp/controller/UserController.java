@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.exceptions.LendingNotFoundException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.User;
@@ -55,7 +53,7 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
-    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException {
+    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException, UnableToChangeRoleException {
         us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole(),userUpdateForm.getPassword());
         LOGGER.info("PUT user/ id:{}",id);
         return Response.noContent().build();
@@ -84,7 +82,7 @@ public class UserController {
     @POST
     @Produces(value = { Vnd.VND_RESET_PASSWORD })
     @Consumes(value = { Vnd.VND_RESET_PASSWORD })
-    public Response createChangePasswordToken(@Valid ResetPasswordTokenForm passwordTokenForm) throws UserNotFoundException {
+    public Response createChangePasswordToken(@Valid ResetPasswordTokenForm passwordTokenForm) throws UnableToCreateTokenException {
         us.createChangePasswordToken(passwordTokenForm.getEmail());
         LOGGER.info("POST user/{}/reset-password-token",passwordTokenForm.getEmail());
         return Response.noContent().build();
@@ -152,7 +150,7 @@ public class UserController {
     @PreAuthorize("@preAuthorizeFunctions.borrowerCanUserReview(#id,#lenderReviewForm)")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, LendingNotFoundException {
+    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, LendingNotFoundException, UnableToAddReviewException {
         UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),id,lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/lender_reviews",id);
@@ -163,7 +161,7 @@ public class UserController {
     @PreAuthorize("@preAuthorizeFunctions.lenderCanUserReview(#id,#borrowerReviewForm)")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, LendingNotFoundException {
+    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, LendingNotFoundException, UnableToAddReviewException {
         UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),id,borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/borrower_reviews",id);
