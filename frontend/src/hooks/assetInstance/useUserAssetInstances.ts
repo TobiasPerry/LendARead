@@ -9,6 +9,11 @@ export const checkFinished = (asset) => {
 export const checkRejected = (asset) => {
     return asset !== undefined && asset.lendingStatus === "REJECTED"
 }
+export const extractId = (url: string) => {
+    const pattern = /\/(\d+)(?=\/?$)/;
+    const match = url.match(pattern);
+    return  match ? match[1] : -1;
+}
 export interface AssetApi {
     author: string,
     isbn: string,
@@ -87,11 +92,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return 1;
     };
 
-    const extractId = (url: string) => {
-        const pattern = /\/(\d+)(?=\/?$)/;
-        const match = url.match(pattern);
-        return  match ? match[1] : -1;
-    }
+
    const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
 
         setIsLoading(true)
@@ -154,7 +155,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
 
 
        setBooks(validLendedBooks)
-        setIsLoading(false)
+       setIsLoading(false)
    }
 
 

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {AssetApi, AssetInstanceApi, LendingApi} from "./useUserAssetInstances.ts";
+import {AssetApi, AssetInstanceApi, extractId, LendingApi} from "./useUserAssetInstances.ts";
 import {api, api_} from "../api/api.ts";
 
 const useUserAssetInstance = (location, id) => {
@@ -40,7 +40,8 @@ const useUserAssetInstance = (location, id) => {
             imageUrl: assetinstace.imageReference,
             isReservable: assetinstace.reservable,
             status: assetinstace.status,
-            id: id,
+            id: id, //wtf this does
+            assetinstanceid: extractId(assetinstace.selfUrl),
             maxDays: assetinstace.maxLendingDays,
             assetinstance: assetinstace
         }
