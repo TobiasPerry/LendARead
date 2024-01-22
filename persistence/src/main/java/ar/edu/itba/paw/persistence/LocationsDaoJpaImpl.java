@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +54,7 @@ public class LocationsDaoJpaImpl implements LocationDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), page, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), page, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<Location> query = entityManager.createQuery("FROM Location as l  WHERE l.id IN (:ids) ORDER BY l.id " , Location.class);

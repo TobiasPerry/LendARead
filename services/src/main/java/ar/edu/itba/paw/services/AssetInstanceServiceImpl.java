@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -72,10 +72,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     public AbstractPage<AssetInstance> getAllAssetsInstances(final int pageNum, final int itemsPerPage, SearchQuery searchQuery) {
 
         if (pageNum < 0 || itemsPerPage <= 0)
-            return new PagingImpl<>(new ArrayList<>(), 1, 1);
+            return new PagingImpl<>(Collections.emptyList(), 1, 1);
 
         if (searchQuery == null)
-            searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1,AssetState.PUBLIC);
+            searchQuery = new SearchQueryImpl(Collections.emptyList(), Collections.emptyList(), "", 1, 5,-1,AssetState.PUBLIC);
 
 
         return assetInstanceDao.getAllAssetInstances(pageNum, itemsPerPage, searchQuery);

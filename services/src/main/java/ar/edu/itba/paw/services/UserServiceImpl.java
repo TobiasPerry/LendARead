@@ -40,8 +40,6 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguagesServiceImpl.class);
 
-    private static final String BORROWER_ROLE = "ROLE_BORROWER";
-
 
     @Autowired
     public UserServiceImpl(final PasswordEncoder passwordEncoder, final UserDao userDao, final EmailService emailService, final ImagesDao imagesDao) {

@@ -8,9 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,7 +63,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
         return getReviewsFromIds(list, pageNum, totalPages);
     }
 
@@ -86,7 +88,7 @@ public class UserReviewsDaoJpa implements UserReviewsDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
         return getReviewsFromIds(list, pageNum, totalPages);
     }
 

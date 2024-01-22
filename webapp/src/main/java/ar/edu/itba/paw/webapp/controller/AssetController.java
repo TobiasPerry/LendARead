@@ -80,6 +80,7 @@ public class AssetController {
 
     @POST
     @Consumes(value = {Vnd.VND_ASSET})
+    @Produces(value = {Vnd.VND_ASSET})
     public Response createAsset(@Valid @RequestBody final AddAssetForm assetForm) throws BookAlreadyExistException, LanguageNotFoundException, AssetAlreadyExistException {
          Asset book = as.addBook(assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
          LOGGER.info("POST asset/ id:{}",book.getId());

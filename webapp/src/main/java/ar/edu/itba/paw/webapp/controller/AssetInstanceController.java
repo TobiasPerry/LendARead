@@ -94,7 +94,7 @@ public class AssetInstanceController {
     }
 
     @GET
-    @Produces(value = {Vnd.VND_ASSET_INSTANCE_SEARCH})
+    @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @PreAuthorize("@preAuthorizeFunctions.searchPrivateAssetInstances(#userId,#status)")
     public Response getAssetsInstances( @QueryParam("search")  @Size(min = 1, max = 100) String search,
                                          @QueryParam("physicalConditions")  List<String> physicalConditions,

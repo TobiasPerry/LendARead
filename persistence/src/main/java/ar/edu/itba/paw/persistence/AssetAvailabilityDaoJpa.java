@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -98,7 +98,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
 
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
 
         final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) " + getSortQueryForTypedQuery(sort,sortDirection), Lending.class);
         query.setParameter("ids", list);
