@@ -15,6 +15,7 @@ import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
 import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
 import ReviewLender from "./views/reviews/ReviewLender.tsx";
 import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
+import AddAsset from "./views/addAsset.tsx";
 
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
                     <Route path="userBook/:id" element={<UserAssetInstance />} />
                     <Route path="review/lender/:lendingNumber" element={<ReviewLender />} />
                     <Route path="review/borrower/:lendingNumber" element={<ReviewBorrower />} />
+                    <Route path="addAssetView" element={<AddAsset />} />
                     {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}

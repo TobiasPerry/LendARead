@@ -1,7 +1,8 @@
 import './styles/addAsset.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
+import { api } from '../hooks/api/api.ts'
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -28,6 +29,12 @@ const AddAsset = () => {
     ]
 
     const [step, setStep] = useState(1);
+
+    useEffect(() => {
+        const languages = api.get('/languages').then((response) => {
+            console.log(response);
+        })
+    }, [])
 
     const getAuthor = async (authors: any[]) => {
         if (authors.length === 0) {
