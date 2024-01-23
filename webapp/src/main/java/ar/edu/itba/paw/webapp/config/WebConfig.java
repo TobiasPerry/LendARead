@@ -19,8 +19,10 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -33,7 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @EnableAsync
-//@EnableWebbMvc
 @EnableScheduling
 @EnableTransactionManagement
 @PropertySource("classpath:/application.properties")
@@ -57,6 +58,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean(name = "baseUrl")
     public String basePath() {
         return environment.getProperty("base_url");
+    }
+    @Bean
+    public TaskScheduler taskScheduler() {
+        return new ConcurrentTaskScheduler(); //single threaded by default
     }
 
     @Bean

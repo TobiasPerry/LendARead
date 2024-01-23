@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToAddReviewException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
 import ar.edu.itba.paw.models.userContext.implementations.User;
@@ -8,7 +9,7 @@ import ar.edu.itba.paw.models.userContext.implementations.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface UserReviewsService {
-     UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws  UserNotFoundException, LendingNotFoundException;
+     UserReview addReview(final int lendingId, final int recipient, final String review, final int rating) throws UserNotFoundException, LendingNotFoundException, UnableToAddReviewException;
 
     boolean lenderCanReview(final int recipientId,final int lendingId) throws  UserNotFoundException, LendingNotFoundException;
 

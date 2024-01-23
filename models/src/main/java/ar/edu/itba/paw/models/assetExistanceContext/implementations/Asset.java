@@ -125,7 +125,12 @@ public class Asset {
         this.language = language;
     }
 
-
+    public void setIsbn(String isbn) {
+        this.isbn = convertToISBN13(isbn);
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
     public String toString() {
         return "BookImpl{" +
                 ", isbn='" + isbn + '\'' +

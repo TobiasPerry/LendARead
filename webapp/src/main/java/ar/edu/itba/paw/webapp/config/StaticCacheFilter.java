@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class StaticCacheFilter extends OncePerRequestFilter {
 
-    public static final int MAX_TIME = 31536000;
+    public static final int CACHE_TIME = 60 * 60 * 24 * 365;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        response.setHeader("Cache-Control", String.format("public, max-age=%d, inmutable", MAX_TIME));
+        response.setHeader("Cache-Control", String.format("public, max-age=%d, inmutable", CACHE_TIME));
         chain.doFilter(request, response);
     }
 }

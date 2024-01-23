@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
 public enum SortDirection {
-    ASCENDING(),
-    DESCENDING();
+    ASCENDING("ASC"),
+    DESCENDING("DESC");
 
     public static SortDirection fromString(String value) {
         if (value != null) {
@@ -13,5 +13,12 @@ public enum SortDirection {
             }
         }
         throw new IllegalArgumentException("No enum constant found for value: " + value);
+    }
+    private String value = "ASC";
+     SortDirection(String value) {
+        this.value = value;
+    }
+    public String getValue() {
+        return value;
     }
 }

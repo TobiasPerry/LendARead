@@ -31,7 +31,9 @@ public class UserJdbcDaoTest {
     private static final String EMAIL = "EMAIL2";
     private static final String NAME = "NAME";
     private static final String TELEPHONE = "TELEPHONE";
+    private static final String LOCALE = "LOCALE";
     private static final String ALREADY_EXISTS_EMAIL = "EMAIL";
+
 
     private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_NOT_EXISTS = new PasswordResetToken("TOKEN2",3, LocalDate.now());
     private static final PasswordResetToken PASSWORD_RESET_TOKEN_USER_EXISTS = new PasswordResetToken("TOKEN2",0, LocalDate.now());
@@ -72,7 +74,7 @@ public class UserJdbcDaoTest {
     public void testRegister(){
 
         //2
-        final User user = userDao.addUser(Behaviour.BORROWER,EMAIL, NAME, TELEPHONE,PASSWORD);
+        final User user = userDao.addUser(Behaviour.BORROWER,EMAIL, NAME, TELEPHONE,PASSWORD,"LOCALE" );
         em.flush();
 
         //3
@@ -81,15 +83,7 @@ public class UserJdbcDaoTest {
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", String.format("mail = '%s'", EMAIL)));
     }
 
-    @Rollback
-    @Test
-    public void testChangeRole(){
-        //2
-        final boolean hasChange = userDao.changeRole(ALREADY_EXISTS_EMAIL,Behaviour.LENDER);
 
-        //3
-        Assert.assertTrue(hasChange);
-    }
     @Rollback
     @Test
     public void getUserById(){

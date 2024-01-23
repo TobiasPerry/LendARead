@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToDeleteLocationException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
@@ -9,6 +10,7 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LocationDTO;
 import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Path("/api/locations")
+@Path(EndpointsUrl.Locations_URL)
 public class LocationsController {
 
     private final LocationsService ls;
@@ -78,7 +80,7 @@ public class LocationsController {
     }
     @DELETE
     @Path("/{id}")
-    public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException {
+    public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException, UnableToDeleteLocationException {
         ls.deleteLocationById(locationId);
         LOGGER.info("DELETE location/ id:{}",locationId);
         return Response.noContent().build();

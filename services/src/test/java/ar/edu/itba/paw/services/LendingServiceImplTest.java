@@ -35,7 +35,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AssetAvailabilityServiceImplTest {
+public class LendingServiceImplTest {
 
     @Mock
     private UserDao userDao;
@@ -45,13 +45,14 @@ public class AssetAvailabilityServiceImplTest {
     private AssetAvailabilityDao lendingDao;
 
     @InjectMocks
-    private AssetAvailabilityServiceImpl assetAvailabilityService;
+    private LendingServiceImpl assetAvailabilityService;
 
     private static final int USER_ID = 0;
     private static final int ASSET_ID = 0;
     private static final String EMAIL = "user@domain.com";
     private static final String NAME = "John Doe";
     private static final String TELEPHONE = "";
+    private static final String LOCALE = "LOCALE";
     private static final String PASSWORD_ENCODED = "";
     private static final Behaviour BEHAVIOUR = Behaviour.BORROWER;
     private static final LocalDate BORROW_DATE_TODAY = LocalDate.now();
@@ -62,7 +63,7 @@ public class AssetAvailabilityServiceImplTest {
     private static final LocalDate BORROW_DATE_THREE_WEEK = LocalDate.now().plusDays(21);
     private static final LocalDate DEVOLUTION_DATE_ONE_WEEK = LocalDate.now().plusDays(7);
     private static final LocalDate DEVOLUTION_DATE_FOUR_WEEK = LocalDate.now().plusDays(28);
-    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR);
+    private static final User USER = new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, BEHAVIOUR, LOCALE);
     private static final AssetInstance ASSET_INSTANCE = new AssetInstance(
             new Asset((long)0, "", "", "", new Language()),
             PhysicalCondition.ASNEW,

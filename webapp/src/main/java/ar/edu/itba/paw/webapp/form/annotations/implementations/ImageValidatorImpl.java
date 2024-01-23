@@ -19,7 +19,7 @@ public class ImageValidatorImpl implements ConstraintValidator<Image, FormDataBo
     @Override
     public boolean isValid(FormDataBodyPart multipartFile, ConstraintValidatorContext constraintValidatorContext) {
         if (multipartFile == null ) {
-            return false;
+            return true;
         }
         return   multipartFile.getMediaType().toString().contains(ACCEPTED_MIME_TYPES);
     }

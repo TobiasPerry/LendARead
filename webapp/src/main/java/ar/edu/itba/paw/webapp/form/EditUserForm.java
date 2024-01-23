@@ -24,7 +24,9 @@ public class EditUserForm {
     private String role;
 
     @Size(max = 100)
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$",message = "{Pattern.userForm.password}")
     /* contains at least one lowercase letter, one uppercase letter, one digit, and one special character, and has a minimum length of 8 characters */
     private String password;
+
+    private Integer imageId;
 }

@@ -44,10 +44,10 @@ public class AssetInstanceDaoTest {
     @PersistenceContext
     private EntityManager em;
 
-    private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "",1 ,5,-1);
-    private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5,-1);
+    private final static SearchQuery searchQuery = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "",1 ,5,-1,AssetState.PUBLIC);
+    private final static SearchQuery searchQueryWithAuthorText = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "SHOW DOG",1 ,5,-1,AssetState.PUBLIC);
 
-    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER,"LOCALE");
     private final static Asset BOOK = new Asset((long)0, "ISBN", "AUTHOR", "TITLE", new Language());
     private final static Location LOCATION = new Location(0, "NAME","ZIPCODE", "LOCALITY", "PROVINCE", "COUNTRY",USER);
     private final static AssetInstance ASSET_INSTANCE_TO_CREATE = new AssetInstance(BOOK, PhysicalCondition.ASNEW, USER, LOCATION, null, AssetState.PUBLIC, 7, "DESCRIPTION",true);
@@ -75,7 +75,7 @@ public class AssetInstanceDaoTest {
     public void addAssetInstanceTest(){
         ASSET_INSTANCE_TO_CREATE.setLocation(em.find(Location.class,0));
         ASSET_INSTANCE_TO_CREATE.setUserReference(em.find(User.class,0L));
-        ASSET_INSTANCE_TO_CREATE.setBook(em.find(Asset.class,0));
+        ASSET_INSTANCE_TO_CREATE.setBook(em.find(Asset.class,0L));
         ASSET_INSTANCE_TO_CREATE.setImage(em.find(Image.class,0));
 
         //2
@@ -109,7 +109,7 @@ public class AssetInstanceDaoTest {
         //2
         AbstractPage<AssetInstance> page = assetInstanceDaoJpa.getAllAssetInstances(1, 1, searchQuery);
         //3
-        Assert.assertEquals(0,page.getCurrentPage());
+        Assert.assertEquals(1,page.getCurrentPage());
         Assert.assertEquals(0,page.getTotalPages());
     }
 

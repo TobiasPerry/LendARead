@@ -14,6 +14,6 @@ public interface AssetDao {
 
     PagingImpl<Asset> getBooks(final int page,final int itemsPerPage,final String isbn, final String author, final String title, final String language);
 
-    Asset getBookById(final Long id);
+    Optional<Asset> getBookById(final Long id);
 
 }

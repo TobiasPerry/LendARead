@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.exceptions.ImageNotFoundException;
@@ -39,3 +40,4 @@ public class ImagesController {
     }
 
 }
+*/

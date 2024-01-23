@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
-import ar.edu.itba.paw.webapp.auth.UnauthorizedRequest;
+import ar.edu.itba.paw.webapp.auth.ForbiddenDeniedHandler;
 import ar.edu.itba.paw.webapp.auth.UnauthorizedRequestHandler;
 import ar.edu.itba.paw.webapp.auth.filters.BasicTokenFilter;
 import ar.edu.itba.paw.webapp.auth.filters.JwtTokenFilter;
@@ -35,12 +36,15 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.web.cors.CorsConfiguration.ALL;
 
 @Configuration
 @EnableWebSecurity
@@ -78,7 +82,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         return  webExpressionVoter;
     }
     @Bean
-    public JwtTokenUtil jwtTokenUtil(@Value("classpath:jwt.salt") Resource jwtKeyResource) throws IOException {
+    public JwtTokenUtil jwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
         return new JwtTokenUtil(jwtKeyResource);
     }
     @Bean
@@ -91,7 +95,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ROLE_LENDER > ROLE_BORROWER";
+        String hierarchy = "ROLE_ADMIN > ROLE_LENDER > ROLE_BORROWER";
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }
@@ -112,7 +116,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new UnauthorizedRequestHandler())
-                .accessDeniedHandler(new UnauthorizedRequest())
+                .accessDeniedHandler(new ForbiddenDeniedHandler())
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
                  // User endpoints
@@ -136,12 +140,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 // Review endpoints
                 .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}/reviews/{idReview}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
 
+                .antMatchers(HttpMethod.PATCH,"/api/assets/{id}").hasRole(Behaviour.ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").hasRole(Behaviour.LENDER.toString())
+                .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").hasRole(Behaviour.LENDER.toString())
 
-                .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews","/api/assetInstances/{id}/reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews","/api/users/{id}/lender_reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews","/api/users/{id}/borrower_reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").authenticated()
                 .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}","/api/lendings/{id}/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/lendings","/api/lendings/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
@@ -155,16 +160,15 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     }
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(Collections.singletonList("*"));
+        cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        cors.setAllowedHeaders(Collections.singletonList(ALL));
+        cors.setExposedHeaders(Arrays.asList("X-JWT", "X-XSS-Protection", "authorization", "Location", "Content-Disposition", "Link","ETag","WWW-Authenticate"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cors);
+        return source;
     }
 
     @Override

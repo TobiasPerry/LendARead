@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.mapper;
 
-
-import ar.edu.itba.paw.exceptions.CustomException;
+import ar.edu.itba.paw.exceptions.AssetInstanceReviewNotFoundException;
 import ar.edu.itba.paw.webapp.dto.ErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,19 +12,18 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-@Singleton
 @Component
+@Singleton
 @Provider
-public class CustomExceptionMapper implements ExceptionMapper<CustomException> {
+public class AssetInstanceReviewNotFoundExceptionMapper  implements ExceptionMapper<AssetInstanceReviewNotFoundException> {
 
     private final MessageSource messageSource;
     @Autowired
-    public CustomExceptionMapper(MessageSource messageSource){
+    public AssetInstanceReviewNotFoundExceptionMapper(MessageSource messageSource){
         this.messageSource = messageSource;
     }
-
     @Override
-    public Response toResponse(CustomException e) {
-        return Response.status(e.getStatusCode()).entity(ErrorDTO.fromError(messageSource.getMessage(e.getMessage(), null,LocaleContextHolder.getLocale()),null)).build();
+    public Response toResponse(AssetInstanceReviewNotFoundException e) {
+        return Response.status(Response.Status.NOT_FOUND).entity(ErrorDTO.fromError(messageSource.getMessage("exception.assetInstanceReviewNotFound", null, LocaleContextHolder.getLocale()),null)).build();
     }
 }

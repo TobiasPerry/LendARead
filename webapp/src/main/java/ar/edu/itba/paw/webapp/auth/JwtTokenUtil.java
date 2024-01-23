@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class JwtTokenUtil {
     private final int JWT_VALID_PIRIOD = 7 * 24 * 60 * 60 * 1000;
 
     @Autowired
-    public JwtTokenUtil(Resource jwtKeyResource) throws IOException {
+    public JwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
         this.jwtSecret = Keys.hmacShaKeyFor(
                 FileCopyUtils.copyToString(new InputStreamReader(jwtKeyResource.getInputStream()))
                         .getBytes(StandardCharsets.UTF_8)
@@ -37,7 +38,6 @@ public class JwtTokenUtil {
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + JWT_VALID_PIRIOD))
-                .claim("authorities", userPrincipal.getAuthorities())
                 .claim("userReference", userReference)
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();

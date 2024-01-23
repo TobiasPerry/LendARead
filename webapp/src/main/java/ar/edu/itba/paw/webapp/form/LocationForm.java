@@ -13,7 +13,7 @@ public class LocationForm {
 
     @NotNull
     @Size(min = 1, max = 100)
-    @Pattern(regexp = "^[a-zA-Z0-9]+$")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{Pattern.locationForm.zipcode}")
     private String zipcode;
 
     @NotNull

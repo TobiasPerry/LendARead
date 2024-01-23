@@ -6,8 +6,11 @@ import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,7 +50,7 @@ public class AssetInstanceReviewsDaoJpa implements AssetInstanceReviewsDao {
         List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
         final TypedQuery<AssetInstanceReview> query = em.createQuery("FROM AssetInstanceReview AS ai WHERE id IN (:ids) ORDER BY ai.id DESC", AssetInstanceReview.class);
         query.setParameter("ids", list);
         List<AssetInstanceReview> reviewList = query.getResultList();

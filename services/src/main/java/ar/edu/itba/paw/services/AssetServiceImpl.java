@@ -3,17 +3,19 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.exceptions.AssetAlreadyExistException;
 import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToCreateAssetException;
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class AssetServiceImpl implements AssetService {
@@ -36,17 +38,16 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional
     @Override
-    public Asset addBook(String isbn, String author, String title, String languageId) throws  LanguageNotFoundException, AssetAlreadyExistException {
+    public Asset addBook(String isbn, String author, String title, String languageId) throws AssetAlreadyExistException, UnableToCreateAssetException {
         try {
             Language language = ls.getLanguage(languageId);
             return ad.addAsset(new Asset(isbn, author, title, language));
         }
         catch (LanguageNotFoundException e) {
-            e.setStatusCode(HttpStatusCodes.BAD_REQUEST);
-            throw e;
+            throw new UnableToCreateAssetException();
         }
         catch (BookAlreadyExistException e) {
-            throw new AssetAlreadyExistException(HttpStatusCodes.CONFLICT);
+            throw new AssetAlreadyExistException();
         }
     }
 
@@ -54,10 +55,30 @@ public class AssetServiceImpl implements AssetService {
     @Transactional(readOnly = true)
     @Override
     public Asset getBookById(Long id) throws AssetNotFoundException {
-        Asset asset =  ad.getBookById(id);
-        if (asset == null) {
-            throw new AssetNotFoundException(HttpStatusCodes.NOT_FOUND);
+        Optional<Asset> asset =  ad.getBookById(id);
+        asset.orElseThrow(AssetNotFoundException::new);
+        return asset.get();
+    }
+
+    @Transactional
+    @Override
+    public void updateBook(Long id, String isbn, String author, String title, String language) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
+        Asset asset = getBookById(id);
+        Optional<Asset> assetWithSameIsbn = ad.getBookByIsbn(isbn);
+        if (isbn != null) {
+            if (assetWithSameIsbn.isPresent() && !assetWithSameIsbn.get().getId().equals(asset.getId())) {
+                throw new AssetAlreadyExistException();
+            }
+            asset.setIsbn(isbn);
         }
-        return asset;
+        if (author != null) {
+            asset.setAuthor(author);
+        }
+        if (title != null) {
+            asset.setTitle(title);
+        }
+        if (language != null) {
+            asset.setLanguage(ls.getLanguage(language));
+        }
     }
 }

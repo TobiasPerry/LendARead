@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,7 +100,7 @@ public class AssetDaoJpa implements AssetDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), page, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), page, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<Asset> query = em.createQuery("FROM Asset as a  WHERE a.id IN (:ids) ORDER BY a.title" , Asset.class);
@@ -111,8 +111,8 @@ public class AssetDaoJpa implements AssetDao {
     }
 
     @Override
-    public Asset getBookById(Long id) {
-        return em.find(Asset.class, id);
+    public Optional<Asset> getBookById(Long id) {
+        return Optional.ofNullable(em.find(Asset.class, id));
     }
 
 }

@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.models.viewsContext.interfaces;
 
-import ar.edu.itba.paw.models.viewsContext.implementations.Sort;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.viewsContext.implementations.AssetInstanceSort;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface SearchQuery {
 
     String getSearch();
 
-    Sort getSort();
+    AssetInstanceSort getSort();
 
     SortDirection getSortDirection();
 
@@ -22,5 +23,7 @@ public interface SearchQuery {
     int getMaxRating();
 
     int getUserId();
+
+    AssetState getAssetState();
 
 }

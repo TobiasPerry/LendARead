@@ -21,4 +21,10 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
         List<Lending> list = em.createQuery(query, Lending.class).setParameter("lendingId", new Long(lendingId)).getResultList();
         return list.stream().findFirst();
     }
+
+    @Override
+    public Integer getActiveLendingsCount(final long assetInstanceId) {
+        String query = "SELECT COUNT(l) FROM Lending l WHERE l.assetInstance.id = :assetInstanceId AND l.active = 'DELIVERED'";
+        return ((Long) em.createQuery(query).setParameter("assetInstanceId",  assetInstanceId).getSingleResult()).intValue();
+    }
 }

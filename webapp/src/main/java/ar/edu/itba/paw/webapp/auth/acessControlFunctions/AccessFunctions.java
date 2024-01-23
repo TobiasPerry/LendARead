@@ -15,7 +15,7 @@ public class AccessFunctions {
 
     private final LocationsService locationsService;
     private final UserService userService;
-    private final AssetAvailabilityService assetAvailabilityService;
+    private final LendingService lendingService;
 
     private final AssetInstanceService assetInstanceService;
 
@@ -23,10 +23,10 @@ public class AccessFunctions {
 
 
     @Autowired
-    public AccessFunctions( UserService userService, LocationsService locationsService, AssetAvailabilityService assetAvailabilityService, AssetInstanceService assetInstanceService, AssetInstanceReviewsService assetInstanceReviewsService) {
+    public AccessFunctions(UserService userService, LocationsService locationsService, LendingService lendingService, AssetInstanceService assetInstanceService, AssetInstanceReviewsService assetInstanceReviewsService) {
         this.userService = userService;
         this.locationsService = locationsService;
-        this.assetAvailabilityService = assetAvailabilityService;
+        this.lendingService = lendingService;
         this.assetInstanceService = assetInstanceService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
     }
@@ -51,7 +51,7 @@ public class AccessFunctions {
         }catch (LocationNotFoundException e){
             return true;
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
@@ -59,11 +59,11 @@ public class AccessFunctions {
         try {
             if (userService.getCurrentUser() == null)
                 return false;
-            return assetAvailabilityService.getLender(id).getEmail().equals(userService.getCurrentUser().getEmail()) || assetAvailabilityService.getBorrower(id).getEmail().equals(userService.getCurrentUser().getEmail());
+            return lendingService.getLender(id).getEmail().equals(userService.getCurrentUser().getEmail()) || lendingService.getBorrower(id).getEmail().equals(userService.getCurrentUser().getEmail());
         }catch (LendingNotFoundException e){
             return true;
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
     public boolean assetInstanceOwner(HttpServletRequest request, Integer id){
@@ -74,7 +74,7 @@ public class AccessFunctions {
         }catch (AssetInstanceNotFoundException e){
             return true;
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
     public boolean assetInstanceReviewOwner(HttpServletRequest request, Integer lending_id, Integer idReview){

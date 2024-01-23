@@ -65,22 +65,22 @@
             <div class="btn-group mx-2 mb-4 mt-2" role="group">
                 <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
                         aria-expanded="false" style="background-color: rgba(255, 255, 255, 0.3)">
-                    <spring:message code="discovery.sort.title"/> : <spring:message
-                        code="enum.${sort.name()}.${sortDirection.name()}"/>
+                    <spring:message code="discovery.assetInstanceSort.title"/> : <spring:message
+                        code="enum.${assetInstanceSort.name()}.${sortDirection.name()}"/>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" id="mostRecent"><spring:message
-                            code="discovery.sort.mostRecent"/></a></li>
+                            code="discovery.assetInstanceSort.mostRecent"/></a></li>
                     <li><a class="dropdown-item" id="leastRecent"><spring:message
-                            code="discovery.sort.leastRecent"/></a></li>
+                            code="discovery.assetInstanceSort.leastRecent"/></a></li>
                     <li><a class="dropdown-item" id="titleAscending"><spring:message
-                            code="discovery.sort.titleAscending"/></a></li>
+                            code="discovery.assetInstanceSort.titleAscending"/></a></li>
                     <li><a class="dropdown-item" id="titleDescending"><spring:message
-                            code="discovery.sort.titleDescending"/></a></li>
+                            code="discovery.assetInstanceSort.titleDescending"/></a></li>
                     <li><a class="dropdown-item" id="authorAscending"><spring:message
-                            code="discovery.sort.authorAscending"/></a></li>
+                            code="discovery.assetInstanceSort.authorAscending"/></a></li>
                     <li><a class="dropdown-item" id="authorDescending"><spring:message
-                            code="discovery.sort.authorDescending"/></a></li>
+                            code="discovery.assetInstanceSort.authorDescending"/></a></li>
                 </ul>
             </div>
 
@@ -157,7 +157,7 @@
                        modelAttribute="searchFilterSortForm" id="springForm">
                 <input type="hidden" name="currentPage" id="currentPageID" value="${currentPage}"/>
 
-                <input type="hidden" name="sort" id="sort" value="${sort}"/>
+                <input type="hidden" name="assetInstanceSort" id="assetInstanceSort" value="${assetInstanceSort}"/>
                 <input type="hidden" name="sortDirection" id="sortDirection" value="${sortDirection}"/>
 
                 <c:forEach var="language" items="${languagesFiltered}" varStatus="status">

@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
-import ar.edu.itba.paw.exceptions.AssetInstanceReviewNotFoundException;
-import ar.edu.itba.paw.exceptions.LendingNotFoundException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
 import ar.edu.itba.paw.interfaces.AssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
@@ -13,7 +10,6 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanc
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +42,16 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
 
     @Transactional
     @Override
-    public AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws AssetInstanceNotFoundException, UserNotFoundException, LendingNotFoundException {
-        Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-        if(lending.getAssetInstance().getId() != assetId){
-            throw new LendingNotFoundException(HttpStatusCodes.BAD_REQUEST);
-        }
+    public AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws  UserNotFoundException, UnableToAddReviewException {
+        Lending lending;
+        try {
+           lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+           if (lending.getAssetInstance().getId() != assetId) {
+               throw new UnableToAddReviewException();
+           }
+       }catch (LendingNotFoundException e) {
+           throw new UnableToAddReviewException();
+       }
         AssetInstanceReview assetInstanceReview = new AssetInstanceReview(lending, review, userService.getCurrentUser(),rating) ;
        assetInstanceReviewsDao.addReview(assetInstanceReview);
        LOGGER.info("Asset review added for lending {}", assetInstanceReview.getLending().getId());
@@ -60,13 +61,13 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     @Transactional(readOnly = true)
     @Override
     public AssetInstanceReview getReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
-        return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
+        return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(AssetInstanceReviewNotFoundException::new);
     }
 
     @Transactional
     @Override
     public void deleteReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
-        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(() -> new AssetInstanceReviewNotFoundException(HttpStatusCodes.NOT_FOUND));
+        AssetInstanceReview assetInstanceReview = assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(AssetInstanceReviewNotFoundException::new);
         assetInstanceReviewsDao.deleteReview(assetInstanceReview);
     }
 

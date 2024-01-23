@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.LanguagesDTO;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
@@ -20,7 +21,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Component
-@Path("/api/languages")
+@Path(EndpointsUrl.Languages_URL)
 public class LanguagesController {
 
     private final LanguagesService ls;
@@ -33,13 +34,14 @@ public class LanguagesController {
     @GET
     @Produces(value = {Vnd.VND_LANGUAGE})
     public Response getUserAssetsInstances(final @QueryParam("page") @DefaultValue("1") int page,
-                                           final @QueryParam("pageSize") @DefaultValue("10") int pageSize,
+                                           final @QueryParam("pageSize") @DefaultValue("200") int pageSize,
                                            final @QueryParam("isUsed") Boolean isUsed
                                            ) {
         AbstractPage<Language> languages = ls.getLanguages(page, pageSize, isUsed);
         List<LanguagesDTO> languagesDTOS = LanguagesDTO.fromLanguages(languages.getList());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {});
         PaginatedData.paginatedData(response, languages, uriInfo);
+        StaticCache.setUnconditionalCache(response);
         return response.build();
     }
     @GET

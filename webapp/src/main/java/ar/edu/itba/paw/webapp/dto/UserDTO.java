@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dto;
 
 
 import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,13 +13,8 @@ import javax.ws.rs.core.UriInfo;
 public class UserDTO {
     private String userName;
     private String email;
-
     private String image;
-
-    private String password;
-
     private String telephone;
-
     private String role;
     private Integer rating;
     private Integer ratingAsLender;
@@ -34,11 +30,12 @@ public class UserDTO {
         dto.ratingAsBorrower = user.getRatingAsBorrower();
         dto.ratingAsLender = user.getRatingAsLender();
         dto.selfUrl = reference(url, user);
-        dto.image = url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).path("image").build().toString();
+        if (user.getProfilePhoto() != null)
+            dto.image = url.getBaseUriBuilder().path(EndpointsUrl.IMAGE_URL).path(String.valueOf(user.getProfilePhoto().getId())).queryParam("size=PORTADA").build().toString();
         return dto;
     }
     public static String reference(UriInfo url, User user) {
-        return url.getBaseUriBuilder().path("/api/users").path(String.valueOf(user.getId())).build().toString();
+        return url.getBaseUriBuilder().path(EndpointsUrl.Users_URL).path(String.valueOf(user.getId())).build().toString();
     }
 
 }

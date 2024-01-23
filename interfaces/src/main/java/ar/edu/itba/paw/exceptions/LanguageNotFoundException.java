@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.exceptions;
 
-public class LanguageNotFoundException extends CustomException{
+public class LanguageNotFoundException extends Exception{
 
-    public LanguageNotFoundException( int statusCode) {
-        super("{exception.LanguageNotFound}", statusCode);
+    public LanguageNotFoundException() {
+        super();
     }
 }

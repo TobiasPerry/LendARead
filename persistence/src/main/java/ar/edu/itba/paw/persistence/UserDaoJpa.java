@@ -4,7 +4,6 @@ import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
 import ar.edu.itba.paw.models.userContext.implementations.PasswordResetToken;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,9 +19,8 @@ public class UserDaoJpa implements UserDao {
     private EntityManager em;
 
     @Override
-    public User addUser(Behaviour behavior, String email, String name, String telephone, String password) {
-        final User user = new User(email, name, telephone, password, behavior);
-        user.setLocale(LocaleContextHolder.getLocale().getLanguage());
+    public User addUser(Behaviour behavior, String email, String name, String telephone, String password,String locale) {
+        final User user = new User(email, name, telephone, password, behavior,locale);
         em.persist(user);
         return user;
     }
@@ -44,14 +42,6 @@ public class UserDaoJpa implements UserDao {
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
 
-    @Override
-    public boolean changeRole(String email, Behaviour behaviour) {
-        User user = getUser(email).orElse(null);
-        if (user == null) return false;
-        user.setBehaviour(behaviour);
-        em.persist(user);
-        return true;
-    }
 
     @Override
     public Optional<User> getUser(int id) {
@@ -60,9 +50,8 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public PasswordResetToken setForgotPasswordToken(PasswordResetToken passwordResetToken) {
+    public void setForgotPasswordToken(PasswordResetToken passwordResetToken) {
         em.persist(passwordResetToken);
-        return passwordResetToken;
     }
 
     @Override
@@ -74,15 +63,15 @@ public class UserDaoJpa implements UserDao {
     }
 
     @Override
-    public int deletePasswordRestToken(String token) {
-        return em.createQuery("delete from PasswordResetToken p where p.token=:token")
+    public void deletePasswordRestToken(String token) {
+        em.createQuery("delete from PasswordResetToken p where p.token=:token")
                 .setParameter("token", token)
                 .executeUpdate();
     }
 
     @Override
-    public int deletePasswordRestToken(int userId) {
-        return em.createQuery("delete from PasswordResetToken p where p.user=:userId")
+    public void deletePasswordRestToken(int userId) {
+        em.createQuery("delete from PasswordResetToken p where p.user=:userId")
                 .setParameter("userId", userId)
                 .executeUpdate();
     }

@@ -1,13 +1,13 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToDeleteLocationException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
-import ar.edu.itba.paw.utils.HttpStatusCodes;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +46,7 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional(readOnly = true)
     public Location getLocation(int locationId) throws LocationNotFoundException {
-        Location location= locationsDao.getLocation(locationId);
-        if (location == null) {
-            throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
-        }
-        return location;
+       return locationsDao.getLocation(locationId).orElseThrow(LocationNotFoundException::new);
     }
 
 
@@ -61,33 +57,20 @@ public class LocationsServiceImpl implements LocationsService {
          locationsDao.editLocation(lc);
     }
 
-    @Override
-    @Transactional
-    public void deleteLocation(Location lc) throws LocationNotFoundException {
-       Location location = getLocation(lc.getId());
-       if (!location.isActive()) {
-           throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
-       }
-       location.setActive(false);
-       LOGGER.info("Location {} deleted for user {}", lc.getId(), lc.getUser().getId());
-    }
+
 
 
 
     @Override
     @Transactional
-    public Location editLocationById(int locationId, Optional<String> name, Optional<String> locality, Optional<String> province, Optional<String> country, Optional<String> zipcode) throws LocationNotFoundException {
-        Location location = locationsDao.getLocation(locationId);
-        if (location == null) {
-            throw new LocationNotFoundException(HttpStatusCodes.NOT_FOUND);
-        }
+    public void editLocationById(int locationId, Optional<String> name, Optional<String> locality, Optional<String> province, Optional<String> country, Optional<String> zipcode) throws LocationNotFoundException {
+        Location location = locationsDao.getLocation(locationId).orElseThrow(LocationNotFoundException::new);
         name.ifPresent(location::setName);
         locality.ifPresent(location::setLocality);
         province.ifPresent(location::setProvince);
         country.ifPresent(location::setCountry);
         zipcode.ifPresent(location::setZipcode);
         editLocation(location);
-        return location;
     }
 
     @Transactional(readOnly = true)
@@ -99,10 +82,12 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional
-    public void deleteLocationById(int locationId) throws  LocationNotFoundException {
-        if(locationId != -1) {
-            deleteLocation(getLocation(locationId));
-            LOGGER.info("Location {} deleted", locationId);
+    public void deleteLocationById(int locationId) throws LocationNotFoundException, UnableToDeleteLocationException {
+        Location location = getLocation(locationId);
+        if (!location.isActive()) {
+            throw new UnableToDeleteLocationException();
         }
+        location.setActive(false);
+        LOGGER.info("Location {} deleted for user {}", location.getId(), location.getUser().getId());
     }
 }

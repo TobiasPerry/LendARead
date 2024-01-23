@@ -8,23 +8,21 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface UserDao {
-    User addUser(Behaviour behavior, String email, String name, String telephone, String password);
+    User addUser(Behaviour behavior, String email, String name, String telephone, String password,String locale);
 
     boolean changePassword(PasswordResetToken passwordResetToken, String newPassword);
 
     Optional<User> getUser(String email);
 
-    boolean changeRole(String email, Behaviour behaviour);
-
     Optional<User> getUser(int id);
 
-    PasswordResetToken setForgotPasswordToken(PasswordResetToken passwordResetToken);
+    void setForgotPasswordToken(PasswordResetToken passwordResetToken);
 
     Optional<PasswordResetToken> getPasswordRestToken(String token);
 
-    int deletePasswordRestToken(String token);
+    void deletePasswordRestToken(String token);
 
-    int deletePasswordRestToken(int userId);
+    void deletePasswordRestToken(int userId);
     Optional<PasswordResetToken> getPasswordRestTokenOfUser (int userId);
 
     void deletePasswordRecoveryTokensOnDay(LocalDate data);

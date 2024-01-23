@@ -24,6 +24,7 @@ public class AssetInstanceReviewForm {
 
 
     @NotNull
+    @Min(1)
     private int lendingId;
 
 

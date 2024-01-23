@@ -35,7 +35,7 @@ public class LocationDaoTest {
     private static String LOCALITY = "LOCALITY";
     private static String PROVINCE = "PROVINCE";
     private static String COUNTRY = "COUNTRY";
-    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER);
+    private final static User USER = new User(0,"EMAIL", "NAME", "TELEPHONE", "PASSWORD_NOT_ENCODED", Behaviour.BORROWER,"LOCALE");
 
     private static Location LOCATION = new Location("", ZIPCODE, LOCALITY, PROVINCE, COUNTRY, USER);
 

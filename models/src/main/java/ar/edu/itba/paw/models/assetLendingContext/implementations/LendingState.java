@@ -23,7 +23,7 @@ public enum LendingState {
         };
 
 
-    }, CANCEL() {
+    }, CANCELED() {
         @Override
         public boolean getIsCancel() {
             return true;
