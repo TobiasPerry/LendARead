@@ -2,10 +2,16 @@ import useLendings from "../../hooks/lendings/useLendings.ts";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import "../styles/myBookActiveLendings.css";
+import Pagination from "../Pagination.tsx";
+import {useEffect} from "react";
 
 const MyBookActiveLendings = ({asset}) => {
-    const {lendings} = useLendings(asset);
+    const {lendings, currentPage, changePage, totalPages, getLendings} = useLendings();
     const {t} = useTranslation();
+
+    useEffect(() => {
+        getLendings(asset).then()
+    }, [asset])
 
     return (
         <div className="lendings-container">
@@ -22,7 +28,7 @@ const MyBookActiveLendings = ({asset}) => {
                     </div>
                 </Link>
             ))}
-            {/* Pagination would go here */}
+            <Pagination currentPage={currentPage} changePage={changePage} totalPages={totalPages} />
         </div>
     );
 }
