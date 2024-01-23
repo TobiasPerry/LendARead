@@ -71,7 +71,9 @@ const UserAssetInstance = () => {
                                 asset={assetDetails}
                                 canReview={canReview}
                                 fetchUserAssetDetails={fetchUserAssetDetails}/>}
-                            {state === "borrowed" && <BorrowedBookOptions /> }
+                            {state === "borrowed" && <BorrowedBookOptions
+                                asset={assetDetails}
+                                fetchUserAssetInstance={fetchUserAssetDetails}/> }
                         </div>
 
                     </div>
