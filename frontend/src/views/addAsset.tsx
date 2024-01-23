@@ -34,7 +34,6 @@ const AddAsset = () => {
     useEffect(() => {
         api.get('/languages').then((response) => {
             setLanguages(response.data)
-            console.log(languages)
         })
     }, [])
 
