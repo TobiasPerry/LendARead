@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-const BookOptions = () => {
+const BorrowedBookOptions = () => {
     const { t } = useTranslation();
 
     // Replace with actual cancel logic
@@ -17,4 +17,4 @@ const BookOptions = () => {
     );
 };
 
-export default BookOptions;
+export default BorrowedBookOptions;
