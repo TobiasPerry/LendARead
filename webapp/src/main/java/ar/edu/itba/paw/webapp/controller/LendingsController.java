@@ -51,6 +51,7 @@ public class LendingsController {
 
     @GET
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
+    @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lenderId,#borrowerId,#assetInstanceId)")
     public Response getLendings(@QueryParam("page")@DefaultValue("1") Integer page,
                                 @QueryParam("itemsPerPage")@DefaultValue("4") Integer itemsPerPage,
                                 @QueryParam("assetInstanceId")  Integer assetInstanceId,

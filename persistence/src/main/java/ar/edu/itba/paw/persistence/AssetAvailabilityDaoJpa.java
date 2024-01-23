@@ -193,7 +193,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
 
     @Override
     public Optional<Lending> getLendingById(int lendingId) {
-        return Optional.ofNullable(em.find(Lending.class, lendingId));
+        return Optional.ofNullable(em.find(Lending.class, (long)lendingId));
     }
 }
 

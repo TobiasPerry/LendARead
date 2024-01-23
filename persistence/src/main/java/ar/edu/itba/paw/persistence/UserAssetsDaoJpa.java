@@ -18,7 +18,7 @@ public class UserAssetsDaoJpa implements UserAssetsDao {
     @Override
     public Optional<Lending> getBorrowedAsset(int lendingId) {
         String query = "SELECT l FROM Lending l WHERE l.id = :lendingId";
-        List<Lending> list = em.createQuery(query, Lending.class).setParameter("lendingId", new Long(lendingId)).getResultList();
+        List<Lending> list = em.createQuery(query, Lending.class).setParameter("lendingId", (long) lendingId).getResultList();
         return list.stream().findFirst();
     }
 
