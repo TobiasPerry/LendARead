@@ -21,7 +21,7 @@ export const isFinished = (lending: string) => {
     return lending === "FINISHED"
 }
 export const isCanceled = (lending: string) => {
-    return lending === "CANCEL"
+    return lending === "CANCELED"
 }
 
 

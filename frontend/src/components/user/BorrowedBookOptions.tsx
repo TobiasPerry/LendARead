@@ -19,7 +19,7 @@ const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
             flexDirection: "column",
             alignItems: "center",
         }} className="flex-column">
-            {!isCanceled(asset.lending.state) &&
+            {!(asset === undefined || asset.lending === undefined) && !isCanceled(asset.lending.state) &&
                 <div>
                     <h3 style={{ alignSelf: 'flex-start', width: '100%' }}>{t('borrowed_book_actions')}</h3>
                     <p className="card-text">{t('loanRequestSent')}</p>
@@ -27,7 +27,12 @@ const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
                     <CancelModal asset={asset} handleSubmitModal={cancelBorrowedBook} showModal={cancelModal} handleCloseModal={() => setCancelModal(false)} />
                 </div>
             }
-        </div>
+            {!(asset === undefined || asset.lending === undefined) && isCanceled(asset.lending.state) &&
+                <div>
+                <div> {t("canceled_text")} </div>
+                </div>
+            }
+                </div>
     );
 };
 

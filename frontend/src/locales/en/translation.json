@@ -45,6 +45,7 @@
   "maxDays": "Maximum Loan Days",
   "borrowed_book_actions": "Borrowed Book Actions",
   "lended_books_actions": "Lended Book Actions",
+  "canceled_text": "The lending was canceled, no options are available",
   "loanRequestSent": "The loan request has been sent, please wait for the lender to accept it or cancel it if you no longer want to borrow the book.",
   "userHomeView": {
     "cancelTitle": "Cancel Lending",
