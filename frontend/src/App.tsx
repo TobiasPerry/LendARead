@@ -28,18 +28,13 @@ export default function App() {
                     <Route path="locations" element={<RequireAuth> <Locations /> </RequireAuth>} />
                     <Route path="userHome" element={<RequireAuth> <UserHome /> </RequireAuth>} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
-                    <Route path="about" element={<About />} />
                     <Route path="register" element={<Register />} />
-                    <Route path="dashboard" element={<Dashboard />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance /> } />
                     <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
-                    <Route path="review/lender/:lendingNumber" element={<ReviewLender />} />
-                    <Route path="review/borrower/:lendingNumber" element={<ReviewBorrower />} />
-                    {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
+                    <Route path="review/lender/:lendingNumber" element={<RequireAuth> <ReviewLender /> </RequireAuth>} />
+                    <Route path="review/borrower/:lendingNumber" element={<RequireAuth> <ReviewBorrower /> </RequireAuth>} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
@@ -50,27 +45,7 @@ function Layout() {
     return (
         <div>
             <NavBar />
-            {/* An <Outlet> renders whatever child route is currently active,
-          so you can think about this <Outlet> as a placeholder for
-          the child routes we defined above. */}
             <Outlet />
-        </div>
-    );
-}
-
-
-
-function About() {
-    return (
-        <div>
-            <h2>About</h2>
-        </div>
-    );
-}
-function Dashboard() {
-    return (
-        <div>
-            <h2>Dashboard</h2>
         </div>
     );
 }
