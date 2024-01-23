@@ -20,6 +20,10 @@ export const isPrivate = (lending: any) => {
 export const isFinished = (lending: string) => {
     return lending === "FINISHED"
 }
+export const isCanceled = (lending: string) => {
+    return lending === "CANCEL"
+}
+
 
 export const isActive = (lending: string) => {
     return lending === "ACTIVE"
@@ -62,7 +66,7 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
         }} className="flex-column">
             {!(asset === undefined || asset.lending === undefined) && (
                 <div>
-                    <h3 >Lended Book Actions</h3>
+                    <h3 >{t('lended_books_actions')}</h3>
                     {!isRejected(asset.lending.state) && !isFinished(asset.lending.state) && (
                         <div className="options-menu"
                              style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
