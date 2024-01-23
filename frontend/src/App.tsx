@@ -15,6 +15,7 @@ import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
 import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
 import ReviewLender from "./views/reviews/ReviewLender.tsx";
 import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
+import RequireAuth from "./components/RequireAuth.tsx";
 
 
 export default function App() {
@@ -24,16 +25,16 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Landing />} />
                     <Route path="login" element={<LoginView />} />
-                    <Route path="locations" element={<Locations />} />
-                    <Route path="userHome" element={<UserHome />} />
+                    <Route path="locations" element={<RequireAuth> <Locations /> </RequireAuth>} />
+                    <Route path="userHome" element={<RequireAuth> <UserHome /> </RequireAuth>} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
                     <Route path="about" element={<About />} />
                     <Route path="register" element={<Register />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />
-                    <Route path="book/:bookNumber" element={<ViewAssetInstance />} />
-                    <Route path="userBook/:id" element={<UserAssetInstance />} />
+                    <Route path="book/:bookNumber" element={<ViewAssetInstance /> } />
+                    <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
                     <Route path="review/lender/:lendingNumber" element={<ReviewLender />} />
                     <Route path="review/borrower/:lendingNumber" element={<ReviewBorrower />} />
                     {/* Using path="*"" means "match anything", so this route
