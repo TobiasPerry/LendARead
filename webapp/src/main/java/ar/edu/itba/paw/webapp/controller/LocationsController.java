@@ -92,5 +92,6 @@ public class LocationsController {
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(location.getId())).build();
         LOGGER.info("POST location/ id:{}",location.getId());
-        return Response.created(uri).build();    }
+        return Response.created(uri).entity(LocationDTO.fromLocation(uriInfo,location)).build();
+    }
 }

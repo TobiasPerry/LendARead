@@ -118,7 +118,7 @@ public class AssetInstanceController {
         LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(assetInstance.getId())).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(AssetsInstancesDTO.fromAssetInstance(uriInfo,assetInstance)).build();
     }
 
     @PATCH
@@ -158,7 +158,7 @@ public class AssetInstanceController {
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(review.getId())).build();
         LOGGER.info("POST assetInstances/{}/reviews id:{}",id,review.getId());
-        return Response.created(uri).build();
+        return Response.created(uri).entity(AssetInstanceReviewDTO.fromAssetInstanceReview(review,uriInfo)).build();
     }
 
     @GET

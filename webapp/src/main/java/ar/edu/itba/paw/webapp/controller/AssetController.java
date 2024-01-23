@@ -86,7 +86,7 @@ public class AssetController {
          LOGGER.info("POST asset/ id:{}",book.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(book.getId())).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(AssetDTO.fromAsset(uriInfo,book)).build();
     }
     @PATCH
     @Path("/{id}")

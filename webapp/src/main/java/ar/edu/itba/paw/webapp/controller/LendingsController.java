@@ -73,7 +73,7 @@ public class LendingsController {
     public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
       Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser().getEmail(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       LOGGER.info("POST lendings/ assetInstanceId:{}",borrowAssetForm.getAssetInstanceId());
-      return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
+      return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).entity(LendingDTO.fromLending(lending,uriInfo)).build();
     }
     @GET
     @Path("/{id}")

@@ -66,7 +66,7 @@ public class UserController {
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
         LOGGER.info("POST user/ email:{} name:{} telephone:{}",registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone());
-        return Response.created(uri).build();
+        return Response.created(uri).entity(UserDTO.fromUser(uriInfo,user)).build();
     }
     @GET
     @Path("/{id}")
@@ -122,7 +122,7 @@ public class UserController {
         UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),id,lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/lender_reviews",id);
-        return Response.created(uri).build();
+        return Response.created(uri).entity(UserReviewsDTO.fromUserReview(userReview,uriInfo)).build();
     }
     @POST
     @Path("/{id}/borrower_reviews")
@@ -133,7 +133,7 @@ public class UserController {
         UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),id,borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/borrower_reviews",id);
-        return Response.created(uri).build();
+        return Response.created(uri).entity(UserReviewsDTO.fromUserReview(userReview,uriInfo)).build();
     }
 
     @GET
