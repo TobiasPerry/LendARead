@@ -19,6 +19,7 @@ public class LocationDTO {
     private String province;
     private String country;
     private String userReference;
+    private String status;
     private String selfUrl;
 
     public static LocationDTO fromLocation(UriInfo url, Location location) {
@@ -27,6 +28,7 @@ public class LocationDTO {
         dto.zipcode = location.getZipcode();
         dto.locality = location.getLocality();
         dto.province = location.getProvince();
+        dto.status = location.isActive() ? "ACTIVE" : "DELETED";
         dto.country = location.getCountry();
         dto.userReference = UserDTO.reference(url, location.getUser());
         dto.selfUrl = reference(url, location);

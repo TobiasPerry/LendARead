@@ -55,7 +55,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
         Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
         if (!assetInstanceOpt.isPresent()) {
-            LOGGER.error("Failed to find the asset instance");
+            LOGGER.info("Failed to find the asset instance");
             throw new AssetInstanceNotFoundException();
         }
         return assetInstanceOpt.get();
@@ -80,8 +80,10 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Override
     public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException, UnableToDeleteAssetInstanceException {
         AssetInstance assetInstance = getAssetInstance(id);
-        if (assetInstance.getAssetState() == AssetState.DELETED)
+        if (assetInstance.getAssetState() == AssetState.DELETED) {
+            LOGGER.info("Asset instance already deleted");
             throw new UnableToDeleteAssetInstanceException();
+        }
         assetInstanceDao.changeStatus(assetInstance,AssetState.DELETED);
     }
 

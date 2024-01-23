@@ -9,17 +9,20 @@ import org.springframework.stereotype.Component;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Component
 @Path(EndpointsUrl.ROOT_URL)
 public class RootController {
 
-
+    @Context
+    private UriInfo uriInfo;
     @GET
     @Produces(value = { Vnd.VND_ROOT })
     public Response getApiEndPoints() {
-        Response.ResponseBuilder response = Response.ok(new RootDTO());
+        Response.ResponseBuilder response = Response.ok(new RootDTO(uriInfo));
         StaticCache.setUnconditionalCache(response);
         return response.build();
     }

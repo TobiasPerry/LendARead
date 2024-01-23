@@ -21,19 +21,32 @@ public enum ImagesSizes {
     }
 
     public byte[] resizeImage(byte[] image) throws IOException {
-        if (image == null ||this.name().equals("FULL")) {
+        if (image == null || this.name().equals("FULL")) {
             return image;
         }
         InputStream inputStream = new ByteArrayInputStream(image);
         BufferedImage originalBufferedImage = ImageIO.read(inputStream);
 
-        BufferedImage resizedImage = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-        resizedImage.createGraphics().drawImage(originalBufferedImage, 0, 0, this.width, this.height, null);
+        int originalWidth = originalBufferedImage.getWidth();
+        int originalHeight = originalBufferedImage.getHeight();
+
+        int newWidth, newHeight;
+        double aspectRatio = (double) originalWidth / originalHeight;
+
+        if (aspectRatio > 1) {
+            newWidth = this.width;
+            newHeight = (int) (this.width / aspectRatio);
+        } else {
+            newWidth = (int) (this.height * aspectRatio);
+            newHeight = this.height;
+        }
+
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+        resizedImage.createGraphics().drawImage(originalBufferedImage, 0, 0, newWidth, newHeight, null);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(resizedImage, "jpg", outputStream);
 
         return outputStream.toByteArray();
     }
-
 }
