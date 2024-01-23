@@ -132,6 +132,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
                 // Lendings endpoints
                 .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").access(ACCESS_CONTROL_LENDINGS)
+                .antMatchers(HttpMethod.GET,"/api/lendings/{id}").access(ACCESS_CONTROL_LENDINGS)
 
                 // AssetInstance endpoints
                 .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
