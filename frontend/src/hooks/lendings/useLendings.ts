@@ -10,6 +10,10 @@ const useLendings = ({asset}) => {
     }, [asset])
 
     const getLendings = async () => {
+        const params = {
+            assetInstanceId: asset.assetinstanceid,
+
+        }
         const lendings = (await api.get(`/lendings`,{ params: {assetInstanceId: asset.assetinstanceid}} )).data
         setLendings(lendings)
     }

@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.ts';
 import {useContext, useEffect} from "react";
-import {AuthContext} from "../../contexts/authContext.tsx";
-import {useNavigate} from "react-router-dom";
-import LoadingAnimation from "../LoadingAnimation.tsx";
-import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx"; // Path to your custom hook
+import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
+import Pagination from "../Pagination.tsx";
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
@@ -53,11 +51,7 @@ const MyBooksTable = ({handleRowClicked}) => {
             }
     }
 
-    const paginationStyle = {
-        color: "gray",
-        border: 'none',
-        borderRadius: '20px'
-    }
+
 
     return (
         <>
@@ -100,25 +94,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                 )}
                 </tbody>
             </table>
-            {totalPages > 1 &&
-                <nav aria-label="Page navigation example" className="d-flex justify-content-center">
-                    <ul className="pagination">
-                        {currentPage > 1 && (
-                            <li className="page-item">
-                                <a className="page-link"   style={paginationStyle} onClick={() => changePage(currentPage - 1)}>{t('previous')}</a>
-                            </li>
-                        )}
-                        <li className="page-item">
-                            <span className="page-link"  style={paginationStyle}>{`${currentPage} / ${totalPages}`}</span>
-                        </li>
-                        {currentPage < totalPages && (
-                            <li className="page-item">
-                                <a className="page-link"  style={paginationStyle} onClick={() => changePage(currentPage + 1)}>{t('next')}</a>
-                            </li>
-                        )}
-                    </ul>
-                </nav>
-            }
+           <Pagination totalPages={totalPages} changePage={changePage} currentPage={currentPage} />
         </div> }
         </>
     );
