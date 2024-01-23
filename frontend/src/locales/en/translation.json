@@ -44,6 +44,9 @@
   "settings": "Settings",
   "maxDays": "Maximum Loan Days",
   "userHomeView": {
+    "cancelTitle": "Cancel Lending",
+    "cancelText": "Are you sure you want to cancel this lending request? This action is not reversible.",
+    "cancelButton": "Cancel Lending",
     "confirmReturnTitle": "Confirm Return",
     "confirmReturnText": "Do you happen to have the book back? If so confirm it's return so you can close the lending!",
     "inProgressText": "You are all set! You should make arrangements for delivering the asset to the lender if you haven't already",
