@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +48,7 @@ public class LanguagesDaoJpa implements LanguageDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), 0, 0);
+            return new PagingImpl<>(Collections.emptyList(), 0, 0);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<Language> query = em.createQuery("FROM Language as l  WHERE l.code IN (:ids) ORDER BY l.code" , Language.class);

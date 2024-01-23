@@ -83,15 +83,7 @@ public class UserJdbcDaoTest {
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", String.format("mail = '%s'", EMAIL)));
     }
 
-    @Rollback
-    @Test
-    public void testChangeRole(){
-        //2
-        final boolean hasChange = userDao.changeRole(ALREADY_EXISTS_EMAIL,Behaviour.LENDER);
 
-        //3
-        Assert.assertTrue(hasChange);
-    }
     @Rollback
     @Test
     public void getUserById(){

@@ -73,7 +73,7 @@ public class LendingsController {
     public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
       Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser().getEmail(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       LOGGER.info("POST lendings/ assetInstanceId:{}",borrowAssetForm.getAssetInstanceId());
-      return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).build();
+      return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).entity(LendingDTO.fromLending(lending,uriInfo)).build();
     }
     @GET
     @Path("/{id}")
@@ -97,7 +97,7 @@ public class LendingsController {
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING_STATE})
     @PreAuthorize("@preAuthorizeFunctions.canChangeLendingStatus(#id,#patchLendingForm.state)")
-    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws AssetInstanceNotFoundException, LendingCompletionUnsuccessfulException, UserNotFoundException {
+    public Response editLending(@PathParam("id") final int id, @Valid  PatchLendingForm patchLendingForm) throws InvalidLendingStateTransitionException, UserNotFoundException, LendingNotFoundException {
         aas.changeLending(id, patchLendingForm.getState());
         LOGGER.info("PATCH lendings/ id:{} state:{}",id,patchLendingForm.getState());
         return Response.noContent().build();

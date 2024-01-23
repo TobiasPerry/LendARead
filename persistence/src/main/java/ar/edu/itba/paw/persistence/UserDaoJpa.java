@@ -42,14 +42,6 @@ public class UserDaoJpa implements UserDao {
         return users.isEmpty() ? Optional.empty() : Optional.of(users.get(0));
     }
 
-    @Override
-    public boolean changeRole(String email, Behaviour behaviour) {
-        User user = getUser(email).orElse(null);
-        if (user == null) return false;
-        user.setBehaviour(behaviour);
-        em.persist(user);
-        return true;
-    }
 
     @Override
     public Optional<User> getUser(int id) {

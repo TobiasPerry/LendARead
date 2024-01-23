@@ -13,4 +13,6 @@ public class EndpointsUrl {
 
     public static final String ROOT_URL = "/api";
 
+    public static final String IMAGE_URL = "/api/images";
+
 }

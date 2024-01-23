@@ -22,15 +22,11 @@ public class ImagesDaoJpa implements ImagesDao {
         return image;
     }
 
-    @Override
-    public Optional<byte[]> getPhoto(int id) {
-        Image image = entityManager.find(Image.class, id);
-        return Optional.ofNullable(image).map(Image::getPhoto);
-    }
+
 
     @Override
-    public Image getImage(int id) {
-        return entityManager.find(Image.class, id);
+    public Optional<Image> getImage(int id) {
+        return Optional.ofNullable(entityManager.find(Image.class, id));
     }
 }
 

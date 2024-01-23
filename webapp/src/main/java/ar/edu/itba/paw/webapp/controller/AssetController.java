@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.AssetAlreadyExistException;
 import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToCreateAssetException;
 import ar.edu.itba.paw.interfaces.AssetService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
@@ -13,7 +14,6 @@ import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
-import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,12 +80,13 @@ public class AssetController {
 
     @POST
     @Consumes(value = {Vnd.VND_ASSET})
-    public Response createAsset(@Valid @RequestBody final AddAssetForm assetForm) throws BookAlreadyExistException, LanguageNotFoundException, AssetAlreadyExistException {
+    @Produces(value = {Vnd.VND_ASSET})
+    public Response createAsset(@Valid @RequestBody final AddAssetForm assetForm) throws  AssetAlreadyExistException, UnableToCreateAssetException {
          Asset book = as.addBook(assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
          LOGGER.info("POST asset/ id:{}",book.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(book.getId())).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(AssetDTO.fromAsset(uriInfo,book)).build();
     }
     @PATCH
     @Path("/{id}")

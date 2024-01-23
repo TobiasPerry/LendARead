@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.exceptions.LendingNotFoundException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.userContext.implementations.User;
@@ -14,10 +12,9 @@ import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.RegisterForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordTokenForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
-import ar.edu.itba.paw.webapp.form.annotations.interfaces.Image;
-import ar.edu.itba.paw.webapp.miscellaneous.*;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
+import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +23,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.io.IOException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 @Path(EndpointsUrl.Users_URL)
@@ -55,8 +52,8 @@ public class UserController {
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
     @Consumes(value = { Vnd.VND_USER })
-    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException {
-        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole(),userUpdateForm.getPassword());
+    public Response updateUser(@PathParam("id") final int id, @Valid final EditUserForm userUpdateForm) throws UserNotFoundException, UnableToChangeRoleException, ImageNotExistException {
+        us.updateUser(id,userUpdateForm.getUsername(),userUpdateForm.getTelephone(),userUpdateForm.getRole(),userUpdateForm.getPassword(),userUpdateForm.getImageId());
         LOGGER.info("PUT user/ id:{}",id);
         return Response.noContent().build();
     }
@@ -69,7 +66,7 @@ public class UserController {
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(user.getId())).build();
         LOGGER.info("POST user/ email:{} name:{} telephone:{}",registerForm.getEmail(),registerForm.getName(),registerForm.getTelephone());
-        return Response.created(uri).build();
+        return Response.created(uri).entity(UserDTO.fromUser(uriInfo,user)).build();
     }
     @GET
     @Path("/{id}")
@@ -84,43 +81,12 @@ public class UserController {
     @POST
     @Produces(value = { Vnd.VND_RESET_PASSWORD })
     @Consumes(value = { Vnd.VND_RESET_PASSWORD })
-    public Response createChangePasswordToken(@Valid ResetPasswordTokenForm passwordTokenForm) throws UserNotFoundException {
+    public Response createChangePasswordToken(@Valid ResetPasswordTokenForm passwordTokenForm) throws UnableToCreateTokenException {
         us.createChangePasswordToken(passwordTokenForm.getEmail());
         LOGGER.info("POST user/{}/reset-password-token",passwordTokenForm.getEmail());
         return Response.noContent().build();
     }
 
-    @PUT
-    @Path("/{id}/image")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-    public Response changeUserProfilePic(@PathParam("id") final int id, @Image @FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) throws UserNotFoundException {
-        us.changeUserProfilePic(id,imageBytes);
-        LOGGER.info("PUT user/{}/profilePic",id);
-        return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/{id}/image")
-    @Produces(value = {"image/webp"})
-    public Response getUserProfilePic(@PathParam("id") final int id,
-                                      @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size,
-                                      @Context javax.ws.rs.core.Request request) throws UserNotFoundException, IOException {
-        final User user = us.getUserById(id);
-        if (user.getProfilePhoto() == null) {
-            return Response.ok().build();
-        }
-        EntityTag eTag = new EntityTag(Arrays.hashCode(user.getProfilePhoto().getPhoto()) + size);
-
-        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
-        LOGGER.info("GET user/{}/profilePic",id);
-        if (response == null) {
-            ImagesSizes imagesSizes = ImagesSizes.valueOf(size);
-            byte[] image = imagesSizes.resizeImage(user.getProfilePhoto().getPhoto());
-            Response.ResponseBuilder responseBuilder = Response.ok(image).tag(eTag);
-            return responseBuilder.build();
-        }
-        return response.build();
-    }
 
     @GET
     @Path("/{id}/lender_reviews")
@@ -152,22 +118,22 @@ public class UserController {
     @PreAuthorize("@preAuthorizeFunctions.borrowerCanUserReview(#id,#lenderReviewForm)")
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_LENDER_REVIEW})
-    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, LendingNotFoundException {
+    public Response createLenderReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm lenderReviewForm) throws UserNotFoundException, LendingNotFoundException, UnableToAddReviewException {
         UserReview userReview =urs.addReview(lenderReviewForm.getLendingId(),id,lenderReviewForm.getReview(),lenderReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/lender_reviews",id);
-        return Response.created(uri).build();
+        return Response.created(uri).entity(UserReviewsDTO.fromUserReview(userReview,uriInfo)).build();
     }
     @POST
     @Path("/{id}/borrower_reviews")
     @PreAuthorize("@preAuthorizeFunctions.lenderCanUserReview(#id,#borrowerReviewForm)")
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     @Consumes(value = { Vnd.VND_USER_BORROWER_REVIEW})
-    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, LendingNotFoundException {
+    public Response createBorrowerReview(@PathParam("id") final int id,@Valid @RequestBody final UserReviewForm borrowerReviewForm) throws UserNotFoundException, LendingNotFoundException, UnableToAddReviewException {
         UserReview userReview = urs.addReview(borrowerReviewForm.getLendingId(),id,borrowerReviewForm.getReview(),borrowerReviewForm.getRating());
         final URI uri = uriInfo.getRequestUriBuilder().path(String.valueOf(userReview.getId())).build();
         LOGGER.info("POST user/{}/borrower_reviews",id);
-        return Response.created(uri).build();
+        return Response.created(uri).entity(UserReviewsDTO.fromUserReview(userReview,uriInfo)).build();
     }
 
     @GET

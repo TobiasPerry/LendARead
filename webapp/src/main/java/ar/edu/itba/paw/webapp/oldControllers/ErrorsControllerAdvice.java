@@ -1,3 +1,4 @@
+/*
 package ar.edu.itba.paw.webapp.oldControllers;
 
 import ar.edu.itba.paw.exceptions.*;
@@ -42,7 +43,7 @@ public class ErrorsControllerAdvice {
         return mav;
     }
 
-    @ExceptionHandler({InternalErrorException.class, LendingCompletionUnsuccessfulException.class})
+    @ExceptionHandler({InternalErrorException.class, InvalidLendingStateTransitionException.class})
     public ModelAndView internalErrorException() {
         ModelAndView mav = new ModelAndView("views/error");
         mav.addObject("errorTitle", messageSource.getMessage("error.internalError.Title", null, LocaleContextHolder.getLocale()));
@@ -55,3 +56,4 @@ public class ErrorsControllerAdvice {
         return new ModelAndView("views/403View");
     }
 }
+*/

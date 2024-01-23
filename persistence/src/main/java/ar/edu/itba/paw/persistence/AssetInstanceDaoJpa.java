@@ -3,8 +3,8 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.AssetInstanceSort;
+import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
@@ -15,7 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -157,7 +157,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
 
         // In case of empty result -> Return a Page with empty lists
         if (list.isEmpty())
-            return new PagingImpl<>(new ArrayList<>(), pageNum, totalPages);
+            return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
         final TypedQuery<AssetInstance> query = em.createQuery("FROM AssetInstance AS ai WHERE id IN (:ids) " + orderByORM, AssetInstance.class);

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 
 import ar.edu.itba.paw.exceptions.LocationNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToDeleteLocationException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
 import ar.edu.itba.paw.models.userContext.implementations.Location;
@@ -79,7 +80,7 @@ public class LocationsController {
     }
     @DELETE
     @Path("/{id}")
-    public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException {
+    public Response deleteLocation(@PathParam("id")final Integer locationId) throws LocationNotFoundException, UnableToDeleteLocationException {
         ls.deleteLocationById(locationId);
         LOGGER.info("DELETE location/ id:{}",locationId);
         return Response.noContent().build();
@@ -91,5 +92,6 @@ public class LocationsController {
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(location.getId())).build();
         LOGGER.info("POST location/ id:{}",location.getId());
-        return Response.created(uri).build();    }
+        return Response.created(uri).entity(LocationDTO.fromLocation(uriInfo,location)).build();
+    }
 }

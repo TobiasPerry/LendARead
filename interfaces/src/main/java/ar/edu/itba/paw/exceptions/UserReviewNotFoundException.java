@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.exceptions;
 
-public class UserReviewNotFoundException extends CustomException {
-    public UserReviewNotFoundException(int statusCode){
-        super("exception.userReviewNotFound", statusCode);
+public class UserReviewNotFoundException extends Exception{
+    public UserReviewNotFoundException(){
+        super();
     }
 }

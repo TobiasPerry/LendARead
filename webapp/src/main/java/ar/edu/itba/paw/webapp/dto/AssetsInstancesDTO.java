@@ -50,7 +50,7 @@ public class AssetsInstancesDTO {
         dto.isReservable = assetInstance.getIsReservable();
         dto.selfUrl = reference(url, assetInstance);
         dto.reviewsReference = url.getBaseUriBuilder().path(EndpointsUrl.AssetInstances_URL).path(String.valueOf(assetInstance.getId())).path("reviews").build().toString();
-        dto.imageReference = url.getBaseUriBuilder().path(EndpointsUrl.AssetInstances_URL).path(String.valueOf(assetInstance.getId())).path("image").build().toString();
+        dto.imageReference = url.getBaseUriBuilder().path(EndpointsUrl.IMAGE_URL).path(String.valueOf(assetInstance.getImage().getId())).build().toString();
         return dto;
     }
     public static List<AssetsInstancesDTO> fromAssetInstanceList(UriInfo url, List<AssetInstance> assetInstances) {
