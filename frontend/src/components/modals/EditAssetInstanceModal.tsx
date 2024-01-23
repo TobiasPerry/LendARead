@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import "../styles/editAssetStyles.css"
 
 const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleClose }) => {
     const { t } = useTranslation();
@@ -97,7 +98,9 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
             <div className="modal-dialog modal-content" role="document"  style={{
                 backgroundColor: '#f0f5f0',
                 borderRadius: '20px',
-                width: "1000px"
+                width: "100%", // Use 100% of the container width
+                maxWidth: "900px", // Set the maximum width you desire
+                margin: 'auto' // Center the modal
             }}>
                     <div className="modal-header">
                         {/* Modal Header Content */}
@@ -109,19 +112,39 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                     <div className="modal-body">
                         <form>
                             <div className="d-flex flex-row">
-                            {/* Image Upload and Preview */}
-                            <div className="image-wrapper" style={{padding: "20px 0px"}}>
-                                <label htmlFor="image-modal" className={`image-container position-relative ${formErrors.image ? 'image-border-error' : ''}`}>
-                                    <img src={imagePreview} alt="Book Cover" className="img-fluid" id="bookImage" style={{maxWidth: '100%', minWidth: '100px', height: 'auto', maxHeight: '1000px', objectFit: 'cover'}} />
-                                    <div className="img-hover-text">
-                                        <i className="fas fa-pencil-alt" style={{color: '#D1E9C3'}}></i>
-                                        {t('editAssetView.changeImage')}
+                                <div className="image-wrapper" style={{ padding: "20px 0px" }}>
+                                    <div className="image-container position-relative"
+                                         style={{
+                                             cursor: 'pointer' // Change the cursor to indicate clickable area
+                                         }}
+                                         onClick={() => document.getElementById('image-modal').click()}
+                                    >
+                                        <img style={{width: "500px"}} src={imagePreview} alt="Book Cover" className="img-fluid" id="bookImage" />
+                                        <div className="image-overlay" style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            bottom: 0,
+                                            left: 0,
+                                            right: 0,
+                                            backgroundColor: 'rgba(0,0,0,0.5)', // Dark tint
+                                            transition: 'backgroundColor 0.5s ease' // Transition for hover effect
+                                        }}></div>
+                                        <div className="img-hover-text" style={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)', // Center the text
+                                            color: '#D1E9C3',
+                                            textAlign: 'center',
+                                            transition: 'color 0.5s ease' // Transition for hover effect
+                                        }}>
+                                            {t('editAssetView.changeImage')}
+                                        </div>
                                     </div>
-                                </label>
-                                <input type="file" accept="image/*" name="file" id="image-modal" style={{display:'none'}} onChange={handleImageChange} />
-                                {formErrors.image && <div className="error">{formErrors.image}</div>}
-                            </div>
-                            <div style={{padding: "0 20px", width: "500px"}}>
+                                    <input type="file" accept="image/*" name="file" id="image-modal" style={{ display: 'none' }} onChange={handleImageChange} />
+                                    {formErrors.image && <div className="error">{formErrors.image}</div>}
+                                </div>
+                                <div style={{padding: "0 20px", width: "500px"}}>
                             {/* Physical Condition Dropdown */}
                             <div className="form-group">
                                 <label htmlFor="physicalCondition-modal">{t('physicalConditionLabel')}</label>

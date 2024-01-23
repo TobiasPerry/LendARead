@@ -35,7 +35,7 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
-    const {rejectLending, returnLending, confirmLending} = useUserLendedBooksOptions(fetchUserAssetDetails)
+    const {rejectLending, returnLending, confirmLending, canConfirmLending} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
     const handleReturnAsset = async () => {
         setShowRejectAssetModal(false)
         await returnLending(asset)
@@ -87,7 +87,7 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                                         {t('userHomeView.inProgressText')}
                                     </h6>
                                     <button id="returnAssetBtn" className="btn btn-green"
-                                            style={{marginTop: '10px', alignSelf: 'center'}} onClick={() => setShowReturnAssetModal(true)}>
+                                            style={{marginTop: '10px', alignSelf: 'center'}} onClick={() => setShowReturnAssetModal(true)} disabled={!canConfirmLending}>
                                         {t('userHomeView.confirmReturn')}
                                     </button>
                                 </>

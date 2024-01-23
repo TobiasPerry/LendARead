@@ -3,6 +3,17 @@ import {useContext, useState} from 'react';
 import {api, api_} from "../api/api.ts";
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 
+export const checkFinished = (asset) => {
+    return asset !== undefined && asset.lendingStatus === "FINISHED"
+}
+export const checkRejected = (asset) => {
+    return asset !== undefined && asset.lendingStatus === "REJECTED"
+}
+export const extractId = (url: string) => {
+    const pattern = /\/(\d+)(?=\/?$)/;
+    const match = url.match(pattern);
+    return  match ? match[1] : -1;
+}
 export interface AssetApi {
     author: string,
     isbn: string,
@@ -17,7 +28,8 @@ export interface LendingApi {
     lendDate: string,
     selfUrl: string,
     state: string,
-    userReference: string,
+    lenderUrl: string,
+    borrowerUrl: string
     userReviews: Array<any>
 }
 
@@ -80,11 +92,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return 1;
     };
 
-    const extractId = (url: string) => {
-        const pattern = /\/(\d+)(?=\/?$)/;
-        const match = url.match(pattern);
-        return  match ? match[1] : -1;
-    }
+
    const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
 
         setIsLoading(true)
@@ -118,26 +126,36 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
        })
 
 
-       const lendedBooksPromises =  lendings.data.map(async (lending: LendingApi) => {
-           const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data
-           const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data
+       const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
+           try {
+               console.log('lending', lending);
+               const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
+               const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
+               const userReference = isLender ? lending.lenderUrl : lending.borrowerUrl;
+               const user = (await api_.get(userReference)).data;
 
-           return {
-               imageUrl: assetinstance.imageReference,
-               title: asset.title,
-               start_date: lending.lendDate,
-               return_date: lending.devolutionDate,
-               user: isLender ?  lending.userReference : assetinstance.userReference,
-               state: assetinstance.physicalCondition,
-               id: extractId(lending.selfUrl)
+               return {
+                   imageUrl: assetinstance.imageReference,
+                   title: asset.title,
+                   start_date: lending.lendDate,
+                   return_date: lending.devolutionDate,
+                   user: user.userName,
+                   state: assetinstance.physicalCondition,
+                   id: extractId(lending.selfUrl),
+                   lendingStatus: lending.state
+               };
+           } catch (error) {
+               console.error("Error in processing lending:", lending, error);
+               return null;
            }
-       })
+       });
 
        const lendedBooks = await Promise.all(lendedBooksPromises);
+       const validLendedBooks = lendedBooks.filter(book => book !== null);
 
-       console.log(lendedBooks)
-       setBooks(lendedBooks)
-        setIsLoading(false)
+
+       setBooks(validLendedBooks)
+       setIsLoading(false)
    }
 
 

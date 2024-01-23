@@ -1,8 +1,18 @@
-import {useState} from "react";
-import React from "react";
+import React, {useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 
+export interface UserDetailsApi {
+    email: string
+    image: string
+    rating: number
+    ratingAsBorrower: number
+    ratingAsLender: number
+    role: string
+    selfUrl: string
+    telephone: string
+    userName: string
+}
 export const AuthContext = React.createContext({
     isLoggedIn: false,
     logout: () => {
@@ -11,6 +21,17 @@ export const AuthContext = React.createContext({
         return false
     },
     user: -1,
+    userDetails: {
+        email: "",
+        image: "",
+        rating: 0 ,
+        ratingAsBorrower: 0,
+        ratingAsLender: 0,
+        role: "",
+        selfUrl: "",
+        telephone: "",
+        userName: "",
+    }
 });
 
 const AuthContextProvider = (props) => {
@@ -23,14 +44,24 @@ const AuthContextProvider = (props) => {
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
     const [user, setUser] = useState(-1);
+    const [userDetails, setUserDetails] = useState({
+        email: "",
+        image: "",
+        rating: 0 ,
+        ratingAsBorrower: 0,
+        ratingAsLender: 0,
+        role: "",
+        selfUrl: "",
+        telephone: "",
+        userName: "",
+    })
 
     const extractUserId = (jwt: string): number => {
         //@ts-ignore
         const decoded = jwtDecode(jwt).userReference;
         const pattern = /\/(\d+)(?=\/?$)/;
         const match = decoded.match(pattern);
-        const out = match ? match[1] : -1;
-        return out
+        return match ? match[1] : -1
     }
 
     const handleJWT = (jwt: string, rememberMe): boolean => {
@@ -43,6 +74,7 @@ const AuthContextProvider = (props) => {
             sessionStorage.setItem("userAuthToken", jwt)
 
         setUser(extractUserId(jwt))
+        storeUserDetails(extractUserId(jwt))
         setAuthKey(jwt);
         setLoggedIn(true);
         api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
@@ -58,6 +90,11 @@ const AuthContextProvider = (props) => {
         setUser(-1);
     }
 
+    const storeUserDetails = async (id: number) => {
+        const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
+        console.log(userDetails)
+        setUserDetails(userDetails)
+    }
 
     const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets"): Promise<boolean> => {
         try {
@@ -83,6 +120,7 @@ const AuthContextProvider = (props) => {
             login,
             logout,
             user,
+            userDetails
         }}>{props.children}</AuthContext.Provider>
 }
 

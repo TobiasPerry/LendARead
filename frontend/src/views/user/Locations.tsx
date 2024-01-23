@@ -5,7 +5,7 @@ import Location from "../../components/locations/Location.tsx";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useLocations from "../../hooks/locations/useLocations.ts";
 
-export interface LocationType {
+export interface LocationApi {
     name: string,
     province: string,
     country: string,

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {AssetApi, AssetInstanceApi, LendingApi} from "./useUserAssetInstances.ts";
+import {AssetApi, AssetInstanceApi, extractId, LendingApi} from "./useUserAssetInstances.ts";
 import {api, api_} from "../api/api.ts";
 
 const useUserAssetInstance = (location, id) => {
@@ -12,18 +12,18 @@ const useUserAssetInstance = (location, id) => {
 
     const fetchUserAssetDetails = async () => {
         setIsLoading(true)
-        let assetinstace: AssetInstanceApi = (await api.get(`/assetInstances/${id}`)).data
-        let lending = {}
+        let assetinstace : any = {}
+        let lending: any = {}
 
         if(state === "lended" || state === "borrowed") {
             const lending_ = await api.get(`/lendings/${id}`)
             lending = lending_.data
 
-            //@ts-ignore
             assetinstace = (await api_.get(lending.assetInstance)).data
-            //@ts-ignore
             if(lending.state == "ACTIVE")
                 setHasActiveLendings(true)
+        } else {
+            assetinstace = (await api.get(`/assetInstances/${id}`)).data
         }
 
         const asset: AssetApi = (await api_.get(assetinstace.assetReference)).data
@@ -40,7 +40,8 @@ const useUserAssetInstance = (location, id) => {
             imageUrl: assetinstace.imageReference,
             isReservable: assetinstace.reservable,
             status: assetinstace.status,
-            id: id,
+            id: id, //wtf this does
+            assetinstanceid: extractId(assetinstace.selfUrl),
             maxDays: assetinstace.maxLendingDays,
             assetinstance: assetinstace
         }
