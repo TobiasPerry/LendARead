@@ -69,10 +69,10 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                             {isActive(asset.lending.state) && (
                                 <>
                                     <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", margin: "15px 0"}}>
-                                        {t('userHomeView.pendingText')}
+                                        {canConfirmLending ? t('userHomeView.pendingText') : t('userHomeView.pendingText2') }
                                     </h6>
                                     <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
-                                        <button id="confirmAssetBtn" className="btn btn-green" onClick={() => setShowConfirmAssetModal(true)}>
+                                        <button id="confirmAssetBtn" className="btn btn-green" onClick={() => setShowConfirmAssetModal(true)}  disabled={!canConfirmLending}>
                                             {t('userHomeView.confirmBook')}
                                         </button>
                                         <button id="rejectAssetBtn" className="btn btn-red-outline" onClick={() => setShowRejectAssetModal(true)}>
@@ -87,7 +87,7 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                                         {t('userHomeView.inProgressText')}
                                     </h6>
                                     <button id="returnAssetBtn" className="btn btn-green"
-                                            style={{marginTop: '10px', alignSelf: 'center'}} onClick={() => setShowReturnAssetModal(true)} disabled={!canConfirmLending}>
+                                            style={{marginTop: '10px', alignSelf: 'center'}} onClick={() => setShowReturnAssetModal(true)}>
                                         {t('userHomeView.confirmReturn')}
                                     </button>
                                 </>
