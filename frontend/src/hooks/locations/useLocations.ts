@@ -4,14 +4,12 @@ import {LocationApi} from "../../views/user/Locations.tsx";
 const useLocations = () => {
 
     const editLocation = async (location: any) => {
-        console.log(location)
         try {
             const response = await api_.patch(location.selfUrl, location,
                 {
                     headers: {"Content-Type": "application/vnd.location.v1+json"}
                 }
             )
-            console.log(response)
             // @ts-ignore
             return true
         } catch (error) {
@@ -40,6 +38,7 @@ const useLocations = () => {
     };
 
     const addLocation = async (location: LocationApi) => {
+        console.log('add location')
         try {
             const response = await api.post('/locations', location, {
                 headers: { "Content-Type": "application/vnd.location.v1+json" }

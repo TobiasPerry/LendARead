@@ -43,26 +43,36 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
         // Validation for zipcode (alphanumeric, 1-100 characters)
         if (!formData.zipcode.match(/^[a-zA-Z0-9]+$/) || formData.zipcode.length < 1 || formData.zipcode.length > 100) {
             errors.zipcode = t('zipcodeValidationError');
+        } else {
+            errors.zipcode = ''
         }
 
         // Validation for locality (1-100 characters)
         if (formData.locality.length < 1 || formData.locality.length > 100) {
             errors.locality = t('localityValidationError');
+        } else {
+            errors.locality = ''
         }
 
         // Validation for province (4-100 characters)
         if (formData.province.length < 4 || formData.province.length > 100) {
             errors.province = t('provinceValidationError');
+        } else {
+            errors.province = ''
         }
 
         // Validation for country (4-100 characters)
         if (formData.country.length < 4 || formData.country.length > 100) {
             errors.country = t('countryValidationError');
+        } else {
+            errors.country = ''
         }
 
         // Validation for name (1-100 characters)
         if (formData.name.length < 1 || formData.name.length > 100) {
             errors.name = t('nameValidationError');
+        } else {
+            errors.name = ''
         }
 
         return errors;
@@ -76,7 +86,7 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const errors = validateForm();
-        if (Object.keys(errors).length === 0) {
+        if (errors.country === "" && errors.zipcode === "" && errors.province === "" && errors.locality === "" && errors.name === "") {
             handleSave(formData);
             setFormData({ name: "", locality: "", province: "", country: "", zipcode: "", selfUrl: "" });
         } else {
