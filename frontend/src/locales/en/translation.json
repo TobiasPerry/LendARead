@@ -182,6 +182,7 @@
 
   "navbar": {
     "explore": "Explore",
+    "my_books": "My books",
     "lend": "Lend Book",
     "login": "Log In",
     "searchbar": {

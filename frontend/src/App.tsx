@@ -26,7 +26,7 @@ export default function App() {
                     <Route index element={<Landing />} />
                     <Route path="login" element={<LoginView />} />
                     <Route path="locations" element={<RequireAuth> <Locations /> </RequireAuth>} />
-                    <Route path="userHome" element={<RequireAuth> <UserHome /> </RequireAuth>} />
+                    <Route path="userAssets" element={<RequireAuth> <UserHome /> </RequireAuth>} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
                     <Route path="register" element={<Register />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
