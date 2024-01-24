@@ -5,6 +5,7 @@
   "Team": "Team",
   "Projects": "Projects",
   "Calendar": "Calendar",
+  "active_loans": "Active Loans",
   "auth": {
     "login": "Login",
     "register": "Register",
@@ -137,6 +138,7 @@
   "PUBLIC": "Public",
   "pending": "Pending",
   "delivered": "Delivered",
+  "canceled": "Canceled",
   "overdue": "Overdue",
   "rejected": "Rejected",
   "finished": "Finished",

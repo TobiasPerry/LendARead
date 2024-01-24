@@ -1,13 +1,13 @@
 /* MyBookActiveLendings.css */
 .lendings-container {
-    background-color: #ffffff; /* Adjust to the exact color of your UI */
-    border-radius: 4px;
+    background-color: #f0f5f0;
+    border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    margin-left: 50px;
 }
 
 .lendings-title {
-    font-size: 24px;
     margin-bottom: 20px;
     color: #333; /* Adjust to match the text color */
 }
@@ -17,19 +17,21 @@
     align-items: center;
     justify-content: space-between;
     padding: 15px;
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 1px solid #f0f5f0;
     transition: background-color 0.3s;
     text-decoration: none;
     color: inherit; /* Ensures text inherits color, adjust if necessary */
 }
 
 .lending-item:hover {
-    background-color: #f5f5f5; /* Color for hover state, adjust to match your UI */
+    background-color: #9fc59f; /* Color for hover state, adjust to match your UI */
+    color: #fff; /* Ensures text inherits color, adjust if necessary */
 }
 
 .user-info {
     display: flex;
     align-items: center;
+    align-self: flex-start;
 }
 
 .user-image {
@@ -39,6 +41,8 @@
 
 .user-name {
     font-weight: bold;
+    margin-right: 10px;
+    border: none;
 }
 
 .lending-dates {
