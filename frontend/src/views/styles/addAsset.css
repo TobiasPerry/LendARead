@@ -14,6 +14,15 @@ input[type="text"].loading {
     background-size: 20px 20px;
 }
 
+select[disabled] {
+    background-color: #eee !important;
+    color: #777;
+    border: 1px solid #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+}
+
 select.round {
     background-image:
             linear-gradient(45deg, transparent 50%, gray 50%),
