@@ -163,10 +163,21 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
        setIsLoading(false)
    }
 
-
     const fetchMyBooks =  async (newPage: number, newSort: any, newFilter: string) => {
-
         setIsLoading(true)
+        if(newFilter === "all") {
+            const publicBooks = await fetchMyBooks2(newPage, newSort, "public")
+            const privateBooks = await fetchMyBooks2(newPage, newSort, "private")
+            setBooks(privateBooks.concat(publicBooks))
+        }  else {
+            const retrievedBooks = await fetchMyBooks2(newPage, newSort, newFilter)
+            setBooks(retrievedBooks)
+        }
+        setIsLoading(false)
+    }
+
+    const fetchMyBooks2 =  async (newPage: number, newSort: any, newFilter: string) => {
+
         const params = {
             params: {
                 'userId': user,
@@ -197,14 +208,13 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                 title: asset.title,
                 author: asset.author,
                 language: lang.name,
-                state: assetinstance.physicalCondition,
+                state: assetinstance.status,
                 imageUrl: assetinstance.imageReference,
                 id: extractId(assetinstance.selfUrl)
             })
         }
 
-        setBooks(booksRetrieved)
-        setIsLoading(false)
+        return booksRetrieved
     };
 
     const changePage = async (newPage: number) => {
