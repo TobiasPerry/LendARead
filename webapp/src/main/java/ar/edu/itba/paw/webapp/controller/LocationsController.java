@@ -16,10 +16,12 @@ import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -46,10 +48,11 @@ public class LocationsController {
 
     @GET
     @Produces(value = { Vnd.VND_LOCATION })
+    @PreAuthorize("@preAuthorizeFunctions.isLocationOwner(#userId)")
     public Response getLocation(
             @QueryParam(value = "page")  @Min(1)  @DefaultValue("1") final Integer page,
             @QueryParam(value = "itemsPerPage")  @Min(1) @DefaultValue("10") final Integer itemsPerPage,
-            @QueryParam("userId") final Integer userId
+            @QueryParam("userId") @NotNull(message = "{userid.notNull}") final Integer userId
     ) {
         final PagingImpl<Location> locations = ls.getLocations(userId, page, itemsPerPage);
 

@@ -105,5 +105,15 @@ public class PreAuthorizeFunctions {
             return false;
         }
     }
+    public boolean isLocationOwner(final Integer userId){
+        try {
+            User currentUser = userService.getCurrentUser();
+            if (currentUser == null)
+                return false;
+            return userId == currentUser.getId();
+        } catch (UserNotFoundException e) {
+            return false;
+        }
+    }
 
 }
