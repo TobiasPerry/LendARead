@@ -6,6 +6,11 @@ import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 export const checkFinished = (asset) => {
     return asset !== undefined && asset.lendingStatus === "FINISHED"
 }
+
+export const checkCanceled = (asset) => {
+    return asset !== undefined && asset.lendingStatus === "CANCELED"
+}
+
 export const checkRejected = (asset) => {
     return asset !== undefined && asset.lendingStatus === "REJECTED"
 }

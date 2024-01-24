@@ -138,6 +138,7 @@
   "PUBLIC": "Public",
   "pending": "Pending",
   "delivered": "Delivered",
+  "active": "Active",
   "canceled": "Canceled",
   "overdue": "Overdue",
   "rejected": "Rejected",
