@@ -1,5 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import useAssetInstances, {checkFinished, checkRejected} from '../../hooks/assetInstance/useUserAssetInstances.ts';
+import useAssetInstances, {
+    checkCanceled,
+    checkFinished,
+    checkRejected
+} from '../../hooks/assetInstance/useUserAssetInstances.ts';
 import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstances.ts";
@@ -91,7 +95,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                             onClick={() => handleRowClicked(book, isLender ? "lended" : "borrowed")}
                             style={{
                                 cursor: "pointer",
-                                opacity: checkFinished(book) || checkRejected(book) ? 0.6 : 1
+                                opacity: checkFinished(book) || checkRejected(book) || checkCanceled(book) ? 0.6 : 1
                             }}
                         >                            <td>
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
@@ -100,7 +104,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                             <td>{book.start_date}</td>
                             <td>{book.return_date}</td>
                             <td>{book.user}</td>
-                            <td>{t(`${book.state}`)}</td>
+                            <td>{t(`${book.lendingStatus.toLowerCase()}`)}</td>
                         </tr>
                     ))
                 )}

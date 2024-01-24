@@ -1,7 +1,8 @@
 import './styles/addAsset.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
+import { api } from '../hooks/api/api.ts'
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -28,6 +29,13 @@ const AddAsset = () => {
     ]
 
     const [step, setStep] = useState(1);
+    const [languages, setLanguages] = useState<any[]>([])
+
+    useEffect(() => {
+        api.get('/languages').then((response) => {
+            setLanguages(response.data)
+        })
+    }, [])
 
     const getAuthor = async (authors: any[]) => {
         if (authors.length === 0) {
@@ -177,13 +185,19 @@ const AddAsset = () => {
             }
 
             const languageInput = document.getElementById('language') as HTMLInputElement;
+            const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
             if (book.lang) {
-                languageInput.value = book.lang;
-                languageInput.readOnly = true;
+                let selectedLang = languages.filter((language) => { return language.code == book.lang })[0]
+                if (selectedLang) {
+                    languageSelect.value = selectedLang.code;
+                    languageSelect.disabled = true;
+                } else {
+                    languageSelect.value = '';
+                    languageSelect.disabled = false;
+                }
             } else {
-                languageInput.value = '';
-                languageInput.readOnly = false;
-                languageInput.value = '';
+                languageSelect.value = '';
+                languageSelect.disabled = false;
             }
 
         } else {
@@ -209,6 +223,7 @@ const AddAsset = () => {
         const titleInput = document.getElementById('title') as HTMLInputElement;
         const authorInput = document.getElementById('author') as HTMLInputElement;
         const languageInput = document.getElementById('language') as HTMLInputElement;
+        const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
         const physicalConditionInput = document.getElementById('physicalCondition') as HTMLInputElement;
 
         if (!titleInput.value ) {
@@ -228,7 +243,7 @@ const AddAsset = () => {
             error.classList.add('d-none');
         }
 
-        if (!languageInput.value ) {
+        if (!languageSelect.value ) {
             valid = false;
             const error = document.getElementById('language-error') as HTMLInputElement;
             error.classList.remove('d-none');
@@ -251,6 +266,7 @@ const AddAsset = () => {
             const authorError = document.getElementById('author-error') as HTMLInputElement;
             const languageError = document.getElementById('language-error') as HTMLInputElement;
             const physicalConditionError = document.getElementById('physicalCondition-error') as HTMLInputElement;
+            languageInput.value = languageSelect.value;
             titleError.classList.add('d-none');
             authorError.classList.add('d-none');
             languageError.classList.add('d-none');
@@ -367,7 +383,15 @@ const AddAsset = () => {
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='language' className='form-label'>{t('addAsset.bookInfo.language')}</label>
-                                    <input type='text' className='form-control round' id='language' placeholder='Language' />
+                                    <select className='form-control round' id='languageSelect' defaultValue={'invalid'} disabled>
+                                        <option key='invalid' value='' disabled>{t('addAsset.bookInfo.selectLanguage')}</option>
+                                        {   
+                                            languages.map((language) => {
+                                                return <option key={language.code} value={language.code}>{language.name}</option>
+                                            })
+                                        }
+                                    </select>
+                                    <input className='d-none' id='language' readOnly={true} />
                                     <small id='language-error' className="text-danger small d-none">{t('addAsset.bookInfo.language-validation-error')}</small>
                                 </div>
                             </div>

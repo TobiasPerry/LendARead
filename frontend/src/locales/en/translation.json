@@ -5,6 +5,7 @@
   "Team": "Team",
   "Projects": "Projects",
   "Calendar": "Calendar",
+  "active_loans": "Active Loan Requests",
   "auth": {
     "login": "Login",
     "register": "Register",
@@ -137,6 +138,8 @@
   "PUBLIC": "Public",
   "pending": "Pending",
   "delivered": "Delivered",
+  "active": "Active",
+  "canceled": "Canceled",
   "overdue": "Overdue",
   "rejected": "Rejected",
   "finished": "Finished",
@@ -149,7 +152,8 @@
   "no_books_available": "No books available",
   "previous": "Previous",
   "next": "Next",
-
+  "rejected_text": "The lending was rejected, no options are available ",
+  "finished_text": "The lending has finished, no options are available ",
   "landing": {
     "hero": {
       "title": "The new era of reading",
@@ -182,6 +186,7 @@
 
   "navbar": {
     "explore": "Explore",
+    "my_books": "My books",
     "lend": "Lend Book",
     "login": "Log In",
     "searchbar": {
@@ -323,7 +328,8 @@
         "title-validation-error": "Please, enter a valid title.",
         "author-validation-error": "Please, enter a valid author.",
         "language-validation-error": "Please, enter a valid language.",
-        "physicalCondition-validation-error": "Please enter a valid physical condition."
+        "physicalCondition-validation-error": "Please enter a valid physical condition.",
+        "selectLanguage": "Select a language"
     },
     "duration": {
         "detail": "Max Borrowing Period",

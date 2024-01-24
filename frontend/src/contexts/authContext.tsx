@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
+// @ts-ignore
+import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
 
 export interface UserDetailsApi {
     email: string
@@ -31,7 +33,8 @@ export const AuthContext = React.createContext({
         selfUrl: "",
         telephone: "",
         userName: "",
-    }
+    },
+    userImage: ""
 });
 
 const AuthContextProvider = (props) => {
@@ -44,6 +47,7 @@ const AuthContextProvider = (props) => {
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
     const [user, setUser] = useState(-1);
+    const [userImage, setUserImage] = useState(defaultUserPhoto);
     const [userDetails, setUserDetails] = useState({
         email: "",
         image: "",
@@ -93,6 +97,9 @@ const AuthContextProvider = (props) => {
     const storeUserDetails = async (id: number) => {
         const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
         console.log(userDetails)
+        const image = (await api_.get(userDetails.image)).data
+        if(image)
+            setUserImage(image)
         setUserDetails(userDetails)
     }
 
@@ -120,7 +127,8 @@ const AuthContextProvider = (props) => {
             login,
             logout,
             user,
-            userDetails
+            userDetails,
+            userImage
         }}>{props.children}</AuthContext.Provider>
 }
 

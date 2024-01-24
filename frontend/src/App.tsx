@@ -16,6 +16,7 @@ import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
 import ReviewLender from "./views/reviews/ReviewLender.tsx";
 import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
+import AddAsset from "./views/addAsset.tsx";
 
 
 export default function App() {
@@ -26,7 +27,7 @@ export default function App() {
                     <Route index element={<Landing />} />
                     <Route path="login" element={<LoginView />} />
                     <Route path="locations" element={<RequireAuth> <Locations /> </RequireAuth>} />
-                    <Route path="userHome" element={<RequireAuth> <UserHome /> </RequireAuth>} />
+                    <Route path="userAssets" element={<RequireAuth> <UserHome /> </RequireAuth>} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
                     <Route path="register" element={<Register />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
@@ -35,6 +36,7 @@ export default function App() {
                     <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
                     <Route path="review/lender/:lendingNumber" element={<RequireAuth> <ReviewLender /> </RequireAuth>} />
                     <Route path="review/borrower/:lendingNumber" element={<RequireAuth> <ReviewBorrower /> </RequireAuth>} />
+                    <Route path="addAssetView" element={<AddAsset />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

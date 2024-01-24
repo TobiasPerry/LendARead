@@ -31,12 +31,12 @@ const UserAssetInstance = () => {
         handleBackClick()
     }
     const handleBackClick = () => {
-        navigate(`/userHome?table=${state}_books`)
+        navigate(`/userAssets?table=${state}_books`)
     }
 
     useEffect(() => {
         fetchUserAssetDetails().then()
-    }, [])
+    }, [id])
 
     //need to make api post to review service, this makes a link to that page
     const canReview = false

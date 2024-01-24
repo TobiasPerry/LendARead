@@ -14,7 +14,7 @@ function classNames(...classes) {
 export default function NavBar() {
 
     const { t, i18n } = useTranslation();
-    const {user, logout} = useContext(AuthContext)
+    const {isLoggedIn, logout, userImage} = useContext(AuthContext)
     const [language, setLanguage] = useState('en');
 
     const navigate = useNavigate()
@@ -69,7 +69,7 @@ export default function NavBar() {
                                         />
 
                                     </div>
-                                    ) : (
+                                ) : (
                                     <>
                                     </>
                                 )
@@ -82,29 +82,34 @@ export default function NavBar() {
                                 <Link className="nav-link navItem"  id="addAsset" aria-current="page" to="/addAssetView">{t('navbar.lend')}</Link>
                             </li>
 
-                            { user === -1 &&
-                            <li className="nav-item d-flex align-items-center">
-                                <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/login">
-                                    {t('navbar.login')}
-                                </Link>
-                            </li> }
-                            { user !== -1 &&
-                            <li className="nav-item d-flex align-items-center">
-                                <Link className="nav-link navItem" id="userView"  aria-current="page" to="/userHome">
+                            { !isLoggedIn && (
+                                <li className="nav-item d-flex align-items-center">
+                                    <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/login">
+                                        {t('navbar.login')}
+                                    </Link>
+                                </li>
+                            )}
+                            { isLoggedIn && (
+                                <>
+                                    <li className="nav-item  d-flex align-items-center">
+                                        <Link className="nav-link navItem" id="home" aria-current="page" to="/userAssets">{t('navbar.my_books')}</Link>
+                                    </li>
+                                    <li className="nav-item d-flex align-items-center">
+                                        <Link className="nav-link navItem" id="userView"  aria-current="page" to="/userHome">
 
                                         <span className="navbar-brand">
-                                            <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/70" className="rounded-circle" width="30" height="30" alt="logo"/>
+                                            <img src={userImage} className="rounded-circle" width="30" height="30" alt="logo"/>
                                         </span>
 
-                                </Link>
-                            </li> }
-                            { user !== -1 &&
-                                <li className="nav-item d-flex align-items-center">
-                                    <button className="nav-link navItem" id="logout" aria-current="page" onClick={handleLogout}>
-                                        <i className="fas fa-sign-out-alt fa-x" ></i>
-                                    </button>
-                                </li>
-                            }
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item d-flex align-items-center">
+                                        <button className="nav-link navItem" id="logout" aria-current="page" onClick={handleLogout}>
+                                            <i className="fas fa-sign-out-alt fa-x" ></i>
+                                        </button>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </div>

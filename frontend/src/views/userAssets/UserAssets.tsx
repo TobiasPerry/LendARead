@@ -46,7 +46,7 @@ const UserAssetsView = () => {
                                 <button
                                     onClick={() => handleTableChange('owned_books')}
                                     className={`list-group-item list-group-item-action button-select ${table === 'my_books' ? 'button-select-active' : ''}`}
-                                    style={{ fontWeight: table === 'my_books' ? 'bold' : 'normal' }}>
+                                    style={{ fontWeight: table === 'owned_books' ? 'bold' : 'normal' }}>
                                     {t('my_books')}
                                 </button>
                                 <button

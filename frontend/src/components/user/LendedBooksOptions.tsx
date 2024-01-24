@@ -66,10 +66,10 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
         }} className="flex-column">
             {!(asset === undefined || asset.lending === undefined) && (
                 <div>
-                    <h3 >{t('lended_books_actions')}</h3>
-                    {!isRejected(asset.lending.state) && !isFinished(asset.lending.state) && (
+                    {(isActive(asset.lending.state) || isDelivered(asset.lending.state)) && (
                         <div className="options-menu"
                              style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                            <h3 >{t('lended_books_actions')}</h3>
                             {isActive(asset.lending.state) && (
                                 <>
                                     <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", margin: "15px 0"}}>
@@ -98,6 +98,21 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                             )}
                         </div>
                     )}
+                    {isRejected(asset.lending.state) &&
+                        <div>
+                            <div> {t("rejected_text")} </div>
+                        </div>
+                    }
+                    {isFinished(asset.lending.state) &&
+                        <div>
+                            <div> {t("finished_text")} </div>
+                        </div>
+                    }
+                    {isCanceled(asset.lending.state) &&
+                        <div>
+                            <div> {t("canceled_text")} </div>
+                        </div>
+                    }
                     {canReview && (
                         <Link className="btn btn-green mt-3" to="/reviews" style={{alignSelf: 'center'}}>
                             {t('makeReview')}
