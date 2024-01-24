@@ -14,8 +14,10 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
     const checkCanConfirmLending = async () => {
         const lendings: Array<LendingApi> = (await api.get(`/lendings`,{ params: {assetInstanceId: asset.assetinstanceid}} )).data
         const deliveredLendings = lendings.filter((lending: LendingApi) => isDelivered(lending.state))
-        setCanConfirmLending(deliveredLendings.length === 0)
+        const canConfirm = deliveredLendings.length === 0
+        setCanConfirmLending(canConfirm)
     }
+
     const updateState = async (url, state) => {
         await api_.patch(url, {state: state},
             {

@@ -1,6 +1,6 @@
 import BookDetails from "../../components/user/BookDetails.tsx";
 import BookStatus from "../../components/user/BookStatus.tsx";
-import BookOptions from "../../components/user/BookOptions.tsx";
+import BorrowedBookOptions from "../../components/user/BorrowedBookOptions.tsx";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import "../styles/userBookDetails.css"
 import {useTranslation} from "react-i18next";
@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import MyBooksOptions from "../../components/user/MyBooksOptions.tsx";
 import LendedBooksOptions from "../../components/user/LendedBooksOptions.tsx";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
+import MyBookActiveLendings from "../../components/user/MyBookActiveLendings.tsx";
 const UserAssetInstance = () => {
 
     const navigate = useNavigate();
@@ -42,10 +43,10 @@ const UserAssetInstance = () => {
 
     return (
         <>
-        {isLoading ?
-            <LoadingAnimation/>
-            :
-            <div className="main-container" style={{padding: '2rem'}}>
+            {isLoading ?
+                <LoadingAnimation/>
+                :
+                <div className="main-container" style={{padding: '2rem'}}>
                     <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
                         <i className="fas fa-arrow-left mb-1"></i>
                         <h3 className="ms-3">
@@ -70,10 +71,16 @@ const UserAssetInstance = () => {
                                 asset={assetDetails}
                                 canReview={canReview}
                                 fetchUserAssetDetails={fetchUserAssetDetails}/>}
+                            {state === "borrowed" && <BorrowedBookOptions
+                                asset={assetDetails}
+                                fetchUserAssetInstance={fetchUserAssetDetails}/> }
                         </div>
+
                     </div>
+                    {state === "owned" && <MyBookActiveLendings
+                    asset={assetDetails} /> }
                 </div>
-        }
+            }
         </>
     );
 };
