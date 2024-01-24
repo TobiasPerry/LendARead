@@ -17,7 +17,7 @@ const MyBookActiveLendings = ({asset}) => {
         <div className="lendings-container">
             <h3 className="lendings-title">{t('active_loans')}</h3>
             {lendings.map((lending, index) => (
-                <Link to={`/lendings/${lending.id}`} key={index} className="lending-item">
+                <Link to={`/userBook/${lending.id}?state=lended`} key={index} className="lending-item">
                     <div className="user-info">
                         <img src={lending.userImage} alt={lending.userName} className="user-image" />
                         <div className="user-name">{lending.userName}</div>

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
+// @ts-ignore
 import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
 
 export interface UserDetailsApi {
@@ -32,7 +33,8 @@ export const AuthContext = React.createContext({
         selfUrl: "",
         telephone: "",
         userName: "",
-    }
+    },
+    userImage: ""
 });
 
 const AuthContextProvider = (props) => {
