@@ -23,18 +23,16 @@ public class PreAuthorizeFunctions {
 
     private final UserService userService;
 
-    private final LendingService lendingService;
 
     private final UserAssetInstanceService uais;
 
     @Autowired
-    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais, AssetInstanceService assetInstanceService, LendingService lendingService) {
+    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais, AssetInstanceService assetInstanceService) {
         this.userReviewsService = userReviewsService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
         this.userService = userService;
         this.uais = uais;
         this.assetInstanceService = assetInstanceService;
-        this.lendingService = lendingService;
     }
 
 
