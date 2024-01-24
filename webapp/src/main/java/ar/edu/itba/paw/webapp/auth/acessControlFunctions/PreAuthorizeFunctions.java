@@ -16,7 +16,6 @@ public class PreAuthorizeFunctions {
 
     private final UserReviewsService userReviewsService;
 
-    private final AssetInstanceService assetInstanceService;
 
     private final AssetInstanceReviewsService assetInstanceReviewsService;
 
@@ -26,12 +25,11 @@ public class PreAuthorizeFunctions {
     private final UserAssetInstanceService uais;
 
     @Autowired
-    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais, AssetInstanceService assetInstanceService) {
+    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais) {
         this.userReviewsService = userReviewsService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
         this.userService = userService;
         this.uais = uais;
-        this.assetInstanceService = assetInstanceService;
     }
 
 
@@ -90,7 +88,7 @@ public class PreAuthorizeFunctions {
         }
     }
 
-    public boolean canListLendings (final Integer lenderId,final Integer borrowerId,final Integer assetInstanceId){
+    public boolean canListLendings (final Integer lenderId,final Integer borrowerId){
         try {
             User currentUser = userService.getCurrentUser();
             if (currentUser == null)

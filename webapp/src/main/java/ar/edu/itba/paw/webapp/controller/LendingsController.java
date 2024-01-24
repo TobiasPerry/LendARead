@@ -51,7 +51,7 @@ public class LendingsController {
 
     @GET
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
-    @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lendingGetForm.lenderId,#lendingGetForm.borrowerId,#lendingGetForm.assetInstanceId)")
+    @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lendingGetForm.lenderId,#lendingGetForm.borrowerId)")
     public Response getLendings(@Valid @BeanParam LendingGetForm lendingGetForm) {
         PagingImpl<Lending> paging = aas.getPagingActiveLendings(lendingGetForm.getPage(), lendingGetForm.getItemsPerPage(), lendingGetForm.getAssetInstanceId(), lendingGetForm.getBorrowerId(), lendingGetForm.getState() == null?null:LendingState.fromString(lendingGetForm.getState() ), lendingGetForm.getLenderId(), lendingGetForm.getSort(), lendingGetForm.getSortDirection());
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
