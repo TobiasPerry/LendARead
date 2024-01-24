@@ -5,7 +5,7 @@
   "Team": "Team",
   "Projects": "Projects",
   "Calendar": "Calendar",
-  "active_loans": "Active Loans",
+  "active_loans": "Active Loan Requests",
   "auth": {
     "login": "Login",
     "register": "Register",
@@ -152,7 +152,8 @@
   "no_books_available": "No books available",
   "previous": "Previous",
   "next": "Next",
-
+  "rejected_text": "The lending was rejected, no options are available ",
+  "finished_text": "The lending has finished, no options are available ",
   "landing": {
     "hero": {
       "title": "The new era of reading",

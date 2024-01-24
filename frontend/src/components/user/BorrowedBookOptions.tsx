@@ -3,7 +3,7 @@ import useUserBorrowedBooksOptions from "../../hooks/assetInstance/useUserBorrow
 import {useState} from "react";
 import CancelModal from "../modals/CancelModal.tsx";
 import {isCancel} from "axios";
-import {isCanceled, isFinished} from "./LendedBooksOptions.tsx";
+import {isActive, isCanceled, isFinished, isRejected} from "./LendedBooksOptions.tsx";
 
 const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
     const { t } = useTranslation();
@@ -19,7 +19,7 @@ const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
             flexDirection: "column",
             alignItems: "center",
         }} className="flex-column">
-            {!(asset === undefined || asset.lending === undefined) && !isCanceled(asset.lending.state) &&
+            {!(asset === undefined || asset.lending === undefined) && isActive(asset.lending.state) &&
                 <div>
                     <h3 style={{ alignSelf: 'flex-start', width: '100%' }}>{t('borrowed_book_actions')}</h3>
                     <p className="card-text">{t('loanRequestSent')}</p>
@@ -30,6 +30,16 @@ const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
             {!(asset === undefined || asset.lending === undefined) && isCanceled(asset.lending.state) &&
                 <div>
                 <div> {t("canceled_text")} </div>
+                </div>
+            }
+            {!(asset === undefined || asset.lending === undefined) && isFinished(asset.lending.state) &&
+                <div>
+                    <div> {t("finished_text")} </div>
+                </div>
+            }
+            {!(asset === undefined || asset.lending === undefined) && isRejected(asset.lending.state) &&
+                <div>
+                    <div> {t("rejected_text")} </div>
                 </div>
             }
                 </div>
