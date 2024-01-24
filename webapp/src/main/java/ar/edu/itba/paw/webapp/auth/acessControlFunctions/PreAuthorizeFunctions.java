@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
@@ -102,11 +101,9 @@ public class PreAuthorizeFunctions {
             if (borrowerId != null){
                 return borrowerId == currentUser.getId() ;
             }
-            if (assetInstanceId != null){
-                return assetInstanceService.isOwner(assetInstanceId,userService.getCurrentUser().getEmail());
-            }
+
             return true;
-        } catch (UserNotFoundException | AssetInstanceNotFoundException e) {
+        } catch (UserNotFoundException e) {
             return false;
         }
     }
