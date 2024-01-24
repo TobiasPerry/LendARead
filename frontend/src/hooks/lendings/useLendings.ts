@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {UserDetailsApi} from "../../contexts/authContext.tsx";
 import {extractId, LendingApi} from "../assetInstance/useUserAssetInstances.ts";
 // @ts-ignore
+import photoPlaceholder from "../../../public/static/profile_placeholder.jpeg";
+
 const useLendings = () => {
 
     const [lendings, setLendings] = useState([])
@@ -22,12 +24,12 @@ const useLendings = () => {
 
         const mappedLendings = lendings.map(async (lending: LendingApi) => {
             const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data
-            console.log(user)
+            const image = (await api_.get(user.image)).data
             return {
                 startDate: lending.lendDate,
                 endDate: lending.devolutionDate,
                 userName: user.userName,
-                userImage: user.image , //need to add default user image
+                userImage: image ? image :  photoPlaceholder, //need to add default user image
                 id: extractId(lending.selfUrl)
             }
         })
