@@ -22,7 +22,7 @@ public class RootController {
     @GET
     @Produces(value = { Vnd.VND_ROOT })
     public Response getApiEndPoints() {
-        Response.ResponseBuilder response = Response.ok(new RootDTO(uriInfo));
+        Response.ResponseBuilder response = Response.ok(RootDTO.fromRoot(uriInfo));
         StaticCache.setUnconditionalCache(response);
         return response.build();
     }

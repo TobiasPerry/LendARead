@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.*;
@@ -17,24 +16,20 @@ public class PreAuthorizeFunctions {
 
     private final UserReviewsService userReviewsService;
 
-    private final AssetInstanceService assetInstanceService;
 
     private final AssetInstanceReviewsService assetInstanceReviewsService;
 
     private final UserService userService;
 
-    private final LendingService lendingService;
 
     private final UserAssetInstanceService uais;
 
     @Autowired
-    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais, AssetInstanceService assetInstanceService, LendingService lendingService) {
+    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais) {
         this.userReviewsService = userReviewsService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
         this.userService = userService;
         this.uais = uais;
-        this.assetInstanceService = assetInstanceService;
-        this.lendingService = lendingService;
     }
 
 
@@ -93,7 +88,7 @@ public class PreAuthorizeFunctions {
         }
     }
 
-    public boolean canListLendings (final Integer lenderId,final Integer borrowerId,final Integer assetInstanceId){
+    public boolean canListLendings (final Integer lenderId,final Integer borrowerId){
         try {
             User currentUser = userService.getCurrentUser();
             if (currentUser == null)
@@ -104,11 +99,9 @@ public class PreAuthorizeFunctions {
             if (borrowerId != null){
                 return borrowerId == currentUser.getId() ;
             }
-            if (assetInstanceId != null){
-                return assetInstanceService.isOwner(assetInstanceId,userService.getCurrentUser().getEmail());
-            }
-            return false;
-        } catch (UserNotFoundException | AssetInstanceNotFoundException e) {
+
+            return true;
+        } catch (UserNotFoundException e) {
             return false;
         }
     }
