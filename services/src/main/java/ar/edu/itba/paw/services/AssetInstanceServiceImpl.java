@@ -95,14 +95,18 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final Optional<Integer> imageId,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException {
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final Optional<Integer> imageId,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException {
         AssetInstance assetInstance = getAssetInstance(id);
+        User user = userService.getCurrentUser();
+
         if (location.isPresent()) {
             Location loc;
             try {
                 loc = locationsService.getLocation(location.get());
                 if (!loc.isActive())
                     throw new LocationNotExistException();
+                if (!loc.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();
+
             } catch (LocationNotFoundException e) {
                 throw new LocationNotExistException();
             }
@@ -126,13 +130,15 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Override
     @Transactional
-    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, final int imageId) throws UserNotFoundException, LocationNotExistException, AssetNotExistException, ImageNotExistException {
+    public AssetInstance addAssetInstance(final PhysicalCondition physicalCondition, final String description, final int maxDays, final Boolean isReservable, final AssetState assetState, final int locationId, final Long assetId, final int imageId) throws UserNotFoundException, LocationNotExistException, AssetNotExistException, ImageNotExistException, UserIsNotOwnerException {
         Asset book ;
         Location location;
+        User user = userService.getCurrentUser();
         try {
             book = assetService.getBookById(assetId);
             location =   locationsService.getLocation(locationId);
             if (!location.isActive()) throw new LocationNotExistException();
+            if (!location.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();
         }
         catch (AssetNotFoundException e) {
             throw new AssetNotExistException();
@@ -140,7 +146,6 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         catch (LocationNotFoundException e) {
             throw new LocationNotExistException();
         }
-        User user = userService.getCurrentUser();
         Image image ;
         try {
             image = imageService.getImage(imageId);

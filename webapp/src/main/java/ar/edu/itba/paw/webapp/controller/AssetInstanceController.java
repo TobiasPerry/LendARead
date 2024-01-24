@@ -113,7 +113,7 @@ public class AssetInstanceController {
     @POST
     @Consumes(Vnd.VND_ASSET_INSTANCE)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
-    public Response createAssetInstance(@Valid @NotNull final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, LocationNotExistException, AssetNotExistException, ImageNotExistException {
+    public Response createAssetInstance(@Valid @NotNull final AssetInstanceForm assetInstanceForm) throws UserNotFoundException, LocationNotExistException, AssetNotExistException, ImageNotExistException, UserIsNotOwnerException {
         AssetInstance assetInstance = ais.addAssetInstance(PhysicalCondition.fromString(assetInstanceForm.getPhysicalCondition()),assetInstanceForm.getDescription(),assetInstanceForm.getMaxDays(),assetInstanceForm.getIsReservable(), AssetState.fromString(assetInstanceForm.getStatus()),assetInstanceForm.getLocationId(),assetInstanceForm.getAssetId(),assetInstanceForm.getImageId());
         LOGGER.info("POST assetInstances/ id:{}",assetInstance.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
@@ -125,7 +125,7 @@ public class AssetInstanceController {
     @Consumes(Vnd.VND_ASSET_INSTANCE)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
-    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @NotNull final AssetInstancePatchForm assetInstancePatchForm) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException {
+    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @NotNull final AssetInstancePatchForm assetInstancePatchForm) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException {
         ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), Optional.ofNullable(assetInstancePatchForm.getImageId()), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getStatus()));
         LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
