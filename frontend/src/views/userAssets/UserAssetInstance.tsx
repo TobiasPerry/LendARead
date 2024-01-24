@@ -36,7 +36,7 @@ const UserAssetInstance = () => {
 
     useEffect(() => {
         fetchUserAssetDetails().then()
-    }, [])
+    }, [id])
 
     //need to make api post to review service, this makes a link to that page
     const canReview = false

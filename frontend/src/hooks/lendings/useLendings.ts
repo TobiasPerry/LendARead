@@ -30,7 +30,8 @@ const useLendings = () => {
                 endDate: lending.devolutionDate,
                 userName: user.userName,
                 userImage: image ? image :  photoPlaceholder, //need to add default user image
-                id: extractId(lending.selfUrl)
+                id: extractId(lending.selfUrl),
+                state: lending.state
             }
         })
 
