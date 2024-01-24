@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
+import ar.edu.itba.paw.webapp.form.LendingGetForm;
 import ar.edu.itba.paw.webapp.form.PatchLendingForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
@@ -20,7 +21,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -51,19 +51,11 @@ public class LendingsController {
 
     @GET
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
-    @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lenderId,#borrowerId,#assetInstanceId)")
-    public Response getLendings(@QueryParam("page")@DefaultValue("1") Integer page,
-                                @QueryParam("itemsPerPage")@DefaultValue("4") Integer itemsPerPage,
-                                @QueryParam("assetInstanceId")  Integer assetInstanceId,
-                                @QueryParam("borrowerId") Integer borrowerId,
-                                @QueryParam("sort") @Pattern(regexp = "TITLE|LENDDATE|DEVOLUTIONDATE|BORROWER_USER|LENDER_USER|STATE",message = "{pattern.lendingSort}") String sort,
-                                @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
-                                @QueryParam("state") @Pattern(regexp = "DELIVERED|ACTIVE|FINISHED|REJECTED|CANCELED",message = "{lending.state.invalid}") String state,
-                                @QueryParam("lenderId") Integer lenderId) {
-        PagingImpl<Lending> paging = aas.getPagingActiveLendings(page, itemsPerPage, assetInstanceId, borrowerId, state == null?null:LendingState.fromString(state), lenderId, sort, sortDirection);
+    @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lendingGetForm.lenderId,#lendingGetForm.borrowerId,#lendingGetForm.assetInstanceId)")
+    public Response getLendings(@Valid @BeanParam LendingGetForm lendingGetForm) {
+        PagingImpl<Lending> paging = aas.getPagingActiveLendings(lendingGetForm.getPage(), lendingGetForm.getItemsPerPage(), lendingGetForm.getAssetInstanceId(), lendingGetForm.getBorrowerId(), lendingGetForm.getState() == null?null:LendingState.fromString(lendingGetForm.getState() ), lendingGetForm.getLenderId(), lendingGetForm.getSort(), lendingGetForm.getSortDirection());
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
-
-        LOGGER.info("GET lendings/ page:{} itemsPerPage:{} assetInstanceId:{} borrowerId:{} state:{} lenderId:{}",page,itemsPerPage,assetInstanceId,borrowerId,state,lenderId);
+        LOGGER.info("GET lendings/ lenderId:{} borrowerId:{} assetInstanceId:{} state:{}",lendingGetForm.getLenderId(),lendingGetForm.getBorrowerId(),lendingGetForm.getAssetInstanceId(),lendingGetForm.getState());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LendingDTO>>(lendingDTOS) {});
         PaginatedData.paginatedData(response, paging, uriInfo);
         return response.build();

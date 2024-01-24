@@ -105,7 +105,7 @@ public class PreAuthorizeFunctions {
             if (assetInstanceId != null){
                 return assetInstanceService.isOwner(assetInstanceId,userService.getCurrentUser().getEmail());
             }
-            return false;
+            return true;
         } catch (UserNotFoundException | AssetInstanceNotFoundException e) {
             return false;
         }
