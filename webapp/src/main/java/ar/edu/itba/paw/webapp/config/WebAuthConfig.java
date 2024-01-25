@@ -61,14 +61,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     private BasicTokenFilter basicTokenFilter;
 
 
-    private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(request, #id)";
+    private static final String ACCESS_CONTROL_USER = "@accessFunctions.checkUser(#id)";
 
-    private static final String ACCESS_CONTROL_LOCATIONS = "@accessFunctions.locationOwner(request, #id)";
+    private static final String ACCESS_CONTROL_LOCATIONS = "@accessFunctions.locationOwner(#id)";
 
-    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingLenderOrBorrower(request, #id)";
+    private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingLenderOrBorrower( #id)";
 
-    private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner(request, #id)";
-    private static final String ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER= "@accessFunctions.assetInstanceReviewOwner(request, #id, #idReview)";
+    private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner( #id)";
+    private static final String ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER= "@accessFunctions.assetInstanceReviewOwner(#idReview)";
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

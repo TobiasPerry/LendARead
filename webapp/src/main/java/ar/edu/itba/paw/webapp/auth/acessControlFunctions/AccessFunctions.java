@@ -6,8 +6,6 @@ import ar.edu.itba.paw.models.userContext.implementations.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Component
 public class AccessFunctions {
 
@@ -33,7 +31,7 @@ public class AccessFunctions {
 
 
 
-    public boolean checkUser(HttpServletRequest request, int id) {
+    public boolean checkUser( int id) {
         try {
             User user = userService.getUserById(id);
             if (userService.getCurrentUser() == null)
@@ -43,7 +41,7 @@ public class AccessFunctions {
             return true;
         }
     }
-    public boolean locationOwner(HttpServletRequest request, Integer id) {
+    public boolean locationOwner( Integer id) {
         try {
             if (userService.getCurrentUser() == null)
                 return false;
@@ -55,7 +53,7 @@ public class AccessFunctions {
         }
     }
 
-    public boolean lendingLenderOrBorrower(HttpServletRequest request, Integer id)  {
+    public boolean lendingLenderOrBorrower( Integer id)  {
         try {
             if (userService.getCurrentUser() == null)
                 return false;
@@ -66,7 +64,7 @@ public class AccessFunctions {
             return false;
         }
     }
-    public boolean assetInstanceOwner(HttpServletRequest request, Integer id){
+    public boolean assetInstanceOwner(Integer id){
         try {
             if  (userService.getCurrentUser() == null)
                 return false;
@@ -77,7 +75,7 @@ public class AccessFunctions {
             return false;
         }
     }
-    public boolean assetInstanceReviewOwner(HttpServletRequest request, Integer lending_id, Integer idReview){
+    public boolean assetInstanceReviewOwner(Integer idReview){
         try {
             if  (userService.getCurrentUser() == null)
                 return false;
