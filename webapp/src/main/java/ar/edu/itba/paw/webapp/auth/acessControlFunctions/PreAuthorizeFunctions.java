@@ -38,17 +38,23 @@ public class PreAuthorizeFunctions {
 
     public boolean borrowerCanUserReview(final int recipientId,final UserReviewForm userReviewForm) {
         try {
+            User currentUser = userService.getCurrentUser();
+            if (currentUser == null)
+                return false;
             return userReviewsService.borrowerCanReview(recipientId, userReviewForm.getLendingId());
         }catch (LendingNotFoundException | UserNotFoundException e){
-            return false;
+            return true;
         }
     }
 
     public boolean lenderCanUserReview(final int recipientId,final UserReviewForm userReviewForm)  {
         try {
+            User currentUser = userService.getCurrentUser();
+            if (currentUser == null)
+                return false;
             return userReviewsService.lenderCanReview(recipientId, userReviewForm.getLendingId());
         }catch (LendingNotFoundException | UserNotFoundException e){
-            return false;
+            return true;
         }
     }
 
