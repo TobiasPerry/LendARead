@@ -43,9 +43,10 @@ public class ImageController {
         return responseBuilder.build();
     }
 
+
     @POST
     @Produces(value = {"image/webp"})
-    public Response addImage(@QueryParam("id") final int id, final byte[] image) {
+    public Response addImage(final byte[] image) {
         Image newImage = imageService.addImage( image);
         URI url = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newImage.getId())).build();
         return Response.created(url).build();
