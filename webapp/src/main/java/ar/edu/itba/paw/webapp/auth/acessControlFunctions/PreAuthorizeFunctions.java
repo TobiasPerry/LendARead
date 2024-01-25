@@ -2,10 +2,13 @@ package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
 import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.interfaces.*;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
+import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserReviewsService;
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,11 +52,14 @@ public class PreAuthorizeFunctions {
         }
     }
 
-    public boolean borrowerCanAssetInstanceReview(final int assetInstanceId,final AssetInstanceReview assetInstanceReview){
+    public boolean borrowerCanAssetInstanceReview(final int assetInstanceId,final AssetInstanceReviewForm assetInstanceReview){
         try {
-            return assetInstanceReviewsService.canReview(assetInstanceId,Math.toIntExact(assetInstanceReview.getId()));
+            User currentUser = userService.getCurrentUser();
+            if (currentUser == null)
+                return false;
+            return assetInstanceReviewsService.canReview(assetInstanceId,Math.toIntExact(assetInstanceReview.getLendingId()));
         }catch (LendingNotFoundException | UserNotFoundException e){
-            return false;
+            return true;
         }
     }
     public boolean searchPrivateAssetInstances(final int userid,final String status){
