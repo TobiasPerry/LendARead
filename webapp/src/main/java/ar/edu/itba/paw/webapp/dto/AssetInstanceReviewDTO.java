@@ -16,7 +16,6 @@ public class AssetInstanceReviewDTO {
         private String review;
         private String lendingReference;
         private String reviewer;
-
         private String selfUrl;
 
         public static AssetInstanceReviewDTO fromAssetInstanceReview(final AssetInstanceReview review, final UriInfo uriInfo) {

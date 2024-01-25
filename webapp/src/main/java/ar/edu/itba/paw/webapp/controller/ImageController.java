@@ -3,15 +3,19 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.webapp.form.ImageForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
@@ -46,8 +50,9 @@ public class ImageController {
 
     @POST
     @Produces(value = {"image/webp"})
-    public Response addImage(final byte[] image) {
-        Image newImage = imageService.addImage( image);
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response addImage(@BeanParam @Valid @NotNull final ImageForm imageForm) {
+        Image newImage = imageService.addImage( imageForm.getImage());
         URI url = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newImage.getId())).build();
         return Response.created(url).build();
     }
