@@ -8,11 +8,12 @@ const config: Config.InitialOptions = {
     moduleNameMapper: {
         // Handle module aliases (if you are using them in your project)
         '^@/(.*)$': '<rootDir>/src/$1',
-        '\\.(css|scss|sass)$': '<rootDir>/src/__mocks__/styleMock.js',
+        '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
+        '\\.(css|scss|sass)$': '<rootDir>/__mocks__/styleMock.js',
     },
     transform: {
-        // Transform files with ts-jest
-        "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+        "^.+\\.(ts|tsx)$": "babel-jest", // Transform TypeScript files
+        "^.+\\.(js|jsx)$": "babel-jest", // Transform JavaScript files
     },
     testPathIgnorePatterns: ['/node_modules/', '/dist/'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
