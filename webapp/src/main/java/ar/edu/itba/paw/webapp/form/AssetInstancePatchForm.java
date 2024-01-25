@@ -30,6 +30,7 @@ public class AssetInstancePatchForm {
     @Pattern(regexp = "PRIVATE|PUBLIC", message = "{Pattern.assetInstanceForm.visibility}")
     private String status;
 
+    @Min(value = 1)
     private Integer imageId;
 
 }
