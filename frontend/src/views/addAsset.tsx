@@ -6,6 +6,14 @@ import { api } from '../hooks/api/api.ts'
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
+type LanguageDTO = {
+    code: string,
+    name: string,
+}
+
+type LanguagesDTO = LanguageDTO[]
+
+
 const AddAsset = () => {
     
     const {t} = useTranslation();
@@ -29,11 +37,12 @@ const AddAsset = () => {
     ]
 
     const [step, setStep] = useState(1);
-    const [languages, setLanguages] = useState<any[]>([])
+    const [languages, setLanguages] = useState<LanguagesDTO>([])
 
     useEffect(() => {
         api.get('/languages').then((response) => {
             setLanguages(response.data)
+            console.log(languages)
         })
     }, [])
 
@@ -413,6 +422,10 @@ const AddAsset = () => {
                                 </select>
                             </div>
                             <small id='borrow-time-error' className="text-danger small d-none">{t('addAsset.duration.validation-error')}</small>
+                            <div className="custom-control custom-switch mt-3 d-flex justify-content-center" >
+                                <input type="checkbox" className="custom-control-input big-switch mx-2" id="reservationSwitch" value='false' data-toggle="tooltip" title="" />
+                                Aceptar reservas
+                            </div>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />
                                 <input type='button' className='next-button btn btn-outline-success mx-1' onClick={nextStep} value='Next' />
