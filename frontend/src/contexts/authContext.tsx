@@ -22,7 +22,13 @@ export const AuthContext = React.createContext({
     login: async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets")  => {
         return false
     },
-    user: -1,
+    handleChangePassword: async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
+      return false
+    },
+    handleForgotPassword: async (email: string) => {
+        return false
+    },
+        user: -1,
     userDetails: {
         email: "",
         image: "",
@@ -119,6 +125,24 @@ const AuthContextProvider = (props) => {
         }
     };
 
+    const handleForgotPassword = async (email: string) => {
+        try {
+            await api.post('/users', {email: email}, {headers: {'Content-Type': 'application/vnd.resetPassword.v1+json'}})
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    const handleChangePassword = async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
+        if(password !== repeatedPassword)
+            return false;
+
+        try {
+        } catch (e) {
+
+        }
+    }
 
 
     return <AuthContext.Provider
@@ -128,7 +152,9 @@ const AuthContextProvider = (props) => {
             logout,
             user,
             userDetails,
-            userImage
+            userImage,
+            handleForgotPassword,
+            handleChangePassword
         }}>{props.children}</AuthContext.Provider>
 }
 

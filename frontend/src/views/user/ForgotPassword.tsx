@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 // @ts-ignore
 import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
 import {Link, useNavigate} from "react-router-dom";
-import useForgotPassword from "../../hooks/users/useForgotPassword.ts";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const ForgotPasswordView = () => {
     const { t } = useTranslation();
-    const {handleForgotPassword} = useForgotPassword();
+    const {handleForgotPassword} = useContext(AuthContext);
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [error, setError] = useState(false);

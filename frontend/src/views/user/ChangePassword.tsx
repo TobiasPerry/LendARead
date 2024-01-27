@@ -13,9 +13,12 @@ const ChangePasswordView = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
+
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get('email');
+
+    const {handleChangePassword} = useContext(AuthContext);
 
     useEffect(() => {
         if (emailParam) {
@@ -25,6 +28,7 @@ const ChangePasswordView = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
     };
 
     return (
