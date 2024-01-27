@@ -98,6 +98,7 @@ const useAssetInstance = () => {
             }
 
             const data = await api.get(url)
+            const pages = extractTotalPages(data.headers["link"])
 
             const body =  data.data
 
@@ -133,7 +134,7 @@ const useAssetInstance = () => {
                 books.push(book)
             }
 
-            return books
+            return {books, pages}
         } catch (error){
             console.log("Error")
             return null;
