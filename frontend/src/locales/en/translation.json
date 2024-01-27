@@ -6,6 +6,7 @@
   "Projects": "Projects",
   "Calendar": "Calendar",
   "active_loans": "Active Loan Requests",
+  "errorPasswordEmail": "Error requesting the password reset email",
   "auth": {
     "login": "Login",
     "register": "Register",
