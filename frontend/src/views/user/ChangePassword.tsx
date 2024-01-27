@@ -55,7 +55,7 @@ const ChangePasswordView = () => {
                                             id="email"
                                             placeholder={t('changePassword.enterEmail')}
                                             value={email}
-                                            onChange={(e) => setVerificationCode(e.target.value)}
+                                            onChange={(e) => setEmail(e.target.value)}
                                             required
                                         />
                                     </label>

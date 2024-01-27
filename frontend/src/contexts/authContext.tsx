@@ -139,8 +139,26 @@ const AuthContextProvider = (props) => {
             return false;
 
         try {
-        } catch (e) {
 
+            //login with verification code using base64
+            const validVerification = await login(email, verficationCode)
+            if(!validVerification)
+                return false
+
+            //once logged in, change password
+            const response = await api.put(
+                `/users/${user}`,
+                {
+                    password: password
+                },
+                {
+                    headers: {'Content-Type': 'application/vnd.user.v1+json'}
+                }
+            )
+
+            return true;
+        } catch (e) {
+            return false;
         }
     }
 
