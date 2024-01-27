@@ -85,7 +85,7 @@ const AuthContextProvider = (props) => {
         else
             sessionStorage.setItem("userAuthToken", jwt)
 
-        setUser(extractUserId(jwt))
+        await setUser(extractUserId(jwt))
         storeUserDetails(extractUserId(jwt))
         setAuthKey(jwt);
         setLoggedIn(true);
@@ -122,6 +122,7 @@ const AuthContextProvider = (props) => {
             const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
             return res
         } catch (error) {
+            console.log(error);
             return false;
         }
     };
@@ -139,17 +140,27 @@ const AuthContextProvider = (props) => {
 
         try {
 
+            logout()
+
             //login with verification code using base64
-            const validVerification = await login(email, verficationCode)
-            if(!validVerification) {
+            const response: any = await api.get("/assets",
+                {
+                    headers: { "Authorization": "Basic " + btoa(`${email}:${verficationCode}`) }
+                }
+            );
+
+
+            const jwt = response.headers.get('x-jwt');
+            const userId_ = extractUserId(jwt)
+
+            console.log('login', response.data)
+            if(userId_ === -1) {
                 console.log(email, verficationCode, password, repeatedPassword)
                 return t('changePassword.invalidVerificationCode')
             }
 
-            console.log('before patch')
-            //once logged in, change password
-            const response = await api.patch(
-                `/users/${user}`,
+            const response2 = await api.patch(
+                `/users/${userId_}`,
                 {
                     password: password
                 },
@@ -160,10 +171,7 @@ const AuthContextProvider = (props) => {
                 }
             )
 
-            console.log('after patch')
-
             logout()
-
             //login with new password
             await login(email, password)
             return "true";
