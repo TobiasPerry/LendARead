@@ -7,7 +7,17 @@
   "Calendar": "Calendar",
   "active_loans": "Active Loan Requests",
   "errorPasswordEmail": "Error requesting the password reset email",
-  "auth": {
+  "changePassword": {
+    "title": "Change password",
+    "verificationCode": "Verification code",
+    "verificationCodePlaceholder": "Enter your verification code",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter new password",
+    "repeatNewPassword": "Repeat new password",
+    "repeatNewPasswordPlaceholder": "Repeat new password",
+    "changePasswordButton": "Change password"
+  },
+"auth": {
     "login": "Login",
     "register": "Register",
     "username": "Username",

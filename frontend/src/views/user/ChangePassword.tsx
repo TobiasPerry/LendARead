@@ -9,6 +9,9 @@ import {Link} from "react-router-dom";
 const ChangePasswordView = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [repeatNewPassword, setRepeatNewPassword] = useState('');
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -27,25 +30,55 @@ const ChangePasswordView = () => {
 
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                             <form onSubmit={handleSubmit} style={{ width: '23rem' }}>
-                                <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('forgotpassword.title')}</h2>
+                                <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('changePassword.title')}</h2>
 
                                 <div className="form-outline mb-4" style={{ width: '100%' }}>
                                     <label style={{ width: '100%' }}>
-                                        {t('auth.email')}
+                                        {t('changePassword.verificationCode')}
                                         <input
                                             className="form-control"
                                             type="text"
-                                            id="email"
-                                            placeholder="Email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            id="verificationCode"
+                                            placeholder={t('changePassword.verificationCodePlaceholder')}
+                                            value={verificationCode}
+                                            onChange={(e) => setVerificationCode(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="form-outline mb-4" style={{ width: '100%' }}>
+                                    <label style={{ width: '100%' }}>
+                                        {t('changePassword.newPassword')}
+                                        <input
+                                            className="form-control"
+                                            type="password"
+                                            id="newPassword"
+                                            placeholder={t('changePassword.newPasswordPlaceholder')}
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="form-outline mb-4" style={{ width: '100%' }}>
+                                    <label style={{ width: '100%' }}>
+                                        {t('changePassword.repeatNewPassword')}
+                                        <input
+                                            className="form-control"
+                                            type="password"
+                                            id="repeatNewPassword"
+                                            placeholder={t('changePassword.repeatNewPasswordPlaceholder')}
+                                            value={repeatNewPassword}
+                                            onChange={(e) => setRepeatNewPassword(e.target.value)}
                                             required
                                         />
                                     </label>
                                 </div>
 
                                 <div className="pt-1 mb-4 text-center">
-                                    <input className="btn btn-light" type="submit" value={t('forgotpassword.changePasswordButton')} />
+                                    <input className="btn btn-light" type="submit" value={t('changePassword.changePasswordButton')} />
                                 </div>
 
                             </form>
