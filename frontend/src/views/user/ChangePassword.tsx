@@ -7,6 +7,12 @@ import loginBg from '../../assets/login-bg.jpg';
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../contexts/authContext.tsx";
 
+const Snackbar = ({ message }) => (
+    <div style={{ backgroundColor: 'red', color: 'white', position: 'fixed', bottom: '20px', left: '20px', padding: '10px', borderRadius: '5px' }}>
+        {message}
+    </div>
+);
+
 const ChangePasswordView = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
@@ -16,6 +22,7 @@ const ChangePasswordView = () => {
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useState(false);
 
     const navigate = useNavigate()
     const location = useLocation();
@@ -31,10 +38,11 @@ const ChangePasswordView = () => {
     }, [emailParam]);
 
     const handleSubmit = async (e: any) => {
+        e.preventDefault();
         if(!checkPassword())
             return;
+
         setIsLoading(true);
-        e.preventDefault();
 
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
 
@@ -42,8 +50,10 @@ const ChangePasswordView = () => {
 
         if(res === "true")
             navigate('/user')
-        else
+        else {
+            setShowSnackbar(true)
             setError(res)
+        }
     };
 
     const checkPassword = () => {
@@ -138,6 +148,7 @@ const ChangePasswordView = () => {
 
                                 <div className="pt-1 mb-4 text-center">
                                     <input className="btn btn-light" type="submit" value={t('changePassword.changePasswordButton')} />
+                                    {showSnackbar && <Snackbar message={error} />}
                                 </div>
 
                             </form>
@@ -147,7 +158,6 @@ const ChangePasswordView = () => {
                     <div className="col-sm-6 px-0 d-none d-sm-block">
                         <img src={loginBg} alt="Login image" className="w-100 vh-100" style={{ objectFit: 'cover', objectPosition: 'left' }} />
                     </div>
-                    <div className="error">{error}</div>
                 </div>
             </div>
         </section>
