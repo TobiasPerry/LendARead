@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../contexts/authContext.tsx";
 
 const ChangePasswordView = () => {
@@ -13,7 +13,10 @@ const ChangePasswordView = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
+    const navigate = useNavigate()
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get('email');
@@ -27,9 +30,17 @@ const ChangePasswordView = () => {
     }, [emailParam]);
 
     const handleSubmit = async (e: any) => {
+        setIsLoading(true);
         e.preventDefault();
-        console.log('loggin in!')
+
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
+
+        setIsLoading(false);
+
+        if(res === "true")
+            navigate('/user')
+        else
+            setError(res)
     };
 
     return (
@@ -118,6 +129,7 @@ const ChangePasswordView = () => {
                     <div className="col-sm-6 px-0 d-none d-sm-block">
                         <img src={loginBg} alt="Login image" className="w-100 vh-100" style={{ objectFit: 'cover', objectPosition: 'left' }} />
                     </div>
+                    <div className="error">{error}</div>
                 </div>
             </div>
         </section>

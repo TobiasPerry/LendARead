@@ -9,6 +9,9 @@
   "errorPasswordEmail": "Error requesting the password reset email",
   "email": "Email",
   "changePassword": {
+    "passwordsDoNotMatch": "Passwords do not match",
+    "invalidVerificationCode": "Invalid verification code",
+    "somethingWentWrong": "Something went wrong",
     "title": "Change password",
     "verificationCode": "Verification code",
     "verificationCodePlaceholder": "Enter your verification code",

@@ -3,6 +3,7 @@ import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 // @ts-ignore
 import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
+import {useTranslation} from "react-i18next";
 
 export interface UserDetailsApi {
     email: string
@@ -23,7 +24,7 @@ export const AuthContext = React.createContext({
         return false
     },
     handleChangePassword: async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
-      return false
+      return ""
     },
     handleForgotPassword: async (email: string) => {
         return false
@@ -48,6 +49,7 @@ const AuthContextProvider = (props) => {
     const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || sessionStorage.hasOwnProperty("userAuthToken"));
     const token = isInLocalStorage ?localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
     const [authKey, setAuthKey] = useState(token);
+    const {t} = useTranslation()
 
     api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
@@ -74,7 +76,7 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
-    const handleJWT = async (jwt: string, rememberMe): boolean => {
+    const handleJWT = async (jwt: string, rememberMe)  => {
         if(jwt === undefined || jwt === null)
             return false
 
@@ -118,9 +120,7 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
-
-            return res
+            return await handleJWT(response.headers.get('x-jwt'), rememberMe)
         } catch (error) {
             console.log("error raised", error);
             return false;
@@ -138,30 +138,32 @@ const AuthContextProvider = (props) => {
 
     const handleChangePassword = async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
         if(password !== repeatedPassword)
-            return false;
+            return t('changePassword.passwordsDoNotMatch');
 
         try {
 
             //login with verification code using base64
             const validVerification = await login(email, verficationCode)
             if(!validVerification)
-                return false
+                return t('changePassword.invalidVerificationCode')
 
 
             //once logged in, change password
-            const response = await api.put(
+            const response = await api.patch(
                 `/users/${user}`,
                 {
                     password: password
                 },
                 {
-                    headers: {'Content-Type': 'application/vnd.user.v1+json'}
+                    headers: {
+                        'Content-Type': 'application/vnd.user.v1+json'
+                    }
                 }
             )
 
-            return true;
+            return "true";
         } catch (e) {
-            return false;
+            return t('changePassword.somethingWentWrong')
         }
     }
 
