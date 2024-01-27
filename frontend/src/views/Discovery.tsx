@@ -44,7 +44,7 @@ const DiscoveryView =  () => {
     const [loadingLanguages, setLoadingLanguages] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage, setBooksPerPage] = useState(1);
-    const [totalPages, setTotalPages] = useState("?");
+    const [totalPages, setTotalPages] = useState(0);
 
     // Read the query params sent form other views (like view asset)
     const searchParams = new URLSearchParams(window.location.search)
@@ -124,7 +124,8 @@ const DiscoveryView =  () => {
     const fetchData = async () => {
         setLoadingData(true)
         setData([])
-        const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating)
+        const {books, pages} = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating)
+        setTotalPages(pages)
         setData(books)
         setLoadingData(false)
     };
@@ -307,7 +308,7 @@ const DiscoveryView =  () => {
                                                 <ul className="pagination justify-content-center align-items-center">
                                                     <li className="page-item">
                                                         <button type="button"
-                                                                className="btn mx-5 pagination-button"
+                                                                className={`btn mx-5 pagination-button ${currentPage <= 1 ? 'disabled' : ''}`}
                                                                 id="previousPageButton"
                                                                 style={{borderColor: "rgba(255, 255, 255, 0)"}}
                                                                 onClick={previousPage}
@@ -323,7 +324,7 @@ const DiscoveryView =  () => {
 
                                                     <li className="page-item">
                                                         <button type="button"
-                                                                className="btn mx-5 pagination-button"
+                                                                className={`btn mx-5 pagination-button ${currentPage >= totalPages ? 'disabled' : ''}`}
                                                                 id="nextPageButton"
                                                                 style={{borderColor: "rgba(255, 255, 255, 0)"}}
                                                                 onClick={nextPage}
