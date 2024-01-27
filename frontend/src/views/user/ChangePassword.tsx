@@ -28,6 +28,7 @@ const ChangePasswordView = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        console.log('loggin in!')
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
     };
 

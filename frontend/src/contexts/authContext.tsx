@@ -74,7 +74,7 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
-    const handleJWT = (jwt: string, rememberMe): boolean => {
+    const handleJWT = async (jwt: string, rememberMe): boolean => {
         if(jwt === undefined || jwt === null)
             return false
 
@@ -83,10 +83,10 @@ const AuthContextProvider = (props) => {
         else
             sessionStorage.setItem("userAuthToken", jwt)
 
-        setUser(extractUserId(jwt))
-        storeUserDetails(extractUserId(jwt))
-        setAuthKey(jwt);
-        setLoggedIn(true);
+        await setUser(extractUserId(jwt))
+        await storeUserDetails(extractUserId(jwt))
+        await setAuthKey(jwt);
+        await setLoggedIn(true);
         api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
         api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
         return true
@@ -118,7 +118,9 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            return handleJWT(response.headers.get('x-jwt'), rememberMe)
+            const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
+
+            return res
         } catch (error) {
             console.log("error raised", error);
             return false;
@@ -144,6 +146,7 @@ const AuthContextProvider = (props) => {
             const validVerification = await login(email, verficationCode)
             if(!validVerification)
                 return false
+
 
             //once logged in, change password
             const response = await api.put(
