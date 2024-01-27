@@ -49,28 +49,34 @@ const ChangePasswordView = () => {
         setIsLoading(true);
 
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
+        console.log(res)
 
         setIsLoading(false);
 
         if(res === "true")
-            navigate('/user')
+            navigate('/')
         else {
             setShowSnackbar({show: true, color: '#dc3b4b', text: res})
         }
     };
 
     const checkPassword = () => {
-        if (!newPassword.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,}$/)) {
-            setPasswordError(t('auth.passwordValidationError'))
-            return false
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,}$/;
+
+        if (!newPassword.match(passwordRegex)) {
+            setPasswordError(t('auth.passwordValidationError'));
+            return false;
         }
 
         if (newPassword !== repeatNewPassword) {
             setPasswordError(t('auth.repeatPasswordValidationError'));
-            return false
+            return false;
         }
-        return true
-    }
+
+        setPasswordError('');
+        return true;
+    };
+
 
     return (
         <section className="vh-100">

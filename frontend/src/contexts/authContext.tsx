@@ -85,10 +85,10 @@ const AuthContextProvider = (props) => {
         else
             sessionStorage.setItem("userAuthToken", jwt)
 
-        await setUser(extractUserId(jwt))
-        await storeUserDetails(extractUserId(jwt))
-        await setAuthKey(jwt);
-        await setLoggedIn(true);
+        setUser(extractUserId(jwt))
+        storeUserDetails(extractUserId(jwt))
+        setAuthKey(jwt);
+        setLoggedIn(true);
         api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
         api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
         return true
@@ -104,7 +104,6 @@ const AuthContextProvider = (props) => {
 
     const storeUserDetails = async (id: number) => {
         const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
-        console.log(userDetails)
         const image = (await api_.get(userDetails.image)).data
         if(image)
             setUserImage(image)
@@ -120,9 +119,9 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            return await handleJWT(response.headers.get('x-jwt'), rememberMe)
+            const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
+            return res
         } catch (error) {
-            console.log("error raised", error);
             return false;
         }
     };
@@ -142,10 +141,12 @@ const AuthContextProvider = (props) => {
 
             //login with verification code using base64
             const validVerification = await login(email, verficationCode)
-            if(!validVerification)
+            if(!validVerification) {
+                console.log(email, verficationCode, password, repeatedPassword)
                 return t('changePassword.invalidVerificationCode')
+            }
 
-
+            console.log('before patch')
             //once logged in, change password
             const response = await api.patch(
                 `/users/${user}`,
@@ -159,6 +160,12 @@ const AuthContextProvider = (props) => {
                 }
             )
 
+            console.log('after patch')
+
+            logout()
+
+            //login with new password
+            await login(email, password)
             return "true";
         } catch (e) {
             return t('changePassword.somethingWentWrong')
