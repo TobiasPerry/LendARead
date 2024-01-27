@@ -11,7 +11,7 @@ const SORT_TYPES = {
     RECENT: "RECENT"
 };
 
-const SORT_DIRECTIONS = {
+export const SORT_DIRECTIONS = {
     ASC: "ASCENDING",
     DES: "DESCENDING"
 };
@@ -130,6 +130,7 @@ const DiscoveryView =  () => {
         setLanguages(languages)
         setLoading(false)
     };
+
     useEffect(()=>{
         document.title = t('discovery.title')
         fetchData();
