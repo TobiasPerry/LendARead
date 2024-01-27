@@ -85,14 +85,20 @@ const ChangePasswordView = () => {
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">
                         <div className="px-5 ms-xl-4 mt-10">
                             <Link to="/">
-                                <img src={logo} alt="Lend a read logo" style={{ width: '300px' }} />
+                                <img src={logo} alt="Lend a read logo" style={{ width: '00px' }} />
                             </Link>
                         </div>
 
+
+
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                             <form onSubmit={handleSubmit} style={{ width: '23rem' }}>
-                                <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('changePassword.title')}</h2>
 
+                                <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('changePassword.title')}</h2>
+                                <div className="m-3 text-center p-2" style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: '10px', maxWidth: '100%' }}>
+                                    <i className="bi bi-info-circle my-2"></i>
+                                    <p className="my-2">{t('changePassword.caption')}</p>
+                                </div>
                                 <div className="form-outline mb-4" style={{ width: '100%' }}>
                                     <label style={{ width: '100%' }}>
                                         {t('email')}

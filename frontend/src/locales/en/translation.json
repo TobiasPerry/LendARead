@@ -10,6 +10,7 @@
   "email": "Email",
   "changePassword": {
     "passwordValidationError": "Password must contain at least one lowercase letter, one uppercase letter, one digit, be at least 8 characters long, and include a special character.",
+    "caption": "Check your email inbox, you will receive a verification code",
     "passwordsDoNotMatch": "Passwords do not match",
     "invalidVerificationCode": "Invalid verification code",
     "somethingWentWrong": "Something went wrong",
