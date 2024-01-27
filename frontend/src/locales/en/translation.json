@@ -12,6 +12,8 @@
     "passwordsDoNotMatch": "Passwords do not match",
     "invalidVerificationCode": "Invalid verification code",
     "somethingWentWrong": "Something went wrong",
+    "resendToken": "Haven't received the token? Resend token",
+    "resentToken": "Token resent! Please check your email",
     "title": "Change password",
     "verificationCode": "Verification code",
     "verificationCodePlaceholder": "Enter your verification code",

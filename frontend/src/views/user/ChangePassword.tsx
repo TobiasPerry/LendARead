@@ -6,9 +6,10 @@ import logo from '../../assets/logo-oscuro.png';
 import loginBg from '../../assets/login-bg.jpg';
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import "../styles/ChangePassword.css";
 
-const Snackbar = ({ message }) => (
-    <div style={{ backgroundColor: 'red', color: 'white', position: 'fixed', bottom: '20px', left: '20px', padding: '10px', borderRadius: '5px' }}>
+const Snackbar = ({ message, color }) => (
+    <div style={{ backgroundColor: color, color: 'white', position: 'fixed', bottom: '20px', left: '20px', padding: '10px', borderRadius: '5px' }}>
         {message}
     </div>
 );
@@ -20,16 +21,15 @@ const ChangePasswordView = () => {
     const [newPassword, setNewPassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
-    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useState({show: false, color: "", text: ""});
 
     const navigate = useNavigate()
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const emailParam = searchParams.get('email');
 
-    const {handleChangePassword} = useContext(AuthContext);
+    const {handleChangePassword, handleForgotPassword} = useContext(AuthContext);
 
     useEffect(() => {
         if (emailParam) {
@@ -37,6 +37,10 @@ const ChangePasswordView = () => {
         }
     }, [emailParam]);
 
+    const handleResendToken = async (e: any) => {
+        await handleForgotPassword(email)
+        setShowSnackbar({show: true, color: '#53b453', text: t('changePassword.resentToken')})
+    }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         if(!checkPassword())
@@ -51,8 +55,7 @@ const ChangePasswordView = () => {
         if(res === "true")
             navigate('/user')
         else {
-            setShowSnackbar(true)
-            setError(res)
+            setShowSnackbar({show: true, color: '#dc3b4b', text: res})
         }
     };
 
@@ -148,7 +151,12 @@ const ChangePasswordView = () => {
 
                                 <div className="pt-1 mb-4 text-center">
                                     <input className="btn btn-light" type="submit" value={t('changePassword.changePasswordButton')} />
-                                    {showSnackbar && <Snackbar message={error} />}
+                                    {showSnackbar.show && <Snackbar message={showSnackbar.text} color={showSnackbar.color} />}
+                                </div>
+
+                                {/* Already Have Account Link */}
+                                <div className="pt-1 mb-4 text-center">
+                                    <div onClick={handleResendToken} className="resendTokenText">{t('changePassword.resendToken')}</div>
                                 </div>
 
                             </form>
