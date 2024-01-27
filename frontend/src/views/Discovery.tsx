@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import "./styles/discovery.css"
+import Spinner from "../components/Spinner.tsx";
 
 const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
@@ -39,7 +40,8 @@ const DiscoveryView =  () => {
 
     const [languages, setLanguages] = useState([])
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
+    const [loadingLanguages, setLoadingLanguages] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage, setBooksPerPage] = useState(1);
     const [totalPages, setTotalPages] = useState("?");
@@ -66,10 +68,8 @@ const DiscoveryView =  () => {
     ));
 
     const clickSearch = (event) => {
-        // Get the value of the search input - Need to be an HTMLInputElement so that TS knows it has the value property
-        const searchInput = document.getElementById('search-bar') as HTMLInputElement;
-        if (searchInput) {
-            setSearch(searchInput.value)
+        if(inputValue !== ""){
+            setSearch(inputValue)
         }
     };
     const handleSearch = (event) => {
@@ -122,23 +122,36 @@ const DiscoveryView =  () => {
     }
 
     const fetchData = async () => {
-        setLoading(true)
+        setLoadingData(true)
         setData([])
         const books = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating)
         setData(books)
-        const languages = await handleGetLanguages(true)
-        setLanguages(languages)
-        setLoading(false)
+        setLoadingData(false)
     };
 
+    const fetchLanguages = async () => {
+        setLoadingLanguages(true)
+        const languages = await handleGetLanguages(true)
+        setLanguages(languages)
+        setLoadingLanguages(false)
+    }
+
+    // When search and filters change
+
     useEffect(()=>{
+        fetchData().then();
+    }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating])
+
+    // When the page loads
+    useEffect(() => {
         document.title = t('discovery.title')
-        fetchData();
+        fetchData().then();
+        fetchLanguages().then();
         // for when it unmounts
         return () => {
             document.title = "Lend a Read"
         }
-    }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating])
+    }, []);
 
     return (
         <>
@@ -187,22 +200,31 @@ const DiscoveryView =  () => {
 
                             <ul className="list-group" style={{maxHeight: '200px', overflowY: 'scroll'}}>
                                 {
-                                    languages.map((language, item) => (
-                                        <div key={item}>
-                                            <li className="list-group-item m-1 clickable"
-                                                style={
-                                                    languages_filters.includes(language.code) ?
-                                                        {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
-                                                }
-                                                onClick={() => {clickLanguages(language)}}
-                                            >
+                                    loadingLanguages ? (
+                                        <Spinner/>
+                                    ) : (
+                                        <>
+                                            {languages.map((language, item) => (
+                                                <div key={item}>
+                                                    <li className="list-group-item m-1 clickable"
+                                                        style={
+                                                            languages_filters.includes(language.code) ?
+                                                                {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
+                                                        }
+                                                        onClick={() => {
+                                                            clickLanguages(language)
+                                                        }}
+                                                    >
                                                 <span className="d-inline-block text-truncate"
                                                       style={{maxWidth: '100px'}}>
                                                     {language.name}
                                                 </span>
-                                            </li>
-                                        </div>
-                                    ))
+                                                    </li>
+                                                </div>
+                                            ))}
+                                        </>
+                                    )
+
                                 }
                             </ul>
                         </ul>
@@ -253,7 +275,7 @@ const DiscoveryView =  () => {
 
                     <div className="container-column" style={{flex: '0 1 85%'}}>
                         { /* If books is empty show message and btn action to clear filters */
-                            !loading && data.length === 0 ? (
+                            !loadingData && data.length === 0 ? (
                                     <div className="mb-2">
                                         <div className="container-row-wrapped" style={{width: '100%'}}>
                                             <h1>{t('discovery.no_books.title')}</h1>
