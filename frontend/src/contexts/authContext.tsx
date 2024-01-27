@@ -137,8 +137,6 @@ const AuthContextProvider = (props) => {
     }
 
     const handleChangePassword = async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
-        if(password !== repeatedPassword)
-            return t('changePassword.passwordsDoNotMatch');
 
         try {
 

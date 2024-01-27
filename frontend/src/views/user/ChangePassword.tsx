@@ -12,6 +12,7 @@ const ChangePasswordView = () => {
     const [email, setEmail] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +31,8 @@ const ChangePasswordView = () => {
     }, [emailParam]);
 
     const handleSubmit = async (e: any) => {
+        if(!checkPassword())
+            return;
         setIsLoading(true);
         e.preventDefault();
 
@@ -42,6 +45,19 @@ const ChangePasswordView = () => {
         else
             setError(res)
     };
+
+    const checkPassword = () => {
+        if (!newPassword.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,}$/)) {
+            setPasswordError(t('auth.passwordValidationError'))
+            return false
+        }
+
+        if (newPassword !== repeatNewPassword) {
+            setPasswordError(t('auth.repeatPasswordValidationError'));
+            return false
+        }
+        return true
+    }
 
     return (
         <section className="vh-100">
@@ -100,6 +116,7 @@ const ChangePasswordView = () => {
                                             onChange={(e) => setNewPassword(e.target.value)}
                                             required
                                         />
+                                        <div className="error">{passwordError}</div>
                                     </label>
                                 </div>
 
@@ -115,6 +132,7 @@ const ChangePasswordView = () => {
                                             onChange={(e) => setRepeatNewPassword(e.target.value)}
                                             required
                                         />
+                                        <div className="error">{passwordError}</div>
                                     </label>
                                 </div>
 
