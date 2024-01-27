@@ -1,10 +1,11 @@
-import  { useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 // @ts-ignore
 import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const ChangePasswordView = () => {
     const { t } = useTranslation();
@@ -12,6 +13,15 @@ const ChangePasswordView = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const emailParam = searchParams.get('email');
+
+    useEffect(() => {
+        if (emailParam) {
+            setEmail(emailParam)
+        }
+    }, [emailParam]);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -31,6 +41,21 @@ const ChangePasswordView = () => {
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                             <form onSubmit={handleSubmit} style={{ width: '23rem' }}>
                                 <h2 className="mb-3 pb-3 text-center" style={{ letterSpacing: '1px' }}>{t('changePassword.title')}</h2>
+
+                                <div className="form-outline mb-4" style={{ width: '100%' }}>
+                                    <label style={{ width: '100%' }}>
+                                        {t('email')}
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            id="email"
+                                            placeholder={t('changePassword.enterEmail')}
+                                            value={email}
+                                            onChange={(e) => setVerificationCode(e.target.value)}
+                                            required
+                                        />
+                                    </label>
+                                </div>
 
                                 <div className="form-outline mb-4" style={{ width: '100%' }}>
                                     <label style={{ width: '100%' }}>

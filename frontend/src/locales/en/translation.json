@@ -7,10 +7,12 @@
   "Calendar": "Calendar",
   "active_loans": "Active Loan Requests",
   "errorPasswordEmail": "Error requesting the password reset email",
+  "email": "Email",
   "changePassword": {
     "title": "Change password",
     "verificationCode": "Verification code",
     "verificationCodePlaceholder": "Enter your verification code",
+    "enterEmail"  : "Enter your email",
     "newPassword": "New password",
     "newPasswordPlaceholder": "Enter new password",
     "repeatNewPassword": "Repeat new password",
