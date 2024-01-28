@@ -30,6 +30,9 @@ public class LendingDTO {
 
     private String state;
 
+    private String borrowerReviewUrl;
+    private String lenderReviewUrl;
+
     private String selfUrl;
     public static LendingDTO fromLending(Lending lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();
@@ -40,7 +43,12 @@ public class LendingDTO {
         dto.devolutionDate = lending.getDevolutionDate().toString();
         dto.state = lending.getActive().toString();
         if (lending.getUserReviews() != null)
-            dto.userReviews = lending.getUserReviews().stream().map(userReview -> UserReviewsDTO.reference(url, userReview)).collect(Collectors.toList());
+          lending.getUserReviews().forEach(userReview -> {
+              if (userReview.isBorrowerReview())
+                    dto.borrowerReviewUrl = UserReviewsDTO.reference(url, userReview);
+                else
+                    dto.lenderReviewUrl = UserReviewsDTO.reference(url, userReview);
+          });
         else dto.userReviews = null;
         if (lending.getAssetInstanceReview() != null)
             dto.assetInstanceReview = AssetInstanceReviewDTO.reference(url, lending.getAssetInstanceReview());

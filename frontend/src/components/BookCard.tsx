@@ -27,8 +27,12 @@ const BookCard = ({ book }) => {
 
     const handleBookClick = () => {
         //aca chequeo sea mismo user que el userDetails y navego
-        //hacia /book o /userBook{id}?state=owned
-        navigate(`/book/${assetInstanceNumber}`)
+        //hacia /book o /userBook/{id}?state=owned
+        if(userDetails.userName === userName) {
+            navigate(`/userBook/${assetInstanceNumber}?state=owned`)
+        }else {
+            navigate(`/book/${assetInstanceNumber}`)
+        }
     }
 
     return (

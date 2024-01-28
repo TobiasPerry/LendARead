@@ -6,12 +6,15 @@ import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.ImagesSizes;
 import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
@@ -43,11 +46,13 @@ public class ImageController {
         return responseBuilder.build();
     }
 
+
     @POST
     @Produces(value = {"image/webp"})
-    public Response addImage(@QueryParam("id") final int id, final byte[] image) {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response addImage(@ar.edu.itba.paw.webapp.form.annotations.interfaces.Image @FormDataParam("image") FormDataBodyPart imageBodyPart, @FormDataParam("image") byte[] image) {
         Image newImage = imageService.addImage( image);
         URI url = uriInfo.getAbsolutePathBuilder().path(String.valueOf(newImage.getId())).build();
-        return Response.created(url).build();
+        return Response.created(url).entity(image).build();
     }
 }

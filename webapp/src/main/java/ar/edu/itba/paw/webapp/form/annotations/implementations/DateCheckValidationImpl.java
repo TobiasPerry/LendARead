@@ -14,6 +14,6 @@ public class DateCheckValidationImpl implements ConstraintValidator<DateCheckVal
          return false;
      }
      LocalDate today = LocalDate.now();
-     return s.isAfter(today);
+     return s.isAfter(today) || s.isEqual(today);
     }
 }
