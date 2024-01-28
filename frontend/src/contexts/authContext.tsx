@@ -159,6 +159,9 @@ const AuthContextProvider = (props) => {
                 return t('changePassword.invalidVerificationCode')
             }
 
+            api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+            api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+
             const response2 = await api.patch(
                 `/users/${userId_}`,
                 {
@@ -171,9 +174,6 @@ const AuthContextProvider = (props) => {
                 }
             )
 
-            logout()
-            //login with new password
-            await login(email, password)
             return "true";
         } catch (e) {
             return t('changePassword.somethingWentWrong')
