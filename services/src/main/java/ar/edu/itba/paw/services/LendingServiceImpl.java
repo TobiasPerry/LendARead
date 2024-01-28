@@ -52,7 +52,7 @@ public class LendingServiceImpl implements LendingService {
 
     @Transactional
     @Override
-    public Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, DayOutOfRangeException {
+    public Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
 
@@ -68,23 +68,22 @@ public class LendingServiceImpl implements LendingService {
             LOGGER.error("AssetInstance is not public with id {}", assetId);
             throw new AssetInstanceBorrowException();
         }
-        if (borrowDate.plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
-            LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
-            throw new DayOutOfRangeException();
-        }
         if (!ai.get().getIsReservable() && !borrowDate.isEqual(LocalDate.now())) {
             LOGGER.error("AssetInstance is not reservable with id {}", assetId);
             throw new AssetInstanceBorrowException();
         }
+        if (borrowDate.plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
+            LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
+            throw new MaxLendingDaysException();
+        }
 
+        List<Lending> lendings = lendingDao.getActiveLendings(ai.get());
+        if (checkOverlapping(borrowDate, devolutionDate, lendings)) {
+            LOGGER.error("AssetInstance is not available with id {}", assetId);
+            throw new DayOutOfRangeException();
+        }
         if (!ai.get().getIsReservable()) {
             ai.get().setAssetState(AssetState.PRIVATE);
-        } else {
-            List<Lending> lending = lendingDao.getActiveLendings(ai.get());
-            if (checkOverlapping(borrowDate, devolutionDate, lending)) {
-                LOGGER.error("AssetInstance is not available with id {}", assetId);
-                throw new AssetInstanceBorrowException();
-            }
         }
         Lending lending = lendingDao.borrowAssetInstance(ai.get(), user.get(), borrowDate, devolutionDate, LendingState.ACTIVE);
         emailService.sendBorrowerEmail(ai.get(), user.get(), lending.getId(), new Locale(user.get().getLocale()));
