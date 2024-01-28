@@ -63,7 +63,7 @@ public class LendingsController {
     @POST
     @Consumes(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
-    public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException {
+    public Response addLending(@Valid  BorrowAssetForm borrowAssetForm) throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException {
       Lending lending = aas.borrowAsset(borrowAssetForm.getAssetInstanceId(),us.getCurrentUser().getEmail(),borrowAssetForm.getBorrowDate(),borrowAssetForm.getDevolutionDate());
       LOGGER.info("POST lendings/ assetInstanceId:{}",borrowAssetForm.getAssetInstanceId());
       return Response.created(uriInfo.getRequestUriBuilder().path(String.valueOf(lending.getId())).build()).entity(LendingDTO.fromLending(lending,uriInfo)).build();

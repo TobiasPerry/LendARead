@@ -164,7 +164,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(Collections.singletonList("*"));
+        cors.setAllowedOrigins(Collections.singletonList(ALL));
         cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cors.setAllowedHeaders(Collections.singletonList(ALL));
         cors.setExposedHeaders(Arrays.asList("X-JWT", "X-XSS-Protection", "authorization", "Location", "Content-Disposition", "Link","ETag","WWW-Authenticate"));

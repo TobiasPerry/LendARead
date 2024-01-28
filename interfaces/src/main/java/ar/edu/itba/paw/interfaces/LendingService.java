@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public interface LendingService {
 
-    Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException, MaxLendingDaysException;
+    Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, UserNotFoundException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException;
 
     void returnAsset(final int lendingId) throws AssetInstanceNotFoundException, InvalidLendingStateTransitionException, UserNotFoundException, LendingNotFoundException;
 

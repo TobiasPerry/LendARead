@@ -52,7 +52,7 @@ public class LendingServiceImpl implements LendingService {
 
     @Transactional
     @Override
-    public Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException {
+    public Lending borrowAsset(final int assetId, final String borrower, final LocalDate borrowDate, final LocalDate devolutionDate) throws AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException {
         Optional<AssetInstance> ai = assetInstanceDao.getAssetInstance(assetId);
         Optional<User> user = userDao.getUser(borrower);
 
@@ -62,15 +62,15 @@ public class LendingServiceImpl implements LendingService {
         }
         if (!user.isPresent()) {
             LOGGER.error("User not found: {}", borrower);
-            throw new AssetInstanceBorrowException();
+            throw new AssetIsNotAvailableException();
         }
         if (!ai.get().getAssetState().isPublic()) {
             LOGGER.error("AssetInstance is not public with id {}", assetId);
-            throw new AssetInstanceBorrowException();
+            throw new AssetIsNotAvailableException();
         }
         if (!ai.get().getIsReservable() && !borrowDate.isEqual(LocalDate.now())) {
             LOGGER.error("AssetInstance is not reservable with id {}", assetId);
-            throw new AssetInstanceBorrowException();
+            throw new AssetInstanceIsNotReservableException();
         }
         if (borrowDate.plusDays(ai.get().getMaxDays()).isBefore(devolutionDate)) {
             LOGGER.error("Devolution date is out of range for asset with id {}", assetId);
