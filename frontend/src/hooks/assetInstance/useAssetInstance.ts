@@ -46,7 +46,7 @@ export interface AssetData {
 
 const useAssetInstance = () => {
 
-    const handleGetLanguages = async (isUsed : boolean  = true, pageSize : number = 10) => {
+    const handleGetLanguages = async (isUsed : boolean  = true, pageSize : number = 20) => {
         let base_url = `/languages?pageSize=${pageSize}`
         if(isUsed){
             base_url += `&isUsed`
@@ -55,25 +55,20 @@ const useAssetInstance = () => {
         let currentPage = 1
         const languages : language[] = []
         const data = await api.get(base_url + `&page=${currentPage}`)
+        // Read the amount of pages
+        const pages = extractTotalPages(data.headers["link"])
+
         const body : language[] = data.data
-
         languages.push(...body)
-
-        // TODO solve link header problem
-        // const pages = extractTotalPages(data.headers["link"])
-
         currentPage++
-        let emptyResponse : boolean = false
-        while(!emptyResponse){
+
+        do{
             const page_url = base_url + `&page=${currentPage}`
             const data_page = await api.get(page_url)
             const body_page : language[] = data_page.data
-            if(body_page.length === 0){
-                emptyResponse = true
-            }
             languages.push(...body_page)
             currentPage++
-        }
+        }while (currentPage <= pages);
 
         languages.sort((a, b) => {
             const a_to_lower = a.name.toLowerCase()
@@ -103,6 +98,7 @@ const useAssetInstance = () => {
             }
 
             const data = await api.get(url)
+            const pages = extractTotalPages(data.headers["link"])
 
             const body =  data.data
 
@@ -138,7 +134,7 @@ const useAssetInstance = () => {
                 books.push(book)
             }
 
-            return books
+            return {books, pages}
         } catch (error){
             console.log("Error")
             return null;

@@ -6,7 +6,27 @@
   "Projects": "Projects",
   "Calendar": "Calendar",
   "active_loans": "Active Loan Requests",
-  "auth": {
+  "errorPasswordEmail": "Error requesting the password reset email",
+  "email": "Email",
+  "changePassword": {
+    "passwordValidationError": "Password must contain at least one lowercase letter, one uppercase letter, one digit, be at least 8 characters long, and include a special character.",
+    "caption": "Check your email inbox, you will receive a verification code",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "invalidVerificationCode": "Invalid verification code",
+    "somethingWentWrong": "Something went wrong",
+    "resendToken": "Haven't received the token? Resend token",
+    "resentToken": "Token resent! Please check your email",
+    "title": "Change password",
+    "verificationCode": "Verification code",
+    "verificationCodePlaceholder": "Enter your verification code",
+    "enterEmail"  : "Enter your email",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter new password",
+    "repeatNewPassword": "Repeat new password",
+    "repeatNewPasswordPlaceholder": "Repeat new password",
+    "changePasswordButton": "Change password"
+  },
+"auth": {
     "login": "Login",
     "register": "Register",
     "username": "Username",

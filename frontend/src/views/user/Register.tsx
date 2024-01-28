@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import {useContext, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {Link, useNavigate} from 'react-router-dom';
 // @ts-ignore
@@ -7,6 +7,7 @@ import logo from '../../assets/logo-oscuro.png';
 
 import loginBg from '../../assets/login-bg.jpg';
 import useRegister from "../../hooks/users/useRegister.ts";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 interface FormErrors {
     email: string,
@@ -23,6 +24,8 @@ const RegisterView = () => {
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const { register} = useRegister();
+    const {login } = useContext(AuthContext);
+
     const [formErrors, setFormErrors] = useState<FormErrors>({
         email: "",
         password: "",
@@ -70,9 +73,9 @@ const RegisterView = () => {
         const {errors, hasErrors} = validateForm();
 
         if (!hasErrors) {
-            console.log("aca!")
             const successfulRegister = await register(email, password, repeatPassword, name);
             if (successfulRegister) {
+                await login(email, password)
                 navigate('/');
             }else{
                 // TODO: Error message

@@ -17,6 +17,7 @@ import ReviewLender from "./views/reviews/ReviewLender.tsx";
 import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import AddAsset from "./views/addAsset.tsx";
+import ChangePassword from "./views/user/ChangePassword.tsx";
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
                     <Route path="locations" element={<RequireAuth> <Locations /> </RequireAuth>} />
                     <Route path="userAssets" element={<RequireAuth> <UserHome /> </RequireAuth>} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
+                    <Route path="changepassword" element={<ChangePassword />} />
                     <Route path="register" element={<Register />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
                     <Route path="user" element={<LoginView />} />

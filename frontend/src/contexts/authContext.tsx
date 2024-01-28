@@ -3,6 +3,7 @@ import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 // @ts-ignore
 import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
+import {useTranslation} from "react-i18next";
 
 export interface UserDetailsApi {
     email: string
@@ -22,7 +23,13 @@ export const AuthContext = React.createContext({
     login: async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets")  => {
         return false
     },
-    user: -1,
+    handleChangePassword: async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
+      return ""
+    },
+    handleForgotPassword: async (email: string) => {
+        return false
+    },
+        user: -1,
     userDetails: {
         email: "",
         image: "",
@@ -42,6 +49,7 @@ const AuthContextProvider = (props) => {
     const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || sessionStorage.hasOwnProperty("userAuthToken"));
     const token = isInLocalStorage ?localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
     const [authKey, setAuthKey] = useState(token);
+    const {t} = useTranslation()
 
     api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
@@ -68,7 +76,7 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
-    const handleJWT = (jwt: string, rememberMe): boolean => {
+    const handleJWT = async (jwt: string, rememberMe)  => {
         if(jwt === undefined || jwt === null)
             return false
 
@@ -77,7 +85,7 @@ const AuthContextProvider = (props) => {
         else
             sessionStorage.setItem("userAuthToken", jwt)
 
-        setUser(extractUserId(jwt))
+        await setUser(extractUserId(jwt))
         storeUserDetails(extractUserId(jwt))
         setAuthKey(jwt);
         setLoggedIn(true);
@@ -96,7 +104,6 @@ const AuthContextProvider = (props) => {
 
     const storeUserDetails = async (id: number) => {
         const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
-        console.log(userDetails)
         const image = (await api_.get(userDetails.image)).data
         if(image)
             setUserImage(image)
@@ -112,13 +119,66 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            return handleJWT(response.headers.get('x-jwt'), rememberMe)
+            const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
+            return res
         } catch (error) {
-            console.log("error raised", error);
+            console.log(error);
             return false;
         }
     };
 
+    const handleForgotPassword = async (email: string) => {
+        try {
+            await api.post('/users', {email: email}, {headers: {'Content-Type': 'application/vnd.resetPassword.v1+json'}})
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    const handleChangePassword = async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
+
+        try {
+
+            logout()
+
+            //login with verification code using base64
+            const response: any = await api.get("/assets",
+                {
+                    headers: { "Authorization": "Basic " + btoa(`${email}:${verficationCode}`) }
+                }
+            );
+
+
+            const jwt = response.headers.get('x-jwt');
+            const userId_ = extractUserId(jwt)
+
+            console.log('login', response.data)
+            if(userId_ === -1) {
+                console.log(email, verficationCode, password, repeatedPassword)
+                return t('changePassword.invalidVerificationCode')
+            }
+
+            const response2 = await api.patch(
+                `/users/${userId_}`,
+                {
+                    password: password
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/vnd.user.v1+json'
+                    }
+                }
+            )
+
+            logout()
+            //login with new password
+            await login(email, password)
+            return "true";
+        } catch (e) {
+            return t('changePassword.somethingWentWrong')
+        }
+    }
 
 
     return <AuthContext.Provider
@@ -128,7 +188,9 @@ const AuthContextProvider = (props) => {
             logout,
             user,
             userDetails,
-            userImage
+            userImage,
+            handleForgotPassword,
+            handleChangePassword
         }}>{props.children}</AuthContext.Provider>
 }
 
