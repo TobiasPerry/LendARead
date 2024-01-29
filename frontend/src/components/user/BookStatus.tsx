@@ -6,7 +6,10 @@ import useLocationAsset from "../../hooks/locations/useLocation.ts";
 const BookStatus = ({asset}) => {
     const { t } = useTranslation();
     const {getLocation, location} = useLocationAsset()
-    useEffect(() => { getLocation(asset).then(); console.log(asset)}, [asset])
+
+    useEffect(() => {
+            getLocation(asset).then();
+    }, [asset])
 
     const styles = {
         backgroundColor: '#f0f5f0',

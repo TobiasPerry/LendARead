@@ -94,7 +94,8 @@ const AuthContextProvider = (props) => {
        }
     });
     const [userImage, setUserImage] = useState(defaultUserPhoto);
-    const [userDetails, setUserDetails] = useState(emptyUserDetails);
+    const [userDetails, setUserDetails] = useState( emptyUserDetails);
+
     const handleJWT = async (jwt: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
@@ -110,7 +111,6 @@ const AuthContextProvider = (props) => {
         setLoggedIn(true);
         api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
         api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-        console.log("handled new jwt!", user)
         return true
     }
 
@@ -127,6 +127,7 @@ const AuthContextProvider = (props) => {
         return (await api.get(`/users/${id}`)).data
     }
     const storeUserDetails = async (id: number) => {
+        const userDetails = await getUserDetails(id)
         if(userDetails.image) {
             const image = await api_.get(userDetails.image)
             const image_ = image.data
@@ -180,9 +181,7 @@ const AuthContextProvider = (props) => {
             const jwt = response.headers.get('x-jwt');
             const userId_ = extractUserId(jwt)
 
-            console.log('login', response.data)
             if(userId_ === -1) {
-                console.log(email, verficationCode, password, repeatedPassword)
                 return t('changePassword.invalidVerificationCode')
             }
 

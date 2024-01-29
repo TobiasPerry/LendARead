@@ -32,14 +32,14 @@ export const isDelivered = (lending: string) => {
     return lending === "DELIVERED"
 }
 
-function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
+function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
     const {t} = useTranslation();
 
 
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
-    const {rejectLending, returnLending, confirmLending, canConfirmLending} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
+    const {rejectLending, returnLending, confirmLending, canConfirmLending, canReview} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
     const handleReturnAsset = async () => {
         setShowRejectAssetModal(false)
         await returnLending(asset)
@@ -103,14 +103,19 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                             <div> {t("rejected_text")} </div>
                         </div>
                     }
-                    {isFinished(asset.lending.state) &&
+                    {isFinished(asset.lending.state) && canReview &&
                         <div>
                             <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", marginTop: "10px"}}>
-                                {t('finished_text')}
+                                {t('finished_borrower')}
                             </h6>
                             <Link id="returnAssetBtn" className="btn btn-green" style={{marginTop: '10px', alignSelf: 'center'}} to={`/review/lender/${asset.lendingid}`}>
                                 {t('userHomeView.review')}
                             </Link>
+                        </div>
+                    }
+                    {isFinished(asset.lending.state) && !canReview &&
+                        <div>
+                            <div> {t("finished_text")} </div>
                         </div>
                     }
                     {isCanceled(asset.lending.state) &&
@@ -118,13 +123,6 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                             <div> {t("canceled_text")} </div>
                         </div>
                     }
-                    {canReview && (
-                        <Link className="btn btn-green mt-3" to="/reviews" style={{alignSelf: 'center'}}>
-                            {t('makeReview')}
-                        </Link>
-                    )}
-                    {/* Include modal components here */}
-                    {/* <ReturnModal lending={lending} /> */}
                     <ConfirmLendingModal showModal={showConfirmAssetModal}
                                          handleCloseModal={() => setShowConfirmAssetModal(false)}
                                         asset={asset}

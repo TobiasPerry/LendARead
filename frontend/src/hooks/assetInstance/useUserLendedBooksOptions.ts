@@ -7,11 +7,12 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
 
     const [canConfirmLending, setCanConfirmLending] = useState(true)
-    const {user} = useContext(AuthContext)
+    const [canReview, setCanReview] = useState(true)
 
     useEffect(() => {
         checkCanConfirmLending().then()
-    }, [])
+        checkCanReview().then()
+    }, [asset])
 
     const checkCanConfirmLending = async () => {
         const lendings: Array<LendingApi> = (await api.get(`/lendings`,{ params: {assetInstanceId: asset.assetinstanceid}} )).data
@@ -20,9 +21,9 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
         setCanConfirmLending(canConfirm)
     }
 
-    const checkCanReview = async (type: string, lendingid: number) => {
-        const review = (await api.get(`/user/${user}/${type}/${lendingid}`)).data
-        console.log(review)
+    const checkCanReview = async () => {
+        const ans = !asset.lending.hasOwnProperty('borrowerReviewUrl')
+        setCanReview(ans)
     }
     const updateState = async (url, state) => {
         await api_.patch(url, {state: state},
@@ -47,7 +48,7 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
     }
 
     return {
-        rejectLending, confirmLending, returnLending, canConfirmLending, checkCanReview
+        rejectLending, confirmLending, returnLending, canConfirmLending, canReview
     }
 }
 
