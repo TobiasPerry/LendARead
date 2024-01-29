@@ -1,4 +1,5 @@
 import {api} from "../api/api.ts";
+import {extractId} from "./useUserAssetInstances.ts";
 
 const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
@@ -26,17 +27,29 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
         //working on image
         const image = asset.image
 
-        const response = (await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})).data
+        try {
+            const response: any = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
 
-        console.log(response)
+            const imageId = extractId(response.headers.get("Location"))
 
-        await api.patch(asset.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
-            {
-                headers: {"Content-type": "application/vnd.assetInstance.v1+json"
-                }
-            })
-        await fetchUserAssetDetails()
+            console.log(imageId)
+            await api.patch(asset.assetinstance.selfUrl, {
+                    imageId: imageId,
+                    status: asset.status,
+                    isReservable: asset.isReservable,
+                    maxDays: asset.maxDays,
+                    description: asset.description,
+                    physicalCondition: asset.physicalCondition
+                },
+                {
+                    headers: {
+                        "Content-type": "application/vnd.assetInstance.v1+json"
+                    }
+                })
+            await fetchUserAssetDetails()
+        } catch (e) {
 
+        }
     }
 
 

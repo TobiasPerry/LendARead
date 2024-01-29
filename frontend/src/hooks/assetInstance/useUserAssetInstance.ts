@@ -15,6 +15,7 @@ const useUserAssetInstance = (location, id) => {
         let assetinstace : any = {}
         let lending: any = {}
 
+        //TODO: assetinstance not being fetched somehow
         if(state === "lended" || state === "borrowed") {
             const lending_ = await api.get(`/lendings/${id}`)
             lending = lending_.data
