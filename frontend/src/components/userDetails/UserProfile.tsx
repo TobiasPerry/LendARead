@@ -8,6 +8,7 @@ const UserProfile = ({ isCurrent }) => {
     const {userDetails, userImage} = useContext(AuthContext);
 
 
+
     return (
         <div className="user-profile-card" style={{
             display: 'flex',
