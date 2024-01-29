@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 // @ts-ignore
@@ -46,9 +46,11 @@ export const AuthContext = React.createContext({
 
 const AuthContextProvider = (props) => {
     const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
-    const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || sessionStorage.hasOwnProperty("userAuthToken"));
-    const token = isInLocalStorage ?localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
+    const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken");
+    const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || isInSessionStorage);
+    const token = isInLocalStorage ? localStorage.getItem("userAuthToken") : isInSessionStorage ? sessionStorage.getItem("userAuthToken") : ""
     const [authKey, setAuthKey] = useState(token);
+
     const {t} = useTranslation()
 
     api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
@@ -68,6 +70,11 @@ const AuthContextProvider = (props) => {
         userName: "",
     })
 
+    useEffect(() => {
+        if(isLoggedIn || isInLocalStorage)
+            handleJWT(token)
+    }, [])
+
     const extractUserId = (jwt: string): number => {
         //@ts-ignore
         const decoded = jwtDecode(jwt).userReference;
@@ -76,7 +83,7 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
-    const handleJWT = async (jwt: string, rememberMe)  => {
+    const handleJWT = async (jwt: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
 
@@ -104,9 +111,17 @@ const AuthContextProvider = (props) => {
 
     const storeUserDetails = async (id: number) => {
         const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
-        const image = (await api_.get(userDetails.image)).data
-        if(image)
-            setUserImage(image)
+        // console.log(userDetails)
+        // const image = await api_.get(userDetails.image)
+        //
+        // try {
+        //     const image_ = image.data
+        //     if(image_)
+        //         setUserImage(image_)
+        // } catch (e) {
+        //
+        // }
+
         setUserDetails(userDetails)
     }
 

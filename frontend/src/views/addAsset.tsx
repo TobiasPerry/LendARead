@@ -1,8 +1,9 @@
 import './styles/addAsset.css';
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useContext} from 'react';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
 import { api } from '../hooks/api/api.ts'
+import {AuthContext} from "../contexts/authContext.tsx";
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -28,6 +29,7 @@ const AddAsset = () => {
         [31, t('addAsset.duration.months')]
     ]
 
+    const {userDetails} = useContext(AuthContext);
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<any[]>([])
 
@@ -147,6 +149,7 @@ const AddAsset = () => {
     }
 
     const validateStep1 = async () => {
+        console.log(userDetails)
         const isbnInput = document.getElementById('isbn') as HTMLInputElement;
         const isbn = isbnInput.value.replace(/[-\s]/g, '');
         if (!isbn || !validateIsbn(isbn)) {
@@ -219,6 +222,7 @@ const AddAsset = () => {
     }
 
     const validateStep2 = () => {
+        console.log(userDetails)
         let valid = true
         const titleInput = document.getElementById('title') as HTMLInputElement;
         const authorInput = document.getElementById('author') as HTMLInputElement;
@@ -276,6 +280,7 @@ const AddAsset = () => {
     }
 
     const validateStep3 = () => {
+        console.log(userDetails)
         const borrowTimeQuantityInput = document.getElementById('borrow-time-quantity') as HTMLInputElement;
         const borrowTimeTypeInput = document.getElementById('borrow-time-type') as HTMLInputElement;
         const borrowTimeError = document.getElementById('borrow-time-error') as HTMLInputElement;
