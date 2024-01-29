@@ -175,7 +175,7 @@
   "previous": "Previous",
   "next": "Next",
   "rejected_text": "The lending was rejected, no options are available ",
-  "finished_text": "The lending has finished, no options are available ",
+  "finished_text": "The lending has finished and you have already written the user a review, no options are available ",
   "landing": {
     "hero": {
       "title": "The new era of reading",

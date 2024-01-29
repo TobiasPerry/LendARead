@@ -106,11 +106,16 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                     {isFinished(asset.lending.state) && canReview &&
                         <div>
                             <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", marginTop: "10px"}}>
-                                {t('finished_text')}
+                                {t('finished_borrower')}
                             </h6>
                             <Link id="returnAssetBtn" className="btn btn-green" style={{marginTop: '10px', alignSelf: 'center'}} to={`/review/lender/${asset.lendingid}`}>
                                 {t('userHomeView.review')}
                             </Link>
+                        </div>
+                    }
+                    {isFinished(asset.lending.state) && !canReview &&
+                        <div>
+                            <div> {t("finished_text")} </div>
                         </div>
                     }
                     {isCanceled(asset.lending.state) &&

@@ -22,7 +22,8 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
     }
 
     const checkCanReview = async () => {
-        setCanReview(asset.hasOwnProperty('borrowerReviewUrl'))
+        const ans = !asset.lending.hasOwnProperty('borrowerReviewUrl')
+        setCanReview(ans)
     }
     const updateState = async (url, state) => {
         await api_.patch(url, {state: state},
