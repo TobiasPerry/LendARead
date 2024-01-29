@@ -67,7 +67,7 @@ const useReview = () => {
             const body_asset = data_asset.data
 
             //get the user that borrowed it
-            const data_borrower = await api_.get(body.userReference)
+            const data_borrower = await api_.get(body.borrowerUrl)
             const body_borrower = data_borrower.data
 
             // get the user that lent it (owner)
@@ -76,7 +76,6 @@ const useReview = () => {
 
             const tmp = body_assetInstance.selfUrl.match(/\/(\d+)$/);
             const num = tmp ? parseInt(tmp[1], 10) : null
-
 
             return {
                 book: {
@@ -98,7 +97,7 @@ const useReview = () => {
             }
 
         }catch (e){
-            console.log("Error")
+            console.log("Error: " + e)
             return null
         }
     }
