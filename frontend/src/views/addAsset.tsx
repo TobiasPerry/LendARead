@@ -20,8 +20,6 @@ type LanguagesDTO = LanguageDTO[]
 const AddAsset = () => {
     
     const {t} = useTranslation();
-    const {user, userDetails} = useContext(AuthContext);
-    console.log(userDetails);
 
     const states = [
         ["ASNEW", "As New"],
@@ -41,12 +39,13 @@ const AddAsset = () => {
         [31, t('addAsset.duration.months')]
     ]
 
-    const {userDetails} = useContext(AuthContext);
+    const {user, userDetails} = useContext(AuthContext);
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<LanguagesDTO>([])
     const [showLocModal, setShowLocModal] = useState(false);
-    const {addLocation} = useLocations()
+    const {getLocations, addLocation} = useLocations()
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
+    const [locations, setLocations] = useState([])
 
     const handleLocationSave = async (newLocation: any) => {
         setShowLocModal(false);
@@ -59,6 +58,13 @@ const AddAsset = () => {
     useEffect(() => {
         api.get('/languages').then((response) => {
             setLanguages(response.data)
+        })
+    }, [])
+
+    useEffect(() => {
+        getLocations(user).then((response) => {
+            setLocations(response)
+            console.log(response)
         })
     }, [])
 
