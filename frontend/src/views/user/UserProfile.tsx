@@ -22,7 +22,16 @@ const UserProfileView = () => {
     });
 
     return (
-        <div className="container mt-4">
+        <div className="main-class">
+        <div  style={{
+            width: '80%',
+            backgroundColor: '#f0f5f0',
+            maxHeight: '1000px',
+            minHeight: '600px',
+            margin: 'auto',
+            paddingTop: '60px',
+            borderRadius: '60px',
+        }}>
             <UserProfile isCurrent={isCurrent} />
             <div className="review-tabs d-flex justify-content-center mt-3">
                 <div style={tabStyle('borrower')} onClick={() => setActiveTab('borrower')}>
@@ -36,6 +45,7 @@ const UserProfileView = () => {
                 reviews={activeTab === 'borrower' ? borrowerReviews : lenderReviews}
                 activeTab={activeTab}
             />
+        </div>
         </div>
     );
 };

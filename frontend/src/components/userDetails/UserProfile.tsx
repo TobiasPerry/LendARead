@@ -20,7 +20,7 @@ const UserProfile = ({ isCurrent }) => {
                     src={userImage}
                     alt={`${userDetails.userName} profile`}
                     style={{
-                        width: '100px',
+                        width: '150px',
                         borderRadius: '50%',
                         objectFit: 'cover',
                         border: '3px solid white',
