@@ -38,9 +38,6 @@ const UserAssetInstance = () => {
         fetchUserAssetDetails().then()
     }, [id])
 
-    //need to make api post to review service, this makes a link to that page
-    const canReview = false
-
     return (
         <>
             {isLoading ?
@@ -69,7 +66,6 @@ const UserAssetInstance = () => {
                             />}
                             {state === "lended" && <LendedBooksOptions
                                 asset={assetDetails}
-                                canReview={canReview}
                                 fetchUserAssetDetails={fetchUserAssetDetails}/>}
                             {state === "borrowed" && <BorrowedBookOptions
                                 asset={assetDetails}

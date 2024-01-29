@@ -13,6 +13,7 @@ const useLendings = () => {
     const PAGE_SIZE = 10
 
     const getLendings = async (asset) => {
+        // if(asset === undefined || asset.assetinstance === undefined || asset.instanceid === undefined) return
         if(asset === undefined) return
 
         const params = {
