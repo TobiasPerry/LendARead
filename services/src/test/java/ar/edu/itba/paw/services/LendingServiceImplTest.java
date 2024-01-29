@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.AssetInstanceBorrowException;
-import ar.edu.itba.paw.exceptions.DayOutOfRangeException;
-import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
@@ -133,7 +131,7 @@ public class LendingServiceImplTest {
     }
 
     @Test(expected = AssetInstanceBorrowException.class)
-    public void borrowAssetNotReservable() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
+    public void borrowAssetNotReservable() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));
@@ -146,7 +144,7 @@ public class LendingServiceImplTest {
     }
 
     @Test(expected = AssetInstanceBorrowException.class)
-    public void borrowAssetOverlappingDates() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException {
+    public void borrowAssetOverlappingDates() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
         when(userDao.getUser(anyString())).thenReturn(Optional.of(USER));

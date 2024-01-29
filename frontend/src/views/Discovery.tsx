@@ -8,7 +8,7 @@ import Spinner from "../components/Spinner.tsx";
 
 const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
-    TITLE: "TITLE_NAME",
+    TITLE: "TITLE",
     RECENT: "RECENT"
 };
 
@@ -124,9 +124,12 @@ const DiscoveryView =  () => {
     const fetchData = async () => {
         setLoadingData(true)
         setData([])
-        const {books, pages} = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating)
-        setTotalPages(pages)
-        setData(books)
+        const response = await handleAllAssetInstances(currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating)
+        if(response !== null && response !== undefined) {
+            const {books, pages} = response;
+            setTotalPages(pages)
+            setData(books)
+        }
         setLoadingData(false)
     };
 

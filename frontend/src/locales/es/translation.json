@@ -239,6 +239,7 @@
   "public": "Publico",
   "reviews": {
     "title": "Reseña",
+    "send": "Enviar Reseña",
     "lender": {
       "user": {
         "title": "¿Como calificas a {{user}} como prestatario/a de libros?",
@@ -260,6 +261,16 @@
         "error_stars": "Agregá una puntuación",
         "error_text": "Este campo es obligatorio"
       }
+    },
+    "success_modal": {
+      "title": "¡Reseña enviada exitosamente!",
+      "subtitle": "",
+      "btn": "Ok"
+    },
+    "error_modal": {
+      "title": "¡Ha habido un error!",
+      "subtitle": "",
+      "btn": "Ok"
     }
   },
   "view_asset": {

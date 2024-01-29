@@ -49,7 +49,7 @@ export default function NavBar() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711', height: '80px'}} data-bs-theme="dark">
+            <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711'}} data-bs-theme="dark">
                 <div className="container-fluid">
                     <Link to="/" className="nav-icon"><img src="/static/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

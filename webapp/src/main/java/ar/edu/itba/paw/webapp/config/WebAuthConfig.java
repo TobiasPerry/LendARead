@@ -148,6 +148,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews","/api/assetInstances/{id}/reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews","/api/users/{id}/lender_reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews","/api/users/{id}/borrower_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/images","/api/images/").authenticated()
                 .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}","/api/lendings/{id}/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/lendings","/api/lendings/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
@@ -163,7 +164,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(Collections.singletonList("*"));
+        cors.setAllowedOrigins(Collections.singletonList(ALL));
         cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cors.setAllowedHeaders(Collections.singletonList(ALL));
         cors.setExposedHeaders(Arrays.asList("X-JWT", "X-XSS-Protection", "authorization", "Location", "Content-Disposition", "Link","ETag","WWW-Authenticate"));
