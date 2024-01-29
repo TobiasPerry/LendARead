@@ -373,5 +373,9 @@
         "years": "year/s",
         "validation-error": "Please, enter a valid duration."
     }
+  },
+  "userProfile": {
+    "borrower": "BORROWER",
+    "lender": "LENDER"
   }
 }

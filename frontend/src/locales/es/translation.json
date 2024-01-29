@@ -321,5 +321,9 @@
         "years": "año/s",
         "validation-error": "Por favor, ingrese una duración válida."
     }
+  },
+  "userProfile": {
+    "borrower": "PRESTATARIO",
+    "lender": "PRESTADOR"
   }
 }

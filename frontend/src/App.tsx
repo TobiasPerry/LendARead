@@ -15,6 +15,7 @@ import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
 import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
 import ReviewLender from "./views/reviews/ReviewLender.tsx";
 import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
+import ProfileView from "./views/user/Profile.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import AddAsset from "./views/addAsset.tsx";
 import ChangePassword from "./views/user/ChangePassword.tsx";
