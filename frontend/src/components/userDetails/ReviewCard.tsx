@@ -1,4 +1,3 @@
-// ReviewCard.jsx
 const ReviewCard = ({ review }) => {
     return (
         <div className="review-card">

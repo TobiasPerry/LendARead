@@ -1,4 +1,3 @@
-// ReviewList.jsx
 import ReviewCard from './ReviewCard';
 
 const ReviewList = ({ reviews, activeTab }) => {
@@ -15,3 +14,5 @@ const ReviewList = ({ reviews, activeTab }) => {
         </div>
     );
 };
+
+export default ReviewList;
