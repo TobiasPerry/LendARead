@@ -1,8 +1,13 @@
-import { useTranslation } from 'react-i18next';
-import {isPrivate, isPublic} from "../userAssets/LendedBooksOptions.tsx";
 
-function DeleteModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
-    const { t } = useTranslation();
+function Modal({
+                   showModal = true,
+                   handleCloseModal = () => {},
+                   handleSubmitModal = () => {},
+                   errorType = false,
+                    title = "",
+                    subtitle = "",
+                    btnText = ""
+}) {
 
     return (
         <>
@@ -12,11 +17,8 @@ function DeleteModal({ asset, showModal, handleCloseModal, handleSubmitModal }) 
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
-                        <div className="icon-box">
-                            <i className="fas fa-trash fa-lg"></i>
-                        </div>
                         <h2 className="modal-title" id="modalTitle">
-                            {t('userHomeView.deleteTitle')}
+                            {title}
                         </h2>
 
                         <button onClick={handleCloseModal} className="btn btn-secondary">
@@ -25,11 +27,11 @@ function DeleteModal({ asset, showModal, handleCloseModal, handleSubmitModal }) 
                     </div>
                     <div className="modal-body">
                         <p>
-                            {t('userHomeView.deleteAssetText') }
+                            {subtitle}
                         </p>
                     </div>
-                    <button type="submit" className="btn btn-red" onClick={handleSubmitModal}>
-                        {t('userHomeView.deleteAsset')}
+                    <button type="submit" className={`btn ${errorType ? 'btn-red' : 'btn-green'}`} onClick={handleSubmitModal}>
+                        {btnText}
                     </button>
 
                 </div>
@@ -38,4 +40,4 @@ function DeleteModal({ asset, showModal, handleCloseModal, handleSubmitModal }) 
     );
 }
 
-export default DeleteModal;
+export default Modal;

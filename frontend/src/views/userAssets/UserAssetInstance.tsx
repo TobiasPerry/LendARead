@@ -1,15 +1,15 @@
-import BookDetails from "../../components/user/BookDetails.tsx";
-import BookStatus from "../../components/user/BookStatus.tsx";
-import BorrowedBookOptions from "../../components/user/BorrowedBookOptions.tsx";
+import BookDetails from "../../components/userAssets/BookDetails.tsx";
+import BookStatus from "../../components/userAssets/BookStatus.tsx";
+import BorrowedBookOptions from "../../components/userAssets/BorrowedBookOptions.tsx";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import "../styles/userBookDetails.css"
 import {useTranslation} from "react-i18next";
 import useUserAssetInstance from "../../hooks/assetInstance/useUserAssetInstance.ts";
 import {useEffect} from "react";
-import MyBooksOptions from "../../components/user/MyBooksOptions.tsx";
-import LendedBooksOptions from "../../components/user/LendedBooksOptions.tsx";
+import MyBooksOptions from "../../components/userAssets/MyBooksOptions.tsx";
+import LendedBooksOptions from "../../components/userAssets/LendedBooksOptions.tsx";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import MyBookActiveLendings from "../../components/user/MyBookActiveLendings.tsx";
+import MyBookActiveLendings from "../../components/userAssets/MyBookActiveLendings.tsx";
 const UserAssetInstance = () => {
 
     const navigate = useNavigate();
@@ -37,9 +37,6 @@ const UserAssetInstance = () => {
     useEffect(() => {
         fetchUserAssetDetails().then()
     }, [id])
-
-    //need to make api post to review service, this makes a link to that page
-    const canReview = false
 
     return (
         <>
@@ -69,7 +66,6 @@ const UserAssetInstance = () => {
                             />}
                             {state === "lended" && <LendedBooksOptions
                                 asset={assetDetails}
-                                canReview={canReview}
                                 fetchUserAssetDetails={fetchUserAssetDetails}/>}
                             {state === "borrowed" && <BorrowedBookOptions
                                 asset={assetDetails}

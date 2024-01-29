@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 // @ts-ignore
@@ -6,7 +6,7 @@ import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
 import {useTranslation} from "react-i18next";
 
 export interface UserDetailsApi {
-    email: string
+    email: string | undefined,
     image: string
     rating: number
     ratingAsBorrower: number
@@ -15,6 +15,18 @@ export interface UserDetailsApi {
     selfUrl: string
     telephone: string
     userName: string
+}
+
+export const emptyUserDetails: UserDetailsApi = {
+    email: "",
+    image: "",
+    rating: 0 ,
+    ratingAsBorrower: 0,
+    ratingAsLender: 0,
+    role: "",
+    selfUrl: "",
+    telephone: "",
+    userName: "",
 }
 export const AuthContext = React.createContext({
     isLoggedIn: false,
@@ -46,27 +58,23 @@ export const AuthContext = React.createContext({
 
 const AuthContextProvider = (props) => {
     const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
-    const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || sessionStorage.hasOwnProperty("userAuthToken"));
-    const token = isInLocalStorage ?localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
+    const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken");
+    const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || isInSessionStorage);
+    const token = isInLocalStorage ? localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
     const [authKey, setAuthKey] = useState(token);
+
     const {t} = useTranslation()
 
     api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
-    const [user, setUser] = useState(-1);
-    const [userImage, setUserImage] = useState(defaultUserPhoto);
-    const [userDetails, setUserDetails] = useState({
-        email: "",
-        image: "",
-        rating: 0 ,
-        ratingAsBorrower: 0,
-        ratingAsLender: 0,
-        role: "",
-        selfUrl: "",
-        telephone: "",
-        userName: "",
-    })
+
+
+
+    useEffect(() => {
+        if(isLoggedIn || isInLocalStorage)
+            handleJWT(token)
+    }, [token])
 
     const extractUserId = (jwt: string): number => {
         //@ts-ignore
@@ -76,7 +84,19 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
-    const handleJWT = async (jwt: string, rememberMe)  => {
+    const [user, setUser] = useState(() => {
+       try {
+           return extractUserId(token)
+       } catch (e) {
+           if(isLoggedIn) {
+               return -1
+           }
+       }
+    });
+    const [userImage, setUserImage] = useState(defaultUserPhoto);
+    const [userDetails, setUserDetails] = useState( emptyUserDetails);
+
+    const handleJWT = async (jwt: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
 
@@ -102,11 +122,19 @@ const AuthContextProvider = (props) => {
         setUser(-1);
     }
 
+
+    const getUserDetails = async (id: number) => {
+        return (await api.get(`/users/${id}`)).data
+    }
     const storeUserDetails = async (id: number) => {
-        const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
-        const image = (await api_.get(userDetails.image)).data
-        if(image)
-            setUserImage(image)
+        const userDetails = await getUserDetails(id)
+        if(userDetails.image) {
+            const image = await api_.get(userDetails.image)
+            const image_ = image.data
+            if(image_ !== undefined)
+                setUserImage(image_)
+        }
+
         setUserDetails(userDetails)
     }
 
@@ -153,11 +181,12 @@ const AuthContextProvider = (props) => {
             const jwt = response.headers.get('x-jwt');
             const userId_ = extractUserId(jwt)
 
-            console.log('login', response.data)
             if(userId_ === -1) {
-                console.log(email, verficationCode, password, repeatedPassword)
                 return t('changePassword.invalidVerificationCode')
             }
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+            api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 
             const response2 = await api.patch(
                 `/users/${userId_}`,
@@ -171,9 +200,6 @@ const AuthContextProvider = (props) => {
                 }
             )
 
-            logout()
-            //login with new password
-            await login(email, password)
             return "true";
         } catch (e) {
             return t('changePassword.somethingWentWrong')

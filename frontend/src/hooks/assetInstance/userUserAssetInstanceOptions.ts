@@ -23,9 +23,16 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
     const editAsset = async (asset: any) => {
 
+        //working on image
+        const image = asset.image
+
+        const response = (await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})).data
+
+        console.log(response)
+
         await api.patch(asset.assetinstance.selfUrl, {status: asset.status, isReservable: asset.isReservable, maxDays: asset.maxDays, description: asset.description, physicalCondition: asset.physicalCondition},
             {
-                headers: {"Content-type": "multipart/form-data"
+                headers: {"Content-type": "application/vnd.assetInstance.v1+json"
                 }
             })
         await fetchUserAssetDetails()

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import {isPrivate, isPublic} from "../user/LendedBooksOptions.tsx";
+import {isPrivate, isPublic} from "../userAssets/LendedBooksOptions.tsx";
 
 function RejectLendingModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
     const { t } = useTranslation();

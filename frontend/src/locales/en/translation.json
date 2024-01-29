@@ -70,6 +70,7 @@
   "loanRequestSent": "The loan request has been sent, please wait for the lender to accept it or cancel it if you no longer want to borrow the book.",
   "userHomeView": {
     "cancelTitle": "Cancel Lending",
+    "review": "Write a Review",
     "cancelText": "Are you sure you want to cancel this lending request? This action is not reversible.",
     "cancelButton": "Cancel Lending",
     "confirmReturnTitle": "Confirm Return",
@@ -162,7 +163,8 @@
   "canceled": "Canceled",
   "overdue": "Overdue",
   "rejected": "Rejected",
-  "finished": "Finished",
+  "finished_lender": "The lending has finished, you can write a review of the borrower clicking the button below",
+  "finished_borrower": "The lending has finished, you can write a review of the lender and the book clicking the button below",
   "title": "Title",
   "start_date": "Start Date",
   "visibility": "Visibility",
@@ -173,7 +175,7 @@
   "previous": "Previous",
   "next": "Next",
   "rejected_text": "The lending was rejected, no options are available ",
-  "finished_text": "The lending has finished, no options are available ",
+  "finished_text": "The lending has finished and you have already written the user a review, no options are available ",
   "landing": {
     "hero": {
       "title": "The new era of reading",
@@ -289,6 +291,7 @@
   "BINDINGCOPY": "Binding copy",
   "reviews": {
     "title": "Make a review",
+    "send": "Send Review",
     "lender": {
       "user": {
         "title": "How do you rate {{user}} as a book borrower?",
@@ -310,6 +313,16 @@
         "error_stars": "Add a rating",
         "error_text": "The field is mandatory"
       }
+    },
+    "success_modal": {
+      "title": "Review sent successfully!",
+      "subtitle": "",
+      "btn": "Ok"
+    },
+    "error_modal": {
+      "title": "There has been an error!",
+      "subtitle": "",
+      "btn": "Ok"
     }
   },
   "view_asset": {
@@ -333,7 +346,7 @@
     }
   },
   "addAsset": {
-    "title": "Do you want to borrow a book?",
+    "title": "Do you want to lend a book?",
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Please, enter a valid ISBN.",
