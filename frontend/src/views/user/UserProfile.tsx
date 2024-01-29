@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 // Assume these are imported from their respective component files
 import UserProfile from '../../components/userDetails/UserProfile';
-import ReviewTabs from '../../components/userDetails/ReviewTabs';
 import ReviewList from '../../components/userDetails/ReviewList';
 import useUserProfileReviews from "../../hooks/users/useUserProfileReviews.ts";
 
@@ -18,10 +17,22 @@ const UserProfileView = ({  }) => {
         setActiveTab(tab);
     };
 
+    const tabStyle = activeTabName => ({
+        cursor: 'pointer',
+        borderBottom: activeTab === activeTabName ? '2px solid #000' : 'none',
+    });
+
     return (
         <div className="container mt-4">
             <UserProfile isCurrent={isCurrent} />
-            <ReviewTabs activeTab={activeTab} handleTabSwitch={handleTabSwitch} />
+            <div className="review-tabs">
+                <div style={tabStyle('borrower')} onClick={() => handleTabSwitch('borrower')}>
+                    Reseñas Prestatario
+                </div>
+                <div style={tabStyle('lender')} onClick={() => handleTabSwitch('lender')}>
+                    Reseñas Prestamista
+                </div>
+            </div>
             <ReviewList
                 reviews={activeTab === 'borrower' ? borrowerReviews : lenderReviews}
                 activeTab={activeTab}
