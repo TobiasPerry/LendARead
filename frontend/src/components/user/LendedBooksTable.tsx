@@ -87,7 +87,11 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                 </thead>
                 <tbody>
                 {books.length === 0 ? (
-                    <h5 >{t('no_books_available')}</h5>
+                    <tr>
+                        <td colSpan={5} className="text-center">
+                            <h5>{t('no_books_available')}</h5>
+                        </td>
+                    </tr>
                 ) : (
                     books.map((book, index) => (
                         <tr
