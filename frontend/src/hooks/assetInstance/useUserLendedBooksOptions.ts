@@ -1,5 +1,5 @@
 import {api, api_} from "../api/api.ts";
-import {isActive, isDelivered} from "../../components/user/LendedBooksOptions.tsx";
+import {isActive, isDelivered} from "../../components/userAssets/LendedBooksOptions.tsx";
 import {LendingApi} from "./useUserAssetInstances.ts";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";

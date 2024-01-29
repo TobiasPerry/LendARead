@@ -1,7 +1,7 @@
 import {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
-import MyBooksTable from '../../components/user/MyBooksTable.tsx';
-import LendedBooksTable from "../../components/user/LendedBooksTable.tsx";
+import MyBooksTable from '../../components/userAssets/MyBooksTable.tsx';
+import LendedBooksTable from "../../components/userAssets/LendedBooksTable.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../contexts/authContext.tsx";
 
