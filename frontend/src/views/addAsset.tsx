@@ -1,9 +1,11 @@
 import './styles/addAsset.css';
-import {useState, useEffect, useContext} from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
 import { api } from '../hooks/api/api.ts'
+import useLocations from '../hooks/locations/useLocations.ts'
 import {AuthContext} from "../contexts/authContext.tsx";
+import NewLenderModal from '../components/modals/NewLenderModal.tsx'
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -18,6 +20,8 @@ type LanguagesDTO = LanguageDTO[]
 const AddAsset = () => {
     
     const {t} = useTranslation();
+    const {user, userDetails} = useContext(AuthContext);
+    console.log(userDetails);
 
     const states = [
         ["ASNEW", "As New"],
@@ -40,11 +44,21 @@ const AddAsset = () => {
     const {userDetails} = useContext(AuthContext);
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<LanguagesDTO>([])
+    const [showLocModal, setShowLocModal] = useState(false);
+    const {addLocation} = useLocations()
+    const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
+
+    const handleLocationSave = async (newLocation: any) => {
+        setShowLocModal(false);
+        // First, make the user lender
+        // api.patch('/users/' + user.id, {isLender: true})
+
+        await addLocation(newLocation)
+    }
 
     useEffect(() => {
         api.get('/languages').then((response) => {
             setLanguages(response.data)
-            console.log(languages)
         })
     }, [])
 
@@ -344,6 +358,13 @@ const AddAsset = () => {
 
     // TODO Check classes
     return (
+        <>
+        <NewLenderModal
+            location={emptyLocation}
+            showModal={showLocModal}
+            handleClose={() => setShowLocModal(false)}
+            handleSave={handleLocationSave}
+        />
         <div className="addasset-container flex-column">
             <h1 className="text-center mb-5">{t('addAsset.title')}</h1>
             <div className="p-4 addasset-container flex-container">
@@ -444,6 +465,7 @@ const AddAsset = () => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 
