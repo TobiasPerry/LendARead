@@ -260,6 +260,16 @@
         "error_stars": "Agregá una puntuación",
         "error_text": "Este campo es obligatorio"
       }
+    },
+    "success_modal": {
+      "title": "¡Reseña enviada exitosamente!",
+      "subtitle": "",
+      "btn": "Ok"
+    },
+    "error_modal": {
+      "title": "¡Ha habido un error!",
+      "subtitle": "",
+      "btn": "Ok"
     }
   },
   "view_asset": {

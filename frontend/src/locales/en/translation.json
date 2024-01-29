@@ -310,6 +310,16 @@
         "error_stars": "Add a rating",
         "error_text": "The field is mandatory"
       }
+    },
+    "success_modal": {
+      "title": "Review sent successfully!",
+      "subtitle": "",
+      "btn": "Ok"
+    },
+    "error_modal": {
+      "title": "There has been an error!",
+      "subtitle": "",
+      "btn": "Ok"
     }
   },
   "view_asset": {
