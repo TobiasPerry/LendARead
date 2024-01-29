@@ -27,7 +27,7 @@ export default function ReviewBorrower () {
         }, lender: {selfUrl: "", userName: "", userId: 0}
     }
 
-    const {navigate} = useNavigate()
+    const navigate = useNavigate()
     const { lendingNumber } = useParams<{ lendingNumber: string}>()
 
     const review_empty : body_review = {
@@ -94,6 +94,10 @@ export default function ReviewBorrower () {
         })
     }
 
+    const handleBackClick = () => {
+        navigate(`/userBook/${data.book.assetInstanceNumber}?state=BORROWED`)
+    }
+
     return(
         <>
             <Modal
@@ -121,55 +125,64 @@ export default function ReviewBorrower () {
                             !found ? (
                                 <NotFound/>
                             ): (
-                                <div className="main-class"
-                                     style={{
-                                         display: 'flex',
-                                         justifyContent: 'center',
-                                         alignItems: 'center',
-                                         flexDirection: 'column'
-                                     }}>
-                                    <div className="container-row-wrapped">
-                                        <div className="d-flex align-items-center justify-content-center">
-                                            <BookCard book={data.book}/>
-                                        </div>
-                                        <div className="">
-                                            <div style={{
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                justifyContent: 'space-between',
-                                                maxWidth: '800px'
-                                            }}>
-                                                <ReviewCard
-                                                    title={t('reviews.borrower.user.title', {user: data.lender.userName})}
-                                                    error_stars={t('reviews.borrower.user.error_stars')}
-                                                    error_description={t('reviews.borrower.user.error_text')}
-                                                    placeholder={t('reviews.borrower.user.placeholder')}
-                                                    type="1"
-                                                    handleRating={handleChangeRating_userReview}
-                                                    handleReview={handleChangeReview_userReview}
-                                                />
-                                                <ReviewCard
-                                                    title={t('reviews.borrower.book.title', {user: "USERNAME"})}
-                                                    error_stars={t('reviews.borrower.book.error_stars')}
-                                                    error_description={t('reviews.borrower.book.error_text')}
-                                                    placeholder={t('reviews.borrower.book.placeholder')}
-                                                    type="2"
-                                                    handleRating={handleChangeRating_assetInstanceReview}
-                                                    handleReview={handleChangeReview_assetInstanceReview}
-                                                />
-                                                <button
-                                                    onClick={
-                                                        () => {
-                                                            handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
-                                                                .then((value) => {
-                                                                    setSuccess(value !== null && value !== undefined);
-                                                                    setError(value === null || value === undefined)
-                                                                });
+                                <div className="main-class py-3">
+                                    <div className="d-flex back-click flex-row align-items-center mx-3"
+                                         onClick={handleBackClick}>
+                                        <i className="fas fa-arrow-left mb-1"></i>
+                                        <h3 className="ms-3">
+                                            {`${data.book.title} ${t('view_asset.by')} ${data.book.author}`}
+                                        </h3>
+                                    </div>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            flexDirection: 'column'
+                                        }}>
+                                        <div className="container-row-wrapped">
+                                            <div className="d-flex align-items-center justify-content-center">
+                                                <BookCard book={data.book}/>
+                                            </div>
+                                            <div className="">
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    justifyContent: 'space-between',
+                                                    maxWidth: '800px'
+                                                }}>
+                                                    <ReviewCard
+                                                        title={t('reviews.borrower.user.title', {user: data.lender.userName})}
+                                                        error_stars={t('reviews.borrower.user.error_stars')}
+                                                        error_description={t('reviews.borrower.user.error_text')}
+                                                        placeholder={t('reviews.borrower.user.placeholder')}
+                                                        type="1"
+                                                        handleRating={handleChangeRating_userReview}
+                                                        handleReview={handleChangeReview_userReview}
+                                                    />
+                                                    <ReviewCard
+                                                        title={t('reviews.borrower.book.title', {user: "USERNAME"})}
+                                                        error_stars={t('reviews.borrower.book.error_stars')}
+                                                        error_description={t('reviews.borrower.book.error_text')}
+                                                        placeholder={t('reviews.borrower.book.placeholder')}
+                                                        type="2"
+                                                        handleRating={handleChangeRating_assetInstanceReview}
+                                                        handleReview={handleChangeReview_assetInstanceReview}
+                                                    />
+                                                    <button
+                                                        onClick={
+                                                            () => {
+                                                                handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
+                                                                    .then((value) => {
+                                                                        setSuccess(value !== null && value !== undefined);
+                                                                        setError(value === null || value === undefined)
+                                                                    });
+                                                            }
                                                         }
-                                                    }
-                                                >
-                                                    {t('reviews.send')}
-                                                </button>
+                                                    >
+                                                        {t('reviews.send')}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

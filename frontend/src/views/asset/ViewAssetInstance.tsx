@@ -1,11 +1,12 @@
 import {Link, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import NotFound from "../../components/NotFound.tsx";
 import {useTranslation} from "react-i18next";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const ViewAssetInstance = () => {
 
@@ -30,6 +31,8 @@ const ViewAssetInstance = () => {
         reviews: undefined,
         description: ""
     }
+
+    const {user, isLoggedIn} = useContext(AuthContext)
 
     const {t} = useTranslation()
 
@@ -181,6 +184,17 @@ const ViewAssetInstance = () => {
                                                      </p>
                                                  </div>
 
+                                                 {
+                                                     isLoggedIn ? (
+                                                         <>
+                                                             Logeado
+                                                         </>
+                                                     ) : (
+                                                         <>
+                                                             boton para logear
+                                                         </>
+                                                     )
+                                                 }
                                                  {/*<security:authorize access="isAuthenticated()">*/}
                                                  {/*    <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>*/}
                                                  {/*    <form:form modelAttribute="borrowAssetForm" method="post"*/}
