@@ -8,7 +8,8 @@ import {useContext, useEffect} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstances.ts";
 import LoadingAnimation from "../LoadingAnimation.tsx";
-import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx"; // Path to your custom hook
+import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
+import Pagination from "../Pagination.tsx"; // Path to your custom hook
 
 const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { t } = useTranslation();
@@ -114,27 +115,10 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                 )}
             </tbody>
         </table>
-            {totalPages > 1 &&
-                <nav className="d-flex justify-content-center">
-                    <ul className="pagination">
-                        {currentPage > 1 && (
-                            <li className="page-item">
-                                <a className="page-link"   style={paginationStyle} onClick={() => changePage(currentPage - 1)}>{t('previous')}</a>
-                            </li>
-                        )}
-                        <li className="page-item">
-                            <span className="page-link"  style={paginationStyle}>{`${currentPage} / ${totalPages}`}</span>
-                        </li>
-                        {currentPage < totalPages && (
-                            <li className="page-item">
-                                <a className="page-link"  style={paginationStyle} onClick={() => changePage(currentPage + 1)}>{t('next')}</a>
-                            </li>
-                        )}
-                    </ul>
-                </nav>
+           <Pagination  currentPage={currentPage} totalPages={totalPages} changePage={changePage}/>
+            </div>
             }
-        </div>}
-            </>
+        </>
     );
 };
 

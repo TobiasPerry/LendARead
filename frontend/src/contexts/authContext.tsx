@@ -48,7 +48,7 @@ const AuthContextProvider = (props) => {
     const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
     const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken");
     const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || isInSessionStorage);
-    const token = isInLocalStorage ? localStorage.getItem("userAuthToken") : isInSessionStorage ? sessionStorage.getItem("userAuthToken") : ""
+    const token = isInLocalStorage ? localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
     const [authKey, setAuthKey] = useState(token);
 
     const {t} = useTranslation()
@@ -56,7 +56,7 @@ const AuthContextProvider = (props) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
-    const [user, setUser] = useState(-1);
+
     const [userImage, setUserImage] = useState(defaultUserPhoto);
     const [userDetails, setUserDetails] = useState({
         email: "",
@@ -73,7 +73,7 @@ const AuthContextProvider = (props) => {
     useEffect(() => {
         if(isLoggedIn || isInLocalStorage)
             handleJWT(token)
-    }, [])
+    }, [token])
 
     const extractUserId = (jwt: string): number => {
         //@ts-ignore
@@ -83,6 +83,7 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
+    const [user, setUser] = useState( extractUserId(token));
     const handleJWT = async (jwt: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
@@ -98,6 +99,7 @@ const AuthContextProvider = (props) => {
         setLoggedIn(true);
         api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
         api_.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+        console.log("handled new jwt!", user)
         return true
     }
 
@@ -109,8 +111,11 @@ const AuthContextProvider = (props) => {
         setUser(-1);
     }
 
+
+    const getUserDetails = async (id: number) => {
+        return (await api.get(`/users/${id}`)).data
+    }
     const storeUserDetails = async (id: number) => {
-        const userDetails: UserDetailsApi = (await api.get(`/users/${id}`)).data
         // console.log(userDetails)
         // const image = await api_.get(userDetails.image)
         //
