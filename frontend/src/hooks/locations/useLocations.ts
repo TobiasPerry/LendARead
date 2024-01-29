@@ -30,7 +30,7 @@ const useLocations = () => {
 
     const getLocations = async (userId: any) => {
         try {
-            const response = await api.get(`/locations?userId=2`);
+            const response = await api.get(`/locations?userId=${userId}`)
             return response.data
         } catch (error) {
             return []
