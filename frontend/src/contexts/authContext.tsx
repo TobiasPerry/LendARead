@@ -127,11 +127,10 @@ const AuthContextProvider = (props) => {
         return (await api.get(`/users/${id}`)).data
     }
     const storeUserDetails = async (id: number) => {
-        console.log(userDetails)
         if(userDetails.image) {
             const image = await api_.get(userDetails.image)
             const image_ = image.data
-            if(image_)
+            if(image_ !== undefined)
                 setUserImage(image_)
         }
 

@@ -1,11 +1,13 @@
 import {api, api_} from "../api/api.ts";
 import {isActive, isDelivered} from "../../components/user/LendedBooksOptions.tsx";
 import {LendingApi} from "./useUserAssetInstances.ts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
 
     const [canConfirmLending, setCanConfirmLending] = useState(true)
+    const {user} = useContext(AuthContext)
 
     useEffect(() => {
         checkCanConfirmLending().then()
@@ -18,6 +20,10 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
         setCanConfirmLending(canConfirm)
     }
 
+    const checkCanReview = async (type: string, lendingid: number) => {
+        const review = (await api.get(`/user/${user}/${type}/${lendingid}`)).data
+        console.log(review)
+    }
     const updateState = async (url, state) => {
         await api_.patch(url, {state: state},
             {
@@ -41,7 +47,7 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
     }
 
     return {
-        rejectLending, confirmLending, returnLending, canConfirmLending
+        rejectLending, confirmLending, returnLending, canConfirmLending, checkCanReview
     }
 }
 

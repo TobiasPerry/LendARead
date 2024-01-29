@@ -25,7 +25,7 @@ const useLendings = () => {
         const mappedLendings = lendings.map(async (lending: LendingApi) => {
             const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data
             let image = photoPlaceholder
-            if(user.image) {
+            if(user.image !== undefined) {
                  image = (await api_.get(user.image)).data
             }
 

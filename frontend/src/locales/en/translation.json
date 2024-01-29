@@ -70,6 +70,7 @@
   "loanRequestSent": "The loan request has been sent, please wait for the lender to accept it or cancel it if you no longer want to borrow the book.",
   "userHomeView": {
     "cancelTitle": "Cancel Lending",
+    "review": "Write a Review",
     "cancelText": "Are you sure you want to cancel this lending request? This action is not reversible.",
     "cancelButton": "Cancel Lending",
     "confirmReturnTitle": "Confirm Return",
@@ -162,7 +163,8 @@
   "canceled": "Canceled",
   "overdue": "Overdue",
   "rejected": "Rejected",
-  "finished": "Finished",
+  "finished_lender": "The lending has finished, you can write a review of the borrower clicking the button below",
+  "finished_borrower": "The lending has finished, you can write a review of the lender and the book clicking the button below",
   "title": "Title",
   "start_date": "Start Date",
   "visibility": "Visibility",
