@@ -12,8 +12,13 @@ const useUserBorrowedBooksOptions = (asset, fetchUserAssetInstance) => {
        await fetchUserAssetInstance()
     }
 
+    const canReview = async () => {
+        console.log('lending id', asset.lending)
+        return asset.lending.lenderReviewer !== undefined
+    }
+
     return {
-        cancelBorrowedBook
+        cancelBorrowedBook, canReview
     }
 }
 

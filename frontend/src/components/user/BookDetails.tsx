@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 const BookDetails = ({data}) => {
     const { t } = useTranslation();
 
-    console.log('book details data', data)
     return (
         <div style={{
             backgroundColor: '#f0f5f0',

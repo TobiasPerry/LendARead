@@ -39,7 +39,7 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
-    const {rejectLending, returnLending, confirmLending, canConfirmLending} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
+    const {rejectLending, returnLending, confirmLending, canConfirmLending, checkCanReview} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
     const handleReturnAsset = async () => {
         setShowRejectAssetModal(false)
         await returnLending(asset)
@@ -103,7 +103,7 @@ function LendedBooksOptions({ asset, canReview, fetchUserAssetDetails }) {
                             <div> {t("rejected_text")} </div>
                         </div>
                     }
-                    {isFinished(asset.lending.state) &&
+                    {isFinished(asset.lending.state) && checkCanReview() &&
                         <div>
                             <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", marginTop: "10px"}}>
                                 {t('finished_text')}
