@@ -239,6 +239,7 @@
   "public": "Publico",
   "reviews": {
     "title": "Reseña",
+    "send": "Enviar Reseña",
     "lender": {
       "user": {
         "title": "¿Como calificas a {{user}} como prestatario/a de libros?",

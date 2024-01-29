@@ -168,7 +168,7 @@ export default function ReviewBorrower () {
                                                         }
                                                     }
                                                 >
-                                                    Envia
+                                                    {t('reviews.send')}
                                                 </button>
                                             </div>
                                         </div>

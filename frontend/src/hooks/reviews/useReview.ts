@@ -21,7 +21,8 @@ export interface Asset_and_borrower_data {
     },
     borrower: {
         userName: string,
-        selfUrl: string
+        selfUrl: string,
+        userId: number
     }
 }
 
@@ -74,8 +75,11 @@ const useReview = () => {
             const data_lender = await api_.get(body_assetInstance.userReference)
             const body_lender = data_lender.data
 
-            const tmp = body_assetInstance.selfUrl.match(/\/(\d+)$/);
-            const num = tmp ? parseInt(tmp[1], 10) : null
+            const tmp_assetInstance = body_assetInstance.selfUrl.match(/\/(\d+)$/);
+            const num_assetInstance = tmp_assetInstance ? parseInt(tmp_assetInstance[1], 10) : null
+
+            const tmp_borrower = body_borrower.selfUrl.match(/\/(\d+)$/);
+            const num_borrower = tmp_borrower ? parseInt(tmp_borrower[1], 10) : null
 
             return {
                 book: {
@@ -88,11 +92,12 @@ const useReview = () => {
                     country: body_location.country,
                     province: body_location.province,
                     locality: body_location.locality,
-                    assetInstanceNumber: num
+                    assetInstanceNumber: num_assetInstance
                 },
                 borrower: {
                     userName: body_borrower.userName,
-                    selfUrl: body_borrower.selfUrl
+                    selfUrl: body_borrower.selfUrl,
+                    userId: num_borrower
                 }
             }
 
@@ -181,17 +186,32 @@ const useReview = () => {
             );
             console.log(lender_user_review_response)
             console.log(asset_instance_review_response)
-            return {};
+            return {
+                userReviewResponse: lender_user_review_response,
+                assetInstanceReviewResponse: asset_instance_review_response
+            };
         }catch (e){
             console.log("error: " + e)
             return null;
         }
     }
 
-    const handleSendLenderReview = async (lendingNumber) => {
+    const handleSendLenderReview = async (body_userReview: body_review, userNum) => {
         try {
-            return {};
+            console.log(userNum)
+            const borrower_user_review_response = await api.post(
+                `/users/${userNum}/borrower_reviews`,
+                body_userReview,
+                {
+                    headers: {
+                        'Content-Type': 'application/vnd.userBorrowerReview.v1+json'
+                    }
+                }
+            )
+            console.log(borrower_user_review_response)
+            return borrower_user_review_response;
         }catch (e){
+            console.log("error: " + e)
             return null;
         }
     }
