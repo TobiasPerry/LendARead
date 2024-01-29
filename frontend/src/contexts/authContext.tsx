@@ -83,7 +83,15 @@ const AuthContextProvider = (props) => {
         return match ? match[1] : -1
     }
 
-    const [user, setUser] = useState( extractUserId(token));
+    const [user, setUser] = useState(() => {
+       try {
+           return extractUserId(token)
+       } catch (e) {
+           if(isLoggedIn) {
+               return -1
+           }
+       }
+    });
     const handleJWT = async (jwt: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
