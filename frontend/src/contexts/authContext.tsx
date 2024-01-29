@@ -6,7 +6,7 @@ import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
 import {useTranslation} from "react-i18next";
 
 export interface UserDetailsApi {
-    email: string
+    email: string | undefined,
     image: string
     rating: number
     ratingAsBorrower: number
@@ -15,6 +15,18 @@ export interface UserDetailsApi {
     selfUrl: string
     telephone: string
     userName: string
+}
+
+export const emptyUserDetails: UserDetailsApi = {
+    email: "",
+    image: "",
+    rating: 0 ,
+    ratingAsBorrower: 0,
+    ratingAsLender: 0,
+    role: "",
+    selfUrl: "",
+    telephone: "",
+    userName: "",
 }
 export const AuthContext = React.createContext({
     isLoggedIn: false,
@@ -57,18 +69,7 @@ const AuthContextProvider = (props) => {
     api_.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
 
 
-    const [userImage, setUserImage] = useState(defaultUserPhoto);
-    const [userDetails, setUserDetails] = useState({
-        email: "",
-        image: "",
-        rating: 0 ,
-        ratingAsBorrower: 0,
-        ratingAsLender: 0,
-        role: "",
-        selfUrl: "",
-        telephone: "",
-        userName: "",
-    })
+
 
     useEffect(() => {
         if(isLoggedIn || isInLocalStorage)
@@ -92,6 +93,8 @@ const AuthContextProvider = (props) => {
            }
        }
     });
+    const [userImage, setUserImage] = useState(defaultUserPhoto);
+    const [userDetails, setUserDetails] = useState(emptyUserDetails);
     const handleJWT = async (jwt: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
@@ -124,16 +127,13 @@ const AuthContextProvider = (props) => {
         return (await api.get(`/users/${id}`)).data
     }
     const storeUserDetails = async (id: number) => {
-        // console.log(userDetails)
-        // const image = await api_.get(userDetails.image)
-        //
-        // try {
-        //     const image_ = image.data
-        //     if(image_)
-        //         setUserImage(image_)
-        // } catch (e) {
-        //
-        // }
+        console.log(userDetails)
+        if(userDetails.image) {
+            const image = await api_.get(userDetails.image)
+            const image_ = image.data
+            if(image_)
+                setUserImage(image_)
+        }
 
         setUserDetails(userDetails)
     }

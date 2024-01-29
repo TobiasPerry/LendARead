@@ -24,12 +24,16 @@ const useLendings = () => {
 
         const mappedLendings = lendings.map(async (lending: LendingApi) => {
             const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data
-            const image = (await api_.get(user.image)).data
+            let image = photoPlaceholder
+            if(user.image) {
+                 image = (await api_.get(user.image)).data
+            }
+
             return {
                 startDate: lending.lendDate,
                 endDate: lending.devolutionDate,
                 userName: user.userName,
-                userImage: image ? image :  photoPlaceholder, //need to add default user image
+                userImage: image,
                 id: extractId(lending.selfUrl),
                 state: lending.state
             }
