@@ -14,7 +14,7 @@ const useLendings = () => {
 
     const getLendings = async (asset) => {
         // if(asset === undefined || asset.assetinstance === undefined || asset.instanceid === undefined) return
-        if(asset === undefined) return
+        if(asset === undefined || asset === null || asset.assetinstance === undefined) return
 
         const params = {
             assetInstanceId: asset.assetinstanceid,

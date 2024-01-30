@@ -47,6 +47,7 @@ const useUserAssetInstance = (location, id) => {
             assetinstance: assetinstace
         }
 
+        console.log('assetDetails_', assetDetails_)
 
         if(state === "lended" || state === "borrowed")
             await setAssetDetails({...assetDetails_, lending: lending, lendingid: extractId(lending.selfUrl)})

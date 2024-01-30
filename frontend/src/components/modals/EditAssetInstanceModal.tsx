@@ -74,8 +74,8 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
         e.preventDefault();
         const errors = validateForm();
 
-        if ( formErrors.physicalCondition === "" && formErrors.locationId === "" && formErrors.status === "" && formErrors.description === "" && formErrors.maxDays === "") {
-            handleSave(formData);
+        if (formErrors.physicalCondition === "" && formErrors.locationId === "" && formErrors.status === "" && formErrors.description === "" && formErrors.maxDays === "") {
+            handleSave(formData, assetInstance)
         } else {
             // @ts-ignore
             setFormErrors(errors);
