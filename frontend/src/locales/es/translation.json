@@ -173,7 +173,7 @@
     },
     "sorting":  {
       "sort_by": "Ordenar Por:",
-      "most_recent": " Más Reciente",
+      "most_recent": "Más Reciente",
       "least_recent": "Más Antiguo",
       "title_asc": "Título A-Z",
       "title_des": "Título Z-A",
@@ -278,6 +278,9 @@
     "by": "Por",
     "language": "Idioma",
     "isbn": "ISBN",
+    "lending_btn": "Tomar prestado",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de devolucion",
     "location": {
       "title": "¿Donde esta este libro?\n",
       "zip_code": "Código postal",

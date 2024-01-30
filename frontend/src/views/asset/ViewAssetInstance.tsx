@@ -45,17 +45,17 @@ const ViewAssetInstance = () => {
 
     const {handleAssetInstance, handleSendLendingRequest, handleGetReservedDays} = useAssetInstance()
 
-    const [data, setData] = useState(book)
+    // Status: is it loading, was not found, error, etc
     const [loading, setLoading] = useState(true)
     const [found, setFound] = useState(false)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
 
     // AssetInstance Information
+    const [data, setData] = useState(book)
     const [hasReviewAsLender, setHasReviewAsLender] = useState(false)
     const [hasUserImage, setHasUserImage] = useState(false)
     const [hasDescription, setHasDescription] = useState(false)
-    const [assetInstances, setAssetInstances] = useState([])
     const [ownerRating, setOwnerRating] = useState(3)
     const [reservedDates, setReservedDates] = useState([])
 
@@ -104,15 +104,12 @@ const ViewAssetInstance = () => {
         }
     }, []);
 
+    // Request the lending
     const handleClickSendLending = async () =>  {
         console.log("Sending lending")
-        const body = {
-            borrowDate: '2024-01-29',
-            devolutionDate: '2024-02-01',
-            assetInstanceId: bookNumber
-
-        }
-        const res = await handleSendLendingRequest(body);
+        const res = await handleSendLendingRequest(
+            { borrowDate: beginDate, devolutionDate: endDate, assetInstanceId: bookNumber }
+        );
         console.log(res)
     }
 
@@ -243,15 +240,15 @@ const ViewAssetInstance = () => {
                                                                          endDate={endDate}
                                                                          handleStartDateChange={setBeginDate}
                                                                          handleEndDateChange={setEndDate}
+                                                                         maxLendingDays={data.maxLendingDays}
                                                                      />
-                                                                     //<></>
                                                                  ) : (
                                                                      <CalendarNotReservable
                                                                          startDate={beginDate}
                                                                          endDate={endDate}
                                                                          handleEndDateChange={setEndDate}
+                                                                         maxLendingDays={data.maxLendingDays}
                                                                      />
-                                                                     //<></>
                                                                  )
                                                              }
                                                              <button className="btn btn-green"
@@ -263,7 +260,7 @@ const ViewAssetInstance = () => {
                                                                      }
                                                                     }
                                                              >
-                                                                 text de send lending
+                                                                 {t('view_asset.lending_btn')}
                                                              </button>
                                                          </>
                                                      ) : (

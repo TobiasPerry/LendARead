@@ -330,6 +330,9 @@
     "by": "By",
     "language": "Language",
     "isbn": "ISBN",
+    "lending_btn": "Borrow this book",
+    "start_date": "Start date",
+    "end_date": "Devolution date",
     "location": {
       "title": "Where is this book?",
       "zip_code": "Zip Code",
