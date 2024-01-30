@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
-import {useState} from "react";
+import { useState, useContext, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/authContext.tsx"
 import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
@@ -14,7 +16,21 @@ type User = {
 
 const ProfileView = () => {
     const { t } = useTranslation();
-    const [isCurrentUser, setIsCurrentUser] = useState(true); // Change to False and check with AuthContext
+    const [isCurrentUser, setIsCurrentUser] = useState(false); // Change to False and check with AuthContext
+    const { user, userDetails, userImage } = useContext(AuthContext);
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!id) {
+            if (!user) {
+                navigate("/login")
+            }
+            navigate(`/user/${user}`)
+        }
+    }, [])
+
+
 
     const MOCK_profile_picture_src = '/static/user-placeholder.jpeg'
 
@@ -69,7 +85,7 @@ const ProfileView = () => {
                             }
                         </div>
                     </div>
-                    <div className="user-info">
+                    <div className="user-info-profile">
                         <h1>{MOCK_user.name}</h1> 
                         <p className="grey-text">
                         {renderRating("BORROWER", MOCK_user.borrowerRating)}

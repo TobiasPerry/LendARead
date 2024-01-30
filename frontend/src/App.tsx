@@ -36,7 +36,7 @@ export default function App() {
                     <Route path="changepassword" element={<ChangePassword />} />
                     <Route path="register" element={<Register />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
-                    <Route path="userHome" element={<UserProfileView />} />
+                    <Route path="user/:id?" element={<ProfileView />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance /> } />
                     <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
                     <Route path="review/lender/:lendingNumber" element={<RequireAuth> <ReviewLender /> </RequireAuth>} />

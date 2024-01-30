@@ -26,7 +26,7 @@ p {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-inline: 20vh;
+    margin-inline: 10vh;
     padding-top: 10%;
 }
 
@@ -73,9 +73,12 @@ p {
     font-size: min(2vh, 2vw);
 }
 
-.user-info {
+.user-info-profile {
     margin-left: calc(min(var(--photo-width), var(--min-photo-width)) + var(--photo-offset) + var(--text-offset));
     margin-bottom: calc(min(var(--photo-width), var(--min-photo-width)) / 6);
+    display: flex;
+    flex-flow: column;
+    justify-content: start;
 }
 
 .user-info > .info-container {
