@@ -78,30 +78,43 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
             first = false;
         }
-        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active").append(getSortQueryForNativeQuery(sort, sortDirection)).append(" limit :limit offset :offset");
 
+        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active").append(getSortQueryForNativeQuery(sort, sortDirection));
+        final Query queryCount = em.createNativeQuery(queryNativeStringBuilder.toString());
+        queryNativeStringBuilder.append(" limit :limit offset :offset");
         final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
 
 
         final int offset = (pageNum - 1) * itemsPerPage;
         if (lenderId != null){
             queryNative.setParameter("lenderId", lenderId);
+            queryCount.setParameter("lenderId", lenderId);
         }
         if (lendingState != null && !lendingState.isEmpty()){
             List<String> states = lendingState.stream().map(String::toUpperCase).collect(Collectors.toList());
             queryNative.setParameter("active", states);
+            queryCount.setParameter("active", states);
+
         }
         if(startingAfter != null){
             queryNative.setParameter("startingAfter", startingAfter);
+            queryCount.setParameter("startingAfter", startingAfter);
+
         }
         if(startingBefore != null){
             queryNative.setParameter("startingBefore", startingBefore);
+            queryCount.setParameter("startingBefore", startingBefore);
+
         }
         if(aiId != null){
             queryNative.setParameter("ai", aiId);
+            queryCount.setParameter("ai", aiId);
+
         }
         if(borrowerId != null){
             queryNative.setParameter("borrowerId", borrowerId);
+            queryCount.setParameter("borrowerId", borrowerId);
+
         }
 
 
@@ -110,7 +123,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
 
 
         @SuppressWarnings("unchecked")
-        List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
+        List<Long> list = (List<Long>) queryCount.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
 
