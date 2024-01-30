@@ -54,6 +54,7 @@ export default function ReviewBorrower () {
         document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
+            // @ts-ignore
             const {info, exists} : { Asset_and_lender_data, boolean } = await handleGetLendingInfoForBorrower(lendingNumber)
             setAlreadyReviewed(exists)
             setFound((!(info === null || info === undefined)))

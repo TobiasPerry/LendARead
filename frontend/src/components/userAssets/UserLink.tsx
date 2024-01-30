@@ -1,13 +1,15 @@
 import {Link} from "react-router-dom";
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
-const UserLink = ({userId}) => {
+const UserLink = ({lending, state}) => {
 
     useEffect(() => {
-        if(userId)
+        if(lending) {
+            const userId = state === "lended" ? lending.borrowerUrl : lending.lenderUrl
             getUserDetails(userId).then()
-    }, [userId])
+        }
+    }, [lending])
 
     const {userDetails, getUserDetails} = useUserDetails()
 

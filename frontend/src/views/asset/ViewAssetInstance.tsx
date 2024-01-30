@@ -14,6 +14,7 @@ import StarsReviews from "../../components/viewAsset/StarsReviews.tsx";
 
 const ViewAssetInstance = () => {
 
+    // @ts-ignore
     const book : AssetData = {
         title: "",
         author: "",

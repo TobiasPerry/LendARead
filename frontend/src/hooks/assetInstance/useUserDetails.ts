@@ -8,6 +8,7 @@ const useUserDetails = () => {
 
     const getUserDetails = async (userId: number) => {
         const userDetails = (await api.get(`/users/${userId}`)).data
+        console.log(userDetails)
     }
 
     return {

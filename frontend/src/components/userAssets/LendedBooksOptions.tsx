@@ -7,7 +7,6 @@ import RejectLendingModal from "../modals/RejectLendingModal.tsx";
 import ConfirmReturnModal from "../modals/ConfirmReturnModal.tsx";
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import useUserLendedBooksOptions from "../../hooks/assetInstance/useUserLendedBooksOptions.ts";
-import UserLink from "./UserLink.tsx";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -71,7 +70,6 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                         <div className="options-menu"
                              style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                             <h3 >{t('lended_books_actions')}</h3>
-                            <UserLink userId={asset.lending.borrower} />
                             {isActive(asset.lending.state) && (
                                 <>
                                     <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", margin: "15px 0"}}>

@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Location from "../locations/Location.tsx";
 import useLocationAsset from "../../hooks/locations/useLocation.ts";
+import UserLink from "./UserLink.tsx";
 
-const BookStatus = ({asset}) => {
+const BookStatus = ({asset, state}) => {
     const { t } = useTranslation();
     const {getLocation, location} = useLocationAsset()
 
@@ -30,6 +31,7 @@ const BookStatus = ({asset}) => {
                     <h5 ><strong>{t('maxDays')}</strong>: {asset.maxDays}</h5>
                     <h5><strong>{t("location")}</strong>: {location.country}, {location.province}, {location.locality}, {location.zipcode}</h5>
                     <h5><strong>{t("visibility")}</strong>: {t(`${asset.status}`)}</h5>
+                    <UserLink lending={asset.lending} state={state}/>
                 </div>
             }
         </>
