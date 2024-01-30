@@ -324,6 +324,16 @@
     "newLender": {
         "title": "¿Quieres empezar a prestar libros?",
         "subtitle": "A partir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos. Para eso es necesario que agregues la ubicacion predeterminada para tus libros"
+    },
+    "location": {
+        "detail": "Ubicación",
+        "info": "Información de la Ubicación",
+        "nama": "Nombre",
+        "country": "País",
+        "province": "Provincia",
+        "locality": "Ciudad",
+        "zipcode": "Código Postal",
+        "validation-error": "Por favor, seleccione una ubicación válida."
     }
   }
 }

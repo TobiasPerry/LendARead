@@ -376,6 +376,16 @@
     "newLender": {
         "title": "Do you want to start lending books?",
         "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books"
+    },
+    "location": {
+        "detail": "Location",
+        "info": "Location Info",
+        "name": "Name",
+        "country": "Country",
+        "province": "Province",
+        "locality": "City",
+        "zipcode": "Zip Code",
+        "validation-error": "Please, select a valid location."
     }
   }
 }

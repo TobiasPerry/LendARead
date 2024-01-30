@@ -127,3 +127,23 @@ select.round {
     justify-content: center;
     margin-top: 1em;
 }
+
+.location-display {
+    background-color: #D1E9C3;
+    border-radius: 20px;
+    width: 100%;
+    margin-top: 1em;
+    padding-block: 1em;
+}
+
+.field-set {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-inline: 1em;
+}
+
+.field {
+    flex: 1;
+}
+

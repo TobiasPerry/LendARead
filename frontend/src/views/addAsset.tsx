@@ -46,6 +46,20 @@ const AddAsset = () => {
     const {getLocations, addLocation} = useLocations()
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([])
+    const [selectedLocation, setSelectedLocation] = useState<any>({})
+
+
+    // Data from the form
+    const [isbn, setIsbn] = useState('');
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [language, setLanguage] = useState('');
+    const [physicalCondition, setPhysicalCondition] = useState(states[0][0]);
+    const [borrowTimeQuantity, setBorrowTimeQuantity] = useState(0);
+    const [borrowTimeType, setBorrowTimeType] = useState(timeTypes[0][0]);
+    const [acceptsReservations, setAcceptsReservations] = useState(false);
+    const [image, setImage] = useState<any>({});
+    const [locationId, setLocationId] = useState(-1);
 
     const handleLocationSave = async (newLocation: any) => {
         setShowLocModal(false);
@@ -56,6 +70,12 @@ const AddAsset = () => {
     }
 
     useEffect(() => {
+        if (locations.length > 0) {
+            changeSelectedLocation(locations[0].selfUrl.split('/').pop())
+        }
+    }, [locations])
+
+    useEffect(() => {
         api.get('/languages').then((response) => {
             setLanguages(response.data)
         })
@@ -64,7 +84,6 @@ const AddAsset = () => {
     useEffect(() => {
         getLocations(user).then((response) => {
             setLocations(response)
-            console.log(response)
         })
     }, [])
 
@@ -83,6 +102,23 @@ const AddAsset = () => {
             }
         } catch (error) {
             return null
+        }
+    }
+
+    const changeSelectedLocation = (locId: string) => {
+        console.log("Changing location to " + locId)
+        console.log(locations)
+        const filtered = locations.filter((location) => { return location.selfUrl.split('/').pop() == locId })
+        filtered.forEach((location) => {
+            console.log("Filtered: ", location)
+        })
+        const location = filtered[0]
+
+        if (location) {
+            setSelectedLocation(location)
+            setLocationId(parseInt(locId))
+        } else {
+            setSelectedLocation(emptyLocation)
         }
     }
 
@@ -164,6 +200,7 @@ const AddAsset = () => {
         const reader = new FileReader();
         reader.onload = function(e) {
             image.src = e.target.result as string;
+            setImage(e.target.result as string);
         }
         reader.readAsDataURL(input.files[0]);
     }
@@ -178,7 +215,6 @@ const AddAsset = () => {
     }
 
     const validateStep1 = async () => {
-        console.log(userDetails)
         const isbnInput = document.getElementById('isbn') as HTMLInputElement;
         const isbn = isbnInput.value.replace(/[-\s]/g, '');
         if (!isbn || !validateIsbn(isbn)) {
@@ -202,6 +238,7 @@ const AddAsset = () => {
             if (book.title) {
                 titleInput.value = book.title;
                 titleInput.readOnly = true;
+                setTitle(book.title)
             } else {
                 titleInput.value = '';
                 titleInput.readOnly = false;
@@ -210,6 +247,7 @@ const AddAsset = () => {
             const authorInput = document.getElementById('author') as HTMLInputElement;
             if (book.author) {
                 authorInput.value = book.author;
+                setAuthor(book.author)
                 authorInput.readOnly = true;
             } else {
                 authorInput.value = '';
@@ -223,6 +261,7 @@ const AddAsset = () => {
                 if (selectedLang) {
                     languageSelect.value = selectedLang.code;
                     languageSelect.disabled = true;
+                    setLanguage(selectedLang.code)
                 } else {
                     languageSelect.value = '';
                     languageSelect.disabled = false;
@@ -251,7 +290,6 @@ const AddAsset = () => {
     }
 
     const validateStep2 = () => {
-        console.log(userDetails)
         let valid = true
         const titleInput = document.getElementById('title') as HTMLInputElement;
         const authorInput = document.getElementById('author') as HTMLInputElement;
@@ -309,7 +347,6 @@ const AddAsset = () => {
     }
 
     const validateStep3 = () => {
-        console.log(userDetails)
         const borrowTimeQuantityInput = document.getElementById('borrow-time-quantity') as HTMLInputElement;
         const borrowTimeTypeInput = document.getElementById('borrow-time-type') as HTMLInputElement;
         const borrowTimeError = document.getElementById('borrow-time-error') as HTMLInputElement;
@@ -328,13 +365,28 @@ const AddAsset = () => {
         return true;
     }
 
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        const formDataObject = {
+            "isbn": isbn,
+            "title": title,
+            "author": author,
+            "language": language,
+            "physicalCondition": physicalCondition,
+            "borrowTimeQuantity": borrowTimeQuantity,
+            "borrowTimeType": borrowTimeType,
+            "acceptsReservations": acceptsReservations,
+            "image": image,
+            "locationId": locationId
+        }
+        console.log(formDataObject);
+    }
+
 
     const validations = [
         validateStep1,
         validateStep2,
         validateStep3,
-        () => { return true },
-        () => { return true },
     ]
 
     const nextStep = async () => {
@@ -348,8 +400,10 @@ const AddAsset = () => {
             return
         }
         currentStep.classList.add('d-none');
-        nextStep.classList.remove('d-none');
-        setStep(step + 1);
+        if (nextStep) {
+          nextStep.classList.remove('d-none');
+          setStep(step + 1);
+        }
     }
 
     const prevStep = () => {
@@ -384,13 +438,13 @@ const AddAsset = () => {
                         </label>
                     </div>
 
-                    <form className="form-container">
+                    <div className="form-container" onSubmit={(e) => handleSubmit(e)}>
                         <div className='stepper'>
                         </div>
                         <fieldset className="info-container">
                             <h2>{t('addAsset.isbn.ISBN')}</h2>
                             <p>{t('addAsset.isbn.explanation')}</p>
-                            <input type="text" placeholder="ISBN" className='form-control' id='isbn' />
+                            <input type="text" placeholder="ISBN" className='form-control' id='isbn' onChange={(e) => setIsbn(e.target.value)}/>
                             <small id='isbn-error' className="text-danger small d-none">Please input a valid ISBN</small>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' value='Previous' disabled />
@@ -403,12 +457,12 @@ const AddAsset = () => {
                             <div className='field-group'>
                                 <div className='field'>
                                     <label htmlFor='title' className='form-label'>{t('addAsset.bookInfo.title')}</label>
-                                    <input type='text' className='form-control' id='title' placeholder='Title' />
+                                    <input type='text' className='form-control' id='title' placeholder='Title' onChange={(e) => setTitle(e.target.value)}/>
                                     <small id='title-error' className="text-danger small d-none">{t('addAsset.bookInfo.title-validation-error')}</small>
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='physicalCondition' className='form-label'>{t('addAsset.bookInfo.physicalCondition')}</label>
-                                    <select id='physicalCondition' className='form-control round'>
+                                    <select id='physicalCondition' className='form-control round' onChange={(e) => setPhysicalCondition(e.target.value)}>
                                         {states.map((state) => {
                                             return <option key={state[0]} value={state[0]}>{state[1]}</option>
                                         })}
@@ -419,12 +473,12 @@ const AddAsset = () => {
                             <div className='field-group'>
                                 <div className='field'>
                                     <label htmlFor='author' className='form-label'>{t('addAsset.bookInfo.author')}</label>
-                                    <input type='text' className='form-control' id='author' placeholder='Author' />
+                                    <input type='text' className='form-control' id='author' placeholder='Author' onChange={(e) => setAuthor(e.target.value)}/>
                                     <small id='author-error' className="text-danger small d-none">{t('addAsset.bookInfo.author-validation-error')}</small>
                                 </div>
                                 <div className='field'>
                                     <label htmlFor='language' className='form-label'>{t('addAsset.bookInfo.language')}</label>
-                                    <select className='form-control round' id='languageSelect' defaultValue={'invalid'} disabled>
+                                    <select className='form-control round' id='languageSelect' defaultValue={'invalid'} onChange={(e) => setLanguage(e.target.value)} disabled>
                                         <option key='invalid' value='' disabled>{t('addAsset.bookInfo.selectLanguage')}</option>
                                         {   
                                             languages.map((language) => {
@@ -446,8 +500,8 @@ const AddAsset = () => {
                             <h2>{t('addAsset.duration.detail')}</h2>
                             <div className='field-group'>
                                 <label>{t('addAsset.duration.lendFor')}</label>
-                                <input type='number' className='form-control' id='borrow-time-quantity' name='borrow-time-quantity' min='1' placeholder='Lend for' />
-                                <select id='borrow-time-type' className='form-select' >
+                                <input type='number' className='form-control' id='borrow-time-quantity' name='borrow-time-quantity' min='1' placeholder='Lend for' onChange={(e) => setBorrowTimeQuantity(parseInt(e.target.value))}/>
+                                <select id='borrow-time-type' className='form-select' onChange={(e) => setBorrowTimeType(parseInt(e.target.value))}>
                                     {timeTypes.map((timeType) => {
                                         return <option key={timeType[0]} value={timeType[0]}>{timeType[1]}</option>
                                     })}
@@ -455,7 +509,7 @@ const AddAsset = () => {
                             </div>
                             <small id='borrow-time-error' className="text-danger small d-none">{t('addAsset.duration.validation-error')}</small>
                             <div className="custom-control custom-switch mt-3 d-flex justify-content-center" >
-                                <input type="checkbox" className="custom-control-input big-switch mx-2" id="reservationSwitch" value='false' data-toggle="tooltip" title="" />
+                                <input type="checkbox" className="custom-control-input big-switch mx-2" checked={acceptsReservations} id="reservationSwitch" data-toggle="tooltip" title="" onChange={(e) => setAcceptsReservations(e.target.checked)}/>
                                 Aceptar reservas
                             </div>
                             <div className="button-container">
@@ -464,10 +518,46 @@ const AddAsset = () => {
                             </div>
                         </fieldset>
                         <fieldset className='info-container d-none'>
+                            <h2>{t('addAsset.location.detail')}</h2>
+                            <div className='location-selector'>
+                                <select id='location-select' className='form-select' onChange={(e) => {changeSelectedLocation(e.target.value)}}>
+                                    {locations.map((location) => {
+                                        const locId = location.selfUrl.split('/').pop()
+                                        return <option key={locId} value={locId}>{location.name}</option>
+                                    })}
+                                </select>
+                                <small id='location-error' className="text-danger small d-none">{t('addAsset.location.validation-error')}</small>
+                                <div className='flex-grow-1 location-display'>
+                                    <div className="field-set">
+                                        <div className='field'>
+                                            <label className='form-label'>{t('addAsset.location.locality')}</label>
+                                            <p id='locality'>{selectedLocation.locality}</p>
+                                        </div>
+                                        <div className='field'>
+                                            <label className='form-label'>{t('addAsset.location.province')}</label>
+                                            <p id='locality'>{selectedLocation.province}</p>
+                                        </div>
+                                    </div>
+                                    <div className="field-set">
+                                        <div className='field'>
+                                            <label className='form-label'>{t('addAsset.location.country')}</label>
+                                            <p id='locality'>{selectedLocation.country}</p>
+                                        </div>
+                                        <div className='field'>
+                                            <label className='form-label'>{t('addAsset.location.zipcode')}</label>
+                                            <p id='locality'>{selectedLocation.zipcode}</p>
+                                        </div>
+                                    </div>
 
+                                </div>
+                            </div>
+                            <div className="button-container">
+                                <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />
+                                <input type='submit' className='next-button btn btn-outline-success mx-1' onClick={handleSubmit} value='Send' />
+                            </div>
                         </fieldset>
                         <input type="file" className='d-none' accept="image/*" name="file" id="uploadImage" onChange={showImage} />
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
