@@ -55,6 +55,14 @@ const useReview = () => {
             const data = await api.get(url)
             const body = data.data
 
+            if(body.borrowerReviewUrl !== null && body.borrowerReviewUrl !== undefined){
+                console.log("aca")
+                return {
+                    info: null,
+                    exits: true
+                }
+            }
+
             // get the assetInstance
             const data_assetInstance = await api_.get(body.assetInstance)
             const body_assetInstance = data_assetInstance.data
@@ -82,28 +90,31 @@ const useReview = () => {
             const num_borrower = tmp_borrower ? parseInt(tmp_borrower[1], 10) : null
 
             return {
-                book: {
-                    title: body_asset.title,
-                    author: body_asset.author,
-                    userName: body_lender.userName,
-                    userImage: body_lender.image,
-                    image: body_assetInstance.imageReference,
-                    physicalCondition: body_assetInstance.physicalCondition,
-                    country: body_location.country,
-                    province: body_location.province,
-                    locality: body_location.locality,
-                    assetInstanceNumber: num_assetInstance
+                info: {
+                    book: {
+                        title: body_asset.title,
+                        author: body_asset.author,
+                        userName: body_lender.userName,
+                        userImage: body_lender.image,
+                        image: body_assetInstance.imageReference,
+                        physicalCondition: body_assetInstance.physicalCondition,
+                        country: body_location.country,
+                        province: body_location.province,
+                        locality: body_location.locality,
+                        assetInstanceNumber: num_assetInstance
+                    },
+                    borrower: {
+                        userName: body_borrower.userName,
+                        selfUrl: body_borrower.selfUrl,
+                        userId: num_borrower
+                    }
                 },
-                borrower: {
-                    userName: body_borrower.userName,
-                    selfUrl: body_borrower.selfUrl,
-                    userId: num_borrower
-                }
+                exists: false
             }
 
         }catch (e){
             console.log("Error: " + e)
-            return null
+            return {info: null, exits: false};
         }
     }
 
@@ -113,6 +124,13 @@ const useReview = () => {
             const url = `/lendings/${lendingNumber}`
             const data = await api.get(url)
             const body = data.data
+
+            if((body.lenderReviewUrl !== null && body.lenderReviewUrl !== undefined) || (body.assetInstanceReview !== null && body.assetInstanceReview !== undefined)){
+                return {
+                    info: null,
+                    exists: true
+                }
+            }
 
             // get the assetInstance
             const data_assetInstance = await api_.get(body.assetInstance)
@@ -137,28 +155,31 @@ const useReview = () => {
 
 
             return {
-                book: {
-                    title: body_asset.title,
-                    author: body_asset.author,
-                    userName: body_lender.userName,
-                    userImage: body_lender.image,
-                    image: body_assetInstance.imageReference,
-                    physicalCondition: body_assetInstance.physicalCondition,
-                    country: body_location.country,
-                    province: body_location.province,
-                    locality: body_location.locality,
-                    assetInstanceNumber: num_assetInstance
+                info: {
+                    book: {
+                        title: body_asset.title,
+                        author: body_asset.author,
+                        userName: body_lender.userName,
+                        userImage: body_lender.image,
+                        image: body_assetInstance.imageReference,
+                        physicalCondition: body_assetInstance.physicalCondition,
+                        country: body_location.country,
+                        province: body_location.province,
+                        locality: body_location.locality,
+                        assetInstanceNumber: num_assetInstance
+                    },
+                    lender: {
+                        userName: body_lender.userName,
+                        selfUrl: body_lender.selfUrl,
+                        userId: num_lender
+                    },
                 },
-                lender: {
-                    userName: body_lender.userName,
-                    selfUrl: body_lender.selfUrl,
-                    userId: num_lender
-                }
+                exists: false
             }
 
         }catch (e){
             console.log("Error")
-            return null
+            return {info: null, exists: false}
         }
     }
 

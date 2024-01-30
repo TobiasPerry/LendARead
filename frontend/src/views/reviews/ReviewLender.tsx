@@ -40,6 +40,7 @@ export default function ReviewLender () {
     const [found, setFound] = useState(false)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
+    const [alreadyReviewed, setAlreadyReviewed] = useState(false)
     const [userReview, setUserReview] = useState(review_empty)
 
     const {t} = useTranslation();
@@ -51,9 +52,10 @@ export default function ReviewLender () {
         document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
-            const res: Asset_and_borrower_data = await handleGetLendingInfoForLender(lendingNumber)
-            setFound((!(res === null || res === undefined)))
-            setData(res)
+            const {info, exists}: { Asset_and_borrower_data, boolean } = await handleGetLendingInfoForLender(lendingNumber)
+            setAlreadyReviewed(exists)
+            setFound(!(info === null || info === undefined))
+            setData(info)
             setLoading(false)
         }
         fetchData()
@@ -88,7 +90,7 @@ export default function ReviewLender () {
             { loading? (
                 <LoadingAnimation/>
             ) : (
-                !found ? (
+                !found || alreadyReviewed ? (
                     <NotFound/>
                 ):(
                     <div className="main-class py-3">

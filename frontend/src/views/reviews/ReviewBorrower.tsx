@@ -7,8 +7,6 @@ import NotFound from "../../components/NotFound.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
 import Modal from "../../components/modals/Modal.tsx";
-import CancelModal from "../../components/modals/CancelModal.tsx";
-
 
 export default function ReviewBorrower () {
 
@@ -45,6 +43,7 @@ export default function ReviewBorrower () {
     const [assetInstanceReview, setAssetInstanceReview] = useState(review_empty)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
+    const [alreadyReviewed, setAlreadyReviewed] = useState(false)
 
     const {handleGetLendingInfoForBorrower, handleSendBorrowerReview} = UseReview()
 
@@ -52,9 +51,11 @@ export default function ReviewBorrower () {
         document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
-            const res : Asset_and_lender_data = await handleGetLendingInfoForBorrower(lendingNumber)
-            setFound((!(res === null || res === undefined)))
-            setData(res)
+            //const {res, exists} : { Asset_and_lender_data, boolean } = await handleGetLendingInfoForBorrower(lendingNumber)
+            const {info, exists} : { Asset_and_lender_data, boolean } = await handleGetLendingInfoForBorrower(lendingNumber)
+            setAlreadyReviewed(exists)
+            setFound((!(info === null || info === undefined)))
+            setData(info)
             setLoading(false)
         }
         fetchData().then()
@@ -122,7 +123,7 @@ export default function ReviewBorrower () {
                 ) : (
                     <>
                         {
-                            !found ? (
+                            !found || alreadyReviewed ? (
                                 <NotFound/>
                             ): (
                                 <div className="main-class py-3">
