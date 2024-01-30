@@ -62,6 +62,8 @@
   "isReservableLabel": "Is Reservable",
   "statusLabel": "Status",
   "shortcut": "Shortcuts",
+  "lending_period_from": "Lending period from",
+  "to": "to",
   "settings": "Settings",
   "maxDays": "Maximum Loan Days",
   "borrowed_book_actions": "Borrowed Book Actions",
