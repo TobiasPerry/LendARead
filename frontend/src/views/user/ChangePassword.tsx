@@ -49,7 +49,6 @@ const ChangePasswordView = () => {
         setIsLoading(true);
 
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
-        console.log(res)
 
         setIsLoading(false);
 

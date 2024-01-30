@@ -1,6 +1,7 @@
 import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
 import {Link} from "react-router-dom";
+import React from 'react'; // Add this line
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
@@ -8,7 +9,6 @@ import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 export default function Landing(){
 
     const {t} = useTranslation();
-
     return (
         <>
             <section id="hero" style={{backgroundColor: '#D0DCD0', paddingBottom: '100px',}}>

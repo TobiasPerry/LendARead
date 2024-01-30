@@ -1,6 +1,13 @@
 import {api_} from "../api/api.ts";
+import {useEffect, useState} from "react";
 
 const useUserBorrowedBooksOptions = (asset, fetchUserAssetInstance) => {
+
+    const [canReview, setCanReview] = useState(true)
+    useEffect(() => {
+        if(asset)
+            canReview_().then()
+    }, [asset])
 
     const cancelBorrowedBook = async() => {
         await api_.patch(asset.lending.selfUrl, {state: "CANCEL"},
@@ -12,8 +19,13 @@ const useUserBorrowedBooksOptions = (asset, fetchUserAssetInstance) => {
        await fetchUserAssetInstance()
     }
 
+    const canReview_ = async () => {
+        const ans = !asset.lending.hasOwnProperty('lenderReviewUrl')
+        setCanReview(ans)
+    }
+
     return {
-        cancelBorrowedBook
+        cancelBorrowedBook, canReview
     }
 }
 

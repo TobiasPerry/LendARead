@@ -1,15 +1,18 @@
 import {api, api_} from "../api/api.ts";
-import {isActive, isDelivered} from "../../components/user/LendedBooksOptions.tsx";
+import {isActive, isDelivered} from "../../components/userAssets/LendedBooksOptions.tsx";
 import {LendingApi} from "./useUserAssetInstances.ts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
 
     const [canConfirmLending, setCanConfirmLending] = useState(true)
+    const [canReview, setCanReview] = useState(true)
 
     useEffect(() => {
         checkCanConfirmLending().then()
-    }, [])
+        checkCanReview().then()
+    }, [asset])
 
     const checkCanConfirmLending = async () => {
         const lendings: Array<LendingApi> = (await api.get(`/lendings`,{ params: {assetInstanceId: asset.assetinstanceid}} )).data
@@ -18,6 +21,10 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
         setCanConfirmLending(canConfirm)
     }
 
+    const checkCanReview = async () => {
+        const ans = !asset.lending.hasOwnProperty('borrowerReviewUrl')
+        setCanReview(ans)
+    }
     const updateState = async (url, state) => {
         await api_.patch(url, {state: state},
             {
@@ -41,7 +48,7 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
     }
 
     return {
-        rejectLending, confirmLending, returnLending, canConfirmLending
+        rejectLending, confirmLending, returnLending, canConfirmLending, canReview
     }
 }
 

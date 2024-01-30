@@ -11,9 +11,13 @@
 # Package files
 *.jar
 
+
 # Maven
 target/
 dist/
+
+#node modules of front end :)
+frontend/node_modules
 
 # JetBrains IDE
 .idea/

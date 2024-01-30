@@ -1,10 +1,13 @@
 import "../styles/starRating.css"
 const ReviewCard = ({
-                        title = "",
-                        placeholder  = "",
-                        error_stars  = "",
-                        error_description  = ""
-                    }) => {
+        title = "",
+        placeholder  = "",
+        error_stars  = "",
+        error_description  = "",
+        type = "",
+        handleRating = (value) => {console.log(value)},
+        handleReview = (value) => {console.log(value)}
+        }) => {
     return (
         <>
             <div style={{backgroundColor: '#f0f5f0', borderRadius: '20px', margin: '20px', padding: '20px'}}>
@@ -13,36 +16,42 @@ const ReviewCard = ({
                 </h2>
                 <div className="rating-wrapper">
 
-                    <input type="radio" id="lender-5-star-rating" name="star-rating" value="5"/>
-                    <label htmlFor="lender-5-star-rating" className="star-rating" id="star5-lender">
+                    <input type="radio" id={`${type}-5-star-rating`} name={`${type}-star-rating`} value="5"
+                           onClick={() => {handleRating(5)}}/>
+                    <label htmlFor={`${type}-5-star-rating`} className="star-rating"
+                           id={`star5-${type}`}>
                         <i className="fas fa-star d-inline-block star"></i>
                     </label>
 
 
-                    <input type="radio" id="lender-4-star-rating" name="star-rating" value="4"/>
-                    <label htmlFor="lender-4-star-rating" className="star-rating star"
-                           id="star4-lender">
+                    <input type="radio" id={`${type}-4-star-rating`} name={`${type}-star-rating`} value="4"
+                           onClick={() => {handleRating(4)}}/>
+                    <label htmlFor={`${type}-4-star-rating`} className="star-rating star"
+                           id={`star4-${type}`}>
                         <i className="fas fa-star d-inline-block star"></i>
                     </label>
 
 
-                    <input type="radio" id="lender-3-star-rating" name="star-rating" value="3"/>
-                    <label htmlFor="lender-3-star-rating" className="star-rating star"
-                           id="star3-lender">
+                    <input type="radio" id={`${type}-3-star-rating`} name={`${type}-star-rating`} value="3"
+                           onClick={() => {handleRating(3)}}/>
+                    <label htmlFor={`${type}-3-star-rating`} className="star-rating star"
+                           id={`star3-${type}`}>
                         <i className="fas fa-star d-inline-block star"></i>
                     </label>
 
 
-                    <input type="radio" id="lender-2-star-rating" name="star-rating" value="2"/>
-                    <label htmlFor="lender-2-star-rating" className="star-rating star"
-                           id="star2-lender">
+                    <input type="radio" id={`${type}-2-star-rating`} name={`${type}-star-rating`} value="2"
+                           onClick={() => {handleRating(2)}}/>
+                    <label htmlFor={`${type}-2-star-rating`} className="star-rating star"
+                           id={`star2-${type}`}>
                         <i className="fas fa-star d-inline-block star"></i>
                     </label>
 
 
-                    <input type="radio" id="lender-1-star-rating" name="star-rating" value="1"/>
-                    <label htmlFor="lender-1-star-rating" className="star-rating star"
-                           id="star1-lender">
+                    <input type="radio" id={`${type}-1-star-rating`} name={`${type}-star-rating`} value="1"
+                           onClick={() => {handleRating(1)}}/>
+                    <label htmlFor={`${type}-1-star-rating`} className="star-rating star"
+                           id={`star1-${type}`}>
                         <i className="fas fa-star d-inline-block star"></i>
                     </label>
                 </div>
@@ -50,7 +59,10 @@ const ReviewCard = ({
                     {error_stars}
                 </p>
                 <textarea className="form-control" aria-label="With textarea" id="review-area"
-                          placeholder={placeholder}></textarea>
+                          placeholder={placeholder}
+                          onChange={(event) => {handleReview(event.target.value)}}
+                >
+                </textarea>
                 <p className="error">
                     {error_description}
                 </p>

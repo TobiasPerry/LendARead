@@ -1,4 +1,6 @@
 import {api, api_} from "../api/api.ts";
+import {Simulate} from "react-dom/test-utils";
+import canPlayThrough = Simulate.canPlayThrough;
 
 const extractTotalPages = (linkHeader) => {
     if(!linkHeader){
@@ -39,7 +41,10 @@ export interface AssetData {
         country: string;
     },
     reviews: any;
+    rating: number;
     description: string;
+    reservable: boolean;
+    maxLendingDays: number;
     // Add other properties as needed
 }
 
@@ -115,6 +120,8 @@ const useAssetInstance = () => {
 
                 const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
                 const num = tmp ? parseInt(tmp[1], 10) : null
+                const tmp_user = body_user.selfUrl.match(/\/(\d+)$/);
+                const num_user = tmp_user ? parseInt(tmp_user[1], 10) : null
                 // // Check if there's a match, and return the captured number
                 //return num ? parseInt(num[1], 10) : null;
 
@@ -127,6 +134,7 @@ const useAssetInstance = () => {
                     physicalCondition: body_instance.physicalCondition,
                     userImage: body_user.image,
                     userName: body_user.userName,
+                    userNum: num_user,
                     country: body_location.country,
                     province: body_location.province,
                     locality: body_location.locality
@@ -156,19 +164,23 @@ const useAssetInstance = () => {
             const response_language = await api_.get(body_asset.language, undefined)
             const body_language = response_language.data
 
+            console.log(body_reviews)
+
             return {
                 author: body_asset.author,
                 image: body_instance.imageReference,
                 isbn: body_asset.isbn,
                 language: body_language,
                 location: body_location,
-                //location: {country: "", locality: "", province: "", zipcode: ""},
                 physicalCondition: body_instance.physicalCondition,
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
+                rating: body_instance.rating,
                 reviews: body_reviews,
-                description: body_instance.description
+                description: body_instance.description,
+                reservable: body_instance.reservable,
+                maxLendingDays: body_instance.maxLendingDays
             };
         }catch (e){
             console.log("error");
@@ -176,10 +188,48 @@ const useAssetInstance = () => {
         }
     }
 
+    const handleGetReservedDays = async (assetInstanceId) => {
+        try{
+            const res = await api.get(
+                `/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED&state=REJECTED`
+            )
+            const body = res.data
+            const reservedDays = []
+            body.forEach((value) => {
+                const [year_s, month_s, day_s] = value.lendDate.split('-').map(Number)
+                const [year_e, month_e, day_e] = value.devolutionDate.split('-').map(Number)
+                reservedDays.push({start: new Date(year_s, month_s - 1, day_s), end: new Date(year_e, month_e - 1, day_e)})
+            })
+            return reservedDays
+        }catch (e){
+            return null;
+        }
+    }
+
+    const handleSendLendingRequest = async (body) => {
+        try{
+            const res = await api.post(
+                '/lendings',
+                body,
+                {
+                    headers:{
+                        "Content-Type": "application/vnd.assetInstanceLending.v1+json"
+                    }
+                }
+            )
+            return res
+        }catch (e){
+            console.error("Error: " + e);
+            return null;
+        }
+    }
+
     return {
         handleAllAssetInstances,
         handleAssetInstance,
-        handleGetLanguages
+        handleGetLanguages,
+        handleSendLendingRequest,
+        handleGetReservedDays
     };
 }
 

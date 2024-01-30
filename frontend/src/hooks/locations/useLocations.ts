@@ -20,7 +20,6 @@ const useLocations = () => {
     const deleteLocation = async (location: any) => {
         try {
             const response = await api_.delete(location.selfUrl)
-            console.log(response)
             // @ts-ignore
             return true
         } catch (error) {
@@ -30,7 +29,7 @@ const useLocations = () => {
 
     const getLocations = async (userId: any) => {
         try {
-            const response = await api.get(`/locations?userId=2`);
+            const response = await api.get(`/locations?userId=${userId}`)
             return response.data
         } catch (error) {
             return []
@@ -38,7 +37,6 @@ const useLocations = () => {
     };
 
     const addLocation = async (location: LocationApi) => {
-        console.log('add location')
         try {
             const response = await api.post('/locations', location, {
                 headers: { "Content-Type": "application/vnd.location.v1+json" }

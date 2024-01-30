@@ -173,7 +173,7 @@
     },
     "sorting":  {
       "sort_by": "Ordenar Por:",
-      "most_recent": " Más Reciente",
+      "most_recent": "Más Reciente",
       "least_recent": "Más Antiguo",
       "title_asc": "Título A-Z",
       "title_des": "Título Z-A",
@@ -239,6 +239,7 @@
   "public": "Publico",
   "reviews": {
     "title": "Reseña",
+    "send": "Enviar Reseña",
     "lender": {
       "user": {
         "title": "¿Como calificas a {{user}} como prestatario/a de libros?",
@@ -260,6 +261,16 @@
         "error_stars": "Agregá una puntuación",
         "error_text": "Este campo es obligatorio"
       }
+    },
+    "success_modal": {
+      "title": "¡Reseña enviada exitosamente!",
+      "subtitle": "",
+      "btn": "Ok"
+    },
+    "error_modal": {
+      "title": "¡Ha habido un error!",
+      "subtitle": "",
+      "btn": "Ok"
     }
   },
   "view_asset": {
@@ -267,6 +278,9 @@
     "by": "Por",
     "language": "Idioma",
     "isbn": "ISBN",
+    "lending_btn": "Tomar prestado",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de devolucion",
     "location": {
       "title": "¿Donde esta este libro?\n",
       "zip_code": "Código postal",
@@ -284,6 +298,9 @@
   },
   "addAsset": {
     "title": "¿Quieres prestar un libro?",
+    "image": {
+        "validation-error": "Por favor, cargue una imagen válida."
+    },
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Por favor, ingrese un ISBN válido.",
@@ -299,7 +316,9 @@
         "author-validation-error": "Por favor, ingrese un autor válido.",
         "language-validation-error": "Por favor, ingrese un idioma válido.",
         "physicalCondition-validation-error": "Por favor, ingrese una condición física válida.",
-        "selectLanguage": "Seleccionar Idioma"
+        "selectLanguage": "Seleccionar Idioma",
+        "description": "Descripción",
+        "description-validation-error": "Por favor, ingrese una descripción válida."
     },
     "duration": {
         "detail": "Duración del Préstamo",
@@ -308,7 +327,22 @@
         "weeks": "semana/s",
         "months": "mes/es",
         "years": "año/s",
+        "acceptsReservations": "Aceptar Reservas",
         "validation-error": "Por favor, ingrese una duración válida."
+    },
+    "newLender": {
+        "title": "¿Quieres empezar a prestar libros?",
+        "subtitle": "A partir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos. Para eso es necesario que agregues la ubicacion predeterminada para tus libros"
+    },
+    "location": {
+        "detail": "Ubicación",
+        "info": "Información de la Ubicación",
+        "nama": "Nombre",
+        "country": "País",
+        "province": "Provincia",
+        "locality": "Ciudad",
+        "zipcode": "Código Postal",
+        "validation-error": "Por favor, seleccione una ubicación válida."
     }
   }
 }

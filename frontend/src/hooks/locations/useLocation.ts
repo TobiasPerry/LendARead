@@ -12,9 +12,11 @@ const useLocationAsset = () => {
         zipcode: 0,
         selfUrl:""
     })
-    const getLocation = async (locationUrl) => {
-        const location: LocationApi = (await api_.get(locationUrl.assetinstance.locationReference)).data
-        setLocation(location)
+    const getLocation = async (asset) => {
+        if(asset && asset.assetinstance && asset.assetinstance.locationReference) {
+            const location: LocationApi = (await api_.get(asset.assetinstance.locationReference)).data
+            setLocation(location)
+        }
     }
 
     return {
