@@ -8,10 +8,7 @@ import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 
 export default function Landing(){
 
-    // const {t} = useTranslation();
-    const t = (string_) => {
-        return string_
-    }
+    const {t} = useTranslation();
     return (
         <>
             <section id="hero" style={{backgroundColor: '#D0DCD0', paddingBottom: '100px',}}>
