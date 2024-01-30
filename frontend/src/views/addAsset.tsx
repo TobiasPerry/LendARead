@@ -192,14 +192,14 @@ const AddAsset = () => {
 
 
 
-    const showImage = () => {
+    const showImage = (e: any) => {
         const image = document.querySelector('.image-container img') as HTMLImageElement;
         const input = document.querySelector('#uploadImage') as HTMLInputElement;
         const reader = new FileReader();
         reader.onload = function(e) {
             image.src = e.target.result as string;
-            setImage(e.target.result as string);
         }
+        setImage(e.target.files[0])
         reader.readAsDataURL(input.files[0]);
     }
 
@@ -422,14 +422,20 @@ const AddAsset = () => {
             description: description
         }
 
-        // First, post the asset
-        api.post('/assets', asset, {
-            headers: {
-                "Content-Type": "application/vnd.asset.v1+json"
-            }
-        }).then((response) => {
+        // First, post the image
+        api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}}).then((response) => {
             console.log(response)
-        });
+        })
+
+
+        // Then the asset
+        // api.post('/assets', asset, {
+        //     headers: {
+        //         "Content-Type": "application/vnd.asset.v1+json"
+        //     }
+        // }).then((response) => {
+        //     console.log(response)
+        // });
         console.log(formDataObject)
     }
 
@@ -613,7 +619,7 @@ const AddAsset = () => {
                                 <input type='submit' className='next-button btn btn-outline-success mx-1' onClick={nextStep} value='Send' />
                             </div>
                         </fieldset>
-                        <input type="file" className='d-none' accept="image/*" name="file" id="uploadImage" onChange={showImage} />
+                        <input type="file" className='d-none' accept="image/*" name="file" id="uploadImage" onChange={(e) => showImage(e)} />
                     </div>
                 </div>
             </div>
