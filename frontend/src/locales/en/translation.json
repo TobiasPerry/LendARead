@@ -365,7 +365,9 @@
         "author-validation-error": "Please, enter a valid author.",
         "language-validation-error": "Please, enter a valid language.",
         "physicalCondition-validation-error": "Please enter a valid physical condition.",
-        "selectLanguage": "Select a language"
+        "selectLanguage": "Select a language",
+        "description": "Description",
+        "description-validation-error": "Please, enter a valid description."
     },
     "duration": {
         "detail": "Max Borrowing Period",

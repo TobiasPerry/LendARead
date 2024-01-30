@@ -55,6 +55,7 @@ const AddAsset = () => {
     const [author, setAuthor] = useState('');
     const [language, setLanguage] = useState('');
     const [physicalCondition, setPhysicalCondition] = useState(states[0][0]);
+    const [description, setDescription] = useState('');
     const [borrowTimeQuantity, setBorrowTimeQuantity] = useState(0);
     const [borrowTimeType, setBorrowTimeType] = useState(timeTypes[0][0]);
     const [acceptsReservations, setAcceptsReservations] = useState(false);
@@ -293,6 +294,7 @@ const AddAsset = () => {
         const languageInput = document.getElementById('language') as HTMLInputElement;
         const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
         const physicalConditionInput = document.getElementById('physicalCondition') as HTMLInputElement;
+        const descriptionInput = document.getElementById('description') as HTMLInputElement;
 
         if (!titleInput.value ) {
             valid = false;
@@ -329,16 +331,27 @@ const AddAsset = () => {
             error.classList.add('d-none');
         }
 
+        if (!descriptionInput.value ) {
+            valid = false;
+            const error = document.getElementById('description-error') as HTMLInputElement;
+            error.classList.remove('d-none');
+        } else {
+            const error = document.getElementById('description-error') as HTMLInputElement;
+            error.classList.add('d-none');
+        }
+
         if (valid) {
             const titleError = document.getElementById('title-error') as HTMLInputElement;
             const authorError = document.getElementById('author-error') as HTMLInputElement;
             const languageError = document.getElementById('language-error') as HTMLInputElement;
             const physicalConditionError = document.getElementById('physicalCondition-error') as HTMLInputElement;
+            const descriptionError = document.getElementById('description-error') as HTMLInputElement;
             languageInput.value = languageSelect.value;
             titleError.classList.add('d-none');
             authorError.classList.add('d-none');
             languageError.classList.add('d-none');
             physicalConditionError.classList.add('d-none');
+            descriptionError.classList.add('d-none');
         }
         return valid;
     }
@@ -394,6 +407,7 @@ const AddAsset = () => {
             "author": author,
             "language": language,
             "physicalCondition": physicalCondition,
+            "description": description,
             "borrowTimeQuantity": borrowTimeQuantity,
             "borrowTimeType": borrowTimeType,
             "acceptsReservations": acceptsReservations,
@@ -512,6 +526,10 @@ const AddAsset = () => {
                                     <input className='d-none' id='language' readOnly={true} />
                                     <small id='language-error' className="text-danger small d-none">{t('addAsset.bookInfo.language-validation-error')}</small>
                                 </div>
+                            </div>
+                            <div className="field-group mt-2 flex-column">
+                                <textarea className="form-control" id="description" placeholder={t('addAsset.bookInfo.description')} onChange={(e) => setDescription(e.target.value)}/>
+                                <small id='description-error' className="text-danger small d-none">{t('addAsset.bookInfo.description-validation-error')}</small>
                             </div>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />

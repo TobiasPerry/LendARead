@@ -313,7 +313,9 @@
         "author-validation-error": "Por favor, ingrese un autor válido.",
         "language-validation-error": "Por favor, ingrese un idioma válido.",
         "physicalCondition-validation-error": "Por favor, ingrese una condición física válida.",
-        "selectLanguage": "Seleccionar Idioma"
+        "selectLanguage": "Seleccionar Idioma",
+        "description": "Descripción",
+        "description-validation-error": "Por favor, ingrese una descripción válida."
     },
     "duration": {
         "detail": "Duración del Préstamo",
