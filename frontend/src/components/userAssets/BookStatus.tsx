@@ -23,6 +23,7 @@ const BookStatus = ({asset, state}) => {
         {!(asset === undefined || asset.lending === undefined) &&
         <div style={styles}>
             <h3 className="card-title">{t('statusLabel')}: {asset.lending.state}</h3>
+            <UserLink asset={asset} state={state}/>
         </div> }
             {/* User asset instance*/}
             {(asset !== undefined && asset.lending === undefined) &&
@@ -31,7 +32,6 @@ const BookStatus = ({asset, state}) => {
                     <h5 ><strong>{t('maxDays')}</strong>: {asset.maxDays}</h5>
                     <h5><strong>{t("location")}</strong>: {location.country}, {location.province}, {location.locality}, {location.zipcode}</h5>
                     <h5><strong>{t("visibility")}</strong>: {t(`${asset.status}`)}</h5>
-                    <UserLink lending={asset.lending} state={state}/>
                 </div>
             }
         </>

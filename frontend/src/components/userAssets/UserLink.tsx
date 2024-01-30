@@ -1,15 +1,16 @@
 import {Link} from "react-router-dom";
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
 import {useEffect, useState} from "react";
+import {extractId} from "../../hooks/assetInstance/useUserAssetInstances.ts";
 
-const UserLink = ({lending, state}) => {
+const UserLink = ({asset, state}) => {
 
     useEffect(() => {
-        if(lending) {
-            const userId = state === "lended" ? lending.borrowerUrl : lending.lenderUrl
-            getUserDetails(userId).then()
+        if(asset !== undefined && asset.lending !== undefined) {
+            const userId = state === "lended" ? asset.lending.borrowerUrl : asset.lending.lenderUrl
+            getUserDetails(extractId(userId)).then()
         }
-    }, [lending])
+    }, [asset])
 
     const {userDetails, getUserDetails} = useUserDetails()
 
