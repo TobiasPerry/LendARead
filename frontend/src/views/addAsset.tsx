@@ -24,15 +24,15 @@ const AddAsset = () => {
     const navigate = useNavigate();
 
     const states = [
-        ["ASNEW", "As New"],
-        ["FINE", "Fine"],
-        ["VERYGOOD", "Very Good"],
-        ["GOOD", "Good"],
-        ["FAIR", "Fair"],
-        ["POOR", "Poor"],
-        ["EXLIBRARY", "Ex-Library"],
-        ["BOOKCLUB", "Book Club"],
-        ["BINDINGCOPY", "Binding Copy"],
+        ["ASNEW", t('addAsset.ASNEW')],
+        ["FINE", t('addAsset.FINE')],
+        ["VERYGOOD", t('addAsset.VERYGOOD')],
+        ["GOOD", t('addAsset.GOOD')],
+        ["FAIR", t('addAsset.FAIR')],
+        ["POOR", t('addAsset.POOR')],
+        ["EXLIBRARY", t('addAsset.EXLIBRARY')],
+        ["BOOKCLUB", t('addAsset.BOOKCLUB')],
+        ["BINDINGCOPY", t('addAsset.BINDINGCOPY')]
     ]
 
     const timeTypes = [
@@ -41,7 +41,7 @@ const AddAsset = () => {
         [31, t('addAsset.duration.months')]
     ]
 
-    const {user, userDetails} = useContext(AuthContext);
+    const {user}  = useContext(AuthContext);
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<LanguagesDTO>([])
     const [showLocModal, setShowLocModal] = useState(false);
@@ -112,8 +112,6 @@ const AddAsset = () => {
 
     const changeSelectedLocation = (locId: string) => {
         const filtered = locations.filter((location) => { return location.selfUrl.split('/').pop() == locId })
-        filtered.forEach((location) => {
-        })
         const location = filtered[0]
 
         if (location) {
@@ -266,7 +264,7 @@ const AddAsset = () => {
                 authorInput.readOnly = false;
             }
 
-            const languageInput = document.getElementById('language') as HTMLInputElement;
+            // const languageInput = document.getElementById('language') as HTMLInputElement;
             const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
             if (book.lang) {
                 let selectedLang = languages.filter((language) => { return language.code == book.lang })[0]
@@ -415,20 +413,6 @@ const AddAsset = () => {
     }
 
     const handleSubmit = async () => {
-        const formDataObject = {
-            "isbn": isbn,
-            "title": title,
-            "author": author,
-            "language": language,
-            "description": description,
-            "physicalCondition": physicalCondition,
-            "borrowTimeQuantity": borrowTimeQuantity,
-            "borrowTimeType": borrowTimeType,
-            "acceptsReservations": acceptsReservations,
-            "image": image,
-            "locationId": locationId
-        }
-
         const asset = {
             isbn: isbn,
             title: title,
@@ -610,7 +594,7 @@ const AddAsset = () => {
                             <small id='borrow-time-error' className="text-danger small d-none">{t('addAsset.duration.validation-error')}</small>
                             <div className="custom-control custom-switch mt-3 d-flex justify-content-center" >
                                 <input type="checkbox" className="custom-control-input big-switch mx-2" checked={acceptsReservations} id="reservationSwitch" data-toggle="tooltip" title="" onChange={(e) => setAcceptsReservations(e.target.checked)}/>
-                                Aceptar reservas
+                                {t('addAsset.duration.acceptsReservations')}
                             </div>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />

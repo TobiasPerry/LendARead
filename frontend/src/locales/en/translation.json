@@ -376,6 +376,7 @@
         "months": "month/s",
         "weeks": "week/s",
         "years": "year/s",
+        "acceptsReservations": "Accepts reservations",
         "validation-error": "Please, enter a valid duration."
     },
     "newLender": {
