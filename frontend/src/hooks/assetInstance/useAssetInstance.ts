@@ -1,4 +1,7 @@
 import {api, api_} from "../api/api.ts";
+import {compact} from "@headlessui/react/dist/utils/render";
+import {Simulate} from "react-dom/test-utils";
+import canPlayThrough = Simulate.canPlayThrough;
 
 const extractTotalPages = (linkHeader) => {
     if(!linkHeader){
@@ -40,6 +43,8 @@ export interface AssetData {
     },
     reviews: any;
     description: string;
+    reservable: boolean;
+    maxLendingDays: number;
     // Add other properties as needed
 }
 
@@ -162,13 +167,14 @@ const useAssetInstance = () => {
                 isbn: body_asset.isbn,
                 language: body_language,
                 location: body_location,
-                //location: {country: "", locality: "", province: "", zipcode: ""},
                 physicalCondition: body_instance.physicalCondition,
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
                 reviews: body_reviews,
-                description: body_instance.description
+                description: body_instance.description,
+                reservable: body_instance.reservable,
+                maxLendingDays: body_instance.maxLendingDays
             };
         }catch (e){
             console.log("error");
@@ -176,10 +182,45 @@ const useAssetInstance = () => {
         }
     }
 
+    const handleGetReservedDays = async (assetInstanceId) => {
+        try{
+            const res = await api.get(
+                `/lendings?assetInstanceId=${assetInstanceId}`
+            )
+            const body = res.data
+            const reservedDays = []
+            body.forEach((value) => {reservedDays.push({start: value.lendDate, end: value.devolutionDate})})
+            return reservedDays
+        }catch (e){
+            return null;
+        }
+    }
+
+    const handleSendLendingRequest = async (body) => {
+        try{
+            const res = await api.post(
+                '/lendings',
+                body,
+                {
+                    headers:{
+                        "Content-Type": "application/vnd.assetInstanceLending.v1+json"
+                    }
+                }
+            )
+            console.log(res)
+            return res
+        }catch (e){
+            console.error("Error: " + e);
+            return null;
+        }
+    }
+
     return {
         handleAllAssetInstances,
         handleAssetInstance,
-        handleGetLanguages
+        handleGetLanguages,
+        handleSendLendingRequest,
+        handleGetReservedDays
     };
 }
 

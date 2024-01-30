@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
@@ -7,6 +7,9 @@ import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import NotFound from "../../components/NotFound.tsx";
 import {useTranslation} from "react-i18next";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import CalendarReservable from "../../components/viewAsset/CalendarReservable.tsx";
+import CalendarNotReservable from "../../components/viewAsset/CalendarNotReservable.tsx";
+import Modal from "../../components/modals/Modal.tsx";
 
 const ViewAssetInstance = () => {
 
@@ -29,7 +32,9 @@ const ViewAssetInstance = () => {
             country: "",
         },
         reviews: undefined,
-        description: ""
+        description: "",
+        reservable: false,
+        maxLendingDays: -1
     }
 
     const {user, isLoggedIn} = useContext(AuthContext)
@@ -38,17 +43,27 @@ const ViewAssetInstance = () => {
 
     const { bookNumber } = useParams<{ bookNumber: string}>()
 
-    const {handleAssetInstance} = useAssetInstance()
+    const {handleAssetInstance, handleSendLendingRequest, handleGetReservedDays} = useAssetInstance()
 
     const [data, setData] = useState(book)
     const [loading, setLoading] = useState(true)
     const [found, setFound] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState(false)
 
+    // AssetInstance Information
     const [hasReviewAsLender, setHasReviewAsLender] = useState(false)
     const [hasUserImage, setHasUserImage] = useState(false)
     const [hasDescription, setHasDescription] = useState(false)
     const [assetInstances, setAssetInstances] = useState([])
     const [ownerRating, setOwnerRating] = useState(3)
+    const [reservedDates, setReservedDates] = useState([])
+
+    // Lending request info
+    const [beginDate, setBeginDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -64,6 +79,17 @@ const ViewAssetInstance = () => {
                 setHasDescription(false)
             }
             setData(res)
+            // Check which dates are not allowed in case the asset is reservable
+            if(res !== null && res !== undefined) {
+                if(res.reservable) {
+                    const res_reserved_dates = await handleGetReservedDays(bookNumber);
+                    setReservedDates((res_reserved_dates === null || res_reserved_dates === undefined) ? [] : res_reserved_dates)
+                }else {
+                    const today = new Date();
+                    today.setHours(0,0,0)
+                    setBeginDate(today)
+                }
+            }
             if((!(res === null || res === undefined))) {
                 document.title = t('view_asset.title', {title: res.title, author: res.author})
             }else{
@@ -79,6 +105,17 @@ const ViewAssetInstance = () => {
         }
     }, []);
 
+    const handleClickSendLending = async () =>  {
+        console.log("Sending lending")
+        const body = {
+            borrowDate: '2024-01-29',
+            devolutionDate: '2024-02-01',
+            assetInstanceId: bookNumber
+
+        }
+        const res = await handleSendLendingRequest(body);
+        console.log(res)
+    }
 
     // These are the links to redirect to discovery with filters applied
     const authorURL = `/discovery?search=${data.author}`
@@ -87,6 +124,18 @@ const ViewAssetInstance = () => {
 
     return (
         <>
+            <Modal
+                showModal={success}
+                title="text" subtitle="text" btnText="text"
+                handleSubmitModal={() => {navigate('/discovery')}}
+                handleCloseModal={() => {navigate('/discovery')}}
+            />
+            <Modal
+                showModal={error} errorType={true}
+                title="text" subtitle="text" btnText="text"
+                handleSubmitModal={() => {setError(false)}}
+                handleCloseModal={() => {setError(false)}}
+            />
             {
                  loading ? (
                      <LoadingAnimation/>
@@ -187,11 +236,42 @@ const ViewAssetInstance = () => {
                                                  {
                                                      isLoggedIn ? (
                                                          <>
-                                                             Logeado
+                                                             {
+                                                                 data.reservable ? (
+                                                                     <CalendarReservable
+                                                                         reservedDates={reservedDates}
+                                                                         startDate={beginDate}
+                                                                         endDate={endDate}
+                                                                         handleStartDateChange={setBeginDate}
+                                                                         handleEndDateChange={setEndDate}
+                                                                     />
+                                                                     //<></>
+                                                                 ) : (
+                                                                     <CalendarNotReservable
+                                                                         startDate={beginDate}
+                                                                         endDate={endDate}
+                                                                         handleEndDateChange={setEndDate}
+                                                                     />
+                                                                     //<></>
+                                                                 )
+                                                             }
+                                                             <button className="btn btn-green"
+                                                                     onClick={ () => {
+                                                                         handleClickSendLending().then((value) => {
+                                                                             setSuccess(value !== null && value !== undefined)
+                                                                             setError(value === null || value === undefined)
+                                                                         })
+                                                                     }
+                                                                    }
+                                                             >
+                                                                 text de send lending
+                                                             </button>
                                                          </>
                                                      ) : (
                                                          <>
-                                                             boton para logear
+                                                             <button className="btn btn-green" onClick={() => {navigate("/login")}}>
+                                                                 text de login
+                                                             </button>
                                                          </>
                                                      )
                                                  }
