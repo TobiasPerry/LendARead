@@ -1,5 +1,4 @@
 import {api, api_} from "../api/api.ts";
-import {compact} from "@headlessui/react/dist/utils/render";
 import {Simulate} from "react-dom/test-utils";
 import canPlayThrough = Simulate.canPlayThrough;
 
