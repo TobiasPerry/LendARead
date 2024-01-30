@@ -1,48 +1,21 @@
 import { useTranslation } from "react-i18next";
-import { useState, useContext, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/authContext.tsx"
 import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
 
-// Create an User Type
-type User = {
-    name: string,
-    borrowerRating: number,
-    lenderRating: number,
-    behavior: "LENDER" | "BORROWER"
-}
-
-const ProfileView = () => {
+const ProfileView = (props: any) => {
     const { t } = useTranslation();
-    const [isCurrentUser, setIsCurrentUser] = useState(false); // Change to False and check with AuthContext
-    const { user, userDetails, userImage } = useContext(AuthContext);
-    const { id } = useParams();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!id) {
-            if (!user) {
-                navigate("/login")
-            }
-            navigate(`/user/${user}`)
-        }
-    }, [])
-
-
+    const isCurrentUser = props.isCurrentUser;
+    const id = props.id;
+    const profileDetails = props.profileDetails;
 
     const MOCK_profile_picture_src = '/static/user-placeholder.jpeg'
 
-    const MOCK_user: User = {
-        name: "John Doe",
-        borrowerRating: 4.5,
-        lenderRating: 4.5,
-        behavior: "LENDER"
-    }
-
     const renderRating = (behavior: "LENDER" | "BORROWER", rating: number) => {
         if (behavior == "LENDER") {
+            if (profileDetails.role != "LENDER") {
+                return <></>
+            }
             return (
             <>
             {t('userProfile.lender')}
@@ -86,10 +59,10 @@ const ProfileView = () => {
                         </div>
                     </div>
                     <div className="user-info-profile">
-                        <h1>{MOCK_user.name}</h1> 
+                        <h1>{profileDetails.userName}</h1> 
                         <p className="grey-text">
-                        {renderRating("BORROWER", MOCK_user.borrowerRating)}
-                        {renderRating("LENDER", MOCK_user.lenderRating)}
+                        {renderRating("BORROWER", profileDetails.ratingAsBorrower)}
+                        {renderRating("LENDER", profileDetails.ratingAsLender)}
                         </p>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ import ViewAssetInstance from "./views/asset/ViewAssetInstance.tsx";
 import UserAssetInstance from "./views/userAssets/UserAssetInstance.tsx";
 import ReviewLender from "./views/reviews/ReviewLender.tsx";
 import ReviewBorrower from "./views/reviews/ReviewBorrower.tsx";
-import ProfileView from "./views/user/Profile.tsx";
+import ProfileWrapper from "./components/userDetails/ProfileWrapper.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import AddAsset from "./views/addAsset.tsx";
 import ChangePassword from "./views/user/ChangePassword.tsx";
@@ -36,7 +36,7 @@ export default function App() {
                     <Route path="changepassword" element={<ChangePassword />} />
                     <Route path="register" element={<Register />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
-                    <Route path="user/:id?" element={<ProfileView />} />
+                    <Route path="user/:id?" element={<ProfileWrapper />} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance /> } />
                     <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
                     <Route path="review/lender/:lendingNumber" element={<RequireAuth> <ReviewLender /> </RequireAuth>} />
