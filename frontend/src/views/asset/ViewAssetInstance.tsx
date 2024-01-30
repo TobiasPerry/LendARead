@@ -70,32 +70,31 @@ const ViewAssetInstance = () => {
             setLoading(true);
             setData(book)
             const res: AssetData = await handleAssetInstance(bookNumber)
-            setFound((!(res === null || res === undefined)))
-            if((!(res === null || res === undefined))) {
+            // if found
+            if(!(res === null || res === undefined)){
+                setFound(true)
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
-            }else{
-                setHasUserImage(false)
-                setHasDescription(false)
-            }
-            setData(res)
-            // Check which dates are not allowed in case the asset is reservable
-            if(res !== null && res !== undefined) {
+                setData(res)
+                // if reservable, get the reserved dates
                 if(res.reservable) {
                     const res_reserved_dates = await handleGetReservedDays(bookNumber);
                     setReservedDates((res_reserved_dates === null || res_reserved_dates === undefined) ? [] : res_reserved_dates)
-                }else {
+                }
+                // Otherwise, just set initial date today and limit the end date
+                else {
                     const today = new Date();
                     today.setHours(0,0,0)
                     setBeginDate(today)
                 }
-            }
-            if((!(res === null || res === undefined))) {
+                // Set the header title
                 document.title = t('view_asset.title', {title: res.title, author: res.author})
-            }else{
-                document.title = " Not Found "
+                setLoading(false)
+            }else {
+                setFound(false)
+                setLoading(false)
+                document.title = "Not Found"
             }
-            setLoading(false)
         };
         fetchData()
 
