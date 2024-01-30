@@ -9,8 +9,7 @@ const BookStatus = ({asset, state}) => {
     const {getLocation, location} = useLocationAsset()
 
     useEffect(() => {
-            getLocation(asset).then();
-            console.log(asset)
+        getLocation(asset).then();
     }, [asset])
 
     const styles = {
@@ -20,13 +19,13 @@ const BookStatus = ({asset, state}) => {
     }
     return (
         <>
-        {/*Lended/Borrowed asset instance*/}
-        {!(asset === undefined || asset.lending === undefined) &&
-        <div style={styles}>
-            <h4 className="card-title mb-1"><strong> {t('statusLabel')}:</strong> {t(`${asset.lending.state.toLowerCase()}`)}</h4>
-            <h5> <strong>{t("lending_period_from")}: </strong> {asset.lending.lendDate} {t("to")} {asset.lending.devolutionDate}</h5>
-            <UserLink asset={asset} state={state}/>
-        </div> }
+            {/*Lended/Borrowed asset instance*/}
+            {!(asset === undefined || asset.lending === undefined) &&
+                <div style={styles}>
+                    <h4 className="card-title mb-1"><strong> {t('statusLabel')}:</strong> {t(`${asset.lending.state.toLowerCase()}`)}</h4>
+                    <h5> <strong>{t("lending_period_from")}: </strong> {asset.lending.lendDate} {t("to")} {asset.lending.devolutionDate}</h5>
+                    <UserLink asset={asset} state={state}/>
+                </div> }
             {/* User asset instance*/}
             {(asset !== undefined && asset.lending === undefined) &&
                 <div style={styles}>
