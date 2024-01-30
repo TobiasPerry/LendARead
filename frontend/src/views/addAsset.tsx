@@ -406,14 +406,30 @@ const AddAsset = () => {
             "title": title,
             "author": author,
             "language": language,
-            "physicalCondition": physicalCondition,
             "description": description,
-            "borrowTimeQuantity": borrowTimeQuantity,
+            "physicalCondition": physicalCondition,
             "borrowTimeType": borrowTimeType,
             "acceptsReservations": acceptsReservations,
             "image": image,
             "locationId": locationId
         }
+
+        const asset = {
+            isbn: isbn,
+            title: title,
+            author: author,
+            language: language,
+            description: description
+        }
+
+        // First, post the asset
+        api.post('/assets', asset, {
+            headers: {
+                "Content-Type": "application/vnd.asset.v1+json"
+            }
+        }).then((response) => {
+            console.log(response)
+        });
         console.log(formDataObject)
     }
 
