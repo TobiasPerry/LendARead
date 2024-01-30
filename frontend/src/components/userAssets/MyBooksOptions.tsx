@@ -35,10 +35,6 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
         await editAsset(editedAsset, originalAsset)
     }
 
-    useEffect(() => {
-        console.log(asset)
-    }, [asset])
-
     return (
         <div style={{
             backgroundColor: '#f0f5f0',

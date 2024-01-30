@@ -133,7 +133,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
 
        const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
            try {
-               console.log('lending', lending);
                const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
                const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
                const userReference = isLender ? lending.lenderUrl : lending.borrowerUrl;

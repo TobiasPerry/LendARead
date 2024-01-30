@@ -56,7 +56,6 @@ const useReview = () => {
             const body = data.data
 
             if(body.borrowerReviewUrl !== null && body.borrowerReviewUrl !== undefined){
-                console.log("aca")
                 return {
                     info: null,
                     exits: true
@@ -205,8 +204,6 @@ const useReview = () => {
                     }
                 }
             );
-            console.log(lender_user_review_response)
-            console.log(asset_instance_review_response)
             return {
                 userReviewResponse: lender_user_review_response,
                 assetInstanceReviewResponse: asset_instance_review_response
@@ -219,7 +216,6 @@ const useReview = () => {
 
     const handleSendLenderReview = async (body_userReview: body_review, userNum) => {
         try {
-            console.log(userNum)
             const borrower_user_review_response = await api.post(
                 `/users/${userNum}/borrower_reviews`,
                 body_userReview,
@@ -229,7 +225,6 @@ const useReview = () => {
                     }
                 }
             )
-            console.log(borrower_user_review_response)
             return borrower_user_review_response;
         }catch (e){
             console.log("error: " + e)

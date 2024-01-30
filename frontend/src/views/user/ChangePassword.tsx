@@ -38,7 +38,6 @@ const ChangePasswordView = () => {
     }, [emailParam]);
 
     const handleResendToken = async (e: any) => {
-        console.log("send the token request passwod")
         await handleForgotPassword(email)
         setShowSnackbar({show: true, color: '#53b453', text: t('changePassword.resentToken')})
     }
@@ -50,7 +49,6 @@ const ChangePasswordView = () => {
         setIsLoading(true);
 
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
-        console.log(res)
 
         setIsLoading(false);
 

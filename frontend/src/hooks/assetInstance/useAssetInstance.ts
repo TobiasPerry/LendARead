@@ -189,12 +189,10 @@ const useAssetInstance = () => {
             const body = res.data
             const reservedDays = []
             body.forEach((value) => {
-                console.log(value)
                 const [year_s, month_s, day_s] = value.lendDate.split('-').map(Number)
                 const [year_e, month_e, day_e] = value.devolutionDate.split('-').map(Number)
                 reservedDays.push({start: new Date(year_s, month_s - 1, day_s), end: new Date(year_e, month_e - 1, day_e)})
             })
-            console.log(reservedDays)
             return reservedDays
         }catch (e){
             return null;
@@ -212,7 +210,6 @@ const useAssetInstance = () => {
                     }
                 }
             )
-            console.log(res)
             return res
         }catch (e){
             console.error("Error: " + e);

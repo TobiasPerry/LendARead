@@ -149,7 +149,6 @@ const AddAsset = () => {
     }
 
     const validateStep1 = async () => {
-        console.log(userDetails)
         const isbnInput = document.getElementById('isbn') as HTMLInputElement;
         const isbn = isbnInput.value.replace(/[-\s]/g, '');
         if (!isbn || !validateIsbn(isbn)) {
@@ -222,7 +221,6 @@ const AddAsset = () => {
     }
 
     const validateStep2 = () => {
-        console.log(userDetails)
         let valid = true
         const titleInput = document.getElementById('title') as HTMLInputElement;
         const authorInput = document.getElementById('author') as HTMLInputElement;
@@ -280,7 +278,6 @@ const AddAsset = () => {
     }
 
     const validateStep3 = () => {
-        console.log(userDetails)
         const borrowTimeQuantityInput = document.getElementById('borrow-time-quantity') as HTMLInputElement;
         const borrowTimeTypeInput = document.getElementById('borrow-time-type') as HTMLInputElement;
         const borrowTimeError = document.getElementById('borrow-time-error') as HTMLInputElement;

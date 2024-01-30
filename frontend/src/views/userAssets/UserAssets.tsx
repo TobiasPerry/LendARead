@@ -32,7 +32,6 @@ const UserAssetsView = () => {
 
 
     const handleRowClicked = (book, state) => {
-        console.log(book)
         navigate(`/userBook/${book.id}?state=${state}`)
     }
 
