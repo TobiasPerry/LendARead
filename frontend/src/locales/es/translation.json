@@ -298,6 +298,9 @@
   },
   "addAsset": {
     "title": "¿Quieres prestar un libro?",
+    "image": {
+        "validation-error": "Por favor, cargue una imagen válida."
+    },
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Por favor, ingrese un ISBN válido.",
@@ -313,7 +316,9 @@
         "author-validation-error": "Por favor, ingrese un autor válido.",
         "language-validation-error": "Por favor, ingrese un idioma válido.",
         "physicalCondition-validation-error": "Por favor, ingrese una condición física válida.",
-        "selectLanguage": "Seleccionar Idioma"
+        "selectLanguage": "Seleccionar Idioma",
+        "description": "Descripción",
+        "description-validation-error": "Por favor, ingrese una descripción válida."
     },
     "duration": {
         "detail": "Duración del Préstamo",
@@ -322,7 +327,22 @@
         "weeks": "semana/s",
         "months": "mes/es",
         "years": "año/s",
+        "acceptsReservations": "Aceptar Reservas",
         "validation-error": "Por favor, ingrese una duración válida."
+    },
+    "newLender": {
+        "title": "¿Quieres empezar a prestar libros?",
+        "subtitle": "A partir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos. Para eso es necesario que agregues la ubicacion predeterminada para tus libros"
+    },
+    "location": {
+        "detail": "Ubicación",
+        "info": "Información de la Ubicación",
+        "nama": "Nombre",
+        "country": "País",
+        "province": "Provincia",
+        "locality": "Ciudad",
+        "zipcode": "Código Postal",
+        "validation-error": "Por favor, seleccione una ubicación válida."
     }
   }
 }

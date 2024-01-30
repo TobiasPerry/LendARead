@@ -350,6 +350,9 @@
   },
   "addAsset": {
     "title": "Do you want to lend a book?",
+    "image": {
+        "validation-error": "Please, upload a valid image."
+    },
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Please, enter a valid ISBN.",
@@ -365,7 +368,9 @@
         "author-validation-error": "Please, enter a valid author.",
         "language-validation-error": "Please, enter a valid language.",
         "physicalCondition-validation-error": "Please enter a valid physical condition.",
-        "selectLanguage": "Select a language"
+        "selectLanguage": "Select a language",
+        "description": "Description",
+        "description-validation-error": "Please, enter a valid description."
     },
     "duration": {
         "detail": "Max Borrowing Period",
@@ -374,7 +379,22 @@
         "months": "month/s",
         "weeks": "week/s",
         "years": "year/s",
+        "acceptsReservations": "Accepts reservations",
         "validation-error": "Please, enter a valid duration."
+    },
+    "newLender": {
+        "title": "Do you want to start lending books?",
+        "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books"
+    },
+    "location": {
+        "detail": "Location",
+        "info": "Location Info",
+        "name": "Name",
+        "country": "Country",
+        "province": "Province",
+        "locality": "City",
+        "zipcode": "Zip Code",
+        "validation-error": "Please, select a valid location."
     }
   }
 }
