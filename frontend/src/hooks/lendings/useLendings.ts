@@ -10,7 +10,7 @@ const useLendings = () => {
     const [lendings, setLendings] = useState([])
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(0)
-    const PAGE_SIZE = 10
+    const PAGE_SIZE = 1
 
     const getLendings = async (asset) => {
         // if(asset === undefined || asset.assetinstance === undefined || asset.instanceid === undefined) return
@@ -21,7 +21,9 @@ const useLendings = () => {
             'itemsPerPage': PAGE_SIZE,
         }
         
-        const lendings = (await api.get(`/lendings`,{ params: params } )).data
+        const lendingsResponse = await api.get(`/lendings`,{ params: params } )
+        console.log(lendingsResponse.headers)
+        const lendings = lendingsResponse.data
 
         const mappedLendings = lendings.map(async (lending: LendingApi) => {
             const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data

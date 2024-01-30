@@ -10,8 +10,10 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
     const [canReview, setCanReview] = useState(true)
 
     useEffect(() => {
-        checkCanConfirmLending().then()
-        checkCanReview().then()
+        if(asset !== undefined && asset.lending !== undefined) {
+            checkCanConfirmLending().then()
+            checkCanReview().then()
+        }
     }, [asset])
 
     const checkCanConfirmLending = async () => {

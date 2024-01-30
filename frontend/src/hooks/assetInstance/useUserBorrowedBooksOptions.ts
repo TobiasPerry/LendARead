@@ -5,7 +5,7 @@ const useUserBorrowedBooksOptions = (asset, fetchUserAssetInstance) => {
 
     const [canReview, setCanReview] = useState(true)
     useEffect(() => {
-        if(asset)
+        if(asset !== undefined && asset.lending !== undefined)
             canReview_().then()
     }, [asset])
 

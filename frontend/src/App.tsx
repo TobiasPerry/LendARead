@@ -29,14 +29,14 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Landing />} />
-                    <Route path="login" element={<LoginView />} />
+                    <Route path="login" element={<LoginView redirect={true}/>} />
                     <Route path="locations" element={<RequireAuth> <Locations /> </RequireAuth>} />
                     <Route path="userAssets" element={<RequireAuth> <UserHome /> </RequireAuth>} />
                     <Route path="forgotpassword" element={<ForgotPassword />} />
                     <Route path="changepassword" element={<ChangePassword />} />
                     <Route path="register" element={<Register />} />
                     <Route path="discovery" element={<DiscoveryView/>} />
-                    <Route path="userHome" element={<UserProfileView />} />
+                    <Route path="userHome" element={<RequireAuth> <UserProfileView /> </RequireAuth>} />
                     <Route path="book/:bookNumber" element={<ViewAssetInstance /> } />
                     <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
                     <Route path="review/lender/:lendingNumber" element={<RequireAuth> <ReviewLender /> </RequireAuth>} />

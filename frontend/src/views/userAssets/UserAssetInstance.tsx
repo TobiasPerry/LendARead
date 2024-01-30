@@ -57,6 +57,7 @@ const UserAssetInstance = () => {
                              style={{flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
                             <BookStatus
                                 asset={assetDetails}
+                                state={state}
                             />
                             {state === "owned" && <MyBooksOptions
                                 asset={assetDetails}

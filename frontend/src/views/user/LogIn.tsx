@@ -7,7 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 
-const LoginView = () => {
+const LoginView = ({redirect}) => {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,7 +22,7 @@ const LoginView = () => {
         e.preventDefault()
         const loginSuccess = await login(email, password, rememberMe)
         if(loginSuccess)
-            navigate('/userAssets')
+           if(redirect) navigate('/userAssets')
         else
             setLoginError(true)
     }

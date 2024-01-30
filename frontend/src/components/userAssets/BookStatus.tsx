@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Location from "../locations/Location.tsx";
 import useLocationAsset from "../../hooks/locations/useLocation.ts";
+import UserLink from "./UserLink.tsx";
 
-const BookStatus = ({asset}) => {
+const BookStatus = ({asset, state}) => {
     const { t } = useTranslation();
     const {getLocation, location} = useLocationAsset()
 
     useEffect(() => {
-            getLocation(asset).then();
+        getLocation(asset).then();
     }, [asset])
 
     const styles = {
@@ -18,11 +19,13 @@ const BookStatus = ({asset}) => {
     }
     return (
         <>
-        {/*Lended/Borrowed asset instance*/}
-        {!(asset === undefined || asset.lending === undefined) &&
-        <div style={styles}>
-            <h3 className="card-title">{t('statusLabel')}: {asset.lending.state}</h3>
-        </div> }
+            {/*Lended/Borrowed asset instance*/}
+            {!(asset === undefined || asset.lending === undefined) &&
+                <div style={styles}>
+                    <h4 className="card-title mb-1"><strong> {t('statusLabel')}:</strong> {t(`${asset.lending.state.toLowerCase()}`)}</h4>
+                    <h5> <strong>{t("lending_period_from")}: </strong> {asset.lending.lendDate} {t("to")} {asset.lending.devolutionDate}</h5>
+                    <UserLink asset={asset} state={state}/>
+                </div> }
             {/* User asset instance*/}
             {(asset !== undefined && asset.lending === undefined) &&
                 <div style={styles}>
