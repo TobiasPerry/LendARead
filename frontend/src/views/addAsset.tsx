@@ -1,5 +1,6 @@
 import './styles/addAsset.css';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
 import { api } from '../hooks/api/api.ts'
@@ -20,6 +21,7 @@ type LanguagesDTO = LanguageDTO[]
 const AddAsset = () => {
     
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     const states = [
         ["ASNEW", "As New"],
@@ -47,6 +49,8 @@ const AddAsset = () => {
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([])
     const [selectedLocation, setSelectedLocation] = useState<any>({})
+    const alreadyHaveAsset = useRef(false)
+    const assetId = useRef(-1)
 
 
     // Data from the form
@@ -225,11 +229,21 @@ const AddAsset = () => {
         nextBtn.disabled = true;
 
 
+        let book = null;
         // TODO: First try with our API
-
-
-        // If it is not in our API, try with OpenLibrary API
-        const book = await getBookOpenLib(isbn);
+        // This returns a string
+        const response = await api.get('/assets?itemsPerPage=2&page=1&isbn=' + isbn)
+        if (response.status == 200 && response.data.length > 0) {
+            book = response.data[0]
+            const langId = book.language.split('/').pop()
+            const langResponse = await api.get('/languages/' + langId)
+            book.lang = langResponse.data.code
+            alreadyHaveAsset.current = true
+            assetId.current = book.selfUrl.split('/').pop()
+        } else {
+            // If it is not in our API, try with OpenLibrary API
+            book = await getBookOpenLib(isbn);
+        }
 
         if (book) {
             const titleInput = document.getElementById('title') as HTMLInputElement;
@@ -395,12 +409,12 @@ const AddAsset = () => {
             imageLabel.classList.remove('img-error');
             imageError.classList.add('d-none');
         }
-        // handleSubmit
-        handleSubmit()
-        return false;
+        return handleSubmit().then((_) => {
+           return false;
+        })
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const formDataObject = {
             "isbn": isbn,
             "title": title,
@@ -408,6 +422,7 @@ const AddAsset = () => {
             "language": language,
             "description": description,
             "physicalCondition": physicalCondition,
+            "borrowTimeQuantity": borrowTimeQuantity,
             "borrowTimeType": borrowTimeType,
             "acceptsReservations": acceptsReservations,
             "image": image,
@@ -422,21 +437,43 @@ const AddAsset = () => {
             description: description
         }
 
+        // Print the type of borrowTimeType
+        const maxDays = (borrowTimeQuantity * (borrowTimeType as number)) // The LSP is saying that it is not a number, but printing the type gives "number". Idk
+
         // First, post the image
-        api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}}).then((response) => {
-            console.log(response)
-        })
+        const responseImage = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
+        if (responseImage.status !== 201) {
+            return false;     
+        }         
 
+        // Then, if the asset is new, post it
+        const imageId: number = parseInt(responseImage.headers.location.split('/').pop())
+        if (!alreadyHaveAsset.current) {
+            const responseAsset = await api.post("/assets", asset, {headers: {"Content-type": "application/vnd.asset.v1+json"}})
+            if (responseAsset.status !== 201) {
+                return false;     
+            }
+            assetId.current = responseAsset.headers.location.split('/').pop()
+        } 
+        
+        // Lastly, the assetInstnace
+        const assetInstnace = {
+            physicalCondition: physicalCondition,
+            maxDays: maxDays,
+            isReservable: acceptsReservations,
+            imageId: imageId,
+            locationId: locationId,
+            description: description,
+            status: "PUBLIC",
+            assetId: assetId.current,
+        }
 
-        // Then the asset
-        // api.post('/assets', asset, {
-        //     headers: {
-        //         "Content-Type": "application/vnd.asset.v1+json"
-        //     }
-        // }).then((response) => {
-        //     console.log(response)
-        // });
-        console.log(formDataObject)
+        const assetInstanceResponse = await api.post("/assetInstances", assetInstnace, {headers: {"Content-type": "application/vnd.assetInstance.v1+json"}})
+        if (assetInstanceResponse.status !== 201) {
+            return false;     
+        }
+        const assetInstanceId = assetInstanceResponse.data.selfUrl.split('/').pop()
+        navigate(`/userBook/${assetInstanceId}?state=owned`)
     }
 
 
