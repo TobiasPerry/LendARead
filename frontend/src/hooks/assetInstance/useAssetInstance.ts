@@ -119,6 +119,8 @@ const useAssetInstance = () => {
 
                 const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
                 const num = tmp ? parseInt(tmp[1], 10) : null
+                const tmp_user = body_user.selfUrl.match(/\/(\d+)$/);
+                const num_user = tmp_user ? parseInt(tmp_user[1], 10) : null
                 // // Check if there's a match, and return the captured number
                 //return num ? parseInt(num[1], 10) : null;
 
@@ -131,6 +133,7 @@ const useAssetInstance = () => {
                     physicalCondition: body_instance.physicalCondition,
                     userImage: body_user.image,
                     userName: body_user.userName,
+                    userNum: num_user,
                     country: body_location.country,
                     province: body_location.province,
                     locality: body_location.locality

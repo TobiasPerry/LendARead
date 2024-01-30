@@ -8,7 +8,6 @@ import {AuthContext} from "../contexts/authContext.tsx";
 const BookCard = ({ book }) => {
     const {t} = useTranslation()
     const navigate = useNavigate();
-    const {userDetails} = useContext(AuthContext);
 
     const {
         title,
@@ -17,6 +16,7 @@ const BookCard = ({ book }) => {
         physicalCondition,
         userImage,
         userName,
+        userNum,
         country,
         province,
         locality,
@@ -25,10 +25,11 @@ const BookCard = ({ book }) => {
 
     const url_book_image = "url('" + image + "')"
 
+    const {user} = useContext(AuthContext)
+    console.log(user + " vs " + parseInt(userNum, 10))
+
     const handleBookClick = () => {
-        //aca chequeo sea mismo user que el userDetails y navego
-        //hacia /book o /userBook/{id}?state=owned
-        if(userDetails.userName === userName) {
+        if(user.toString() === userNum.toString()) {
             navigate(`/userBook/${assetInstanceNumber}?state=owned`)
         }else {
             navigate(`/book/${assetInstanceNumber}`)
