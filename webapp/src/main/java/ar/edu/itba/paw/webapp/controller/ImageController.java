@@ -36,7 +36,7 @@ public class ImageController {
 
     @GET
     @Path("/{id}")
-    @Produces("image/webp")
+    @Produces({ "image/png", "image/jpeg", "image/gif", MediaType.APPLICATION_JSON })
     public Response getImage(@PathParam("id") final int id,
                              @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size) throws ImageNotFoundException, IOException {
         Image image = imageService.getImage(id);
@@ -48,7 +48,7 @@ public class ImageController {
 
 
     @POST
-    @Produces(value = {"image/webp"})
+    @Produces({ "image/png", "image/jpeg", "image/gif", MediaType.APPLICATION_JSON })
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response addImage(@ar.edu.itba.paw.webapp.form.annotations.interfaces.Image @FormDataParam("image") FormDataBodyPart imageBodyPart, @FormDataParam("image") byte[] image) {
         Image newImage = imageService.addImage( image);

@@ -43,7 +43,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection) {
+    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter) {
 
         final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id join book as b on a.assetid = b.uid join users as borrower on l.borrowerid = borrower.id join users as owner on a.owner = owner.id ");
 
@@ -63,6 +63,16 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             first = false;
 
         }
+        if(startingBefore != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.lenddate <= :startingBefore ");
+            first = false;
+        }
+        if(startingAfter != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.lenddate >= :startingAfter ");
+            first = false;
+        }
         if(borrowerId != null){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
             queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
@@ -79,6 +89,12 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         }
         if (lendingState != null){
             queryNative.setParameter("active", lendingState.toString());
+        }
+        if(startingAfter != null){
+            queryNative.setParameter("startingAfter", startingAfter);
+        }
+        if(startingBefore != null){
+            queryNative.setParameter("startingBefore", startingBefore);
         }
         if(aiId != null){
             queryNative.setParameter("ai", aiId);
