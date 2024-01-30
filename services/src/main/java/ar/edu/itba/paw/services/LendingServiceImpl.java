@@ -177,7 +177,7 @@ public class LendingServiceImpl implements LendingService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter) {
+    public PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final List<String> lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter) {
         return lendingDao.getPagingActiveLending(page, size, aiId, borrowerId, lendingState, lenderId, sort, sortDirection, startingBefore, startingAfter);
     }
 
