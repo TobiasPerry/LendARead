@@ -41,6 +41,7 @@ export interface AssetData {
         country: string;
     },
     reviews: any;
+    rating: number;
     description: string;
     reservable: boolean;
     maxLendingDays: number;
@@ -163,6 +164,8 @@ const useAssetInstance = () => {
             const response_language = await api_.get(body_asset.language, undefined)
             const body_language = response_language.data
 
+            console.log(body_reviews)
+
             return {
                 author: body_asset.author,
                 image: body_instance.imageReference,
@@ -173,6 +176,7 @@ const useAssetInstance = () => {
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
+                rating: body_instance.rating,
                 reviews: body_reviews,
                 description: body_instance.description,
                 reservable: body_instance.reservable,

@@ -10,6 +10,7 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import CalendarReservable from "../../components/viewAsset/CalendarReservable.tsx";
 import CalendarNotReservable from "../../components/viewAsset/CalendarNotReservable.tsx";
 import Modal from "../../components/modals/Modal.tsx";
+import StarsReviews from "../../components/viewAsset/StarsReviews.tsx";
 
 const ViewAssetInstance = () => {
 
@@ -53,9 +54,10 @@ const ViewAssetInstance = () => {
 
     // AssetInstance Information
     const [data, setData] = useState(book)
-    const [hasReviewAsLender, setHasReviewAsLender] = useState(false)
+    const [hasReviewAsLender, setHasReviewAsLender] = useState(false) // To decide if show rating alongside the user
     const [hasUserImage, setHasUserImage] = useState(false)
     const [hasDescription, setHasDescription] = useState(false)
+    const [hasReviews, setHasReviews] = useState(false)
     const [ownerRating, setOwnerRating] = useState(3)
     const [reservedDates, setReservedDates] = useState([])
 
@@ -73,6 +75,7 @@ const ViewAssetInstance = () => {
             // if found
             if(!(res === null || res === undefined)){
                 setFound(true)
+                setHasReviews(res.rating !== 0)
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
                 setData(res)
@@ -269,29 +272,6 @@ const ViewAssetInstance = () => {
                                                          </>
                                                      )
                                                  }
-                                                 {/*<security:authorize access="isAuthenticated()">*/}
-                                                 {/*    <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>*/}
-                                                 {/*    <form:form modelAttribute="borrowAssetForm" method="post"*/}
-                                                 {/*               action="${borrowAsset}" enctype="multipart/form-data" id="form"*/}
-                                                 {/*               accept-charset="utf-9">*/}
-                                                 {/*        <c:choose>*/}
-                                                 {/*            <c:when test="${assetInstance.isReservable}">*/}
-                                                 {/*                <jsp:include page="../components/calendar.jsp"/>*/}
-                                                 {/*            </c:when>*/}
-                                                 {/*            <c:otherwise>*/}
-                                                 {/*                <jsp:include page="../components/simpleCalendar.jsp"/>*/}
-                                                 {/*            </c:otherwise>*/}
-                                                 {/*        </c:choose>*/}
-                                                 {/*        <input className="btn btn-green" type="submit"*/}
-                                                 {/*               value="text"/>*/}
-                                                 {/*    </form:form>*/}
-                                                 {/*</security:authorize>*/}
-                                                 {/*<security:authorize access="!isAuthenticated()">*/}
-                                                 {/*    <a className="btn-green" href="<c:url value="/login"/>"*/}
-                                                 {/*       style="text-decoration: none; text-align: center">*/}
-                                                 {/*        text*/}
-                                                 {/*    </a>*/}
-                                                 {/*</security:authorize>*/}
                                              </div>
                                          </div>
                                      </div>
@@ -386,91 +366,25 @@ const ViewAssetInstance = () => {
                                                           }}
                                                           id="scrollspyRating">
                                                          <div className="container-column">
-                                                             <h1 className="text-muted text-center mt-5"><i
-                                                                 className="bi bi-x-circle"></i></h1>
-                                                             <h6 className="text-muted text-center mb-5">
-                                                                 {t('view_asset.reviews.no_reviews')}
-                                                             </h6>
-                                                             {/*        {*/}
-                                                             {/*            hasReviews ? (<></>) : (<></>)*/}
-                                                             {/*        }*/}
-                                                             {/*        <c:if test="${hasReviews}">*/}
-                                                             {/*            <div className="container-row" style="justify-content: center !important;">*/}
-                                                             {/*                <h1>*/}
-                                                             {/*            <span id="rating-value">text</span><small>/5</small>*/}
-                                                             {/*                </h1>*/}
-                                                             {/*            </div>*/}
-                                                             {/*            <div className="container-row mb-2" style="justify-content: center !important;"*/}
-                                                             {/*                 id="stars-container" data-rating="<c:out value="*/}
-                                                             {/*                 ${assetInstanceReviewAverage}"/>">*/}
-                                                             {/*                <*/}
-                                                             {/*                %--Stars will be added via JS based on the rating--%>*/}
-                                                             {/*            </div>*/}
-                                                             {/*            <div className="user-profile-reviews-pane">*/}
+                                                             {
+                                                                 !hasReviews ? (
+                                                                     <>
+                                                                         <h1 className="text-muted text-center mt-5"><i
+                                                                             className="bi bi-x-circle"></i></h1>
+                                                                         <h6 className="text-muted text-center mb-5">
+                                                                             {t('view_asset.reviews.no_reviews')}
+                                                                         </h6>
+                                                                     </>
+                                                                 ) : (
+                                                                     <>
+                                                                         <div className="text-center">
+                                                                             <h1>{data.rating} <small>/ 5</small></h1>
+                                                                         </div>
+                                                                         <StarsReviews rating={parseInt(data.rating.toString(), 10)}/>
+                                                                     </>
+                                                                 )
+                                                             }
 
-                                                             {/*                <c:forEach var="review" items="${assetInstanceReviewPage.list}">*/}
-                                                             {/*                    <jsp:include page="../components/reviewCardProfile.jsp">*/}
-                                                             {/*                        <jsp:param name="review" value="${review.review}"/>*/}
-                                                             {/*                        <jsp:param name="userId" value="${review.reviewer.id}"/>*/}
-                                                             {/*                        <jsp:param name="reviewer" value="${review.reviewer.name}"/>*/}
-                                                             {/*                        <jsp:param name="role" value="${review.reviewer.behavior}"/>*/}
-                                                             {/*                        <jsp:param name="imgSrc"*/}
-                                                             {/*                                   value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>*/}
-                                                             {/*                    </jsp:include>*/}
-                                                             {/*                </c:forEach>*/}
-                                                             {/*            </div>*/}
-                                                             {/*            <div className="container-row-wrapped"*/}
-                                                             {/*                 style="margin-top: 25px; margin-bottom: 25px; width: 100%;">*/}
-                                                             {/*                <div>*/}
-                                                             {/*                    <nav aria-label="Page navigation example">*/}
-                                                             {/*                        <ul className="pagination justify-content-center align-items-center">*/}
-                                                             {/*                            <li className="page-item">*/}
-                                                             {/*                                <button type="button"*/}
-                                                             {/*                                        className="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage != 1 ? "" : "*/}
-                                                             {/*                                        disabled"}"*/}
-                                                             {/*                                        id="previousPageButton"*/}
-                                                             {/*                                        style="border-color: rgba(255, 255, 255, 0)"*/}
-                                                             {/*                                        onclick="window.location.href = '<c:url*/}
-                                                             {/*                                        value="/info/${assetInstance.id}*/}
-                                                             {/*                                ?reviewPage=${assetInstanceReviewPage.currentPage - 1}#scrollspyRating"/>'"*/}
-                                                             {/*                                >*/}
-                                                             {/*                                <i className="bi bi-chevron-left"></i>*/}
-                                                             {/*                                text*/}
-                                                             {/*                            </button>*/}
-                                                             {/*                        </li>*/}
-
-                                                             {/*                        <li >*/}
-                                                             {/*                            <c:out value="${assetInstanceReviewPage.currentPage}"/>*/}
-                                                             {/*                            / <c:out*/}
-                                                             {/*                            value="${assetInstanceReviewPage.totalPages}"/>*/}
-                                                             {/*                        </li>*/}
-
-                                                             {/*                        <li className="page-item">*/}
-                                                             {/*                            <button type="button"*/}
-                                                             {/*                                    className="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage < assetInstanceReviewPage.totalPages ? "" : "*/}
-                                                             {/*                                    disabled"}"*/}
-                                                             {/*                                    id="nextPageButton"*/}
-                                                             {/*                                    style="border-color: rgba(255, 255, 255, 0)"*/}
-                                                             {/*                                    onclick="window.location.href = '<c:url*/}
-                                                             {/*                                        value="/info/${assetInstance.id}*/}
-                                                             {/*                            ?reviewPage=${assetInstanceReviewPage.currentPage + 1}#scrollspyRating"/>'"*/}
-                                                             {/*                            >*/}
-                                                             {/*                            text <i*/}
-                                                             {/*                            className="bi bi-chevron-right"></i>*/}
-                                                             {/*                        </button>*/}
-                                                             {/*                    </li>*/}
-                                                             {/*                </ul>*/}
-                                                             {/*            </nav>*/}
-                                                             {/*        </div>*/}
-                                                             {/*    </div>*/}
-
-                                                             {/*</c:if>*/}
-                                                             {/*<c:if test="${!hasReviews}">*/}
-                                                             {/*    <h1 className="text-muted text-center mt-5"><i className="bi bi-x-circle"></i></h1>*/}
-                                                             {/*    <h6 className="text-muted text-center mb-5">*/}
-                                                             {/*        text*/}
-                                                             {/*    </h6>*/}
-                                                             {/*</c:if>*/}
                                                          </div>
                                                      </div>
                                                  </div>
