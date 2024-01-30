@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import Landing from "./views/Landing.tsx";
 import DiscoveryView from "./views/Discovery.tsx";
 import NotFound from "./components/NotFound.tsx";
+import React from 'react'; // Add this line
 
 
 import LoginView from "./views/user/LogIn.tsx";
