@@ -43,7 +43,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter) {
+    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final List<String> lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter) {
 
         final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id join book as b on a.assetid = b.uid join users as borrower on l.borrowerid = borrower.id join users as owner on a.owner = owner.id ");
 
@@ -52,9 +52,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             queryNativeStringBuilder.append("WHERE a.owner = :lenderId ");
             first = false;
         }
-        if (lendingState != null){
+        if (lendingState != null && !lendingState.isEmpty()){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
-            queryNativeStringBuilder.append(" l.active = :active ");
+            queryNativeStringBuilder.append(" l.active in (:active) ");
             first = false;
         }
         if(aiId != null){
@@ -87,8 +87,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         if (lenderId != null){
             queryNative.setParameter("lenderId", lenderId);
         }
-        if (lendingState != null){
-            queryNative.setParameter("active", lendingState.toString());
+        if (lendingState != null && !lendingState.isEmpty()){
+            List<String> states = lendingState.stream().map(String::toUpperCase).collect(Collectors.toList());
+            queryNative.setParameter("active", states);
         }
         if(startingAfter != null){
             queryNative.setParameter("startingAfter", startingAfter);

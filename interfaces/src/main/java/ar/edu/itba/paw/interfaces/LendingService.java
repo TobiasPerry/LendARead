@@ -2,11 +2,11 @@ package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface LendingService {
 
@@ -21,7 +21,7 @@ public interface LendingService {
     void rejectAsset(final int lendingId) throws AssetInstanceNotFoundException, InvalidLendingStateTransitionException, UserNotFoundException, LendingNotFoundException;
 
     void changeLending(final int lendingId,final String state) throws  InvalidLendingStateTransitionException, UserNotFoundException, LendingNotFoundException;
-    PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter);
+    PagingImpl<Lending> getPagingActiveLendings(final int page, final int size, final Integer aiId, final Integer borrowerId, final List<String> lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter);
 
     User getBorrower(final int lendingId) throws  LendingNotFoundException;
 
