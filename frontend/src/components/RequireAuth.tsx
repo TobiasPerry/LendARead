@@ -6,7 +6,7 @@ const RequireAuth = ({ children }) => {
    const {isLoggedIn} = useContext(AuthContext);
 
    if (!isLoggedIn)
-      return <LoginView />;
+      return <LoginView redirect={false} />;
 
    return children;
 };
