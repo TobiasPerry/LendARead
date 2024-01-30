@@ -9,6 +9,11 @@ const ProfileView = (props: any) => {
     const id = props.id;
     const profileDetails = props.profileDetails;
 
+    const tabs = [
+        "Lender Reviews",
+        "Borrower Reviews"
+    ]
+
     const MOCK_profile_picture_src = '/static/user-placeholder.jpeg'
 
     const renderRating = (behavior: "LENDER" | "BORROWER", rating: number) => {
@@ -21,7 +26,7 @@ const ProfileView = (props: any) => {
             {t('userProfile.lender')}
             <span className="user-role-stars">
                 { rating <= 0 ? (
-                    "-.-" ) : (
+                    "-.- " ) : (
                     rating
                 )}
                 ★ </span>
@@ -33,14 +38,33 @@ const ProfileView = (props: any) => {
             {t('userProfile.borrower')}
             <span className="user-role-stars">
                 { rating <= 0 ? (
-                    "-.-" ) : (
+                    "-.- " ) : (
                     rating
                 )}
-                ★ </span>
+                ★</span>
             </>
             )
         }
     }
+
+    const renderTabTitle = (title: string, index: number) => {
+        return (
+            <li key={index} className="nav-item" role="presentation">
+                <button className="nav-link black-text" type="button" role="tab" aria-selected={index == 0}>{title}</button>
+            </li>
+        )
+    }
+
+    const renderTabNav = () => {
+        return (
+            <ul className="nav nav-tabs" id="user-tab" role="tablist">
+            {tabs.map((tab, index) => {
+                return renderTabTitle(tab, index)
+            })}
+            </ul>
+        )
+    }
+
 
 
     return (
@@ -61,9 +85,13 @@ const ProfileView = (props: any) => {
                     <div className="user-info-profile">
                         <h1>{profileDetails.userName}</h1> 
                         <p className="grey-text">
-                        {renderRating("BORROWER", profileDetails.ratingAsBorrower)}
-                        {renderRating("LENDER", profileDetails.ratingAsLender)}
+                            {renderRating("BORROWER", profileDetails.ratingAsBorrower)}
+                            {renderRating("LENDER", profileDetails.ratingAsLender)}
                         </p>
+                    </div>
+                    <hr/>
+                    <div className="tabs-container">
+                        {renderTabNav()}
                     </div>
                 </div>
             </div>

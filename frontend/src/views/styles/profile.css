@@ -6,6 +6,10 @@
     --grey-custom: #9ca3af;
 }
 
+hr {
+    margin-top: calc(min(var(--photo-width), var(--min-photo-width)) / 2.5);
+}
+
 p {
     font-size: 1.5rem;;
 }
@@ -98,3 +102,4 @@ p {
 span.user-role-stars {
     margin-inline: 0.5em;
 }
+
