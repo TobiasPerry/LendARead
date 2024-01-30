@@ -2,13 +2,14 @@ import BookCardPlaceholder from "../../components/BookCardPlaceholder.tsx";
 
 import ReviewCard from "../../components/reviews/ReviewCard.tsx";
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import UseReview, {Asset_and_borrower_data, body_review} from "../../hooks/reviews/useReview.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
 import NotFound from "../../components/NotFound.tsx";
 import Modal from "../../components/modals/Modal.tsx";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 export default function ReviewLender () {
     const { lendingNumber } = useParams<{ lendingNumber: string}>()
@@ -42,9 +43,11 @@ export default function ReviewLender () {
     const [error, setError] = useState(false)
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
     const [userReview, setUserReview] = useState(review_empty)
+    const [notAllowed, setNotAllowed] = useState(false)
 
     const {t} = useTranslation();
     const { handleGetLendingInfoForLender, handleSendLenderReview } = UseReview()
+    const {user} = useContext(AuthContext)
 
 
 
@@ -56,6 +59,7 @@ export default function ReviewLender () {
             const {info, exists}: { Asset_and_borrower_data, boolean } = await handleGetLendingInfoForLender(lendingNumber)
             setAlreadyReviewed(exists)
             setFound(!(info === null || info === undefined))
+            setNotAllowed( (info !== null && info !== undefined) && (user.toString() === info.borrower.userId.toString()) )
             setData(info)
             setLoading(false)
         }
@@ -91,7 +95,7 @@ export default function ReviewLender () {
             { loading? (
                 <LoadingAnimation/>
             ) : (
-                !found || alreadyReviewed ? (
+                !found || alreadyReviewed || notAllowed ? (
                     <NotFound/>
                 ):(
                     <div className="main-class py-3">

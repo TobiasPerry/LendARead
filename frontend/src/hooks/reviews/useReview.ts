@@ -88,6 +88,9 @@ const useReview = () => {
             const tmp_borrower = body_borrower.selfUrl.match(/\/(\d+)$/);
             const num_borrower = tmp_borrower ? parseInt(tmp_borrower[1], 10) : null
 
+            const tmp_owner = body_lender.selfUrl.match(/\/(\d+)$/);
+            const num_owner = tmp_owner ? parseInt(tmp_owner[1], 10) : null
+
             return {
                 info: {
                     book: {
@@ -95,6 +98,7 @@ const useReview = () => {
                         author: body_asset.author,
                         userName: body_lender.userName,
                         userImage: body_lender.image,
+                        userNum: num_owner,
                         image: body_assetInstance.imageReference,
                         physicalCondition: body_assetInstance.physicalCondition,
                         country: body_location.country,
@@ -160,6 +164,7 @@ const useReview = () => {
                         author: body_asset.author,
                         userName: body_lender.userName,
                         userImage: body_lender.image,
+                        userNum: num_lender,
                         image: body_assetInstance.imageReference,
                         physicalCondition: body_assetInstance.physicalCondition,
                         country: body_location.country,

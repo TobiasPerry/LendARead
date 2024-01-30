@@ -1,12 +1,13 @@
 import ReviewCard from "../../components/reviews/ReviewCard.tsx";
 import {useTranslation} from "react-i18next";
 import UseReview, {Asset_and_lender_data, body_review} from "../../hooks/reviews/useReview.ts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import NotFound from "../../components/NotFound.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
 import Modal from "../../components/modals/Modal.tsx";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
 export default function ReviewBorrower () {
 
@@ -44,18 +45,19 @@ export default function ReviewBorrower () {
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
+    const [notAllowed, setNotAllowed] = useState(false)
 
     const {handleGetLendingInfoForBorrower, handleSendBorrowerReview} = UseReview()
+    const {user} = useContext(AuthContext)
 
     useEffect(() => {
         document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
-            //const {res, exists} : { Asset_and_lender_data, boolean } = await handleGetLendingInfoForBorrower(lendingNumber)
-            // @ts-ignore
             const {info, exists} : { Asset_and_lender_data, boolean } = await handleGetLendingInfoForBorrower(lendingNumber)
             setAlreadyReviewed(exists)
             setFound((!(info === null || info === undefined)))
+            setNotAllowed( (info !== null && info !== undefined) && (user.toString() === info.lender.userId.toString()) )
             setData(info)
             setLoading(false)
         }
@@ -124,7 +126,7 @@ export default function ReviewBorrower () {
                 ) : (
                     <>
                         {
-                            !found || alreadyReviewed ? (
+                            !found || alreadyReviewed || notAllowed ? (
                                 <NotFound/>
                             ): (
                                 <div className="main-class py-3">
