@@ -106,11 +106,8 @@ const AddAsset = () => {
     }
 
     const changeSelectedLocation = (locId: string) => {
-        console.log("Changing location to " + locId)
-        console.log(locations)
         const filtered = locations.filter((location) => { return location.selfUrl.split('/').pop() == locId })
         filtered.forEach((location) => {
-            console.log("Filtered: ", location)
         })
         const location = filtered[0]
 
@@ -365,8 +362,32 @@ const AddAsset = () => {
         return true;
     }
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
+    const validateStep4 = () => {
+        const locationSelect = document.getElementById('location-select') as HTMLSelectElement;
+        const locationError = document.getElementById('location-error') as HTMLInputElement;
+        if (!locationSelect.value || parseInt(locationSelect.value) <= 0) {
+            locationError.classList.remove('d-none');
+            return false;
+        }
+        locationError.classList.add('d-none');
+
+        const imageInput = document.getElementById('uploadImage') as HTMLInputElement;
+        const imageLabel = document.querySelector('.image-container') as HTMLInputElement;
+        const imageError = document.getElementById('image-error') as HTMLInputElement;
+        if (!imageInput.value) {
+            imageError.classList.remove('d-none');
+            imageLabel.classList.add('img-error');
+            return false;
+        } else {
+            imageLabel.classList.remove('img-error');
+            imageError.classList.add('d-none');
+        }
+        // handleSubmit
+        handleSubmit()
+        return false;
+    }
+
+    const handleSubmit = () => {
         const formDataObject = {
             "isbn": isbn,
             "title": title,
@@ -379,7 +400,7 @@ const AddAsset = () => {
             "image": image,
             "locationId": locationId
         }
-        console.log(formDataObject);
+        console.log(formDataObject)
     }
 
 
@@ -387,6 +408,7 @@ const AddAsset = () => {
         validateStep1,
         validateStep2,
         validateStep3,
+        validateStep4,
     ]
 
     const nextStep = async () => {
@@ -436,9 +458,10 @@ const AddAsset = () => {
                                 <i className="bi bi-cloud-upload"></i>
                             </div>
                         </label>
+                        <small id='image-error' className="text-danger small d-none">{t('addAsset.image.validation-error')}</small>
                     </div>
 
-                    <div className="form-container" onSubmit={(e) => handleSubmit(e)}>
+                    <div className="form-container"> 
                         <div className='stepper'>
                         </div>
                         <fieldset className="info-container">
@@ -553,7 +576,7 @@ const AddAsset = () => {
                             </div>
                             <div className="button-container">
                                 <input type='button' className='prev-button btn btn-outline-success mx-1' onClick={prevStep} value='Previous' />
-                                <input type='submit' className='next-button btn btn-outline-success mx-1' onClick={handleSubmit} value='Send' />
+                                <input type='submit' className='next-button btn btn-outline-success mx-1' onClick={nextStep} value='Send' />
                             </div>
                         </fieldset>
                         <input type="file" className='d-none' accept="image/*" name="file" id="uploadImage" onChange={showImage} />

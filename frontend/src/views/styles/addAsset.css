@@ -84,6 +84,11 @@ select.round {
     font-size: 10em;
 }
 
+.img-error {
+    border: 2px solid red;
+    transition: all 0.3s ease-in-out;
+}
+
 .flex-container {
     display: flex;
     flex-wrap: wrap;

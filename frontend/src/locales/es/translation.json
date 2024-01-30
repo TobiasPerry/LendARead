@@ -295,6 +295,9 @@
   },
   "addAsset": {
     "title": "¿Quieres prestar un libro?",
+    "image": {
+        "validation-error": "Por favor, cargue una imagen válida."
+    },
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Por favor, ingrese un ISBN válido.",
