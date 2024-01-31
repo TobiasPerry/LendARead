@@ -126,12 +126,14 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         List<Long> list = (List<Long>) queryCount.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
-
-        if (list.isEmpty())
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) queryNative.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        if (ids.isEmpty())
             return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
 
         final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) " + getSortQueryForTypedQuery(sort,sortDirection), Lending.class);
-        query.setParameter("ids", list);
+        query.setParameter("ids", ids);
         List<Lending> reviewList = query.getResultList();
 
         return new PagingImpl<>(reviewList, pageNum, totalPages);
