@@ -22,7 +22,7 @@ export default function Landing(){
         setData([])
         const res = await handleAllAssetInstances(1, 4, SORT_TYPES.RECENT, SORT_DIRECTIONS.DES, "",[], [], 1)
         if(res !== null && res !== undefined){
-            const {books, _} = res
+            const {books} = res
             setData(books)
         }
         setLoading(false)

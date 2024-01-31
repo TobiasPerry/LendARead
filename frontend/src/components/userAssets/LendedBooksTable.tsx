@@ -109,7 +109,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                             <td>{book.start_date}</td>
                             <td>{book.return_date}</td>
                             <td>{book.user}</td>
-                            <td>{t(`${book.lendingStatus.toLowerCase()}`)}</td>
+                            <td>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}

@@ -92,7 +92,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                             <td>{book.title}</td>
                             <td>{book.author}</td>
                             <td>{book.language}</td>
-                            <td>{t(`${book.state}`)}</td>
+                            <td>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}

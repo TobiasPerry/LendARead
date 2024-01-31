@@ -144,7 +144,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                    start_date: lending.lendDate,
                    return_date: lending.devolutionDate,
                    user: user.userName,
-                   state: assetinstance.physicalCondition,
+                   physicalCondition: assetinstance.physicalCondition,
                    id: extractId(lending.selfUrl),
                    lendingStatus: lending.state
                };
@@ -208,6 +208,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                 author: asset.author,
                 language: lang.name,
                 state: assetinstance.status,
+                physicalCondition: assetinstance.physicalCondition,
                 imageUrl: assetinstance.imageReference,
                 id: extractId(assetinstance.selfUrl)
             })

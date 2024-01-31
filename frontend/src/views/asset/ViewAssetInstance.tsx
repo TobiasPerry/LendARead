@@ -122,6 +122,8 @@ const ViewAssetInstance = () => {
     const physicalConditionURL = `/discovery?physicalCondition=${data.physicalCondition}`
     const languageURL = `/discovery?language=${data.language.code}`
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             <Modal
@@ -389,6 +391,7 @@ const ViewAssetInstance = () => {
                                                                              data.reviews.map((review, index) => (<ShowReviewCard review={review} key={index}/> ))
                                                                          }
                                                                          <div className="text-center">
+                                                                             {/*@ts-ignore*/}
                                                                             <GreenButton style={{width: '20%'}}
                                                                                          text={t('view_asset.reviews.see_all')}
                                                                                          action={() => {navigate(`/book/${bookNumber}/reviews`)}} />
