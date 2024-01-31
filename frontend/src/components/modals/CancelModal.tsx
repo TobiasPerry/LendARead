@@ -11,7 +11,8 @@ const CancelModal = ({ asset, showModal, handleCloseModal, handleSubmitModal }) 
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
-                        <div className="icon-box">
+                        <div className="icon-box" style={{backgroundColor: "#D45235"}}>
+                            <i className="fas fa-ban fa-lg"></i>
                         </div>
                         <h2 className="modal-title" id="modalTitle">
                             {t('userHomeView.cancelTitle')}
