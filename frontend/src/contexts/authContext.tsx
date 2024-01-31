@@ -138,7 +138,8 @@ const AuthContextProvider = (props) => {
         setUserDetails(userDetails)
     }
 
-    const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets"): Promise<boolean> => {
+    // For path to login we use the root as a default
+    const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/"): Promise<boolean> => {
         try {
 
             const response: any = await api.get(path,
