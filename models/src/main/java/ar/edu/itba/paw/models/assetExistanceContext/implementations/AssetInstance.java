@@ -51,7 +51,7 @@ public class AssetInstance {
     private Image image;
 
     @Formula("(SELECT COALESCE(AVG(COALESCE(asr.rating, 0)),0) FROM assetInstanceReview AS asr left outer join lendings as l on asr.lendid = l.id  WHERE l.assetinstanceid = id)")
-    private Integer rating;
+    private float rating;
 
 
     public AssetInstance(final int id, final Asset book, final PhysicalCondition physicalCondition, final User userReference, final Location location, final Image imageId, final AssetState as, final int maxDaysLending, final String description) {
@@ -208,7 +208,7 @@ public class AssetInstance {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
-    public Integer getRating() {
+    public float getRating() {
         return rating;
     }
     public void setIsReservable(boolean isReservable) {

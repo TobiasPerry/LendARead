@@ -17,7 +17,7 @@ public class AddAssetForm {
     private String title;
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 500)
     private String description;
 
     @NotNull

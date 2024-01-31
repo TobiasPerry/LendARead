@@ -107,7 +107,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         }
         queryFilters.append(isFirst ? "WHERE " : "AND ");
         // If there's a rating filter parameter
-        queryFilters.append("  COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
+        queryFilters.append("  COALESCE(avg_reviews.avg_rating ,0) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,0) <= :max_rating ");
 
         // Append the filters
         queryNativeString.append(queryFilters);
