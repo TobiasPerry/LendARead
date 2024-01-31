@@ -3,7 +3,7 @@
     font-size: 0; /* Remove whitespace between inline-block elements */
 }
 
-.star {
+.gold-star {
     display: inline-block;
     width: 40px;
     height: 40px;

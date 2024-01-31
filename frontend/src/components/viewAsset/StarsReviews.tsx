@@ -10,11 +10,11 @@ const StarRating = ({ rating }) => {
 
         for (let i = 1; i <= 5; i++) {
             if (i <= filledStars) {
-                stars.push(<span key={i} className="star filled"></span>);
+                stars.push(<span key={i} className="gold-star filled"></span>);
             } else if (i === filledStars + 1 && hasHalfStar) {
-                stars.push(<span key={i} className="star half-filled"></span>);
+                stars.push(<span key={i} className="gold-star half-filled"></span>);
             } else {
-                stars.push(<span key={i} className="star"></span>);
+                stars.push(<span key={i} className="gold-star"></span>);
             }
         }
 
