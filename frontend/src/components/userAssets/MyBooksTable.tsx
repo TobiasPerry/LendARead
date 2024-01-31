@@ -58,7 +58,7 @@ const MyBooksTable = ({handleRowClicked}) => {
         <>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>My Books Table</title>
+                <title>{t("my_books")}</title>
                 <link rel="canonical" href="http://mysite.com/example" />
             </Helmet>
             {isLoading ?

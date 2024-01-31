@@ -105,7 +105,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         setIsLoading(true)
        const queryparams = {
            'page': newPage,
-           'pageSize': PAGE_SIZE,
+           'itemsPerPage': PAGE_SIZE,
            'sortDirection': newSort.order,
        }
 

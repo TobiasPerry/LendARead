@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import {Helmet} from "react-helmet";
 import useAssetInstances, {
     checkCanceled,
     checkFinished,
@@ -71,6 +72,11 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>{isLender ? t('lended_books'): t('borrowed_books')}</title>
+                <link rel="canonical" href="http://mysite.com/example" />
+            </Helmet>
             {isLoading ?
                 <LoadingAnimationWhite /> :
         <div className="container mt-3">
