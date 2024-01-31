@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import React, {lazy, Suspense} from 'react';
 import AuthProvider from "./contexts/authContext.tsx";
 import LoadingAnimation from "./components/LoadingAnimation.tsx";
+import {Helmet} from "react-helmet";
 
 
 const LoginView = lazy(() => import("./views/user/LogIn.tsx"));
@@ -27,6 +28,10 @@ const Landing = lazy(() => import("./views/Landing.tsx"));
 
 export default function App() {
     return (
+        <>
+        <Helmet>
+            <title>Lend a Read</title>  {/* Default title */}
+        </Helmet>
         <AuthProvider>
             <Suspense fallback={<LoadingAnimation />}>
                 <Routes>
@@ -51,6 +56,7 @@ export default function App() {
                 </Routes>
             </Suspense>
         </AuthProvider>
+        </>
     );
 }
 function Layout() {
