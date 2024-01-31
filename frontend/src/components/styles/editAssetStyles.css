@@ -5,3 +5,8 @@
 .image-container:hover .img-hover-text {
     color: #D1E9C3;
 }
+
+.img-fluid {
+height: auto;
+object-fit: cover;
+}
