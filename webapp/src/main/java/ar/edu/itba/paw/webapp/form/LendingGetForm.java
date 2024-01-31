@@ -18,7 +18,8 @@ public class LendingGetForm {
     @QueryParam("page")
     @DefaultValue("1")
     private Integer page;
-    @QueryParam("itemsPerPage")@DefaultValue("4")
+    @QueryParam("itemsPerPage")
+    @DefaultValue("4")
     private Integer itemsPerPage;
     @QueryParam("assetInstanceId")
     private Integer assetInstanceId;
