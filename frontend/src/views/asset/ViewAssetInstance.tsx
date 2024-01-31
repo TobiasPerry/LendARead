@@ -109,6 +109,11 @@ const ViewAssetInstance = () => {
         const res = await handleSendLendingRequest(
             { borrowDate: beginDate, devolutionDate: endDate, assetInstanceId: bookNumber }
         );
+        if(res !== undefined && res !== null){
+            setSuccess(true)
+        }else{
+            setError(true)
+        }
     }
 
     // These are the links to redirect to discovery with filters applied
