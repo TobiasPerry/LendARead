@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 
 const MyBookActiveLendings = ({ asset }) => {
     const navigate = useNavigate();
-    const { lendings, currentPage, changePage, totalPages, getLendings } = useLendings();
+    const { lendings, currentPage, changePage, totalPages, getLendings, setAsset_ } = useLendings();
     const { t } = useTranslation();
 
     useEffect(() => {
         getLendings(asset).then();
+        setAsset_(asset)
     }, [asset]);
 
     const handleNavigation = (lendingId) => {
