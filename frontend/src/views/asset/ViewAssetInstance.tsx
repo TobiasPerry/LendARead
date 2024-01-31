@@ -4,7 +4,7 @@ import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import {useTranslation} from "react-i18next";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import CalendarReservable from "../../components/viewAsset/CalendarReservable.tsx";
@@ -122,6 +122,8 @@ const ViewAssetInstance = () => {
     const physicalConditionURL = `/discovery?physicalCondition=${data.physicalCondition}`
     const languageURL = `/discovery?language=${data.language.code}`
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             <Modal
@@ -389,6 +391,7 @@ const ViewAssetInstance = () => {
                                                                              data.reviews.map((review, index) => (<ShowReviewCard review={review} key={index}/> ))
                                                                          }
                                                                          <div className="text-center">
+                                                                             {/*@ts-ignore*/}
                                                                             <GreenButton style={{width: '20%'}}
                                                                                          text={t('view_asset.reviews.see_all')}
                                                                                          action={() => {navigate(`/book/${bookNumber}/reviews`)}} />

@@ -75,7 +75,7 @@ const lendingStatusAdapterApi = {
     finished: "FINISHED"
 }
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 5
+    const PAGE_SIZE = 1
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
@@ -130,6 +130,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                params: queryparams
        })
 
+       setTotalPages(extractTotalPages(lendings.headers["link"]))
 
        const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
            try {
@@ -144,7 +145,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                    start_date: lending.lendDate,
                    return_date: lending.devolutionDate,
                    user: user.userName,
-                   state: assetinstance.physicalCondition,
+                   physicalCondition: assetinstance.physicalCondition,
                    id: extractId(lending.selfUrl),
                    lendingStatus: lending.state
                };
@@ -208,6 +209,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                 author: asset.author,
                 language: lang.name,
                 state: assetinstance.status,
+                physicalCondition: assetinstance.physicalCondition,
                 imageUrl: assetinstance.imageReference,
                 id: extractId(assetinstance.selfUrl)
             })
@@ -216,13 +218,16 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return booksRetrieved
     };
 
-    const changePage = async (newPage: number) => {
-        setCurrentPage(newPage);
+    const changePageMyBooks = async (newPage: number) => {
         await fetchMyBooks(newPage, sort, filter);
+        setCurrentPage(newPage);
+    };
+    const changePageLendings = async (newPage: number, isLender) => {
+        await fetchLendings(newPage, sort, filter, isLender);
+        setCurrentPage(newPage);
     };
 
-
-    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePage, totalPages, books, setBooks, fetchLendings, isLoading};
+    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading};
 };
 
 export default useUserAssetInstances;

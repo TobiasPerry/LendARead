@@ -13,7 +13,17 @@ import Pagination from "../Pagination.tsx"; // Path to your custom hook
 
 const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { t } = useTranslation();
-    const { setFilter, filter, fetchLendings, sort, setSort, currentPage, changePage, totalPages, books, isLoading} = useUserAssetInstances();
+    const {
+        setFilter,
+        filter,
+        fetchLendings,
+        sort,
+        setSort,
+        currentPage,
+        changePageLendings,
+        totalPages,
+        books,
+        isLoading} = useUserAssetInstances();
 
     useEffect(() => {
         fetchLendings(currentPage, sort, filter, isLender).then()
@@ -109,13 +119,13 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                             <td>{book.start_date}</td>
                             <td>{book.return_date}</td>
                             <td>{book.user}</td>
-                            <td>{t(`${book.lendingStatus.toLowerCase()}`)}</td>
+                            <td>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}
             </tbody>
         </table>
-           <Pagination  currentPage={currentPage} totalPages={totalPages} changePage={changePage}/>
+           <Pagination  currentPage={currentPage} totalPages={totalPages} changePage={(newPage) => changePageLendings(newPage, isLender)}/>
             </div>
             }
         </>

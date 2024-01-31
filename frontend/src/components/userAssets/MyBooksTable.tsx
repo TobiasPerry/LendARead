@@ -13,7 +13,7 @@ const MyBooksTable = ({handleRowClicked}) => {
         sort,
         setSort,
         currentPage,
-        changePage,
+        changePageMyBooks,
         totalPages,
         books,
         isLoading
@@ -92,13 +92,13 @@ const MyBooksTable = ({handleRowClicked}) => {
                             <td>{book.title}</td>
                             <td>{book.author}</td>
                             <td>{book.language}</td>
-                            <td>{t(`${book.state}`)}</td>
+                            <td>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}
                 </tbody>
             </table>
-           <Pagination totalPages={totalPages} changePage={changePage} currentPage={currentPage} />
+           <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
         </div> }
         </>
     );
