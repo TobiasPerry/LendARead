@@ -29,7 +29,7 @@ const BookCard = ({ book }) => {
     console.log(user + " vs " + parseInt(userNum, 10))
 
     const handleBookClick = () => {
-        if(user.toString() === userNum.toString()) {
+        if(user !== null && user !== undefined && user.toString() === userNum.toString()) {
             navigate(`/userBook/${assetInstanceNumber}?state=owned`)
         }else {
             navigate(`/book/${assetInstanceNumber}`)
