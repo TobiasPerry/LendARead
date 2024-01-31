@@ -75,7 +75,7 @@ const lendingStatusAdapterApi = {
     finished: "FINISHED"
 }
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 5
+    const PAGE_SIZE = 1
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
@@ -130,6 +130,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                params: queryparams
        })
 
+       setTotalPages(extractTotalPages(lendings.headers["link"]))
 
        const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
            try {
@@ -218,8 +219,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
     };
 
     const changePage = async (newPage: number) => {
-        setCurrentPage(newPage);
         await fetchMyBooks(newPage, sort, filter);
+        setCurrentPage(newPage);
     };
 
 
