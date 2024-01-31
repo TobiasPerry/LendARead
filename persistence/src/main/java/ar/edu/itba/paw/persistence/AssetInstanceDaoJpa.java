@@ -102,12 +102,12 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         }
         if (searchQuery.getAssetState() != null && !searchQuery.getAssetState().equals(AssetState.ALL)) {
                 queryFilters.append(isFirst ? "WHERE " : "AND ");
-                queryFilters.append("f ai.status = :state ");
+                queryFilters.append(" ai.status = :state ");
                 isFirst = false;
         }
-        queryFilters.append(isFirst ? "WHERE " : "AND ");
+        queryFilters.append(isFirst ? " WHERE " : "AND ");
         // If there's a rating filter parameter
-        queryFilters.append("  COALESCE(avg_reviews.avg_rating ,0) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,0) <= :max_rating ");
+        queryFilters.append("  COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
 
         // Append the filters
         queryNativeString.append(queryFilters);
