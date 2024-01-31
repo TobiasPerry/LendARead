@@ -99,7 +99,7 @@ const ViewAssetInstance = () => {
             }else {
                 setFound(false)
                 setLoading(false)
-                document.title = "Not Found"
+                document.title = t('not_found.tab_title')
             }
         };
         fetchData()
@@ -389,7 +389,9 @@ const ViewAssetInstance = () => {
                                                                              data.reviews.map((review, index) => (<ShowReviewCard review={review} key={index}/> ))
                                                                          }
                                                                          <div className="text-center">
-                                                                            <GreenButton style={{width: '20%'}} text="btn de ir a ver todas las reviews" action={() => {navigate(`/book/${bookNumber}/reviews`)}} />
+                                                                            <GreenButton style={{width: '20%'}}
+                                                                                         text={t('view_asset.reviews.see_all')}
+                                                                                         action={() => {navigate(`/book/${bookNumber}/reviews`)}} />
                                                                          </div>
                                                                      </>
                                                                  )

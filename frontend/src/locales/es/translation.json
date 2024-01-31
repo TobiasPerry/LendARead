@@ -218,6 +218,7 @@
     "delete": "Eliminar"
   },
   "not_found": {
+    "tab_title": "No se ha encontrado",
     "title": "Lo sentimos",
     "subtitle": "No hemos encontrado lo que buscabas"
   },
@@ -282,7 +283,7 @@
     "start_date": "Fecha de inicio",
     "end_date": "Fecha de devolucion",
     "location": {
-      "title": "¿Donde esta este libro?\n",
+      "title": "¿Donde esta este libro?",
       "zip_code": "Código postal",
       "locality": "Localidad",
       "province": "Provincia",
@@ -293,8 +294,12 @@
       "no_description": "No hay descripción para esta publicación"
     },
     "reviews": {
-      "no_reviews": "No hay reseñas para este libro"
+      "no_reviews": "No hay reseñas para este libro",
+      "see_all": "Ver todas las reseñas"
     }
+  },
+  "view_asset_reviews": {
+    "title": "Reseñas de {{title}}"
   },
   "addAsset": {
     "title": "¿Quieres prestar un libro?",

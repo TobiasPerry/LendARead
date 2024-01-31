@@ -273,7 +273,6 @@ const useReview = () => {
             const response_asset = await api_.get(body_instance.assetReference)
             const body_asset = response_asset.data
 
-            console.log(body_reviews)
             return {
                 title: body_asset.title,
                 author: body_asset.author,

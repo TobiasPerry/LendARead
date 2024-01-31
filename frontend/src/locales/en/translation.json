@@ -274,6 +274,7 @@
     "delete": "Delete"
   },
   "not_found": {
+    "tab_title": "Not found",
     "title": "We're sorry",
     "subtitle": "We could not find what you were looking for"
   },
@@ -347,8 +348,12 @@
       "no_description": "There is no description for this publication"
     },
     "reviews": {
-      "no_reviews": "There are no reviews for this book"
+      "no_reviews": "There are no reviews for this book",
+      "see_all": "See all reviews"
     }
+  },
+  "view_asset_reviews": {
+    "title": "{{title}} reviews"
   },
   "addAsset": {
     "title": "Do you want to lend a book?",

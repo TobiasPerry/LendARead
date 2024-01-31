@@ -30,8 +30,10 @@ const ReviewsAssetInstance = () => {
         if(!(res === null || res === undefined)){
             setNotFound(false)
             setData(res)
+            document.title = (t('view_asset_reviews.title', {title: res.title}))
         }else{
             setNotFound(true)
+            document.title = t('not_found.tab_title')
         }
         setLoading(false)
     }
