@@ -36,6 +36,10 @@ public class LendingGetForm {
 
     @QueryParam("startingAfter")
     private LocalDate startingAfter;
+    @QueryParam("endBefore")
+    private LocalDate endBefore;
+    @QueryParam("endAfter")
+    private LocalDate endAfter;
 
     @QueryParam("state")
     private List<String> state;

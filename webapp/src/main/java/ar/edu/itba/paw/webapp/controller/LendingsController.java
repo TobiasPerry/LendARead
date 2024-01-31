@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfaces.LendingService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;
@@ -53,7 +52,7 @@ public class LendingsController {
     @Produces(value = { Vnd.VND_ASSET_INSTANCE_LENDING })
     @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lendingGetForm.lenderId,#lendingGetForm.borrowerId)")
     public Response getLendings(@Valid @BeanParam LendingGetForm lendingGetForm) {
-        PagingImpl<Lending> paging = aas.getPagingActiveLendings(lendingGetForm.getPage(), lendingGetForm.getItemsPerPage(), lendingGetForm.getAssetInstanceId(), lendingGetForm.getBorrowerId(), lendingGetForm.getState(), lendingGetForm.getLenderId(), lendingGetForm.getSort(), lendingGetForm.getSortDirection(), lendingGetForm.getStartingBefore(), lendingGetForm.getStartingAfter());
+        PagingImpl<Lending> paging = aas.getPagingActiveLendings(lendingGetForm.getPage(), lendingGetForm.getItemsPerPage(), lendingGetForm.getAssetInstanceId(), lendingGetForm.getBorrowerId(), lendingGetForm.getState(), lendingGetForm.getLenderId(), lendingGetForm.getSort(), lendingGetForm.getSortDirection(), lendingGetForm.getStartingBefore(), lendingGetForm.getStartingAfter(), lendingGetForm.getEndBefore(), lendingGetForm.getEndAfter());
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
         LOGGER.info("GET lendings/ lenderId:{} borrowerId:{} assetInstanceId:{} state:{}",lendingGetForm.getLenderId(),lendingGetForm.getBorrowerId(),lendingGetForm.getAssetInstanceId(),lendingGetForm.getState());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LendingDTO>>(lendingDTOS) {});
