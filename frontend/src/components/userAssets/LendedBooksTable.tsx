@@ -97,7 +97,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
             <table className="table table-hover mt-2 mb-3">
                 <thead className="table-light">
                 <tr>
-                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} {renderSortIcon('image')}</th>
+                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} </th>
                     <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
                     <th scope="col" onClick={() => handleSortChange('start_date')}>{t('start_date')} {renderSortIcon('start_date')}</th>
                     <th scope="col" onClick={() => handleSortChange('return_date')}>{t('return_date')} {renderSortIcon('return_date')}</th>
@@ -128,7 +128,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                             <td>{book.start_date}</td>
                             <td>{book.return_date}</td>
                             <td>{book.user}</td>
-                            <td>{t(`${book.physicalCondition}`)}</td>
+                            <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}

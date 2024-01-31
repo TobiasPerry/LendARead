@@ -4,6 +4,7 @@ import LocationModal from "../../components/modals/LocationModal.tsx";
 import Location from "../../components/locations/Location.tsx";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useLocations from "../../hooks/locations/useLocations.ts";
+import {Helmet} from "react-helmet";
 
 export interface LocationApi {
     name: string,
@@ -64,6 +65,9 @@ const LocationsPage = () => {
 
     return (
         <div className="main-class" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+            <Helmet>
+                <title>{t("locations.title")}</title>
+            </Helmet>
             <div className="container">
                 <h2 style={{ padding: '20px' }}>{t('locations.title')}</h2>
                 <div className="container-row-wrapped" style={{ backgroundColor: '#D0DCD0', borderRadius: '20px', padding: '20px' }}>

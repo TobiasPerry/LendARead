@@ -31,7 +31,6 @@ const useLendings = () => {
 
     const [lendings, setLendings] = useState([])
     const [totalPages, setTotalPages] = useState(1)
-    const [links, setLinks] = useState({ first: null, next: null, last: null, prev: null });
     const [currentPage, setCurrentPage] = useState(1)
     const PAGE_SIZE = 1
     const [asset_, setAsset_] = useState(null)
@@ -47,11 +46,9 @@ const useLendings = () => {
 
         //@ts-ignore
         const linkHeader: any = lendingsResponse.headers.get("Link");
-        const parsedLinks = parseLinkHeader(linkHeader);
-        setLinks(parsedLinks);
         const totalPages = extractTotalPages(linkHeader);
-        console.log(totalPages)
         setTotalPages(totalPages);
+
         const lendings = lendingsResponse.data
 
         const mappedLendings = lendings.map(async (lending: LendingApi) => {
@@ -76,7 +73,6 @@ const useLendings = () => {
     }
 
     const changePage = async (page) => {
-        console.log('changed page')
         await getLendings(asset_, page)
         setCurrentPage(page);
     };
