@@ -10,6 +10,8 @@ import MyBooksOptions from "../../components/userAssets/MyBooksOptions.tsx";
 import LendedBooksOptions from "../../components/userAssets/LendedBooksOptions.tsx";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import MyBookActiveLendings from "../../components/userAssets/MyBookActiveLendings.tsx";
+import {Helmet} from "react-helmet";
+
 const UserAssetInstance = () => {
 
     const navigate = useNavigate();
@@ -40,6 +42,10 @@ const UserAssetInstance = () => {
 
     return (
         <>
+            <Helmet>
+                {/*@ts-ignore*/}
+                <title>{assetDetails.title}</title>
+            </Helmet>
             {isLoading ?
                 <LoadingAnimation/>
                 :

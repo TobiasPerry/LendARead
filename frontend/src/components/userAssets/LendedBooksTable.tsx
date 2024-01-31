@@ -24,7 +24,9 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
         changePageLendings,
         totalPages,
         books,
-        isLoading} = useUserAssetInstances();
+        isLoading,
+        setCurrentPage
+    } = useUserAssetInstances();
 
     useEffect(() => {
         fetchLendings(currentPage, sort, filter, isLender).then()
@@ -32,6 +34,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
+        setCurrentPage(1);
         await fetchLendings(currentPage, sort, newFilter, isLender)
     };
 
@@ -94,7 +97,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
             <table className="table table-hover mt-2 mb-3">
                 <thead className="table-light">
                 <tr>
-                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} {renderSortIcon('image')}</th>
+                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} </th>
                     <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
                     <th scope="col" onClick={() => handleSortChange('start_date')}>{t('start_date')} {renderSortIcon('start_date')}</th>
                     <th scope="col" onClick={() => handleSortChange('return_date')}>{t('return_date')} {renderSortIcon('return_date')}</th>
@@ -105,7 +108,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                 <tbody>
                 {books.length === 0 ? (
                     <tr>
-                        <td colSpan={5} className="text-center">
+                        <td colSpan={6} className="text-center">
                             <h5>{t('no_books_available')}</h5>
                         </td>
                     </tr>
@@ -125,7 +128,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                             <td>{book.start_date}</td>
                             <td>{book.return_date}</td>
                             <td>{book.user}</td>
-                            <td>{t(`${book.physicalCondition}`)}</td>
+                            <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}

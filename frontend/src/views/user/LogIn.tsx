@@ -6,6 +6,7 @@ import loginBg from '../../assets/login-bg.jpg';
 import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import {Helmet} from "react-helmet";
 
 const LoginView = ({redirect}) => {
     const { t } = useTranslation();
@@ -36,6 +37,9 @@ const LoginView = ({redirect}) => {
 
     return (
         <section className="vh-100">
+            <Helmet>
+                <title>{t("login")}</title>
+            </Helmet>
             <div className="container-fluid">
                 <div className="row">
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">
