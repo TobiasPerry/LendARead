@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import "./styles/discovery.css"
 import Spinner from "../components/Spinner.tsx";
+import Pagination from "../components/Pagination.tsx";
 
 export const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
@@ -101,12 +102,15 @@ const DiscoveryView =  () => {
         }
     }
 
-    const previousPage = () => {
-        currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
+    const changePage = (page: number) => {
+        setCurrentPage(page)
     }
-    const nextPage = () => {
-        setCurrentPage(currentPage + 1)
-    }
+    // const previousPage = () => {
+    //     currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
+    // }
+    // const nextPage = () => {
+    //     setCurrentPage(currentPage + 1)
+    // }
     const clearSearch = () => {
         setSearch("");
         setInputValue("");
@@ -306,39 +310,7 @@ const DiscoveryView =  () => {
                                     </div>
                                     <div className="container-row-wrapped"
                                          style={{marginTop: '25px', marginBottom: '25px', width: '100%'}}>
-                                        <div>
-                                            <nav aria-label="Page navigation example">
-                                                <ul className="pagination justify-content-center align-items-center">
-                                                    <li className="page-item">
-                                                        <button type="button"
-                                                                className={`btn mx-5 pagination-button ${currentPage <= 1 ? 'disabled' : ''}`}
-                                                                id="previousPageButton"
-                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
-                                                                onClick={previousPage}
-                                                        >
-                                                            <i className="bi bi-chevron-left"></i>
-                                                            {t('discovery.pagination.previous')}
-                                                        </button>
-                                                    </li>
-
-                                                    <li>
-                                                        {currentPage} / {totalPages}
-                                                    </li>
-
-                                                    <li className="page-item">
-                                                        <button type="button"
-                                                                className={`btn mx-5 pagination-button ${currentPage >= totalPages ? 'disabled' : ''}`}
-                                                                id="nextPageButton"
-                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
-                                                                onClick={nextPage}
-                                                        >
-                                                            {t('discovery.pagination.next')}
-                                                            <i className="bi bi-chevron-right"></i>
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
+                                       <Pagination currentPage={currentPage} changePage={changePage} totalPages={totalPages}/>
                                     </div>
                                 </>
                             )
