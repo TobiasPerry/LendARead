@@ -4,7 +4,7 @@ import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import {useTranslation} from "react-i18next";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import CalendarReservable from "../../components/viewAsset/CalendarReservable.tsx";

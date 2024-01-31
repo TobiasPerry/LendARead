@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import UseReview, {Asset_and_lender_data, body_review} from "../../hooks/reviews/useReview.ts";
 import {useContext, useEffect, useState} from "react";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
 import Modal from "../../components/modals/Modal.tsx";

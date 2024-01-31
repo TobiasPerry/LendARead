@@ -7,7 +7,7 @@ import UseReview, {Asset_and_borrower_data, body_review} from "../../hooks/revie
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import Modal from "../../components/modals/Modal.tsx";
 import {AuthContext} from "../../contexts/authContext.tsx";
 

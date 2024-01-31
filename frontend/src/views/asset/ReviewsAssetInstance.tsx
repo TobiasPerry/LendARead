@@ -3,7 +3,7 @@ import useReview from "../../hooks/reviews/useReview.ts";
 import useAssetInstance, {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
 import {useEffect, useState} from "react";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import ShowReviewCard from "../../components/viewAsset/ShowReviewCard.tsx";
 import {useTranslation} from "react-i18next";
 import Pagination from "../../components/Pagination.tsx";
