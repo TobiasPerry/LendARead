@@ -60,17 +60,19 @@ const sortAdapterApi = {
     state: "STATE",
     start_date: "LENDDATE",
     return_date: "DEVOLUTIONDATE",
+    physicalCondition: "PHYSICAL_CONDITION"
 }
 
 const statusAdapterApi = {
     private: "PRIVATE",
     public: "PUBLIC",
+    all: "ALL"
 }
 
 const lendingStatusAdapterApi = {
     pending: "ACTIVE",
     delivered: "DELIVERED",
-    canceled: "CANCELED", //new
+    canceled: "CANCELED",
     rejected: "REJECTED",
     finished: "FINISHED"
 }
@@ -165,14 +167,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
 
     const fetchMyBooks =  async (newPage: number, newSort: any, newFilter: string) => {
         setIsLoading(true)
-        if(newFilter === "all") {
-            const publicBooks = await fetchMyBooks2(newPage, newSort, "public")
-            const privateBooks = await fetchMyBooks2(newPage, newSort, "private")
-            setBooks(privateBooks.concat(publicBooks))
-        }  else {
-            const retrievedBooks = await fetchMyBooks2(newPage, newSort, newFilter)
-            setBooks(retrievedBooks)
-        }
+        const retrievedBooks = await fetchMyBooks2(newPage, newSort, newFilter)
+        setBooks(retrievedBooks)
         setIsLoading(false)
     }
 

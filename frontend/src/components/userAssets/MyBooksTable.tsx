@@ -3,6 +3,7 @@ import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.t
 import {useContext, useEffect} from "react";
 import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
 import Pagination from "../Pagination.tsx";
+import {Helmet} from "react-helmet";
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
@@ -55,6 +56,11 @@ const MyBooksTable = ({handleRowClicked}) => {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>My Books Table</title>
+                <link rel="canonical" href="http://mysite.com/example" />
+            </Helmet>
             {isLoading ?
                 <LoadingAnimationWhite /> :
         <div className="container">
