@@ -218,13 +218,16 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return booksRetrieved
     };
 
-    const changePage = async (newPage: number) => {
+    const changePageMyBooks = async (newPage: number) => {
         await fetchMyBooks(newPage, sort, filter);
         setCurrentPage(newPage);
     };
+    const changePageLendings = async (newPage: number, isLender) => {
+        await fetchLendings(newPage, sort, filter, isLender);
+        setCurrentPage(newPage);
+    };
 
-
-    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePage, totalPages, books, setBooks, fetchLendings, isLoading};
+    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading};
 };
 
 export default useUserAssetInstances;
