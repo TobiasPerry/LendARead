@@ -89,7 +89,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             first = false;
         }
 
-        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active").append(getSortQueryForNativeQuery(sort, sortDirection));
+        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active,a.physicalcondition").append(getSortQueryForNativeQuery(sort, sortDirection));
         final Query queryCount = em.createNativeQuery(queryNativeStringBuilder.toString());
         queryNativeStringBuilder.append(" limit :limit offset :offset");
         final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
@@ -178,6 +178,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             case "TITLE":
                 sb.append( " ORDER BY l.assetInstance.book.title " );
                 break;
+            case "PHYSICAL_CONDITION":
+                sb.append( " ORDER BY l.assetInstance.physicalCondition " );
+                break;
             case "LENDING_STATUS":
                 sb.append( " ORDER BY l.active " );
                 break;
@@ -210,6 +213,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
                 break;
             case "LENDING_STATUS":
                 sb.append( " ORDER BY l.active " );
+                break;
+            case "PHYSICAL_CONDITION":
+                sb.append( " ORDER BY a.physicalcondition " );
                 break;
             default:
                 return "";
