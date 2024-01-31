@@ -26,7 +26,6 @@ const BookCard = ({ book }) => {
     const url_book_image = "url('" + image + "')"
 
     const {user} = useContext(AuthContext)
-    console.log(user + " vs " + parseInt(userNum, 10))
 
     const handleBookClick = () => {
         if(user !== null && user !== undefined && user.toString() === userNum.toString()) {
