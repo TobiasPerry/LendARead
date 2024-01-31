@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ProfileReviewCard from "../../components/reviews/ProfileReviewCard";
 import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
@@ -8,11 +10,15 @@ const ProfileView = (props: any) => {
     const isCurrentUser = props.isCurrentUser;
     const id = props.id;
     const profileDetails = props.profileDetails;
+    const [selectedTab, setSelectedTab] = useState(0);
+    const [lenderReviews, setLenderReviews] = useState([]);
+    const [borrowerReviews, setBorrowerReviews] = useState([]);
 
     const tabs = [
         "Lender Reviews",
         "Borrower Reviews"
     ]
+
 
     const MOCK_profile_picture_src = '/static/user-placeholder.jpeg'
 
@@ -50,7 +56,7 @@ const ProfileView = (props: any) => {
     const renderTabTitle = (title: string, index: number) => {
         return (
             <li key={index} className="nav-item" role="presentation">
-                <button className="nav-link black-text" type="button" role="tab" aria-selected={index == 0}>{title}</button>
+                <button className="nav-link black-text" type="button" role="tab" onClick={(_) => setSelectedTab(index)} aria-selected={index == 0}>{title}</button>
             </li>
         )
     }
@@ -62,6 +68,18 @@ const ProfileView = (props: any) => {
                 return renderTabTitle(tab, index)
             })}
             </ul>
+        )
+    }
+
+    const renderTabContent = () => {
+        const mock_review = {
+            reviwer: 'http://example.com/user/1',
+            lending: "http://example.com/lending/1",
+            rating: 3,
+            review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+        }
+        return (
+            <ProfileReviewCard review={mock_review}/>
         )
     }
 
@@ -92,6 +110,11 @@ const ProfileView = (props: any) => {
                     <hr/>
                     <div className="tabs-container">
                         {renderTabNav()}
+                    </div>
+                    <div  className="tab-content" >
+                        {
+                           renderTabContent()
+                        }
                     </div>
                 </div>
             </div>
