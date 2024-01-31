@@ -6,7 +6,7 @@ import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import "./styles/discovery.css"
 import Spinner from "../components/Spinner.tsx";
 
-const SORT_TYPES = {
+export const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
     TITLE: "TITLE",
     RECENT: "RECENT"

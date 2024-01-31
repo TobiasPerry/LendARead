@@ -1,14 +1,37 @@
 import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
 import {Link} from "react-router-dom";
-import React from 'react'; // Add this line
+import React, {useEffect, useState} from 'react'; // Add this line
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
+import useAssetInstance from "../hooks/assetInstance/useAssetInstance.ts";
+import {SORT_DIRECTIONS, SORT_TYPES} from "./Discovery.tsx";
 
 
 export default function Landing(){
 
     const {t} = useTranslation();
+    const {handleAllAssetInstances} = useAssetInstance()
+
+    const [loading, setLoading] = useState(true)
+    const [data, setData] = useState([])
+
+
+    const fetchData = async () => {
+        setLoading(true)
+        setData([])
+        const res = await handleAllAssetInstances(1, 4, SORT_TYPES.RECENT, SORT_DIRECTIONS.DES, "",[], [], 1)
+        if(res !== null && res !== undefined){
+            const {books, _} = res
+            setData(books)
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        fetchData().then()
+    }, []);
+
     return (
         <>
             <section id="hero" style={{backgroundColor: '#D0DCD0', paddingBottom: '100px',}}>
@@ -21,8 +44,9 @@ export default function Landing(){
                             <Link to="/discovery" className="btn-get-started scrollto" style={{textDecoration: 'none'}}>{t('landing.hero.btn')}</Link>
                         </div>
                     </div>
-                    <div className="image-container">
-                        <img src="http://pawserver.it.itba.edu.ar/paw-2023a-03/static/images/indexPhoto.svg" className="img-fluid animated" alt=""/>
+                    {/*<div className="image-container">*/}
+                    <div>
+                        <img src="/static/landing.svg" className="img-fluid animated" alt=""/>
                     </div>
                 </div>
             </section>
@@ -33,8 +57,19 @@ export default function Landing(){
                     <h1>{t('landing.recent.title')}</h1>
                 </div>
                 <div className="container-row-wrapped" style={{margin: '20px auto', paddingTop: '20px', backgroundColor: '#FFFFFF', borderRadius: '20px', width: '90%'}}>
-                    {/*<BookCard book={}></BookCard>*/}
-                    <BookCardPlaceholder/>
+                    {
+                        data.length === 0 ? (
+                            <>
+                                <BookCardPlaceholder/><BookCardPlaceholder/><BookCardPlaceholder/><BookCardPlaceholder/>
+                            </>
+                        ) : (
+                            <>
+                                {
+                                    data.map((book, index) => (<BookCard key={index} book={book}/>))
+                                }
+                            </>
+                        )
+                    }
                 </div>
             </section>
             
