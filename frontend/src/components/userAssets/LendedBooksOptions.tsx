@@ -119,8 +119,9 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                         </div>
                     }
                     {isFinished(asset.lending.state) && canReview &&
-                        <div>
-                            <h6 style={{
+                        <div className="options-menu"
+                             style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <h6 style={{
                                 color: '#7d7c7c',
                                 fontWeight: 'bold',
                                 textAlign: 'center',
