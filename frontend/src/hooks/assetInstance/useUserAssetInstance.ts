@@ -43,7 +43,8 @@ const useUserAssetInstance = (location, id) => {
             id: id, //wtf this does
             assetinstanceid: extractId(assetinstace.selfUrl),
             maxDays: assetinstace.maxLendingDays,
-            assetinstance: assetinstace
+            assetinstance: assetinstace,
+            selfUrl: assetinstace.selfUrl
         }
 
 
