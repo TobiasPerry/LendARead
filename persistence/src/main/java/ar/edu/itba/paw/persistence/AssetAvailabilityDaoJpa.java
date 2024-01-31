@@ -43,7 +43,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final List<String> lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter) {
+    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final List<String> lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter, final LocalDate endBefore, final LocalDate endAfter) {
 
         final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id join book as b on a.assetid = b.uid join users as borrower on l.borrowerid = borrower.id join users as owner on a.owner = owner.id ");
 
@@ -76,6 +76,16 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
         if(borrowerId != null){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
             queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
+            first = false;
+        }
+        if(endBefore != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.devolutiondate <= :endBefore ");
+            first = false;
+        }
+        if(endAfter != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.devolutiondate >= :endAfter ");
             first = false;
         }
 
@@ -116,7 +126,16 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             queryCount.setParameter("borrowerId", borrowerId);
 
         }
+        if(endAfter != null){
+            queryNative.setParameter("endAfter", endAfter);
+            queryCount.setParameter("endAfter", endAfter);
 
+        }
+        if(endBefore != null){
+            queryNative.setParameter("endBefore", endBefore);
+            queryCount.setParameter("endBefore", endBefore);
+
+        }
 
         queryNative.setParameter("limit", itemsPerPage);
         queryNative.setParameter("offset", offset);
