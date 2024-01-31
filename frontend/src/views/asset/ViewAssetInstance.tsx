@@ -83,8 +83,8 @@ const ViewAssetInstance = () => {
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
                 setData(res)
-                // if reservable, get the reserved dates
-                if(res.reservable) {
+                // if log in and assetInstance reservable, get the reserved dates
+                if(isLoggedIn && res.reservable) {
                     const res_reserved_dates = await handleGetReservedDays(bookNumber);
                     setReservedDates((res_reserved_dates === null || res_reserved_dates === undefined) ? [] : res_reserved_dates)
                 }
@@ -213,7 +213,6 @@ const ViewAssetInstance = () => {
                                                              )
                                                          }
                                                      </Link>
-                                                     {/*<a href="<c:url value="/user/${assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">*/}
                                                      <Link to="/">
                                                          <span className="mx-2 text-clickable">{data.userName}</span>
                                                      </Link>
