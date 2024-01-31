@@ -13,11 +13,13 @@ function ChangeReservabilityModal({ asset, showModal, handleCloseModal, handleSu
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
+                        <div className="icon-box" style={{backgroundColor: "#16df7e"}}>
                         {asset.isReservable ? (
                                 <i className="fas fa-calendar-times"></i>
                         ) : (
                                 <i className="fas fa-calendar-alt"></i>
                         )}
+                        </div>
                         <h2 className="modal-title" id="modalTitle">
                             {t('userHomeView.changeReservability')}
                         </h2>
