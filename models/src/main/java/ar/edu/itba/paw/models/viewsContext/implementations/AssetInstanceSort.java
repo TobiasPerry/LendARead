@@ -8,7 +8,9 @@ public enum AssetInstanceSort {
 
     STATE(),
 
-    LANGUAGE();
+    LANGUAGE(),
+
+    PHYSICAL_CONDITION();
 
     public static AssetInstanceSort fromString(String value) {
         if (value != null) {

@@ -55,8 +55,7 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         // Base query for getting the assets IDs for a given page
         StringBuilder queryNativeString = new StringBuilder("SELECT ai.id FROM AssetInstance ai " +
                 "LEFT OUTER JOIN (SELECT lendings.assetinstanceid AS assetinstanceid, AVG(rating) AS avg_rating FROM assetInstancereview JOIN lendings ON assetInstancereview.lendid = lendings.id GROUP BY lendings.assetinstanceid) AS avg_reviews ON ai.id = avg_reviews.assetInstanceid " +
-                "JOIN Book b on ai.assetid = b.uid " +
-                "WHERE ai.status = :state ");
+                "JOIN Book b on ai.assetid = b.uid ");
 
         // Query filters based on the search filters
         StringBuilder queryFilters = new StringBuilder();
@@ -75,27 +74,40 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         final int offset = (pageNum - 1) * itemsPerPage;
         final int limit = itemsPerPage;
         String pagination = " LIMIT :limit OFFSET :offset ";
-
+        boolean isFirst = true;
         // If there's a search parameter
         if (!searchQuery.getSearch().equals("")) {
-            queryFilters.append(" AND ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
+            queryFilters.append("WHERE ");
+            queryFilters.append(" ( b.title ILIKE CONCAT('%', :search, '%') OR b.author ILIKE CONCAT('%', :search, '%') ) ");
+            isFirst = false;
         }
 
         // If the search is filtered bt languages
         if (!searchQuery.getLanguages().isEmpty()) {
-            queryFilters.append(" AND b.lang IN (:languages) ");
+            queryFilters.append(isFirst ? "WHERE " : "AND ");
+            queryFilters.append(" b.lang IN (:languages) ");
+            isFirst = false;
         }
 
         // If the search is filtered by physicalConditions
         if (!searchQuery.getPhysicalConditions().isEmpty()) {
-            queryFilters.append(" AND ai.physicalCondition IN (:physicalConditions) ");
+            queryFilters.append(isFirst ? "WHERE " : "AND ");
+            queryFilters.append(" ai.physicalCondition IN (:physicalConditions) ");
+            isFirst = false;
         }
         if (searchQuery.getUserId() != -1) {
-            queryFilters.append(" AND ai.owner = :userId ");
+            queryFilters.append(isFirst ? "WHERE " : "AND ");
+            queryFilters.append(" ai.owner = :userId ");
+            isFirst = false;
         }
-
+        if (searchQuery.getAssetState() != null && !searchQuery.getAssetState().equals(AssetState.ALL)) {
+                queryFilters.append(isFirst ? "WHERE " : "AND ");
+                queryFilters.append("f ai.status = :state ");
+                isFirst = false;
+        }
+        queryFilters.append(isFirst ? "WHERE " : "AND ");
         // If there's a rating filter parameter
-        queryFilters.append(" AND COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
+        queryFilters.append("  COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
 
         // Append the filters
         queryNativeString.append(queryFilters);
@@ -133,14 +145,17 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             queryNative.setParameter("userId", searchQuery.getUserId());
             queryCount.setParameter("userId", searchQuery.getUserId());
         }
+        if (searchQuery.getAssetState() != null && !searchQuery.getAssetState().equals(AssetState.ALL)) {
+            queryNative.setParameter("state",searchQuery.getAssetState().toString() );
+            queryCount.setParameter("state",searchQuery.getAssetState().toString()  );
+        }
+
         queryNative.setParameter("min_rating", searchQuery.getMinRating());
         queryNative.setParameter("max_rating", searchQuery.getMaxRating());
 
         queryCount.setParameter("min_rating", searchQuery.getMinRating());
         queryCount.setParameter("max_rating", searchQuery.getMaxRating());
 
-        queryNative.setParameter("state",searchQuery.getAssetState().toString() );
-        queryCount.setParameter("state",searchQuery.getAssetState().toString()  );
 
         queryNative.setParameter("limit", limit);
         queryNative.setParameter("offset", offset);
@@ -205,7 +220,9 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
             case LANGUAGE:
                 return " b.lang ";
             case STATE:
-                return " ai.physicalcondition ";
+                return " ai.status ";
+            case PHYSICAL_CONDITION:
+                return " ai.physicalCondition ";
         }
         return "ai.id";
     }
@@ -218,6 +235,12 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
                 return " ai.book.title ";
             case AUTHOR_NAME:
                 return " ai.book.author ";
+            case LANGUAGE:
+                return " ai.book.language.code ";
+            case STATE:
+                return " ai.assetState ";
+            case PHYSICAL_CONDITION:
+                return " ai.physicalCondition ";
             case RECENT:
                 return " ai.id ";
         }
