@@ -64,7 +64,7 @@ const BookCard = ({ book }) => {
                         </div>
                         <div className="card-footer">
                             <div className="media">
-                                <img className="mr-3 rounded-circle" src={userImage} style={{width:'50px', height: '50px'}} alt="User Image"/>
+                                <img className="mr-3 rounded-circle" src={userImage !== null && userImage !== undefined && userImage !== "" ? userImage : "/static/profile_placeholder.jpeg"} style={{width:'50px', height: '50px'}} alt="User Image"/>
                                 <div className="media-body">
                                     <h6 className="my-0 text-white d-block text-truncate">{userName}</h6>
                                     <small className="text-white truncate-3-lines"> {locality}, {province}, {country} </small>
