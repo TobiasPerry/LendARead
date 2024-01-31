@@ -52,7 +52,7 @@ const useLendings = () => {
             const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data
             let image = photoPlaceholder
             if(user.image !== undefined) {
-                 image = (await api_.get(user.image)).data
+                 image = (await api_.get(user.image, {params: {size: "CUADRADA"}})).data
             }
 
             return {
