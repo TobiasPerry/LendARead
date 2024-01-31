@@ -26,7 +26,6 @@ const BookCard = ({ book }) => {
     const url_book_image = "url('" + image + "')"
 
     const {user} = useContext(AuthContext)
-    console.log(user + " vs " + parseInt(userNum, 10))
 
     const handleBookClick = () => {
         if(user !== null && user !== undefined && user.toString() === userNum.toString()) {
@@ -34,6 +33,10 @@ const BookCard = ({ book }) => {
         }else {
             navigate(`/book/${assetInstanceNumber}`)
         }
+    }
+
+    const handleUserImage = () => {
+        return userImage !== null && userImage !== undefined && userImage !== "" ? userImage : "/static/profile_placeholder.jpeg";
     }
 
     return (
@@ -64,7 +67,7 @@ const BookCard = ({ book }) => {
                         </div>
                         <div className="card-footer">
                             <div className="media">
-                                <img className="mr-3 rounded-circle" src={userImage} style={{width:'50px', height: '50px'}} alt="User Image"/>
+                                <img className="mr-3 rounded-circle" src={handleUserImage()} style={{width:'50px', height: '50px'}} alt="User Image"/>
                                 <div className="media-body">
                                     <h6 className="my-0 text-white d-block text-truncate">{userName}</h6>
                                     <small className="text-white truncate-3-lines"> {locality}, {province}, {country} </small>
