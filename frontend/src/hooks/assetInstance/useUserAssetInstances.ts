@@ -77,7 +77,7 @@ const lendingStatusAdapterApi = {
     finished: "FINISHED"
 }
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 10
+    const PAGE_SIZE = 1
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
@@ -223,7 +223,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         setCurrentPage(newPage);
     };
 
-    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading};
+    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading, setCurrentPage};
 };
 
 export default useUserAssetInstances;

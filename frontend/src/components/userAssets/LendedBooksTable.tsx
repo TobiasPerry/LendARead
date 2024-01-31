@@ -24,7 +24,9 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
         changePageLendings,
         totalPages,
         books,
-        isLoading} = useUserAssetInstances();
+        isLoading,
+        setCurrentPage
+    } = useUserAssetInstances();
 
     useEffect(() => {
         fetchLendings(currentPage, sort, filter, isLender).then()
@@ -32,6 +34,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
+        setCurrentPage(1);
         await fetchLendings(currentPage, sort, newFilter, isLender)
     };
 
@@ -105,7 +108,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                 <tbody>
                 {books.length === 0 ? (
                     <tr>
-                        <td colSpan={5} className="text-center">
+                        <td colSpan={6} className="text-center">
                             <h5>{t('no_books_available')}</h5>
                         </td>
                     </tr>

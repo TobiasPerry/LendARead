@@ -17,7 +17,8 @@ const MyBooksTable = ({handleRowClicked}) => {
         changePageMyBooks,
         totalPages,
         books,
-        isLoading
+        isLoading,
+        setCurrentPage
     } = useAssetInstances();
 
 
@@ -29,7 +30,8 @@ const MyBooksTable = ({handleRowClicked}) => {
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
-        await applyFilterAndSort(currentPage, sort, newFilter);
+        setCurrentPage(1);
+        await applyFilterAndSort(1, sort, newFilter);
     };
 
     const handleSortChange = async (column: string) => {
@@ -85,7 +87,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                 <tbody>
                 {books.length === 0 ? (
                     <tr>
-                        <td colSpan={5} className="text-center">
+                        <td colSpan={6} className="text-center">
                             <h5>{t('no_books_available')}</h5>
                         </td>
                     </tr>
