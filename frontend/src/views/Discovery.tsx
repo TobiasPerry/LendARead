@@ -1,11 +1,12 @@
 import BookCard from '../components/BookCard';
 import useAssetInstance, {language} from "../hooks/assetInstance/useAssetInstance.ts";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import "./styles/discovery.css"
 import Spinner from "../components/Spinner.tsx";
 import Pagination from "../components/Pagination.tsx";
+import {Helmet} from "react-helmet";
 
 export const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
@@ -152,17 +153,16 @@ const DiscoveryView =  () => {
 
     // When the page loads
     useEffect(() => {
-        document.title = t('discovery.title')
         fetchData().then();
         fetchLanguages().then();
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{t('discovery.title')}</title>
+            </Helmet>
             <div className="main-class">
                 <div className="container">
                     <div className="row height d-flex justify-content-center align-items-center">

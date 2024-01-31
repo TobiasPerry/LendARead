@@ -1,8 +1,6 @@
-import BookCardPlaceholder from "../../components/BookCardPlaceholder.tsx";
-
 import ReviewCard from "../../components/reviews/ReviewCard.tsx";
 import {useTranslation} from "react-i18next";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import UseReview, {Asset_and_borrower_data, body_review} from "../../hooks/reviews/useReview.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import {useNavigate, useParams} from "react-router-dom";
@@ -10,6 +8,7 @@ import BookCard from "../../components/BookCard.tsx";
 import NotFound from "../NotFound.tsx";
 import Modal from "../../components/modals/Modal.tsx";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import {Helmet} from "react-helmet";
 
 export default function ReviewLender () {
     const { lendingNumber } = useParams<{ lendingNumber: string}>()
@@ -52,7 +51,6 @@ export default function ReviewLender () {
 
 
     useEffect(() => {
-        document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
             // @ts-ignore
@@ -64,10 +62,6 @@ export default function ReviewLender () {
             setLoading(false)
         }
         fetchData()
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
     const handleBackClick = () => {
@@ -76,6 +70,10 @@ export default function ReviewLender () {
 
     return(
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{t('reviews.title')}</title>
+            </Helmet>
             <Modal
                 showModal={success}
                 title={t('reviews.success_modal.title')}

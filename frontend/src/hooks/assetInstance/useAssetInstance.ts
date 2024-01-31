@@ -53,7 +53,7 @@ export interface AssetData {
 const useAssetInstance = () => {
 
     const handleGetLanguages = async (isUsed : boolean  = true, pageSize : number = 20) => {
-        let base_url = `/languages?pageSize=${pageSize}`
+        let base_url = `/languages?itemsPerPage=${pageSize}`
         if(isUsed){
             base_url += `&isUsed`
         }
