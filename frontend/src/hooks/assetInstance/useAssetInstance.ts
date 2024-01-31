@@ -2,7 +2,7 @@ import {api, api_} from "../api/api.ts";
 import {Simulate} from "react-dom/test-utils";
 import canPlayThrough = Simulate.canPlayThrough;
 
-const extractTotalPages = (linkHeader) => {
+export const extractTotalPages = (linkHeader) => {
     if(!linkHeader){
         return 1;
     }
@@ -149,12 +149,12 @@ const useAssetInstance = () => {
         }
     }
 
-    const handleAssetInstance = async (assetInstanceNumber): Promise<AssetData> => {
+    const handleAssetInstance = async (assetInstanceNumber, reviewsCount): Promise<AssetData> => {
         try{
             const response_instance = await api.get(`/assetInstances/${assetInstanceNumber}`);
             const body_instance =  response_instance.data
             const response_asset = await api_.get(body_instance.assetReference, undefined)
-            const response_reviews = await api_.get(body_instance.reviewsReference, undefined);
+            const response_reviews = await api_.get(body_instance.reviewsReference + `?itemsPerPage=${reviewsCount}`, undefined);
             const response_location = await api_.get(body_instance.locationReference, undefined);
             const response_user = await api_.get(body_instance.userReference, undefined);
             const body_asset = response_asset.data
@@ -163,8 +163,6 @@ const useAssetInstance = () => {
             const body_user =  response_user.data
             const response_language = await api_.get(body_asset.language, undefined)
             const body_language = response_language.data
-
-            console.log(body_reviews)
 
             return {
                 author: body_asset.author,

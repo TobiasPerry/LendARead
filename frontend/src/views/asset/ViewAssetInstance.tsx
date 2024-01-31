@@ -11,6 +11,8 @@ import CalendarReservable from "../../components/viewAsset/CalendarReservable.ts
 import CalendarNotReservable from "../../components/viewAsset/CalendarNotReservable.tsx";
 import Modal from "../../components/modals/Modal.tsx";
 import StarsReviews from "../../components/viewAsset/StarsReviews.tsx";
+import ShowReviewCard from "../../components/viewAsset/ShowReviewCard.tsx";
+import GreenButton from "../../components/GreenButton.tsx";
 
 const ViewAssetInstance = () => {
 
@@ -72,7 +74,7 @@ const ViewAssetInstance = () => {
         const fetchData = async () => {
             setLoading(true);
             setData(book)
-            const res: AssetData = await handleAssetInstance(bookNumber)
+            const res: AssetData = await handleAssetInstance(bookNumber, 3)
             // if found
             if(!(res === null || res === undefined)){
                 setFound(true)
@@ -366,7 +368,7 @@ const ViewAssetInstance = () => {
                                                               alignItems: 'center'
                                                           }}
                                                           id="scrollspyRating">
-                                                         <div className="container-column">
+                                                         <div className="container-column" style={{width: '100%'}}>
                                                              {
                                                                  !hasReviews ? (
                                                                      <>
@@ -380,8 +382,15 @@ const ViewAssetInstance = () => {
                                                                      <>
                                                                          <div className="text-center">
                                                                              <h1>{data.rating} <small>/ 5</small></h1>
+                                                                             <StarsReviews
+                                                                                 rating={parseInt(data.rating.toString(), 10)}/>
                                                                          </div>
-                                                                         <StarsReviews rating={parseInt(data.rating.toString(), 10)}/>
+                                                                         {
+                                                                             data.reviews.map((review, index) => (<ShowReviewCard review={review} key={index}/> ))
+                                                                         }
+                                                                         <div className="text-center">
+                                                                            <GreenButton style={{width: '20%'}} text="btn de ir a ver todas las reviews" action={() => {navigate(`/book/${bookNumber}/reviews`)}} />
+                                                                         </div>
                                                                      </>
                                                                  )
                                                              }

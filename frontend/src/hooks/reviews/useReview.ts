@@ -1,4 +1,5 @@
 import {api, api_} from "../api/api.ts";
+import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
 
 export interface body_review {
     review,
@@ -44,6 +45,14 @@ export interface Asset_and_lender_data {
         selfUrl: string,
         userId: number
     }
+}
+
+export interface ShowReview {
+    text: string,
+    userName: string,
+    role: string,
+    userImage: string,
+    rating: number
 }
 
 const useReview = () => {
@@ -237,11 +246,52 @@ const useReview = () => {
         }
     }
 
+    const handleGetReviewDataForAssetInstance = async (review) => {
+        try{
+            // I get the response from assetInstance/:id/review/:id so i need to go and get data from the reviewer
+            const res = await api_.get(review.reviewer);
+            const data = res.data
+            return {
+                text: review.review,
+                rating: review.rating,
+                role: data.role,
+                userName: data.userName,
+                userImage: data.userImage
+            }
+        }catch (e) {
+            return null;
+        }
+    }
+
+    const handleGetAllReviewsForBook = async (assetInstanceNumber, itemsPerPage = 3, page = 1) => {
+        try{
+            const response_instance = await api.get(`/assetInstances/${assetInstanceNumber}`);
+            const body_instance =  response_instance.data
+            const response_reviews = await api_.get(body_instance.reviewsReference + `?itemsPerPage=${itemsPerPage}&page=${page}`, undefined);
+            const pages = extractTotalPages(response_reviews.headers["link"])
+            const body_reviews = response_reviews.data;
+            const response_asset = await api_.get(body_instance.assetReference)
+            const body_asset = response_asset.data
+
+            console.log(body_reviews)
+            return {
+                title: body_asset.title,
+                author: body_asset.author,
+                reviews: body_reviews,
+                pages: pages
+            }
+        }catch (e) {
+            return null;
+        }
+    }
+
     return{
         handleGetLendingInfoForLender,
         handleGetLendingInfoForBorrower,
         handleSendBorrowerReview,
-        handleSendLenderReview
+        handleSendLenderReview,
+        handleGetReviewDataForAssetInstance,
+        handleGetAllReviewsForBook
     };
 }
 
