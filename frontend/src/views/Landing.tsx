@@ -2,6 +2,7 @@ import BookCard from "../components/BookCard.tsx";
 import './styles/landing.css';
 import {Link} from "react-router-dom";
 import React, {useEffect, useState} from 'react'; // Add this line
+import {Helmet} from "react-helmet";
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import useAssetInstance from "../hooks/assetInstance/useAssetInstance.ts";
@@ -34,6 +35,10 @@ export default function Landing(){
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <link rel="canonical" href="http://mysite.com/example"/>
+            </Helmet>
             <section id="hero" style={{backgroundColor: '#D0DCD0', paddingBottom: '100px',}}>
                 <div className="container" style={{textAlign: 'start'}}>
                     <div className="text-container">

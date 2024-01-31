@@ -1,5 +1,5 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
@@ -13,6 +13,7 @@ import Modal from "../../components/modals/Modal.tsx";
 import StarsReviews from "../../components/viewAsset/StarsReviews.tsx";
 import ShowReviewCard from "../../components/viewAsset/ShowReviewCard.tsx";
 import GreenButton from "../../components/GreenButton.tsx";
+import {Helmet} from "react-helmet";
 
 const ViewAssetInstance = () => {
 
@@ -93,21 +94,14 @@ const ViewAssetInstance = () => {
                     today.setHours(0,0,0)
                     setBeginDate(today)
                 }
-                // Set the header title
-                document.title = t('view_asset.title', {title: res.title, author: res.author})
                 setLoading(false)
             }else {
                 setFound(false)
                 setLoading(false)
-                document.title = t('not_found.tab_title')
             }
         };
         fetchData()
 
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
     // Request the lending
@@ -122,10 +116,12 @@ const ViewAssetInstance = () => {
     const physicalConditionURL = `/discovery?physicalCondition=${data.physicalCondition}`
     const languageURL = `/discovery?language=${data.language.code}`
 
-    // @ts-ignore
-    // @ts-ignore
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{loading || !found ? "Lend a Read" : t('view_asset.title', {title: data.title, author: data.author})}</title>
+            </Helmet>
             <Modal
                 showModal={success}
                 title="text" subtitle="text" btnText="text"
