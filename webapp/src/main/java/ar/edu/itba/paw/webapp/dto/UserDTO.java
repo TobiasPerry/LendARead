@@ -16,9 +16,9 @@ public class UserDTO {
     private String image;
     private String telephone;
     private String role;
-    private Integer rating;
-    private Integer ratingAsLender;
-    private Integer ratingAsBorrower;
+    private float rating;
+    private float ratingAsLender;
+    private float ratingAsBorrower;
     private String selfUrl;
     public static UserDTO fromUser(UriInfo url, User user) {
         UserDTO dto = new UserDTO();

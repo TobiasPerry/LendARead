@@ -73,7 +73,7 @@ public class PreAuthorizeFunctions {
             if (status.equals("PUBLIC")) {
                 return true;
             }
-            return status.equals("PRIVATE") && userService.getCurrentUser().getId() == userid;
+            return (status.equals("PRIVATE") || status.equals("ALL")) && userService.getCurrentUser().getId() == userid;
         } catch (UserNotFoundException e) {
             return false;
         }
