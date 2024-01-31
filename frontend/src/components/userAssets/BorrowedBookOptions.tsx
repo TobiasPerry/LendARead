@@ -2,8 +2,7 @@ import { useTranslation } from 'react-i18next';
 import useUserBorrowedBooksOptions from "../../hooks/assetInstance/useUserBorrowedBooksOptions.ts";
 import {useState} from "react";
 import CancelModal from "../modals/CancelModal.tsx";
-import {isCancel} from "axios";
-import {isActive, isCanceled, isFinished, isRejected} from "./LendedBooksOptions.tsx";
+import {isActive, isCanceled, isDelivered, isFinished, isRejected} from "./LendedBooksOptions.tsx";
 import {Link} from "react-router-dom";
 
 const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
@@ -43,12 +42,17 @@ const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
                     </Link>
                 </div>
             }
-            {!(asset.lending === undefined) && isFinished(asset.lending.state) && !canReview &&
+            {!(asset === undefined || asset.lending === undefined)  && isFinished(asset.lending.state) && !canReview &&
                 <div>
                     <div> {t("finished_text")} </div>
                 </div>
             }
-            {!(asset.lending === undefined) && isRejected(asset.lending.state) &&
+            {!(asset === undefined || asset.lending === undefined)  && isDelivered(asset.lending.state) &&
+                <div>
+                    <div> {t("delivered_text_borrower")} </div>
+                </div>
+            }
+            {!(asset === undefined || asset.lending === undefined)  && isRejected(asset.lending.state) &&
                 <div>
                     <div> {t("rejected_text")} </div>
                 </div>

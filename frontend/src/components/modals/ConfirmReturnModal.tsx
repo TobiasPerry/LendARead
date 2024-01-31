@@ -11,12 +11,15 @@ function ConfirmReturnModal({ asset, showModal, handleCloseModal, handleSubmitMo
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
+                        <div className="icon-box" style={{backgroundColor: "#16df7e"}}>
+                            <i className="fas fa-check"></i>
+                        </div>
                         <h2 className="modal-title" id="modalTitle">
                             {t('userHomeView.confirmReturnTitle')}
                         </h2>
 
                         <button onClick={handleCloseModal} className="btn btn-secondary">
-                            <i className="fas fa-tick fa-lg"></i>
+                            <i className="fas fa-window-close fa-lg"></i>
                         </button>
                     </div>
                     <div className="modal-body">
