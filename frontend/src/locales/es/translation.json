@@ -5,6 +5,7 @@
   "Team": "Equipo",
   "Projects": "Proyectos",
   "Calendar": "Calendario",
+  "delivered_text_borrower": "Great! The lender has approved your request. He should contact you soon to arrange the delivery.",
   "auth": {
       "emailValidationError": "El correo electrónico debe ser válido y tener entre 3 y 100 caracteres.",
       "passwordValidationError": "La contraseña debe contener al menos una letra minúscula, una mayúscula, un número, tener al menos 8 caracteres de longitud e incluir un carácter especial.",
