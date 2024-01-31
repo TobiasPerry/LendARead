@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import {Helmet} from "react-helmet";
 import useAssetInstances, {
     checkCanceled,
     checkFinished,
@@ -71,6 +72,11 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>{isLender ? t('lended_books'): t('borrowed_books')}</title>
+                <link rel="canonical" href="http://mysite.com/example" />
+            </Helmet>
             {isLoading ?
                 <LoadingAnimationWhite /> :
         <div className="container mt-3">
@@ -93,7 +99,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                     <th scope="col" onClick={() => handleSortChange('start_date')}>{t('start_date')} {renderSortIcon('start_date')}</th>
                     <th scope="col" onClick={() => handleSortChange('return_date')}>{t('return_date')} {renderSortIcon('return_date')}</th>
                     <th scope="col" onClick={() => handleSortChange('user')}>{t('user')} {renderSortIcon('user')}</th>
-                    <th scope="col" onClick={() => handleSortChange('state')}>{t('state')} {renderSortIcon('state')}</th>
+                    <th scope="col" onClick={() => handleSortChange('physicalCondition')}>{t('physicalCondition')} {renderSortIcon('physicalCondition')}</th>
                 </tr>
                 </thead>
                 <tbody>

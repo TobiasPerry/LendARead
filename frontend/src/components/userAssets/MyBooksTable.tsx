@@ -58,7 +58,7 @@ const MyBooksTable = ({handleRowClicked}) => {
         <>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>My Books Table</title>
+                <title>{t("my_books")}</title>
                 <link rel="canonical" href="http://mysite.com/example" />
             </Helmet>
             {isLoading ?
@@ -79,7 +79,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                     <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
                     <th scope="col" onClick={() => handleSortChange('author')}>{t('author')} {renderSortIcon('author')}</th>
                     <th scope="col" onClick={() => handleSortChange('language')}>{t('language')} {renderSortIcon('language')}</th>
-                    <th scope="col" onClick={() => handleSortChange('state')}>{t('state')} {renderSortIcon('state')}</th>
+                    <th scope="col" onClick={() => handleSortChange('physicalCondition')}>{t('physicalCondition')} {renderSortIcon('physicalCondition')}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -98,7 +98,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                             <td>{book.title}</td>
                             <td>{book.author}</td>
                             <td>{book.language}</td>
-                            <td>{t(`${book.physicalCondition}`)}</td>
+                            <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}
