@@ -166,6 +166,7 @@
   "overdue": "Overdue",
   "rejected": "Rejected",
   "finished": "Finished",
+  "physicalCondition": "Physical Condition",
   "finished_lender": "The lending has finished, you can write a review of the borrower clicking the button below",
   "finished_borrower": "The lending has finished, you can write a review of the lender and the book clicking the button below",
   "title": "Title",

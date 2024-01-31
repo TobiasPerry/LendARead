@@ -77,7 +77,7 @@ const lendingStatusAdapterApi = {
     finished: "FINISHED"
 }
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 1
+    const PAGE_SIZE = 10
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
@@ -105,7 +105,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         setIsLoading(true)
        const queryparams = {
            'page': newPage,
-           'pageSize': PAGE_SIZE,
+           'itemsPerPage': PAGE_SIZE,
            'sortDirection': newSort.order,
        }
 
