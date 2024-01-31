@@ -6,7 +6,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
     const editAssetVisbility = async (asset: any) => {
         await api.patch(asset.assetinstance.selfUrl, { status:  asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
             {
-                headers: {"Content-type": "multipart/form-data"}
+                headers: {"Content-type": "application/vnd.assetInstance.v1+json"}
             })
         await fetchUserAssetDetails()
     }
@@ -15,7 +15,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
         await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
             {
-                headers: {"Content-type": "multipart/form-data"
+                headers: {"Content-type": "application/vnd.assetInstance.v1+json"
                 }
             })
 
