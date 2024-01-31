@@ -77,7 +77,7 @@ const lendingStatusAdapterApi = {
     finished: "FINISHED"
 }
 const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 1
+    const PAGE_SIZE = 10
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
