@@ -128,7 +128,9 @@ const AuthContextProvider = (props) => {
     }
     const storeUserDetails = async (id: number) => {
         const userDetails = await getUserDetails(id)
-        setUserImage(userDetails.image)
+        if(userDetails.image !== null && userDetails.image !== undefined) {
+            setUserImage(userDetails.image)
+        }
 
         setUserDetails(userDetails)
     }
