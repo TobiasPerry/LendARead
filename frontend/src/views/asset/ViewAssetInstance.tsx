@@ -61,7 +61,6 @@ const ViewAssetInstance = () => {
     const [hasUserImage, setHasUserImage] = useState(false)
     const [hasDescription, setHasDescription] = useState(false)
     const [hasReviews, setHasReviews] = useState(false)
-    const [ownerRating, setOwnerRating] = useState(3)
     const [reservedDates, setReservedDates] = useState([])
 
     // Lending request info
@@ -78,7 +77,8 @@ const ViewAssetInstance = () => {
             // if found
             if(!(res === null || res === undefined)){
                 setFound(true)
-                setHasReviews(res.rating !== 0)
+                setHasReviews(res.rating_assetInstance !== 0)
+                setHasReviewAsLender(res.rating_as_lender !== 0)
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
                 setData(res)
@@ -224,8 +224,8 @@ const ViewAssetInstance = () => {
                                                          {
                                                              hasReviewAsLender ? (
                                                                  <span className="badge bg-success">
-                                               {ownerRating} ★
-                                            </span>
+                                                                   {data.rating_as_lender} ★
+                                                                 </span>
                                                              ) : (
                                                                  <span className="badge bg-secondary">-.- ★</span>
                                                              )
@@ -270,7 +270,7 @@ const ViewAssetInstance = () => {
                                                      ) : (
                                                          <>
                                                              <button className="btn btn-green" onClick={() => {navigate("/login")}}>
-                                                                 text de login
+                                                                 {t('view_asset.login_btn')}
                                                              </button>
                                                          </>
                                                      )
@@ -321,7 +321,7 @@ const ViewAssetInstance = () => {
                                          </div>
 
                                      </div>
-                                     <div className="container-row" style={{width: '50 %', marginBottom: '20px'}}>
+                                     <div className="container-row" style={{width: '50%', marginBottom: '20px'}}>
                                          <div className="container-column" style={{flex: '0 0 100%'}}>
                                              <div className="card"
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
@@ -355,7 +355,7 @@ const ViewAssetInstance = () => {
 
 
 
-                                     <div className="container-row" style={{width: '50 %', marginBottom: '20px'}}>
+                                     <div className="container-row" style={{width: '50%', marginBottom: '20px'}}>
                                          <div className="container-column" style={{flex: '0 0 100%'}}>
                                              <div className="card p-2"
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
@@ -381,9 +381,9 @@ const ViewAssetInstance = () => {
                                                                  ) : (
                                                                      <>
                                                                          <div className="text-center">
-                                                                             <h1>{data.rating} <small>/ 5</small></h1>
+                                                                             <h1>{data.rating_assetInstance} <small>/ 5</small></h1>
                                                                              <StarsReviews
-                                                                                 rating={parseInt(data.rating.toString(), 10)}/>
+                                                                                 rating={parseInt(data.rating_assetInstance.toString(), 10)}/>
                                                                          </div>
                                                                          {
                                                                              data.reviews.map((review, index) => (<ShowReviewCard review={review} key={index}/> ))

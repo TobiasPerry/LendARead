@@ -71,6 +71,12 @@ const useReview = () => {
                 }
             }
 
+            if(body.state !== 'FINISHED'){
+                return {
+                    info: null,
+                    exists: false
+                }
+            }
             // get the assetInstance
             const data_assetInstance = await api_.get(body.assetInstance)
             const body_assetInstance = data_assetInstance.data
@@ -141,6 +147,13 @@ const useReview = () => {
                 return {
                     info: null,
                     exists: true
+                }
+            }
+
+            if(body.state !== 'FINISHED'){
+                return {
+                    info: null,
+                    exists: false
                 }
             }
 

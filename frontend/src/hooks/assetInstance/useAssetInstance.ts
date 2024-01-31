@@ -41,7 +41,8 @@ export interface AssetData {
         country: string;
     },
     reviews: any;
-    rating: number;
+    rating_assetInstance: number;
+    rating_as_lender: number;
     description: string;
     reservable: boolean;
     maxLendingDays: number;
@@ -174,7 +175,8 @@ const useAssetInstance = () => {
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
-                rating: body_instance.rating,
+                rating_assetInstance: body_instance.rating,
+                rating_as_lender: body_user.ratingAsLender,
                 reviews: body_reviews,
                 description: body_instance.description,
                 reservable: body_instance.reservable,

@@ -282,6 +282,7 @@
     "lending_btn": "Tomar prestado",
     "start_date": "Fecha de inicio",
     "end_date": "Fecha de devolucion",
+    "login_btn": "Inciá sesion para pedir prestado",
     "location": {
       "title": "¿Donde esta este libro?",
       "zip_code": "Código postal",
@@ -330,7 +331,7 @@
         "lendFor": "Prestar por",
         "days": "día/s",
         "weeks": "semana/s",
-        "months": "mes/es",
+        "months": "mrating_assetInstancees/es",
         "years": "año/s",
         "acceptsReservations": "Aceptar Reservas",
         "validation-error": "Por favor, ingrese una duración válida."
@@ -349,5 +350,7 @@
         "zipcode": "Código Postal",
         "validation-error": "Por favor, seleccione una ubicación válida."
     }
-  }
+  },
+  "BORROWER": "Prestatario",
+  "LENDER": "Prestador"
 }

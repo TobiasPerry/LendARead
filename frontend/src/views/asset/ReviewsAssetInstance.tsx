@@ -67,7 +67,7 @@ const ReviewsAssetInstance = () => {
                                         alignItems: 'center',
                                         flexDirection: 'column',
                                     }}>
-                                        <div style={{width: '90%'}}>
+                                        <div style={{width: '50%'}}>
                                             {
                                                 data.reviews.length === 0 ? (
                                                     <>

@@ -336,6 +336,7 @@
     "lending_btn": "Borrow this book",
     "start_date": "Start date",
     "end_date": "Devolution date",
+    "login_btn": "Log in to borrow",
     "location": {
       "title": "Where is this book?",
       "zip_code": "Zip Code",
@@ -403,5 +404,7 @@
         "zipcode": "Zip Code",
         "validation-error": "Please, select a valid location."
     }
-  }
+  },
+  "BORROWER": "Borrower",
+  "LENDER": "Lender"
 }
