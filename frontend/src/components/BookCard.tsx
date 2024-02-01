@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useContext} from "react";
 import {AuthContext} from "../contexts/authContext.tsx";
+import ProfilePlaceholder from "../../public/static/profile_placeholder.jpeg"
 
 const BookCard = ({ book }) => {
     const {t} = useTranslation()
@@ -36,7 +37,7 @@ const BookCard = ({ book }) => {
     }
 
     const handleUserImage = () => {
-        return userImage !== null && userImage !== undefined && userImage !== "" ? userImage : "/static/profile_placeholder.jpeg";
+        return userImage !== null && userImage !== undefined && userImage !== "" ? userImage : ProfilePlaceholder;
     }
 
     return (

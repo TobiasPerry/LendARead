@@ -7,6 +7,7 @@ import { api } from '../hooks/api/api.ts'
 import useLocations from '../hooks/locations/useLocations.ts'
 import {AuthContext} from "../contexts/authContext.tsx";
 import NewLenderModal from '../components/modals/NewLenderModal.tsx'
+import noImagePlacegolder from '../../public/static/no_image_placeholder.jpg'
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -510,7 +511,7 @@ const AddAsset = () => {
                 <div className='flex-container'>
                     <div className="image-wrapper">
                         <label htmlFor='uploadImage' className='image-container position-relative'>
-                            <img src="/static/no_image_placeholder.jpg" alt="Book Cover" className="img-fluid object-fit-cover" />
+                            <img src={noImagePlacegolder} alt="Book Cover" className="img-fluid object-fit-cover" />
                             <div className='img-hover-text'>
                                 <i className="bi bi-cloud-upload"></i>
                             </div>

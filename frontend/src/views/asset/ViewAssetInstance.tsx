@@ -14,6 +14,7 @@ import StarsReviews from "../../components/viewAsset/StarsReviews.tsx";
 import ShowReviewCard from "../../components/viewAsset/ShowReviewCard.tsx";
 import GreenButton from "../../components/GreenButton.tsx";
 import {Helmet} from "react-helmet";
+import ProfilePlaceholder from "../../../public/static/profile_placeholder.jpeg"
 
 const ViewAssetInstance = () => {
 
@@ -213,8 +214,8 @@ const ViewAssetInstance = () => {
                                                                       alt="profile picture"/>
                                                              ) : (
                                                                  <img className="rounded-circle img-hover-click" style={{width: '25px'}}
-                                                                      src="/static/profile_placeholder.jpeg"
-                                                                      alt="profile picture"/>
+                                                                    src={ProfilePlaceholder}
+                                                                    alt="profile picture"/>
                                                              )
                                                          }
                                                      </Link>
