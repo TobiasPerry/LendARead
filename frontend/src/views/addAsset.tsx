@@ -24,15 +24,15 @@ const AddAsset = () => {
     const navigate = useNavigate();
 
     const states = [
-        ["ASNEW", t('addAsset.ASNEW')],
-        ["FINE", t('addAsset.FINE')],
-        ["VERYGOOD", t('addAsset.VERYGOOD')],
-        ["GOOD", t('addAsset.GOOD')],
-        ["FAIR", t('addAsset.FAIR')],
-        ["POOR", t('addAsset.POOR')],
-        ["EXLIBRARY", t('addAsset.EXLIBRARY')],
-        ["BOOKCLUB", t('addAsset.BOOKCLUB')],
-        ["BINDINGCOPY", t('addAsset.BINDINGCOPY')]
+        ["ASNEW", t('ASNEW')],
+        ["FINE", t('FINE')],
+        ["VERYGOOD", t('VERYGOOD')],
+        ["GOOD", t('GOOD')],
+        ["FAIR", t('FAIR')],
+        ["POOR", t('POOR')],
+        ["EXLIBRARY", t('EXLIBRARY')],
+        ["BOOKCLUB", t('BOOKCLUB')],
+        ["BINDINGCOPY", t('BINDINGCOPY')]
     ]
 
     const timeTypes = [
