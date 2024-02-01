@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -24,6 +25,6 @@ public class    NotFoundExceptionMapper implements ExceptionMapper<NotFoundExcep
 
     @Override
     public Response toResponse(NotFoundException e) {
-        return Response.status(Response.Status.NOT_FOUND).entity(ErrorDTO.fromError(messageSource.getMessage("exception.notFound", null, LocaleContextHolder.getLocale()),null)).build();
+        return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(ErrorDTO.fromError(messageSource.getMessage("exception.notFound", null, LocaleContextHolder.getLocale()),null)).build();
     }
 }

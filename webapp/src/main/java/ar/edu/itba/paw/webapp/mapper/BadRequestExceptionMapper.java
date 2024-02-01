@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -23,6 +24,6 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
     }
     @Override
     public Response toResponse(BadRequestException e) {
-        return Response.status(Response.Status.BAD_REQUEST).entity(ErrorDTO.fromError(messageSource.getMessage("exception.badRequest", null, LocaleContextHolder.getLocale()),null)).build();
+        return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(ErrorDTO.fromError(messageSource.getMessage("exception.badRequest", null, LocaleContextHolder.getLocale()),null)).build();
     }
 }

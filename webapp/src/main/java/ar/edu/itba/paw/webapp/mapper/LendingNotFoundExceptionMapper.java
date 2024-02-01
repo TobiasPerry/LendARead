@@ -8,6 +8,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -24,6 +25,6 @@ public class LendingNotFoundExceptionMapper  implements ExceptionMapper<LendingN
     }
     @Override
     public Response toResponse(LendingNotFoundException e) {
-        return Response.status(Response.Status.NOT_FOUND).entity(ErrorDTO.fromError(messageSource.getMessage("exception.lendingNotFound", null, LocaleContextHolder.getLocale()),null)).build();
+        return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(ErrorDTO.fromError(messageSource.getMessage("exception.lendingNotFound", null, LocaleContextHolder.getLocale()),null)).build();
     }
 }
