@@ -175,8 +175,8 @@ const useAssetInstance = () => {
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
-                rating_assetInstance: body_instance.rating,
-                rating_as_lender: body_user.ratingAsLender,
+                rating_assetInstance: body_instance.rating.toFixed(1),
+                rating_as_lender: body_user.ratingAsLender.toFixed(1),
                 reviews: body_reviews,
                 description: body_instance.description,
                 reservable: body_instance.reservable,
@@ -190,8 +190,12 @@ const useAssetInstance = () => {
 
     const handleGetReservedDays = async (assetInstanceId) => {
         try{
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
             const res = await api.get(
-                `/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED&state=REJECTED`
+                `/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED&state=REJECTED&endAfter=${year}-${month}-${day}`
             )
             const body = res.data
             const reservedDays = []

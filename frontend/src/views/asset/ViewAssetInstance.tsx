@@ -78,7 +78,7 @@ const ViewAssetInstance = () => {
             // if found
             if(!(res === null || res === undefined)){
                 setFound(true)
-                setHasReviews(res.rating_assetInstance !== 0)
+                setHasReviews(res.rating_assetInstance != 0)
                 setHasReviewAsLender(res.rating_as_lender !== 0)
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
