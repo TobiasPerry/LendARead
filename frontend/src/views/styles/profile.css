@@ -1,0 +1,105 @@
+:root {
+    --photo-offset: 25px;
+    --text-offset: 20px;
+    --photo-width: 25%;
+    --min-photo-width: 25vh;
+    --grey-custom: #9ca3af;
+}
+
+hr {
+    margin-top: calc(min(var(--photo-width), var(--min-photo-width)) / 2.5);
+}
+
+p {
+    font-size: 1.5rem;;
+}
+
+.grey-text {
+    color: var(--grey-custom);
+}
+
+.black-text {
+    color: black;
+}
+
+.black-text:hover {
+    color: black;
+}
+
+.user-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-inline: 10vh;
+    padding-top: 10%;
+}
+
+.user-profile-cell {
+    width: min(var(--photo-width), var(--min-photo-width));
+    position: absolute;
+    top: 0;
+    transform: translate(var(--photo-offset), -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-profile-picture {
+    width: 100%;
+    -webkit-box-shadow: 0 0 15px gray;
+    box-shadow: 0 0 15px gray;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-change-picture-container {
+    position: absolute;
+    background: #2B3B2B;
+    padding: min(2vh, 2vw);
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px black;
+    cursor: pointer;
+}
+
+.user-change-picture-container:hover {
+    filter: brightness(150%);
+}
+
+.user-change-picture-container > i {
+    color: white;
+    font-size: min(2vh, 2vw);
+}
+
+.user-info-profile {
+    margin-left: calc(min(var(--photo-width), var(--min-photo-width)) + var(--photo-offset) + var(--text-offset));
+    margin-bottom: calc(min(var(--photo-width), var(--min-photo-width)) / 6);
+    display: flex;
+    flex-flow: column;
+    justify-content: start;
+}
+
+.user-info > .info-container {
+    display: block;
+    align-items: center;
+    margin-block: 4vh;
+    padding-left: 5%;
+    width: 100%;
+}
+
+.user-role-stars {
+    border: 1px solid var(--grey-custom);
+    border-radius: 50em;
+    padding-inline: 0.3em;
+}
+
+span.user-role-stars {
+    margin-inline: 0.5em;
+}
+
