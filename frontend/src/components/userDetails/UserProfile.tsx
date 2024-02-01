@@ -2,43 +2,55 @@ import {useContext} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {useTranslation} from "react-i18next";
 
-const UserProfile = ({ isCurrent }) => {
+const UserProfile = ({ isCurrentUser }) => {
     const { t } = useTranslation();
     //asumo por ahora que es current
     const {userDetails, userImage} = useContext(AuthContext);
 
-
-
     return (
-        <div className="user-profile-card" style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-            <div className="profile-image-container">
-                <img
-                    src={userImage}
-                    alt={`${userDetails.userName} profile`}
-                    style={{
-                        width: '150px',
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: '3px solid white',
-                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                        marginRight: '10px',
-                    }}
-                />
-            </div>
-            <div className="d-flex flex-column">
-            <h3 className="mt-2">{userDetails.userName}</h3>
-            {/* Display the rating and lender/borrower status */}
-            <div>
-                <span>{t('borrower')} {userDetails.ratingAsBorrower} ★</span>
-                <span> - </span>
-                <span>{t('lender')} {userDetails.ratingAsLender} ★</span>
-            </div> </div>
-        </div>
+        <div>
+       <div className="position-relative">
+                        <div className="user-profile-cell">
+                            <img className="user-profile-picture" src={userImage} alt="user profile picture" />
+                            {isCurrentUser
+                                ?
+                                <div className="user-change-picture-container" id="change-profile-pic-btn">
+                                    <i className="fas fa-solid fa-camera"></i>
+                                </div>
+                                :
+                                <>
+                                </>
+                            }
+                        </div>
+                    </div>
+                    <div className="user-info-profile">
+                        <h1>{userDetails.userName}</h1>
+                        <p className="grey-text">
+                            <>
+                                { userDetails.role === "LENDER" &&
+                                    <>
+                                        {t('userProfile.lender')}
+                                        <span className="user-role-stars">
+                                        {userDetails.ratingAsBorrower <= 0 ? (
+                                            "-.- ") : (
+                                            userDetails.ratingAsBorrower
+                                        )}
+                                            ★ </span>
+                                    </>
+                                }
+                            </>
+                            <>
+                                {t('userProfile.borrower')}
+                                <span className="user-role-stars">
+                    {userDetails.ratingAsLender <= 0 ? (
+                        "-.- ") : (
+                        userDetails.ratingAsLender
+                    )}
+                                    ★</span>
+                            </>
+                        </p>
+                    </div>
+    </div>
     );
 };
 
