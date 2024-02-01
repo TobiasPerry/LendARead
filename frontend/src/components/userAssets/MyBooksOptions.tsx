@@ -6,7 +6,7 @@ import ChangeReservabilityModal from "../modals/ChangeReservabilityModal.tsx";
 import DeleteModal from "../modals/DeleteModal.tsx";
 import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
 import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
-
+import "../styles/MyBooksOptions.css";
 function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAssetDetails}) {
     const { t } = useTranslation();
 

@@ -7,6 +7,7 @@ import RejectLendingModal from "../modals/RejectLendingModal.tsx";
 import ConfirmReturnModal from "../modals/ConfirmReturnModal.tsx";
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import useUserLendedBooksOptions from "../../hooks/assetInstance/useUserLendedBooksOptions.ts";
+import "../styles/MyBooksOptions.css";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"

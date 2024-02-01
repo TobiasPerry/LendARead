@@ -42,7 +42,7 @@ const LocationsPage = () => {
 
 
     return (
-        <LoadingWrapper isLoading={isLoading} documentTitle={t("locations.title")}>
+        <LoadingWrapper isLoading={isLoading} documentTitle={t("locations.title")} isWhiteAnimation={false}>
         <div className="main-class" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
             <div className="container" style={{textAlign: "center"}}>
                 <h1 style={{marginTop: "50px"}}>{t('locations.title')}</h1>

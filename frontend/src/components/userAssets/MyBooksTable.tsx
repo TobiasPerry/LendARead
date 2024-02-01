@@ -58,7 +58,7 @@ const MyBooksTable = ({handleRowClicked}) => {
 
 
     return (
-      <LoadingWrapper isLoading={isLoading} documentTitle={t('my_books')}>
+      <LoadingWrapper isLoading={isLoading} documentTitle={t('my_books')} isWhiteAnimation={true}>
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{t('my_books')}</h2>

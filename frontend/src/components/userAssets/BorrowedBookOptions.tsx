@@ -4,6 +4,7 @@ import {useState} from "react";
 import CancelModal from "../modals/CancelModal.tsx";
 import {isActive, isCanceled, isDelivered, isFinished, isRejected} from "./LendedBooksOptions.tsx";
 import {Link} from "react-router-dom";
+import "../styles/MyBooksOptions.css";
 
 const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
     const { t } = useTranslation();
