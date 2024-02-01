@@ -75,7 +75,7 @@ const useLocations = () => {
     }
 
     return {
-        editLocation, deleteLocation, getLocations, addLocation, isLoading, fetchLocation, locations, editingLocation, setEditingLocation
+        editLocation, deleteLocation, getLocations, addLocation, isLoading, fetchLocation, locations, editingLocation, setEditingLocation, emptyLocation
     }
 }
 

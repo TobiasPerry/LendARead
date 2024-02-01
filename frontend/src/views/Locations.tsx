@@ -10,7 +10,7 @@ import LoadingWrapper from "../components/LoadingWrapper.tsx";
 
 const LocationsPage = () => {
     const { t } = useTranslation();
-    const { editLocation, deleteLocation, getLocations, addLocation, fetchLocation, isLoading, locations, setEditingLocation, editingLocation} = useLocations()
+    const { editLocation, deleteLocation, getLocations, addLocation, fetchLocation, isLoading, locations, setEditingLocation,emptyLocation, editingLocation} = useLocations()
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -30,6 +30,7 @@ const LocationsPage = () => {
 
     const handleSave = async (updatedLocation: any) => {
         setShowModal(false);
+        setEditingLocation(emptyLocation)
 
         if(editingLocation.id !== -1)
             await editLocation(updatedLocation)
@@ -59,7 +60,7 @@ const LocationsPage = () => {
                     )}
                 </div>
             </div>
-            <LocationModal location={editingLocation} showModal={showModal} handleClose={() => setShowModal(false)} handleSave={handleSave}/>
+            <LocationModal location={editingLocation} showModal={showModal} handleClose={() => {setShowModal(false); setEditingLocation(emptyLocation)}} handleSave={handleSave}/>
         </div>
         </LoadingWrapper>
     );
