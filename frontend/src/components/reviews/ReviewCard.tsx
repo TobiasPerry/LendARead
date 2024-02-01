@@ -4,6 +4,8 @@ const ReviewCard = ({
         placeholder  = "",
         error_stars  = "",
         error_description  = "",
+        showError_stars = false,
+        showError_review = false,
         type = "",
         handleRating = (value) => {console.log(value)},
         handleReview = (value) => {console.log(value)}
@@ -56,7 +58,7 @@ const ReviewCard = ({
                     </label>
                 </div>
                 <p className="error">
-                    {error_stars}
+                    {showError_stars ? error_stars : ''}
                 </p>
                 <textarea className="form-control" aria-label="With textarea" id="review-area"
                           placeholder={placeholder}
@@ -64,7 +66,7 @@ const ReviewCard = ({
                 >
                 </textarea>
                 <p className="error">
-                    {error_description}
+                    {showError_review ? error_description : ''}
                 </p>
             </div>
         </>

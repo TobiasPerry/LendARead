@@ -8,7 +8,7 @@ function Modal({
                     subtitle = "",
                     btnText = ""
 }) {
-    console.log(showModal)
+
     return (
         <>
             <div className={`modal ${showModal ? 'show' : ''}`}  role="dialog" aria-labelledby="modalTitle">

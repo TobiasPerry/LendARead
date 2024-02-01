@@ -43,6 +43,8 @@ export default function ReviewLender () {
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
     const [userReview, setUserReview] = useState(review_empty)
     const [notAllowed, setNotAllowed] = useState(false)
+    const [showError_stars, setShowError_stars] = useState(false)
+    const [showError_review, setShowError_review] = useState(false)
 
     const {t} = useTranslation();
     const { handleGetLendingInfoForLender, handleSendLenderReview } = UseReview()
@@ -66,6 +68,19 @@ export default function ReviewLender () {
 
     const handleBackClick = () => {
         navigate(`/userBook/${lendingNumber}?state=lended`)
+    }
+
+    const handleSendClick = async () => {
+        if(userReview.review === "" || userReview.rating === -1 ) {
+            setShowError_review(userReview.review === "");
+            setShowError_stars(userReview.rating === -1);
+        }else {
+            handleSendLenderReview(userReview, data.borrower.userId)
+                .then((value) => {
+                    setSuccess(value !== null && value !== undefined);
+                    setError(value === null || value === undefined)
+                });
+        }
     }
 
     return(
@@ -127,6 +142,8 @@ export default function ReviewLender () {
                                             title={t('reviews.lender.user.title', {user: data.borrower.userName})}
                                             error_stars={t('reviews.lender.user.error_stars')}
                                             error_description={t('reviews.lender.user.error_text')}
+                                            showError_stars={showError_stars}
+                                            showError_review={showError_review}
                                             placeholder={t('reviews.lender.user.placeholder')}
                                             handleReview={(value) => {
                                                 setUserReview({
@@ -145,13 +162,7 @@ export default function ReviewLender () {
                                         />
                                         <button
                                             onClick={
-                                                () => {
-                                                    handleSendLenderReview(userReview, data.borrower.userId)
-                                                        .then((value) => {
-                                                            setSuccess(value !== null && value !== undefined);
-                                                            setError(value === null || value === undefined)
-                                                        });
-                                                }
+                                                () => {handleSendClick().then()}
                                             }
                                         >
                                             {t('reviews.send')}
