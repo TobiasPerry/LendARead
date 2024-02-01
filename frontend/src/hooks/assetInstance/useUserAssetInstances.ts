@@ -14,10 +14,10 @@ export const checkCanceled = (asset) => {
 export const checkRejected = (asset) => {
     return asset !== undefined && asset.lendingStatus === "REJECTED"
 }
-export const extractId = (url: string) => {
+export const extractId = (url: string): string => {
     const pattern = /\/(\d+)(?=\/?$)/;
     const match = url.match(pattern);
-    return  match ? match[1] : -1;
+    return  match ? match[1] : "";
 }
 export interface AssetApi {
     author: string,

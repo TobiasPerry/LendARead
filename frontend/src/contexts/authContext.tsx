@@ -41,7 +41,7 @@ export const AuthContext = React.createContext({
     handleForgotPassword: async (email: string) => {
         return false
     },
-        user: -1,
+        user: "",
     userDetails: {
         email: "",
         image: "",
@@ -76,12 +76,12 @@ const AuthContextProvider = (props) => {
             handleJWT(token)
     }, [token])
 
-    const extractUserId = (jwt: string): number => {
+    const extractUserId = (jwt: string): string => {
         //@ts-ignore
         const decoded = jwtDecode(jwt).userReference;
         const pattern = /\/(\d+)(?=\/?$)/;
         const match = decoded.match(pattern);
-        return match ? match[1] : -1
+        return match ? match[1] : ""
     }
 
     const [user, setUser] = useState(() => {
@@ -89,7 +89,7 @@ const AuthContextProvider = (props) => {
            return extractUserId(token)
        } catch (e) {
            if(isLoggedIn) {
-               return -1
+               return ""
            }
        }
     });
@@ -119,14 +119,14 @@ const AuthContextProvider = (props) => {
         sessionStorage.removeItem("userAuthToken");
         setLoggedIn(false);
         setAuthKey('');
-        setUser(-1);
+        setUser("");
     }
 
 
-    const getUserDetails = async (id: number) => {
+    const getUserDetails = async (id: string) => {
         return (await api.get(`/users/${id}`)).data
     }
-    const storeUserDetails = async (id: number) => {
+    const storeUserDetails = async (id: string) => {
         const userDetails = await getUserDetails(id)
         if(userDetails.image !== null && userDetails.image !== undefined) {
             setUserImage(userDetails.image)
@@ -179,7 +179,7 @@ const AuthContextProvider = (props) => {
             const jwt = response.headers.get('x-jwt');
             const userId_ = extractUserId(jwt)
 
-            if(userId_ === -1) {
+            if(userId_ === "") {
                 return t('changePassword.invalidVerificationCode')
             }
 
