@@ -1,4 +1,5 @@
 import "./styles/loadingAnimation.css";
+import FaviconClaro from "../../public/static/favicon-claro.png"
 
 const LoadingAnimationWhite = () => {
     return (
@@ -21,7 +22,7 @@ const LoadingAnimationWhite = () => {
                     alignItems: 'center',
                     backgroundColor: 'white', // Set background color to white
                 }}>
-                    <img style={{width: "200px" }}src="/static/favicon-claro.png" alt="Animated Image" className="fade-in-out"/>
+                    <img style={{width: "200px" }} src={FaviconClaro} alt="Animated Image" className="fade-in-out"/>
                 </div>
             </div>
         </>

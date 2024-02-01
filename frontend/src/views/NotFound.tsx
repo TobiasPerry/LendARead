@@ -1,4 +1,5 @@
 import {useTranslation} from "react-i18next";
+import BrokenLendARead from "../../public/static/broken_lendaread.png";
 
 const NotFound = () => {
     const {t} = useTranslation()
@@ -10,7 +11,7 @@ const NotFound = () => {
             alignItems: 'center',
             height: '100vh'
         }}>
-            <img src="/static/broken_lendaread.png" alt="Animated Image" style={{height: '300px'}}/>
+            <img src={BrokenLendARead} alt="Animated Image" style={{height: '300px'}}/>
             <span>
                 <h1>{t('not_found.title')}</h1>
                 <br/>
