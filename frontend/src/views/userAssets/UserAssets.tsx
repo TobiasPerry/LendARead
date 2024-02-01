@@ -36,8 +36,10 @@ const UserAssetsView = () => {
     }
 
     return (
-        <div style={{ width: '1000px', margin: 'auto', paddingBottom: '50px', paddingTop: '50px' }}>
-            <h1 className="mb-3">{t('greeting', { userEmail: userDetails.userName })}</h1>
+        <div className="main-class" style={{height: "100%", margin: 0}}>
+            <div style={{ padding: "40px"}}>
+                <div style={{backgroundColor: "#f9f9f9", padding: "30px", borderRadius: "20px"}}>
+            <h1 style={{marginBottom: "20px"}}>{t('greeting', { userEmail: userDetails.userName })}</h1>
             <div style={{ display: 'flex', flexDirection: 'row', marginBottom: "20px" }}>
                 <div style={{ flex: 1 }}>
                     <div className="list-group" style={{ width: "150px" }}>
@@ -67,6 +69,8 @@ const UserAssetsView = () => {
                     {table === 'borrowed_books' && <LendedBooksTable isLender={false} handleRowClicked={handleRowClicked} />}
                 </div>
             </div>
+            </div>
+        </div>
         </div>
     );
 };
