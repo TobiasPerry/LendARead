@@ -10,7 +10,7 @@ export default defineConfig({
         assetFileNames: 'public/[name]-[hash][extname]'
       }
     },
-    minify: 'terser', // 'terser' is the default minifier for production
+    minify: 'esbuild', // 'terser' is the default minifier for production
   },
   base: '/'
 })
