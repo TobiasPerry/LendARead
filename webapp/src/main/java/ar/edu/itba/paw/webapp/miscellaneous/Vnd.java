@@ -23,5 +23,6 @@ public class Vnd {
     public static final String VND_ASSET = VND_PREFIX + "asset.v1" + VND_SUFFIX;
     public static final String VND_LANGUAGE = VND_PREFIX + "language.v1" + VND_SUFFIX;
     public static final String VND_ROOT = VND_PREFIX + "root.v1" + VND_SUFFIX;
+    public static final String VND_VALIDATION_ERROR = VND_PREFIX + "validationError.v1" + VND_SUFFIX;
 
 }

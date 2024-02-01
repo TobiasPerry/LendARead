@@ -12,7 +12,6 @@ import javax.ws.rs.core.UriInfo;
 @Setter
 public class UserDTO {
     private String userName;
-    private String email;
     private String image;
     private String telephone;
     private String role;
@@ -24,14 +23,13 @@ public class UserDTO {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
         dto.telephone = user.getTelephone();
-        dto.email = user.getEmail();
         dto.role = user.getBehavior().toString();
         dto.rating = user.getRating();
         dto.ratingAsBorrower = user.getRatingAsBorrower();
         dto.ratingAsLender = user.getRatingAsLender();
         dto.selfUrl = reference(url, user);
         if (user.getProfilePhoto() != null)
-            dto.image = url.getBaseUriBuilder().path(EndpointsUrl.IMAGE_URL).path(String.valueOf(user.getProfilePhoto().getId())).queryParam("size=PORTADA").build().toString();
+            dto.image = url.getBaseUriBuilder().path(EndpointsUrl.IMAGE_URL).path(String.valueOf(user.getProfilePhoto().getId())).build().toString();
         return dto;
     }
     public static String reference(UriInfo url, User user) {
