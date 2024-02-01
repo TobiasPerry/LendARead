@@ -7,6 +7,7 @@ import "../styles/addAsset.css"
 import {AuthContext} from "../../contexts/authContext.tsx";
 import useReviews, {ReviewApi} from "../../hooks/reviews/useReviews.ts";
 import UserProfile from "../../components/userDetails/UserProfile.tsx";
+import UserProfileTabs from "../../components/userDetails/UserProfileTabs.tsx";
 
 const ProfileView = ({isCurrentUser, id}) => {
 
@@ -27,24 +28,7 @@ const ProfileView = ({isCurrentUser, id}) => {
                    <UserProfile isCurrentUser={isCurrentUser}/>
                     <hr />
                     <div className="tabs-container">
-                        <ul className="nav nav-tabs" id="user-tab" role="tablist">
-                            <li className="nav-item" role="presentation">
-                                <button
-                                    className="nav-link black-text"
-                                    type="button"
-                                    role="tab"
-                                    onClick={(_) => setSelectedTab("lender_reviews")}
-                                    aria-selected={selectedTab === "lender_reviews"}>Lender Reviews</button>
-                            </li>
-                            <li className="nav-item" role="presentation">
-                                <button
-                                    className="nav-link black-text"
-                                    type="button"
-                                    role="tab"
-                                    onClick={(_) => setSelectedTab("borrower_reviews")}
-                                    aria-selected={selectedTab === "borrower_reviews"}>Borrower Reviews</button>
-                            </li>
-                        </ul>
+                    <UserProfileTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
                     </div>
                     <div className="tab-content" >
                         {selectedTab === "lender_reviews" &&
