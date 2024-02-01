@@ -32,7 +32,7 @@ const useLendings = () => {
     const [lendings, setLendings] = useState([])
     const [totalPages, setTotalPages] = useState(1)
     const [currentPage, setCurrentPage] = useState(1)
-    const PAGE_SIZE = 1
+    const PAGE_SIZE = 3
     const [asset_, setAsset_] = useState(null)
     const getLendings = async (asset, newPage = 1) => {
         if(asset === undefined || asset === null || asset.assetinstance === undefined) return

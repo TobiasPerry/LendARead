@@ -43,7 +43,9 @@ const UserAssetInstance = () => {
 
     return (
         <LoadingAccessWrapper isLoading={isLoading} documentTitle={assetDetails.title} isOwner={isOwner}>
-            <div className="main-container" style={{padding: '2rem'}}>
+            <div className="main-class" style={{height: "100%", margin: 0}}>
+                <div style={{ padding: "40px"}}>
+                    <div style={{backgroundColor: "#f9f9f9", padding: "30px", borderRadius: "20px"}}>
                 <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
                     <i className="fas fa-arrow-left mb-1"></i>
                     <h3 className="ms-3">
@@ -76,6 +78,8 @@ const UserAssetInstance = () => {
                 </div>
                 {state === "owned" && <MyBookActiveLendings
                     asset={assetDetails} /> }
+            </div>
+                </div>
             </div>
         </LoadingAccessWrapper>
     );
