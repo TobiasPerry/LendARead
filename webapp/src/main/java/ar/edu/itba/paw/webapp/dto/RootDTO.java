@@ -51,4 +51,26 @@ public class RootDTO {
         rootDTO.languages_url = builder.cloneBuilder().path(EndpointsUrl.Languages_URL).path("{?page,itemsPerPage,isUsed}").build().toString();
         return rootDTO;
     }
+
+
+    @Override
+    public int hashCode() {
+        int result = api_url != null ? api_url.hashCode() : 0;
+        result = 31 * result + (assets_url != null ? assets_url.hashCode() : 0);
+        result = 31 * result + (asset_instances_url != null ? asset_instances_url.hashCode() : 0);
+        result = 31 * result + (lendings_url != null ? lendings_url.hashCode() : 0);
+        result = 31 * result + (locations_url != null ? locations_url.hashCode() : 0);
+        result = 31 * result + (users_url != null ? users_url.hashCode() : 0);
+        result = 31 * result + (languages_url != null ? languages_url.hashCode() : 0);
+        result = 31 * result + (asset_url != null ? asset_url.hashCode() : 0);
+        result = 31 * result + (assets_instances_url != null ? assets_instances_url.hashCode() : 0);
+        result = 31 * result + (lending_url != null ? lending_url.hashCode() : 0);
+        result = 31 * result + (location_url != null ? location_url.hashCode() : 0);
+        result = 31 * result + (language_url != null ? language_url.hashCode() : 0);
+        result = 31 * result + (asset_instance_review_url != null ? asset_instance_review_url.hashCode() : 0);
+        result = 31 * result + (asset_instance_reviews_url != null ? asset_instance_reviews_url.hashCode() : 0);
+        result = 31 * result + (users_lender_reviews_url != null ? users_lender_reviews_url.hashCode() : 0);
+        result = 31 * result + (users_borrower_reviews_url != null ? users_borrower_reviews_url.hashCode() : 0);
+        return result;
+    }
 }
