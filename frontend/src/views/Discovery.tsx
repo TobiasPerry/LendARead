@@ -45,7 +45,7 @@ const DiscoveryView =  () => {
     const [loadingData, setLoadingData] = useState(true);
     const [loadingLanguages, setLoadingLanguages] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [booksPerPage, setBooksPerPage] = useState(2);
+    const [booksPerPage, setBooksPerPage] = useState(12);
     const [totalPages, setTotalPages] = useState(0);
 
     // Read the query params sent form other views (like view asset)
