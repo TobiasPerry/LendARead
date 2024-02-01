@@ -6,10 +6,10 @@ import { AuthContext } from '../../contexts/authContext.tsx';
 
 const ProfileWrapper = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
-    const isCurrentUser = useRef(false);
-    const redirectLogin = useRef(false);
-
+    // const navigate = useNavigate();
+    // const isCurrentUser = useRef(false);
+    // const redirectLogin = useRef(false);
+    //
     useEffect(() => {
         // if (!id || isNaN(Number(id)) ) {
         //     if (!user || user === -1 || user === undefined) {
@@ -26,7 +26,7 @@ const ProfileWrapper = () => {
     }, [])
 
     return (
-        <ProfileView id={id} isCurrentUser={isCurrentUser.current}/>
+        <ProfileView id={id} isCurrentUser={true}/>
     )
 
 }
