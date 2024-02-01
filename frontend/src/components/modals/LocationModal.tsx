@@ -80,7 +80,6 @@ const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
 
 
     const handleClose_ = () => {
-        console.log('handleClose')
         setFormData({ name: "", locality: "", province: "", country: "", zipcode: "", selfUrl: "" });
         setFormErrors({ name: "", locality: "", province: "", country: "", zipcode: "" });
         handleClose()

@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useTranslation } from 'react-i18next';
 import LocationModal from "../components/modals/LocationModal.tsx";
 import Location from "../components/locations/Location.tsx";
@@ -10,11 +10,17 @@ import LoadingWrapper from "../components/LoadingWrapper.tsx";
 
 const LocationsPage = () => {
     const { t } = useTranslation();
-    const { editLocation, deleteLocation, getLocations, addLocation, fetchLocation, isLoading, locations, setEditingLocation,emptyLocation, editingLocation} = useLocations()
+    const { editLocation,
+            deleteLocation,
+            addLocation,
+            fetchLocation,
+            isLoading,
+            locations,
+        setEditingLocation,emptyLocation, editingLocation} = useLocations()
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-       fetchLocation().then()
+        fetchLocation().then()
     }, []);
 
 
@@ -40,13 +46,23 @@ const LocationsPage = () => {
        await fetchLocation()
     };
 
+    const handleBackClick = () => {
+
+    }
+
 
     return (
         <LoadingWrapper isLoading={isLoading} documentTitle={t("locations.title")} isWhiteAnimation={false}>
-        <div className="main-class" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+        <div className="main-class" style={{ display: 'flex', flexDirection: 'column' }}>
             <div className="container" style={{textAlign: "center"}}>
+                <div className="d-flex back-click flex-row align-items-center mt-4 mb-4" onClick={handleBackClick}>
+                    <i className="fas fa-arrow-left mb-1"></i>
+                    <h3 className="ms-3">
+                        {t("user")}
+                    </h3>
+                </div>
                 <h1 style={{marginTop: "50px"}}>{t('locations.title')}</h1>
-                <div className="container-row-wrapped" style={{ backgroundColor: '#D0DCD0', borderRadius: '20px', padding: '20px' }}>
+                <div className="container-row-wrapped" style={{borderRadius: '20px', padding: '20px' }}>
                     {locations.map((location , i) => (
                         <Location key={i} location={locations[i]} handleEdit={() => handleEdit(location)} handleDelete={() => handleDelete(location)}/>
                     ))}

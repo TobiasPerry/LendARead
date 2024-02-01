@@ -2,6 +2,7 @@ import {api, api_} from "../api/api.ts";
 import Vnd from "../api/types.ts";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import {useTranslation} from "react-i18next";
 
 export interface LocationApi {
     name: string,
@@ -14,21 +15,27 @@ export interface LocationApi {
 const useLocations = () => {
 
     const {user} = useContext(AuthContext)
-    const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
+    const { i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(false)
+    const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([emptyLocation]);
     const [editingLocation, setEditingLocation] = useState(emptyLocation);
+    const currentLanguage = i18n.language;
 
     const editLocation = async (location: any) => {
         try {
             const response = await api_.patch(location.selfUrl, location,
                 {
-                    headers: {"Content-Type": Vnd.VND_LOCATION}
+                    headers: {
+                        "Content-Type": Vnd.VND_LOCATION,
+                        "Accept-Language": currentLanguage
+                    }
                 }
             )
             // @ts-ignore
             return true
         } catch (error) {
+            console.log(error)
             return false
         }
     }
@@ -46,7 +53,14 @@ const useLocations = () => {
     const getLocations = async (userId: any) => {
         setIsLoading(true)
         try {
-            const response = await api.get(`/locations`, {params: {userId: userId}})
+            const response = await api.get(`/locations`, {
+                headers: {
+                    "Accept-Language": currentLanguage
+                },
+                params: {
+                    userId: userId
+                }
+            })
             setIsLoading(false)
             return response.data
         } catch (error) {
@@ -58,7 +72,10 @@ const useLocations = () => {
     const addLocation = async (location: LocationApi) => {
         try {
             const response = await api.post('/locations', location, {
-                headers: { "Content-Type": Vnd.VND_LOCATION }
+                headers: {
+                    "Content-Type": Vnd.VND_LOCATION,
+                    "Accept-Language": currentLanguage
+                }
             });
         } catch (e) {
             return false
