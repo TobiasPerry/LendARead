@@ -103,6 +103,9 @@ public class AssetInstanceController {
                         AssetState.fromString(status)
                         )
         );
+        if (page.getTotalPages() == 0 || page.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getList());
         LOGGER.info("GET assetInstances/ search:{} physicalConditions:{} languages:{} sort:{} sortDirection:{} page:{} itemsPerPage:{} minRating:{} maxRating:{} userId:{}",search,physicalConditions,languages,sort,sortDirection,currentPage,itemsPerPage,minRating,maxRating,userId);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetsInstancesDTO>>(assetsInstancesDTO) {});
@@ -143,6 +146,9 @@ public class AssetInstanceController {
     @Produces(value ={Vnd.VND_ASSET_INSTANCE_REVIEW})
     public Response getAssetInstanceReviews(@PathParam("id") final int id, @QueryParam("page")  @DefaultValue("1") final int page, @QueryParam("itemsPerPage") @DefaultValue("4") final int itemsPerPage) throws AssetInstanceNotFoundException {
         PagingImpl<AssetInstanceReview> reviews = air.getAssetInstanceReviewsById(page, itemsPerPage,id);
+        if (reviews.getTotalPages() == 0 || reviews.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetInstanceReviewDTO>>(AssetInstanceReviewDTO.fromAssetInstanceReviews(reviews.getList(),uriInfo)) {});
         PaginatedData.paginatedData(response, reviews, uriInfo);
         LOGGER.info("GET assetInstances/{}/reviews page:{} itemsPerPage:{}",id,page,itemsPerPage);

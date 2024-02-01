@@ -57,6 +57,9 @@ public class AssetController {
             @QueryParam(value = "language")  final String language
     ){
         PagingImpl<Asset> books = as.getBooks(page,itemsPerPage,isbn,author,title,language);
+        if (books.getTotalPages() == 0 || books.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         LOGGER.info("GET asset/ isbn:{} author:{} title:{} language:{}",isbn,author,title,language);
         List<AssetDTO> assetsDTO = AssetDTO.fromBooks( books.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetDTO>>(assetsDTO) {});
