@@ -259,10 +259,7 @@ const ViewAssetInstance = () => {
                                                              }
                                                              <button className="btn btn-green"
                                                                      onClick={ () => {
-                                                                         handleClickSendLending().then((value) => {
-                                                                             setSuccess(value !== null && value !== undefined)
-                                                                             setError(value === null || value === undefined)
-                                                                         })
+                                                                         handleClickSendLending().then()
                                                                      }
                                                                     }
                                                              >

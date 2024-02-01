@@ -1,4 +1,4 @@
-
+import '../styles/LocationsModal.css'
 function Modal({
                    showModal = true,
                    handleCloseModal = () => {},
@@ -8,7 +8,7 @@ function Modal({
                     subtitle = "",
                     btnText = ""
 }) {
-
+    console.log(showModal)
     return (
         <>
             <div className={`modal ${showModal ? 'show' : ''}`}  role="dialog" aria-labelledby="modalTitle">
