@@ -6,7 +6,7 @@ import ChangeReservabilityModal from "../modals/ChangeReservabilityModal.tsx";
 import DeleteModal from "../modals/DeleteModal.tsx";
 import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
 import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
-
+import "../styles/MyBooksOptions.css";
 function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAssetDetails}) {
     const { t } = useTranslation();
 
@@ -30,14 +30,10 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
         setShowModalDelete(true);
         await handleDelete(asset)
     }
-    const handleEditAsset = async (editedAsset) => {
+    const handleEditAsset = async (editedAsset, originalAsset) => {
         setShowModalEdit(true);
-        await editAsset(editedAsset)
+        await editAsset(editedAsset, originalAsset)
     }
-
-    useEffect(() => {
-        console.log(asset)
-    }, [asset])
 
     return (
         <div style={{

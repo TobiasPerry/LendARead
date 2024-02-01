@@ -32,7 +32,7 @@ public class AssetsInstancesDTO {
 
     private String imageReference;
 
-    private Integer rating;
+    private float rating;
 
     private String selfUrl;
 

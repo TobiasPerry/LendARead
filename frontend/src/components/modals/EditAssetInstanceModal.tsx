@@ -74,8 +74,8 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
         e.preventDefault();
         const errors = validateForm();
 
-        if ( formErrors.physicalCondition === "" && formErrors.locationId === "" && formErrors.status === "" && formErrors.description === "" && formErrors.maxDays === "") {
-            handleSave(formData);
+        if (errors.physicalCondition === "" && errors.locationId === "" && errors.status === "" && errors.description === "" && errors.maxDays === "") {
+            handleSave(formData, assetInstance)
         } else {
             // @ts-ignore
             setFormErrors(errors);
@@ -145,7 +145,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
                                 <div style={{padding: "0 20px", width: "500px"}}>
                             {/* Physical Condition Dropdown */}
                             <div className="form-group">
-                                <label htmlFor="physicalCondition-modal">{t('physicalConditionLabel')}</label>
+                                <label htmlFor="physicalCondition-modal"><strong>{t('physicalConditionLabel')}</strong></label>
                                 <select className="form-control" name="physicalCondition" id="physicalCondition-modal" value={formData.physicalCondition} onChange={handleChange}>
                                     <option value="ASNEW">{t('ASNEW')}</option>
                                     <option value="VERYGOOD">{t('VERYGOOD')}</option>
@@ -162,14 +162,14 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
 
                             {/* Max Days Input */}
                             <div className="form-group">
-                                <label htmlFor="maxDays-modal">{t('maxDaysLabel')}</label>
+                                <label htmlFor="maxDays-modal"><strong>{t('maxDaysLabel')}</strong></label>
                                 <input type="number" className="form-control" name="maxDays" id="maxDays-modal" value={formData.maxDays} onChange={handleChange} />
                                 {formErrors.maxDays && <div className="error">{formErrors.maxDays}</div>}
                             </div>
 
                             {/* Description Textarea */}
                             <div className="form-group">
-                                <label htmlFor="description-modal">{t('descriptionLabel')}</label>
+                                <label htmlFor="description-modal"><strong> {t('descriptionLabel')} </strong></label>
                                 <textarea className="form-control" name="description" id="description-modal" value={formData.description} onChange={handleChange}></textarea>
                                 {formErrors.description && <div className="error">{formErrors.description}</div>}
                             </div>
@@ -178,8 +178,9 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
 
                             {/* Is Reservable Checkbox */}
                             <div className="form-group">
-                                <label htmlFor="isReservable-modal">{t('isReservableLabel')}</label>
+                                <label htmlFor="isReservable-modal"><strong>{t('isReservableLabel')}</strong></label>
                                 <input
+                                    style={{backgroundColor: "#f0f5f0", width: "50px"}}
                                     type="checkbox"
                                     name="isReservable"
                                     checked={formData.isReservable}
@@ -190,7 +191,7 @@ const EditAssetInstanceModal = ({ handleSave, assetInstance, showModal, handleCl
 
                                     {/* Status Field */}
                             <div className="form-group">
-                                <label htmlFor="status-modal">{t('statusLabel')}</label>
+                                <label htmlFor="status-modal"><strong>{t('statusLabel')}</strong></label>
                                 <select className="form-control" name="status" id="status-modal" value={formData.status} onChange={handleChange}>
                                     <option value="PRIVATE">{t('private')}</option>
                                     <option value="PUBLIC">{t('public')}</option>

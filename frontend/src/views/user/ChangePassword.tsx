@@ -7,6 +7,7 @@ import loginBg from '../../assets/login-bg.jpg';
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import "../styles/ChangePassword.css";
+import {Helmet} from "react-helmet";
 
 const Snackbar = ({ message, color }) => (
     <div style={{ backgroundColor: color, color: 'white', position: 'fixed', bottom: '20px', left: '20px', padding: '10px', borderRadius: '5px' }}>
@@ -38,7 +39,6 @@ const ChangePasswordView = () => {
     }, [emailParam]);
 
     const handleResendToken = async (e: any) => {
-        console.log("send the token request passwod")
         await handleForgotPassword(email)
         setShowSnackbar({show: true, color: '#53b453', text: t('changePassword.resentToken')})
     }
@@ -50,7 +50,6 @@ const ChangePasswordView = () => {
         setIsLoading(true);
 
         const res = await handleChangePassword(email, verificationCode, newPassword, repeatNewPassword);
-        console.log(res)
 
         setIsLoading(false);
 
@@ -81,6 +80,9 @@ const ChangePasswordView = () => {
 
     return (
         <section className="vh-100">
+            <Helmet>
+                <title>{t("changePasswordTitle")}</title>
+            </Helmet>
             <div className="container-fluid">
                 <div className="row">
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">

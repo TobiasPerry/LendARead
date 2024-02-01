@@ -13,7 +13,7 @@ function ChangeStatusModal({ asset, showModal, handleCloseModal, handleSubmitMod
                         borderRadius: '20px',
                     }}>
                         <div className="modal-header">
-                            <div className="icon-box">
+                            <div className="icon-box" style={{backgroundColor: "#16df7e"}}>
                                 <i className="fas fa-eye-slash fa-lg"></i>
                             </div>
                             <h2 className="modal-title" id="modalTitle">

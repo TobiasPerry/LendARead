@@ -75,7 +75,7 @@ class EmailServiceImpl implements EmailService {
         variables.put("borrower", borrower);
         variables.put("owner", owner);
         variables.put("location", location);
-        variables.put("path", baseUrl + "lentBookDetails/" + lendingId);
+        variables.put("path", baseUrl + "userBook/" + lendingId);
 
         String email = owner.getEmail();
         String bookName = book.getName();
@@ -96,7 +96,7 @@ class EmailServiceImpl implements EmailService {
         variables.put("book", book);
         variables.put("borrower", borrower.getName());
         variables.put("owner", owner);
-        variables.put("path", baseUrl + "borrowedBookDetails/" + lendingId);
+        variables.put("path", baseUrl + "userBook/" + lendingId);
         variables.put("location", location);
         String subject = String.format(messageSource.getMessage("email.borrower.subject", null, locale), assetInstance.getBook().getName());
 

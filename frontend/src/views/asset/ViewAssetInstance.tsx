@@ -1,15 +1,23 @@
-import {Link, useParams} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
 import "../styles/assetView.css"
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import {AssetData} from "../../hooks/assetInstance/useAssetInstance.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import {useTranslation} from "react-i18next";
 import {AuthContext} from "../../contexts/authContext.tsx";
+import CalendarReservable from "../../components/viewAsset/CalendarReservable.tsx";
+import CalendarNotReservable from "../../components/viewAsset/CalendarNotReservable.tsx";
+import Modal from "../../components/modals/Modal.tsx";
+import StarsReviews from "../../components/viewAsset/StarsReviews.tsx";
+import ShowReviewCard from "../../components/viewAsset/ShowReviewCard.tsx";
+import GreenButton from "../../components/GreenButton.tsx";
+import {Helmet} from "react-helmet";
 
 const ViewAssetInstance = () => {
 
+    // @ts-ignore
     const book : AssetData = {
         title: "",
         author: "",
@@ -29,7 +37,9 @@ const ViewAssetInstance = () => {
             country: "",
         },
         reviews: undefined,
-        description: ""
+        description: "",
+        reservable: false,
+        maxLendingDays: -1
     }
 
     const {user, isLoggedIn} = useContext(AuthContext)
@@ -38,47 +48,73 @@ const ViewAssetInstance = () => {
 
     const { bookNumber } = useParams<{ bookNumber: string}>()
 
-    const {handleAssetInstance} = useAssetInstance()
+    const {handleAssetInstance, handleSendLendingRequest, handleGetReservedDays} = useAssetInstance()
 
-    const [data, setData] = useState(book)
+    // Status: is it loading, was not found, error, etc
     const [loading, setLoading] = useState(true)
     const [found, setFound] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState(false)
 
-    const [hasReviewAsLender, setHasReviewAsLender] = useState(false)
+    // AssetInstance Information
+    const [data, setData] = useState(book)
+    const [hasReviewAsLender, setHasReviewAsLender] = useState(false) // To decide if show rating alongside the user
     const [hasUserImage, setHasUserImage] = useState(false)
     const [hasDescription, setHasDescription] = useState(false)
-    const [assetInstances, setAssetInstances] = useState([])
-    const [ownerRating, setOwnerRating] = useState(3)
+    const [hasReviews, setHasReviews] = useState(false)
+    const [reservedDates, setReservedDates] = useState([])
+
+    // Lending request info
+    const [beginDate, setBeginDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             setData(book)
-            const res: AssetData = await handleAssetInstance(bookNumber)
-            setFound((!(res === null || res === undefined)))
-            if((!(res === null || res === undefined))) {
+            const res: AssetData = await handleAssetInstance(bookNumber, 3)
+            // if found
+            if(!(res === null || res === undefined)){
+                setFound(true)
+                setHasReviews(res.rating_assetInstance != 0)
+                setHasReviewAsLender(res.rating_as_lender !== 0)
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
-            }else{
-                setHasUserImage(false)
-                setHasDescription(false)
+                setData(res)
+                // if log in and assetInstance reservable, get the reserved dates
+                if(isLoggedIn && res.reservable) {
+                    const res_reserved_dates = await handleGetReservedDays(bookNumber);
+                    setReservedDates((res_reserved_dates === null || res_reserved_dates === undefined) ? [] : res_reserved_dates)
+                }
+                // Otherwise, just set initial date today and limit the end date
+                else {
+                    const today = new Date();
+                    today.setHours(0,0,0)
+                    setBeginDate(today)
+                }
+                setLoading(false)
+            }else {
+                setFound(false)
+                setLoading(false)
             }
-            setData(res)
-            if((!(res === null || res === undefined))) {
-                document.title = t('view_asset.title', {title: res.title, author: res.author})
-            }else{
-                document.title = " Not Found "
-            }
-            setLoading(false)
         };
         fetchData()
 
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
+    // Request the lending
+    const handleClickSendLending = async () =>  {
+        const res = await handleSendLendingRequest(
+            { borrowDate: beginDate, devolutionDate: endDate, assetInstanceId: bookNumber }
+        );
+        if(res !== undefined && res !== null){
+            setSuccess(true)
+        }else{
+            setError(true)
+        }
+    }
 
     // These are the links to redirect to discovery with filters applied
     const authorURL = `/discovery?search=${data.author}`
@@ -87,6 +123,22 @@ const ViewAssetInstance = () => {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{loading || !found ? "Lend a Read" : t('view_asset.title', {title: data.title, author: data.author})}</title>
+            </Helmet>
+            <Modal
+                showModal={success}
+                title="text" subtitle="text" btnText="text"
+                handleSubmitModal={() => {navigate('/discovery')}}
+                handleCloseModal={() => {navigate('/discovery')}}
+            />
+            <Modal
+                showModal={error} errorType={true}
+                title="text" subtitle="text" btnText="text"
+                handleSubmitModal={() => {setError(false)}}
+                handleCloseModal={() => {setError(false)}}
+            />
             {
                  loading ? (
                      <LoadingAnimation/>
@@ -166,7 +218,6 @@ const ViewAssetInstance = () => {
                                                              )
                                                          }
                                                      </Link>
-                                                     {/*<a href="<c:url value="/user/${assetInstance.owner.id}"/>" style="color: inherit; text-decoration: none;">*/}
                                                      <Link to="/">
                                                          <span className="mx-2 text-clickable">{data.userName}</span>
                                                      </Link>
@@ -175,8 +226,8 @@ const ViewAssetInstance = () => {
                                                          {
                                                              hasReviewAsLender ? (
                                                                  <span className="badge bg-success">
-                                               {ownerRating} ★
-                                            </span>
+                                                                   {data.rating_as_lender} ★
+                                                                 </span>
                                                              ) : (
                                                                  <span className="badge bg-secondary">-.- ★</span>
                                                              )
@@ -187,37 +238,42 @@ const ViewAssetInstance = () => {
                                                  {
                                                      isLoggedIn ? (
                                                          <>
-                                                             Logeado
+                                                             {
+                                                                 data.reservable ? (
+                                                                     <CalendarReservable
+                                                                         reservedDates={reservedDates}
+                                                                         startDate={beginDate}
+                                                                         endDate={endDate}
+                                                                         handleStartDateChange={setBeginDate}
+                                                                         handleEndDateChange={setEndDate}
+                                                                         maxLendingDays={data.maxLendingDays}
+                                                                     />
+                                                                 ) : (
+                                                                     <CalendarNotReservable
+                                                                         startDate={beginDate}
+                                                                         endDate={endDate}
+                                                                         handleEndDateChange={setEndDate}
+                                                                         maxLendingDays={data.maxLendingDays}
+                                                                     />
+                                                                 )
+                                                             }
+                                                             <button className="btn btn-green"
+                                                                     onClick={ () => {
+                                                                         handleClickSendLending().then()
+                                                                     }
+                                                                    }
+                                                             >
+                                                                 {t('view_asset.lending_btn')}
+                                                             </button>
                                                          </>
                                                      ) : (
                                                          <>
-                                                             boton para logear
+                                                             <button className="btn btn-green" onClick={() => {navigate("/login")}}>
+                                                                 {t('view_asset.login_btn')}
+                                                             </button>
                                                          </>
                                                      )
                                                  }
-                                                 {/*<security:authorize access="isAuthenticated()">*/}
-                                                 {/*    <c:url var="borrowAsset" value="/requestAsset/${assetInstance.id}"/>*/}
-                                                 {/*    <form:form modelAttribute="borrowAssetForm" method="post"*/}
-                                                 {/*               action="${borrowAsset}" enctype="multipart/form-data" id="form"*/}
-                                                 {/*               accept-charset="utf-9">*/}
-                                                 {/*        <c:choose>*/}
-                                                 {/*            <c:when test="${assetInstance.isReservable}">*/}
-                                                 {/*                <jsp:include page="../components/calendar.jsp"/>*/}
-                                                 {/*            </c:when>*/}
-                                                 {/*            <c:otherwise>*/}
-                                                 {/*                <jsp:include page="../components/simpleCalendar.jsp"/>*/}
-                                                 {/*            </c:otherwise>*/}
-                                                 {/*        </c:choose>*/}
-                                                 {/*        <input className="btn btn-green" type="submit"*/}
-                                                 {/*               value="text"/>*/}
-                                                 {/*    </form:form>*/}
-                                                 {/*</security:authorize>*/}
-                                                 {/*<security:authorize access="!isAuthenticated()">*/}
-                                                 {/*    <a className="btn-green" href="<c:url value="/login"/>"*/}
-                                                 {/*       style="text-decoration: none; text-align: center">*/}
-                                                 {/*        text*/}
-                                                 {/*    </a>*/}
-                                                 {/*</security:authorize>*/}
                                              </div>
                                          </div>
                                      </div>
@@ -264,7 +320,7 @@ const ViewAssetInstance = () => {
                                          </div>
 
                                      </div>
-                                     <div className="container-row" style={{width: '50 %', marginBottom: '20px'}}>
+                                     <div className="container-row" style={{width: '50%', marginBottom: '20px'}}>
                                          <div className="container-column" style={{flex: '0 0 100%'}}>
                                              <div className="card"
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
@@ -298,7 +354,7 @@ const ViewAssetInstance = () => {
 
 
 
-                                     <div className="container-row" style={{width: '50 %', marginBottom: '20px'}}>
+                                     <div className="container-row" style={{width: '50%', marginBottom: '20px'}}>
                                          <div className="container-column" style={{flex: '0 0 100%'}}>
                                              <div className="card p-2"
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
@@ -311,92 +367,36 @@ const ViewAssetInstance = () => {
                                                               alignItems: 'center'
                                                           }}
                                                           id="scrollspyRating">
-                                                         <div className="container-column">
-                                                             <h1 className="text-muted text-center mt-5"><i
-                                                                 className="bi bi-x-circle"></i></h1>
-                                                             <h6 className="text-muted text-center mb-5">
-                                                                 {t('view_asset.reviews.no_reviews')}
-                                                             </h6>
-                                                             {/*        {*/}
-                                                             {/*            hasReviews ? (<></>) : (<></>)*/}
-                                                             {/*        }*/}
-                                                             {/*        <c:if test="${hasReviews}">*/}
-                                                             {/*            <div className="container-row" style="justify-content: center !important;">*/}
-                                                             {/*                <h1>*/}
-                                                             {/*            <span id="rating-value">text</span><small>/5</small>*/}
-                                                             {/*                </h1>*/}
-                                                             {/*            </div>*/}
-                                                             {/*            <div className="container-row mb-2" style="justify-content: center !important;"*/}
-                                                             {/*                 id="stars-container" data-rating="<c:out value="*/}
-                                                             {/*                 ${assetInstanceReviewAverage}"/>">*/}
-                                                             {/*                <*/}
-                                                             {/*                %--Stars will be added via JS based on the rating--%>*/}
-                                                             {/*            </div>*/}
-                                                             {/*            <div className="user-profile-reviews-pane">*/}
+                                                         <div className="container-column" style={{width: '100%'}}>
+                                                             {
+                                                                 !hasReviews ? (
+                                                                     <>
+                                                                         <h1 className="text-muted text-center mt-5"><i
+                                                                             className="bi bi-x-circle"></i></h1>
+                                                                         <h6 className="text-muted text-center mb-5">
+                                                                             {t('view_asset.reviews.no_reviews')}
+                                                                         </h6>
+                                                                     </>
+                                                                 ) : (
+                                                                     <>
+                                                                         <div className="text-center">
+                                                                             <h1>{data.rating_assetInstance} <small>/ 5</small></h1>
+                                                                             <StarsReviews
+                                                                                 rating={parseInt(data.rating_assetInstance.toString(), 10)}/>
+                                                                         </div>
+                                                                         {
+                                                                             data.reviews.map((review, index) => (<ShowReviewCard review={review} key={index}/> ))
+                                                                         }
+                                                                         <div className="text-center">
+                                                                             {/*@ts-ignore*/}
+                                                                            <GreenButton style={{width: '20%'}}
+                                                                                         text={t('view_asset.reviews.see_all')}
+                                                                                         action={() => {navigate(`/book/${bookNumber}/reviews`)}} />
+                                                                         </div>
+                                                                     </>
+                                                                 )
+                                                             }
 
-                                                             {/*                <c:forEach var="review" items="${assetInstanceReviewPage.list}">*/}
-                                                             {/*                    <jsp:include page="../components/reviewCardProfile.jsp">*/}
-                                                             {/*                        <jsp:param name="review" value="${review.review}"/>*/}
-                                                             {/*                        <jsp:param name="userId" value="${review.reviewer.id}"/>*/}
-                                                             {/*                        <jsp:param name="reviewer" value="${review.reviewer.name}"/>*/}
-                                                             {/*                        <jsp:param name="role" value="${review.reviewer.behavior}"/>*/}
-                                                             {/*                        <jsp:param name="imgSrc"*/}
-                                                             {/*                                   value="${review.reviewer.profilePhoto == null ? -1 : review.reviewer.profilePhoto.id}"/>*/}
-                                                             {/*                    </jsp:include>*/}
-                                                             {/*                </c:forEach>*/}
-                                                             {/*            </div>*/}
-                                                             {/*            <div className="container-row-wrapped"*/}
-                                                             {/*                 style="margin-top: 25px; margin-bottom: 25px; width: 100%;">*/}
-                                                             {/*                <div>*/}
-                                                             {/*                    <nav aria-label="Page navigation example">*/}
-                                                             {/*                        <ul className="pagination justify-content-center align-items-center">*/}
-                                                             {/*                            <li className="page-item">*/}
-                                                             {/*                                <button type="button"*/}
-                                                             {/*                                        className="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage != 1 ? "" : "*/}
-                                                             {/*                                        disabled"}"*/}
-                                                             {/*                                        id="previousPageButton"*/}
-                                                             {/*                                        style="border-color: rgba(255, 255, 255, 0)"*/}
-                                                             {/*                                        onclick="window.location.href = '<c:url*/}
-                                                             {/*                                        value="/info/${assetInstance.id}*/}
-                                                             {/*                                ?reviewPage=${assetInstanceReviewPage.currentPage - 1}#scrollspyRating"/>'"*/}
-                                                             {/*                                >*/}
-                                                             {/*                                <i className="bi bi-chevron-left"></i>*/}
-                                                             {/*                                text*/}
-                                                             {/*                            </button>*/}
-                                                             {/*                        </li>*/}
-
-                                                             {/*                        <li >*/}
-                                                             {/*                            <c:out value="${assetInstanceReviewPage.currentPage}"/>*/}
-                                                             {/*                            / <c:out*/}
-                                                             {/*                            value="${assetInstanceReviewPage.totalPages}"/>*/}
-                                                             {/*                        </li>*/}
-
-                                                             {/*                        <li className="page-item">*/}
-                                                             {/*                            <button type="button"*/}
-                                                             {/*                                    className="btn mx-5 pagination-button ${assetInstanceReviewPage.currentPage < assetInstanceReviewPage.totalPages ? "" : "*/}
-                                                             {/*                                    disabled"}"*/}
-                                                             {/*                                    id="nextPageButton"*/}
-                                                             {/*                                    style="border-color: rgba(255, 255, 255, 0)"*/}
-                                                             {/*                                    onclick="window.location.href = '<c:url*/}
-                                                             {/*                                        value="/info/${assetInstance.id}*/}
-                                                             {/*                            ?reviewPage=${assetInstanceReviewPage.currentPage + 1}#scrollspyRating"/>'"*/}
-                                                             {/*                            >*/}
-                                                             {/*                            text <i*/}
-                                                             {/*                            className="bi bi-chevron-right"></i>*/}
-                                                             {/*                        </button>*/}
-                                                             {/*                    </li>*/}
-                                                             {/*                </ul>*/}
-                                                             {/*            </nav>*/}
-                                                             {/*        </div>*/}
-                                                             {/*    </div>*/}
-
-                                                             {/*</c:if>*/}
-                                                             {/*<c:if test="${!hasReviews}">*/}
-                                                             {/*    <h1 className="text-muted text-center mt-5"><i className="bi bi-x-circle"></i></h1>*/}
-                                                             {/*    <h6 className="text-muted text-center mb-5">*/}
-                                                             {/*        text*/}
-                                                             {/*    </h6>*/}
-                                                             {/*</c:if>*/}
                                                          </div>
                                                      </div>
                                                  </div>

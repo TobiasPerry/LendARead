@@ -8,6 +8,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -24,6 +25,6 @@ public class UnableToDeleteLocationExceptionMapper implements ExceptionMapper<Un
     }
     @Override
     public Response toResponse(UnableToDeleteLocationException e) {
-        return Response.status(Response.Status.GONE).entity(ErrorDTO.fromError(messageSource.getMessage("exception.unableToDeleteLC", null, LocaleContextHolder.getLocale()),null)).build();
+        return Response.status(Response.Status.GONE).type(MediaType.APPLICATION_JSON).entity(ErrorDTO.fromError(messageSource.getMessage("exception.unableToDeleteLC", null, LocaleContextHolder.getLocale()),null)).build();
     }
 }

@@ -173,7 +173,7 @@
     },
     "sorting":  {
       "sort_by": "Ordenar Por:",
-      "most_recent": " Más Reciente",
+      "most_recent": "Más Reciente",
       "least_recent": "Más Antiguo",
       "title_asc": "Título A-Z",
       "title_des": "Título Z-A",
@@ -218,6 +218,7 @@
     "delete": "Eliminar"
   },
   "not_found": {
+    "tab_title": "No se ha encontrado",
     "title": "Lo sentimos",
     "subtitle": "No hemos encontrado lo que buscabas"
   },
@@ -278,8 +279,12 @@
     "by": "Por",
     "language": "Idioma",
     "isbn": "ISBN",
+    "lending_btn": "Tomar prestado",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de devolucion",
+    "login_btn": "Inciá sesion para pedir prestado",
     "location": {
-      "title": "¿Donde esta este libro?\n",
+      "title": "¿Donde esta este libro?",
       "zip_code": "Código postal",
       "locality": "Localidad",
       "province": "Provincia",
@@ -290,11 +295,18 @@
       "no_description": "No hay descripción para esta publicación"
     },
     "reviews": {
-      "no_reviews": "No hay reseñas para este libro"
+      "no_reviews": "No hay reseñas para este libro",
+      "see_all": "Ver todas las reseñas"
     }
+  },
+  "view_asset_reviews": {
+    "title": "Reseñas de {{title}}"
   },
   "addAsset": {
     "title": "¿Quieres prestar un libro?",
+    "image": {
+        "validation-error": "Por favor, cargue una imagen válida."
+    },
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Por favor, ingrese un ISBN válido.",
@@ -310,20 +322,35 @@
         "author-validation-error": "Por favor, ingrese un autor válido.",
         "language-validation-error": "Por favor, ingrese un idioma válido.",
         "physicalCondition-validation-error": "Por favor, ingrese una condición física válida.",
-        "selectLanguage": "Seleccionar Idioma"
+        "selectLanguage": "Seleccionar Idioma",
+        "description": "Descripción",
+        "description-validation-error": "Por favor, ingrese una descripción válida."
     },
     "duration": {
         "detail": "Duración del Préstamo",
         "lendFor": "Prestar por",
         "days": "día/s",
         "weeks": "semana/s",
-        "months": "mes/es",
+        "months": "mrating_assetInstancees/es",
         "years": "año/s",
+        "acceptsReservations": "Aceptar Reservas",
         "validation-error": "Por favor, ingrese una duración válida."
+    },
+    "newLender": {
+        "title": "¿Quieres empezar a prestar libros?",
+        "subtitle": "A partir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos. Para eso es necesario que agregues la ubicacion predeterminada para tus libros"
+    },
+    "location": {
+        "detail": "Ubicación",
+        "info": "Información de la Ubicación",
+        "nama": "Nombre",
+        "country": "País",
+        "province": "Provincia",
+        "locality": "Ciudad",
+        "zipcode": "Código Postal",
+        "validation-error": "Por favor, seleccione una ubicación válida."
     }
   },
-  "userProfile": {
-    "borrower": "PRESTATARIO",
-    "lender": "PRESTADOR"
-  }
+  "BORROWER": "Prestatario",
+  "LENDER": "Prestador"
 }

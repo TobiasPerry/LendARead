@@ -14,10 +14,10 @@ export const checkCanceled = (asset) => {
 export const checkRejected = (asset) => {
     return asset !== undefined && asset.lendingStatus === "REJECTED"
 }
-export const extractId = (url: string) => {
+export const extractId = (url: string): string => {
     const pattern = /\/(\d+)(?=\/?$)/;
     const match = url.match(pattern);
-    return  match ? match[1] : -1;
+    return  match ? match[1] : "";
 }
 export interface AssetApi {
     author: string,
@@ -60,22 +60,24 @@ const sortAdapterApi = {
     state: "STATE",
     start_date: "LENDDATE",
     return_date: "DEVOLUTIONDATE",
+    physicalCondition: "PHYSICAL_CONDITION"
 }
 
 const statusAdapterApi = {
     private: "PRIVATE",
     public: "PUBLIC",
+    all: "ALL"
 }
 
 const lendingStatusAdapterApi = {
     pending: "ACTIVE",
     delivered: "DELIVERED",
-    canceled: "CANCELED", //new
+    canceled: "CANCELED",
     rejected: "REJECTED",
     finished: "FINISHED"
 }
-const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDING' }) => {
-    const PAGE_SIZE = 10
+const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDING' }) => {
+    const PAGE_SIZE = 3
 
     const {user} = useContext(AuthContext)
     const [filter, setFilter] = useState('all');
@@ -130,13 +132,13 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                params: queryparams
        })
 
+       setTotalPages(extractTotalPages(lendings.headers["link"]))
 
        const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
            try {
-               console.log('lending', lending);
                const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
                const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
-               const userReference = isLender ? lending.lenderUrl : lending.borrowerUrl;
+               const userReference = !isLender ? lending.lenderUrl : lending.borrowerUrl;
                const user = (await api_.get(userReference)).data;
 
                return {
@@ -145,7 +147,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                    start_date: lending.lendDate,
                    return_date: lending.devolutionDate,
                    user: user.userName,
-                   state: assetinstance.physicalCondition,
+                   physicalCondition: assetinstance.physicalCondition,
                    id: extractId(lending.selfUrl),
                    lendingStatus: lending.state
                };
@@ -165,14 +167,8 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
 
     const fetchMyBooks =  async (newPage: number, newSort: any, newFilter: string) => {
         setIsLoading(true)
-        if(newFilter === "all") {
-            const publicBooks = await fetchMyBooks2(newPage, newSort, "public")
-            const privateBooks = await fetchMyBooks2(newPage, newSort, "private")
-            setBooks(privateBooks.concat(publicBooks))
-        }  else {
-            const retrievedBooks = await fetchMyBooks2(newPage, newSort, newFilter)
-            setBooks(retrievedBooks)
-        }
+        const retrievedBooks = await fetchMyBooks2(newPage, newSort, newFilter)
+        setBooks(retrievedBooks)
         setIsLoading(false)
     }
 
@@ -209,6 +205,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
                 author: asset.author,
                 language: lang.name,
                 state: assetinstance.status,
+                physicalCondition: assetinstance.physicalCondition,
                 imageUrl: assetinstance.imageReference,
                 id: extractId(assetinstance.selfUrl)
             })
@@ -217,13 +214,16 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
         return booksRetrieved
     };
 
-    const changePage = async (newPage: number) => {
-        setCurrentPage(newPage);
+    const changePageMyBooks = async (newPage: number) => {
         await fetchMyBooks(newPage, sort, filter);
+        setCurrentPage(newPage);
+    };
+    const changePageLendings = async (newPage: number, isLender) => {
+        await fetchLendings(newPage, sort, filter, isLender);
+        setCurrentPage(newPage);
     };
 
-
-    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePage, totalPages, books, setBooks, fetchLendings, isLoading};
+    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading, setCurrentPage};
 };
 
 export default useUserAssetInstances;

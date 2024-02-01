@@ -28,13 +28,13 @@ final public class User {
     private Image profilePhoto;
 
     @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  WHERE us.id = id)")
-    private Integer rating;
+    private float rating;
 
     @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  JOIN lendings AS l ON ur.lendId = l.id JOIN AssetInstance AS ai ON l.assetInstanceId = ai.id WHERE ur.recipient = id AND ai.owner = id AND us.id = id)")
-    private Integer ratingAsLender;
+    private float ratingAsLender;
 
     @Formula("(SELECT COALESCE(AVG(COALESCE(ur.rating, 0)),0) FROM users AS us left outer join userreview AS ur on us.id = ur.recipient  JOIN lendings AS l ON ur.lendId = l.id WHERE ur.recipient = id AND l.borrowerid = id )")
-    private Integer ratingAsBorrower;
+    private float ratingAsBorrower;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_seq")
@@ -136,15 +136,15 @@ final public class User {
         this.behavior = behavior;
     }
 
-    public Integer getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public Integer getRatingAsLender() {
+    public float getRatingAsLender() {
         return ratingAsLender;
     }
 
-    public Integer getRatingAsBorrower() {
+    public float getRatingAsBorrower() {
         return ratingAsBorrower;
     }
 

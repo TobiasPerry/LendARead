@@ -1,12 +1,14 @@
 import BookCard from '../components/BookCard';
 import useAssetInstance, {language} from "../hooks/assetInstance/useAssetInstance.ts";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import "./styles/discovery.css"
 import Spinner from "../components/Spinner.tsx";
+import Pagination from "../components/Pagination.tsx";
+import {Helmet} from "react-helmet";
 
-const SORT_TYPES = {
+export const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
     TITLE: "TITLE",
     RECENT: "RECENT"
@@ -43,7 +45,7 @@ const DiscoveryView =  () => {
     const [loadingData, setLoadingData] = useState(true);
     const [loadingLanguages, setLoadingLanguages] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [booksPerPage, setBooksPerPage] = useState(1);
+    const [booksPerPage, setBooksPerPage] = useState(12);
     const [totalPages, setTotalPages] = useState(0);
 
     // Read the query params sent form other views (like view asset)
@@ -101,12 +103,15 @@ const DiscoveryView =  () => {
         }
     }
 
-    const previousPage = () => {
-        currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
+    const changePage = (page: number) => {
+        setCurrentPage(page)
     }
-    const nextPage = () => {
-        setCurrentPage(currentPage + 1)
-    }
+    // const previousPage = () => {
+    //     currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
+    // }
+    // const nextPage = () => {
+    //     setCurrentPage(currentPage + 1)
+    // }
     const clearSearch = () => {
         setSearch("");
         setInputValue("");
@@ -148,17 +153,16 @@ const DiscoveryView =  () => {
 
     // When the page loads
     useEffect(() => {
-        document.title = t('discovery.title')
         fetchData().then();
         fetchLanguages().then();
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{t('discovery.title')}</title>
+            </Helmet>
             <div className="main-class">
                 <div className="container">
                     <div className="row height d-flex justify-content-center align-items-center">
@@ -306,39 +310,7 @@ const DiscoveryView =  () => {
                                     </div>
                                     <div className="container-row-wrapped"
                                          style={{marginTop: '25px', marginBottom: '25px', width: '100%'}}>
-                                        <div>
-                                            <nav aria-label="Page navigation example">
-                                                <ul className="pagination justify-content-center align-items-center">
-                                                    <li className="page-item">
-                                                        <button type="button"
-                                                                className={`btn mx-5 pagination-button ${currentPage <= 1 ? 'disabled' : ''}`}
-                                                                id="previousPageButton"
-                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
-                                                                onClick={previousPage}
-                                                        >
-                                                            <i className="bi bi-chevron-left"></i>
-                                                            {t('discovery.pagination.previous')}
-                                                        </button>
-                                                    </li>
-
-                                                    <li>
-                                                        {currentPage} / {totalPages}
-                                                    </li>
-
-                                                    <li className="page-item">
-                                                        <button type="button"
-                                                                className={`btn mx-5 pagination-button ${currentPage >= totalPages ? 'disabled' : ''}`}
-                                                                id="nextPageButton"
-                                                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
-                                                                onClick={nextPage}
-                                                        >
-                                                            {t('discovery.pagination.next')}
-                                                            <i className="bi bi-chevron-right"></i>
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
+                                       <Pagination currentPage={currentPage} changePage={changePage} totalPages={totalPages}/>
                                     </div>
                                 </>
                             )

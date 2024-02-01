@@ -223,6 +223,8 @@ p {
   background-color: #111711;
 }
 
+
+
 .btn-green {
   min-width: 200px;
   font-family: "Roboto", sans-serif;
@@ -237,6 +239,8 @@ p {
   background: #16df7e;
   box-shadow: 0 8px 28px rgba(22, 223, 126, 0.45);
 }
+
+
 
 .btn-green:hover {
   background: #206bfb;
@@ -307,6 +311,11 @@ p {
   box-shadow: 0 0 0 1px #16df7e, 0 8px 28px rgba(22, 223, 126, 0.25);
 }
 
+.btn-mini {
+  min-width: 100px;
+  padding: 4px 10px;
+  font-size: 16px;
+}
 .btn-green-outline:hover {
   background: #16df7e;
   color: #fff;

@@ -43,7 +43,7 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
     }
 
     @Override
-    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final LendingState lendingState, final Integer lenderId, final String sort, final String sortDirection) {
+    public PagingImpl<Lending> getPagingActiveLending(final int pageNum, final int itemsPerPage, final Integer aiId, final Integer borrowerId, final List<String> lendingState, final Integer lenderId, final String sort, final String sortDirection, final LocalDate startingBefore, final LocalDate startingAfter, final LocalDate endBefore, final LocalDate endAfter) {
 
         final StringBuilder queryNativeStringBuilder = new StringBuilder("select l.id from lendings as l join assetInstance as a on l.assetinstanceid = a.id join book as b on a.assetid = b.uid join users as borrower on l.borrowerid = borrower.id join users as owner on a.owner = owner.id ");
 
@@ -52,9 +52,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             queryNativeStringBuilder.append("WHERE a.owner = :lenderId ");
             first = false;
         }
-        if (lendingState != null){
+        if (lendingState != null && !lendingState.isEmpty()){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
-            queryNativeStringBuilder.append(" l.active = :active ");
+            queryNativeStringBuilder.append(" l.active in (:active) ");
             first = false;
         }
         if(aiId != null){
@@ -63,45 +63,96 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
             first = false;
 
         }
+        if(startingBefore != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.lenddate <= :startingBefore ");
+            first = false;
+        }
+        if(startingAfter != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.lenddate >= :startingAfter ");
+            first = false;
+        }
         if(borrowerId != null){
             queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
             queryNativeStringBuilder.append(" l.borrowerid = :borrowerId ");
             first = false;
         }
-        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active").append(getSortQueryForNativeQuery(sort, sortDirection)).append(" limit :limit offset :offset");
+        if(endBefore != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.devolutiondate <= :endBefore ");
+            first = false;
+        }
+        if(endAfter != null){
+            queryNativeStringBuilder.append(first ? "WHERE " : "AND ");
+            queryNativeStringBuilder.append(" l.devolutiondate >= :endAfter ");
+            first = false;
+        }
 
+        queryNativeStringBuilder.append("group by l.id,l.lenddate,l.devolutiondate,owner.name,borrower.name,b.title,l.active,a.physicalcondition").append(getSortQueryForNativeQuery(sort, sortDirection));
+        final Query queryCount = em.createNativeQuery(queryNativeStringBuilder.toString());
+        queryNativeStringBuilder.append(" limit :limit offset :offset");
         final Query queryNative = em.createNativeQuery(queryNativeStringBuilder.toString());
 
 
         final int offset = (pageNum - 1) * itemsPerPage;
         if (lenderId != null){
             queryNative.setParameter("lenderId", lenderId);
+            queryCount.setParameter("lenderId", lenderId);
         }
-        if (lendingState != null){
-            queryNative.setParameter("active", lendingState.toString());
+        if (lendingState != null && !lendingState.isEmpty()){
+            List<String> states = lendingState.stream().map(String::toUpperCase).collect(Collectors.toList());
+            queryNative.setParameter("active", states);
+            queryCount.setParameter("active", states);
+
+        }
+        if(startingAfter != null){
+            queryNative.setParameter("startingAfter", startingAfter);
+            queryCount.setParameter("startingAfter", startingAfter);
+
+        }
+        if(startingBefore != null){
+            queryNative.setParameter("startingBefore", startingBefore);
+            queryCount.setParameter("startingBefore", startingBefore);
+
         }
         if(aiId != null){
             queryNative.setParameter("ai", aiId);
+            queryCount.setParameter("ai", aiId);
+
         }
         if(borrowerId != null){
             queryNative.setParameter("borrowerId", borrowerId);
-        }
+            queryCount.setParameter("borrowerId", borrowerId);
 
+        }
+        if(endAfter != null){
+            queryNative.setParameter("endAfter", endAfter);
+            queryCount.setParameter("endAfter", endAfter);
+
+        }
+        if(endBefore != null){
+            queryNative.setParameter("endBefore", endBefore);
+            queryCount.setParameter("endBefore", endBefore);
+
+        }
 
         queryNative.setParameter("limit", itemsPerPage);
         queryNative.setParameter("offset", offset);
 
 
         @SuppressWarnings("unchecked")
-        List<Long> list = (List<Long>) queryNative.getResultList().stream().map(
+        List<Long> list = (List<Long>) queryCount.getResultList().stream().map(
                 n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
         final int totalPages = (int) Math.ceil((double) (list.size()) / itemsPerPage);
-
-        if (list.isEmpty())
+        @SuppressWarnings("unchecked")
+        List<Long> ids = (List<Long>) queryNative.getResultList().stream().map(
+                n -> (Long) ((Number) n).longValue()).collect(Collectors.toList());
+        if (ids.isEmpty())
             return new PagingImpl<>(Collections.emptyList(), pageNum, totalPages);
 
         final TypedQuery<Lending> query = em.createQuery("FROM Lending AS l WHERE id IN (:ids) " + getSortQueryForTypedQuery(sort,sortDirection), Lending.class);
-        query.setParameter("ids", list);
+        query.setParameter("ids", ids);
         List<Lending> reviewList = query.getResultList();
 
         return new PagingImpl<>(reviewList, pageNum, totalPages);
@@ -126,6 +177,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
                 break;
             case "TITLE":
                 sb.append( " ORDER BY l.assetInstance.book.title " );
+                break;
+            case "PHYSICAL_CONDITION":
+                sb.append( " ORDER BY l.assetInstance.physicalCondition " );
                 break;
             case "LENDING_STATUS":
                 sb.append( " ORDER BY l.active " );
@@ -159,6 +213,9 @@ public class AssetAvailabilityDaoJpa implements AssetAvailabilityDao {
                 break;
             case "LENDING_STATUS":
                 sb.append( " ORDER BY l.active " );
+                break;
+            case "PHYSICAL_CONDITION":
+                sb.append( " ORDER BY a.physicalcondition " );
                 break;
             default:
                 return "";

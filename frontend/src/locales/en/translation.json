@@ -2,10 +2,19 @@
   "Open main menu": "Open main menu",
   "Your profile": "Your Profile",
   "Dashboard": "Dashboard",
+  "register": "Register",
+    "login": "Login",
+  "forgotPassword": "Forgot Password",
+  "changePasswordTitle": "Change Password",
   "Team": "Team",
+  "delivered_text_borrower": "Great! The lender has approved your request. He should contact you soon to arrange the delivery.",
+  "not_allowed": {
+    "title": "Not allowed",
+    "subtitle": "You are not allowed to access this page"
+  },
   "Projects": "Projects",
   "Calendar": "Calendar",
-  "active_loans": "Active Loan Requests",
+  "active_loans": "Loan Requests",
   "errorPasswordEmail": "Error requesting the password reset email",
   "email": "Email",
   "changePassword": {
@@ -13,7 +22,7 @@
     "caption": "Check your email inbox, you will receive a verification code",
     "passwordsDoNotMatch": "Passwords do not match",
     "invalidVerificationCode": "Invalid verification code",
-    "somethingWentWrong": "Something went wrong",
+    "somethingWentWrong": "Please try with a new verification code",
     "resendToken": "Haven't received the token? Resend token",
     "resentToken": "Token resent! Please check your email",
     "title": "Change password",
@@ -26,7 +35,6 @@
     "repeatNewPasswordPlaceholder": "Repeat new password",
     "changePasswordButton": "Change password"
   },
-  "my_locations": "My Locations",
 "auth": {
     "login": "Login",
     "register": "Register",
@@ -63,6 +71,8 @@
   "isReservableLabel": "Is Reservable",
   "statusLabel": "Status",
   "shortcut": "Shortcuts",
+  "lending_period_from": "Period",
+  "to": "to",
   "settings": "Settings",
   "maxDays": "Maximum Loan Days",
   "borrowed_book_actions": "Borrowed Book Actions",
@@ -133,7 +143,7 @@
   "author": "Author",
   "language": "Language",
   "state": "State",
-  "no_books": "No books available",
+  "no_books": "No books",
   "become_lender": {
     "title": "Become a Lender",
     "subtitle": "Start lending your books today!",
@@ -164,6 +174,8 @@
   "canceled": "Canceled",
   "overdue": "Overdue",
   "rejected": "Rejected",
+  "finished": "Finished",
+  "physicalCondition": "Physical Condition",
   "finished_lender": "The lending has finished, you can write a review of the borrower clicking the button below",
   "finished_borrower": "The lending has finished, you can write a review of the lender and the book clicking the button below",
   "title": "Title",
@@ -172,7 +184,7 @@
   "location": "Location",
   "return_date": "Return Date",
   "user": "User",
-  "no_books_available": "No books available",
+  "no_books_available": "No books",
   "previous": "Previous",
   "next": "Next",
   "rejected_text": "The lending was rejected, no options are available ",
@@ -264,7 +276,7 @@
     "country": "Country is required.",
     "zipcode": "Zip code is required."
   },
-  "modalTitle": "Location Details",
+  "newLocation": "Location Details",
   "save": "Save",
   "locations": {
     "title": "Locations",
@@ -273,9 +285,11 @@
     "delete": "Delete"
   },
   "not_found": {
+    "tab_title": "Not found",
     "title": "We're sorry",
     "subtitle": "We could not find what you were looking for"
   },
+  "name": "Name",
   "zipcodeValidationError": "Zipcode must be alphanumeric and between 1 to 100 characters.",
   "localityValidationError": "Locality must be between 1 to 100 characters.",
   "provinceValidationError": "Province must be between 4 to 100 characters.",
@@ -331,6 +345,10 @@
     "by": "By",
     "language": "Language",
     "isbn": "ISBN",
+    "lending_btn": "Borrow this book",
+    "start_date": "Start date",
+    "end_date": "Devolution date",
+    "login_btn": "Log in to borrow",
     "location": {
       "title": "Where is this book?",
       "zip_code": "Zip Code",
@@ -343,11 +361,18 @@
       "no_description": "There is no description for this publication"
     },
     "reviews": {
-      "no_reviews": "There are no reviews for this book"
+      "no_reviews": "There are no reviews for this book",
+      "see_all": "See all reviews"
     }
+  },
+  "view_asset_reviews": {
+    "title": "{{title}} reviews"
   },
   "addAsset": {
     "title": "Do you want to lend a book?",
+    "image": {
+        "validation-error": "Please, upload a valid image."
+    },
     "isbn": {
         "ISBN": "ISBN",
         "validation-error": "Please, enter a valid ISBN.",
@@ -363,7 +388,9 @@
         "author-validation-error": "Please, enter a valid author.",
         "language-validation-error": "Please, enter a valid language.",
         "physicalCondition-validation-error": "Please enter a valid physical condition.",
-        "selectLanguage": "Select a language"
+        "selectLanguage": "Select a language",
+        "description": "Description",
+        "description-validation-error": "Please, enter a valid description."
     },
     "duration": {
         "detail": "Max Borrowing Period",
@@ -372,11 +399,24 @@
         "months": "month/s",
         "weeks": "week/s",
         "years": "year/s",
+        "acceptsReservations": "Accepts reservations",
         "validation-error": "Please, enter a valid duration."
+    },
+    "newLender": {
+        "title": "Do you want to start lending books?",
+        "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books"
+    },
+    "location": {
+        "detail": "Location",
+        "info": "Location Info",
+        "name": "Name",
+        "country": "Country",
+        "province": "Province",
+        "locality": "City",
+        "zipcode": "Zip Code",
+        "validation-error": "Please, select a valid location."
     }
   },
-  "userProfile": {
-    "borrower": "BORROWER",
-    "lender": "LENDER"
-  }
+  "BORROWER": "Borrower",
+  "LENDER": "Lender"
 }

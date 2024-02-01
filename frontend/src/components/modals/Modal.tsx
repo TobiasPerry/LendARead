@@ -1,4 +1,4 @@
-
+import '../styles/LocationsModal.css'
 function Modal({
                    showModal = true,
                    handleCloseModal = () => {},

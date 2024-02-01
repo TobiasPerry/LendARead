@@ -8,7 +8,6 @@ import {AuthContext} from "../contexts/authContext.tsx";
 const BookCard = ({ book }) => {
     const {t} = useTranslation()
     const navigate = useNavigate();
-    const {userDetails} = useContext(AuthContext);
 
     const {
         title,
@@ -17,6 +16,7 @@ const BookCard = ({ book }) => {
         physicalCondition,
         userImage,
         userName,
+        userNum,
         country,
         province,
         locality,
@@ -25,14 +25,18 @@ const BookCard = ({ book }) => {
 
     const url_book_image = "url('" + image + "')"
 
+    const {user} = useContext(AuthContext)
+
     const handleBookClick = () => {
-        //aca chequeo sea mismo user que el userDetails y navego
-        //hacia /book o /userBook/{id}?state=owned
-        if(userDetails.userName === userName) {
+        if(user !== null && user !== undefined && user.toString() === userNum.toString()) {
             navigate(`/userBook/${assetInstanceNumber}?state=owned`)
         }else {
             navigate(`/book/${assetInstanceNumber}`)
         }
+    }
+
+    const handleUserImage = () => {
+        return userImage !== null && userImage !== undefined && userImage !== "" ? userImage : "/static/profile_placeholder.jpeg";
     }
 
     return (
@@ -63,7 +67,7 @@ const BookCard = ({ book }) => {
                         </div>
                         <div className="card-footer">
                             <div className="media">
-                                <img className="mr-3 rounded-circle" src={userImage} style={{width:'50px', height: '50px'}} alt="User Image"/>
+                                <img className="mr-3 rounded-circle" src={handleUserImage()} style={{width:'50px', height: '50px'}} alt="User Image"/>
                                 <div className="media-body">
                                     <h6 className="my-0 text-white d-block text-truncate">{userName}</h6>
                                     <small className="text-white truncate-3-lines"> {locality}, {province}, {country} </small>

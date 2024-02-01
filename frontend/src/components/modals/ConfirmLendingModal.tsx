@@ -12,12 +12,15 @@ function ConfirmLendingModal({ asset, showModal, handleCloseModal, handleSubmitM
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
+                        <div className="icon-box" style={{backgroundColor: "#16df7e"}}>
+                            <i className="fas fa-thumbs-up"></i>
+                        </div>
                         <h2 className="modal-title" id="modalTitle">
                             {t('userHomeView.verifyLendingTitle')}
                         </h2>
 
                         <button onClick={handleCloseModal} className="btn btn-secondary">
-                            <i className="fas fa-tick fa-lg"></i>
+                            <i className="fas fa-window-close fa-lg"></i>
                         </button>
                     </div>
                     <div className="modal-body">

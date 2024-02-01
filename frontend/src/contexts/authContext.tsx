@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 // @ts-ignore
-import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
+import defaultUserPhoto from "/static/user-placeholder.jpeg";
 import {useTranslation} from "react-i18next";
 
 export interface UserDetailsApi {
@@ -41,7 +41,7 @@ export const AuthContext = React.createContext({
     handleForgotPassword: async (email: string) => {
         return false
     },
-        user: -1,
+        user: "",
     userDetails: {
         email: "",
         image: "",
@@ -76,12 +76,12 @@ const AuthContextProvider = (props) => {
             handleJWT(token)
     }, [token])
 
-    const extractUserId = (jwt: string): number => {
+    const extractUserId = (jwt: string): string => {
         //@ts-ignore
         const decoded = jwtDecode(jwt).userReference;
         const pattern = /\/(\d+)(?=\/?$)/;
         const match = decoded.match(pattern);
-        return match ? match[1] : -1
+        return match ? match[1] : ""
     }
 
     const [user, setUser] = useState(() => {
@@ -89,7 +89,7 @@ const AuthContextProvider = (props) => {
            return extractUserId(token)
        } catch (e) {
            if(isLoggedIn) {
-               return -1
+               return ""
            }
        }
     });
@@ -119,26 +119,24 @@ const AuthContextProvider = (props) => {
         sessionStorage.removeItem("userAuthToken");
         setLoggedIn(false);
         setAuthKey('');
-        setUser(-1);
+        setUser("");
     }
 
 
-    const getUserDetails = async (id: number) => {
+    const getUserDetails = async (id: string) => {
         return (await api.get(`/users/${id}`)).data
     }
-    const storeUserDetails = async (id: number) => {
+    const storeUserDetails = async (id: string) => {
         const userDetails = await getUserDetails(id)
-        if(userDetails.image) {
-            const image = await api_.get(userDetails.image)
-            const image_ = image.data
-            if(image_ !== undefined)
-                setUserImage(image_)
+        if(userDetails.image !== null && userDetails.image !== undefined) {
+            setUserImage(userDetails.image)
         }
 
         setUserDetails(userDetails)
     }
 
-    const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets"): Promise<boolean> => {
+    // For path to login we use the root as a default
+    const login = async (email: string, password: string, rememberMe: boolean = false, path: string = "/"): Promise<boolean> => {
         try {
 
             const response: any = await api.get(path,
@@ -181,7 +179,7 @@ const AuthContextProvider = (props) => {
             const jwt = response.headers.get('x-jwt');
             const userId_ = extractUserId(jwt)
 
-            if(userId_ === -1) {
+            if(userId_ === "") {
                 return t('changePassword.invalidVerificationCode')
             }
 

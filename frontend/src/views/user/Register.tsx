@@ -4,7 +4,9 @@ import {Link, useNavigate} from 'react-router-dom';
 // @ts-ignore
 import logo from '../../assets/logo-oscuro.png';
 // @ts-ignore
+import {Helmet} from "react-helmet";
 
+// @ts-ignore
 import loginBg from '../../assets/login-bg.jpg';
 import useRegister from "../../hooks/users/useRegister.ts";
 import {AuthContext} from "../../contexts/authContext.tsx";
@@ -87,6 +89,9 @@ const RegisterView = () => {
 
     return (
         <section className="vh-100">
+            <Helmet>
+                <title>{t("register")}</title>
+            </Helmet>
             <div className="container-fluid">
                 <div className="row">
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">

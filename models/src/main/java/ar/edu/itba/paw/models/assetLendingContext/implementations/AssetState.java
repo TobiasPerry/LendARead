@@ -21,7 +21,8 @@ public enum AssetState {
         public boolean isDeleted() {
             return true;
         }
-    };
+    },
+    ALL();
 
 
     public boolean isPublic() { return false;}

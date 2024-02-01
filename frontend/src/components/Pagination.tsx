@@ -4,6 +4,7 @@ const Pagination = ({totalPages, changePage, currentPage, }) => {
 
     const { t } = useTranslation();
 
+
     const paginationStyle = {
         color: "gray",
         border: 'none',
@@ -13,23 +14,37 @@ const Pagination = ({totalPages, changePage, currentPage, }) => {
     return (
         <div>
         {totalPages > 1 &&
-        <nav aria-label="Page navigation example" className="d-flex justify-content-center">
-            <ul className="pagination">
-                {currentPage > 1 && (
+            <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center align-items-center">
                     <li className="page-item">
-                        <a className="page-link"   style={paginationStyle} onClick={() => changePage(currentPage - 1)}>{t('previous')}</a>
+                        <button type="button"
+                                className={`btn mx-5 pagination-button ${currentPage <= 1 ? 'disabled' : ''}`}
+                                id="previousPageButton"
+                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
+                                onClick={() => changePage(currentPage - 1)}
+                        >
+                            <i className="bi bi-chevron-left"></i>
+                            {t('discovery.pagination.previous')}
+                        </button>
                     </li>
-                )}
-                <li className="page-item">
-                    <span className="page-link"  style={paginationStyle}>{`${currentPage} / ${totalPages}`}</span>
-                </li>
-                {currentPage < totalPages && (
+
+                    <li>
+                        {currentPage} / {totalPages}
+                    </li>
+
                     <li className="page-item">
-                        <a className="page-link"  style={paginationStyle} onClick={() => changePage(currentPage + 1)}>{t('next')}</a>
+                        <button type="button"
+                                className={`btn mx-5 pagination-button ${currentPage >= totalPages ? 'disabled' : ''}`}
+                                id="nextPageButton"
+                                style={{borderColor: "rgba(255, 255, 255, 0)"}}
+                                onClick={() => changePage(currentPage + 1)}
+                        >
+                            {t('discovery.pagination.next')}
+                            <i className="bi bi-chevron-right"></i>
+                        </button>
                     </li>
-                )}
-            </ul>
-        </nav>
+                </ul>
+            </nav>
         }
         </div>
     );

@@ -1,6 +1,8 @@
 import {api, api_} from "../api/api.ts";
+import {Simulate} from "react-dom/test-utils";
+import canPlayThrough = Simulate.canPlayThrough;
 
-const extractTotalPages = (linkHeader) => {
+export const extractTotalPages = (linkHeader) => {
     if(!linkHeader){
         return 1;
     }
@@ -39,7 +41,11 @@ export interface AssetData {
         country: string;
     },
     reviews: any;
+    rating_assetInstance: number;
+    rating_as_lender: number;
     description: string;
+    reservable: boolean;
+    maxLendingDays: number;
     // Add other properties as needed
 }
 
@@ -47,7 +53,7 @@ export interface AssetData {
 const useAssetInstance = () => {
 
     const handleGetLanguages = async (isUsed : boolean  = true, pageSize : number = 20) => {
-        let base_url = `/languages?pageSize=${pageSize}`
+        let base_url = `/languages?itemsPerPage=${pageSize}`
         if(isUsed){
             base_url += `&isUsed`
         }
@@ -115,6 +121,8 @@ const useAssetInstance = () => {
 
                 const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
                 const num = tmp ? parseInt(tmp[1], 10) : null
+                const tmp_user = body_user.selfUrl.match(/\/(\d+)$/);
+                const num_user = tmp_user ? parseInt(tmp_user[1], 10) : null
                 // // Check if there's a match, and return the captured number
                 //return num ? parseInt(num[1], 10) : null;
 
@@ -127,6 +135,7 @@ const useAssetInstance = () => {
                     physicalCondition: body_instance.physicalCondition,
                     userImage: body_user.image,
                     userName: body_user.userName,
+                    userNum: num_user,
                     country: body_location.country,
                     province: body_location.province,
                     locality: body_location.locality
@@ -141,12 +150,12 @@ const useAssetInstance = () => {
         }
     }
 
-    const handleAssetInstance = async (assetInstanceNumber): Promise<AssetData> => {
+    const handleAssetInstance = async (assetInstanceNumber, reviewsCount): Promise<AssetData> => {
         try{
             const response_instance = await api.get(`/assetInstances/${assetInstanceNumber}`);
             const body_instance =  response_instance.data
             const response_asset = await api_.get(body_instance.assetReference, undefined)
-            const response_reviews = await api_.get(body_instance.reviewsReference, undefined);
+            const response_reviews = await api_.get(body_instance.reviewsReference + `?itemsPerPage=${reviewsCount}`, undefined);
             const response_location = await api_.get(body_instance.locationReference, undefined);
             const response_user = await api_.get(body_instance.userReference, undefined);
             const body_asset = response_asset.data
@@ -162,13 +171,16 @@ const useAssetInstance = () => {
                 isbn: body_asset.isbn,
                 language: body_language,
                 location: body_location,
-                //location: {country: "", locality: "", province: "", zipcode: ""},
                 physicalCondition: body_instance.physicalCondition,
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
+                rating_assetInstance: body_instance.rating.toFixed(1),
+                rating_as_lender: body_user.ratingAsLender.toFixed(1),
                 reviews: body_reviews,
-                description: body_instance.description
+                description: body_instance.description,
+                reservable: body_instance.reservable,
+                maxLendingDays: body_instance.maxLendingDays
             };
         }catch (e){
             console.log("error");
@@ -176,10 +188,52 @@ const useAssetInstance = () => {
         }
     }
 
+    const handleGetReservedDays = async (assetInstanceId) => {
+        try{
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const res = await api.get(
+                `/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED&state=REJECTED&endAfter=${year}-${month}-${day}`
+            )
+            const body = res.data
+            const reservedDays = []
+            body.forEach((value) => {
+                const [year_s, month_s, day_s] = value.lendDate.split('-').map(Number)
+                const [year_e, month_e, day_e] = value.devolutionDate.split('-').map(Number)
+                reservedDays.push({start: new Date(year_s, month_s - 1, day_s), end: new Date(year_e, month_e - 1, day_e)})
+            })
+            return reservedDays
+        }catch (e){
+            return null;
+        }
+    }
+
+    const handleSendLendingRequest = async (body) => {
+        try{
+            const res = await api.post(
+                '/lendings',
+                body,
+                {
+                    headers:{
+                        "Content-Type": "application/vnd.assetInstanceLending.v1+json"
+                    }
+                }
+            )
+            return res
+        }catch (e){
+            console.error("Error: " + e);
+            return null;
+        }
+    }
+
     return {
         handleAllAssetInstances,
         handleAssetInstance,
-        handleGetLanguages
+        handleGetLanguages,
+        handleSendLendingRequest,
+        handleGetReservedDays
     };
 }
 

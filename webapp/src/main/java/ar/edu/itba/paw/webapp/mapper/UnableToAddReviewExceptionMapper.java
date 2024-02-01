@@ -8,6 +8,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -22,6 +23,6 @@ public class UnableToAddReviewExceptionMapper  implements ExceptionMapper<Unable
     }
     @Override
     public Response toResponse(UnableToAddReviewException e) {
-        return Response.status(Response.Status.BAD_REQUEST).entity(ErrorDTO.fromError(messageSource.getMessage("exception.unableToAddReview", null, LocaleContextHolder.getLocale()),null)).build();
+        return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(ErrorDTO.fromError(messageSource.getMessage("exception.unableToAddReview", null, LocaleContextHolder.getLocale()),null)).build();
     }
 }

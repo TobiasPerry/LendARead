@@ -15,6 +15,7 @@
 .modal.show {
     display: flex;
     border: none;
+    justify-content: center;
 }
 
 .modal-dialog {
@@ -24,6 +25,7 @@
     max-width: 500px;
     width: 100%;
     border: none;
+    margin-inline: 0px !important;
 }
 
 .modal-content {
@@ -37,8 +39,25 @@
     border: none;
 }
 
+.modal-header-centered {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1rem 1rem;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+}
+
+label {
+    font-weight: bold;
+}
+
 .close-button {
     cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
     border: none;
     background: none;
     font-size: 1.5rem;
@@ -83,6 +102,30 @@
     display: block;
 }
 
+.icon-box {
+    color: #fff;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: -70px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
+    background: #82ce34;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-box i {
+    font-size: 3rem;
+}
+
 /* Media query for responsiveness (optional) */
 @media (max-width: 600px) {
     .modal-dialog {
@@ -90,3 +133,28 @@
         padding: 10px;
     }
 }
+
+.modal-dialog {
+    /* Center the modal more effectively */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.close-button {*/
+/*    !* Ensure the button is always in the top right corner of the modal *!*/
+/*    position: absolute;*/
+/*    top: 5px;*/
+/*    right: 5px;*/
+/*    background: transparent;*/
+/*    border: none;*/
+/*    font-size: 1.5rem;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.form-control {*/
+/*    width: 100%;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+

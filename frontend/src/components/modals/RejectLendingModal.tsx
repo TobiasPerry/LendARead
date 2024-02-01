@@ -12,12 +12,15 @@ function RejectLendingModal({ asset, showModal, handleCloseModal, handleSubmitMo
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
+                        <div className="icon-box" style={{backgroundColor: "#D45235"}}>
+                            <i className="fas fa-thumbs-down"></i>
+                        </div>
                         <h2 className="modal-title" id="modalTitle">
                             {t('userHomeView.rejectLendingTitle')}
                         </h2>
 
                         <button onClick={handleCloseModal} className="btn btn-secondary">
-                            <i className="fas fa-tick fa-lg"></i>
+                            <i className="fas fa-window-close fa-lg"></i>
                         </button>
                     </div>
                     <div className="modal-body">

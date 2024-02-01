@@ -1,14 +1,14 @@
 import ReviewCard from "../../components/reviews/ReviewCard.tsx";
 import {useTranslation} from "react-i18next";
 import UseReview, {Asset_and_lender_data, body_review} from "../../hooks/reviews/useReview.ts";
-import {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
 import Modal from "../../components/modals/Modal.tsx";
-import CancelModal from "../../components/modals/CancelModal.tsx";
-
+import {AuthContext} from "../../contexts/authContext.tsx";
+import {Helmet} from "react-helmet";
 
 export default function ReviewBorrower () {
 
@@ -45,23 +45,29 @@ export default function ReviewBorrower () {
     const [assetInstanceReview, setAssetInstanceReview] = useState(review_empty)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
+    const [alreadyReviewed, setAlreadyReviewed] = useState(false)
+    const [notAllowed, setNotAllowed] = useState(false)
+
+    const [showError_stars_user, setShowError_stars_user] = useState(false)
+    const [showError_review_user, setShowError_review_user] = useState(false)
+    const [showError_stars_assetInstance, setShowError_stars_assetInstance] = useState(false)
+    const [showError_review_assetInstance, setShowError_review_assetInstance] = useState(false)
 
     const {handleGetLendingInfoForBorrower, handleSendBorrowerReview} = UseReview()
+    const {user} = useContext(AuthContext)
 
     useEffect(() => {
-        document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
-            const res : Asset_and_lender_data = await handleGetLendingInfoForBorrower(lendingNumber)
-            setFound((!(res === null || res === undefined)))
-            setData(res)
+            // @ts-ignore
+            const {info, exists} : { Asset_and_lender_data, boolean } = await handleGetLendingInfoForBorrower(lendingNumber)
+            setAlreadyReviewed(exists)
+            setFound((!(info === null || info === undefined)))
+            setNotAllowed( (info !== null && info !== undefined) && (user.toString() === info.lender.userId.toString()) )
+            setData(info)
             setLoading(false)
         }
         fetchData().then()
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
     const handleChangeReview_userReview = (value) => {
@@ -73,7 +79,7 @@ export default function ReviewBorrower () {
     }
     const handleChangeRating_userReview = (value) => {
         setUserReview({
-            review: userReview.rating,
+            review: userReview.review,
             rating: value,
             lendingId: userReview.lendingId
         })
@@ -88,18 +94,37 @@ export default function ReviewBorrower () {
     }
     const handleChangeRating_assetInstanceReview = (value) => {
         setAssetInstanceReview({
-            review: assetInstanceReview.rating,
+            review: assetInstanceReview.review,
             rating: value,
             lendingId: assetInstanceReview.lendingId
         })
     }
 
     const handleBackClick = () => {
-        navigate(`/userBook/${data.book.assetInstanceNumber}?state=borrowed`)
+        navigate(`/userBook/${lendingNumber}?state=borrowed`)
+    }
+
+    const handleSendClick = async ()=>{
+        if(userReview.review === "" || assetInstanceReview.review === "" || userReview.rating === -1 || assetInstanceReview.rating === -1) {
+            setShowError_review_user(userReview.review === "");
+            setShowError_review_assetInstance(assetInstanceReview.review === "");
+            setShowError_stars_user(userReview.rating === -1);
+            setShowError_stars_assetInstance(assetInstanceReview.rating === -1);
+        }else{
+            handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
+                .then((value) => {
+                    setSuccess(value !== null && value !== undefined);
+                    setError(value === null || value === undefined)
+                });
+        }
     }
 
     return(
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{t('reviews.title')}</title>
+            </Helmet>
             <Modal
                 showModal={success}
                 title={t('reviews.success_modal.title')}
@@ -122,7 +147,7 @@ export default function ReviewBorrower () {
                 ) : (
                     <>
                         {
-                            !found ? (
+                            !found || alreadyReviewed || notAllowed ? (
                                 <NotFound/>
                             ): (
                                 <div className="main-class py-3">
@@ -159,6 +184,8 @@ export default function ReviewBorrower () {
                                                         type="1"
                                                         handleRating={handleChangeRating_userReview}
                                                         handleReview={handleChangeReview_userReview}
+                                                        showError_review={showError_review_user}
+                                                        showError_stars={showError_stars_user}
                                                     />
                                                     <ReviewCard
                                                         title={t('reviews.borrower.book.title', {user: "USERNAME"})}
@@ -168,15 +195,17 @@ export default function ReviewBorrower () {
                                                         type="2"
                                                         handleRating={handleChangeRating_assetInstanceReview}
                                                         handleReview={handleChangeReview_assetInstanceReview}
+                                                        showError_review={showError_review_assetInstance}
+                                                        showError_stars={showError_stars_assetInstance}
                                                     />
                                                     <button
                                                         onClick={
-                                                            () => {
-                                                                handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
-                                                                    .then((value) => {
-                                                                        setSuccess(value !== null && value !== undefined);
-                                                                        setError(value === null || value === undefined)
-                                                                    });
+                                                            () => {handleSendClick().then()
+                                                                // handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
+                                                                //     .then((value) => {
+                                                                //         setSuccess(value !== null && value !== undefined);
+                                                                //         setError(value === null || value === undefined)
+                                                                //     });
                                                             }
                                                         }
                                                     >

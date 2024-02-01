@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfaces.AssetInstanceReviewsService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserReviewsService;
 import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
@@ -70,10 +71,10 @@ public class PreAuthorizeFunctions {
     }
     public boolean searchPrivateAssetInstances(final int userid,final String status){
         try {
-            if (status.equals("PUBLIC")) {
+            if (status.equals(AssetState.PUBLIC.toString())) {
                 return true;
             }
-            return status.equals("PRIVATE") && userService.getCurrentUser().getId() == userid;
+            return (status.equals(AssetState.PRIVATE.toString()) || status.equals(AssetState.ALL.toString())) && userService.getCurrentUser().getId() == userid;
         } catch (UserNotFoundException e) {
             return false;
         }
@@ -83,9 +84,7 @@ public class PreAuthorizeFunctions {
             Lending lending = uais.getBorrowedAssetInstance(lendingId);
             switch (status){
                 case "REJECTED":
-                    return lending.getAssetInstance().getOwner().getEmail().equals(userService.getCurrentUser().getEmail());
                 case "FINISHED":
-                    return lending.getAssetInstance().getOwner().getEmail().equals(userService.getCurrentUser().getEmail());
                 case "DELIVERED":
                     return lending.getAssetInstance().getOwner().getEmail().equals(userService.getCurrentUser().getEmail());
                 case "CANCELED":

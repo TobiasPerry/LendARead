@@ -3,6 +3,8 @@ import useAssetInstances from '../../hooks/assetInstance/useUserAssetInstances.t
 import {useContext, useEffect} from "react";
 import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
 import Pagination from "../Pagination.tsx";
+import {Helmet} from "react-helmet";
+import LoadingWrapper from "../LoadingWrapper.tsx";
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
@@ -13,10 +15,11 @@ const MyBooksTable = ({handleRowClicked}) => {
         sort,
         setSort,
         currentPage,
-        changePage,
+        changePageMyBooks,
         totalPages,
         books,
-        isLoading
+        isLoading,
+        setCurrentPage
     } = useAssetInstances();
 
 
@@ -28,7 +31,8 @@ const MyBooksTable = ({handleRowClicked}) => {
 
     const handleFilterChange = async(newFilter: string) => {
         setFilter(newFilter);
-        await applyFilterAndSort(currentPage, sort, newFilter);
+        setCurrentPage(1);
+        await applyFilterAndSort(1, sort, newFilter);
     };
 
     const handleSortChange = async (column: string) => {
@@ -54,9 +58,7 @@ const MyBooksTable = ({handleRowClicked}) => {
 
 
     return (
-        <>
-            {isLoading ?
-                <LoadingAnimationWhite /> :
+      <LoadingWrapper isLoading={isLoading} documentTitle={t('my_books')} isWhiteAnimation={true}>
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{t('my_books')}</h2>
@@ -69,17 +71,17 @@ const MyBooksTable = ({handleRowClicked}) => {
             <table className="table table-hover mt-2 mb-3">
                 <thead className="table-light">
                 <tr>
-                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')} {renderSortIcon('image')}</th>
+                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')}</th>
                     <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
                     <th scope="col" onClick={() => handleSortChange('author')}>{t('author')} {renderSortIcon('author')}</th>
                     <th scope="col" onClick={() => handleSortChange('language')}>{t('language')} {renderSortIcon('language')}</th>
-                    <th scope="col" onClick={() => handleSortChange('state')}>{t('state')} {renderSortIcon('state')}</th>
+                    <th scope="col" onClick={() => handleSortChange('physicalCondition')}>{t('physicalCondition')} {renderSortIcon('physicalCondition')}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {books.length === 0 ? (
                     <tr>
-                        <td colSpan={5} className="text-center">
+                        <td colSpan={6} className="text-center">
                             <h5>{t('no_books_available')}</h5>
                         </td>
                     </tr>
@@ -92,15 +94,15 @@ const MyBooksTable = ({handleRowClicked}) => {
                             <td>{book.title}</td>
                             <td>{book.author}</td>
                             <td>{book.language}</td>
-                            <td>{t(`${book.state}`)}</td>
+                            <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
                         </tr>
                     ))
                 )}
                 </tbody>
             </table>
-           <Pagination totalPages={totalPages} changePage={changePage} currentPage={currentPage} />
-        </div> }
-        </>
+           <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
+        </div>
+      </LoadingWrapper>
     );
 };
 

@@ -1,14 +1,14 @@
-import BookCardPlaceholder from "../../components/BookCardPlaceholder.tsx";
-
 import ReviewCard from "../../components/reviews/ReviewCard.tsx";
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import UseReview, {Asset_and_borrower_data, body_review} from "../../hooks/reviews/useReview.ts";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import BookCard from "../../components/BookCard.tsx";
-import NotFound from "../../components/NotFound.tsx";
+import NotFound from "../NotFound.tsx";
 import Modal from "../../components/modals/Modal.tsx";
+import {AuthContext} from "../../contexts/authContext.tsx";
+import {Helmet} from "react-helmet";
 
 export default function ReviewLender () {
     const { lendingNumber } = useParams<{ lendingNumber: string}>()
@@ -40,35 +40,55 @@ export default function ReviewLender () {
     const [found, setFound] = useState(false)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
+    const [alreadyReviewed, setAlreadyReviewed] = useState(false)
     const [userReview, setUserReview] = useState(review_empty)
+    const [notAllowed, setNotAllowed] = useState(false)
+    const [showError_stars, setShowError_stars] = useState(false)
+    const [showError_review, setShowError_review] = useState(false)
 
     const {t} = useTranslation();
     const { handleGetLendingInfoForLender, handleSendLenderReview } = UseReview()
+    const {user} = useContext(AuthContext)
 
 
 
     useEffect(() => {
-        document.title = t('reviews.title')
         const fetchData = async () => {
             setLoading(true)
-            const res: Asset_and_borrower_data = await handleGetLendingInfoForLender(lendingNumber)
-            setFound((!(res === null || res === undefined)))
-            setData(res)
+            // @ts-ignore
+            const {info, exists}: { Asset_and_borrower_data, boolean } = await handleGetLendingInfoForLender(lendingNumber)
+            setAlreadyReviewed(exists)
+            setFound(!(info === null || info === undefined))
+            setNotAllowed( (info !== null && info !== undefined) && (user.toString() === info.borrower.userId.toString()) )
+            setData(info)
             setLoading(false)
         }
         fetchData()
-        // for when it unmounts
-        return () => {
-            document.title = "Lend a Read"
-        }
     }, []);
 
     const handleBackClick = () => {
-        navigate(`/userBook/${data.book.assetInstanceNumber}?state=lended`)
+        navigate(`/userBook/${lendingNumber}?state=lended`)
+    }
+
+    const handleSendClick = async () => {
+        if(userReview.review === "" || userReview.rating === -1 ) {
+            setShowError_review(userReview.review === "");
+            setShowError_stars(userReview.rating === -1);
+        }else {
+            handleSendLenderReview(userReview, data.borrower.userId)
+                .then((value) => {
+                    setSuccess(value !== null && value !== undefined);
+                    setError(value === null || value === undefined)
+                });
+        }
     }
 
     return(
         <>
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>{t('reviews.title')}</title>
+            </Helmet>
             <Modal
                 showModal={success}
                 title={t('reviews.success_modal.title')}
@@ -88,7 +108,7 @@ export default function ReviewLender () {
             { loading? (
                 <LoadingAnimation/>
             ) : (
-                !found ? (
+                !found || alreadyReviewed || notAllowed ? (
                     <NotFound/>
                 ):(
                     <div className="main-class py-3">
@@ -122,6 +142,8 @@ export default function ReviewLender () {
                                             title={t('reviews.lender.user.title', {user: data.borrower.userName})}
                                             error_stars={t('reviews.lender.user.error_stars')}
                                             error_description={t('reviews.lender.user.error_text')}
+                                            showError_stars={showError_stars}
+                                            showError_review={showError_review}
                                             placeholder={t('reviews.lender.user.placeholder')}
                                             handleReview={(value) => {
                                                 setUserReview({
@@ -140,13 +162,7 @@ export default function ReviewLender () {
                                         />
                                         <button
                                             onClick={
-                                                () => {
-                                                    handleSendLenderReview(userReview, data.borrower.userId)
-                                                        .then((value) => {
-                                                            setSuccess(value !== null && value !== undefined);
-                                                            setError(value === null || value === undefined)
-                                                        });
-                                                }
+                                                () => {handleSendClick().then()}
                                             }
                                         >
                                             {t('reviews.send')}
