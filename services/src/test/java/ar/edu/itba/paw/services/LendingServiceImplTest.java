@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+    @RunWith(MockitoJUnitRunner.class)
 public class LendingServiceImplTest {
 
     @Mock
@@ -91,7 +91,7 @@ public class LendingServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = UserNotFoundException.class)
+    @Test(expected = AssetIsNotAvailableException.class)
     public void borrowAssetFromUserNotPresentTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
@@ -104,7 +104,7 @@ public class LendingServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = AssetInstanceBorrowException.class)
+    @Test(expected = AssetInstanceIsNotReservableException.class)
     public void borrowAssetNotPublicTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
@@ -117,7 +117,7 @@ public class LendingServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = DayOutOfRangeException.class)
+    @Test(expected = MaxLendingDaysException.class)
     public void borrowAssetInvalidDateTest() throws Exception {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
@@ -130,7 +130,7 @@ public class LendingServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = AssetInstanceBorrowException.class)
+    @Test(expected = AssetInstanceIsNotReservableException.class)
     public void borrowAssetNotReservable() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
@@ -143,7 +143,7 @@ public class LendingServiceImplTest {
         Assert.fail();
     }
 
-    @Test(expected = AssetInstanceBorrowException.class)
+    @Test(expected = AssetInstanceIsNotReservableException.class)
     public void borrowAssetOverlappingDates() throws UserNotFoundException, AssetInstanceBorrowException, DayOutOfRangeException, MaxLendingDaysException, AssetIsNotAvailableException, AssetInstanceIsNotReservableException {
         // 1 - Precondiciones
         when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(ASSET_INSTANCE));
