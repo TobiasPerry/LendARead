@@ -10,6 +10,7 @@ const BookDetails = ({data}) => {
             margin: '0 50px',
             borderRadius: '20px',
             padding: '20px',
+            minWidth: '600px',
             width: '50%'
         }}>
             <div style={{display: 'flex', flexFlow: 'row', width: '100%', justifyContent: 'start'}}>

@@ -1,5 +1,6 @@
 import {api, api_} from "../api/api.ts";
 import {LocationApi} from "../../views/user/Locations.tsx";
+import Vnd from "../api/types.ts";
 
 const useLocations = () => {
 
@@ -7,7 +8,7 @@ const useLocations = () => {
         try {
             const response = await api_.patch(location.selfUrl, location,
                 {
-                    headers: {"Content-Type": "application/vnd.location.v1+json"}
+                    headers: {"Content-Type": Vnd.VND_LOCATION}
                 }
             )
             // @ts-ignore
@@ -29,7 +30,7 @@ const useLocations = () => {
 
     const getLocations = async (userId: any) => {
         try {
-            const response = await api.get(`/locations?userId=${userId}`)
+            const response = await api.get(`/locations`, {params: {userId: userId}})
             return response.data
         } catch (error) {
             return []
@@ -39,7 +40,7 @@ const useLocations = () => {
     const addLocation = async (location: LocationApi) => {
         try {
             const response = await api.post('/locations', location, {
-                headers: { "Content-Type": "application/vnd.location.v1+json" }
+                headers: { "Content-Type": Vnd.VND_LOCATION }
             });
         } catch (e) {
             return false
