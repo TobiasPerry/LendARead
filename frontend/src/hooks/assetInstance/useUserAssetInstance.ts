@@ -17,9 +17,7 @@ const useUserAssetInstance = (location, id) => {
 
     const checkIsOwner = async (user: string, lending: LendingApi, assetinstance: AssetInstanceApi) => {
         if(state === "lended") {
-            console.log("lending", lending)
             const user_: UserDetailsApi = (await api.get(lending.lenderUrl)).data
-            console.log("user_", user_)
             const isOwner = extractId(user_.selfUrl) === user
             setIsOwner(isOwner)
         } else if (state === "borrowed") {
@@ -27,10 +25,7 @@ const useUserAssetInstance = (location, id) => {
             const isOwner = extractId(user_.selfUrl) === user
             setIsOwner(isOwner)
         } else if (state === "owned") {
-            console.log("assetinstance", assetinstance)
             const user_: UserDetailsApi = (await api.get(assetinstance.userReference)).data
-            console.log("userId", extractId(user_.selfUrl))
-            console.log("user logged", user)
             const isOwner = extractId(user_.selfUrl) === user
             setIsOwner(isOwner)
         } else {

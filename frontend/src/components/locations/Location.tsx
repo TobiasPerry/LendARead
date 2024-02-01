@@ -20,19 +20,10 @@ const Location = ({ handleEdit, handleDelete, location }: any) => {
         fontWeight: 'bold',
     };
 
-    const buttonStyle = {
-        backgroundColor: '#16df7e',
-        color: 'white',
-        padding: '0.5rem 1rem',
-        border: 'none',
-        borderRadius: '0.25rem',
-        cursor: 'pointer',
-        margin: '5px'
-    };
 
     return (
 
-        <div key={location.id} className="info-container m-3" style={{ maxWidth: '600px', minWidth: '300px', minHeight: '300px' }}>
+        <div key={location.id} className="info-container m-3" style={{ width: '350px', height: '350px' }}>
             <div className="form-group m-2">
                 <div style={{...labelStyle, fontSize: "30px"}}>{location.name ? location.name : ""}</div>
             </div>
@@ -58,10 +49,10 @@ const Location = ({ handleEdit, handleDelete, location }: any) => {
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button  type="submit" style={buttonStyle} onClick={handleEdit}>
+                    <button  type="submit" className="btn-green btn-mini" style={{width: "10px", padding: "1px"}} onClick={handleEdit}>
                         {t('edit')}
                     </button>
-                    <button type="submit" style={buttonStyle} onClick={handleDelete}>
+                    <button type="submit" className="btn-red btn-mini" onClick={handleDelete}>
                         {t('delete')}
                     </button>
                 </div>

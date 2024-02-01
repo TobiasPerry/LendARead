@@ -1,8 +1,23 @@
 import {api, api_} from "../api/api.ts";
-import {LocationApi} from "../../views/user/Locations.tsx";
 import Vnd from "../api/types.ts";
+import {useContext, useState} from "react";
+import {AuthContext} from "../../contexts/authContext.tsx";
 
+export interface LocationApi {
+    name: string,
+    province: string,
+    country: string,
+    locality: string,
+    zipcode: number,
+    selfUrl: string
+}
 const useLocations = () => {
+
+    const {user} = useContext(AuthContext)
+    const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
+    const [isLoading, setIsLoading] = useState(false)
+    const [locations, setLocations] = useState([emptyLocation]);
+    const [editingLocation, setEditingLocation] = useState(emptyLocation);
 
     const editLocation = async (location: any) => {
         try {
@@ -29,10 +44,13 @@ const useLocations = () => {
     }
 
     const getLocations = async (userId: any) => {
+        setIsLoading(true)
         try {
             const response = await api.get(`/locations`, {params: {userId: userId}})
+            setIsLoading(false)
             return response.data
         } catch (error) {
+            setIsLoading(false)
             return []
         }
     };
@@ -47,8 +65,17 @@ const useLocations = () => {
         }
     }
 
+    const fetchLocation = async () => {
+        try {
+            const response = await getLocations(user);
+            await setLocations(response);
+        } catch (error) {
+            console.error("Failed to fetch locations:", error);
+        }
+    }
+
     return {
-        editLocation, deleteLocation, getLocations, addLocation
+        editLocation, deleteLocation, getLocations, addLocation, isLoading, fetchLocation, locations, editingLocation, setEditingLocation
     }
 }
 

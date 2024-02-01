@@ -4,6 +4,7 @@ import {useContext, useEffect} from "react";
 import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
 import Pagination from "../Pagination.tsx";
 import {Helmet} from "react-helmet";
+import LoadingWrapper from "../LoadingWrapper.tsx";
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
@@ -57,14 +58,7 @@ const MyBooksTable = ({handleRowClicked}) => {
 
 
     return (
-        <>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>{t("my_books")}</title>
-                <link rel="canonical" href="http://mysite.com/example" />
-            </Helmet>
-            {isLoading ?
-                <LoadingAnimationWhite /> :
+      <LoadingWrapper isLoading={isLoading} documentTitle={t('my_books')}>
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
                 <h2 className="m-1">{t('my_books')}</h2>
@@ -107,8 +101,8 @@ const MyBooksTable = ({handleRowClicked}) => {
                 </tbody>
             </table>
            <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
-        </div> }
-        </>
+        </div>
+      </LoadingWrapper>
     );
 };
 

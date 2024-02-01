@@ -10,7 +10,7 @@ const LoginView = lazy(() => import("./views/user/LogIn.tsx"));
 const Register = lazy(() => import("./views/user/Register.tsx"));
 const ForgotPassword = lazy(() => import("./views/user/ForgotPassword.tsx"));
 const UserHome = lazy(() => import("./views/userAssets/UserAssets.tsx"));
-const Locations = lazy(() => import("./views/user/Locations.tsx"));
+const Locations = lazy(() => import("./views/Locations.tsx"));
 const ViewAssetInstance = lazy(() => import("./views/asset/ViewAssetInstance.tsx"));
 const UserAssetInstance = lazy(() => import("./views/userAssets/UserAssetInstance.tsx"));
 const ReviewLender = lazy(() => import("./views/reviews/ReviewLender.tsx"));

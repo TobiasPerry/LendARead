@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {LocationApi} from "../../views/user/Locations.tsx";
+import {LocationApi} from "../../views/Locations.tsx";
 import {api_} from "../api/api.ts";
 
 const useLocationAsset = () => {
