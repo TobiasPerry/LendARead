@@ -1,60 +1,22 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
 import { useTranslation } from "react-i18next";
 import ProfileReviewCard from "../../components/reviews/ProfileReviewCard";
 import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
+import {AuthContext} from "../../contexts/authContext.tsx";
 
-const ProfileView = (props: any) => {
+const ProfileView = ({isCurrentUser, id, profileDetails}) => {
+
     const { t } = useTranslation();
-    const isCurrentUser = props.isCurrentUser;
-    const id = props.id;
-    const profileDetails = props.profileDetails;
+    const {userImage} = useContext(AuthContext)
     const [selectedTab, setSelectedTab] = useState(0);
     const [lenderReviews, setLenderReviews] = useState([]);
     const [borrowerReviews, setBorrowerReviews] = useState([]);
-
-    const tabs = [
-        "Lender Reviews",
-        "Borrower Reviews"
-    ]
-
     const [userNames, setUserNames] = useState([])
 
+    const tabs = ["Lender Reviews", "Borrower Reviews"]
 
-    const MOCK_profile_picture_src = '/static/user-placeholder.jpeg'
-    const MOCK_reviews = [
-        {
-            reviwer: 'http://example.com/user/1',
-            lending: "http://example.com/lending/1",
-            rating: 3,
-            review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-        },
-        {
-            reviwer: 'http://example.com/user/2',
-            lending: "http://example.com/lending/1",
-            rating: 2,
-            review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-        },
-        {
-            reviwer: 'http://example.com/user/1',
-            lending: "http://example.com/lending/1",
-            rating: 1,
-            review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-        },
-        {
-            reviwer: 'http://example.com/user/1',
-            lending: "http://example.com/lending/1",
-            rating: 4,
-            review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-        },
-        {
-            reviwer: 'http://example.com/user/2',
-            lending: "http://example.com/lending/1",
-            rating: 5,
-            review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-        }
-    ]
 
     const renderRating = (behavior: "LENDER" | "BORROWER", rating: number) => {
         if (behavior == "LENDER") {
@@ -114,7 +76,8 @@ const ProfileView = (props: any) => {
             })
         })
         return (
-            <ProfileReviewCard review={mock_review} />
+            <div></div>
+            // <ProfileReviewCard review={MOCK_reviews} />
         )
     }
 
@@ -126,7 +89,7 @@ const ProfileView = (props: any) => {
                 <div className="info-container w-100 mt-10" id="user-info">
                     <div className="position-relative">
                         <div className="user-profile-cell">
-                            <img className="user-profile-picture" src={MOCK_profile_picture_src} alt="user profile picture" />
+                            <img className="user-profile-picture" src={userImage} alt="user profile picture" />
                             {isCurrentUser ? (
                                 <div className="user-change-picture-container" id="change-profile-pic-btn">
                                     <i className="fas fa-solid fa-camera"></i>
@@ -148,7 +111,7 @@ const ProfileView = (props: any) => {
                     </div>
                     <div className="tab-content" >
                         {
-                            renderTabContent(MOCK_reviews)
+                            // renderTabContent(MOCK_reviews)
                         }
                     </div>
                 </div>

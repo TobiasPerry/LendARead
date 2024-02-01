@@ -12,18 +12,18 @@ const ProfileWrapper = () => {
     const redirectLogin = useRef(false);
 
     useEffect(() => {
-        if (!id || isNaN(Number(id)) ) {
-            if (!user || user === -1 || user === undefined) {
-                redirectLogin.current = true;
-                navigate('/login')
-            } else {
-                navigate(`/user/${user}`)
-            }
-        }
-
-        if (user && id && user == Number(id)) {
-            isCurrentUser.current = true;
-        }
+        // if (!id || isNaN(Number(id)) ) {
+        //     if (!user || user === -1 || user === undefined) {
+        //         redirectLogin.current = true;
+        //         navigate('/login')
+        //     } else {
+        //         navigate(`/user/${user}`)
+        //     }
+        // }
+        //
+        // if (user && id && user == Number(id)) {
+        //     isCurrentUser.current = true;
+        // }
     }, [])
 
     return (
