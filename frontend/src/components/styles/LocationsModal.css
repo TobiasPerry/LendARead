@@ -49,8 +49,15 @@
     border-top-right-radius: 0.3rem;
 }
 
+label {
+    font-weight: bold;
+}
+
 .close-button {
     cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
     border: none;
     background: none;
     font-size: 1.5rem;
@@ -126,3 +133,28 @@
         padding: 10px;
     }
 }
+
+.modal-dialog {
+    /* Center the modal more effectively */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.close-button {*/
+/*    !* Ensure the button is always in the top right corner of the modal *!*/
+/*    position: absolute;*/
+/*    top: 5px;*/
+/*    right: 5px;*/
+/*    background: transparent;*/
+/*    border: none;*/
+/*    font-size: 1.5rem;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.form-control {*/
+/*    width: 100%;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+

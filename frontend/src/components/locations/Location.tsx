@@ -48,7 +48,7 @@ const Location = ({ handleEdit, handleDelete, location }: any) => {
                         <div style={textStyle}>{location.zipcode}</div>
                     </div>
                 </div>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center gap-2">
                     <button  type="submit" className="btn-green btn-mini" style={{width: "10px", padding: "1px"}} onClick={handleEdit}>
                         {t('edit')}
                     </button>
@@ -59,6 +59,6 @@ const Location = ({ handleEdit, handleDelete, location }: any) => {
             </div>
         </div>
     );
-};
+}
 
 export default Location;
