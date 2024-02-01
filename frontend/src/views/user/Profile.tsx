@@ -1,21 +1,24 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import ProfileReviewCard from "../../components/reviews/ProfileReviewCard";
 import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
 import {AuthContext} from "../../contexts/authContext.tsx";
+import useReviews from "../../hooks/reviews/useReviews.ts";
 
 const ProfileView = ({isCurrentUser, id, profileDetails}) => {
 
     const { t } = useTranslation();
     const {userImage} = useContext(AuthContext)
     const [selectedTab, setSelectedTab] = useState("lender_reviews")
-    const [lenderReviews, setLenderReviews] = useState([]);
-    const [borrowerReviews, setBorrowerReviews] = useState([]);
-    const [userNames, setUserNames] = useState([])
+
+    const {lenderReviews, borrowerReviews, fetchReviews} = useReviews()
 
 
+    useEffect(() => {
+        fetchReviews().then()
+    }, [id])
 
     const renderRating = (behavior: "LENDER" | "BORROWER", rating: number) => {
         if (behavior == "LENDER") {
@@ -111,9 +114,16 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
                         </ul>
                     </div>
                     <div className="tab-content" >
-                        {
-                            // renderTabContent(MOCK_reviews)
-                        }
+                        {selectedTab === "lender_reviews" &&
+                            (lenderReviews.length > 0
+                                ? lenderReviews.map((review) => <ProfileReviewCard review={review} />)
+                                : <p>No reviews yet</p>
+                        )}
+                        {selectedTab === "borrower_reviews" &&
+                            (borrowerReviews.length > 0
+                                ? borrowerReviews.map((review) => <ProfileReviewCard review={review} />)
+                                : <p>No reviews yet</p>
+                        )}
                     </div>
                 </div>
             </div>
