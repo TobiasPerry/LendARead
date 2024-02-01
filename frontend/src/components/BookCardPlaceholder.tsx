@@ -18,7 +18,7 @@ const BookCardPlaceholder = () => {
                          objectFit: 'cover',
                      }}          >
 
-                <img className="card-img d-none" src="http://pawserver.it.itba.edu.ar/paw-2023a-03/getImage/61" alt="Book title" />
+                <img className="card-img d-none" src="" alt="Book title" />
 
                 <div className="card-img-overlay d-flex flex-column">
                     <div className="card-body">
