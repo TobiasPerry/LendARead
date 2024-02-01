@@ -96,6 +96,7 @@ export default function ReviewLender () {
                 btnText={t('reviews.success_modal.btn')}
                 handleSubmitModal={() => {navigate('/userAssets')}}
                 handleCloseModal={() => {setSuccess(false)}}
+                icon="bi bi-check"
             />
             <Modal
                 showModal={error} errorType={true}
@@ -104,6 +105,7 @@ export default function ReviewLender () {
                 btnText={t('reviews.error_modal.btn')}
                 handleSubmitModal={() => {navigate('/userAssets')}}
                 handleCloseModal={() => {setError(false)}}
+                icon="bi bi-x"
             />
             { loading? (
                 <LoadingAnimation/>

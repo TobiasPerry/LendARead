@@ -6,7 +6,8 @@ function Modal({
                    errorType = false,
                     title = "",
                     subtitle = "",
-                    btnText = ""
+                    btnText = "",
+                    icon= ""
 }) {
 
     return (
@@ -17,6 +18,9 @@ function Modal({
                     borderRadius: '20px',
                 }}>
                     <div className="modal-header">
+                        <div className="icon-box" style={errorType ? {backgroundColor: "#D45235"} : {backgroundColor: "#16df7e"}}>
+                            <i className={icon}></i>
+                        </div>
                         <h2 className="modal-title" id="modalTitle">
                             {title}
                         </h2>

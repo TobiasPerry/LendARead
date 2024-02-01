@@ -132,12 +132,14 @@ const ViewAssetInstance = () => {
                 title="text" subtitle="text" btnText="text"
                 handleSubmitModal={() => {navigate('/discovery')}}
                 handleCloseModal={() => {navigate('/discovery')}}
+                icon="bi bi-check"
             />
             <Modal
                 showModal={error} errorType={true}
                 title="text" subtitle="text" btnText="text"
                 handleSubmitModal={() => {setError(false)}}
                 handleCloseModal={() => {setError(false)}}
+                icon="bi bi-x"
             />
             {
                  loading ? (
