@@ -22,7 +22,7 @@ const ReviewsAssetInstance = () => {
     const [loading, setLoading] = useState(true)
     const [notFound, setNotFound] = useState(false)
 
-    const itemsPerPage = 1
+    const itemsPerPage = 10
 
     const fetchData = async ()=> {
         setLoading(true)
