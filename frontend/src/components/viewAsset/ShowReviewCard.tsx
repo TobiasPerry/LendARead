@@ -2,6 +2,7 @@ import useReview, {ShowReview} from "../../hooks/reviews/useReview.ts";
 import {useEffect, useState} from "react";
 import StarsReviews from "./StarsReviews.tsx";
 import {useTranslation} from "react-i18next";
+import ProfilePlaceholder from "../../../public/static/profile_placeholder.jpeg"
 
 const ShowReviewCard = ({review}) => {
 
@@ -12,6 +13,7 @@ const ShowReviewCard = ({review}) => {
     const { handleGetReviewDataForAssetInstance } = useReview()
     const [data, setData] = useState(empty_data)
     const [hasImage, setHasImage] = useState(false)
+    const [imgSrc, setImgSrc] = useState<any>(ProfilePlaceholder)
     const fetchAuxData = async () => {
         const res : ShowReview = await handleGetReviewDataForAssetInstance(review)
         if(res !== null && res !== undefined)
@@ -21,6 +23,14 @@ const ShowReviewCard = ({review}) => {
         fetchAuxData()
     }, []);
 
+    useEffect(() => {
+        if (hasImage) {
+            setImgSrc(data.userImage)
+        } else {
+            setImgSrc(ProfilePlaceholder)
+        }
+    }, [hasImage]);
+
 
     return (
         <div className="row d-flex justify-content-center" style={{}}>
@@ -29,7 +39,7 @@ const ShowReviewCard = ({review}) => {
                     <div className="card-body m-3">
                         <div className="row">
                             <div className="col-lg-4 justify-content-center align-tems-center">
-                                <img src={hasImage ? `${data.userImage}` : "/static/profile_placeholder.jpeg"}
+                                <img src={imgSrc}
                                      className="rounded-circle img-fluid shadow-1" alt="avatar" width="50"
                                      height="50"/>
                                 <p className="fw-bold lead mb-2"><strong>{data.userName}</strong></p>

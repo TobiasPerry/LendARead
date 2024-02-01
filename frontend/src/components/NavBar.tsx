@@ -5,6 +5,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useContext, useState} from "react";
 import {AuthContext} from "../contexts/authContext.tsx";
+import logoClaro from "../assets/logo-claro.png";
 
 // @ts-ignore
 function classNames(...classes) {
@@ -51,7 +52,9 @@ export default function NavBar() {
         <>
             <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#111711'}} data-bs-theme="dark">
                 <div className="container-fluid">
-                    <Link to="/" className="nav-icon"><img src="/static/logo-claro.png" alt="Lend a read logo" style={{width: '150px'}}/></Link>
+                    <Link to="/" className="nav-icon">
+                        <img src={logoClaro} alt="Lend a read logo" style={{width: '150px'}}/>
+                    </Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>

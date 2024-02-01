@@ -1,11 +1,10 @@
 import NavBar from "./components/NavBar.tsx";
 import { Routes, Route, Outlet } from "react-router-dom";
-import React, {lazy, Suspense} from 'react';
+import {lazy, Suspense} from 'react';
 import AuthProvider from "./contexts/authContext.tsx";
 import LoadingAnimation from "./components/LoadingAnimation.tsx";
 import {Helmet} from "react-helmet";
 import ProfileWrapper from "./components/userDetails/ProfileWrapper.tsx";
-
 
 const LoginView = lazy(() => import("./views/user/LogIn.tsx"));
 const Register = lazy(() => import("./views/user/Register.tsx"));
@@ -24,7 +23,6 @@ const ReviewsAssetInstance = lazy(() => import("./views/asset/ReviewsAssetInstan
 const DiscoveryView = lazy(() => import("./views/Discovery.tsx"));
 const NotFound = lazy(() => import("./views/NotFound.tsx"));
 const Landing = lazy(() => import("./views/Landing.tsx"));
-
 
 
 export default function App() {

@@ -1,4 +1,6 @@
 import "./styles/loadingAnimation.css"
+import FaviconClaro from "../../public/static/favicon-claro-bg.ico"
+
 const LoadingAnimation = () => {
     return (
         <>
@@ -8,7 +10,7 @@ const LoadingAnimation = () => {
                 alignItems: 'center',
                 height: '100vh'
             }}>
-                <img src="/static/favicon-claro-bg.ico" alt="Animated Image" className="fade-in-out"/>
+                <img src={FaviconClaro} alt="Animated Image" className="fade-in-out"/>
             </div>
         </>
     )

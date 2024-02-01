@@ -7,6 +7,7 @@ import {useTranslation} from "react-i18next";
 import BookCardPlaceholder from "../components/BookCardPlaceholder.tsx";
 import useAssetInstance from "../hooks/assetInstance/useAssetInstance.ts";
 import {SORT_DIRECTIONS, SORT_TYPES} from "./Discovery.tsx";
+import LandinSvg from "../../public/static/landing.svg";
 
 
 export default function Landing(){
@@ -51,7 +52,7 @@ export default function Landing(){
                     </div>
                     {/*<div className="image-container">*/}
                     <div>
-                        <img src="/static/landing.svg" className="img-fluid animated" alt=""/>
+                        <img src={LandinSvg} className="img-fluid animated" alt=""/>
                     </div>
                 </div>
             </section>
