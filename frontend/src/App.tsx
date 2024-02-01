@@ -4,6 +4,7 @@ import React, {lazy, Suspense} from 'react';
 import AuthProvider from "./contexts/authContext.tsx";
 import LoadingAnimation from "./components/LoadingAnimation.tsx";
 import {Helmet} from "react-helmet";
+import ProfileWrapper from "./components/userDetails/ProfileWrapper.tsx";
 
 
 const LoginView = lazy(() => import("./views/user/LogIn.tsx"));
@@ -44,7 +45,7 @@ export default function App() {
                             <Route path="changepassword" element={<ChangePassword />} />
                             <Route path="register" element={<Register />} />
                             <Route path="discovery" element={<DiscoveryView/>} />
-                            <Route path="userHome" element={<RequireAuth > <UserProfileView /> </RequireAuth>} />
+                            <Route path="user/:id" element={<RequireAuth > <ProfileWrapper /> </RequireAuth>} />
                             <Route path="book/:bookNumber" element={<ViewAssetInstance /> } />
                             <Route path="userBook/:id" element={<RequireAuth> <UserAssetInstance /> </RequireAuth>} />
                             <Route path="review/lender/:lendingNumber" element={<RequireAuth> <ReviewLender /> </RequireAuth>} />

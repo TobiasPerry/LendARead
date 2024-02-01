@@ -55,7 +55,7 @@ const UserProfile = ({ isCurrentUser }) => {
             {isCurrentUser &&
                 <Link  to={"/locations"} style={{width: "150px", padding: "10px 5px", height: "50px", margin: "auto", marginTop: "30px"}}>
                 <button>
-                    {t("my_locations")}
+                    {t("userProfile.my_locations")}
                 </button>
                 </Link>
             }

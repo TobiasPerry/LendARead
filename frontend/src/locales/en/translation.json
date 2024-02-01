@@ -35,6 +35,11 @@
     "repeatNewPasswordPlaceholder": "Repeat new password",
     "changePasswordButton": "Change password"
   },
+  "userProfile": {
+    "lender": "Lender ",
+    "borrower": "Borrower ",
+    "my_locations": "My Locations"
+  },
 "auth": {
     "login": "Login",
     "register": "Register",

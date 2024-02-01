@@ -6,6 +6,7 @@ import {AuthContext} from "../contexts/authContext.tsx";
 import useLocations from "../hooks/locations/useLocations.ts";
 import {Helmet} from "react-helmet";
 import LoadingWrapper from "../components/LoadingWrapper.tsx";
+import {Link} from "react-router-dom";
 
 
 const LocationsPage = () => {
@@ -18,6 +19,7 @@ const LocationsPage = () => {
             locations,
         setEditingLocation,emptyLocation, editingLocation} = useLocations()
     const [showModal, setShowModal] = useState(false);
+    const {user} = useContext(AuthContext);
 
     useEffect(() => {
         fetchLocation().then()
@@ -55,12 +57,12 @@ const LocationsPage = () => {
         <LoadingWrapper isLoading={isLoading} documentTitle={t("locations.title")} isWhiteAnimation={false}>
         <div className="main-class" style={{ display: 'flex', flexDirection: 'column' }}>
             <div className="container" style={{textAlign: "center"}}>
-                <div className="d-flex back-click flex-row align-items-center mt-4 mb-4" onClick={handleBackClick}>
+                <Link className="d-flex back-click flex-row align-items-center mt-4 mb-4" to={`/user/${user}`}>
                     <i className="fas fa-arrow-left mb-1"></i>
                     <h3 className="ms-3">
                         {t("user")}
                     </h3>
-                </div>
+                </Link>
                 <h1 style={{marginTop: "50px"}}>{t('locations.title')}</h1>
                 <div className="container-row-wrapped" style={{borderRadius: '20px', padding: '20px' }}>
                     {locations.map((location , i) => (
