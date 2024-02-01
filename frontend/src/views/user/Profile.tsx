@@ -10,12 +10,11 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
 
     const { t } = useTranslation();
     const {userImage} = useContext(AuthContext)
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedTab, setSelectedTab] = useState("lender_reviews")
     const [lenderReviews, setLenderReviews] = useState([]);
     const [borrowerReviews, setBorrowerReviews] = useState([]);
     const [userNames, setUserNames] = useState([])
 
-    const tabs = ["Lender Reviews", "Borrower Reviews"]
 
 
     const renderRating = (behavior: "LENDER" | "BORROWER", rating: number) => {
@@ -49,24 +48,6 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
         }
     }
 
-    const renderTabTitle = (title: string, index: number) => {
-        return (
-            <li key={index} className="nav-item" role="presentation">
-                <button className="nav-link black-text" type="button" role="tab" onClick={(_) => setSelectedTab(index)} aria-selected={index == 0}>{title}</button>
-            </li>
-        )
-    }
-
-    const renderTabNav = () => {
-        return (
-            <ul className="nav nav-tabs" id="user-tab" role="tablist">
-                {tabs.map((tab, index) => {
-                    return renderTabTitle(tab, index)
-                })}
-            </ul>
-        )
-    }
-
     const renderTabContent = (reviews: any) => {
         const reviews_with_usernames: any = []
         reviews.forEach((review: any)  => {
@@ -90,11 +71,14 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
                     <div className="position-relative">
                         <div className="user-profile-cell">
                             <img className="user-profile-picture" src={userImage} alt="user profile picture" />
-                            {isCurrentUser ? (
+                            {isCurrentUser
+                                ?
                                 <div className="user-change-picture-container" id="change-profile-pic-btn">
                                     <i className="fas fa-solid fa-camera"></i>
                                 </div>
-                            ) : null
+                                :
+                                <>
+                                </>
                             }
                         </div>
                     </div>
@@ -107,7 +91,24 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
                     </div>
                     <hr />
                     <div className="tabs-container">
-                        {renderTabNav()}
+                        <ul className="nav nav-tabs" id="user-tab" role="tablist">
+                                <li className="nav-item" role="presentation">
+                                    <button
+                                        className="nav-link black-text"
+                                        type="button"
+                                        role="tab"
+                                        onClick={(_) => setSelectedTab("lender_reviews")}
+                                        aria-selected={selectedTab === "lender_reviews"}>Lender Reviews</button>
+                                </li>
+                            <li className="nav-item" role="presentation">
+                                <button
+                                    className="nav-link black-text"
+                                    type="button"
+                                    role="tab"
+                                    onClick={(_) => setSelectedTab("borrower_reviews")}
+                                    aria-selected={selectedTab === "borrower_reviews"}>Borrower Reviews</button>
+                            </li>
+                        </ul>
                     </div>
                     <div className="tab-content" >
                         {

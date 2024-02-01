@@ -1,7 +1,6 @@
 import "../styles/profileReview.css"
 
-const ProfileReviewCard = (props: any) => {
-    const review = props.review;
+const ProfileReviewCard = ({review}) => {
     const user = review.reviwer.split("/").pop();
     const lending = review.lending;
     const rating = review.rating;
