@@ -6,7 +6,6 @@ import { AuthContext } from '../../contexts/authContext.tsx';
 
 const ProfileWrapper = () => {
     const { id } = useParams();
-    const { user, userDetails } = useContext(AuthContext);
     const navigate = useNavigate();
     const isCurrentUser = useRef(false);
     const redirectLogin = useRef(false);
@@ -27,7 +26,7 @@ const ProfileWrapper = () => {
     }, [])
 
     return (
-        <ProfileView profileDetails={userDetails} id={id} isCurrentUser={isCurrentUser.current}/>
+        <ProfileView id={id} isCurrentUser={isCurrentUser.current}/>
     )
 
 }

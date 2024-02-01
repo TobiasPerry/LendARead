@@ -1,7 +1,6 @@
 import "../styles/profileReview.css"
 
-const ProfileReviewCard = ({review}) => {
-    const user = review.reviwer.split("/").pop();
+const ProfileReviewCard = ({review, user, userName}) => {
     const lending = review.lending;
     const rating = review.rating;
     const reviewText = review.review;
@@ -31,7 +30,7 @@ const ProfileReviewCard = ({review}) => {
             <div className="user-review-card-content">
                 <div className="user-review-card-header">
                     <a href={`/user/${user}`}>
-                        <h2>{user}</h2>
+                        <h2>{userName}</h2>
                     </a>
                     {renderStars(rating)}
                 </div>

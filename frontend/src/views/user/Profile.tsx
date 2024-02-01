@@ -5,24 +5,24 @@ import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
 import {AuthContext} from "../../contexts/authContext.tsx";
-import useReviews from "../../hooks/reviews/useReviews.ts";
+import useReviews, {ReviewApi} from "../../hooks/reviews/useReviews.ts";
 
-const ProfileView = ({isCurrentUser, id, profileDetails}) => {
+const ProfileView = ({isCurrentUser, id}) => {
 
     const { t } = useTranslation();
-    const {userImage} = useContext(AuthContext)
+    const {userImage, userDetails, user} = useContext(AuthContext)
     const [selectedTab, setSelectedTab] = useState("lender_reviews")
 
     const {lenderReviews, borrowerReviews, fetchReviews} = useReviews()
 
-
+    console.log(userDetails)
     useEffect(() => {
         fetchReviews().then()
     }, [id])
 
     const renderRating = (behavior: "LENDER" | "BORROWER", rating: number) => {
         if (behavior == "LENDER") {
-            if (profileDetails.role != "LENDER") {
+            if (userDetails.role != "LENDER") {
                 return <></>
             }
             return (
@@ -51,20 +51,6 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
         }
     }
 
-    const renderTabContent = (reviews: any) => {
-        const reviews_with_usernames: any = []
-        reviews.forEach((review: any)  => {
-            reviews_with_usernames.push({
-                ...review,
-                reviewer: "John Doe"
-            })
-        })
-        return (
-            <div></div>
-            // <ProfileReviewCard review={MOCK_reviews} />
-        )
-    }
-
 
 
     return (
@@ -86,10 +72,10 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
                         </div>
                     </div>
                     <div className="user-info-profile">
-                        <h1>{profileDetails.userName}</h1>
+                        <h1>{userDetails.userName}</h1>
                         <p className="grey-text">
-                            {renderRating("BORROWER", profileDetails.ratingAsBorrower)}
-                            {renderRating("LENDER", profileDetails.ratingAsLender)}
+                            {renderRating("BORROWER", userDetails.ratingAsBorrower)}
+                            {renderRating("LENDER", userDetails.ratingAsLender)}
                         </p>
                     </div>
                     <hr />
@@ -116,13 +102,13 @@ const ProfileView = ({isCurrentUser, id, profileDetails}) => {
                     <div className="tab-content" >
                         {selectedTab === "lender_reviews" &&
                             (lenderReviews.length > 0
-                                ? lenderReviews.map((review) => <ProfileReviewCard review={review} />)
-                                : <p>No reviews yet</p>
+                                ? lenderReviews.map((review: ReviewApi) => <ProfileReviewCard review={review} user={user} userName={userDetails.userName}/>)
+                                : <p>No Lender reviews yet</p>
                         )}
                         {selectedTab === "borrower_reviews" &&
                             (borrowerReviews.length > 0
-                                ? borrowerReviews.map((review) => <ProfileReviewCard review={review} />)
-                                : <p>No reviews yet</p>
+                                ? borrowerReviews.map((review: ReviewApi) => <ProfileReviewCard review={review} user={user} userName={userDetails.userName}/>)
+                                : <p>No Borrower reviews yet</p>
                         )}
                     </div>
                 </div>
