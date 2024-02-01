@@ -10,11 +10,17 @@ import LoadingWrapper from "../components/LoadingWrapper.tsx";
 
 const LocationsPage = () => {
     const { t } = useTranslation();
-    const { editLocation, deleteLocation, getLocations, addLocation, fetchLocation, isLoading, locations, setEditingLocation,emptyLocation, editingLocation} = useLocations()
+    const { editLocation,
+            deleteLocation,
+            addLocation,
+            fetchLocation,
+            isLoading,
+            locations,
+        setEditingLocation,emptyLocation, editingLocation} = useLocations()
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-       fetchLocation().then()
+        fetchLocation().then()
     }, []);
 
 
