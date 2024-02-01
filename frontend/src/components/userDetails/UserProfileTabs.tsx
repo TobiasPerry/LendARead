@@ -1,3 +1,4 @@
+import {t} from "i18next";
 
 const UserProfileTabs = ({selectedTab, setSelectedTab}) => {
 
@@ -9,7 +10,7 @@ const UserProfileTabs = ({selectedTab, setSelectedTab}) => {
                     type="button"
                     role="tab"
                     onClick={(_) => setSelectedTab("lender_reviews")}
-                    aria-selected={selectedTab === "lender_reviews"}>Lender Reviews</button>
+                    aria-selected={selectedTab === "lender_reviews"}>{t("lender_reviews")}</button>
             </li>
             <li className="nav-item" role="presentation">
                 <button
@@ -17,7 +18,7 @@ const UserProfileTabs = ({selectedTab, setSelectedTab}) => {
                     type="button"
                     role="tab"
                     onClick={(_) => setSelectedTab("borrower_reviews")}
-                    aria-selected={selectedTab === "borrower_reviews"}>Borrower Reviews</button>
+                    aria-selected={selectedTab === "borrower_reviews"}>{t("borrower_reviews")}</button>
             </li>
         </ul>
     )

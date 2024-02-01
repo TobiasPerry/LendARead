@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 // Assume these are imported from their respective component files
 import UserProfile from '../../components/userDetails/UserProfile';
-import ReviewList from '../../components/userDetails/ReviewList';
 import useUserProfileReviews from "../../hooks/users/useUserProfileReviews.ts";
 const UserProfileView = () => {
     const { t } = useTranslation();
@@ -21,6 +20,7 @@ const UserProfileView = () => {
         color: activeTab === activeTabName ? '#000' : '#aaa',
     });
 
+    // @ts-ignore
     return (
         <div className="main-class">
         <div  style={{
@@ -32,7 +32,8 @@ const UserProfileView = () => {
             paddingTop: '60px',
             borderRadius: '60px',
         }}>
-            <UserProfile isCurrent={isCurrent} />
+            {/* @ts-ignore */}
+            {/*<UserProfile isCurrent={isCurrent} />*/}
             <div className="review-tabs d-flex justify-content-center mt-3">
                 <div style={tabStyle('borrower')} onClick={() => setActiveTab('borrower')}>
                     {t('borrower_reviews')}
@@ -41,10 +42,10 @@ const UserProfileView = () => {
                     {t('lender_reviews')}
                 </div>
             </div>
-            <ReviewList
-                reviews={activeTab === 'borrower' ? borrowerReviews : lenderReviews}
-                activeTab={activeTab}
-            />
+            {/*<ReviewList*/}
+            {/*    reviews={activeTab === 'borrower' ? borrowerReviews : lenderReviews}*/}
+            {/*    activeTab={activeTab}*/}
+            {/*/>*/}
         </div>
         </div>
     );
