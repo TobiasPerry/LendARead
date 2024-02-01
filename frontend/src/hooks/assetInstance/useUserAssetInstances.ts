@@ -138,7 +138,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'ASCENDIN
            try {
                const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
                const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
-               const userReference = isLender ? lending.lenderUrl : lending.borrowerUrl;
+               const userReference = !isLender ? lending.lenderUrl : lending.borrowerUrl;
                const user = (await api_.get(userReference)).data;
 
                return {

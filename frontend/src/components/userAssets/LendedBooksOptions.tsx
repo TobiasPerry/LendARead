@@ -54,6 +54,7 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
         await confirmLending(asset)
     }
 
+    if(asset === undefined || asset.lending === undefined) return (<></>);
 
     return (
         <div style={{
@@ -64,22 +65,29 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
             flexDirection: "column",
             alignItems: "center",
         }} className="flex-column">
-            {!(asset === undefined || asset.lending === undefined) && (
-                <div>
                     {(isActive(asset.lending.state) || isDelivered(asset.lending.state)) && (
                         <div className="options-menu"
                              style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                            <h3 >{t('lended_books_actions')}</h3>
+                            <h3>{t('lended_books_actions')}</h3>
                             {isActive(asset.lending.state) && (
                                 <>
-                                    <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", margin: "15px 0"}}>
-                                        {canConfirmLending ? t('userHomeView.pendingText') : t('userHomeView.pendingText2') }
+                                    <h6 style={{
+                                        color: '#7d7c7c',
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        width: "60%",
+                                        margin: "15px 0"
+                                    }}>
+                                        {canConfirmLending ? t('userHomeView.pendingText') : t('userHomeView.pendingText2')}
                                     </h6>
                                     <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
-                                        <button id="confirmAssetBtn" className="btn btn-green" onClick={() => setShowConfirmAssetModal(true)}  disabled={!canConfirmLending}>
+                                        <button id="confirmAssetBtn" className="btn btn-green"
+                                                onClick={() => setShowConfirmAssetModal(true)}
+                                                disabled={!canConfirmLending}>
                                             {t('userHomeView.confirmBook')}
                                         </button>
-                                        <button id="rejectAssetBtn" className="btn btn-red-outline" onClick={() => setShowRejectAssetModal(true)}>
+                                        <button id="rejectAssetBtn" className="btn btn-red-outline"
+                                                onClick={() => setShowRejectAssetModal(true)}>
                                             {t('userHomeView.rejectAssetTitle')}
                                         </button>
                                     </div>
@@ -87,11 +95,18 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                             )}
                             {isDelivered(asset.lending.state) && (
                                 <>
-                                    <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", marginTop: "10px"}}>
+                                    <h6 style={{
+                                        color: '#7d7c7c',
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        width: "60%",
+                                        marginTop: "10px"
+                                    }}>
                                         {t('userHomeView.inProgressText')}
                                     </h6>
                                     <button id="returnAssetBtn" className="btn btn-green"
-                                            style={{marginTop: '10px', alignSelf: 'center'}} onClick={() => setShowReturnAssetModal(true)}>
+                                            style={{marginTop: '10px', alignSelf: 'center'}}
+                                            onClick={() => setShowReturnAssetModal(true)}>
                                         {t('userHomeView.confirmReturn')}
                                     </button>
                                 </>
@@ -104,11 +119,20 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                         </div>
                     }
                     {isFinished(asset.lending.state) && canReview &&
-                        <div>
-                            <h6 style={{color: '#7d7c7c', fontWeight: 'bold', textAlign: 'center', width: "60%", marginTop: "10px"}}>
+                        <div className="options-menu"
+                             style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                        <h6 style={{
+                                color: '#7d7c7c',
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                width: "60%",
+                                marginTop: "10px"
+                            }}>
                                 {t('finished_borrower')}
                             </h6>
-                            <Link id="returnAssetBtn" className="btn btn-green" style={{marginTop: '10px', alignSelf: 'center'}} to={`/review/lender/${asset.lendingid}`}>
+                            <Link id="returnAssetBtn" className="btn btn-green"
+                                  style={{marginTop: '10px', alignSelf: 'center'}}
+                                  to={`/review/lender/${asset.lendingid}`}>
                                 {t('userHomeView.review')}
                             </Link>
                         </div>
@@ -125,18 +149,16 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                     }
                     <ConfirmLendingModal showModal={showConfirmAssetModal}
                                          handleCloseModal={() => setShowConfirmAssetModal(false)}
-                                        asset={asset}
-                                        handleSubmitModal={handleConfirmAsset} />
+                                         asset={asset}
+                                         handleSubmitModal={handleConfirmAsset}/>
                     <RejectLendingModal showModal={showRejectAssetModal}
                                         handleCloseModal={() => setShowRejectAssetModal(false)}
                                         asset={asset}
-                                        handleSubmitModal={handleRejectAsset} />
+                                        handleSubmitModal={handleRejectAsset}/>
                     <ConfirmReturnModal showModal={showReturnAssetModal}
                                         handleCloseModal={() => setShowReturnAssetModal(false)}
                                         asset={asset}
-                                        handleSubmitModal={handleReturnAsset} />
-                </div>
-            )}
+                                        handleSubmitModal={handleReturnAsset}/>
         </div>
     );
 }

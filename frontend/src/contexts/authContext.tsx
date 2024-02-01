@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import {api, api_} from "../hooks/api/api";
 // @ts-ignore
-import defaultUserPhoto from "../../public/static/user-placeholder.jpeg";
+import defaultUserPhoto from "/static/user-placeholder.jpeg";
 import {useTranslation} from "react-i18next";
 
 export interface UserDetailsApi {
@@ -128,11 +128,8 @@ const AuthContextProvider = (props) => {
     }
     const storeUserDetails = async (id: number) => {
         const userDetails = await getUserDetails(id)
-        if(userDetails.image) {
-            const image = await api_.get(userDetails.image, {params: {size: "FULL"}})
-            const image_ = image.data
-            if(image_ !== undefined)
-                setUserImage(image_)
+        if(userDetails.image !== null && userDetails.image !== undefined) {
+            setUserImage(userDetails.image)
         }
 
         setUserDetails(userDetails)

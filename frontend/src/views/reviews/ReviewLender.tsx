@@ -65,7 +65,7 @@ export default function ReviewLender () {
     }, []);
 
     const handleBackClick = () => {
-        navigate(`/userBook/${data.book.assetInstanceNumber}?state=lended`)
+        navigate(`/userBook/${lendingNumber}?state=lended`)
     }
 
     return(

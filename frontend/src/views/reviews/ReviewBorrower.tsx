@@ -96,7 +96,7 @@ export default function ReviewBorrower () {
     }
 
     const handleBackClick = () => {
-        navigate(`/userBook/${data.book.assetInstanceNumber}?state=borrowed`)
+        navigate(`/userBook/${lendingNumber}?state=borrowed`)
     }
 
     return(

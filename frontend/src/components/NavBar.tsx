@@ -16,7 +16,7 @@ export default function NavBar() {
     const { t, i18n } = useTranslation();
     const {isLoggedIn, logout, userImage} = useContext(AuthContext)
     const [language, setLanguage] = useState('en');
-
+    console.log(userImage)
     const navigate = useNavigate()
     const location = useLocation()
     const showSearchBar = location.pathname !== '/discovery'
