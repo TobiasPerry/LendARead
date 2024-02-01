@@ -7,7 +7,9 @@ const useUserAssetInstance = (location, id) => {
 
     const queryParams = new URLSearchParams(location.search);
     const state = queryParams.get('state');
-    const [assetDetails, setAssetDetails] = useState({})
+    const [assetDetails, setAssetDetails] = useState({
+        title: ""
+    })
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
@@ -15,7 +17,9 @@ const useUserAssetInstance = (location, id) => {
 
     const checkIsOwner = async (user: string, lending: LendingApi, assetinstance: AssetInstanceApi) => {
         if(state === "lended") {
+            console.log("lending", lending)
             const user_: UserDetailsApi = (await api.get(lending.lenderUrl)).data
+            console.log("user_", user_)
             const isOwner = extractId(user_.selfUrl) === user
             setIsOwner(isOwner)
         } else if (state === "borrowed") {
@@ -37,13 +41,14 @@ const useUserAssetInstance = (location, id) => {
     const fetchUserAssetDetails = async () => {
         await setIsLoading(true)
         let assetinstace : any = {}
-        let lending: any = {}
+        let lending: any = null
 
         if(state === "lended" || state === "borrowed") {
-            const lending = (await api.get(`/lendings/${id}`)).data
-            assetinstace = (await api_.get(lending.assetInstance)).data
-            if(lending.state == "ACTIVE")
+            const lending_ = (await api.get(`/lendings/${id}`)).data
+            assetinstace = (await api_.get(lending_.assetInstance)).data
+            if(lending_.state == "ACTIVE")
                 setHasActiveLendings(true)
+            lending = lending_
         } else {
             assetinstace = (await api.get(`/assetInstances/${id}`)).data
         }
@@ -71,9 +76,9 @@ const useUserAssetInstance = (location, id) => {
         }
 
 
-        if(state === "lended" || state === "borrowed")
-            await setAssetDetails({...assetDetails_, lending: lending, lendingid: extractId(lending.selfUrl)})
-        else
+        if(state === "lended" || state === "borrowed") { // @ts-ignore
+                await setAssetDetails({...assetDetails_, lending: lending, lendingid: extractId(lending.selfUrl)})
+        } else
             await setAssetDetails(assetDetails_)
 
         await setIsLoading(false)

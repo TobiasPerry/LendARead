@@ -8,13 +8,8 @@ import useUserAssetInstance from "../../hooks/assetInstance/useUserAssetInstance
 import React, {useEffect} from "react";
 import MyBooksOptions from "../../components/userAssets/MyBooksOptions.tsx";
 import LendedBooksOptions from "../../components/userAssets/LendedBooksOptions.tsx";
-import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 import MyBookActiveLendings from "../../components/userAssets/MyBookActiveLendings.tsx";
-import {Helmet} from "react-helmet";
-import LoginView from "../user/LogIn.tsx";
-import Location from "../../components/locations/Location.tsx";
-import NotFound from "../NotFound.tsx";
-import NotAllowed from "../NotAllowed.tsx";
+import LoadingAccessWrapper from "../../components/LoadingAccessWrapper.tsx";
 
 const UserAssetInstance = () => {
 
@@ -47,57 +42,42 @@ const UserAssetInstance = () => {
 
 
     return (
-        <>
-            { isLoading ?
-                <LoadingAnimation/>
-                :
-                <>
-                    { !isOwner && !isLoading ?
-                        <NotAllowed/> :
-                        <>
-                            <Helmet>
-                                {/*@ts-ignore*/}
-                                <title>{assetDetails.title}</title>
-                            </Helmet>
-                            <div className="main-container" style={{padding: '2rem'}}>
-                                <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
-                                    <i className="fas fa-arrow-left mb-1"></i>
-                                    <h3 className="ms-3">
-                                        {state === "owned" ? t('my_books') : state === "lended" ? t('lended_books') : t('borrowed_books')}
-                                    </h3>
-                                </div>
-                                <div className="content-container"
-                                     style={{display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: '1rem'}}>
-                                    <BookDetails data={assetDetails}/>
-                                    <div className="loan-container"
-                                         style={{flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                                        <BookStatus
-                                            asset={assetDetails}
-                                            state={state}
-                                        />
-                                        {state === "owned" && <MyBooksOptions
-                                            asset={assetDetails}
-                                            haveActiveLendings={hasActiveLendings}
-                                            handleDelete={handleDelete}
-                                            fetchUserAssetDetails={fetchUserAssetDetails}
-                                        />}
-                                        {state === "lended" && <LendedBooksOptions
-                                            asset={assetDetails}
-                                            fetchUserAssetDetails={fetchUserAssetDetails}/>}
-                                        {state === "borrowed" && <BorrowedBookOptions
-                                            asset={assetDetails}
-                                            fetchUserAssetInstance={fetchUserAssetDetails}/> }
-                                    </div>
+        <LoadingAccessWrapper isLoading={isLoading} documentTitle={assetDetails.title} isOwner={isOwner}>
+            <div className="main-container" style={{padding: '2rem'}}>
+                <div className="d-flex back-click flex-row align-items-center m-3" onClick={handleBackClick}>
+                    <i className="fas fa-arrow-left mb-1"></i>
+                    <h3 className="ms-3">
+                        {state === "owned" ? t('my_books') : state === "lended" ? t('lended_books') : t('borrowed_books')}
+                    </h3>
+                </div>
+                <div className="content-container"
+                     style={{display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: '1rem'}}>
+                    <BookDetails data={assetDetails}/>
+                    <div className="loan-container"
+                         style={{flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                        <BookStatus
+                            asset={assetDetails}
+                            state={state}
+                        />
+                        {state === "owned" && <MyBooksOptions
+                            asset={assetDetails}
+                            haveActiveLendings={hasActiveLendings}
+                            handleDelete={handleDelete}
+                            fetchUserAssetDetails={fetchUserAssetDetails}
+                        />}
+                        {state === "lended" && <LendedBooksOptions
+                            asset={assetDetails}
+                            fetchUserAssetDetails={fetchUserAssetDetails}/>}
+                        {state === "borrowed" && <BorrowedBookOptions
+                            asset={assetDetails}
+                            fetchUserAssetInstance={fetchUserAssetDetails}/> }
+                    </div>
 
-                                </div>
-                                {state === "owned" && <MyBookActiveLendings
-                                    asset={assetDetails} /> }
-                            </div>
-                        </>
-                    }
-                </>
-            }
-        </>
+                </div>
+                {state === "owned" && <MyBookActiveLendings
+                    asset={assetDetails} /> }
+            </div>
+        </LoadingAccessWrapper>
     );
 };
 
