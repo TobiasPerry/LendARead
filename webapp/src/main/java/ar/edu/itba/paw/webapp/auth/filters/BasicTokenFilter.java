@@ -88,8 +88,8 @@ public class BasicTokenFilter extends OncePerRequestFilter {
                 );
             }
         User user = userService.getUser(username);
-        response.setHeader("X-JWT", jwtTokenUtil.generateJwtToken(authentication,getBaseUrl(request) + "/api/users/" + user.getId()));
-
+        response.setHeader("X-JWT", jwtTokenUtil.generateJwtToken(authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
+        response.setHeader("X-Refresh-Token", jwtTokenUtil.generateRefreshToken( authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         }catch (Exception e){
@@ -99,9 +99,7 @@ public class BasicTokenFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-    public String getBaseUrl(HttpServletRequest request){
-        return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
-    }
+
     private boolean isTokenReset(String email,String posiblePassword) throws UserNotFoundException {
         User user = userService.getUser(email);
         String token = userService.getUserResetPasswordToken(email);

@@ -21,19 +21,14 @@ public class LendingDTO {
     private String lenderUrl;
 
     private String lendDate;
-
     private String devolutionDate;
-
     private List<String> userReviews;
-
     private String assetInstanceReview;
-
     private String state;
-
     private String borrowerReviewUrl;
     private String lenderReviewUrl;
-
     private String selfUrl;
+    private Long id;
     public static LendingDTO fromLending(Lending lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();
         dto.assetInstance = AssetsInstancesDTO.reference(url, lending.getAssetInstance());
@@ -54,6 +49,7 @@ public class LendingDTO {
             dto.assetInstanceReview = AssetInstanceReviewDTO.reference(url, lending.getAssetInstanceReview());
         else dto.assetInstanceReview = null;
         dto.selfUrl = reference(url, lending);
+        dto.id = lending.getId();
         return dto;
     }
     public static List<LendingDTO> fromLendings(List<Lending> lendings, UriInfo url) {

@@ -21,6 +21,7 @@ public class LocationDTO {
     private String userReference;
     private String status;
     private String selfUrl;
+    private Integer id;
 
     public static LocationDTO fromLocation(UriInfo url, Location location) {
         LocationDTO dto = new LocationDTO();
@@ -32,6 +33,7 @@ public class LocationDTO {
         dto.country = location.getCountry();
         dto.userReference = UserDTO.reference(url, location.getUser());
         dto.selfUrl = reference(url, location);
+        dto.id = location.getId();
         return dto;
     }
     public static String reference(UriInfo url, Location location) {
