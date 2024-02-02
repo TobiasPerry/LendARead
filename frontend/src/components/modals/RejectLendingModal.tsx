@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import '../styles/LocationsModal.css';
 import {isPrivate, isPublic} from "../userAssets/LendedBooksOptions.tsx";
 
 function RejectLendingModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {

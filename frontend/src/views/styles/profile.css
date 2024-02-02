@@ -52,6 +52,43 @@ p {
     object-fit: cover;
     border-radius: 50%;
 }
+.icon-tick, .icon-cross {
+    position: absolute;
+    top: 50%;
+    cursor: pointer;
+    /* Add more styles as needed */
+}
+
+.icon-tick {
+    left: 100%; /* Position to the right of the camera icon */
+    transform: translateY(-50%);
+}
+
+.icon-cross {
+    right: 100%; /* Position to the left of the camera icon */
+    transform: translateY(-50%) scaleX(-1); /* Mirror the icon */
+}
+
+.user-change-picture-container2 {
+    position: absolute;
+    background: #2B3B2B;
+    padding: min(2vh, 2vw);
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px black;
+    cursor: pointer;
+}
+
+.discard-image{
+    transform: translateX(-150px);
+    background: #dc3b4b !important;
+}
+
 
 .user-change-picture-container {
     position: absolute;
@@ -69,7 +106,7 @@ p {
 }
 
 .user-change-picture-container:hover {
-    filter: brightness(150%);
+    filter: brightness(120%);
 }
 
 .user-change-picture-container > i {

@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next';
+import '../styles/LocationsModal.css';
+
 
 function ConfirmReturnModal({ asset, showModal, handleCloseModal, handleSubmitModal }) {
     const { t } = useTranslation();

@@ -38,7 +38,9 @@
   "userProfile": {
     "lender": "Lender ",
     "borrower": "Borrower ",
-    "my_locations": "My Locations"
+    "my_locations": "My Locations",
+    "lender_reviews": "Lender Reviews",
+    "borrower_reviews": "Borrower Reviews"
   },
 "auth": {
     "login": "Login",

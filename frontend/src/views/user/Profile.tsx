@@ -1,6 +1,5 @@
 import {useContext, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
-import ProfileReviewCard from "../../components/reviews/ProfileReviewCard";
 import "../../index.css";
 import "../styles/profile.css"
 import "../styles/addAsset.css"
@@ -8,13 +7,24 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import useReviews, {ReviewApi} from "../../hooks/reviews/useReviews.ts";
 import UserProfile from "../../components/userDetails/UserProfile.tsx";
 import UserProfileTabs from "../../components/userDetails/UserProfileTabs.tsx";
+import UserReviews from "../../components/reviews/UserReviews.tsx";
 
 const ProfileView = ({isCurrentUser, id}) => {
 
     const { t } = useTranslation();
     const {userImage, userDetails, user} = useContext(AuthContext)
     const [selectedTab, setSelectedTab] = useState("lender_reviews")
-    const {lenderReviews, borrowerReviews, fetchReviews} = useReviews()
+    const {
+        lenderReviews,
+        borrowerReviews,
+        currentPageLenderReviews,
+        currentPageBorrowerReviews,
+        totalPagesLenderReviews,
+        totalPagesBorrowerReviews,
+        changePageLenderReviews,
+        changePageBorrowerReviews,
+        fetchReviews
+    } = useReviews()
 
     useEffect(() => {
         fetchReviews().then()
@@ -32,15 +42,19 @@ const ProfileView = ({isCurrentUser, id}) => {
                     </div>
                     <div className="tab-content" >
                         {selectedTab === "lender_reviews" &&
-                            (lenderReviews.length > 0
-                                ? lenderReviews.map((review: ReviewApi) => <ProfileReviewCard review={review} user={user} userName={userDetails.userName}/>)
-                                : <p>No Lender reviews yet</p>
-                        )}
+                          <UserReviews
+                              reviews={lenderReviews}
+                              changePage={changePageLenderReviews}
+                              currentPage={currentPageLenderReviews}
+                              totalPages={totalPagesLenderReviews}/>
+                        }
                         {selectedTab === "borrower_reviews" &&
-                            (borrowerReviews.length > 0
-                                ? borrowerReviews.map((review: ReviewApi) => <ProfileReviewCard review={review} user={user} userName={userDetails.userName}/>)
-                                : <p>No Borrower reviews yet</p>
-                        )}
+                            <UserReviews
+                                reviews={borrowerReviews}
+                                changePage={changePageBorrowerReviews}
+                                currentPage={currentPageBorrowerReviews}
+                                totalPages={totalPagesBorrowerReviews}/>
+                        }
                     </div>
                 </div>
             </div>

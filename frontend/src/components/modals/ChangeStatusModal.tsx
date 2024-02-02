@@ -1,4 +1,5 @@
 import  { useState } from 'react';
+import '../styles/LocationsModal.css';
 import { useTranslation } from 'react-i18next';
 import {isPrivate, isPublic} from "../userAssets/LendedBooksOptions.tsx";
 
