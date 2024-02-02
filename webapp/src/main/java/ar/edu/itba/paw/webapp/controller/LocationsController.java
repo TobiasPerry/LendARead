@@ -55,7 +55,9 @@ public class LocationsController {
             @QueryParam("userId") @NotNull(message = "{userid.notNull}") final Integer userId
     ) {
         final PagingImpl<Location> locations = ls.getLocations(userId, page, itemsPerPage);
-
+        if (locations.getTotalPages() == 0 || locations.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         LOGGER.info("GET location/ userId:{}",userId);
         List<LocationDTO> locationDTOS = LocationDTO.fromLocations(locations.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LocationDTO>>(locationDTOS) {});

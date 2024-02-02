@@ -53,6 +53,9 @@ public class LendingsController {
     @PreAuthorize("@preAuthorizeFunctions.canListLendings(#lendingGetForm.lenderId,#lendingGetForm.borrowerId)")
     public Response getLendings(@Valid @BeanParam LendingGetForm lendingGetForm) {
         PagingImpl<Lending> paging = aas.getPagingActiveLendings(lendingGetForm.getPage(), lendingGetForm.getItemsPerPage(), lendingGetForm.getAssetInstanceId(), lendingGetForm.getBorrowerId(), lendingGetForm.getState(), lendingGetForm.getLenderId(), lendingGetForm.getSort(), lendingGetForm.getSortDirection(), lendingGetForm.getStartingBefore(), lendingGetForm.getStartingAfter(), lendingGetForm.getEndBefore(), lendingGetForm.getEndAfter());
+        if (paging.getTotalPages() == 0 || paging.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         List<LendingDTO> lendingDTOS = LendingDTO.fromLendings(paging.getList(), uriInfo);
         LOGGER.info("GET lendings/ lenderId:{} borrowerId:{} assetInstanceId:{} state:{}",lendingGetForm.getLenderId(),lendingGetForm.getBorrowerId(),lendingGetForm.getAssetInstanceId(),lendingGetForm.getState());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LendingDTO>>(lendingDTOS) {});

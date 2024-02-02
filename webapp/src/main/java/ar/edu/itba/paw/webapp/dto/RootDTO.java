@@ -1,11 +1,17 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.webapp.form.AssetInstanceGetForm;
+import ar.edu.itba.paw.webapp.form.AssetsGetForm;
+import ar.edu.itba.paw.webapp.form.LendingGetForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.ws.rs.core.UriInfo;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -32,23 +38,27 @@ public class RootDTO {
 
     public static RootDTO fromRoot(UriInfo uriInfo) {
         RootDTO rootDTO = new RootDTO();
+        String lendingParams = Arrays.stream(LendingGetForm.class.getDeclaredFields()).map(Field::getName).collect(Collectors.joining(","));
+        String assetParams = Arrays.stream(AssetsGetForm.class.getDeclaredFields()).map(Field::getName).collect(Collectors.joining(","));
+        String assetInstanceParams = Arrays.stream(AssetInstanceGetForm.class.getDeclaredFields()).map(Field::getName).collect(Collectors.joining(","));
+        String paginationParams = "page,itemsPerPage";
         UriComponentsBuilder builder = UriComponentsBuilder.fromUri(uriInfo.getBaseUriBuilder().build());
         rootDTO.api_url = uriInfo.getBaseUriBuilder().build().toString();
         rootDTO.asset_url = builder.cloneBuilder().path(EndpointsUrl.Assets_URL).path("{id}").build().toString();
-        rootDTO.assets_url = builder.cloneBuilder().path(EndpointsUrl.Assets_URL).path("{?page,itemsPerPage,isbn,author,title,language}").build().toString();
+        rootDTO.assets_url = builder.cloneBuilder().path(EndpointsUrl.Assets_URL).path("{?"+assetParams+"}").build().toString();
         rootDTO.asset_instances_url = builder.cloneBuilder().path(EndpointsUrl.AssetInstances_URL).path("{/id}").build().toString();
-        rootDTO.assets_instances_url = builder.cloneBuilder().path(EndpointsUrl.AssetInstances_URL).path("{?page,itemsPerPage,search,physicalCondition,status,languages,sort,sortDirection,minRating,maxRating,userId}").build().toString();
+        rootDTO.assets_instances_url = builder.cloneBuilder().path(EndpointsUrl.AssetInstances_URL).path("{?"+assetInstanceParams+"}").build().toString();
         rootDTO.asset_instance_review_url = builder.cloneBuilder().path(EndpointsUrl.AssetInstances_URL).path("{id}/reviews/{/idReview}").build().toString();
-        rootDTO.asset_instance_reviews_url = builder.cloneBuilder().path(EndpointsUrl.AssetInstances_URL).path("{id}/reviews").path("{?page,itemsPerPage}").build().toString();
+        rootDTO.asset_instance_reviews_url = builder.cloneBuilder().path(EndpointsUrl.AssetInstances_URL).path("{id}/reviews").path("{?"+paginationParams+"}").build().toString();
         rootDTO.lending_url = builder.cloneBuilder().path(EndpointsUrl.Lendings_URL).path("{/id}").build().toString();
-        rootDTO.lendings_url = builder.cloneBuilder().path(EndpointsUrl.Lendings_URL).path("{?page,itemsPerPage,sort,sortDirection,lenderId,borrowerId,assetInstanceId,state}").build().toString();
+        rootDTO.lendings_url = builder.cloneBuilder().path(EndpointsUrl.Lendings_URL).path("{?"+lendingParams+"}").build().toString();
         rootDTO.location_url = builder.cloneBuilder().path(EndpointsUrl.Locations_URL).path("{/id}").build().toString();
-        rootDTO.locations_url = builder.cloneBuilder().path(EndpointsUrl.Locations_URL).path("{?page,itemsPerPage,userId}").build().toString();
+        rootDTO.locations_url = builder.cloneBuilder().path(EndpointsUrl.Locations_URL).path("{?"+paginationParams+",userId}").build().toString();
         rootDTO.users_url = builder.cloneBuilder().path(EndpointsUrl.Users_URL).path("{/id}").build().toString();
-        rootDTO.users_lender_reviews_url = builder.cloneBuilder().path(EndpointsUrl.Users_URL).path("{id}/lender_reviews").path("{?page,itemsPerPage}").build().toString();
-        rootDTO.users_borrower_reviews_url = builder.cloneBuilder().path(EndpointsUrl.Users_URL).path("{id}/borrower_reviews").path("{?page,itemsPerPage}").build().toString();
+        rootDTO.users_lender_reviews_url = builder.cloneBuilder().path(EndpointsUrl.Users_URL).path("{id}/lender_reviews").path("{?"+paginationParams+"}").build().toString();
+        rootDTO.users_borrower_reviews_url = builder.cloneBuilder().path(EndpointsUrl.Users_URL).path("{id}/borrower_reviews").path("{?"+paginationParams+"}").build().toString();
         rootDTO.language_url = builder.cloneBuilder().path(EndpointsUrl.Languages_URL).path("{/code}").build().toString();
-        rootDTO.languages_url = builder.cloneBuilder().path(EndpointsUrl.Languages_URL).path("{?page,itemsPerPage,isUsed}").build().toString();
+        rootDTO.languages_url = builder.cloneBuilder().path(EndpointsUrl.Languages_URL).path("{?"+paginationParams+",userId}").build().toString();
         return rootDTO;
     }
 

@@ -38,6 +38,9 @@ public class LanguagesController {
                                            final @QueryParam("isUsed") Boolean isUsed
                                            ) {
         AbstractPage<Language> languages = ls.getLanguages(page, pageSize, isUsed);
+        if (languages.getTotalPages() == 0 || languages.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         List<LanguagesDTO> languagesDTOS = LanguagesDTO.fromLanguages(languages.getList());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {});
         PaginatedData.paginatedData(response, languages, uriInfo);
