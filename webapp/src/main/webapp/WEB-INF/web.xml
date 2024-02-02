@@ -62,6 +62,10 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <filter-name>StaticCacheFilter</filter-name>
     <url-pattern>/static/*</url-pattern>
   </filter-mapping>
+  <filter-mapping>
+    <filter-name>StaticCacheFilter</filter-name>
+    <url-pattern>/assets/*</url-pattern>
+  </filter-mapping>
 
 
   <filter>
