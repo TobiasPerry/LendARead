@@ -98,14 +98,14 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
         <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle" >
             <div className="modal-dialog" role="document" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-content">
-                    <div className="modal-header-centered mb-4">
+                    <div className="modal-header-centered mb-2">
                         <div className="icon-box">
                             <i className="fas fa-book-reader"/>
                         </div>
-                        <h3 className="modal-title mt-3" id="modal-title">
+                        <h5 className="modal-title mt-3" id="modal-title">
                             {t('addAsset.newLender.title')}
-                        </h3>
-                        <p className="d-flex justify-content-center">{t('addAsset.newLender.subtitle')}</p>
+                        </h5>
+                        <small className="d-flex justify-content-center">{t('addAsset.newLender.subtitle')}</small>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
