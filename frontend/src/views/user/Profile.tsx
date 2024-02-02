@@ -8,12 +8,16 @@ import useReviews, {ReviewApi} from "../../hooks/reviews/useReviews.ts";
 import UserProfile from "../../components/userDetails/UserProfile.tsx";
 import UserProfileTabs from "../../components/userDetails/UserProfileTabs.tsx";
 import UserReviews from "../../components/reviews/UserReviews.tsx";
+import {useParams} from "react-router-dom";
 
-const ProfileView = ({isCurrentUser, id}) => {
+const ProfileView = () => {
 
+    const {id} = useParams()
     const { t } = useTranslation();
     const {userImage, userDetails, user} = useContext(AuthContext)
     const [selectedTab, setSelectedTab] = useState("lender_reviews")
+    const [isCurrentUser, setIsCurrentUser] = useState(false)
+
     const {
         lenderReviews,
         borrowerReviews,
@@ -27,8 +31,9 @@ const ProfileView = ({isCurrentUser, id}) => {
     } = useReviews()
 
     useEffect(() => {
-        fetchReviews().then()
-    }, [id])
+        setIsCurrentUser(user !== undefined && id !== undefined && id === user)
+        fetchReviews(user).then()
+    }, [id, user])
 
 
     return (
