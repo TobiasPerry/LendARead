@@ -5,6 +5,7 @@ import "../styles/myBookActiveLendings.css";
 import Pagination from "../Pagination.tsx";
 import {useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
+import {extractDate} from "../../hooks/api/types.ts";
 
 const MyBookActiveLendings = ({ asset }) => {
     const navigate = useNavigate();
@@ -38,8 +39,8 @@ const MyBookActiveLendings = ({ asset }) => {
                     </div>
                     <div className="d-flex flex-row lending-dates">
                         <div className="user-name">{lending.state}</div>
-                        <div className="start-date">{t('from')} {lending.startDate}</div>
-                        <div className="end-date">{t('until')} {lending.endDate}</div>
+                        <div className="start-date">{t('from')} {t('date', extractDate(lending.startDate))} </div>
+                        <div className="end-date">{t('until')} {t('date', extractDate(lending.endDate))}</div>
                     </div>
                 </div>
             ))}

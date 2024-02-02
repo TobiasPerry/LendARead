@@ -11,7 +11,8 @@ import useUserAssetInstances from "../../hooks/assetInstance/useUserAssetInstanc
 import LoadingAnimation from "../LoadingAnimation.tsx";
 import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
 import Pagination from "../Pagination.tsx";
-import LoadingWrapper from "../LoadingWrapper.tsx"; // Path to your custom hook
+import LoadingWrapper from "../LoadingWrapper.tsx";
+import {extractDate} from "../../hooks/api/types.ts"; // Path to your custom hook
 
 const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { t } = useTranslation();
@@ -119,8 +120,8 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                                 <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
                             </td>
                                 <td>{book.title}</td>
-                                <td>{book.start_date}</td>
-                                <td>{book.return_date}</td>
+                                <td>{t('date', extractDate(book.start_date))}</td>
+                                <td>{t('date', extractDate(book.return_date))}</td>
                                 <td>{book.user}</td>
                                 <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
                             </tr>
