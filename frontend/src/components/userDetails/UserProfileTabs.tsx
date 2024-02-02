@@ -12,7 +12,7 @@ const UserProfileTabs = ({selectedTab, setSelectedTab}) => {
                     type="button"
                     role="tab"
                     onClick={(_) => setSelectedTab("lender_reviews")}
-                    aria-selected={selectedTab === "lender_reviews"}>{t("userProfile.lender_reviews")}</button>
+                    style={{fontWeight: selectedTab === "lender_reviews" ? "bold": "normal"}}>{t("userProfile.lender_reviews")}</button>
             </li>
             <li className="nav-item" role="presentation">
                 <button
@@ -20,7 +20,7 @@ const UserProfileTabs = ({selectedTab, setSelectedTab}) => {
                     type="button"
                     role="tab"
                     onClick={(_) => setSelectedTab("borrower_reviews")}
-                    aria-selected={selectedTab === "borrower_reviews"}>{t("userProfile.borrower_reviews")}</button>
+                    style={{fontWeight: selectedTab === "borrower_reviews" ? "bold": "normal"}}>{t("userProfile.borrower_reviews")}</button>
             </li>
         </ul>
     )
