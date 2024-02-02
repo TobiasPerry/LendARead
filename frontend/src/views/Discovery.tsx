@@ -7,6 +7,7 @@ import "./styles/discovery.css"
 import Spinner from "../components/Spinner.tsx";
 import Pagination from "../components/Pagination.tsx";
 import {Helmet} from "react-helmet";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export const SORT_TYPES = {
     AUTHOR: "AUTHOR_NAME",
@@ -51,15 +52,18 @@ const DiscoveryView =  () => {
     // Read the query params sent form other views (like view asset)
     const searchParams = new URLSearchParams(window.location.search)
     const searchParam = searchParams.get('search')
-    const languageParam = searchParams.get('language')
-    const physicalConditionParam = searchParams.get('physicalCondition')
+    const languageParams = searchParams.getAll('language')
+    const physicalConditionParams = searchParams.getAll('physicalCondition')
+    const minRatingParam = searchParams.get('minRating')
+    const sortParam = searchParams.get('sortBy')
+    const sortDirectionParam = searchParams.get('sortDirection')
 
     // Filters and sorting
-    const [sort, setSort] = useState(SORT_TYPES.RECENT);
-    const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DES);
-    const [physicalConditions_filters, setPhysicalConditions_filters] = useState((physicalConditionParam !== null && physicalConditionParam !== undefined) ? [physicalConditionParam] : [])
-    const [languages_filters, setLanguages_filters] = useState((languageParam !== null && languageParam !== undefined) ? [languageParam] : [])
-    const [minRating, setMinRating] = useState(1)
+    const [sort, setSort] = useState((sortParam !== null && sortParam !== undefined) ? sortParam : SORT_TYPES.RECENT);
+    const [sortDirection, setSortDirection] = useState((sortDirectionParam !== null && sortDirectionParam !== undefined) ? sortDirectionParam : SORT_DIRECTIONS.DES);
+    const [physicalConditions_filters, setPhysicalConditions_filters] = useState((physicalConditionParams !== null && physicalConditionParams !== undefined) ? physicalConditionParams : [])
+    const [languages_filters, setLanguages_filters] = useState((languageParams !== null && languageParams !== undefined) ? languageParams : [])
+    const [minRating, setMinRating] = useState((minRatingParam !== null && minRatingParam !== undefined) ? parseInt(minRatingParam, 10): 1)
     const [search, setSearch] = useState((searchParam !== null && searchParam !== undefined) ? searchParam : "");
     const [inputValue, setInputValue] = useState(search);
 
@@ -106,12 +110,25 @@ const DiscoveryView =  () => {
     const changePage = (page: number) => {
         setCurrentPage(page)
     }
-    // const previousPage = () => {
-    //     currentPage > 1 ? setCurrentPage(currentPage - 1) : {}
-    // }
-    // const nextPage = () => {
-    //     setCurrentPage(currentPage + 1)
-    // }
+
+    const location = useLocation()
+    const navigate = useNavigate()
+    const updateQueryParams = () => {
+
+        const newSearch = new URLSearchParams()
+        languages_filters.forEach((l) => {newSearch.append('language', l)})
+        physicalConditions_filters.forEach((p) => {newSearch.append('physicalCondition', p)})
+        newSearch.set('minRating', minRating.toString())
+        newSearch.set('sortBy', sort)
+        newSearch.set('sortDirection', sortDirection)
+        if(search !== "") newSearch.set('search', search)
+
+        navigate({
+            ...location,
+            search: newSearch.toString(),
+        });
+    }
+
     const clearSearch = () => {
         setSearch("");
         setInputValue("");
@@ -148,7 +165,9 @@ const DiscoveryView =  () => {
     // When search and filters change
 
     useEffect(()=>{
+
         fetchData().then();
+        updateQueryParams()
     }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating])
 
     // When the page loads
