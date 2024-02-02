@@ -60,7 +60,7 @@ const useLendings = () => {
                 endDate: lending.devolutionDate,
                 userName: user.userName,
                 userImage: image,
-                id: extractId(lending.selfUrl),
+                id: lending.id,
                 state: lending.state
             }
         })

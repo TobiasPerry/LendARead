@@ -3,6 +3,7 @@ import {isActive, isDelivered} from "../../components/userAssets/LendedBooksOpti
 import {LendingApi} from "./useUserAssetInstances";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../contexts/authContext";
+import types from "../api/types.ts";
 
 const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
 
@@ -31,7 +32,7 @@ const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
         await api_.patch(url, {state: state},
             {
                 headers: {
-                    "Content-type": "application/vnd.assetInstanceLendingState.v1+json"
+                    "Content-type": types.VND_ASSET_INSTANCE_LENDING_STATE
                 }
             })
         await fetchUserAssetInstance()

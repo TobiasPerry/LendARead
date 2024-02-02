@@ -16,7 +16,8 @@ const UserReviews = ({reviews,changePage, currentPage, totalPages}) => {
         image: "",
         reviewerDetails: {
             image: ""
-        }
+        },
+        reviewerId: ""
     })
 
     const handleClickedReview = async (review) => {

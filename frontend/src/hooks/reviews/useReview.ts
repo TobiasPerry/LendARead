@@ -1,5 +1,6 @@
 import {api, api_} from "../api/api.ts";
 import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
+import types from "../api/types.ts";
 
 export interface body_review {
     review,
@@ -173,10 +174,8 @@ const useReview = () => {
             const data_lender = await api_.get(body_assetInstance.userReference)
             const body_lender = data_lender.data
 
-            const tmp_assetInstance = body_assetInstance.selfUrl.match(/\/(\d+)$/);
-            const num_assetInstance = tmp_assetInstance ? parseInt(tmp_assetInstance[1], 10) : null
-            const tmp_lender = body_lender.selfUrl.match(/\/(\d+)$/);
-            const num_lender = tmp_lender ? parseInt(tmp_lender[1], 10) : null
+            const num_assetInstance =  body_assetInstance.id
+            const num_lender = body_lender.id
 
 
             return {
@@ -218,7 +217,7 @@ const useReview = () => {
                 body_userReview,
                 {
                     headers: {
-                        'Content-Type': 'application/vnd.userLenderReview.v1+json'
+                        'Content-Type': types.VND_USER_LENDER_REVIEW
                     }
                 }
             );
@@ -227,7 +226,7 @@ const useReview = () => {
                 body_assetInstance,
                 {
                     headers: {
-                        'Content-Type': 'application/vnd.assetInstanceReview.v1+json'
+                        'Content-Type': types.VND_ASSET_INSTANCE_REVIEW
                     }
                 }
             );
@@ -248,7 +247,7 @@ const useReview = () => {
                 body_userReview,
                 {
                     headers: {
-                        'Content-Type': 'application/vnd.userBorrowerReview.v1+json'
+                        'Content-Type': types.VND_USER_BORROWER_REVIEW
                     }
                 }
             )

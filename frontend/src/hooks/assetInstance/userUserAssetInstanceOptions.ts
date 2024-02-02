@@ -1,12 +1,13 @@
 import {api} from "../api/api.ts";
 import {extractId} from "./useUserAssetInstances.ts";
+import types from "../api/types.ts";
 
 const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
     const editAssetVisbility = async (asset: any) => {
         await api.patch(asset.assetinstance.selfUrl, { status:  asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
             {
-                headers: {"Content-type": "application/vnd.assetInstance.v1+json"}
+                headers: {"Content-type": types.VND_ASSET_INSTANCE}
             })
         await fetchUserAssetDetails()
     }
@@ -15,7 +16,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
         await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
             {
-                headers: {"Content-type": "application/vnd.assetInstance.v1+json"
+                headers: {"Content-type": types.VND_ASSET_INSTANCE
                 }
             })
 
@@ -46,7 +47,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
         await api.patch(originalAsset.assetinstance.selfUrl, data,
             {
                 headers: {
-                    "Content-type": "application/vnd.assetInstance.v1+json"
+                    "Content-type": types.VND_ASSET_INSTANCE
                 }
             })
         await fetchUserAssetDetails()

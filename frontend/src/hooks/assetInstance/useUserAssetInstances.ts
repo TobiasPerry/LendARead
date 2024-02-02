@@ -36,6 +36,7 @@ export interface LendingApi {
     lenderUrl: string,
     borrowerUrl: string
     userReviews: Array<any>
+    id:number
 }
 
 export interface AssetInstanceApi {
@@ -148,7 +149,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
                    return_date: lending.devolutionDate,
                    user: user.userName,
                    physicalCondition: assetinstance.physicalCondition,
-                   id: extractId(lending.selfUrl),
+                   id: lending.id,
                    lendingStatus: lending.state
                };
            } catch (error) {
@@ -193,25 +194,36 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
 
         setTotalPages(extractTotalPages(assetinstances.headers["link"]))
 
-        const booksRetrieved = []
-        for (const assetinstance of assetinstances.data) {
-            const assetResponse = await api_.get(assetinstance.assetReference)
-            const asset: AssetApi = assetResponse.data
+        try {
+            const booksRetrieved = await Promise.all(assetinstances.data.map(async (assetinstance) => {
 
-            const languageResponse = await api_.get(asset.language)
-            const lang = languageResponse.data
-            booksRetrieved.push({
-                title: asset.title,
-                author: asset.author,
-                language: lang.name,
-                state: assetinstance.status,
-                physicalCondition: assetinstance.physicalCondition,
-                imageUrl: assetinstance.imageReference,
-                id: extractId(assetinstance.selfUrl)
-            })
+                const [assetResponse] = await Promise.all([
+                    api_.get(assetinstance.assetReference),
+                ]);
+                const languageResponse = await api_.get(assetResponse.data.language);
+
+
+                const asset: AssetApi = assetResponse.data;
+                const lang = languageResponse.data;
+
+                return {
+                    title: asset.title,
+                    author: asset.author,
+                    language: lang.name,
+                    state: assetinstance.status,
+                    physicalCondition: assetinstance.physicalCondition,
+                    imageUrl: assetinstance.imageReference,
+                    id: assetinstance.id
+                };
+            }));
+
+            return booksRetrieved;
+        } catch (error) {
+            console.error("Error:", error);
+            return null;
         }
 
-        return booksRetrieved
+
     };
 
     const changePageMyBooks = async (newPage: number) => {
