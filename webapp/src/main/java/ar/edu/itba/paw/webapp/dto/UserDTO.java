@@ -19,6 +19,7 @@ public class UserDTO {
     private float ratingAsLender;
     private float ratingAsBorrower;
     private String selfUrl;
+    private Integer id;
     public static UserDTO fromUser(UriInfo url, User user) {
         UserDTO dto = new UserDTO();
         dto.userName = user.getName();
@@ -30,6 +31,7 @@ public class UserDTO {
         dto.selfUrl = reference(url, user);
         if (user.getProfilePhoto() != null)
             dto.image = url.getBaseUriBuilder().path(EndpointsUrl.IMAGE_URL).path(String.valueOf(user.getProfilePhoto().getId())).build().toString();
+        dto.id = user.getId();
         return dto;
     }
     public static String reference(UriInfo url, User user) {

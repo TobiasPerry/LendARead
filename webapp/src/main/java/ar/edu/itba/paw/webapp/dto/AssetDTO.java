@@ -16,7 +16,7 @@ public class AssetDTO {
     private String title;
     private String language;
     private String selfUrl;
-
+    private Long id;
 
     public static AssetDTO fromAsset(UriInfo url, Asset asset) {
         AssetDTO assetDTO = new AssetDTO();
@@ -25,6 +25,7 @@ public class AssetDTO {
         assetDTO.title = asset.getName();
         assetDTO.language = LanguagesDTO.reference(url,asset.getLanguage());
         assetDTO.selfUrl = reference(url, asset);
+        assetDTO.id = asset.getId();
         return assetDTO;
     }
     public static String reference(UriInfo url, Asset asset) {

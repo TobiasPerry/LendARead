@@ -17,6 +17,7 @@ public class UserReviewsDTO {
       private String reviewer;
       private String lending ;
       private String selfUrl;
+      private Long id;
 
       public static UserReviewsDTO fromUserReview(UserReview userReview, UriInfo url) {
             UserReviewsDTO dto = new UserReviewsDTO();
@@ -25,6 +26,7 @@ public class UserReviewsDTO {
             dto.reviewer = UserDTO.reference(url, userReview.getReviewer());
             dto.lending = LendingDTO.reference(url, userReview.getLending());
             dto.selfUrl = reference(url, userReview);
+            dto.id = userReview.getId();
             return dto;
       }
       public static List<UserReviewsDTO> fromUserReviewsList(List<UserReview> userReviews, UriInfo uriInfo) {

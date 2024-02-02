@@ -17,7 +17,7 @@ public class AssetInstanceReviewDTO {
         private String lendingReference;
         private String reviewer;
         private String selfUrl;
-
+        private Long id;
         public static AssetInstanceReviewDTO fromAssetInstanceReview(final AssetInstanceReview review, final UriInfo uriInfo) {
             final AssetInstanceReviewDTO dto = new AssetInstanceReviewDTO();
             dto.setRating(review.getRating());
@@ -25,6 +25,7 @@ public class AssetInstanceReviewDTO {
             dto.setLendingReference(LendingDTO.reference(uriInfo,review.getLending()));
             dto.setReviewer(UserDTO.reference(uriInfo,review.getReviewer()));
             dto.setSelfUrl(reference(uriInfo,review));
+            dto.setId(review.getId());
             return dto;
         }
         public static List<AssetInstanceReviewDTO> fromAssetInstanceReviews(final List<AssetInstanceReview> reviews, final UriInfo uriInfo) {
