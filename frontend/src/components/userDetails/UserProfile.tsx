@@ -9,20 +9,21 @@ const UserProfile = ({ isCurrentUser }) => {
     const {userDetails, userImage, uploadUserImage} = useContext(AuthContext);
     const fileInputRef = useRef(null);
 
-    const [userImage_, setUserImage_] = useState(""); // existing user image
     const [tempImage, setTempImage] = useState(""); // temporary image for preview
+    const [storeImage, setStoreImage] = useState(null); // temporary image for preview
     const [showConfirmation, setShowConfirmation] = useState(false); // to show/hide tick and cross icons
 
     const handleUploadImage = async (e) => {
         if (!e.target.files || !e.target.files[0]) return;
 
         const file = e.target.files[0];
+        setStoreImage(file)
         const reader = new FileReader();
 
         reader.onloadend = () => {
             // @ts-ignore
             setTempImage(reader.result);
-            setShowConfirmation(true); // Show the tick and cross icons
+            setShowConfirmation(true);
         };
 
         reader.readAsDataURL(file);
@@ -31,7 +32,11 @@ const UserProfile = ({ isCurrentUser }) => {
     const handleSave = async () => {
         // Here, implement the logic to save the image
         // For now, we're just updating the userImage state
-        setUserImage_(tempImage);
+        try {
+            const res = await uploadUserImage(storeImage);
+        } catch (e) {
+
+        }
         setShowConfirmation(false);
     };
 
@@ -48,7 +53,7 @@ const UserProfile = ({ isCurrentUser }) => {
         <div>
             <div className="position-relative">
                 <div className="user-profile-cell">
-                    <img className="user-profile-picture" src={tempImage || userImage_} alt="user profile" />
+                    <img className="user-profile-picture" src={tempImage || userImage} alt="user profile" />
                     {isCurrentUser && (
                         <div>
                             {!showConfirmation &&

@@ -136,7 +136,7 @@ const AuthContextProvider = (props) => {
         try {
             const response: any = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
             const imageId = extractId(response.headers.get("Location"))
-            const userResponse = await api.patch(`/users/${user}`, {image: imageId}, {headers: {"Content-type": Vnd.VND_USER}})
+            const userResponse = await api.patch(`/users/${user}`, {imageId: imageId}, {headers: {"Content-type": Vnd.VND_USER}})
         } catch (e) {
             
         }
