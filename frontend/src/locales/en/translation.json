@@ -409,7 +409,8 @@
     },
     "newLender": {
         "title": "Do you want to start lending books?",
-        "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books"
+        "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books",
+      "cancel": "I do not want to be a lender"
     },
     "location": {
         "detail": "Location",

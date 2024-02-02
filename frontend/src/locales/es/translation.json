@@ -338,7 +338,8 @@
     },
     "newLender": {
         "title": "¿Quieres empezar a prestar libros?",
-        "subtitle": "A partir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos. Para eso es necesario que agregues la ubicacion predeterminada para tus libros"
+        "subtitle": "A partir de ahora podras prestar libros y dentro de tu perfil podras ver tus libros y modificarlos. Para eso es necesario que agregues la ubicacion predeterminada para tus libros",
+        "cancel": "No quiero prestar libros"
     },
     "location": {
         "detail": "Ubicación",

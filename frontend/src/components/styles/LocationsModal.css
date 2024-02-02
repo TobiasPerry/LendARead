@@ -102,6 +102,17 @@ label {
     display: block;
 }
 
+.cancel-button {
+    background-color: #D45235;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    margin: 5px auto;
+    display: block;
+}
+
 .icon-box {
     color: #fff;
     position: absolute;

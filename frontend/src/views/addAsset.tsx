@@ -42,7 +42,7 @@ const AddAsset = () => {
         [31, t('addAsset.duration.months')]
     ]
 
-    const {user}  = useContext(AuthContext);
+    const {user, userDetails}  = useContext(AuthContext);
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<LanguagesDTO>([])
     const [showLocModal, setShowLocModal] = useState(false);
@@ -70,9 +70,21 @@ const AddAsset = () => {
     const handleLocationSave = async (newLocation: any) => {
         setShowLocModal(false);
         // First, make the user lender
-        // api.patch('/users/' + user.id, {isLender: true})
+        const resChangeRole = await api.patch(`/users/${user}`, {"role": "LENDER"}, {headers: {"Content-Type": "application/vnd.user.v1+json"}})
+        if(resChangeRole.status !== 204){
+            console.log(resChangeRole.status)
+        }
 
-        await addLocation(newLocation)
+        const resAddLocation = await addLocation(newLocation)
+        if(!resAddLocation){
+            console.error("Error en cargar la ubicacion")
+        }else{ 
+            getLocations(user).then((response) => {
+                setLocations(response)
+            })
+        }
+
+
     }
 
     useEffect(() => {
@@ -92,6 +104,13 @@ const AddAsset = () => {
             setLocations(response)
         })
     }, [])
+
+    useEffect(() => {
+        console.log(userDetails.role)
+        if(userDetails.role !== "LENDER"){
+            setShowLocModal(true)
+        }
+    }, []);
 
     const getAuthor = async (authors: any[]) => {
         if (authors.length === 0) {
@@ -502,7 +521,7 @@ const AddAsset = () => {
         <NewLenderModal
             location={emptyLocation}
             showModal={showLocModal}
-            handleClose={() => setShowLocModal(false)}
+            handleClose={() =>{navigate(-1)}}
             handleSave={handleLocationSave}
         />
         <div className="addasset-container flex-column">
