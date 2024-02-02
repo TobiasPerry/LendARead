@@ -1,8 +1,8 @@
-import {api, api_} from "../api/api.ts";
-import {isActive, isDelivered} from "../../components/userAssets/LendedBooksOptions.tsx";
-import {LendingApi} from "./useUserAssetInstances.ts";
+import {api, api_} from "../api/api";
+import {isActive, isDelivered} from "../../components/userAssets/LendedBooksOptions";
+import {LendingApi} from "./useUserAssetInstances";
 import {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../contexts/authContext.tsx";
+import {AuthContext} from "../../contexts/authContext";
 
 const useUserLendedBooksOptions = (fetchUserAssetInstance, asset) => {
 

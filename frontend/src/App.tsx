@@ -18,7 +18,6 @@ const ReviewBorrower = lazy(() => import("./views/reviews/ReviewBorrower.tsx"));
 const RequireAuth = lazy(() => import("./components/RequireAuth.tsx"));
 const AddAsset = lazy(() => import("./views/addAsset.tsx"));
 const ChangePassword = lazy(() => import("./views/user/ChangePassword.tsx"));
-const UserProfileView = lazy(() => import("./views/user/UserProfile.tsx"));
 const ReviewsAssetInstance = lazy(() => import("./views/asset/ReviewsAssetInstance.tsx"));
 const DiscoveryView = lazy(() => import("./views/Discovery.tsx"));
 const NotFound = lazy(() => import("./views/NotFound.tsx"));

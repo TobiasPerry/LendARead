@@ -1,9 +1,11 @@
 import axios from 'axios';
 import Qs from 'qs';
 
-const baseUrl = `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_PATH}` || 'http://localhost:8080/';
-console.log('baseUrl', baseUrl);
+let baseUrl = `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_PATH}`
 
+if(import.meta.env.VITE_APP_BASE_URL === undefined && import.meta.env.VITE_APP_BASE_PATH === undefined) {
+    baseUrl = 'http://localhost:8080/';
+}
 // Axios instance with baseURL
 const api = axios.create({
     baseURL: baseUrl + "api",
