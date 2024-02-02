@@ -153,7 +153,6 @@ const DiscoveryView =  () => {
 
     // When the page loads
     useEffect(() => {
-        fetchData().then();
         fetchLanguages().then();
     }, []);
 

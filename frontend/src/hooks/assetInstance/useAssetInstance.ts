@@ -91,40 +91,40 @@ const useAssetInstance = () => {
     }
 
     const handleAllAssetInstances = async (page, itemsPerPage, sort, sortDirection, search, languages: string[], physicalConditions: string[], minRating) => {
-        const books = []
 
         try {
-            //TODO: ippo fijate de que axios tiene un argumento para pasar esto automaticamente, tipo un objeto y te lo hace query params
-            // TODO: Joya grax Scili
             let url = `/assetInstances?page=${page}&itemsPerPage=${itemsPerPage}&sort=${sort}&sortDirection=${sortDirection}&minRating=${minRating}`
             languages.forEach((l) => {url += `&languages=${l}`})
             physicalConditions.forEach((p) => {url += `&physicalConditions=${p}`})
-            if(search !== ""){
+            if (search !== "") {
                 url += `&search=${search}`
             }
 
             const data = await api.get(url)
             const pages = extractTotalPages(data.headers["link"])
+            const body = data.data
 
-            const body =  data.data
+            // Array para almacenar todas las promesas de las llamadas en paralelo
+            const promises = body.map(async (assetInstance) => {
+                // Usar Promise.all() para hacer llamadas en paralelo
+                const [response_asset, response_instance, response_location, response_user] = await Promise.all([
+                    api_.get(assetInstance.assetReference),
+                    api_.get(assetInstance.selfUrl),
+                    api_.get(assetInstance.locationReference),
+                    api_.get(assetInstance.userReference)
+                ]);
 
-
-            for (const assetInstance of body) {
-                const response_asset = await api_.get(assetInstance.assetReference)
-                const response_instance = await api_.get(assetInstance.selfUrl)
-                const response_location = await api_.get(assetInstance.locationReference)
-                const response_user = await api_.get(assetInstance.userReference)
-                const body_asset =  response_asset.data
-                const body_instance =  response_instance.data
-                const body_location =  response_location.data
-                const body_user =  response_user.data
+                const [body_asset, body_instance, body_location, body_user] = [
+                    response_asset.data,
+                    response_instance.data,
+                    response_location.data,
+                    response_user.data
+                ];
 
                 const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
-                const num = tmp ? parseInt(tmp[1], 10) : null
+                const num = tmp ? parseInt(tmp[1], 10) : null;
                 const tmp_user = body_user.selfUrl.match(/\/(\d+)$/);
-                const num_user = tmp_user ? parseInt(tmp_user[1], 10) : null
-                // // Check if there's a match, and return the captured number
-                //return num ? parseInt(num[1], 10) : null;
+                const num_user = tmp_user ? parseInt(tmp_user[1], 10) : null;
 
                 const book = {
                     title: body_asset.title,
@@ -139,15 +139,20 @@ const useAssetInstance = () => {
                     country: body_location.country,
                     province: body_location.province,
                     locality: body_location.locality
-                }
-                books.push(book)
-            }
+                };
 
-            return {books, pages}
-        } catch (error){
-            console.log("Error")
+                return book;
+            });
+
+            // Esperar a que todas las promesas se resuelvan
+            const books = await Promise.all(promises);
+
+            return { books, pages };
+        } catch (error) {
+            console.log("Error:", error);
             return null;
         }
+
     }
 
     const handleAssetInstance = async (assetInstanceNumber, reviewsCount): Promise<AssetData> => {
