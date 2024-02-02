@@ -283,6 +283,7 @@
     "start_date": "Fecha de inicio",
     "end_date": "Fecha de devolucion",
     "login_btn": "Inciá sesion para pedir prestado",
+    "error_no_dates": "Seleccione las fechas",
     "location": {
       "title": "¿Donde esta este libro?",
       "zip_code": "Código postal",
@@ -297,10 +298,20 @@
     "reviews": {
       "no_reviews": "No hay reseñas para este libro",
       "see_all": "Ver todas las reseñas"
+    },
+    "success_modal": {
+      "title": "El prestamo fue pedido",
+      "sub_title": "El prestamo del libro se ha pedido con exito. Pronto recibiras un correo con informacion del prestatario",
+      "btn_text": "Ver detalle del prestamo"
+    },
+    "error_modal": {
+      "title": "¡Ha ocurrido un error!",
+      "sub_title": "",
+      "btn_text": "Volver a intentar"
     }
   },
   "view_asset_reviews": {
-    "title": "Reseñas de {{title}}"
+    "title": "Reseñas de '{{title}}'"
   },
   "addAsset": {
     "title": "¿Quieres prestar un libro?",

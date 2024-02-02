@@ -56,6 +56,7 @@ const ViewAssetInstance = () => {
     const [found, setFound] = useState(false)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
+    const [noDatesSelected, setNoDatesSelected] = useState(false)
 
     // AssetInstance Information
     const [data, setData] = useState(book)
@@ -68,6 +69,7 @@ const ViewAssetInstance = () => {
     // Lending request info
     const [beginDate, setBeginDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
+    const [lendingId, setLendingId] = useState(-1)
 
     const navigate = useNavigate()
 
@@ -107,13 +109,19 @@ const ViewAssetInstance = () => {
 
     // Request the lending
     const handleClickSendLending = async () =>  {
-        const res = await handleSendLendingRequest(
-            { borrowDate: beginDate, devolutionDate: endDate, assetInstanceId: bookNumber }
-        );
-        if(res !== undefined && res !== null){
-            setSuccess(true)
-        }else{
-            setError(true)
+        if(beginDate === null || beginDate === undefined || endDate === undefined|| endDate === null){
+            setNoDatesSelected(true)
+        }
+        else{
+            const res = await handleSendLendingRequest(
+                {borrowDate: beginDate, devolutionDate: endDate, assetInstanceId: bookNumber}
+            );
+            if (res !== undefined && res !== null) {
+                setLendingId(res.lendingId)
+                setSuccess(true)
+            } else {
+                setError(true)
+            }
         }
     }
 
@@ -130,14 +138,14 @@ const ViewAssetInstance = () => {
             </Helmet>
             <Modal
                 showModal={success}
-                title="text" subtitle="text" btnText="text"
-                handleSubmitModal={() => {navigate('/discovery')}}
-                handleCloseModal={() => {navigate('/discovery')}}
+                title={t('view_asset.success_modal.title')} subtitle={t('view_asset.success_modal.sub_title')} btnText={t('view_asset.success_modal.btn_text')}
+                handleSubmitModal={() => {navigate(`/userBook/${lendingId}?state=borrowed`)}}
+                handleCloseModal={() => {navigate(`/userBook/${lendingId}?state=borrowed`)}}
                 icon="bi bi-check"
             />
             <Modal
                 showModal={error} errorType={true}
-                title="text" subtitle="text" btnText="text"
+                title={t('view_asset.error_modal.title')} subtitle={t('view_asset.error_modal.sub_title')} btnText={t('view_asset.error_modal.btn_text')}
                 handleSubmitModal={() => {setError(false)}}
                 handleCloseModal={() => {setError(false)}}
                 icon="bi bi-x"
@@ -176,7 +184,6 @@ const ViewAssetInstance = () => {
                                                  <h1 className="textOverflow" title="text">
                                                      {data.title}
                                                  </h1>
-
 
                                                  <h3 className="textOverflow" id="authorClick" data-author="data-author">
                                                      {t('view_asset.by')}:
@@ -279,6 +286,9 @@ const ViewAssetInstance = () => {
                                                              >
                                                                  {t('view_asset.lending_btn')}
                                                              </button>
+                                                             {
+                                                                 noDatesSelected ? (<><br/> <p className="error">{t('view_asset.error_no_dates')}</p></>) : (<></>)
+                                                             }
                                                          </>
                                                      ) : (
                                                          <>
