@@ -76,7 +76,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
 
     return (
         <LoadingWrapper isLoading={isLoading} documentTitle={isLender ? t('lended_books'): t('borrowed_books')} isWhiteAnimation={true}>
-            <div className="container mt-3">
+            <div className="container">
                 <div className="d-flex justify-content-between align-items-center">
                     <h2 className="m-1">{isLender ? t('lended_books'): t('borrowed_books')}</h2>
                     <div className="btn-group">

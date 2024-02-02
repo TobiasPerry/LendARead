@@ -4,6 +4,8 @@ import {api, api_} from "../hooks/api/api";
 // @ts-ignore
 import defaultUserPhoto from "/static/user-placeholder.jpeg";
 import {useTranslation} from "react-i18next";
+import {extractId} from "../hooks/assetInstance/useUserAssetInstances.ts";
+import Vnd from "../hooks/api/types.ts";
 
 export interface UserDetailsApi {
     email: string | undefined,
@@ -41,7 +43,10 @@ export const AuthContext = React.createContext({
     handleForgotPassword: async (email: string) => {
         return false
     },
-        user: "",
+    uploadUserImage: async (image: any) => {
+
+    },
+    user: "",
     userDetails: {
         email: "",
         image: "",
@@ -126,6 +131,17 @@ const AuthContextProvider = (props) => {
     const getUserDetails = async (id: string) => {
         return (await api.get(`/users/${id}`)).data
     }
+
+    const uploadUserImage = async(image: any) => {
+        try {
+            const response: any = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
+            const imageId = extractId(response.headers.get("Location"))
+            const userResponse = await api.patch(`/users/${user}`, {image: imageId}, {headers: {"Content-type": Vnd.VND_USER}})
+        } catch (e) {
+            
+        }
+        await storeUserDetails(user)
+    }
     const storeUserDetails = async (id: string) => {
         const userDetails = await getUserDetails(id)
         if(userDetails.image !== null && userDetails.image !== undefined) {
@@ -155,7 +171,7 @@ const AuthContextProvider = (props) => {
 
     const handleForgotPassword = async (email: string) => {
         try {
-            await api.post('/users', {email: email}, {headers: {'Content-Type': 'application/vnd.resetPassword.v1+json'}})
+            await api.post('/users', {email: email}, {headers: {'Content-Type': Vnd.VND_RESET_PASSWORD}})
             return true;
         } catch (error) {
             return false;
@@ -193,7 +209,7 @@ const AuthContextProvider = (props) => {
                 },
                 {
                     headers: {
-                        'Content-Type': 'application/vnd.user.v1+json'
+                        'Content-Type': Vnd.VND_USER
                     }
                 }
             )
@@ -214,7 +230,8 @@ const AuthContextProvider = (props) => {
             userDetails,
             userImage,
             handleForgotPassword,
-            handleChangePassword
+            handleChangePassword,
+            uploadUserImage
         }}>{props.children}</AuthContext.Provider>
 }
 
