@@ -426,5 +426,7 @@
     }
   },
   "BORROWER": "Borrower",
-  "LENDER": "Lender"
+  "LENDER": "Lender",
+  "date": "{{month}}/{{day}}/{{year}}",
+  "date_for_calendar": "MM/dd/yyyy"
 }
