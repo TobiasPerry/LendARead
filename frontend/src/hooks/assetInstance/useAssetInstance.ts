@@ -240,7 +240,12 @@ const useAssetInstance = () => {
                     }
                 }
             )
-            return res
+
+            const body_res = res.data
+            const lendingId = parseInt(body_res.selfUrl.split('/').pop(), 10)
+            return {
+                lendingId: lendingId
+            }
         }catch (e){
             console.error("Error: " + e);
             return null;

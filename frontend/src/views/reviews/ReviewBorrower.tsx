@@ -203,11 +203,6 @@ export default function ReviewBorrower () {
                                                     <button
                                                         onClick={
                                                             () => {handleSendClick().then()
-                                                                // handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
-                                                                //     .then((value) => {
-                                                                //         setSuccess(value !== null && value !== undefined);
-                                                                //         setError(value === null || value === undefined)
-                                                                //     });
                                                             }
                                                         }
                                                     >
