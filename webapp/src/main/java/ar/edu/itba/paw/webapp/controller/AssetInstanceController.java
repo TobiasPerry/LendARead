@@ -15,6 +15,7 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.AssetInstanceReviewDTO;
 import ar.edu.itba.paw.webapp.dto.AssetsInstancesDTO;
 import ar.edu.itba.paw.webapp.form.AssetInstanceForm;
+import ar.edu.itba.paw.webapp.form.AssetInstanceGetForm;
 import ar.edu.itba.paw.webapp.form.AssetInstancePatchForm;
 import ar.edu.itba.paw.webapp.form.AssetInstanceReviewForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
@@ -28,14 +29,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,37 +78,27 @@ public class AssetInstanceController {
 
     @GET
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
-    @PreAuthorize("@preAuthorizeFunctions.searchPrivateAssetInstances(#userId,#status)")
-    public Response getAssetsInstances( @QueryParam("search")  @Size(min = 1, max = 100) String search,
-                                         @QueryParam("physicalConditions")  List<String> physicalConditions,
-                                         @QueryParam("languages")  List<String> languages,
-                                         @QueryParam("sort") @Pattern(regexp = "AUTHOR_NAME|TITLE|RECENT|LANGUAGE|STATE|PHYSICAL_CONDITION",message = "{pattern.sort.AssetInstance}") String sort,
-                                         @QueryParam("sortDirection") @Pattern(regexp = "ASCENDING|DESCENDING",message = "{pattern.SortDirection}") String sortDirection,
-                                         @QueryParam("page")  @DefaultValue("1")  @Min(1) int currentPage,
-                                         @QueryParam("status") @DefaultValue("PUBLIC") @Pattern(regexp = "PUBLIC|PRIVATE|ALL",message = "{pattern.status}") String status,
-                                         @QueryParam("minRating")  @DefaultValue("1")@Min(1) @Max(5) int minRating,
-                                         @QueryParam("maxRating")  @DefaultValue("5") @Min(1) @Max(5)int maxRating,
-                                         @QueryParam("itemsPerPage") @DefaultValue("10") int itemsPerPage,
-                                        @QueryParam("userId")  @DefaultValue("-1") int userId)  {
+    @PreAuthorize("@preAuthorizeFunctions.searchPrivateAssetInstances(#assetInstanceGetForm.userId,#assetInstanceGetForm.status)")
+    public Response getAssetsInstances(@Valid @BeanParam final AssetInstanceGetForm assetInstanceGetForm)  {
         AbstractPage<AssetInstance> page = ais.getAllAssetsInstances(
-                currentPage, itemsPerPage,
+                assetInstanceGetForm.getPage(), assetInstanceGetForm.getItemsPerPage(),
                 new SearchQueryImpl(
-                        (languages != null) ? languages : new ArrayList<>(),
-                        (physicalConditions != null) ? physicalConditions : new ArrayList<>(),
-                        (search != null) ? search : "",
-                        (sort != null) ? AssetInstanceSort.fromString(sort) : AssetInstanceSort.RECENT,
-                        (sortDirection != null) ? SortDirection.fromString(sortDirection) : SortDirection.DESCENDING,
-                        minRating,
-                        maxRating,
-                        userId,
-                        AssetState.fromString(status)
+                        (assetInstanceGetForm.getLanguages() != null) ? assetInstanceGetForm.getLanguages() : Collections.emptyList(),
+                        (assetInstanceGetForm.getPhysicalConditions() != null) ? assetInstanceGetForm.getPhysicalConditions() : Collections.emptyList(),
+                        (assetInstanceGetForm.getSearch() != null) ? assetInstanceGetForm.getSearch() : "",
+                        (assetInstanceGetForm.getSort() != null) ? AssetInstanceSort.fromString(assetInstanceGetForm.getSort()) : AssetInstanceSort.RECENT,
+                        (assetInstanceGetForm.getSortDirection() != null) ? SortDirection.fromString(assetInstanceGetForm.getSortDirection()) : SortDirection.DESCENDING,
+                        assetInstanceGetForm.getMinRating(),
+                        assetInstanceGetForm.getMaxRating(),
+                        assetInstanceGetForm.getUserId(),
+                        AssetState.fromString(assetInstanceGetForm.getStatus())
                         )
         );
         if (page.getTotalPages() == 0 || page.getList().isEmpty()) {
             return Response.noContent().build();
         }
         List<AssetsInstancesDTO> assetsInstancesDTO = AssetsInstancesDTO.fromAssetInstanceList(uriInfo, page.getList());
-        LOGGER.info("GET assetInstances/ search:{} physicalConditions:{} languages:{} sort:{} sortDirection:{} page:{} itemsPerPage:{} minRating:{} maxRating:{} userId:{}",search,physicalConditions,languages,sort,sortDirection,currentPage,itemsPerPage,minRating,maxRating,userId);
+        LOGGER.info("GET assetInstances/ search:{} physicalConditions:{} languages:{} sort:{} sortDirection:{} page:{} itemsPerPage:{} minRating:{} maxRating:{} userId:{}",assetInstanceGetForm.getSearch(),assetInstanceGetForm.getPhysicalConditions(),assetInstanceGetForm.getLanguages(),assetInstanceGetForm.getSort(),assetInstanceGetForm.getSortDirection(),assetInstanceGetForm.getPage(),assetInstanceGetForm.getItemsPerPage(),assetInstanceGetForm.getMinRating(),assetInstanceGetForm.getMaxRating(),assetInstanceGetForm.getUserId());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetsInstancesDTO>>(assetsInstancesDTO) {});
         PaginatedData.paginatedData(response, page, uriInfo);
         return response.build();

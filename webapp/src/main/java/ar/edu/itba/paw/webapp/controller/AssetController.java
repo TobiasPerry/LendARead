@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.AssetDTO;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;
+import ar.edu.itba.paw.webapp.form.AssetsGetForm;
 import ar.edu.itba.paw.webapp.form.PatchAssetForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
@@ -49,18 +49,12 @@ public class AssetController {
     @GET
     @Produces(value = {Vnd.VND_ASSET})
     public Response getAssets(
-            @QueryParam(value = "page")  @Min(1)  @DefaultValue("1") final int page,
-            @QueryParam(value = "itemsPerPage")  @Min(1) @DefaultValue("10") final int itemsPerPage,
-            @QueryParam(value = "isbn")  final String isbn,
-            @QueryParam(value = "author")  final String author,
-            @QueryParam(value = "title")  final String title,
-            @QueryParam(value = "language")  final String language
-    ){
-        PagingImpl<Asset> books = as.getBooks(page,itemsPerPage,isbn,author,title,language);
+            @Valid @BeanParam final AssetsGetForm assetsGetForm) {
+        PagingImpl<Asset> books = as.getBooks(assetsGetForm.getPage(),assetsGetForm.getItemsPerPage(), assetsGetForm.getIsbn(), assetsGetForm.getAuthor(), assetsGetForm.getTitle(), assetsGetForm.getLanguage());
         if (books.getTotalPages() == 0 || books.getList().isEmpty()) {
             return Response.noContent().build();
         }
-        LOGGER.info("GET asset/ isbn:{} author:{} title:{} language:{}",isbn,author,title,language);
+        LOGGER.info("GET asset/ isbn:{} author:{} title:{} language:{}",assetsGetForm.getIsbn(), assetsGetForm.getAuthor(), assetsGetForm.getTitle(), assetsGetForm.getLanguage());
         List<AssetDTO> assetsDTO = AssetDTO.fromBooks( books.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetDTO>>(assetsDTO) {});
         PaginatedData.paginatedData(response, books, uriInfo);
