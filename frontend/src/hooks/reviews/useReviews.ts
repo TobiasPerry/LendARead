@@ -33,7 +33,6 @@ const useReviews = () => {
 
             const lenderReviewsData = lenderReviewsResponse.data
             setLenderReviews(lenderReviewsData)
-            console.log('lenderReviewsData', lenderReviewsData)
         } catch (e) {
 
         }
@@ -41,9 +40,15 @@ const useReviews = () => {
 
     const fetchBorrowerReviews = async (page: number ) => {
         try {
-            const borrowerReviewsData: Array<ReviewApi> =(await api.get(`/users/${user}/borrower_reviews/`, {params: {"itemsPerPage": PAGE_SIZE, "page": page}})).data
+            const borrowerReviewsResponse = await api.get(`/users/${user}/borrower_reviews/`, {params: {"itemsPerPage": PAGE_SIZE, "page": page}})
+
+            //@ts-ignore
+            const linkHeader: any = borrowerReviewsResponse.headers.get("Link");
+            const totalPages = extractTotalPages(linkHeader);
+            setTotalPagesBorrowerReviews(totalPages);
+
+            const borrowerReviewsData = borrowerReviewsResponse.data
             setBorrowerReviews(borrowerReviewsData)
-            console.log('borrowerReviewsData', borrowerReviewsData)
         } catch (e) {
             console.log(e)
         }
