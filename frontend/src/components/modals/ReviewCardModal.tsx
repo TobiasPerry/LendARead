@@ -11,29 +11,32 @@ function ReviewCardModal({ review, showModal, handleCloseModal}) {
         <>
             <div className={`modal ${showModal ? 'show' : ''}`}  role="dialog" aria-labelledby="modalTitle">
                 <div className="modal-dialog modal-content">
-                    <div className="row d-flex justify-content-center" style={{ width: '450px' }}>
-                        <div className="my-2">
-                            <div className="card" style={{ borderRadius: '30px' }}>
-                                <div className="card-body m-3">
-                                    <div className="row">
-                                        <div className="col-lg-4 justify-content-center align-items-center">
-                                            <img src={`${review.reviewerDetails.image}`}
-                                                 className="rounded-circle img-fluid shadow-1" alt="avatar" width="50"
-                                                 height="50"/>
-                                            <p className="fw-bold lead mb-2"><strong>{review.reviewerDetails.userName}</strong></p>
-                                        </div>
-                                        <div className="col-lg-8">
-                                            <StarsReviews rating={review.rating}/>
-                                            <p className="fw-light mb-4 ellipsis-text">
-                                                {review.review}
-                                            </p>
-                                        </div>
-                                    </div>
+                    <button onClick={handleCloseModal} style={{
+                        position: "absolute",
+                        top: "15px",
+                        right: "15px"
+                    }}>
+                        <i className="fas fa-window-close fa-lg"></i>
+                    </button>
+                    <div className="my-2">
+                        <div className="card-body m-3">
+                            <div className="d-flex flex-row">
+                                <img src={`${review.reviewerDetails.image}`}
+                                     className="rounded-circle img-fluid shadow-1"
+                                     alt="avatar"
+                                     style={{width: "100px", height: "100px", marginRight: "20px"}}/>
+                                <div>
+                                    <h3 className="fw-bold lead mb-2"><strong>{review.reviewerDetails.userName}</strong></h3>
+                                    <h3 className="fw-bold lead mb-2"><strong>{review.reviewerDetails.email}</strong></h3>
+                                    <StarsReviews rating={review.rating}/>
+                                    <h5 className="fw-light mb-4">
+                                        {review.review}
+                                    </h5>
                                 </div>
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
             </div>
         </>
     );
