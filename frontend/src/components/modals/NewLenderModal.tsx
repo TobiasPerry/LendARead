@@ -95,7 +95,7 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
     };
 
     return (
-        <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle" onClick={handleClose}>
+        <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle" >
             <div className="modal-dialog" role="document" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-content">
                     <div className="modal-header-centered mb-4">
@@ -112,46 +112,57 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                             {/* Name Field */}
                             <div className="form-group">
                                 <label htmlFor="name-modal">{t('addAssetView.nameLabel')}</label>
-                                <input type="text" className="form-control" name="name" id="name-modal" value={formData.name} onChange={handleChange} />
+                                <input type="text" className="form-control" name="name" id="name-modal"
+                                       value={formData.name} onChange={handleChange}/>
                                 {formErrors.name && <div className="error">{formErrors.name}</div>}
                             </div>
 
                             {/* Locality Field */}
                             <div className="form-group">
                                 <label htmlFor="locality-modal">{t('addAssetView.localityLabel')}</label>
-                                <input type="text" className="form-control" name="locality" id="locality-modal" value={formData.locality} onChange={handleChange} />
+                                <input type="text" className="form-control" name="locality" id="locality-modal"
+                                       value={formData.locality} onChange={handleChange}/>
                                 {formErrors.locality && <div className="error">{formErrors.locality}</div>}
                             </div>
 
                             {/* Province Field */}
                             <div className="form-group">
                                 <label htmlFor="province-modal">{t('addAssetView.provinceLabel')}</label>
-                                <input type="text" className="form-control" name="province" id="province-modal" value={formData.province} onChange={handleChange} />
+                                <input type="text" className="form-control" name="province" id="province-modal"
+                                       value={formData.province} onChange={handleChange}/>
                                 {formErrors.province && <div className="error">{formErrors.province}</div>}
                             </div>
 
                             {/* Country Field */}
                             <div className="form-group">
                                 <label htmlFor="country-modal">{t('addAssetView.countryLabel')}</label>
-                                <input type="text" className="form-control" name="country" id="country-modal" value={formData.country} onChange={handleChange} />
+                                <input type="text" className="form-control" name="country" id="country-modal"
+                                       value={formData.country} onChange={handleChange}/>
                                 {formErrors.country && <div className="error">{formErrors.country}</div>}
                             </div>
 
                             {/* Zipcode Field */}
                             <div className="form-group">
                                 <label htmlFor="zipcode-modal">{t('addAssetView.zipcodeLabel')}</label>
-                                <input type="text" className="form-control" name="zipcode" id="zipcode-modal" value={formData.zipcode} onChange={handleChange} />
+                                <input type="text" className="form-control" name="zipcode" id="zipcode-modal"
+                                       value={formData.zipcode} onChange={handleChange}/>
                                 {formErrors.zipcode && <div className="error">{formErrors.zipcode}</div>}
                             </div>
 
                             {/* Hidden Field for selfUrl */}
-                            <input type="hidden" name="selfUrl" value={formData.selfUrl} />
+                            <input type="hidden" name="selfUrl" value={formData.selfUrl}/>
+
 
                             {/* Submit Button */}
                             <button className="submit-button" type="submit">
                                 {t('save')}
                             </button>
+
+
                         </form>
+                        <button className="cancel-button text-center" onClick={handleClose}>
+                            {t('addAsset.newLender.cancel')}
+                        </button>
                     </div>
                 </div>
             </div>
