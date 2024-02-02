@@ -23,6 +23,7 @@ const ProfileReviewCard = ({review}) => {
         )
     }
 
+    console.log("review", review)
     return (
         <div className="user-review-card">
             <Link to={`/user/${review.reviewerId}`}>

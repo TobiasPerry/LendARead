@@ -4,6 +4,7 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
 import useUserDetails from "../assetInstance/useUserDetails.ts";
 import {extractId} from "../assetInstance/useUserAssetInstances.ts";
+import photoHolder from "../../../public/static/profile_placeholder.jpeg";
 export interface ReviewApi {
     lending: string,
     rating: number,
@@ -21,9 +22,20 @@ const useReviews = () => {
     const [totalPagesLenderReviews, setTotalPagesLenderReviews] = useState(1)
     const [totalPagesBorrowerReviews, setTotalPagesBorrowerReviews] = useState(1)
 
-    const {retrieveUserDetails} = useUserDetails()
     const {user} = useContext(AuthContext)
     const PAGE_SIZE = 2
+
+
+    const retrieveUserDetails = async (userId: string) => {
+        const userDetails = (await api.get(`/users/${userId}`)).data
+        if(userDetails.image) {
+            const image = (await api_.get(userDetails.image)).data
+            if(image !== undefined)
+                return {...userDetails, image: userDetails.image}
+        } else {
+            return {...userDetails, image: photoHolder}
+        }
+    }
 
     const fetchLenderReviews = async (page: number ) => {
         try {
