@@ -25,14 +25,10 @@ public class LendingDTO {
     private String devolutionDate;
 
     private List<String> userReviews;
-
     private String assetInstanceReview;
-
     private String state;
-
     private String borrowerReviewUrl;
     private String lenderReviewUrl;
-
     private String selfUrl;
     public static LendingDTO fromLending(Lending lending, UriInfo url) {
         final LendingDTO dto = new LendingDTO();

@@ -1,5 +1,8 @@
 package ar.edu.itba.paw.webapp.auth.filters;
 
+import ar.edu.itba.paw.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfaces.UserService;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,11 +28,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final PawUserDetailsService pawUserDetailsService;
 
+    private final UserService userService;
 
 
-    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, PawUserDetailsService pawUserDetailsService) {
+    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, PawUserDetailsService pawUserDetailsService,UserService userService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.pawUserDetailsService = pawUserDetailsService;
+        this.userService = userService;
     }
 
     @Override
@@ -62,6 +67,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 userDetails.getPassword(),
                 userDetails.getAuthorities()
         );
+        User user;
+        try {
+            user = userService.getUser(userDetails.getUsername());
+        } catch (UserNotFoundException e) {
+            chain.doFilter(request, response);
+            return;
+        }
+        if (jwtTokenUtil.isRefreshToken(token)) {
+            response.setHeader("X-JWT", jwtTokenUtil.generateJwtToken(authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
+        }
 
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request)

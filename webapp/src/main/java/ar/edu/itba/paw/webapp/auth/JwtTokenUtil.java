@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import javax.crypto.SecretKey;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,8 @@ import java.util.Date;
 public class JwtTokenUtil {
     private final SecretKey jwtSecret ;
 
-    private final int JWT_VALID_PIRIOD = 7 * 24 * 60 * 60 * 1000;
+    private final int JWT_VALID_PIRIOD =  24 * 60 * 60 * 1000;
+    private final int JWT_REFRESH_VALID_PIRIOD =  7 * 24 * 60 * 60 * 1000;
 
     @Autowired
     public JwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
@@ -39,6 +41,19 @@ public class JwtTokenUtil {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + JWT_VALID_PIRIOD))
                 .claim("userReference", userReference)
+                .claim("refresh", false)
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+    public String generateRefreshToken(Authentication authentication,String userReference) {
+        PawUserDetails userPrincipal = (PawUserDetails) authentication.getPrincipal();
+
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + JWT_REFRESH_VALID_PIRIOD))
+                .claim("userReference", userReference)
+                .claim("refresh", true)
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -51,9 +66,16 @@ public class JwtTokenUtil {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
+    public boolean isRefreshToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key()).build()
+                .parseClaimsJws(token).getBody().get("refresh", Boolean.class);
+    }
 
     public boolean validateJwtToken(String authToken) {
         final Claims claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken).getBody();
         return !claims.getExpiration().before(new Date());
+    }
+    public static String getBaseUrl(HttpServletRequest request){
+        return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
     }
 }
