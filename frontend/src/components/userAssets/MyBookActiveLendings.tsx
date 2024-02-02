@@ -22,35 +22,29 @@ const MyBookActiveLendings = ({ asset }) => {
 
 
     return (
-        <>
-            {lendings.length > 0 ?
-                <div className="lendings-container">
-                    <h3 className="lendings-title">{t('active_loans')}</h3>
-                    {lendings.map((lending, index) => (
-                        <div
-                            key={index}
-                            className="lending-item"
-                            onClick={() => handleNavigation(lending.id)}
-                            role="button"
-                            tabIndex={0}
-                        >
-                            <div className="user-info">
-                                <img src={lending.userImage} alt={lending.userName} className="user-image" />
-                                <div className="user-name">{lending.userName}</div>
-                            </div>
-                            <div className="d-flex flex-row lending-dates">
-                                <div className="user-name">{lending.state}</div>
-                                <div className="start-date">{t('from')} {lending.startDate}</div>
-                                <div className="end-date">{t('until')} {lending.endDate}</div>
-                            </div>
-                        </div>
-                    ))}
-                    <Pagination currentPage={currentPage} changePage={changePage} totalPages={totalPages} />
+        <div className="lendings-container">
+            <h3 className="lendings-title">{t('active_loans')}</h3>
+            {lendings.map((lending, index) => (
+                <div
+                    key={index}
+                    className="lending-item"
+                    onClick={() => handleNavigation(lending.id)}
+                    role="button"
+                    tabIndex={0}
+                >
+                    <div className="user-info">
+                        <img src={lending.userImage} alt={lending.userName} className="user-image" />
+                        <div className="user-name">{lending.userName}</div>
+                    </div>
+                    <div className="d-flex flex-row lending-dates">
+                        <div className="user-name">{lending.state}</div>
+                        <div className="start-date">{t('from')} {lending.startDate}</div>
+                        <div className="end-date">{t('until')} {lending.endDate}</div>
+                    </div>
                 </div>
-                : <>
-                </>
-            }
-        </>
+            ))}
+            <Pagination currentPage={currentPage} changePage={changePage} totalPages={totalPages} />
+        </div>
     );
 };
 
