@@ -12,7 +12,7 @@ const useUserDetails = () => {
         if(userDetails.image) {
             const image = (await api_.get(userDetails.image)).data
             if(image !== undefined)
-                return {...userDetails, image: image}
+                return {...userDetails, image: userDetails.image}
         } else {
             return {...userDetails, image: photoHolder}
         }
