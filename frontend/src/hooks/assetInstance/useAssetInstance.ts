@@ -1,6 +1,7 @@
 import {api, api_} from "../api/api.ts";
 import {Simulate} from "react-dom/test-utils";
 import canPlayThrough = Simulate.canPlayThrough;
+import types from "../api/types.ts";
 
 export const extractTotalPages = (linkHeader) => {
     if(!linkHeader){
@@ -119,21 +120,18 @@ const useAssetInstance = () => {
                     response_user.data
                 ];
 
-                const tmp = assetInstance.selfUrl.match(/\/(\d+)$/);
-                const num = tmp ? parseInt(tmp[1], 10) : null;
-                const tmp_user = body_user.selfUrl.match(/\/(\d+)$/);
-                const num_user = tmp_user ? parseInt(tmp_user[1], 10) : null;
+
 
                 const book = {
                     title: body_asset.title,
                     author: body_asset.author,
                     language: body_asset.language,
-                    assetInstanceNumber: num,
+                    assetInstanceNumber: assetInstance.id,
                     image: assetInstance.imageReference,
                     physicalCondition: assetInstance.physicalCondition,
                     userImage: body_user.image,
                     userName: body_user.userName,
-                    userNum: num_user,
+                    userNum: body_user.id,
                     country: body_location.country,
                     province: body_location.province,
                     locality: body_location.locality
@@ -236,13 +234,13 @@ const useAssetInstance = () => {
                 body,
                 {
                     headers:{
-                        "Content-Type": "application/vnd.assetInstanceLending.v1+json"
+                        "Content-Type": types.VND_ASSET_INSTANCE_LENDING
                     }
                 }
             )
 
             const body_res = res.data
-            const lendingId = parseInt(body_res.selfUrl.split('/').pop(), 10)
+            const lendingId = body_res.id
             return {
                 lendingId: lendingId
             }
