@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import '../styles/LocationsModal.css'; // Import the external CSS file
+import '../styles/LocationsModal.css';
 
 const LocationModal = ({ handleSave, location, showModal, handleClose }) => {
     const { t } = useTranslation();

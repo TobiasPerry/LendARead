@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import '../styles/LocationsModal.css';
 
 const CancelModal = ({ asset, showModal, handleCloseModal, handleSubmitModal }) => {
     const { t } = useTranslation();

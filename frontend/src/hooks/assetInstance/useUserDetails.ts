@@ -7,19 +7,22 @@ const useUserDetails = () => {
 
     const [userDetails, setUserDetails] = useState(emptyUserDetails)
 
-    const getUserDetails = async (userId: string | number) => {
+    const retrieveUserDetails = async (userId: string | number) => {
         const userDetails = (await api.get(`/users/${userId}`)).data
         if(userDetails.image) {
             const image = (await api_.get(userDetails.image)).data
             if(image !== undefined)
-                setUserDetails({...userDetails, image: image})
+                return {...userDetails, image: userDetails.image}
         } else {
-            setUserDetails({...userDetails, image: photoHolder})
+            return {...userDetails, image: photoHolder}
         }
+    }
+    const getUserDetails = async (userId: string | number) => {
+        setUserDetails(await retrieveUserDetails(userId))
     }
 
     return {
-        userDetails, getUserDetails
+        userDetails, getUserDetails, retrieveUserDetails
     }
 }
 

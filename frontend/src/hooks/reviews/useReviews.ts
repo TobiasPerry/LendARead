@@ -1,7 +1,10 @@
 import {useContext, useState} from "react";
-import {api} from "../api/api.ts";
+import {api, api_} from "../api/api.ts";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
+import useUserDetails from "../assetInstance/useUserDetails.ts";
+import {extractId} from "../assetInstance/useUserAssetInstances.ts";
+import photoHolder from "../../../public/static/profile_placeholder.jpeg";
 export interface ReviewApi {
     lending: string,
     rating: number,
@@ -19,8 +22,11 @@ const useReviews = () => {
     const [totalPagesLenderReviews, setTotalPagesLenderReviews] = useState(1)
     const [totalPagesBorrowerReviews, setTotalPagesBorrowerReviews] = useState(1)
 
+    const {retrieveUserDetails} = useUserDetails()
     const {user} = useContext(AuthContext)
     const PAGE_SIZE = 2
+
+
 
     const fetchLenderReviews = async (page: number ) => {
         try {
@@ -31,7 +37,15 @@ const useReviews = () => {
             const totalPages = extractTotalPages(linkHeader);
             setTotalPagesLenderReviews(totalPages);
 
-            const lenderReviewsData = lenderReviewsResponse.data
+            const lenderReviewsPromises = lenderReviewsResponse.data.map(async (review: ReviewApi) => {
+                const reviewerId = extractId(review.reviewer)
+                return {
+                    ...review,
+                    reviewerDetails: await retrieveUserDetails(reviewerId),
+                    reviewerId: reviewerId
+                }
+            })
+            const lenderReviewsData = await Promise.all(lenderReviewsPromises)
             setLenderReviews(lenderReviewsData)
         } catch (e) {
 
@@ -47,7 +61,15 @@ const useReviews = () => {
             const totalPages = extractTotalPages(linkHeader);
             setTotalPagesBorrowerReviews(totalPages);
 
-            const borrowerReviewsData = borrowerReviewsResponse.data
+            const borrowerReviewsPromises = borrowerReviewsResponse.data.map(async (review: ReviewApi) => {
+                const reviewerId = extractId(review.reviewer)
+                return {
+                    ...review,
+                    reviewerDetails: await retrieveUserDetails(reviewerId),
+                    reviewerId: reviewerId
+                }
+            })
+            const borrowerReviewsData = await Promise.all(borrowerReviewsPromises)
             setBorrowerReviews(borrowerReviewsData)
         } catch (e) {
             console.log(e)
