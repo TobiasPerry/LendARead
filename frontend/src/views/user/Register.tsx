@@ -25,7 +25,9 @@ const RegisterView = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
-    const { register} = useRegister();
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const {register} = useRegister();
     const {login } = useContext(AuthContext);
 
     const [formErrors, setFormErrors] = useState<FormErrors>({
@@ -75,12 +77,12 @@ const RegisterView = () => {
         const {errors, hasErrors} = validateForm();
 
         if (!hasErrors) {
-            const successfulRegister = await register(email, password, repeatPassword, name);
+            const {successfulRegister, errorMessage} = await register(email, password, repeatPassword, name);
             if (successfulRegister) {
                 await login(email, password)
                 navigate('/');
             }else{
-                // TODO: Error message
+                setErrorMessage(errorMessage);
             }
         } else {
             setFormErrors(errors);
@@ -95,11 +97,7 @@ const RegisterView = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="d-flex flex-column justify-content-center align-items-center text-black main-class col-sm-6">
-                        <div className="px-5 ms-xl-4 mt-10">
-                            <Link to="/">
-                                <img src={logo} alt="Lend a read logo" style={{ width: '300px' }} />
-                            </Link>
-                        </div>
+
 
                         <div className="d-flex flex-column justify-content-center align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                             <form onSubmit={handleSubmit}>
@@ -144,6 +142,8 @@ const RegisterView = () => {
                                 {/* Register Button */}
                                 <div className="form-outline mb-4 text-center">
                                     <input className="btn btn-light" type="submit" value={t('auth.registerBtn')} />
+                                    <br/>
+                                    <p className="error">{errorMessage}</p>
                                 </div>
 
                                 {/* Already Have Account Link */}

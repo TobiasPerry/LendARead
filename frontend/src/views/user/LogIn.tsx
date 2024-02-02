@@ -22,10 +22,13 @@ const LoginView = ({redirect}) => {
     const handleLogin = async (e: any) => {
         e.preventDefault()
         const loginSuccess = await login(email, password, rememberMe)
-        if(loginSuccess)
-           if(redirect) navigate('/userAssets')
-        else
-            setLoginError(true)
+        console.log(loginSuccess)
+        if(loginSuccess) {
+            if (redirect) navigate('/userAssets')
+        }
+        else {
+           setLoginError(true)
+        }
     }
     const handlePasswordChange = (e: any) => {
         setPassword(e.target.value);
@@ -60,7 +63,7 @@ const LoginView = ({redirect}) => {
                                         {t('auth.password')}
                                     </label>
                                     <input className="form-control" name="password" type="password" value={password} onChange={handlePasswordChange} />
-                                    {loginError && <label style={{ color: 'red' }}>{t('auth.loginError')}</label>}
+                                    {loginError && <p className="error">{t('auth.loginError')}</p>}
                                 </div>
 
                                 <div className="form-outline mb-4 text-center">
