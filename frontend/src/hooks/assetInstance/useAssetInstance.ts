@@ -107,16 +107,14 @@ const useAssetInstance = () => {
             // Array para almacenar todas las promesas de las llamadas en paralelo
             const promises = body.map(async (assetInstance) => {
                 // Usar Promise.all() para hacer llamadas en paralelo
-                const [response_asset, response_instance, response_location, response_user] = await Promise.all([
+                const [response_asset,  response_location, response_user] = await Promise.all([
                     api_.get(assetInstance.assetReference),
-                    api_.get(assetInstance.selfUrl),
                     api_.get(assetInstance.locationReference),
                     api_.get(assetInstance.userReference)
                 ]);
 
-                const [body_asset, body_instance, body_location, body_user] = [
+                const [body_asset, body_location, body_user] = [
                     response_asset.data,
-                    response_instance.data,
                     response_location.data,
                     response_user.data
                 ];
@@ -131,8 +129,8 @@ const useAssetInstance = () => {
                     author: body_asset.author,
                     language: body_asset.language,
                     assetInstanceNumber: num,
-                    image: body_instance.imageReference,
-                    physicalCondition: body_instance.physicalCondition,
+                    image: assetInstance.imageReference,
+                    physicalCondition: assetInstance.physicalCondition,
                     userImage: body_user.image,
                     userName: body_user.userName,
                     userNum: num_user,
