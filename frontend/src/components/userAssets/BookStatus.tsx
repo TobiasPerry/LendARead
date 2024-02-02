@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Location from "../locations/Location.tsx";
 import useLocationAsset from "../../hooks/locations/useLocation.ts";
 import UserLink from "./UserLink.tsx";
+import {extractDate} from "../../hooks/api/types.ts";
 
 const BookStatus = ({asset, state}) => {
     const { t } = useTranslation();
@@ -23,7 +24,7 @@ const BookStatus = ({asset, state}) => {
             {!(asset === undefined || asset.lending === undefined) &&
                 <div style={styles}>
                     <h4 className="card-title mb-1"><strong> {t('statusLabel')}:</strong> {t(`${asset.lending.state.toLowerCase()}`)}</h4>
-                    <h5> <strong>{t("lending_period_from")}: </strong> {asset.lending.lendDate} {t("to")} {asset.lending.devolutionDate}</h5>
+                    <h5> <strong>{t("lending_period_from")}: </strong> {t('date', extractDate(asset.lending.lendDate))} {t("to")} {t('date', extractDate(asset.lending.devolutionDate))} </h5>
                     <UserLink asset={asset} state={state}/>
                 </div> }
             {/* User asset instance*/}

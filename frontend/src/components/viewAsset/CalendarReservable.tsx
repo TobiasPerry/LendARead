@@ -80,7 +80,7 @@ const CalendarReservable = ({
                     filterDate={filterStartDates}
                     startDate={startDate}
                     endDate={endDate}
-                    dateFormat="dd/MM/yyyy"
+                    dateFormat={t('date_for_calendar')}
                     className="form-control"
                 />
             </div>
@@ -96,7 +96,7 @@ const CalendarReservable = ({
                     filterDate={filterEndDates}
                     startDate={startDate}
                     endDate={endDate}
-                    dateFormat="dd/MM/yyyy"
+                    dateFormat={t('date_for_calendar')}
                     className="form-control"
                 />
             </div>

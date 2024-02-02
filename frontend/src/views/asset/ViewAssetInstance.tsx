@@ -80,7 +80,7 @@ const ViewAssetInstance = () => {
             if(!(res === null || res === undefined)){
                 setFound(true)
                 setHasReviews(res.rating_assetInstance != 0)
-                setHasReviewAsLender(res.rating_as_lender !== 0)
+                setHasReviewAsLender(res.rating_as_lender != 0)
                 setHasUserImage((!(res.userImage === null || res.userImage === undefined)))
                 setHasDescription((!(res.description === null || res.description === undefined || res.description === "")))
                 setData(res)
@@ -206,7 +206,7 @@ const ViewAssetInstance = () => {
                                                      {t('view_asset.isbn')}: {data.isbn} </h6>
 
 
-                                                 <div className="container-row" style={{justifyContent: 'start'}}>
+                                                 <div className="container-row" style={{justifyContent: 'start', display: 'flex', alignItems: 'center'}}>
                                                      <Link to="/">
                                                          {
                                                              hasUserImage ? (
@@ -224,15 +224,26 @@ const ViewAssetInstance = () => {
                                                      <Link to="/">
                                                          <span className="mx-2 text-clickable">{data.userName}</span>
                                                      </Link>
-                                                     {/*</a>*/}
-                                                     <p>
+                                                     <p style={{display: 'flex', alignItems: 'center'}}>
+
                                                          {
                                                              hasReviewAsLender ? (
-                                                                 <span className="badge bg-success">
-                                                                   {data.rating_as_lender} ★
-                                                                 </span>
+                                                                 <small>
+                                                                     <span
+                                                                         style={{margin: 0}}
+                                                                         className={
+                                                                             `badge ${data.rating_as_lender >= 3.5 ? (`bg-success`) : (data.rating_as_lender >= 2.5) ? `bg-warning` : `bg-danger`} `
+                                                                         }
+                                                                     >
+                                                                       {data.rating_as_lender} ★
+                                                                     </span>
+                                                                 </small>
                                                              ) : (
-                                                                 <span className="badge bg-secondary">-.- ★</span>
+                                                                 <small>
+                                                                     <span className="badge bg-secondary">
+                                                                         -.- ★
+                                                                     </span>
+                                                                 </small>
                                                              )
                                                          }
                                                      </p>

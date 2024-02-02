@@ -68,13 +68,13 @@ const useAssetInstance = () => {
         languages.push(...body)
         currentPage++
 
-        do{
+        while (currentPage <= pages){
             const page_url = base_url + `&page=${currentPage}`
             const data_page = await api.get(page_url)
             const body_page : language[] = data_page.data
             languages.push(...body_page)
             currentPage++
-        }while (currentPage <= pages);
+        }
 
         languages.sort((a, b) => {
             const a_to_lower = a.name.toLowerCase()
@@ -192,26 +192,42 @@ const useAssetInstance = () => {
     }
 
     const handleGetReservedDays = async (assetInstanceId) => {
-        try{
+        try {
             const currentDate = new Date();
             const year = currentDate.getFullYear();
             const month = String(currentDate.getMonth() + 1).padStart(2, '0');
             const day = String(currentDate.getDate()).padStart(2, '0');
-            const res = await api.get(
-                `/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED&state=REJECTED&endAfter=${year}-${month}-${day}`
-            )
-            const body = res.data
-            const reservedDays = []
-            body.forEach((value) => {
-                const [year_s, month_s, day_s] = value.lendDate.split('-').map(Number)
-                const [year_e, month_e, day_e] = value.devolutionDate.split('-').map(Number)
-                reservedDays.push({start: new Date(year_s, month_s - 1, day_s), end: new Date(year_e, month_e - 1, day_e)})
-            })
-            return reservedDays
-        }catch (e){
+            const url = `/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED&state=REJECTED&endAfter=${year}-${month}-${day}&itemsPerPage=20`;
+            const res = await api.get(url);
+
+            const pages = extractTotalPages(res.headers["link"]);
+
+            const fetchPage = async (page) => {
+                const response = await api.get(`${url}&page=${page}`);
+                return response.data;
+            };
+
+            const promises = [];
+            for (let currentPage = 2; currentPage <= pages; currentPage++) {
+                promises.push(fetchPage(currentPage));
+            }
+
+            const additionalPagesData = await Promise.all(promises);
+
+            const body = res.data.concat(...additionalPagesData);
+
+            const reservedDays = body.flatMap((value) => {
+                const [year_s, month_s, day_s] = value.lendDate.split('-').map(Number);
+                const [year_e, month_e, day_e] = value.devolutionDate.split('-').map(Number);
+                return [{ start: new Date(year_s, month_s - 1, day_s), end: new Date(year_e, month_e - 1, day_e) }];
+            });
+
+            return reservedDays;
+        } catch (e) {
             return null;
         }
-    }
+    };
+
 
     const handleSendLendingRequest = async (body) => {
         try{

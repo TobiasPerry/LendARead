@@ -47,7 +47,7 @@ const ShowReviewCard = ({review}) => {
                             </div>
                             <div className="col-lg-8">
                                 <StarsReviews rating={data.rating}/>
-                                <p className="fw-light mb-4">
+                                <p className="fw-light mb-4" >
                                     {data.text}
                                 </p>
                             </div>

@@ -32,7 +32,8 @@ const CalendarNotReservable = ({
                     filterDate={filterDate}
                     startDate={startDate}
                     endDate={endDate}
-                    dateFormat="dd/MM/yyyy"
+                    // dateFormat="dd/MM/yyyy"
+                    dateFormat={t('date_for_calendar')}
                     className="form-control"
                 />
             </div>

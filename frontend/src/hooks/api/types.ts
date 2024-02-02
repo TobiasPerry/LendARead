@@ -1,3 +1,8 @@
+export const extractDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return {day: day, month: month, year: year}
+}
+
 export class Vnd {
     private constructor() {}
 
