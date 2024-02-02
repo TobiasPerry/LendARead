@@ -1,8 +1,15 @@
 package ar.edu.itba.paw.services;
 
 
+import ar.edu.itba.paw.exceptions.AssetInstanceNotFoundException;
+import ar.edu.itba.paw.exceptions.UnableToDeleteAssetInstanceException;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
 import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.miscellaneous.Image;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SearchQueryImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
@@ -16,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -35,6 +43,7 @@ public class AssetInstanceServiceImplTest {
     private static final int ITEMS_PER_PAGE = 15;
     private static final int ITEMS_PER_PAGE_INVALID = 0;
     private static final SearchQuery SEARCH_QUERY = new SearchQueryImpl(new ArrayList<>(), new ArrayList<>(), "", 1, 5,-1, AssetState.PUBLIC);
+    private static final AssetInstance DELETED_ASSET_INSTANCE = new AssetInstance(0, new Asset(), PhysicalCondition.ASNEW, new User(), new Location(), new Image(), AssetState.DELETED,0, "");
 
     @Test
     public void getAllAssetsInstancesEmptyDBTest(){
@@ -77,5 +86,30 @@ public class AssetInstanceServiceImplTest {
         Assert.assertEquals(page.getCurrentPage(), 1);
         Assert.assertEquals(page.getTotalPages(), 1);
     }
+    @Test(expected = AssetInstanceNotFoundException.class)
+    public void assetInstanceNotFound() throws AssetInstanceNotFoundException {
+        // 1 - Precondiciones
+        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.empty());
+
+        // 2 - Ejercitación
+
+        assetInstanceService.getAssetInstance(1);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
+
+    @Test(expected = UnableToDeleteAssetInstanceException.class)
+    public void removeAssetInstanceAlreadyDeleted() throws AssetInstanceNotFoundException, UnableToDeleteAssetInstanceException {
+        // 1 - Precondiciones
+        when(assetInstanceDao.getAssetInstance(anyInt())).thenReturn(Optional.of(DELETED_ASSET_INSTANCE));
+
+        // 2 - Ejercitación
+        assetInstanceService.removeAssetInstance(1);
+
+        // 3 - Assertions
+        Assert.fail();
+    }
+
 
 }
