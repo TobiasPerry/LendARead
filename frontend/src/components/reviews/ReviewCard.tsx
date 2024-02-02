@@ -7,8 +7,8 @@ const ReviewCard = ({
         showError_stars = false,
         showError_review = false,
         type = "",
-        handleRating = (value) => {console.log(value)},
-        handleReview = (value) => {console.log(value)}
+        handleRating = (value) => {},
+        handleReview = (value) => {}
         }) => {
     return (
         <>
