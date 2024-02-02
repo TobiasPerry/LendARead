@@ -5,11 +5,11 @@ import {extractId} from "../../hooks/assetInstance/useUserAssetInstances.ts";
 import {Link} from "react-router-dom";
 import StarsReviews from "../viewAsset/StarsReviews.tsx";
 
-const ProfileReviewCard = ({review}) => {
+const ProfileReviewCard = ({review, setCurrentReview}) => {
     const rating = review.rating;
 
     return (
-        <div className="row d-flex justify-content-center" style={{ width: '450px' }}>
+        <div className="row d-flex justify-content-center" style={{ width: '450px' }} onClick={() => setCurrentReview(review)}>
             <div className="my-2">
                 <div className="card" style={{ borderRadius: '30px' }}>
                     <div className="card-body m-3">
