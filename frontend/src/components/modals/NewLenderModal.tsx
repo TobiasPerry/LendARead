@@ -96,15 +96,16 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
 
     return (
         <div className={`modal ${showModal ? 'show' : ''}`} role="dialog" aria-labelledby="modalTitle" >
-            <div className="modal-dialog" role="document" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-dialog" style={{borderRadius: "25px"}} role="document" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-content">
+                <div>
                     <div className="modal-header-centered mb-2">
                         <div className="icon-box">
                             <i className="fas fa-book-reader"/>
                         </div>
-                        <h5 className="modal-title mt-3" id="modal-title">
+                        <h2 className="modal-title mt-3" id="modal-title">
                             {t('addAsset.newLender.title')}
-                        </h5>
+                        </h2>
                         <small className="d-flex justify-content-center">{t('addAsset.newLender.subtitle')}</small>
                     </div>
                     <div className="modal-body">
@@ -113,7 +114,8 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                             <div className="form-group">
                                 <label htmlFor="name-modal">{t('addAssetView.nameLabel')}</label>
                                 <input type="text" className="form-control" name="name" id="name-modal"
-                                       value={formData.name} onChange={handleChange}/>
+                                       value={formData.name} onChange={handleChange}
+                                       placeholder={t("addAssetView.nameLabel")}/>
                                 {formErrors.name && <div className="error">{formErrors.name}</div>}
                             </div>
 
@@ -122,7 +124,8 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                             <div className="form-group">
                                 <label htmlFor="locality-modal">{t('addAssetView.localityLabel')}</label>
                                 <input type="text" className="form-control" name="locality" id="locality-modal"
-                                       value={formData.locality} onChange={handleChange}/>
+                                       value={formData.locality} onChange={handleChange}
+                                       placeholder={t("addAssetView.localityLabel")}/>
                                 {formErrors.locality && <div className="error">{formErrors.locality}</div>}
                             </div>
 
@@ -130,7 +133,8 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                             <div className="form-group">
                                 <label htmlFor="province-modal">{t('addAssetView.provinceLabel')}</label>
                                 <input type="text" className="form-control" name="province" id="province-modal"
-                                       value={formData.province} onChange={handleChange}/>
+                                       value={formData.province} onChange={handleChange}
+                                       placeholder={t("addAssetView.provinceLabel")}/>
                                 {formErrors.province && <div className="error">{formErrors.province}</div>}
                             </div>
                             </div>
@@ -141,7 +145,8 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                             <div className="form-group">
                                 <label htmlFor="country-modal">{t('addAssetView.countryLabel')}</label>
                                 <input type="text" className="form-control" name="country" id="country-modal"
-                                       value={formData.country} onChange={handleChange}/>
+                                       value={formData.country} onChange={handleChange}
+                                placeholder={t("addAssetView.countryLabel")}/>
                                 {formErrors.country && <div className="error">{formErrors.country}</div>}
                             </div>
 
@@ -149,7 +154,8 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                             <div className="form-group">
                                 <label htmlFor="zipcode-modal">{t('addAssetView.zipcodeLabel')}</label>
                                 <input type="text" className="form-control" name="zipcode" id="zipcode-modal"
-                                       value={formData.zipcode} onChange={handleChange}/>
+                                       value={formData.zipcode} onChange={handleChange}
+                                placeholder={t("addAssetView.zipcodeLabel")}/>
                                 {formErrors.zipcode && <div className="error">{formErrors.zipcode}</div>}
                             </div>
                             </div>
@@ -167,11 +173,12 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                         </form>
 
                     </div>
-
                 </div>
-                <button style={{position: "absolute", top: "15px", right: "15px", background: "none", color: "black", cursor: "pointer"}} onClick={handleClose}>
-                    <i className="fas fa-times fa-lg"></i>
-                </button>
+                    <button style={{position: "absolute", top: "0px", right: "0px", background: "none", color: "black", cursor: "pointer"}} onClick={handleClose}>
+                        <i className="fas fa-times fa-lg"></i>
+                    </button>
+                </div>
+
             </div>
         </div>
     );
