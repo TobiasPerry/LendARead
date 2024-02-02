@@ -1,17 +1,20 @@
 import "../styles/profileReview.css"
+import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
+import {useEffect} from "react";
+import {extractId} from "../../hooks/assetInstance/useUserAssetInstances.ts";
+import {Link} from "react-router-dom";
 
-const ProfileReviewCard = ({review, user, userName}) => {
-    const lending = review.lending;
+const ProfileReviewCard = ({review}) => {
     const rating = review.rating;
-    const reviewText = review.review;
+
 
     const renderStars = (rating: number) => {
         const stars = [];
         for (let i = 0; i < rating; i++) {
-            stars.push(<span key={i} className="fa fa-star checked"></span>);
+            stars.push(<span key={i} className="fa fa-star checked fa-sm"></span>);
         }
         for (let i = rating; i < 5; i++) {
-            stars.push(<span key={i} className="fa fa-star unchecked"></span>);
+            stars.push(<span key={i} className="fa fa-star unchecked fa-sm"></span>);
         }
         return (
             <div className="user-review-card-rating">
@@ -22,19 +25,19 @@ const ProfileReviewCard = ({review, user, userName}) => {
 
     return (
         <div className="user-review-card">
-            <a href={`/user/${user}`}>
+            <Link to={`/user/${review.reviewerId}`}>
             <div className="user-review-card-img-container">
-                <img className="user-review-card-img" src="https://preview.redd.it/if-the-show-gets-released-what-would-happen-if-alastor-gets-v0-ntsn6fk2oe5a1.jpg?auto=webp&s=d473c255d8aa94a4c2c9617786053f1b98c4a010" alt="reviewer profile picture" />
+                <img className="user-review-card-img" src={`${review.reviewerDetails.image}`} alt="reviewer profile picture" />
             </div>
-            </a>
+            </Link>
             <div className="user-review-card-content">
                 <div className="user-review-card-header">
-                    <a href={`/user/${user}`}>
-                        <h2>{userName}</h2>
-                    </a>
+                    <Link to={`/user/${review.reviewerId}`}>
+                        <h5>{review.reviewerDetails.userName}</h5>
+                    </Link>
                     {renderStars(rating)}
                 </div>
-                <p>{reviewText}</p>
+                <p style={{fontSize: "18px"}}>{review.review}</p>
             </div>
         </div>
     )

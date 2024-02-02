@@ -44,8 +44,6 @@ const ProfileView = ({isCurrentUser, id}) => {
                         {selectedTab === "lender_reviews" &&
                           <UserReviews
                               reviews={lenderReviews}
-                              user={user}
-                              userName={userDetails.userName}
                               changePage={changePageLenderReviews}
                               currentPage={currentPageLenderReviews}
                               totalPages={totalPagesLenderReviews}/>
@@ -53,8 +51,6 @@ const ProfileView = ({isCurrentUser, id}) => {
                         {selectedTab === "borrower_reviews" &&
                             <UserReviews
                                 reviews={borrowerReviews}
-                                user={user}
-                                userName={userDetails.userName}
                                 changePage={changePageBorrowerReviews}
                                 currentPage={currentPageBorrowerReviews}
                                 totalPages={totalPagesBorrowerReviews}/>
