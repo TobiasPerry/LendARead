@@ -24,7 +24,7 @@ const useReviews = () => {
 
     const {retrieveUserDetails} = useUserDetails()
     const {user} = useContext(AuthContext)
-    const PAGE_SIZE = 2
+    const PAGE_SIZE = 3
 
 
 
