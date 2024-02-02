@@ -43,7 +43,6 @@ const useReviews = () => {
                 }
             })
             const lenderReviewsData = await Promise.all(lenderReviewsPromises)
-            console.log(lenderReviewsData)
             setLenderReviews(lenderReviewsData)
         } catch (e) {
 
@@ -59,7 +58,15 @@ const useReviews = () => {
             const totalPages = extractTotalPages(linkHeader);
             setTotalPagesBorrowerReviews(totalPages);
 
-            const borrowerReviewsData = borrowerReviewsResponse.data
+            const borrowerReviewsPromises = borrowerReviewsResponse.data.map(async (review: ReviewApi) => {
+                const reviewerId = extractId(review.reviewer)
+                return {
+                    ...review,
+                    reviewerDetails: await retrieveUserDetails(reviewerId),
+                    reviewerId: reviewerId
+                }
+            })
+            const borrowerReviewsData = await Promise.all(borrowerReviewsPromises)
             setBorrowerReviews(borrowerReviewsData)
         } catch (e) {
             console.log(e)
