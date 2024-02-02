@@ -13,14 +13,14 @@ import java.util.List;
 public class ErrorsDTO {
 
     private  List<ErrorDTO> errors;
-    private  int errosCount;
+    private  int errorsCount;
 
 
     public static ErrorsDTO fromValidationError(ConstraintViolationException e) {
         ErrorsDTO errorsDTO = new ErrorsDTO();
         errorsDTO.errors = new ArrayList<>();
         e.getConstraintViolations().forEach(violation -> errorsDTO.errors.add(ErrorDTO.fromError(violation.getMessage(), getViolationPropertyName(violation))));
-        errorsDTO.errosCount = e.getConstraintViolations().size();
+        errorsDTO.errorsCount = e.getConstraintViolations().size();
         return errorsDTO;
     }
     private static String getViolationPropertyName(ConstraintViolation<?> violation) {
