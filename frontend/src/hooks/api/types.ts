@@ -21,6 +21,7 @@ export class Vnd {
     public static readonly VND_ASSET = Vnd.VND_PREFIX + "asset.v1" + Vnd.VND_SUFFIX;
     public static readonly VND_LANGUAGE = Vnd.VND_PREFIX + "language.v1" + Vnd.VND_SUFFIX;
     public static readonly VND_ROOT = Vnd.VND_PREFIX + "root.v1" + Vnd.VND_SUFFIX;
+    public static readonly VND_VALIDATION_ERROR = Vnd.VND_PREFIX + "validationError.v1" + Vnd.VND_SUFFIX + ";charset=UTF-8";
 }
 
 export default Vnd;

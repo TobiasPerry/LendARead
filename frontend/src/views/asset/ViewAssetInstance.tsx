@@ -57,6 +57,7 @@ const ViewAssetInstance = () => {
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
     const [noDatesSelected, setNoDatesSelected] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
 
     // AssetInstance Information
     const [data, setData] = useState(book)
@@ -116,11 +117,12 @@ const ViewAssetInstance = () => {
             const res = await handleSendLendingRequest(
                 {borrowDate: beginDate, devolutionDate: endDate, assetInstanceId: bookNumber}
             );
-            if (res !== undefined && res !== null) {
+            if (!res.error) {
                 setLendingId(res.lendingId)
                 setSuccess(true)
             } else {
                 setError(true)
+                setErrorMessage(res.errorMessage)
             }
         }
     }
@@ -145,7 +147,7 @@ const ViewAssetInstance = () => {
             />
             <Modal
                 showModal={error} errorType={true}
-                title={t('view_asset.error_modal.title')} subtitle={t('view_asset.error_modal.sub_title')} btnText={t('view_asset.error_modal.btn_text')}
+                title={t('view_asset.error_modal.title')} subtitle={errorMessage} btnText={t('view_asset.error_modal.btn_text')}
                 handleSubmitModal={() => {setError(false)}}
                 handleCloseModal={() => {setError(false)}}
                 icon="bi bi-x"
