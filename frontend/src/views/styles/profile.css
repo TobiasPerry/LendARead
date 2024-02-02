@@ -10,9 +10,9 @@ hr {
     margin-top: calc(min(var(--photo-width), var(--min-photo-width)) / 2.5);
 }
 
-p {
-    font-size: 1.5rem;;
-}
+/*p {*/
+/*    font-size: 1.5rem;;*/
+/*}*/
 
 .grey-text {
     color: var(--grey-custom);
