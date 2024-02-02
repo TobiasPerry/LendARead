@@ -93,6 +93,9 @@ public class UserController {
     @Produces(value = { Vnd.VND_USER_LENDER_REVIEW})
     public Response getLenderReviews(@PathParam("id") final int id,@QueryParam("page") @DefaultValue("1") final int page,@QueryParam("itemsPerPage")@DefaultValue("1") final int itemsPerPage) throws UserNotFoundException {
         PagingImpl<UserReview> items =urs.getUserReviewsAsLender(page,itemsPerPage,us.getUserById(id));
+        if (items.getTotalPages() == 0 || items.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         List<UserReviewsDTO> reviewsDTOS = UserReviewsDTO.fromUserReviewsList(items.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<UserReviewsDTO>>(reviewsDTOS) {});
         LOGGER.info("GET user/{}/lender_reviews",id);
@@ -106,6 +109,9 @@ public class UserController {
     @Produces(value = { Vnd.VND_USER_BORROWER_REVIEW})
     public Response getBorrowerReviews(@PathParam("id") final int id,@QueryParam("page") @DefaultValue("1") final int page,@QueryParam("itemsPerPage")@DefaultValue("1") final int itemsPerPage) throws UserNotFoundException {
         PagingImpl<UserReview> items =urs.getUserReviewsAsBorrower(page,itemsPerPage,us.getUserById(id));
+        if (items.getTotalPages() == 0 || items.getList().isEmpty()) {
+            return Response.noContent().build();
+        }
         List<UserReviewsDTO> reviewsDTOS = UserReviewsDTO.fromUserReviewsList(items.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<UserReviewsDTO>>(reviewsDTOS) {});
         LOGGER.info("GET user/{}/borrower_reviews",id);
