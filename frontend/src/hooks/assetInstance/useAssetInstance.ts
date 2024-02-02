@@ -1,7 +1,25 @@
 import {api, api_} from "../api/api.ts";
 import {Simulate} from "react-dom/test-utils";
+import i18n from "../../i18n.js"
 import canPlayThrough = Simulate.canPlayThrough;
+import Vnd from "../api/types.ts";
 import types from "../api/types.ts";
+
+export const getErrorMsg = (response) => {
+    console.log(response.headers["content-type"])
+    console.log(Vnd.VND_VALIDATION_ERROR)
+    if(response.headers["content-type"] === Vnd.VND_VALIDATION_ERROR){
+        console.log(response)
+        let toReturn= ""
+        response.data.errors.forEach((error)=>{
+            toReturn += `${error.field}: ${error.message}\n`
+        })
+        return toReturn
+    }
+    else{
+        return response.message
+    }
+}
 
 export const extractTotalPages = (linkHeader) => {
     if(!linkHeader){
@@ -238,15 +256,21 @@ const useAssetInstance = () => {
                     }
                 }
             )
-
             const body_res = res.data
             const lendingId = body_res.id
             return {
-                lendingId: lendingId
+                lendingId: lendingId,
+                error: false,
+                errorMessage: ""
             }
         }catch (e){
-            console.error("Error: " + e);
-            return null;
+            console.error("Error: " + e.response.status);
+            const errorMsg = getErrorMsg(e.response);
+            return {
+                errorMessage: errorMsg,
+                error: true,
+                lendingId: -1
+            };
         }
     }
 

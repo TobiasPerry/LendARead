@@ -3,42 +3,31 @@ import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
 import {useEffect} from "react";
 import {extractId} from "../../hooks/assetInstance/useUserAssetInstances.ts";
 import {Link} from "react-router-dom";
+import StarsReviews from "../viewAsset/StarsReviews.tsx";
 
-const ProfileReviewCard = ({review}) => {
-    const rating = review.rating;
+const ProfileReviewCard = ({review, clickedReview}) => {
 
-
-    const renderStars = (rating: number) => {
-        const stars = [];
-        for (let i = 0; i < rating; i++) {
-            stars.push(<span key={i} className="fa fa-star checked fa-sm"></span>);
-        }
-        for (let i = rating; i < 5; i++) {
-            stars.push(<span key={i} className="fa fa-star unchecked fa-sm"></span>);
-        }
-        return (
-            <div className="user-review-card-rating">
-                {stars}
-            </div>
-        )
-    }
-
-    console.log("review", review)
     return (
-        <div className="user-review-card">
-            <Link to={`/user/${review.reviewerId}`}>
-            <div className="user-review-card-img-container">
-                <img className="user-review-card-img" src={`${review.reviewerDetails.image}`} alt="reviewer profile picture" />
-            </div>
-            </Link>
-            <div className="user-review-card-content">
-                <div className="user-review-card-header">
-                    <Link to={`/user/${review.reviewerId}`}>
-                        <h5>{review.reviewerDetails.userName}</h5>
-                    </Link>
-                    {renderStars(rating)}
+        <div className="row d-flex justify-content-center" style={{ width: '450px' }} onClick={() => clickedReview(review)}>
+            <div className="my-2">
+                <div className="card" style={{ borderRadius: '30px' }}>
+                    <div className="card-body m-3">
+                        <div className="row">
+                            <div className="col-lg-4 justify-content-center align-items-center">
+                                <img src={review.reviewerDetails.image}
+                                     className="rounded-circle img-fluid shadow-1" alt="avatar" width="50"
+                                     height="50"/>
+                                <p className="fw-bold lead mb-2"><strong>{review.reviewerDetails.userName}</strong></p>
+                            </div>
+                            <div className="col-lg-8">
+                                <StarsReviews rating={review.rating}/>
+                                <p className="fw-light mb-4 ellipsis-text">
+                                    {review.review}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p style={{fontSize: "18px"}}>{review.review}</p>
             </div>
         </div>
     )

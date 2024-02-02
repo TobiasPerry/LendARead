@@ -2,6 +2,11 @@
     display: inline-block;
     font-size: 0; /* Remove whitespace between inline-block elements */
 }
+.ellipsis-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 50px; /* Adjust this value based on your requirements */
+}
 
 .gold-star {
     display: inline-block;
