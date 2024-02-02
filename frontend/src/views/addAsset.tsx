@@ -604,7 +604,7 @@ const AddAsset = () => {
                             <h2>{t('addAsset.duration.detail')}</h2>
                             <div className='field-group'>
                                 <label>{t('addAsset.duration.lendFor')}</label>
-                                <input type='number' className='form-control' id='borrow-time-quantity' name='borrow-time-quantity' min='1' placeholder='Lend for' onChange={(e) => setBorrowTimeQuantity(parseInt(e.target.value))}/>
+                                <input type='number' className='form-control' id='borrow-time-quantity' name='borrow-time-quantity' min='1' placeholder={t('addAsset.duration.lendFor')} onChange={(e) => setBorrowTimeQuantity(parseInt(e.target.value))}/>
                                 <select id='borrow-time-type' className='form-select' onChange={(e) => setBorrowTimeType(parseInt(e.target.value))}>
                                     {timeTypes.map((timeType) => {
                                         return <option key={timeType[0]} value={timeType[0]}>{timeType[1]}</option>
