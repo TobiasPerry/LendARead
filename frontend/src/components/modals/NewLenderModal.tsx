@@ -117,6 +117,7 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                                 {formErrors.name && <div className="error">{formErrors.name}</div>}
                             </div>
 
+                            <div className="d-flex flex-1 flex-row gap-3">
                             {/* Locality Field */}
                             <div className="form-group">
                                 <label htmlFor="locality-modal">{t('addAssetView.localityLabel')}</label>
@@ -132,6 +133,9 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                                        value={formData.province} onChange={handleChange}/>
                                 {formErrors.province && <div className="error">{formErrors.province}</div>}
                             </div>
+                            </div>
+
+                            <div className="d-flex flex-1 flex-row gap-3">
 
                             {/* Country Field */}
                             <div className="form-group">
@@ -148,6 +152,7 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
                                        value={formData.zipcode} onChange={handleChange}/>
                                 {formErrors.zipcode && <div className="error">{formErrors.zipcode}</div>}
                             </div>
+                            </div>
 
                             {/* Hidden Field for selfUrl */}
                             <input type="hidden" name="selfUrl" value={formData.selfUrl}/>
@@ -160,11 +165,13 @@ const NewLenderModal = ({ handleSave, location, showModal, handleClose }) => {
 
 
                         </form>
-                        <button className="cancel-button text-center" onClick={handleClose}>
-                            {t('addAsset.newLender.cancel')}
-                        </button>
+
                     </div>
+
                 </div>
+                <button style={{position: "absolute", top: "15px", right: "15px", background: "none", color: "black", cursor: "pointer"}} onClick={handleClose}>
+                    <i className="fas fa-times fa-lg"></i>
+                </button>
             </div>
         </div>
     );
