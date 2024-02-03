@@ -13,7 +13,7 @@ describe('Landing Component', () => {
                 <Landing />
             // </AuthContextProvider>
         );
-        const titleElement = screen.getByText(/landing.hero.title/i);
+        const titleElement = screen.getByText("La nueva era de los libros\n");
         expect(titleElement).toBeInTheDocument();
     });
 });

@@ -21,5 +21,11 @@ export default defineConfig({
     },
     minify: 'esbuild', // 'terser' is the default minifier for production
   },
-  base: base
+  base: base,
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.ts"
+
+  }
 })
