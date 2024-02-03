@@ -47,7 +47,7 @@ const AddAsset = () => {
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<LanguagesDTO>([])
     const [showLocModal, setShowLocModal] = useState(false);
-    const {getLocations, addLocation} = useLocations()
+    const {getLocations, addLocation, getAllLocations} = useLocations()
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([])
     const [selectedLocation, setSelectedLocation] = useState<any>({})
@@ -73,15 +73,12 @@ const AddAsset = () => {
         setShowLocModal(false);
         // First, make the user lender
         const resChangeRole = await api.patch(`/users/${user}`, {"role": "LENDER"}, {headers: {"Content-Type": "application/vnd.user.v1+json"}})
-        if(resChangeRole.status !== 204){
-            console.log(resChangeRole.status)
-        }
 
         const resAddLocation = await addLocation(newLocation)
         if(!resAddLocation){
             console.error("Error en cargar la ubicacion")
         }else{ 
-            getLocations(user).then((response) => {
+            getAllLocations(user).then((response) => {
                 setLocations(response)
             })
         }
@@ -90,6 +87,9 @@ const AddAsset = () => {
     }
 
     useEffect(() => {
+        locations.map((location) => {
+            return location
+        })
         if (locations.length > 0) {
             changeSelectedLocation(locations[0].selfUrl.split('/').pop())
         }
@@ -102,13 +102,12 @@ const AddAsset = () => {
     }, [])
 
     useEffect(() => {
-        getLocations(user).then((response) => {
+        getAllLocations(user).then((response) => {
             setLocations(response)
         })
     }, [])
 
     useEffect(() => {
-        console.log(userDetails.role)
         if(userDetails.role !== "LENDER"){
             setShowLocModal(true)
         }
@@ -519,8 +518,6 @@ const AddAsset = () => {
     const handleSaveNewLocation = async (formData) => {
         const res = await addLocation(formData)
         setNewLocationModal(false)
-        const res_new = await getLocations(user)
-        setLocations(res_new)
     }
 
 
