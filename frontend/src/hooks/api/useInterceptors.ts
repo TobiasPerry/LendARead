@@ -11,11 +11,11 @@ const useInterceptors = () => {
 
     api.interceptors.response.use(response => {
         return response;
-    }, async (error) => {await handleError(error, api)});
+    }, async (error) => {return await handleError(error, api)});
 
     api_.interceptors.response.use(response => {
         return response;
-    }, async (error) => {await handleError(error, api_)});
+    }, async (error) => {return await handleError(error, api_)});
 
     const handleLogout = () => {
         logout()
@@ -53,6 +53,7 @@ const useInterceptors = () => {
 
     const handleError = async (error, Api: AxiosInstance) => {
 
+        console.log("llegue")
         try {
 
             const originalRequest = error.config;
