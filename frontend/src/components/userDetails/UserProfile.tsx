@@ -87,7 +87,7 @@ const UserProfile = () => {
                                 <span className="user-role-stars">
                                         {userDetails.ratingAsBorrower <= 0 ? (
                                             "-.- ") : (
-                                            userDetails.ratingAsBorrower
+                                            Math.round(userDetails.ratingAsBorrower * 10) / 10
                                         )}
                                     ★ </span>
                             </>
@@ -98,7 +98,7 @@ const UserProfile = () => {
                         <span className="user-role-stars">
                             {userDetails.ratingAsLender <= 0 ? (
                                 "-.- ") : (
-                                userDetails.ratingAsLender
+                                Math.round(userDetails.ratingAsLender * 10) / 10
                             )}
                         ★</span>
                     </>

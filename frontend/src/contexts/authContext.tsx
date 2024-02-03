@@ -159,7 +159,6 @@ const AuthContextProvider = (props) => {
         const userDetails = await getUserDetails(id)
         if(userDetails.image !== null && userDetails.image !== undefined) {
             setUserImage(userDetails.image)
-            console.log(userDetails.image)
         }
 
         setUserDetails(userDetails)
