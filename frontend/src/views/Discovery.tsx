@@ -218,12 +218,48 @@ const DiscoveryView =  () => {
                                 {t('discovery.sorting.sort_by')} {sortingi18n(sort, sortDirection)}
                             </button>
                             <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.RECENT); setSortDirection(SORT_DIRECTIONS.DES)}}>{t('discovery.sorting.most_recent')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.RECENT); setSortDirection(SORT_DIRECTIONS.ASC)}}>{t('discovery.sorting.least_recent')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.TITLE); setSortDirection(SORT_DIRECTIONS.ASC)}}>{t('discovery.sorting.title_asc')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.TITLE); setSortDirection(SORT_DIRECTIONS.DES)}}>{t('discovery.sorting.title_des')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.AUTHOR); setSortDirection(SORT_DIRECTIONS.ASC)}}>{t('discovery.sorting.author_asc')}</a></li>
-                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {setSort(SORT_TYPES.AUTHOR); setSortDirection(SORT_DIRECTIONS.DES)}}>{t('discovery.sorting.author_des')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setSort(SORT_TYPES.RECENT);
+                                    setSortDirection(SORT_DIRECTIONS.DES)
+                                }}>{t('discovery.sorting.most_recent')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setSort(SORT_TYPES.RECENT);
+                                    setSortDirection(SORT_DIRECTIONS.ASC)
+                                }}>{t('discovery.sorting.least_recent')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setSort(SORT_TYPES.TITLE);
+                                    setSortDirection(SORT_DIRECTIONS.ASC)
+                                }}>{t('discovery.sorting.title_asc')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setSort(SORT_TYPES.TITLE);
+                                    setSortDirection(SORT_DIRECTIONS.DES)
+                                }}>{t('discovery.sorting.title_des')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setSort(SORT_TYPES.AUTHOR);
+                                    setSortDirection(SORT_DIRECTIONS.ASC)
+                                }}>{t('discovery.sorting.author_asc')}</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setSort(SORT_TYPES.AUTHOR);
+                                    setSortDirection(SORT_DIRECTIONS.DES)
+                                }}>{t('discovery.sorting.author_des')}</a></li>
+                            </ul>
+                        </div>
+
+                        <div className="btn-group mx-2 mb-4 mt-2" role="group">
+                            <button type="button" className="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false" style={{backgroundColor: "rgba(255, 255, 255, 0.3)"}}>
+                                {t('discovery.books_per_page.title')} {booksPerPage}
+                            </button>
+                            <ul className="dropdown-menu">
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setBooksPerPage(12)
+                                }}>12</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setBooksPerPage(24)
+                                }}>24</a></li>
+                                <li><a className="dropdown-item" id="mostRecent" onClick={() => {
+                                    setBooksPerPage(48)
+                                }}>48</a></li>
                             </ul>
                         </div>
 
@@ -265,19 +301,21 @@ const DiscoveryView =  () => {
                             <ul className="list-group" style={{maxHeight: '200px', overflowY: 'scroll'}}>
                                 {
                                     physical_conditions.map((physical_condition, item) => (
-                                        <div key={item}>
-                                            <li className="list-group-item m-1 clickable"
-                                                style={
-                                                    physicalConditions_filters.includes(physical_condition) ? {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
-                                                }
-                                                onClick={() => {clickPhysicalCondition(physical_condition)}}
-                                            >
+                                            <div key={item}>
+                                                <li className="list-group-item m-1 clickable"
+                                                    style={
+                                                        physicalConditions_filters.includes(physical_condition) ? {backgroundColor: 'rgba(255,255,255,0.9)'} : {backgroundColor: 'rgba(255,255,255,0.3)'}
+                                                    }
+                                                    onClick={() => {
+                                                        clickPhysicalCondition(physical_condition)
+                                                    }}
+                                                >
                                                 <span className="d-inline-block text-truncate"
                                                       style={{maxWidth: '100px'}}>
                                                     {t(physical_condition)}
                                                 </span>
-                                            </li>
-                                        </div>
+                                                </li>
+                                            </div>
                                         )
                                     )
                                 }
@@ -308,16 +346,17 @@ const DiscoveryView =  () => {
                     <div className="container-column" style={{flex: '0 1 85%'}}>
                         { /* If books is empty show message and btn action to clear filters */
                             !loadingData && data.length === 0 ? (
-                                    <div className="mb-2">
-                                        <div className="container-row-wrapped" style={{width: '100%'}}>
-                                            <h1>{t('discovery.no_books.title')}</h1>
-                                        </div>
-                                        <div className="container-row-wrapped mt-3" style={{width: '100%'}}>
-                                            <button type="button" className="btn btn-outline-secondary btn-lg" onClick={clearSearch}>
-                                                {t('discovery.no_books.btn')}
-                                            </button>
-                                        </div>
+                                <div className="mb-2">
+                                    <div className="container-row-wrapped" style={{width: '100%'}}>
+                                        <h1>{t('discovery.no_books.title')}</h1>
                                     </div>
+                                    <div className="container-row-wrapped mt-3" style={{width: '100%'}}>
+                                        <button type="button" className="btn btn-outline-secondary btn-lg"
+                                                onClick={clearSearch}>
+                                            {t('discovery.no_books.btn')}
+                                        </button>
+                                    </div>
+                                </div>
                             ) : (
                                 <>
                                     <div className="container-row-wrapped"
@@ -329,7 +368,8 @@ const DiscoveryView =  () => {
                                              width: '90%'
                                          }}>
                                         {
-                                            data.length === 0 ? placeholder_books : data.map((book, index) => (<BookCard key={index} book={book}/> ))
+                                            data.length === 0 ? placeholder_books : data.map((book, index) => (
+                                                <BookCard key={index} book={book}/>))
                                         }
                                     </div>
                                     <div className="container-row-wrapped"

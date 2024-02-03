@@ -180,6 +180,9 @@
       "author_asc": "Autor A-Z",
       "author_des": "Autor Z-A"
     },
+    "books_per_page": {
+      "title": "Libros por pagina: "
+    },
     "filters": {
       "language": "Idioma",
       "physical_condition": "Condición Física",
@@ -342,7 +345,7 @@
         "lendFor": "Prestar por",
         "days": "día/s",
         "weeks": "semana/s",
-        "months": "mrating_assetInstancees/es",
+        "months": "mes/es",
         "years": "año/s",
         "acceptsReservations": "Aceptar Reservas",
         "validation-error": "Por favor, ingrese una duración válida."
@@ -360,7 +363,8 @@
         "province": "Provincia",
         "locality": "Ciudad",
         "zipcode": "Código Postal",
-        "validation-error": "Por favor, seleccione una ubicación válida."
+        "validation-error": "Por favor, seleccione una ubicación válida.",
+        "new": "Añadir una nueva ubicación"
     }
   },
   "BORROWER": "Prestatario",
