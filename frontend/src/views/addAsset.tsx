@@ -8,6 +8,7 @@ import useLocations from '../hooks/locations/useLocations.ts'
 import {AuthContext} from "../contexts/authContext.tsx";
 import NewLenderModal from '../components/modals/NewLenderModal.tsx'
 import noImagePlacegolder from '../../public/static/no_image_placeholder.jpg'
+import LocationModal from "../components/modals/LocationModal.tsx";
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -53,6 +54,7 @@ const AddAsset = () => {
     const alreadyHaveAsset = useRef(false)
     const assetId = useRef(-1)
 
+    const [newLocationModal, setNewLocationModal] = useState(false)
 
     // Data from the form
     const [isbn, setIsbn] = useState('');
@@ -514,6 +516,13 @@ const AddAsset = () => {
         setStep(step - 1);
     }
 
+    const handleSaveNewLocation = async (formData) => {
+        const res = await addLocation(formData)
+        setNewLocationModal(false)
+        const res_new = await getLocations(user)
+        setLocations(res_new)
+    }
+
 
     // TODO Check classes
     return (
@@ -523,6 +532,11 @@ const AddAsset = () => {
             showModal={showLocModal}
             handleClose={() =>{navigate(-1)}}
             handleSave={handleLocationSave}
+        />
+        <LocationModal
+            handleSave={handleSaveNewLocation}
+            location={()=>{}} showModal={newLocationModal}
+            handleClose={()=>{setNewLocationModal(false)}}
         />
         <div className="addasset-container flex-column">
             <h1 className="text-center mb-5">{t('addAsset.title')}</h1>
@@ -624,12 +638,17 @@ const AddAsset = () => {
                         <fieldset className='info-container d-none'>
                             <h2>{t('addAsset.location.detail')}</h2>
                             <div className='location-selector'>
-                                <select id='location-select' className='form-select' onChange={(e) => {changeSelectedLocation(e.target.value)}}>
+                                <select id='location-select' className='form-select' onChange={(e) => {
+                                    changeSelectedLocation(e.target.value)
+                                }}>
                                     {locations.map((location) => {
                                         const locId = location.selfUrl.split('/').pop()
                                         return <option key={locId} value={locId}>{location.name}</option>
                                     })}
                                 </select>
+                                <p className="text-clickable mt-3" onClick={() => {setNewLocationModal(true)}}>
+                                    {t('addAsset.location.new')}
+                                </p>
                                 <small id='location-error' className="text-danger small d-none">{t('addAsset.location.validation-error')}</small>
                                 <div className='flex-grow-1 location-display'>
                                     <div className="field-set">

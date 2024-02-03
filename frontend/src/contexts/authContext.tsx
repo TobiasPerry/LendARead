@@ -58,11 +58,11 @@ export const AuthContext = React.createContext({
         telephone: "",
         userName: "",
     },
-    userImage: ""
+    userImage: "",
+    smallUserImage: ""
 });
 
 export const logoutStorages = () => {
-    console.log("logout")
     localStorage.removeItem("userAuthToken");
     sessionStorage.removeItem("userAuthToken");
     localStorage.removeItem("refreshToken");
@@ -114,6 +114,7 @@ const AuthContextProvider = (props) => {
        }
     });
     const [userImage, setUserImage] = useState(defaultUserPhoto);
+    const [smallUserImage, setSmallUserImage] = useState(defaultUserPhoto);
     const [userDetails, setUserDetails] = useState( emptyUserDetails);
 
     const handleJWT = async (jwt: string, refreshToken: string, rememberMe = false)  => {
@@ -165,8 +166,8 @@ const AuthContextProvider = (props) => {
         const userDetails = await getUserDetails(id)
         if(userDetails.image !== null && userDetails.image !== undefined) {
             setUserImage(userDetails.image)
+            setSmallUserImage(userDetails.image + '?size=PORTADA')
         }
-
         setUserDetails(userDetails)
     }
 
@@ -246,6 +247,7 @@ const AuthContextProvider = (props) => {
             user,
             userDetails,
             userImage,
+            smallUserImage,
             handleForgotPassword,
             handleChangePassword,
             uploadUserImage

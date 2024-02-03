@@ -1,6 +1,6 @@
 import NavBar from "./components/NavBar.tsx";
 import { Routes, Route, Outlet } from "react-router-dom";
-import {lazy, Suspense} from 'react';
+import {lazy, Suspense, useEffect} from 'react';
 import AuthProvider from "./contexts/authContext.tsx";
 import LoadingAnimation from "./components/LoadingAnimation.tsx";
 import {Helmet} from "react-helmet";
@@ -33,7 +33,6 @@ export default function App() {
             <Helmet>
                 <title>Lend a Read</title>
             </Helmet>
-            <AuthProvider>
                 <Suspense fallback={<LoadingAnimation />}>
                     <Routes>
                         <Route path="/" element={<Layout />}>
@@ -56,7 +55,6 @@ export default function App() {
                         </Route>
                     </Routes>
                 </Suspense>
-            </AuthProvider>
         </>
     );
 }
