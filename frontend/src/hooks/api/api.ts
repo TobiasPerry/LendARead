@@ -83,13 +83,19 @@ const handleError = async (error, Api: AxiosInstance) => {
         Api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
-        const newRequest = await Api(originalRequest);
-        if(newRequest.status === 401) {
+        try {
+            const newRequest = await Api(originalRequest);
+            if(newRequest.request.status === 401) {
+                logoutStorages()
+                return Promise.reject(error)
+            }
+
+            return newRequest
+        } catch (error) {
             logoutStorages()
             return Promise.reject(error)
         }
 
-        return newRequest
     }
 
     return Promise.reject(error);
