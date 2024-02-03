@@ -22,7 +22,7 @@
     "caption": "Check your email inbox, you will receive a verification code",
     "passwordsDoNotMatch": "Passwords do not match",
     "invalidVerificationCode": "Invalid verification code",
-    "somethingWentWrong": "Please try with a new verification code",
+    "somethingWentWrong": "Invalid email or validation code",
     "resendToken": "Haven't received the token? Resend token",
     "resentToken": "Token resent! Please check your email",
     "title": "Change password",
