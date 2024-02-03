@@ -7,22 +7,29 @@ import useLocations from "../hooks/locations/useLocations.ts";
 import {Helmet} from "react-helmet";
 import LoadingWrapper from "../components/LoadingWrapper.tsx";
 import {Link} from "react-router-dom";
+import Pagination from "../components/Pagination.tsx";
 
 
 const LocationsPage = () => {
     const { t } = useTranslation();
     const { editLocation,
-            deleteLocation,
-            addLocation,
-            fetchLocation,
-            isLoading,
-            locations,
-        setEditingLocation,emptyLocation, editingLocation} = useLocations()
+        deleteLocation,
+        addLocation,
+        fetchLocation,
+        isLoading,
+        locations,
+        setEditingLocation,
+        emptyLocation,
+        editingLocation,
+        currentPage,
+        changePageLocations,
+        totalPages
+    } = useLocations()
     const [showModal, setShowModal] = useState(false);
     const {user} = useContext(AuthContext);
 
     useEffect(() => {
-        fetchLocation().then()
+        fetchLocation(currentPage).then()
     }, []);
 
 
@@ -33,7 +40,7 @@ const LocationsPage = () => {
 
     const handleDelete = async (locationId: any) => {
         await deleteLocation(locationId)
-        await fetchLocation()
+        await fetchLocation(currentPage)
     };
 
     const handleSave = async (updatedLocation: any) => {
@@ -45,7 +52,7 @@ const LocationsPage = () => {
         else
             await addLocation(updatedLocation)
 
-       await fetchLocation()
+       await fetchLocation(currentPage)
     };
 
     const handleBackClick = () => {
@@ -68,17 +75,17 @@ const LocationsPage = () => {
                     {locations.map((location , i) => (
                         <Location key={i} location={locations[i]} handleEdit={() => handleEdit(location)} handleDelete={() => handleDelete(location)}/>
                     ))}
-                    {locations.length <= 5 && (
+                    { totalPages === currentPage &&
                         <div className="info-container m-3 add-new-location btn-icon add-button" onClick={() => {setShowModal(true)}}
-                             style={{  width: '350px', height: '350px'  }}>
-                            <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-                                <i className="bi bi-plus-lg"></i>
-                            </div>
+                         style={{  width: '350px', height: '350px'  }}>
+                        <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                            <i className="bi bi-plus-lg"></i>
                         </div>
-                    )}
+                    </div> }
                 </div>
             </div>
             <LocationModal location={editingLocation} showModal={showModal} handleClose={() => {setShowModal(false); setEditingLocation(emptyLocation)}} handleSave={handleSave}/>
+            <Pagination currentPage={currentPage} changePage={changePageLocations} totalPages={totalPages} />
         </div>
         </LoadingWrapper>
     );

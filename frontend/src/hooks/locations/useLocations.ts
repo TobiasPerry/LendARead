@@ -3,6 +3,7 @@ import Vnd from "../api/types.ts";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {useTranslation} from "react-i18next";
+import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
 
 export interface LocationApi {
     name: string,
@@ -20,7 +21,11 @@ const useLocations = () => {
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([emptyLocation]);
     const [editingLocation, setEditingLocation] = useState(emptyLocation);
+    const [totalPages, setTotalPages] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
+
     const currentLanguage = i18n.language;
+    const PAGE_SIZE = 2
 
     const editLocation = async (location: any) => {
         try {
@@ -50,7 +55,7 @@ const useLocations = () => {
         }
     }
 
-    const getLocations = async (userId: any) => {
+    const getLocations = async (userId: any, page: number) => {
         setIsLoading(true)
         try {
             const response = await api.get(`/locations`, {
@@ -58,9 +63,13 @@ const useLocations = () => {
                     "Accept-Language": currentLanguage
                 },
                 params: {
-                    userId: userId
+                    userId: userId,
+                    page: page,
+                    itemsPerPage: PAGE_SIZE
                 }
             })
+            //@ts-ignore
+            setTotalPages(extractTotalPages(response.headers.get("Link")))
             setIsLoading(false)
             return response.data
         } catch (error) {
@@ -82,17 +91,34 @@ const useLocations = () => {
         }
     }
 
-    const fetchLocation = async () => {
+    const fetchLocation = async (page: number) => {
         try {
-            const response = await getLocations(user);
+            const response = await getLocations(user, page);
             await setLocations(response);
         } catch (error) {
             console.error("Failed to fetch locations:", error);
         }
     }
 
+    const changePageLocations = async(page: number) => {
+        setCurrentPage(page)
+        await fetchLocation(page)
+    }
+
     return {
-        editLocation, deleteLocation, getLocations, addLocation, isLoading, fetchLocation, locations, editingLocation, setEditingLocation, emptyLocation
+        editLocation,
+        deleteLocation,
+        getLocations,
+        addLocation,
+        isLoading,
+        fetchLocation,
+        locations,
+        editingLocation,
+        setEditingLocation,
+        emptyLocation,
+        changePageLocations,
+        currentPage,
+        totalPages
     }
 }
 
