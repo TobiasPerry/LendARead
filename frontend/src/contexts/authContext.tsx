@@ -62,6 +62,7 @@ export const AuthContext = React.createContext({
 });
 
 export const logoutStorages = () => {
+    console.log("logout")
     localStorage.removeItem("userAuthToken");
     sessionStorage.removeItem("userAuthToken");
     localStorage.removeItem("refreshToken");

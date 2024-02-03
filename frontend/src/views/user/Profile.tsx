@@ -33,7 +33,8 @@ const ProfileView = () => {
 
     useEffect(() => {
         setIsCurrentUser(user !== undefined && id !== undefined && id === user)
-        fetchReviews(id).then()
+        if(id !== undefined)
+            fetchReviews(id).then()
     }, [id, user])
 
 
@@ -51,14 +52,14 @@ const ProfileView = () => {
                         {selectedTab === "lender_reviews" &&
                           <UserReviews
                               reviews={lenderReviews}
-                              changePage={changePageLenderReviews}
+                              changePage={(page: number) => changePageLenderReviews(page, id)}
                               currentPage={currentPageLenderReviews}
                               totalPages={totalPagesLenderReviews}/>
                         }
                         {selectedTab === "borrower_reviews" &&
                             <UserReviews
                                 reviews={borrowerReviews}
-                                changePage={changePageBorrowerReviews}
+                                changePage={(page: number) => changePageBorrowerReviews(page, id)}
                                 currentPage={currentPageBorrowerReviews}
                                 totalPages={totalPagesBorrowerReviews}/>
                         }
