@@ -45,6 +45,7 @@ export default function ReviewLender () {
     const [notAllowed, setNotAllowed] = useState(false)
     const [showError_stars, setShowError_stars] = useState(false)
     const [showError_review, setShowError_review] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
 
     const {t} = useTranslation();
     const { handleGetLendingInfoForLender, handleSendLenderReview } = UseReview()
@@ -77,8 +78,9 @@ export default function ReviewLender () {
         }else {
             handleSendLenderReview(userReview, data.borrower.userId)
                 .then((value) => {
-                    setSuccess(value !== null && value !== undefined);
-                    setError(value === null || value === undefined)
+                    setSuccess(value.res !== null && value.res !== undefined);
+                    setError(value.res === null || value.res === undefined);
+                    setErrorMessage(value.errorMessage)
                 });
         }
     }
@@ -94,16 +96,16 @@ export default function ReviewLender () {
                 title={t('reviews.success_modal.title')}
                 subtitle={t('reviews.success_modal.subtitle')}
                 btnText={t('reviews.success_modal.btn')}
-                handleSubmitModal={() => {navigate('/userAssets')}}
-                handleCloseModal={() => {setSuccess(false)}}
+                handleSubmitModal={() => {navigate(`/userBook/${lendingNumber}?state=lended`)}}
+                handleCloseModal={() => {navigate(`/userBook/${lendingNumber}?state=lended`)}}
                 icon="bi bi-check"
             />
             <Modal
                 showModal={error} errorType={true}
                 title={t('reviews.error_modal.title')}
-                subtitle={t('reviews.error_modal.subtitle')}
+                subtitle={errorMessage}
                 btnText={t('reviews.error_modal.btn')}
-                handleSubmitModal={() => {navigate('/userAssets')}}
+                handleSubmitModal={() => {setError(false)}}
                 handleCloseModal={() => {setError(false)}}
                 icon="bi bi-x"
             />

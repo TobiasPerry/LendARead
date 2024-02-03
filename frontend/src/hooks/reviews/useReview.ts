@@ -1,5 +1,5 @@
 import {api, api_} from "../api/api.ts";
-import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
+import {extractTotalPages, getErrorMsg} from "../assetInstance/useAssetInstance.ts";
 import types from "../api/types.ts";
 
 export interface body_review {
@@ -232,11 +232,17 @@ const useReview = () => {
             );
             return {
                 userReviewResponse: lender_user_review_response,
-                assetInstanceReviewResponse: asset_instance_review_response
+                assetInstanceReviewResponse: asset_instance_review_response,
+                errorMessage: ""
             };
         }catch (e){
+            const errorMsg = getErrorMsg(e.response)
             console.log("error: " + e)
-            return null;
+            return {
+                userReviewResponse: null,
+                assetInstanceReviewResponse: null,
+                errorMessage: errorMsg
+            };
         }
     }
 
@@ -251,10 +257,10 @@ const useReview = () => {
                     }
                 }
             )
-            return borrower_user_review_response;
+            return {res: borrower_user_review_response, errorMessage: ""};
         }catch (e){
-            console.log("error: " + e)
-            return null;
+            const errorMsg = getErrorMsg(e.response)
+            return {res: null, errorMessage: errorMsg};
         }
     }
 

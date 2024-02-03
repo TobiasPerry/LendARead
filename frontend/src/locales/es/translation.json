@@ -271,7 +271,7 @@
     "error_modal": {
       "title": "¡Ha habido un error!",
       "subtitle": "",
-      "btn": "Ok"
+      "btn": "Volver a intentarlo"
     }
   },
   "view_asset": {
