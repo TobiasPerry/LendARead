@@ -106,7 +106,7 @@ const AuthContextProvider = (props) => {
         if(jwt === undefined || jwt === null)
             return false
 
-        sessionStorage.setItem("rememberMe", String(rememberMe))
+        localStorage.setItem("rememberMe", String(rememberMe))
 
         if(rememberMe) {
             localStorage.setItem("userAuthToken", jwt)

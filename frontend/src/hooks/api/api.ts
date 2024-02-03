@@ -22,12 +22,15 @@ const api_ = axios.create({
 
 
 const refreshToken = async () => {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const rememberMe = localStorage.getItem("rememberMe")
+    const refreshToken = rememberMe ? localStorage.getItem("refreshToken") : sessionStorage.getItem('refreshToken');
 
     const response = await axios.post('/api/refresh-token', { refreshToken });
     const { token } = response.data;
 
-    localStorage.setItem('userAuthToken', token);
+    if(rememberMe) localStorage.setItem('userAuthToken', token);
+    else sessionStorage.setItem('userAuthToken', token);
+
     return  token;
 }
 
@@ -41,6 +44,7 @@ api.interceptors.response.use(response => {
         originalRequest._retry = true;
 
         const newToken = await refreshToken();
+
         axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
@@ -49,6 +53,27 @@ api.interceptors.response.use(response => {
 
     return Promise.reject(error);
 });
+
+api_.interceptors.response.use(response => {
+    return response;
+}, async (error) => {
+    const originalRequest = error.config;
+
+    // Check if the response is a token expired error
+    if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        const newToken = await refreshToken();
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+
+        return api_(originalRequest);
+    }
+
+    return Promise.reject(error);
+});
+
 
 
 export { api, api_ };
