@@ -344,7 +344,7 @@
     "error_modal": {
       "title": "An error has occured!",
       "subtitle": "",
-      "btn": "Ok"
+      "btn": "Try again"
     }
   },
   "view_asset": {

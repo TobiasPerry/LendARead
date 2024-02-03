@@ -47,6 +47,7 @@ export default function ReviewBorrower () {
     const [error, setError] = useState(false)
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
     const [notAllowed, setNotAllowed] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
 
     const [showError_stars_user, setShowError_stars_user] = useState(false)
     const [showError_review_user, setShowError_review_user] = useState(false)
@@ -113,8 +114,9 @@ export default function ReviewBorrower () {
         }else{
             handleSendBorrowerReview(userReview, assetInstanceReview, data.lender.userId, data.book.assetInstanceNumber)
                 .then((value) => {
-                    setSuccess(value !== null && value !== undefined);
-                    setError(value === null || value === undefined)
+                    setSuccess(value.userReviewResponse !== null && value.userReviewResponse !== undefined && value.assetInstanceReviewResponse !== null && value.assetInstanceReviewResponse!== undefined);
+                    setError(value.userReviewResponse === null || value.userReviewResponse === undefined || value.assetInstanceReviewResponse === null || value.assetInstanceReviewResponse === undefined)
+                    setErrorMessage(value.errorMessage)
                 });
         }
     }
@@ -130,16 +132,16 @@ export default function ReviewBorrower () {
                 title={t('reviews.success_modal.title')}
                 subtitle={t('reviews.success_modal.subtitle')}
                 btnText={t('reviews.success_modal.btn')}
-                handleSubmitModal={() => {navigate('/userAssets')}}
-                handleCloseModal={() => {setSuccess(false)}}
+                handleSubmitModal={() => {navigate(`/userBook/${lendingNumber}?state=borrowed`)}}
+                handleCloseModal={() => {navigate(`/userBook/${lendingNumber}?state=borrowed`)}}
                 icon="bi bi-check"
             />
             <Modal
                 showModal={error} errorType={true}
                 title={t('reviews.error_modal.title')}
-                subtitle={t('reviews.error_modal.subtitle')}
+                subtitle={errorMessage}
                 btnText={t('reviews.error_modal.btn')}
-                handleSubmitModal={() => {navigate('/userAssets')}}
+                handleSubmitModal={() => {setError(false)}}
                 handleCloseModal={() => {setError(false)}}
                 icon="bi bi-x"
             />
