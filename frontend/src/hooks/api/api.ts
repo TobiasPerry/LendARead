@@ -1,6 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
 import Qs from 'qs';
 import {jwtDecode} from "jwt-decode";
+import {logoutStorages} from "../../contexts/authContext.tsx";
 
 let baseUrl = `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_PATH}`
 
@@ -69,12 +70,14 @@ const handleError = async (error, Api: AxiosInstance) => {
 
         const newToken = await refreshToken();
 
-        axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+        Api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
         const newRequest = await Api(originalRequest);
-        if(newRequest.status === 401)
+        if(newRequest.status === 401) {
+            logoutStorages()
             return Promise.reject(error)
+        }
 
         return newRequest
     }

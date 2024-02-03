@@ -61,6 +61,14 @@ export const AuthContext = React.createContext({
     userImage: ""
 });
 
+export const logoutStorages = () => {
+    localStorage.removeItem("userAuthToken");
+    sessionStorage.removeItem("userAuthToken");
+    localStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("rememberMe");
+    sessionStorage.removeItem("rememberMe");
+}
 const AuthContextProvider = (props) => {
     const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken") && localStorage.hasOwnProperty("refreshToken");
     const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken") && sessionStorage.hasOwnProperty("refreshToken");
@@ -126,8 +134,7 @@ const AuthContextProvider = (props) => {
     }
 
     const logout = () => {
-        localStorage.removeItem("userAuthToken");
-        sessionStorage.removeItem("userAuthToken");
+        logoutStorages()
         setLoggedIn(false);
         setAuthKey('');
         setUser("");
