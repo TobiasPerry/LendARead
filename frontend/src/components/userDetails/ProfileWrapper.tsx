@@ -23,7 +23,7 @@ const ProfileWrapper = () => {
     }, [id])
 
     return (
-        <ProfileView id={id} isCurrentUser={true}/>
+        <ProfileView />
     )
 
 }
