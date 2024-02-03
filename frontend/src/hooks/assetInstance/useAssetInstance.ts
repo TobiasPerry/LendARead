@@ -52,6 +52,7 @@ export interface AssetData {
     physicalCondition: string;
     userImage: string;
     userName: string;
+    userId: number;
     isbn: string;
     location: {
         zipcode: string;
@@ -194,6 +195,7 @@ const useAssetInstance = () => {
                 title: body_asset.title,
                 userImage: body_user.image,
                 userName: body_user.userName,
+                userId: body_user.id,
                 rating_assetInstance: body_instance.rating.toFixed(1),
                 rating_as_lender: body_user.ratingAsLender.toFixed(1),
                 reviews: body_reviews,
