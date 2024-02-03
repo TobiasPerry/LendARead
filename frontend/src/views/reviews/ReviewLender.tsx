@@ -105,7 +105,7 @@ export default function ReviewLender () {
                 title={t('reviews.error_modal.title')}
                 subtitle={errorMessage}
                 btnText={t('reviews.error_modal.btn')}
-                handleSubmitModal={() => {navigate('/userAssets')}}
+                handleSubmitModal={() => {setError(false)}}
                 handleCloseModal={() => {setError(false)}}
                 icon="bi bi-x"
             />
