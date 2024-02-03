@@ -216,12 +216,12 @@ const ViewAssetInstance = () => {
 
 
                                                  <div className="container-row" style={{justifyContent: 'start', display: 'flex', alignItems: 'center'}}>
-                                                     <Link to="/">
+                                                     <Link to={`/user/${data.userId}`}>
                                                          {
                                                              hasUserImage ? (
                                                                  <img className="rounded-circle img-hover-click"
                                                                       style={{width: '25px', height: '25px'}}
-                                                                      src={data.userImage}
+                                                                      src={data.userImage +`?size=PORTADA`}
                                                                       alt="profile picture"/>
                                                              ) : (
                                                                  <img className="rounded-circle img-hover-click" style={{width: '25px'}}
@@ -229,11 +229,9 @@ const ViewAssetInstance = () => {
                                                                     alt="profile picture"/>
                                                              )
                                                          }
-                                                     </Link>
-                                                     <Link to="/">
                                                          <span className="mx-2 text-clickable">{data.userName}</span>
                                                      </Link>
-                                                     <p style={{display: 'flex', alignItems: 'center'}}>
+                                                     <p style={{display: 'flex', alignContent: 'center'}}>
 
                                                          {
                                                              hasReviewAsLender ? (

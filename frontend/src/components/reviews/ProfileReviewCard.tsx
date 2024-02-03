@@ -15,8 +15,11 @@ const ProfileReviewCard = ({review, clickedReview}) => {
                         <div className="row">
                             <div className="col-lg-4 justify-content-center align-items-center">
                                 <img src={review.reviewerDetails.image}
-                                     className="rounded-circle img-fluid shadow-1" alt="avatar" width="50"
-                                     height="50"/>
+                                     className="rounded-circle img-fluid shadow-1" alt="avatar"
+                                     style={{
+                                         objectFit: 'cover', width: '50px', height: '50px'
+                                     }}
+                                />
                                 <p className="fw-bold lead mb-2"><strong>{review.reviewerDetails.userName}</strong></p>
                             </div>
                             <div className="col-lg-8">
