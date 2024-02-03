@@ -77,6 +77,7 @@ const useLocations = () => {
                     "Accept-Language": currentLanguage
                 }
             });
+            return response.status !== 400;
         } catch (e) {
             return false
         }
