@@ -26,6 +26,9 @@ public class JwtTokenUtil {
     private final int JWT_VALID_PIRIOD =  24 * 60 * 60 *  1000;
     private final int JWT_REFRESH_VALID_PIRIOD = 7 * 24 * 60 * 60 *  1000;
 
+    public static final String JWT_HEADER = "X-JWT";
+    public static final String JWT_REFRESH_HEADER = "X-Refresh-Token";
+
     @Autowired
     public JwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
         this.jwtSecret = Keys.hmacShaKeyFor(

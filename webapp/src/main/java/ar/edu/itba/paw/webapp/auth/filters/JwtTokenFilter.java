@@ -76,7 +76,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         try {
         if (jwtTokenUtil.isRefreshToken(token)) {
-            response.setHeader("X-JWT", jwtTokenUtil.generateJwtToken(authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
+            response.setHeader(JwtTokenUtil.JWT_HEADER, jwtTokenUtil.generateJwtToken(authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
         }
         } catch (Exception e) {
             chain.doFilter(request, response);
