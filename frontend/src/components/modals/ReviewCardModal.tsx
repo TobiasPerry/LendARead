@@ -28,7 +28,7 @@ function ReviewCardModal({ review, showModal, handleCloseModal}) {
                                      }}/>
                                 <div>
                                     <Link to={`/user/${review.reviewerId}`} onClick={handleCloseModal} >
-                                    <h3 className="fw-bold lead mb-2"><strong>{review.reviewerDetails.userName}</strong></h3>
+                                    <h3 className="fw-bold lead mb-2 text-clickable"><strong>{review.reviewerDetails.userName}</strong></h3>
                                     </Link>
                                     <h3 className="fw-bold lead mb-2"><strong>{review.reviewerDetails.email}</strong></h3>
                                     <StarsReviews rating={review.rating}/>
