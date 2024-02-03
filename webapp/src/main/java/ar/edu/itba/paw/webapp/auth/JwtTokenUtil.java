@@ -73,7 +73,9 @@ public class JwtTokenUtil {
 
     public boolean validateJwtToken(String authToken) {
         final Claims claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken).getBody();
-        return !claims.getExpiration().before(new Date());
+
+
+        return claims.get("refresh", Boolean.class) != null && !claims.getExpiration().before(new Date());
     }
     public static String getBaseUrl(HttpServletRequest request){
         return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
