@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Qs from 'qs';
+import {jwtDecode} from "jwt-decode";
 
 let baseUrl = `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_PATH}`
 
@@ -22,16 +23,35 @@ const api_ = axios.create({
 
 
 const refreshToken = async () => {
-    const rememberMe = localStorage.getItem("rememberMe")
+    const rememberMe = localStorage.getItem("rememberMe");
     const refreshToken = rememberMe ? localStorage.getItem("refreshToken") : sessionStorage.getItem('refreshToken');
 
-    const response = await axios.post('/api/refresh-token', { refreshToken });
-    const { token } = response.data;
+    if (!refreshToken) {
+        console.log("No refresh token found");
+        return null;
+    }
 
-    if(rememberMe) localStorage.setItem('userAuthToken', token);
-    else sessionStorage.setItem('userAuthToken', token);
+    try {
+        const decoded = jwtDecode(refreshToken);
+        const currentTime = Date.now() / 1000;
 
-    return  token;
+        if (decoded.exp < currentTime) {
+            console.log("Refresh token expired");
+            return null;
+        }
+
+        // Proceed with token refresh
+        const response = await axios.post('/api/refresh-token', { refreshToken });
+        const { token } = response.data;
+
+        if (rememberMe) localStorage.setItem('userAuthToken', token);
+        else sessionStorage.setItem('userAuthToken', token);
+
+        return token;
+    } catch (error) {
+        console.error("Error decoding refresh token", error);
+        return null;
+    }
 }
 
 api.interceptors.response.use(response => {
@@ -67,7 +87,7 @@ api_.interceptors.response.use(response => {
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-
+        console.log("refreshed the token, if you login again all working!!")
         return api_(originalRequest);
     }
 
