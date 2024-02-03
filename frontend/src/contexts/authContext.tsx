@@ -61,11 +61,20 @@ export const AuthContext = React.createContext({
     userImage: ""
 });
 
+export const logoutStorages = () => {
+    localStorage.removeItem("userAuthToken");
+    sessionStorage.removeItem("userAuthToken");
+    localStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("rememberMe");
+    sessionStorage.removeItem("rememberMe");
+}
 const AuthContextProvider = (props) => {
-    const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
-    const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken");
+    const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken") && localStorage.hasOwnProperty("refreshToken");
+    const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken") && sessionStorage.hasOwnProperty("refreshToken");
     const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || isInSessionStorage);
     const token = isInLocalStorage ? localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
+    const refreshToken = isInLocalStorage ? localStorage.getItem("refreshToken") : sessionStorage.getItem("refreshToken")
     const [authKey, setAuthKey] = useState(token);
 
     const {t} = useTranslation()
@@ -78,8 +87,8 @@ const AuthContextProvider = (props) => {
 
     useEffect(() => {
         if(isLoggedIn || isInLocalStorage)
-            handleJWT(token)
-    }, [token])
+            handleJWT(token, refreshToken).then()
+    }, [token, refreshToken])
 
     const extractUserId = (jwt: string): string => {
         //@ts-ignore
@@ -101,14 +110,19 @@ const AuthContextProvider = (props) => {
     const [userImage, setUserImage] = useState(defaultUserPhoto);
     const [userDetails, setUserDetails] = useState( emptyUserDetails);
 
-    const handleJWT = async (jwt: string, rememberMe = false)  => {
+    const handleJWT = async (jwt: string, refreshToken: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
 
-        if(rememberMe)
+        localStorage.setItem("rememberMe", String(rememberMe))
+
+        if(rememberMe) {
             localStorage.setItem("userAuthToken", jwt)
-        else
+            localStorage.setItem("refreshToken", refreshToken)
+        } else {
             sessionStorage.setItem("userAuthToken", jwt)
+            sessionStorage.setItem("refreshToken", refreshToken)
+        }
 
         await setUser(extractUserId(jwt))
         storeUserDetails(extractUserId(jwt))
@@ -120,8 +134,7 @@ const AuthContextProvider = (props) => {
     }
 
     const logout = () => {
-        localStorage.removeItem("userAuthToken");
-        sessionStorage.removeItem("userAuthToken");
+        logoutStorages()
         setLoggedIn(false);
         setAuthKey('');
         setUser("");
@@ -162,7 +175,7 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
+            const res = await handleJWT(response.headers.get('x-jwt'), response.headers.get('x-refresh-token'), rememberMe)
             return res
         } catch (error) {
             console.log(error);

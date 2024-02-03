@@ -2,6 +2,7 @@
 import {useContext, useState} from 'react';
 import {api, api_} from '../api/api.ts';
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
+import {extractTotalPages} from "./useAssetInstance.ts";
 
 export const checkFinished = (asset) => {
     return asset !== undefined && asset.lendingStatus === "FINISHED"
@@ -88,18 +89,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
     const [books, setBooks] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
-    const extractTotalPages = (linkHeader) => {
-        const links = linkHeader.split(',').map(a => a.split(';'));
-        const lastLink = links.find(link => link[1].includes('rel="last"'));
-        if (lastLink) {
-            const lastPageUrl = lastLink[0].trim().slice(1, -1);
-            const urlParams = new URLSearchParams(lastPageUrl);
-            const lastPage = urlParams.get('page');
-            return parseInt(lastPage, 10);
-        }
-        return 1;
-    };
-
 
    const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
 
@@ -134,6 +123,11 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
        })
 
        setTotalPages(extractTotalPages(lendings.headers["link"]))
+
+       if(lendings.data.length == 0) {
+          setIsLoading(false)
+          setBooks([])
+       }
 
        const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
            try {
