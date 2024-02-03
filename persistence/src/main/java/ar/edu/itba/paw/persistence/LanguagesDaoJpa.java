@@ -23,9 +23,9 @@ public class LanguagesDaoJpa implements LanguageDao {
 
     @Override
     public AbstractPage<Language>getLanguages(final int page, final int itemsPerPage,final Boolean isUsed) {
-        StringBuilder sb = new StringBuilder("SELECT l.id FROM languages l ");
+        StringBuilder sb = new StringBuilder("SELECT distinct(l.id) FROM languages l ");
         boolean first = true;
-        if (isUsed != null) {
+        if (isUsed != null && isUsed) {
             sb.append("join book a on l.id = a.lang ");
             first = false;
         }
