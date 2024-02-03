@@ -74,7 +74,10 @@ public class PreAuthorizeFunctions {
             if (status.equals(AssetState.PUBLIC.toString())) {
                 return true;
             }
-            return (status.equals(AssetState.PRIVATE.toString()) || status.equals(AssetState.ALL.toString())) && userService.getCurrentUser().getId() == userid;
+            User currentUser = userService.getCurrentUser();
+            if (currentUser == null)
+                return false;
+            return (status.equals(AssetState.PRIVATE.toString()) || status.equals(AssetState.ALL.toString())) && currentUser.getId() == userid;
         } catch (UserNotFoundException e) {
             return false;
         }
