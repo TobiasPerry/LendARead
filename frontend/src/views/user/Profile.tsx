@@ -9,6 +9,7 @@ import UserProfile from "../../components/userDetails/UserProfile.tsx";
 import UserProfileTabs from "../../components/userDetails/UserProfileTabs.tsx";
 import UserReviews from "../../components/reviews/UserReviews.tsx";
 import {useParams} from "react-router-dom";
+import UserProfileExternal from "../../components/userDetails/UserProfileExternal.tsx";
 
 const ProfileView = () => {
 
@@ -32,7 +33,7 @@ const ProfileView = () => {
 
     useEffect(() => {
         setIsCurrentUser(user !== undefined && id !== undefined && id === user)
-        fetchReviews(user).then()
+        fetchReviews(id).then()
     }, [id, user])
 
 
@@ -40,7 +41,8 @@ const ProfileView = () => {
         <div className="main-class">
             <div className="user-container">
                 <div className="info-container w-100 mt-10" id="user-info">
-                   <UserProfile isCurrentUser={isCurrentUser}/>
+                    {isCurrentUser && <UserProfile/>}
+                    {!isCurrentUser && <UserProfileExternal user={id}/> }
                     <hr />
                     <div className="tabs-container">
                     <UserProfileTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>

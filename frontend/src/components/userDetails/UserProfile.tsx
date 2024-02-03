@@ -3,15 +3,14 @@ import {AuthContext} from "../../contexts/authContext.tsx";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 
-const UserProfile = ({ isCurrentUser }) => {
+const UserProfile = () => {
     const { t } = useTranslation();
-    //asumo por ahora que es current
     const {userDetails, userImage, uploadUserImage} = useContext(AuthContext);
     const fileInputRef = useRef(null);
 
-    const [tempImage, setTempImage] = useState(""); // temporary image for preview
-    const [storeImage, setStoreImage] = useState(null); // temporary image for preview
-    const [showConfirmation, setShowConfirmation] = useState(false); // to show/hide tick and cross icons
+    const [tempImage, setTempImage] = useState("");
+    const [storeImage, setStoreImage] = useState(null);
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const handleUploadImage = async (e) => {
         if (!e.target.files || !e.target.files[0]) return;
@@ -30,8 +29,6 @@ const UserProfile = ({ isCurrentUser }) => {
     };
 
     const handleSave = async () => {
-        // Here, implement the logic to save the image
-        // For now, we're just updating the userImage state
         try {
             const res = await uploadUserImage(storeImage);
         } catch (e) {
@@ -54,7 +51,6 @@ const UserProfile = ({ isCurrentUser }) => {
             <div className="position-relative">
                 <div className="user-profile-cell">
                     <img className="user-profile-picture" src={tempImage || userImage} alt="user profile" />
-                    {isCurrentUser && (
                         <div>
                             {!showConfirmation &&
                             <div className="user-change-picture-container" onClick={handleClick}>
@@ -78,7 +74,6 @@ const UserProfile = ({ isCurrentUser }) => {
                                 style={{ display: 'none' }}
                             />
                         </div>
-                    )}
                 </div>
             </div>
             <div className="d-flex flex-row">
@@ -109,7 +104,7 @@ const UserProfile = ({ isCurrentUser }) => {
                     </>
                 </p>
             </div>
-            {isCurrentUser && userDetails.role === "LENDER" &&
+                { userDetails.role === "LENDER" &&
                 <Link  to={"/locations"} style={{width: "150px", padding: "10px 5px", height: "50px", margin: "auto", marginTop: "30px"}}>
                 <button>
                     {t("userProfile.my_locations")}
