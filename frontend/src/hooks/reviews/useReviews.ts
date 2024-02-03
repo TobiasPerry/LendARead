@@ -23,12 +23,11 @@ const useReviews = () => {
     const [totalPagesBorrowerReviews, setTotalPagesBorrowerReviews] = useState(1)
 
     const {retrieveUserDetails} = useUserDetails()
-    const {user} = useContext(AuthContext)
     const PAGE_SIZE = 3
 
 
 
-    const fetchLenderReviews = async (page: number ) => {
+    const fetchLenderReviews = async (page: number, user:string) => {
         try {
             const lenderReviewsResponse = await api.get(`/users/${user}/lender_reviews/`, {params: {"itemsPerPage": PAGE_SIZE, "page": page}})
 
@@ -52,7 +51,7 @@ const useReviews = () => {
         }
     }
 
-    const fetchBorrowerReviews = async (page: number ) => {
+    const fetchBorrowerReviews = async (page: number, user: string) => {
         try {
             const borrowerReviewsResponse = await api.get(`/users/${user}/borrower_reviews/`, {params: {"itemsPerPage": PAGE_SIZE, "page": page}})
 
@@ -76,18 +75,18 @@ const useReviews = () => {
         }
     }
 
-    const fetchReviews = async () => {
-        await fetchLenderReviews(currentPageLenderReviews)
-        await fetchBorrowerReviews(currentPageBorrowerReviews)
+    const fetchReviews = async (user: string) => {
+        await fetchLenderReviews(currentPageLenderReviews, user)
+        await fetchBorrowerReviews(currentPageBorrowerReviews, user)
     }
 
-    const changePageLenderReviews = async (newPage: number) => {
-        await fetchLenderReviews(newPage)
+    const changePageLenderReviews = async (newPage: number, user: string) => {
+        await fetchLenderReviews(newPage, user)
         await setPageLenderReviews(newPage)
     }
 
-    const changePageBorrowerReviews = async (newPage: number) => {
-        await fetchBorrowerReviews(newPage)
+    const changePageBorrowerReviews = async (newPage: number, user: string) => {
+        await fetchBorrowerReviews(newPage, user)
         await setPageBorrowerReviews(newPage)
     }
 
