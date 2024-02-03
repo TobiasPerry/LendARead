@@ -23,8 +23,8 @@ import java.util.Date;
 public class JwtTokenUtil {
     private final SecretKey jwtSecret ;
 
-    private final int JWT_VALID_PIRIOD =   1000;
-    private final int JWT_REFRESH_VALID_PIRIOD = 60 * 60 *  1000;
+    private final int JWT_VALID_PIRIOD =  24 * 60 * 60 *  1000;
+    private final int JWT_REFRESH_VALID_PIRIOD = 7 * 24 * 60 * 60 *  1000;
 
     @Autowired
     public JwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
@@ -38,8 +38,8 @@ public class JwtTokenUtil {
         PawUserDetails userPrincipal = (PawUserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + JWT_VALID_PIRIOD))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_VALID_PIRIOD))
                 .claim("userReference", userReference)
                 .claim("refresh", false)
                 .signWith(key(), SignatureAlgorithm.HS256)
@@ -50,8 +50,8 @@ public class JwtTokenUtil {
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + JWT_REFRESH_VALID_PIRIOD))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_REFRESH_VALID_PIRIOD))
                 .claim("userReference", userReference)
                 .claim("refresh", true)
                 .signWith(key(), SignatureAlgorithm.HS256)
@@ -75,7 +75,7 @@ public class JwtTokenUtil {
         final Claims claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(authToken).getBody();
 
 
-        return claims.get("refresh", Boolean.class) != null && !claims.getExpiration().before(new Date());
+        return claims.get("refresh", Boolean.class) != null && !(new Date(System.currentTimeMillis()).after(claims.getExpiration()));
     }
     public static String getBaseUrl(HttpServletRequest request){
         return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();

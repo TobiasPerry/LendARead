@@ -86,7 +86,6 @@ public class AssetInstanceReviewImplTest {
     @Test
     public void canNotReviewTest() throws LendingNotFoundException, UserNotFoundException {
         // 1 - Precondiciones
-       // when(userService.getCurrentUser()).thenReturn(new User( "EMAIL", "", "","", Behaviour.BORROWER,""));
         when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(new Lending( new AssetInstance(0, new Asset(), PhysicalCondition.ASNEW, new User(), new Location(), new Image(), AssetState.PRIVATE,0, ""),new User( "EMAIL", "", "","", Behaviour.BORROWER,""), LocalDate.now(),LocalDate.now(), LendingState.ACTIVE));
         // 2 - Ejercitación
         boolean canReview = assetInstanceReviewsService.canReview(0, 0);
