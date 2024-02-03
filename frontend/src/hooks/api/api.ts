@@ -20,4 +20,35 @@ const api_ = axios.create({
     paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' })
 });
 
+
+const refreshToken = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    const response = await axios.post('/api/refresh-token', { refreshToken });
+    const { token } = response.data;
+
+    localStorage.setItem('userAuthToken', token);
+    return  token;
+}
+
+api.interceptors.response.use(response => {
+    return response;
+}, async (error) => {
+    const originalRequest = error.config;
+
+    // Check if the response is a token expired error
+    if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+
+        const newToken = await refreshToken();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+
+        return api(originalRequest);
+    }
+
+    return Promise.reject(error);
+});
+
+
 export { api, api_ };
