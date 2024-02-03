@@ -11,16 +11,15 @@ const useInterceptors = () => {
 
     api.interceptors.response.use(response => {
         return response;
-    }, async (error) => {await handleError(error, api)});
+    }, async (error) => {return await handleError(error, api)});
 
     api_.interceptors.response.use(response => {
         return response;
-    }, async (error) => {await handleError(error, api_)});
+    }, async (error) => {return await handleError(error, api_)});
 
     const handleLogout = () => {
         logout()
-        navigate("/")
-        console.log("failed refresh-token, logging out")
+        navigate("/login")
     }
     const refreshToken = async () => {
         try {
@@ -30,13 +29,14 @@ const useInterceptors = () => {
             if (refreshToken === "")
                 return null;
 
+
             api.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
-            const response = await api.get('/');
+            const response = await api('/');
 
             //@ts-ignore
             const token = response.headers.get('x-jwt')
 
-            if(token === null)
+            if(token === null || token === undefined)
                 return null
 
             if (rememberMe === "true")
