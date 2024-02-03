@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import Qs from 'qs';
 import {jwtDecode} from "jwt-decode";
 
@@ -6,21 +6,26 @@ let baseUrl = `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BA
 
 if(import.meta.env.VITE_APP_BASE_URL === undefined && import.meta.env.VITE_APP_BASE_PATH === undefined) {
     baseUrl = 'http://localhost:8080/';
-    console.log("Using default base url: " + baseUrl)
 }
-// Axios instance with baseURL
+
 const api = axios.create({
     baseURL: baseUrl + "api",
     timeout: 5000,
     paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' })
 });
 
-// Axios instance without baseURL
 const api_ = axios.create({
     timeout: 5000,
     paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' })
 });
 
+api.interceptors.response.use(response => {
+    return response;
+}, async (error) => {await handleError(error, api)});
+
+api_.interceptors.response.use(response => {
+    return response;
+}, async (error) => {await handleError(error, api_)});
 
 const refreshToken = async () => {
     const rememberMe = localStorage.getItem("rememberMe");
@@ -54,9 +59,8 @@ const refreshToken = async () => {
     }
 }
 
-api.interceptors.response.use(response => {
-    return response;
-}, async (error) => {
+const handleError = async (error, Api: AxiosInstance) => {
+
     const originalRequest = error.config;
 
     // Check if the response is a token expired error
@@ -68,31 +72,15 @@ api.interceptors.response.use(response => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
-        return api(originalRequest);
+        const newRequest = await Api(originalRequest);
+        if(newRequest.status === 401)
+            return Promise.reject(error)
+
+        return newRequest
     }
 
     return Promise.reject(error);
-});
-
-api_.interceptors.response.use(response => {
-    return response;
-}, async (error) => {
-    const originalRequest = error.config;
-
-    // Check if the response is a token expired error
-    if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-
-        const newToken = await refreshToken();
-
-        axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-        console.log("refreshed the token, if you login again all working!!")
-        return api_(originalRequest);
-    }
-
-    return Promise.reject(error);
-});
+}
 
 
 
