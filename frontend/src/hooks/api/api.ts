@@ -30,27 +30,32 @@ api_.interceptors.response.use(response => {
 
 const refreshToken = async () => {
     const rememberMe = localStorage.getItem("rememberMe");
-    const refreshToken = rememberMe ? localStorage.getItem("refreshToken") : sessionStorage.getItem('refreshToken');
+    const refreshToken = rememberMe === "true" ? localStorage.getItem("refreshToken") : sessionStorage.getItem('refreshToken');
 
-    if (!refreshToken) {
+    if (refreshToken === "") {
         console.log("No refresh token found");
         return null;
     }
 
     try {
-        const decoded = jwtDecode(refreshToken);
-        const currentTime = Date.now() / 1000;
+        // const decoded = jwtDecode(refreshToken);
+        // const currentTime = Date.now() / 1000;
+        //
+        // if (decoded.exp < currentTime) {
+        //     console.log("Refresh token expired");
+        //     return null;
+        // }
 
-        if (decoded.exp < currentTime) {
-            console.log("Refresh token expired");
-            return null;
-        }
+        api.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
+        const response = await api.get('/');
 
-        // Proceed with token refresh
-        const response = await axios.post('/api/refresh-token', { refreshToken });
-        const { token } = response.data;
+        //@ts-ignore
+        const token = response.headers.get('x-jwt')
 
-        if (rememberMe) localStorage.setItem('userAuthToken', token);
+        if(token === null)
+            return null
+
+        if (rememberMe === "true") localStorage.setItem('userAuthToken', token);
         else sessionStorage.setItem('userAuthToken', token);
 
         return token;
@@ -65,10 +70,15 @@ const handleError = async (error, Api: AxiosInstance) => {
     const originalRequest = error.config;
 
     // Check if the response is a token expired error
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response !== undefined && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
         const newToken = await refreshToken();
+
+        if(newToken === null) {
+            logoutStorages()
+            return Promise.reject(error)
+        }
 
         Api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
