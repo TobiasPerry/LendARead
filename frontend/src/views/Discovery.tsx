@@ -45,9 +45,7 @@ const DiscoveryView =  () => {
     const [data, setData] = useState([]);
     const [loadingData, setLoadingData] = useState(true);
     const [loadingLanguages, setLoadingLanguages] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [booksPerPage, setBooksPerPage] = useState(12);
-    const [totalPages, setTotalPages] = useState(0);
+
 
     // Read the query params sent form other views (like view asset)
     const searchParams = new URLSearchParams(window.location.search)
@@ -57,6 +55,8 @@ const DiscoveryView =  () => {
     const minRatingParam = searchParams.get('minRating')
     const sortParam = searchParams.get('sortBy')
     const sortDirectionParam = searchParams.get('sortDirection')
+    const pageParam = searchParams.get('page')
+    const booksPerPageParam = searchParams.get('pageSize')
 
     // Filters and sorting
     const [sort, setSort] = useState((sortParam !== null && sortParam !== undefined) ? sortParam : SORT_TYPES.RECENT);
@@ -67,7 +67,9 @@ const DiscoveryView =  () => {
     const [search, setSearch] = useState((searchParam !== null && searchParam !== undefined) ? searchParam : "");
     const [inputValue, setInputValue] = useState(search);
 
-
+    const [currentPage, setCurrentPage] = useState((pageParam !== null && pageParam !== undefined) ? parseInt(pageParam, 10) : 1);
+    const [booksPerPage, setBooksPerPage] = useState((booksPerPageParam !== null && booksPerPageParam !== undefined) ? parseInt(booksPerPageParam, 10): 12);
+    const [totalPages, setTotalPages] = useState(0);
 
     let placeholder_books = Array.from({ length: booksPerPage }, (_, index) => (
         <BookCardPlaceholder key={index} />
@@ -87,6 +89,7 @@ const DiscoveryView =  () => {
 
     const changeRating = (event) => {
         setMinRating(parseInt(event.target.value, 10))
+        setCurrentPage(1)
     }
 
     const clickPhysicalCondition = (physicalCondition : string) => {
@@ -96,6 +99,7 @@ const DiscoveryView =  () => {
             const new_filters: string[] = physicalConditions_filters.filter((str) => str !== physicalCondition)
             setPhysicalConditions_filters(new_filters)
         }
+        setCurrentPage(1)
     }
 
     const clickLanguages = (language : language) => {
@@ -105,6 +109,7 @@ const DiscoveryView =  () => {
             const new_filters : string[] = languages_filters.filter((item) => item !== language.code)
             setLanguages_filters(new_filters)
         }
+        setCurrentPage(1)
     }
 
     const changePage = (page: number) => {
@@ -121,6 +126,8 @@ const DiscoveryView =  () => {
         newSearch.set('minRating', minRating.toString())
         newSearch.set('sortBy', sort)
         newSearch.set('sortDirection', sortDirection)
+        newSearch.set('page', currentPage.toString())
+        newSearch.set('pageSize', booksPerPage.toString())
         if(search !== "") newSearch.set('search', search)
 
         navigate({
@@ -165,7 +172,6 @@ const DiscoveryView =  () => {
     // When search and filters change
 
     useEffect(()=>{
-
         fetchData().then();
         updateQueryParams()
     }, [currentPage, booksPerPage, sort, sortDirection, search, languages_filters, physicalConditions_filters, minRating])
