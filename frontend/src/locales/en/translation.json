@@ -254,6 +254,9 @@
       "author_asc": "Author Ascending",
       "author_des": "Author Descending"
     },
+    "books_per_page": {
+      "title": "Books per page: "
+    },
     "filters": {
       "language": "Language",
       "physical_condition": "Physical Condition",

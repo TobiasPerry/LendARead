@@ -180,6 +180,9 @@
       "author_asc": "Autor A-Z",
       "author_des": "Autor Z-A"
     },
+    "books_per_page": {
+      "title": "Libros por pagina: "
+    },
     "filters": {
       "language": "Idioma",
       "physical_condition": "Condición Física",
