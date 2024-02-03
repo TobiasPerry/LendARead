@@ -24,7 +24,7 @@ public class JwtTokenUtil {
     private final SecretKey jwtSecret ;
 
     private final int JWT_VALID_PIRIOD =   1000;
-    private final int JWT_REFRESH_VALID_PIRIOD =  7 * 24 * 60 * 60 * 1000;
+    private final int JWT_REFRESH_VALID_PIRIOD = 60 * 60 *  1000;
 
     @Autowired
     public JwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
