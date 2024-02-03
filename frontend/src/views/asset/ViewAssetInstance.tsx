@@ -303,9 +303,9 @@ const ViewAssetInstance = () => {
                                      </div>
 
                                      <div className="container-row"
-                                          style={{minWidth: '50%', width: 'fit-content', marginBottom: '20px'}}>
+                                          style={{width: '50%', marginBottom: '20px'}}>
 
-                                         <div className="container-column" style={{flex: '0 0 100 %'}}>
+                                         <div className="container-column" style={{flex: '0 0 100 %', width: '100%'}}>
                                              <div className="card"
                                                   style={{backgroundColor: '#e3e6e3', height: 'fit-content', borderRadius: '25px'}}>
                                                  <div className="card-body">
