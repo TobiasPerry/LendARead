@@ -5,6 +5,7 @@ import AuthProvider from "./contexts/authContext.tsx";
 import LoadingAnimation from "./components/LoadingAnimation.tsx";
 import {Helmet} from "react-helmet";
 import ProfileWrapper from "./components/userDetails/ProfileWrapper.tsx";
+import useInterceptors from "./hooks/api/useInterceptors.ts";
 
 const LoginView = lazy(() => import("./views/user/LogIn.tsx"));
 const Register = lazy(() => import("./views/user/Register.tsx"));
@@ -25,6 +26,8 @@ const Landing = lazy(() => import("./views/Landing.tsx"));
 
 
 export default function App() {
+    useInterceptors()
+
     return (
         <>
             <Helmet>

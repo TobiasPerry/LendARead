@@ -12,8 +12,12 @@ const MyBookActiveLendings = ({ asset }) => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        getLendings(asset).then();
-        setAsset_(asset)
+        try {
+            getLendings(asset).then();
+            setAsset_(asset)
+        } catch (e) {
+            
+        }
     }, [asset]);
 
     const handleNavigation = (lendingId) => {

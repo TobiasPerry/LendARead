@@ -92,11 +92,16 @@ const AuthContextProvider = (props) => {
     }, [token, refreshToken])
 
     const extractUserId = (jwt: string): string => {
-        //@ts-ignore
-        const decoded = jwtDecode(jwt).userReference;
-        const pattern = /\/(\d+)(?=\/?$)/;
-        const match = decoded.match(pattern);
-        return match ? match[1] : ""
+        try {
+            //@ts-ignore
+            const decoded = jwtDecode(jwt).userReference;
+            const pattern = /\/(\d+)(?=\/?$)/;
+            const match = decoded.match(pattern);
+            return match ? match[1] : ""
+        } catch (e) {
+            return ""
+        }
+
     }
 
     const [user, setUser] = useState(() => {
