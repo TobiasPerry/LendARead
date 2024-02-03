@@ -120,36 +120,36 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
                  // User endpoints
-                .antMatchers(HttpMethod.DELETE,"/api/users/{id}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PATCH,"/api/users/{id}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PUT,"/api/users/{id}/password").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PUT,"/api/users/{id}/profilePic").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.DELETE,"/api/users/{id:[0-9]+}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PATCH,"/api/users/{id:[0-9]+}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT,"/api/users/{id:[0-9]+}/password").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT,"/api/users/{id:[0-9]+}/profilePic").access(ACCESS_CONTROL_USER)
 
                 // Location endpoints
-                .antMatchers(HttpMethod.PATCH,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)
-                .antMatchers(HttpMethod.DELETE,"/api/locations/{id}").access(ACCESS_CONTROL_LOCATIONS)
+                .antMatchers(HttpMethod.PATCH,"/api/locations/{id:[0-9]+}").access(ACCESS_CONTROL_LOCATIONS)
+                .antMatchers(HttpMethod.DELETE,"/api/locations/{id:[0-9]+}").access(ACCESS_CONTROL_LOCATIONS)
 
 
                 // Lendings endpoints
-                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}").access(ACCESS_CONTROL_LENDINGS)
-                .antMatchers(HttpMethod.GET,"/api/lendings/{id}").access(ACCESS_CONTROL_LENDINGS)
+                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id:[0-9]+}").access(ACCESS_CONTROL_LENDINGS)
+                .antMatchers(HttpMethod.GET,"/api/lendings/{id:[0-9]+}").access(ACCESS_CONTROL_LENDINGS)
 
                 // AssetInstance endpoints
-                .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
-                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
+                .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
+                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
 
                 // Review endpoints
-                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id}/reviews/{idReview}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
+                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id:[0-9]+}/reviews/{idReview:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
 
-                .antMatchers(HttpMethod.PATCH,"/api/assets/{id}").hasRole(Behaviour.ADMIN.toString())
+                .antMatchers(HttpMethod.PATCH,"/api/assets/{id:[0-9]+}").hasRole(Behaviour.ADMIN.toString())
                 .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").hasRole(Behaviour.LENDER.toString())
                 .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").hasRole(Behaviour.LENDER.toString())
 
-                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id}/reviews","/api/assetInstances/{id}/reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/{id}/lender_reviews","/api/users/{id}/lender_reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/{id}/borrower_reviews","/api/users/{id}/borrower_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id:[0-9]+}/reviews","/api/assetInstances/{id:[0-9]+}/reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id:[0-9]+}/lender_reviews","/api/users/{id:[0-9]+}/lender_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/users/{id:[0-9]+}/borrower_reviews","/api/users/{id:[0-9]+}/borrower_reviews/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/images","/api/images/").authenticated()
-                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id}","/api/lendings/{id}/").authenticated()
+                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id:[0-9]+}","/api/lendings/{id:[0-9]+}/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/lendings","/api/lendings/").authenticated()
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .and().addFilterBefore(
