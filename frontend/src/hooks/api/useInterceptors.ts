@@ -19,8 +19,7 @@ const useInterceptors = () => {
 
     const handleLogout = () => {
         logout()
-        navigate("/")
-        console.log("failed refresh-token, logging out")
+        navigate("/login")
     }
     const refreshToken = async () => {
         try {
@@ -30,13 +29,14 @@ const useInterceptors = () => {
             if (refreshToken === "")
                 return null;
 
+
             api.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
-            const response = await api.get('/');
+            const response = await api('/');
 
             //@ts-ignore
             const token = response.headers.get('x-jwt')
 
-            if(token === null)
+            if(token === null || token === undefined)
                 return null
 
             if (rememberMe === "true")
@@ -53,7 +53,6 @@ const useInterceptors = () => {
 
     const handleError = async (error, Api: AxiosInstance) => {
 
-        console.log("llegue")
         try {
 
             const originalRequest = error.config;
