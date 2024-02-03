@@ -15,10 +15,7 @@ const api = axios.create({
     paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' })
 });
 
-const api_ = axios.create({
-    timeout: 5000,
-    paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' })
-});
+const api_ = api
 
 
 
