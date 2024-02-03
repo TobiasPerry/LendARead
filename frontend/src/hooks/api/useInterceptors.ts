@@ -19,7 +19,7 @@ const useInterceptors = () => {
 
     const handleLogout = () => {
         logout()
-        navigate("/login")
+        navigate('/login')
     }
     const refreshToken = async () => {
         try {

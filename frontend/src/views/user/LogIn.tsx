@@ -24,7 +24,7 @@ const LoginView = ({redirect}) => {
         const loginSuccess = await login(email, password, rememberMe)
         console.log(loginSuccess)
         if(loginSuccess) {
-            if (redirect) navigate('/userAssets')
+            if (redirect) navigate(-1)
         }
         else {
            setLoginError(true)
