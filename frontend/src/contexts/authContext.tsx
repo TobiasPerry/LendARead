@@ -180,9 +180,7 @@ const AuthContextProvider = (props) => {
     }
 
     const handleChangePassword = async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
-
         try {
-
             logout()
 
             //login with verification code using base64
