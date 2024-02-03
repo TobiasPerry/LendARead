@@ -436,7 +436,8 @@
         "province": "Province",
         "locality": "City",
         "zipcode": "Zip Code",
-        "validation-error": "Please, select a valid location."
+        "validation-error": "Please, select a valid location.",
+        "new": "Add new location"
     }
   },
   "BORROWER": "Borrower",

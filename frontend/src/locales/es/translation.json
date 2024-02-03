@@ -363,7 +363,8 @@
         "province": "Provincia",
         "locality": "Ciudad",
         "zipcode": "Código Postal",
-        "validation-error": "Por favor, seleccione una ubicación válida."
+        "validation-error": "Por favor, seleccione una ubicación válida.",
+        "new": "Añadir una nueva ubicación"
     }
   },
   "BORROWER": "Prestatario",
