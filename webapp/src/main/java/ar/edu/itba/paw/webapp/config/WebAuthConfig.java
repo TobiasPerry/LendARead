@@ -67,10 +67,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ACCESS_CONTROL_LENDINGS = "@accessFunctions.lendingLenderOrBorrower( #id)";
 
-    private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER= "@accessFunctions.assetInstanceOwner( #id)";
-    private static final String ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER= "@accessFunctions.assetInstanceReviewOwner(#idReview)";
+    private static final String ACCESS_CONTROL_ASSET_INSTANCE_OWNER = "@accessFunctions.assetInstanceOwner( #id)";
+    private static final String ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER = "@accessFunctions.assetInstanceReviewOwner(#idReview)";
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -79,12 +80,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     public WebExpressionVoter webExpressionVoter() {
         WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
         webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
-        return  webExpressionVoter;
+        return webExpressionVoter;
     }
+
     @Bean
     public JwtTokenUtil jwtTokenUtil(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
         return new JwtTokenUtil(jwtKeyResource);
     }
+
     @Bean
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
@@ -99,6 +102,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }
+
     @Bean
     public AccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<?>> decisionVoters = Arrays.asList(
@@ -108,8 +112,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         );
         return new UnanimousBased(decisionVoters);
     }
+
     @Override
-    protected void configure(final HttpSecurity http)	throws	Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -119,71 +124,74 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new ForbiddenDeniedHandler())
                 .and().authorizeRequests().expressionHandler(webSecurityExpressionHandler())
 
-                 // User endpoints
-                .antMatchers(HttpMethod.DELETE,"/api/users/{id:[0-9]+}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PATCH,"/api/users/{id:[0-9]+}").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PUT,"/api/users/{id:[0-9]+}/password").access(ACCESS_CONTROL_USER)
-                .antMatchers(HttpMethod.PUT,"/api/users/{id:[0-9]+}/profilePic").access(ACCESS_CONTROL_USER)
+                // User endpoints
+                .antMatchers(HttpMethod.DELETE, "/api/users/{id:[0-9]+}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PATCH, "/api/users/{id:[0-9]+}").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT, "/api/users/{id:[0-9]+}/password").access(ACCESS_CONTROL_USER)
+                .antMatchers(HttpMethod.PUT, "/api/users/{id:[0-9]+}/profilePic").access(ACCESS_CONTROL_USER)
 
                 // Location endpoints
-                .antMatchers(HttpMethod.PATCH,"/api/locations/{id:[0-9]+}").access(ACCESS_CONTROL_LOCATIONS)
-                .antMatchers(HttpMethod.DELETE,"/api/locations/{id:[0-9]+}").access(ACCESS_CONTROL_LOCATIONS)
+                .antMatchers(HttpMethod.PATCH, "/api/locations/{id:[0-9]+}").access(ACCESS_CONTROL_LOCATIONS)
+                .antMatchers(HttpMethod.DELETE, "/api/locations/{id:[0-9]+}").access(ACCESS_CONTROL_LOCATIONS)
 
 
                 // Lendings endpoints
-                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id:[0-9]+}").access(ACCESS_CONTROL_LENDINGS)
-                .antMatchers(HttpMethod.GET,"/api/lendings/{id:[0-9]+}").access(ACCESS_CONTROL_LENDINGS)
+                .antMatchers(HttpMethod.PATCH, "/api/lendings/{id:[0-9]+}").access(ACCESS_CONTROL_LENDINGS)
+                .antMatchers(HttpMethod.GET, "/api/lendings/{id:[0-9]+}").access(ACCESS_CONTROL_LENDINGS)
 
                 // AssetInstance endpoints
-                .antMatchers(HttpMethod.PATCH,"/api/assetInstances/{id:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
-                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
+                .antMatchers(HttpMethod.PATCH, "/api/assetInstances/{id:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
+                .antMatchers(HttpMethod.DELETE, "/api/assetInstances/{id:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_OWNER)
 
                 // Review endpoints
-                .antMatchers(HttpMethod.DELETE,"/api/assetInstances/{id:[0-9]+}/reviews/{idReview:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
+                .antMatchers(HttpMethod.DELETE, "/api/assetInstances/{id:[0-9]+}/reviews/{idReview:[0-9]+}").access(ACCESS_CONTROL_ASSET_INSTANCE_REVIEW_OWNER)
 
-                .antMatchers(HttpMethod.PATCH,"/api/assets/{id:[0-9]+}").hasRole(Behaviour.ADMIN.toString())
-                .antMatchers(HttpMethod.POST,"/api/assetInstances","/api/assetInstances/").hasRole(Behaviour.LENDER.toString())
-                .antMatchers(HttpMethod.POST,"/api/locations","/api/locations/").hasRole(Behaviour.LENDER.toString())
+                .antMatchers(HttpMethod.PATCH, "/api/assets/{id:[0-9]+}").hasRole(Behaviour.ADMIN.toString())
+                .antMatchers(HttpMethod.POST, "/api/assetInstances", "/api/assetInstances/").hasRole(Behaviour.LENDER.toString())
+                .antMatchers(HttpMethod.POST, "/api/locations", "/api/locations/").hasRole(Behaviour.LENDER.toString())
 
-                .antMatchers(HttpMethod.POST,"/api/assetInstances/{id:[0-9]+}/reviews","/api/assetInstances/{id:[0-9]+}/reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/{id:[0-9]+}/lender_reviews","/api/users/{id:[0-9]+}/lender_reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/users/{id:[0-9]+}/borrower_reviews","/api/users/{id:[0-9]+}/borrower_reviews/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/images","/api/images/").authenticated()
-                .antMatchers(HttpMethod.PATCH,"/api/lendings/{id:[0-9]+}","/api/lendings/{id:[0-9]+}/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/lendings","/api/lendings/").authenticated()
-                .antMatchers(HttpMethod.POST,"/api/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/assetInstances/{id:[0-9]+}/reviews", "/api/assetInstances/{id:[0-9]+}/reviews/").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/users/{id:[0-9]+}/lender_reviews", "/api/users/{id:[0-9]+}/lender_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/users/{id:[0-9]+}/borrower_reviews", "/api/users/{id:[0-9]+}/borrower_reviews/").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/images", "/api/images/").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/lendings/{id:[0-9]+}", "/api/lendings/{id:[0-9]+}/").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/lendings", "/api/lendings/").authenticated()
+                .antMatchers("/api/**").permitAll()
                 .and().addFilterBefore(
                         basicTokenFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(
-                jwtTokenFilter,
-                UsernamePasswordAuthenticationFilter.class
-            );
+                        jwtTokenFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
         cors.setAllowedOrigins(Collections.singletonList(ALL));
         cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cors.setAllowedHeaders(Collections.singletonList(ALL));
-        cors.setExposedHeaders(Arrays.asList("X-JWT","X-Refresh-Token", "X-XSS-Protection", "authorization", "Location", "Content-Disposition", "Link","ETag","WWW-Authenticate"));
+        cors.setExposedHeaders(Arrays.asList("X-JWT", "X-Refresh-Token", "X-XSS-Protection", "authorization", "Location", "Content-Disposition", "Link", "ETag", "WWW-Authenticate"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cors);
         return source;
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)	throws	Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-        @Override
-    public	void configure(final WebSecurity web){
+
+    @Override
+    public void configure(final WebSecurity web) {
         web.ignoring().antMatchers("/static/css/**", "/static/js/**", "/static/images/**", "/favicon.ico", "/errors/403");
     }
+
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean()throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 

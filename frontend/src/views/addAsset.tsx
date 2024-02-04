@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next";
 import axios from 'axios';
 import { api } from '../hooks/api/api.ts'
 import useLocations from '../hooks/locations/useLocations.ts'
+import useChangeRole from '../hooks/users/useChangeRole.ts'
 import {AuthContext} from "../contexts/authContext.tsx";
 import NewLenderModal from '../components/modals/NewLenderModal.tsx'
 import noImagePlacegolder from '../../public/static/no_image_placeholder.jpg'
@@ -24,6 +25,7 @@ const AddAsset = () => {
     
     const {t} = useTranslation();
     const navigate = useNavigate();
+    const { makeLender } = useChangeRole();
 
     const states = [
         ["ASNEW", t('ASNEW')],
@@ -72,7 +74,13 @@ const AddAsset = () => {
     const handleLocationSave = async (newLocation: any) => {
         setShowLocModal(false);
         // First, make the user lender
-        const resChangeRole = await api.patch(`/users/${user}`, {"role": "LENDER"}, {headers: {"Content-Type": "application/vnd.user.v1+json"}})
+        const roleChanged = await makeLender(user)
+
+        if (!roleChanged) {
+            console.error("Error en cambiar el rol")
+            setShowLocModal(true)
+            return 
+        }
 
         const resAddLocation = await addLocation(newLocation)
         if(!resAddLocation){
@@ -87,9 +95,6 @@ const AddAsset = () => {
     }
 
     useEffect(() => {
-        locations.map((location) => {
-            return location
-        })
         if (locations.length > 0) {
             changeSelectedLocation(locations[0].selfUrl.split('/').pop())
         }
@@ -108,7 +113,7 @@ const AddAsset = () => {
     }, [])
 
     useEffect(() => {
-        if(userDetails.role !== "LENDER"){
+        if(userDetails.role != "LENDER"){
             setShowLocModal(true)
         }
     }, []);

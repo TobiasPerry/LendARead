@@ -46,6 +46,8 @@ export const AuthContext = React.createContext({
     uploadUserImage: async (image: any) => {
 
     },
+    changeUserRole: async () => {
+    },
     user: "",
     userDetails: {
         email: "",
@@ -238,6 +240,10 @@ const AuthContextProvider = (props) => {
         }
     }
 
+    const changeUserRole = async () => {
+        userDetails.role = "LENDER"
+    }
+
 
     return <AuthContext.Provider
         value={{
@@ -250,7 +256,8 @@ const AuthContextProvider = (props) => {
             smallUserImage,
             handleForgotPassword,
             handleChangePassword,
-            uploadUserImage
+            uploadUserImage,
+            changeUserRole
         }}>{props.children}</AuthContext.Provider>
 }
 

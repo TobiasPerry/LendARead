@@ -129,6 +129,14 @@ const useLocations = () => {
                     "Accept-Language": currentLanguage
                 }
             });
+
+            if (response.status === 201) {
+                return true
+            }
+            else {
+                console.error("Failed to add location:", response)
+                return false
+            }
         } catch (e) {
             return false
         }
