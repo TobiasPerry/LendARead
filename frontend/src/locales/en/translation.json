@@ -8,7 +8,12 @@
     "failedPatchLocation": "Failed patching location",
     "failedToFetchLendings": "Failed to fetch lendings",
     "failedDeleteLocation": "Failed deleting location",
-    "failedToFetchBooks": "Failed to fetch user books"
+    "failedToFetchBooks": "Failed to fetch user books",
+    "cancelBorrowedBook": "Failed to cancel borrowed book",
+    "failedToFetchUserDetails": "Failed to fetch user details",
+    "failedToCheckCanConfirmLending": "Failed to check if can confirm lending",
+    "failedCheckCanReview": "Failed to check if can review",
+    "failedToUpdateState": "Failed to update state",
   },
   "Open main menu": "Open main menu",
   "Your profile": "Your Profile",
