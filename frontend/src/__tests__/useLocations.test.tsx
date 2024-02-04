@@ -37,7 +37,7 @@ describe('useLocations', () => {
         );
 
         // Render the hook within the wrapper
-        const { result, waitFor } = renderHook(() => useLocations(), { wrapper });
+        const { result } = renderHook(() => useLocations(), { wrapper });
 
         // Trigger an action
         const res = await result.current.addLocation({ name: "", province: "", country: "", locality: "", zipcode: 0, selfUrl: "" });

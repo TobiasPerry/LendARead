@@ -116,9 +116,8 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                                     cursor: "pointer",
                                     opacity: checkFinished(book) || checkRejected(book) || checkCanceled(book) ? 0.6 : 1
                                 }}
-                            >                            <td>
-                                <img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/>
-                            </td>
+                            >
+                                <td><img style={{height: '125px', width: '75px', objectFit: 'cover'}} src={book.imageUrl} alt={book.title}/></td>
                                 <td>{book.title}</td>
                                 <td>{t('date', extractDate(book.start_date))}</td>
                                 <td>{t('date', extractDate(book.return_date))}</td>

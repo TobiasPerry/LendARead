@@ -85,9 +85,9 @@ const UserProfile = () => {
                             <>
                                 {t('userProfile.lender')}
                                 <span className="user-role-stars">
-                                        {userDetails.ratingAsBorrower <= 0 ? (
+                                        {userDetails.ratingAsLender <= 0 ? (
                                             "-.- ") : (
-                                            Math.round(userDetails.ratingAsBorrower * 10) / 10
+                                            Math.round(userDetails.ratingAsLender * 10) / 10
                                         )}
                                     ★ </span>
                             </>
@@ -96,9 +96,9 @@ const UserProfile = () => {
                     <>
                         {t('userProfile.borrower')}
                         <span className="user-role-stars">
-                            {userDetails.ratingAsLender <= 0 ? (
+                            {userDetails.ratingAsBorrower <= 0 ? (
                                 "-.- ") : (
-                                Math.round(userDetails.ratingAsLender * 10) / 10
+                                Math.round(userDetails.ratingAsBorrower * 10) / 10
                             )}
                         ★</span>
                     </>

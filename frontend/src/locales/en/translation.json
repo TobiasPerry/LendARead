@@ -19,7 +19,7 @@
     "failedToFetchLenderReviews": "Failed to fetch lender reviews",
     "failedGettingLocations": "Failed getting locations",
     "failedToFetchBorrowerReviews": "Failed to fetch borrower reviews",
-    "failedToChangeRole": "Failed to change role",
+    "failedToChangeRole": "Failed to change role"
   },
   "Open main menu": "Open main menu",
   "Your profile": "Your Profile",
@@ -450,10 +450,12 @@
         "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books",
       "cancel": "I do not want to be a lender"
     },
+    "modalTitle": "Add new book",
     "location": {
         "detail": "Location",
         "info": "Location Info",
         "name": "Name",
+      "nama": "Name",
         "country": "Country",
         "province": "Province",
         "locality": "City",
@@ -465,5 +467,6 @@
   "BORROWER": "Borrower",
   "LENDER": "Lender",
   "date": "{{month}}/{{day}}/{{year}}",
-  "date_for_calendar": "MM/dd/yyyy"
+  "date_for_calendar": "MM/dd/yyyy",
+  "no_reviews": "No reviews"
 }
