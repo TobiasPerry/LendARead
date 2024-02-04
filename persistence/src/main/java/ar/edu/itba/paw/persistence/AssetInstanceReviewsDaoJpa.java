@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstanceReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
 import org.springframework.stereotype.Repository;

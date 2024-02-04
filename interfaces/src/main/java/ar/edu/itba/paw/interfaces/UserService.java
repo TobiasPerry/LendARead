@@ -4,7 +4,7 @@ import ar.edu.itba.paw.exceptions.ImageNotExistException;
 import ar.edu.itba.paw.exceptions.UnableToChangeRoleException;
 import ar.edu.itba.paw.exceptions.UnableToCreateTokenException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.User;
 import org.springframework.scheduling.annotation.Scheduled;
 
 public interface UserService {

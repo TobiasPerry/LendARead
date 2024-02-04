@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.PasswordResetToken;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.Behaviour;
+import ar.edu.itba.paw.models.userContext.PasswordResetToken;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.springframework.stereotype.Repository;
 

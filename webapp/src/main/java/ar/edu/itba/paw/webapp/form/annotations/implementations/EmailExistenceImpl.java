@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.form.annotations.implementations;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.webapp.form.annotations.interfaces.EmailExistence;
 import org.springframework.beans.factory.annotation.Autowired;
 

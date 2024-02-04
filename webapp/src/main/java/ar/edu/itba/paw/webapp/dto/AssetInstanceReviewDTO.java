@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstanceReview;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;

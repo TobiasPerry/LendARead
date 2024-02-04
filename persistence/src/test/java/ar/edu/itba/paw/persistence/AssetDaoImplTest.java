@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;

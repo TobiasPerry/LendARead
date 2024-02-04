@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstanceReview;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;

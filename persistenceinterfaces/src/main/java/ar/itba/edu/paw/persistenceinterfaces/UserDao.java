@@ -1,8 +1,8 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.PasswordResetToken;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.Behaviour;
+import ar.edu.itba.paw.models.userContext.PasswordResetToken;
+import ar.edu.itba.paw.models.userContext.User;
 
 import java.time.LocalDate;
 import java.util.Optional;

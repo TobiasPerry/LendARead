@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.interfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.Asset;
 
 import java.io.IOException;
 

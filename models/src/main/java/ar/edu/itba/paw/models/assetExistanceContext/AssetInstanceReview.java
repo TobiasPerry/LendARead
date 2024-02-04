@@ -1,7 +1,7 @@
-package ar.edu.itba.paw.models.assetExistanceContext.implementations;
+package ar.edu.itba.paw.models.assetExistanceContext;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
+import ar.edu.itba.paw.models.userContext.User;
 
 import javax.persistence.*;
 

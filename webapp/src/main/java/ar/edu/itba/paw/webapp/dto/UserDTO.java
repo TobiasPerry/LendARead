@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;

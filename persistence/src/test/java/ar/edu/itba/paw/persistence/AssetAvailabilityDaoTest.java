@@ -1,15 +1,15 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.PhysicalCondition;
+import ar.edu.itba.paw.models.assetLendingContext.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
+import ar.edu.itba.paw.models.assetLendingContext.LendingState;
+import ar.edu.itba.paw.models.userContext.Behaviour;
+import ar.edu.itba.paw.models.userContext.Location;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;
 import org.junit.Assert;

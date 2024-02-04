@@ -1,9 +1,9 @@
-package ar.edu.itba.paw.models.assetLendingContext.implementations;
+package ar.edu.itba.paw.models.assetLendingContext;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.userContext.implementations.User;
-import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstanceReview;
+import ar.edu.itba.paw.models.userContext.User;
+import ar.edu.itba.paw.models.userContext.UserReview;
 
 import javax.persistence.*;
 import java.time.LocalDate;

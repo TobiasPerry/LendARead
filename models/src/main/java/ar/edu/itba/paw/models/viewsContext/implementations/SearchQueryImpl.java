@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models.viewsContext.implementations;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.AssetState;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 
 import java.util.List;

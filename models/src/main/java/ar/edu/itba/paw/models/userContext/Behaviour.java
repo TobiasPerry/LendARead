@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.userContext.implementations;
+package ar.edu.itba.paw.models.userContext;
 
 public enum Behaviour {
     LENDER(),

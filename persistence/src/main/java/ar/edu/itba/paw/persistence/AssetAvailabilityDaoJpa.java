@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.LendingState;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstance;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
+import ar.edu.itba.paw.models.assetLendingContext.LendingState;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.implementations.SortDirection;
 import ar.itba.edu.paw.persistenceinterfaces.AssetAvailabilityDao;

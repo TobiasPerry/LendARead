@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.persistence;
 
 
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.Behaviour;
+import ar.edu.itba.paw.models.userContext.Location;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.junit.Assert;

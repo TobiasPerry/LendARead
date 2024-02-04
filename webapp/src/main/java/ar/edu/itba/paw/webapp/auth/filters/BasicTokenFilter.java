@@ -2,7 +2,7 @@ package ar.edu.itba.paw.webapp.auth.filters;
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.PawUserDetailsService;
 import org.glassfish.jersey.internal.util.Base64;

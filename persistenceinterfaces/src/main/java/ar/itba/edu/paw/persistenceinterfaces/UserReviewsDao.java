@@ -1,7 +1,7 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.userContext.implementations.User;
-import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.userContext.User;
+import ar.edu.itba.paw.models.userContext.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
 import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.springframework.stereotype.Repository;
 

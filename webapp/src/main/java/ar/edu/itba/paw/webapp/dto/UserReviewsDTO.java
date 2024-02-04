@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.userContext.UserReview;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import lombok.Getter;
 import lombok.Setter;

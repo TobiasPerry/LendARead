@@ -5,7 +5,7 @@ import ar.edu.itba.paw.exceptions.AssetAlreadyExistException;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.exceptions.UnableToCreateAssetException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
 import ar.itba.edu.paw.exceptions.BookAlreadyExistException;
 import ar.itba.edu.paw.persistenceinterfaces.AssetDao;
 import org.junit.Assert;

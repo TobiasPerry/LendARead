@@ -5,7 +5,7 @@ import ar.edu.itba.paw.exceptions.LocationNotFoundException;
 import ar.edu.itba.paw.exceptions.UnableToDeleteLocationException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.LocationsService;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LocationDTO;
 import ar.edu.itba.paw.webapp.form.EditLocationForm;

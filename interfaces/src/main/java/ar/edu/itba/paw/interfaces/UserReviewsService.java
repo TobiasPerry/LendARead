@@ -4,8 +4,8 @@ import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UnableToAddReviewException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.exceptions.UserReviewNotFoundException;
-import ar.edu.itba.paw.models.userContext.implementations.User;
-import ar.edu.itba.paw.models.userContext.implementations.UserReview;
+import ar.edu.itba.paw.models.userContext.User;
+import ar.edu.itba.paw.models.userContext.UserReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 public interface UserReviewsService {

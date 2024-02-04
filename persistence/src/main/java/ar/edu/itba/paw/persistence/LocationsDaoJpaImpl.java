@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.itba.edu.paw.persistenceinterfaces.LocationDao;
 import org.springframework.stereotype.Repository;

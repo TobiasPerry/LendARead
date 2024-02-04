@@ -1,6 +1,6 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.userContext.implementations.Location;
+import ar.edu.itba.paw.models.userContext.Location;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.util.Optional;
