@@ -279,12 +279,22 @@ const useAssetInstance = () => {
         }
     }
 
+    const uploadAssetInstanceImage = async (imageFile: any): Promise<number> => {
+        const responseImage = await api.post("/images", {image: imageFile}, {headers: {"Content-type": "multipart/form-data"}})
+        if (responseImage.status !== 201) {
+            console.error("Error uploading image: ", responseImage)
+            return -1; 
+        }
+        return parseInt(responseImage.headers.location.split('/').pop());
+    }
+
     return {
         handleAllAssetInstances,
         handleAssetInstance,
         handleGetLanguages,
         handleSendLendingRequest,
-        handleGetReservedDays
+        handleGetReservedDays,
+        uploadAssetInstanceImage
     };
 }
 
