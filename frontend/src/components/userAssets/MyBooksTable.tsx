@@ -68,39 +68,44 @@ const MyBooksTable = ({handleRowClicked}) => {
                 <button style={buttonStyle('public')}  onClick={() => handleFilterChange('public')} className="btn btn-outline-primary">{t('public')}</button>
             </div>
             </div>
-            <table className="table table-hover mt-2 mb-3">
-                <thead className="table-light">
-                <tr>
-                    <th scope="col" onClick={() => handleSortChange('image')}>{t('image')}</th>
-                    <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
-                    <th scope="col" onClick={() => handleSortChange('author')}>{t('author')} {renderSortIcon('author')}</th>
-                    <th scope="col" onClick={() => handleSortChange('language')}>{t('language')} {renderSortIcon('language')}</th>
-                    <th scope="col" onClick={() => handleSortChange('physicalCondition')}>{t('physicalCondition')} {renderSortIcon('physicalCondition')}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {books.length === 0 ? (
-                    <tr>
-                        <td colSpan={6} className="text-center">
-                            <h5>{t('no_books_available')}</h5>
-                        </td>
-                    </tr>
-                ) : (
-                    books.map((book, index) => (
-                        <tr key={index} onClick={() => handleRowClicked(book, "owned")} style={{ cursor: "pointer" }}>
-                            <td>
-                                <img style={{ height: '125px', width: '75px', objectFit: 'cover' }} src={book.imageUrl} alt={book.title} />
-                            </td>
-                            <td>{book.title}</td>
-                            <td>{book.author}</td>
-                            <td>{book.language}</td>
-                            <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
+
+            {books.length !== 0 ? (
+                    <table className="table table-hover mt-2 mb-3">
+                        <thead className="table-light">
+                        <tr>
+                            <th scope="col" onClick={() => handleSortChange('image')}>{t('image')}</th>
+                            <th scope="col" onClick={() => handleSortChange('title')}>{t('title')} {renderSortIcon('title')}</th>
+                            <th scope="col" onClick={() => handleSortChange('author')}>{t('author')} {renderSortIcon('author')}</th>
+                            <th scope="col" onClick={() => handleSortChange('language')}>{t('language')} {renderSortIcon('language')}</th>
+                            <th scope="col" onClick={() => handleSortChange('physicalCondition')}>{t('physicalCondition')} {renderSortIcon('physicalCondition')}</th>
                         </tr>
-                    ))
-                )}
-                </tbody>
-            </table>
-           <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
+                        </thead>
+                        <tbody>
+                        {books.map((book, index) => (
+                            <tr key={index} onClick={() => handleRowClicked(book, "owned")} style={{ cursor: "pointer" }}>
+                                <td>
+                                    <img style={{ height: '125px', width: '75px', objectFit: 'cover' }} src={book.imageUrl} alt={book.title} />
+                                </td>
+                                <td>{book.title}</td>
+                                <td>{book.author}</td>
+                                <td>{book.language}</td>
+                                <td style={{minWidth: "200px", alignContent: "center"}}>{t(`${book.physicalCondition}`)}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                ) :
+                    <div style={{
+                        textAlign: "center",
+                        width: "100%",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                        fontWeight: "bold",
+                    }}>
+                        {t('no_books_available')}
+                    </div>
+            }
+            <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
         </div>
       </LoadingWrapper>
     );

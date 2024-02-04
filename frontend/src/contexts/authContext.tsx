@@ -71,6 +71,7 @@ export const logoutStorages = () => {
     sessionStorage.removeItem("refreshToken");
     localStorage.removeItem("rememberMe");
     sessionStorage.removeItem("rememberMe");
+    window.location.reload();
 }
 const AuthContextProvider = (props) => {
     const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken") && localStorage.hasOwnProperty("refreshToken");
@@ -145,6 +146,7 @@ const AuthContextProvider = (props) => {
     }
 
     const logout = () => {
+
         logoutStorages()
         setLoggedIn(false);
         setAuthKey('');
