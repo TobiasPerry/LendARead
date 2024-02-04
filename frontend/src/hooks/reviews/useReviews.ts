@@ -18,6 +18,8 @@ const useReviews = () => {
 
     const [lenderReviews, setLenderReviews] = useState([]);
     const [borrowerReviews, setBorrowerReviews] = useState([]);
+    const [lendingReviews, setLendingReviews] = useState([])
+
     const [currentPageLenderReviews, setPageLenderReviews] = useState(1)
     const [currentPageBorrowerReviews, setPageBorrowerReviews] = useState(1)
     const [totalPagesLenderReviews, setTotalPagesLenderReviews] = useState(1)
@@ -30,6 +32,48 @@ const useReviews = () => {
     const PAGE_SIZE = 2
 
 
+    const fetchLendingReviews = async (lending: any) => {
+
+        const reviews = []
+
+        if(lending.hasOwnProperty('borrowerReviewUrl')) {
+            try {
+                const borrowerReview = await api.get(lending.borrowerReviewUrl)
+                const borrowerReviewDetails = await retrieveUserDetails(extractId(borrowerReview.data.reviewer))
+                reviews.push({...borrowerReview.data, reviewerDetails: borrowerReviewDetails, reviewerId: extractId(borrowerReview.data.reviewer), type: t("BORROWER")})
+            } catch (e) {
+               setError({status: true, text: t("errors.failedToFetchBorrowerReview")} )
+            }
+
+        }
+
+        if(lending.hasOwnProperty('lenderReviewUrl')) {
+            try {
+                const lenderReview = await api.get(lending.lenderReviewUrl)
+                const lenderReviewDetails = await retrieveUserDetails(extractId(lenderReview.data.reviewer))
+                reviews.push({...lenderReview.data, reviewerDetails: lenderReviewDetails, reviewerId: extractId(lenderReview.data.reviewer), type: t("LENDER")})
+            } catch (e) {
+                setError({status: true, text: t("errors.failedToFetchLenderReview")} )
+            }
+
+        }
+
+        if(lending.hasOwnProperty('assetInstanceReview')) {
+            try {
+                const assetInstanceReview = await api.get(lending.assetInstanceReview)
+                const assetInstanceReviewDetails = await retrieveUserDetails(extractId(assetInstanceReview.data.reviewer))
+                reviews.push({
+                    ...assetInstanceReview.data,
+                    reviewerDetails: assetInstanceReviewDetails,
+                    reviewerId: extractId(assetInstanceReview.data.reviewer),
+                    type: t("ASSET_INSTANCE")
+                })
+            } catch (e) {
+                setError({status: true, text: t("errors.failedToFetchAssetInstanceReview")} )
+            }
+        }
+        setLendingReviews(reviews)
+    }
 
     const fetchLenderReviews = async (page: number, user:string) => {
         try {
@@ -111,7 +155,9 @@ const useReviews = () => {
         totalPagesBorrowerReviews,
         totalPagesLenderReviews,
         changePageLenderReviews,
-        changePageBorrowerReviews
+        changePageBorrowerReviews,
+        lendingReviews,
+        fetchLendingReviews
     }
 }
 

@@ -5,7 +5,9 @@
 .ellipsis-text {
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 50px; /* Adjust this value based on your requirements */
+    height: 50px;
+    max-width: 200px;
+/* Adjust this value based on your requirements */
 }
 
 .gold-star {

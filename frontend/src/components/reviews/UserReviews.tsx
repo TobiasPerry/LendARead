@@ -29,7 +29,7 @@ const UserReviews = ({reviews,changePage, currentPage, totalPages}) => {
 
     return (
         <div>
-        <div className="d-flex flex-row gap-3 mb-4">
+        <div className="d-flex flex-row gap-3 mb-4 flex-wrap">
             {(reviews.length > 0
                     ? reviews.map((review: ReviewApi, index) =>
                         <ProfileReviewCard key={index} review={review} clickedReview={handleClickedReview}/>

@@ -129,7 +129,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                         marginBottom: "20px",
                         fontWeight: "bold",
                     }}>
-                        {t('no_books_available')}
+                        {t('no_books')}
                     </div>
                 )}
                 <Pagination  currentPage={currentPage} totalPages={totalPages} changePage={(newPage) => changePageLendings(newPage, isLender)}/>

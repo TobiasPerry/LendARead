@@ -1,5 +1,8 @@
 {
   "errors": {
+    "failedToFetchBorrowerReview": "Failed to fetch borrower review",
+    "failedToFetchLenderReview": "Failed to fetch lender review",
+    "failedToFetchAssetInstanceReview": "Failed to fetch asset instance reviews",
     "failedDeletingAssetDetails": "Failed deleting asset details",
     "failedFetchingAssetDetails": "Failed fetching asset details",
     "failedPatchAsset": "Failed patching asset",
@@ -464,7 +467,9 @@
         "new": "Add new location"
     }
   },
+  "reviews_text": "Reviews",
   "BORROWER": "Borrower",
+  "ASSET_INSTANCE": "Asset",
   "LENDER": "Lender",
   "date": "{{month}}/{{day}}/{{year}}",
   "date_for_calendar": "MM/dd/yyyy",
