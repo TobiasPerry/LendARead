@@ -5,6 +5,7 @@ import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
 import useUserDetails from "../assetInstance/useUserDetails.ts";
 import {extractId} from "../assetInstance/useUserAssetInstances.ts";
 import photoHolder from "../../../public/static/profile_placeholder.jpeg";
+import {useTranslation} from "react-i18next";
 export interface ReviewApi {
     lending: string,
     rating: number,
@@ -21,6 +22,9 @@ const useReviews = () => {
     const [currentPageBorrowerReviews, setPageBorrowerReviews] = useState(1)
     const [totalPagesLenderReviews, setTotalPagesLenderReviews] = useState(1)
     const [totalPagesBorrowerReviews, setTotalPagesBorrowerReviews] = useState(1)
+    const [error, setError] = useState({status: false, text: ""})
+    const {t} = useTranslation()
+
 
     const {retrieveUserDetails} = useUserDetails()
     const PAGE_SIZE = 3
@@ -50,7 +54,8 @@ const useReviews = () => {
             const lenderReviewsData = await Promise.all(lenderReviewsPromises)
             setLenderReviews(lenderReviewsData)
         } catch (e) {
-
+            setError({status: true, text: t("errors.failedToFetchLenderReviews")})
+            setLenderReviews([])
         }
     }
 
@@ -77,7 +82,8 @@ const useReviews = () => {
             const borrowerReviewsData = await Promise.all(borrowerReviewsPromises)
             setBorrowerReviews(borrowerReviewsData)
         } catch (e) {
-            console.log(e)
+            setError({status: true, text: t("errors.failedToFetchBorrowerReviews")})
+            setBorrowerReviews([])
         }
     }
 

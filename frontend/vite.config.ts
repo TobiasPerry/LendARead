@@ -9,6 +9,7 @@ const base = process.env.VITE_APP_BASE_PATH || '/'
 
 
 // https://vitejs.dev/config/
+// @ts-ignore
 export default defineConfig({
   plugins: [
       react(),
@@ -23,6 +24,7 @@ export default defineConfig({
     minify: 'esbuild', // 'terser' is the default minifier for production
   },
   base: base,
+  //@ts-ignore
   test: {
     globals: true,
     environment: "jsdom",

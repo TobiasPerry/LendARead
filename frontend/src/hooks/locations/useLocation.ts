@@ -1,6 +1,7 @@
 import {useState} from "react";
-import {api_} from "../api/api.ts";
-import {LocationApi} from "./useLocations.ts";
+import {api_} from "../api/api";
+import {LocationApi} from "./useLocations";
+import {useTranslation} from "react-i18next/index";
 
 const useLocationAsset = () => {
 
@@ -12,10 +13,25 @@ const useLocationAsset = () => {
         zipcode: 0,
         selfUrl:""
     })
+
+    const {t} = useTranslation()
+    const [error, setError] = useState({state: false, text: ""})
+
     const getLocation = async (asset) => {
         if(asset && asset.assetinstance && asset.assetinstance.locationReference) {
-            const location: LocationApi = (await api_.get(asset.assetinstance.locationReference)).data
-            setLocation(location)
+            try {
+                const location: LocationApi = (await api_.get(asset.assetinstance.locationReference)).data
+                setLocation(location)
+            } catch (e) {
+                setLocation({ name: "",
+                    province: "",
+                    country: "",
+                    locality: "",
+                    zipcode: 0,
+                    selfUrl:""
+                })
+                setError({state: true, text: t("errors.failedToFetchLocation")})
+            }
         }
     }
 

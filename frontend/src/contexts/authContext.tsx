@@ -34,11 +34,11 @@ export const AuthContext = React.createContext({
     isLoggedIn: false,
     logout: () => {
     },
-    login: async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets")  => {
+    login: async (email: string, password: string, rememberMe: boolean = false, path: string = "/assets") => {
         return false
     },
     handleChangePassword: async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
-      return ""
+        return ""
     },
     handleForgotPassword: async (email: string) => {
         return false
@@ -52,7 +52,7 @@ export const AuthContext = React.createContext({
     userDetails: {
         email: "",
         image: "",
-        rating: 0 ,
+        rating: 0,
         ratingAsBorrower: 0,
         ratingAsLender: 0,
         role: "",
@@ -61,7 +61,7 @@ export const AuthContext = React.createContext({
         userName: "",
     },
     userImage: "",
-    smallUserImage: ""
+    smallUserImage: "",
 });
 
 export const logoutStorages = () => {

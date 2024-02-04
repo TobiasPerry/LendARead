@@ -1,12 +1,18 @@
-import { api } from '../api/api.ts';
+import { api } from '../api/api';
+import {useTranslation} from "react-i18next";
+import {useState} from "react";
 
 
 const useLanguages = () => {
+
+    const {t} = useTranslation()
+    const [error, setError] = useState({state: false, text: ""})
+
     const getAllLanguages = async () => {
         try {
             const response = await api.get(`/languages`)
             if (response.status !== 200) {
-                console.error("Error getting languages: ", response)
+                setError({state: true, text: t("errors.failedToFetchLanguages") + response})
                 return []
             }
             return response.data
@@ -19,7 +25,7 @@ const useLanguages = () => {
         try {
             const response = await api.get(`/languages/${languageId}`)
             if (response.status !== 200) {
-                console.error("Error getting language: ", response)
+                setError({state: true, text: t("errors.failedToFetchLanguages") + response})
                 return {}
             }
             return response.data
@@ -29,7 +35,8 @@ const useLanguages = () => {
     }
     return {
         getAllLanguages,
-        getLanguage
+        getLanguage,
+        error
     };
 }
 

@@ -1,9 +1,9 @@
-import { api, api_ } from "../api/api.ts";
-import Vnd from "../api/types.ts";
+import { api, api_ } from "../api/api";
+import Vnd from "../api/types";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/authContext.tsx";
+import { AuthContext } from "../../contexts/authContext";
 import { useTranslation } from "react-i18next";
-import { extractTotalPages } from "../assetInstance/useAssetInstance.ts";
+import { extractTotalPages } from "../assetInstance/useAssetInstance";
 
 export interface LocationApi {
     name: string,
@@ -27,6 +27,7 @@ const useLocations = () => {
     const currentLanguage = i18n.language;
     const PAGE_SIZE = 6
     const [error, setError] = useState({status: false, text: ""})
+    const {t} = useTranslation()
 
 
 
@@ -42,7 +43,7 @@ const useLocations = () => {
             // @ts-ignore
             return true
         } catch (error) {
-            setError({status: true, text: "error.failedPatchLocation"})
+            setError({status: true, text: t("error.failedPatchLocation")})
             return false
         }
     }
@@ -53,7 +54,7 @@ const useLocations = () => {
             // @ts-ignore
             return true
         } catch (error) {
-            setError({status: true, text: "error.failedDeleteLocation"})
+            setError({status: true, text: t("error.failedDeleteLocation")})
             return false
         }
     }
@@ -76,7 +77,7 @@ const useLocations = () => {
             }
             return response.data
         } catch (error) {
-            setError({status: true, text: "error.failedPatchLocation"})
+            setError({status: true, text: t("error.failedPatchLocation")})
             setIsLoading(false)
             return []
         }
@@ -118,6 +119,7 @@ const useLocations = () => {
             return locations;
         } catch (error) {
             setIsLoading(false)
+            setError({status: true, text: t("error.failedGettingLocations")})
             return []
         }
     }
@@ -130,17 +132,15 @@ const useLocations = () => {
                     "Accept-Language": currentLanguage
                 }
             });
-            return true;
 
             if (response.status === 201) {
                 return true
-            }
-            else {
-                console.error("Failed to add location:", response)
+            } else {
+                setError({status: true, text: t("error.failedAddingLocation")})
                 return false
             }
         } catch (e) {
-            setError({status: true, text: "error.failedAddingLocation"})
+            setError({status: true, text: t("error.failedAddingLocation")})
             return false
         }
     }
