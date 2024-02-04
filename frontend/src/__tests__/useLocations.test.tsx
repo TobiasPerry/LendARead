@@ -6,6 +6,7 @@ import useLocations from '../hooks/locations/useLocations';
 import { AuthContext } from '../contexts/authContext.tsx'; // Replace with the correct path
 import { I18nextProvider } from 'react-i18next';
 import i18n from "../../src/i18n.js"
+import {act} from "react-dom/test-utils";
 // Create a mock user for AuthContext
 const mockUser = ""
 
@@ -43,13 +44,16 @@ describe('useLocations', () => {
         const { result } = renderHook(() => useLocations(), { wrapper });
 
         // Trigger an action
-        const res = await result.current.addLocation({ name: "", province: "", country: "", locality: "", zipcode: 0, selfUrl: "" });
+        await act(async () => {
+            await result.current.addLocation({ name: "", province: "", country: "", locality: "", zipcode: 0, selfUrl: "" });
+        });
 
-        // // Wait for state updates
-        //
-        console.log(result.current.locations)
-        expect(result.current.locations).toContain([{ name: "", province: "", country: "", locality: "", zipcode: 0, id: -1 }]);
+        // Wait for state updates to be applied
+        await waitFor(() => {
+            return result.current.locations.length > 0;
+        });
 
-        // Add more tests as necessary
+        // Assert the expected state
+        expect(result.current.locations).toEqual([{ name: "", province: "", country: "", locality: "", zipcode: 0, id: -1 }]);
     });
 });
