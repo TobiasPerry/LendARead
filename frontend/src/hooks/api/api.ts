@@ -11,7 +11,7 @@ if(import.meta.env.VITE_APP_BASE_URL === undefined && import.meta.env.VITE_APP_B
 
 const api = axios.create({
     baseURL: baseUrl + "api",
-    timeout: 5000,
+    timeout: 10000,
     paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' })
 });
 
