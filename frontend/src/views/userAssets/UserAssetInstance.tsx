@@ -10,6 +10,7 @@ import MyBooksOptions from "../../components/userAssets/MyBooksOptions.tsx";
 import LendedBooksOptions from "../../components/userAssets/LendedBooksOptions.tsx";
 import MyBookActiveLendings from "../../components/userAssets/MyBookActiveLendings.tsx";
 import LoadingAccessWrapper from "../../components/LoadingAccessWrapper.tsx";
+import LendingsReviews from "../../components/userAssets/LendingsReviews.tsx";
 
 const UserAssetInstance = () => {
 
@@ -76,9 +77,9 @@ const UserAssetInstance = () => {
                     </div>
 
                 </div>
-                {state === "owned" && <MyBookActiveLendings
-                    asset={assetDetails} /> }
-            </div>
+                {state === "owned" && <MyBookActiveLendings asset={assetDetails} /> }
+                {(state === "lended" || state === "borrowed") && <LendingsReviews asset={assetDetails} />}
+                    </div>
                 </div>
             </div>
         </LoadingAccessWrapper>

@@ -102,7 +102,7 @@ const MyBooksTable = ({handleRowClicked}) => {
                         marginBottom: "20px",
                         fontWeight: "bold",
                     }}>
-                        {t('no_books_available')}
+                        {t('no_books')}
                     </div>
             }
             <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
