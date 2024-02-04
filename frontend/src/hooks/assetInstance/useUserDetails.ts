@@ -9,6 +9,7 @@ const useUserDetails = () => {
     const [userDetails, setUserDetails] = useState(emptyUserDetails)
     const {t} = useTranslation()
     const [error, setError] = useState({state: false, text: ""})
+    const [notFound, setNotFound] = useState(false)
 
     const retrieveUserDetails = async (userId: string | number) => {
         try {
@@ -27,11 +28,16 @@ const useUserDetails = () => {
 
     }
     const getUserDetails = async (userId: string | number) => {
-        setUserDetails(await retrieveUserDetails(userId))
+        const res = await retrieveUserDetails(userId);
+        if(res === emptyUserDetails){
+            setNotFound(true)
+        }else{
+            setUserDetails(res)
+        }
     }
 
     return {
-        userDetails, getUserDetails, retrieveUserDetails
+        userDetails, getUserDetails, retrieveUserDetails, notFound
     }
 }
 

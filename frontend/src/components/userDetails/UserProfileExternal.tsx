@@ -5,13 +5,8 @@ import {Link} from "react-router-dom";
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
 import UserRating from "../userAssets/UserRatingDiv.tsx";
 
-const UserProfileRefactor = ({user }) => {
+const UserProfileRefactor = ({userDetails }) => {
     const { t } = useTranslation();
-    const {userDetails, getUserDetails} = useUserDetails()
-
-    useEffect(() => {
-        getUserDetails(user).then()
-    }, [user])
 
     return (
         <div>
