@@ -33,19 +33,26 @@ const useReviews = () => {
 
 
     const fetchLendingReviews = async (lending: any) => {
+
         console.log(lending)
         const reviews = []
 
-        if(lending.hasProperty('borrowerReviewUrl')) {
+        if(lending.hasOwnProperty('borrowerReviewUrl')) {
             const borrowerReview = await api.get(lending.borrowerReviewUrl)
             const borrowerReviewDetails = await retrieveUserDetails(extractId(borrowerReview.data.reviewer))
             reviews.push({...borrowerReview.data, reviewerDetails: borrowerReviewDetails, reviewerId: extractId(borrowerReview.data.reviewer)})
         }
 
-        if(lending.hasProperty('lenderReviewUrl')) {
+        if(lending.hasOwnProperty('lenderReviewUrl')) {
             const lenderReview = await api.get(lending.lenderReviewUrl)
             const lenderReviewDetails = await retrieveUserDetails(extractId(lenderReview.data.reviewer))
             reviews.push({...lenderReview.data, reviewerDetails: lenderReviewDetails, reviewerId: extractId(lenderReview.data.reviewer)})
+        }
+
+        if(lending.hasOwnProperty('assetInstanceReview')) {
+            const assetInstanceReview = await api.get(lending.assetInstanceReview)
+            const assetInstanceReviewDetails = await retrieveUserDetails(extractId(assetInstanceReview.data.reviewer))
+            reviews.push({...assetInstanceReview.data, reviewerDetails: assetInstanceReviewDetails, reviewerId: extractId(assetInstanceReview.data.reviewer)})
         }
         console.log(reviews)
         setLendingReviews(reviews)
