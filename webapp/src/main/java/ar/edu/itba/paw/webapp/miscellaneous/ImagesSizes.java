@@ -20,10 +20,11 @@ public enum ImagesSizes {
         this.height = height;
     }
 
-    public byte[] resizeImage(byte[] image) throws IOException {
+    public byte[] resizeImage(byte[] image)  {
         if (image == null || this.name().equals("FULL")) {
             return image;
         }
+        try{
         InputStream inputStream = new ByteArrayInputStream(image);
         BufferedImage originalBufferedImage = ImageIO.read(inputStream);
 
@@ -46,7 +47,9 @@ public enum ImagesSizes {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(resizedImage, "jpg", outputStream);
-
         return outputStream.toByteArray();
+        }catch (IOException e){
+            return image;
+        }
     }
 }

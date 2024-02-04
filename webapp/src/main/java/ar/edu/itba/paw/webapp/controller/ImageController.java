@@ -17,7 +17,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
 import java.net.URI;
 
 @Component
@@ -38,7 +37,7 @@ public class ImageController {
     @Path("/{id}")
     @Produces({ "image/png", "image/jpeg", "image/gif", MediaType.APPLICATION_JSON })
     public Response getImage(@PathParam("id") final int id,
-                             @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size) throws ImageNotFoundException, IOException {
+                             @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size) throws ImageNotFoundException {
         Image image = imageService.getImage(id).orElseThrow(ImageNotFoundException::new);
         byte [] imageBytes = image.getPhoto();
         Response.ResponseBuilder responseBuilder = Response.ok(ImagesSizes.valueOf(size).resizeImage(imageBytes));
