@@ -8,7 +8,7 @@ import StarsReviews from "../viewAsset/StarsReviews.tsx";
 const ProfileReviewCard = ({review, clickedReview}) => {
 
     return (
-        <div className="row d-flex justify-content-center" style={{ width: '600px'}} onClick={() => clickedReview(review)}>
+        <div className="row d-flex justify-content-center" style={{ width: '450px'}} onClick={() => clickedReview(review)}>
             <div className="my-2">
                 <div className="card" style={{ borderRadius: '30px' }}>
                     <div className="card-body m-3">

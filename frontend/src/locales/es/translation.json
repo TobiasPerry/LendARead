@@ -388,7 +388,7 @@
   "errors": {
     "failedToFetchBorrowerReview": "Error al obtener reseña del prestatario",
     "failedToFetchLenderReview": "Error al obtener reseña del prestamista",
-    "failedToFetchAssetInstanceReviews": "Error al obtener reseñas del activo",
+    "failedToFetchAssetInstanceReview": "Error al obtener reseñas del activo",
     "failedPatchAsset": "Error al modificar activo",
     "failedFetchingAssetDetails": "Error al obtener detalles del activo",
     "failedPostImage": "Error al publicar imagen",

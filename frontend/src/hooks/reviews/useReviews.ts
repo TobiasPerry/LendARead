@@ -69,7 +69,6 @@ const useReviews = () => {
                 })
             } catch (e) {
                 setError({status: true, text: t("errors.failedToFetchAssetInstanceReview")} )
-
             }
         }
         setLendingReviews(reviews)
