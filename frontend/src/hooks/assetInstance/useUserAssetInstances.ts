@@ -3,6 +3,7 @@ import {useContext, useState} from 'react';
 import {api, api_} from '../api/api.ts';
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 import {extractTotalPages} from "./useAssetInstance.ts";
+import {useTranslation} from "react-i18next";
 
 export const checkFinished = (asset) => {
     return asset !== undefined && asset.lendingStatus === "FINISHED"
