@@ -5,9 +5,14 @@ import '../styles/ReviewCardModal.css';
 import {isPrivate, isPublic} from "../userAssets/LendedBooksOptions.tsx";
 import StarsReviews from "../viewAsset/StarsReviews.tsx";
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 function ReviewCardModal({ review, showModal, handleCloseModal }) {
     const { t } = useTranslation();
+    useEffect(() => {
+        if(review)
+            console.log(review)
+    }, [review])
 
     return (
         <>
@@ -21,13 +26,22 @@ function ReviewCardModal({ review, showModal, handleCloseModal }) {
                             <img src={`${review.reviewerDetails.image}`}
                                  className="reviewer-image"
                                  alt="avatar"/>
-                            <div className="review-details">
+                            <div className="review-details" style={{
+                                whiteSpace: "normal",
+                                wordWrap: "break-word",
+                                overflowWrap: "break-word"
+                            }}>
                                 <Link to={`/user/${review.reviewerId}`} onClick={handleCloseModal} >
                                     <h3 className="reviewer-name"><strong>{review.reviewerDetails.userName}</strong></h3>
                                 </Link>
+                                <h5 style={{fontWeight: "lighter"}}>{review.type}</h5>
                                 <h3 className="reviewer-email"><strong>{review.reviewerDetails.email}</strong></h3>
                                 <StarsReviews rating={review.rating}/>
-                                <h5 className="review-text">
+                                <h5 style={{
+                                    maxHeight: "300px",
+                                    overflowY: "auto",
+                                    wordWrap: "break-word",
+                                }}>
                                     {review.review}
                                 </h5>
                             </div>

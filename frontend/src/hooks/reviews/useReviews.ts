@@ -40,7 +40,7 @@ const useReviews = () => {
             try {
                 const borrowerReview = await api.get(lending.borrowerReviewUrl)
                 const borrowerReviewDetails = await retrieveUserDetails(extractId(borrowerReview.data.reviewer))
-                reviews.push({...borrowerReview.data, reviewerDetails: borrowerReviewDetails, reviewerId: extractId(borrowerReview.data.reviewer)})
+                reviews.push({...borrowerReview.data, reviewerDetails: borrowerReviewDetails, reviewerId: extractId(borrowerReview.data.reviewer), type: t("BORROWER")})
             } catch (e) {
                setError({status: true, text: t("errors.failedToFetchBorrowerReview")} )
             }
@@ -51,7 +51,7 @@ const useReviews = () => {
             try {
                 const lenderReview = await api.get(lending.lenderReviewUrl)
                 const lenderReviewDetails = await retrieveUserDetails(extractId(lenderReview.data.reviewer))
-                reviews.push({...lenderReview.data, reviewerDetails: lenderReviewDetails, reviewerId: extractId(lenderReview.data.reviewer)})
+                reviews.push({...lenderReview.data, reviewerDetails: lenderReviewDetails, reviewerId: extractId(lenderReview.data.reviewer), type: t("LENDER")})
             } catch (e) {
                 setError({status: true, text: t("errors.failedToFetchLenderReview")} )
             }
@@ -65,7 +65,8 @@ const useReviews = () => {
                 reviews.push({
                     ...assetInstanceReview.data,
                     reviewerDetails: assetInstanceReviewDetails,
-                    reviewerId: extractId(assetInstanceReview.data.reviewer)
+                    reviewerId: extractId(assetInstanceReview.data.reviewer),
+                    type: t("ASSET_INSTANCE")
                 })
             } catch (e) {
                 setError({status: true, text: t("errors.failedToFetchAssetInstanceReview")} )

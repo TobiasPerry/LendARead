@@ -382,6 +382,7 @@
     }
   },
   "BORROWER": "Prestatario",
+  "ASSET_INSTANCE": "Activo",
   "LENDER": "Prestador",
   "date": "{{day}}/{{month}}/{{year}}",
   "date_for_calendar": "dd/MM/yyyy",

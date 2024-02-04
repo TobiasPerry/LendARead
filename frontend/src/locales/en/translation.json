@@ -469,6 +469,7 @@
   },
   "reviews_text": "Reviews",
   "BORROWER": "Borrower",
+  "ASSET_INSTANCE": "Asset",
   "LENDER": "Lender",
   "date": "{{month}}/{{day}}/{{year}}",
   "date_for_calendar": "MM/dd/yyyy",

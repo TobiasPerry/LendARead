@@ -14,6 +14,7 @@ const ProfileReviewCard = ({review, clickedReview}) => {
                     <div className="card-body m-3">
                         <div className="row">
                             <div className="col-lg-4 justify-content-center align-items-center">
+                                <h5 style={{fontWeight: "lighter"}}>{review.type}</h5>
                                 <img src={review.reviewerDetails.image}
                                      className="rounded-circle img-fluid shadow-1" alt="avatar"
                                      style={{
