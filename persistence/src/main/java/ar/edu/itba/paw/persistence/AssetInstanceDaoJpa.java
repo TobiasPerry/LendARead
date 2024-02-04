@@ -105,6 +105,11 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
                 queryFilters.append(" ai.status = :state ");
                 isFirst = false;
         }
+        if (searchQuery.getAssetState() != null && searchQuery.getAssetState().equals(AssetState.ALL)){
+            queryFilters.append(isFirst ? "WHERE " : "AND ");
+            queryFilters.append(" ai.status != :state ");
+            isFirst = false;
+        }
         queryFilters.append(isFirst ? " WHERE " : "AND ");
         // If there's a rating filter parameter
         queryFilters.append("  COALESCE(avg_reviews.avg_rating ,3) >= :min_rating AND COALESCE(avg_reviews.avg_rating ,3) <= :max_rating ");
@@ -148,6 +153,10 @@ public class AssetInstanceDaoJpa implements AssetInstanceDao {
         if (searchQuery.getAssetState() != null && !searchQuery.getAssetState().equals(AssetState.ALL)) {
             queryNative.setParameter("state",searchQuery.getAssetState().toString() );
             queryCount.setParameter("state",searchQuery.getAssetState().toString()  );
+        }
+        if (searchQuery.getAssetState() != null && searchQuery.getAssetState().equals(AssetState.ALL)){
+            queryNative.setParameter("state",AssetState.DELETED.toString() );
+            queryCount.setParameter("state",AssetState.DELETED.toString() );
         }
 
         queryNative.setParameter("min_rating", searchQuery.getMinRating());

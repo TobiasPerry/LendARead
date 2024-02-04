@@ -28,14 +28,14 @@ public class PreAuthorizeFunctions {
     private final UserService userService;
 
 
-    private final UserAssetInstanceService uais;
+    private final UserAssetInstanceService userAssetInstanceService;
 
     @Autowired
-    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService uais) {
+    public PreAuthorizeFunctions(UserReviewsService userReviewsService, AssetInstanceReviewsService assetInstanceReviewsService, UserService userService, UserAssetInstanceService userAssetInstanceService) {
         this.userReviewsService = userReviewsService;
         this.assetInstanceReviewsService = assetInstanceReviewsService;
         this.userService = userService;
-        this.uais = uais;
+        this.userAssetInstanceService = userAssetInstanceService;
     }
 
 
@@ -86,7 +86,7 @@ public class PreAuthorizeFunctions {
     }
     public boolean canChangeLendingStatus(final int lendingId,final String status){
         try {
-            Optional<Lending> lendingOptional = uais.getBorrowedAssetInstance(lendingId);
+            Optional<Lending> lendingOptional = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
             if (!lendingOptional.isPresent()) return true;
             Lending lending = lendingOptional.get();
             switch (status){
