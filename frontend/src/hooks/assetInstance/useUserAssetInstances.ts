@@ -2,7 +2,6 @@
 import {useContext, useState} from 'react';
 import {api, api_} from '../api/api.ts';
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
-import {useTranslation} from "react-i18next";
 import {extractTotalPages} from "./useAssetInstance.ts";
 
 export const checkFinished = (asset) => {
@@ -100,36 +99,41 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
            'itemsPerPage': PAGE_SIZE,
            'sortDirection': newSort.order,
        }
-
-       if(isLender)
-           queryparams['lenderId'] = user
-       else
-           queryparams['borrowerId'] = user
-
-       if(lendingStatusAdapterApi[`${newFilter}`] !== undefined)
-           queryparams['state'] =  lendingStatusAdapterApi[`${newFilter}`]
-
-       if(sortAdapterApi[`${newSort.column}`] !== undefined && newSort.column !== "user")
-           queryparams['sort'] = sortAdapterApi[`${newSort.column}`]
-
-       if(newSort.column === "user") {
-           if(isLender)
-               queryparams['sort'] = 'LENDER_USER'
-           else
-               queryparams['sort'] = 'BORROWER_USER'
-       }
-
-
+        setIsLoading(true)
        try {
+           const queryparams = {
+               'page': newPage,
+               'itemsPerPage': PAGE_SIZE,
+               'sortDirection': newSort.order,
+           }
+
+           if (isLender)
+               queryparams['lenderId'] = user
+           else
+               queryparams['borrowerId'] = user
+
+           if (lendingStatusAdapterApi[`${newFilter}`] !== undefined)
+               queryparams['state'] = lendingStatusAdapterApi[`${newFilter}`]
+
+           if (sortAdapterApi[`${newSort.column}`] !== undefined && newSort.column !== "user")
+               queryparams['sort'] = sortAdapterApi[`${newSort.column}`]
+
+           if (newSort.column === "user") {
+               if (isLender)
+                   queryparams['sort'] = 'LENDER_USER'
+               else
+                   queryparams['sort'] = 'BORROWER_USER'
+           }
+
+
            const lendings = await api.get(`/lendings`, {
                params: queryparams
            })
 
            setTotalPages(extractTotalPages(lendings.headers["link"]))
-           if(lendings.data.length === 0) {
-                setBooks([])
-                setIsLoading(false)
-                return
+           if (lendings.data.length == 0|| lendings.status === 204) {
+               setIsLoading(false)
+               setBooks([])
            }
 
            const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
@@ -181,17 +185,21 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
             }
         }
 
-        if(statusAdapterApi[`${newFilter}`] !== undefined)
-            params.params['status'] =  statusAdapterApi[`${newFilter}`]
+            if(statusAdapterApi[`${newFilter}`] !== undefined)
+                params.params['status'] =  statusAdapterApi[`${newFilter}`]
 
-        if(sortAdapterApi[`${newSort.column}`] !== undefined)
-            params.params['sort'] = sortAdapterApi[`${newSort.column}`]
+            if(sortAdapterApi[`${newSort.column}`] !== undefined)
+                params.params['sort'] = sortAdapterApi[`${newSort.column}`]
 
+            const assetinstances = await api.get(`/assetInstances`, params )
 
         try {
         const assetinstances = await api.get(`/assetInstances`, params )
 
-        setTotalPages(extractTotalPages(assetinstances.headers["link"]))
+            setTotalPages(extractTotalPages(assetinstances.headers["link"]))
+            if (assetinstances.status === 204) {
+                return []
+            }
 
             const booksRetrieved = await Promise.all(assetinstances.data.map(async (assetinstance) => {
 

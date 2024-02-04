@@ -15,7 +15,7 @@ function classNames(...classes) {
 export default function NavBar() {
 
     const { t, i18n } = useTranslation();
-    const {isLoggedIn, logout, userImage, user} = useContext(AuthContext)
+    const {isLoggedIn, logout, smallUserImage, user} = useContext(AuthContext)
     const [language, setLanguage] = useState('en');
 
     const navigate = useNavigate()
@@ -101,7 +101,7 @@ export default function NavBar() {
                                         <Link className="nav-link navItem" id="userView"  aria-current="page" to={`/user/${user}`}>
 
                                         <span className="navbar-brand">
-                                            <img src={userImage} className="rounded-circle" width="30" height="30" alt="logo"/>
+                                            <img src={smallUserImage} className="rounded-circle" width="30" height="30" alt="logo"/>
                                         </span>
 
                                         </Link>

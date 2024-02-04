@@ -37,7 +37,7 @@ const BookCard = ({ book }) => {
     }
 
     const handleUserImage = () => {
-        return userImage !== null && userImage !== undefined && userImage !== "" ? userImage : ProfilePlaceholder;
+        return userImage !== null && userImage !== undefined && userImage !== "" ? (userImage + '?size=PORTADA') : ProfilePlaceholder;
     }
 
     return (

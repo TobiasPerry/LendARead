@@ -35,7 +35,10 @@ const useReviews = () => {
             const linkHeader: any = lenderReviewsResponse.headers.get("Link");
             const totalPages = extractTotalPages(linkHeader);
             setTotalPagesLenderReviews(totalPages);
-
+            if (lenderReviewsResponse.status === 204) {
+                setLenderReviews([])
+                return
+            }
             const lenderReviewsPromises = lenderReviewsResponse.data.map(async (review: ReviewApi) => {
                 const reviewerId = extractId(review.reviewer)
                 return {
@@ -59,7 +62,10 @@ const useReviews = () => {
             const linkHeader: any = borrowerReviewsResponse.headers.get("Link");
             const totalPages = extractTotalPages(linkHeader);
             setTotalPagesBorrowerReviews(totalPages);
-
+            if (borrowerReviewsResponse.status === 204) {
+                setBorrowerReviews([])
+                return
+            }
             const borrowerReviewsPromises = borrowerReviewsResponse.data.map(async (review: ReviewApi) => {
                 const reviewerId = extractId(review.reviewer)
                 return {

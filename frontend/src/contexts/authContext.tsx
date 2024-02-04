@@ -46,6 +46,8 @@ export const AuthContext = React.createContext({
     uploadUserImage: async (image: any) => {
 
     },
+    changeUserRole: async () => {
+    },
     user: "",
     userDetails: {
         email: "",
@@ -58,14 +60,24 @@ export const AuthContext = React.createContext({
         telephone: "",
         userName: "",
     },
-    userImage: ""
+    userImage: "",
+    smallUserImage: ""
 });
 
+export const logoutStorages = () => {
+    localStorage.removeItem("userAuthToken");
+    sessionStorage.removeItem("userAuthToken");
+    localStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("rememberMe");
+    sessionStorage.removeItem("rememberMe");
+}
 const AuthContextProvider = (props) => {
-    const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken");
-    const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken");
+    const isInLocalStorage = localStorage.hasOwnProperty("userAuthToken") && localStorage.hasOwnProperty("refreshToken");
+    const isInSessionStorage = sessionStorage.hasOwnProperty("userAuthToken") && sessionStorage.hasOwnProperty("refreshToken");
     const [isLoggedIn, setLoggedIn] = useState(isInLocalStorage || isInSessionStorage);
     const token = isInLocalStorage ? localStorage.getItem("userAuthToken") : sessionStorage.getItem("userAuthToken")
+    const refreshToken = isInLocalStorage ? localStorage.getItem("refreshToken") : sessionStorage.getItem("refreshToken")
     const [authKey, setAuthKey] = useState(token);
 
     const { i18n } = useTranslation();
@@ -80,15 +92,20 @@ const AuthContextProvider = (props) => {
 
     useEffect(() => {
         if(isLoggedIn || isInLocalStorage)
-            handleJWT(token)
-    }, [token])
+            handleJWT(token, refreshToken).then()
+    }, [token, refreshToken])
 
     const extractUserId = (jwt: string): string => {
-        //@ts-ignore
-        const decoded = jwtDecode(jwt).userReference;
-        const pattern = /\/(\d+)(?=\/?$)/;
-        const match = decoded.match(pattern);
-        return match ? match[1] : ""
+        try {
+            //@ts-ignore
+            const decoded = jwtDecode(jwt).userReference;
+            const pattern = /\/(\d+)(?=\/?$)/;
+            const match = decoded.match(pattern);
+            return match ? match[1] : ""
+        } catch (e) {
+            return ""
+        }
+
     }
 
     const [user, setUser] = useState(() => {
@@ -101,16 +118,22 @@ const AuthContextProvider = (props) => {
        }
     });
     const [userImage, setUserImage] = useState(defaultUserPhoto);
+    const [smallUserImage, setSmallUserImage] = useState(defaultUserPhoto);
     const [userDetails, setUserDetails] = useState( emptyUserDetails);
 
-    const handleJWT = async (jwt: string, rememberMe = false)  => {
+    const handleJWT = async (jwt: string, refreshToken: string, rememberMe = false)  => {
         if(jwt === undefined || jwt === null)
             return false
 
-        if(rememberMe)
+        localStorage.setItem("rememberMe", String(rememberMe))
+
+        if(rememberMe) {
             localStorage.setItem("userAuthToken", jwt)
-        else
+            localStorage.setItem("refreshToken", refreshToken)
+        } else {
             sessionStorage.setItem("userAuthToken", jwt)
+            sessionStorage.setItem("refreshToken", refreshToken)
+        }
 
         await setUser(extractUserId(jwt))
         storeUserDetails(extractUserId(jwt))
@@ -122,8 +145,7 @@ const AuthContextProvider = (props) => {
     }
 
     const logout = () => {
-        localStorage.removeItem("userAuthToken");
-        sessionStorage.removeItem("userAuthToken");
+        logoutStorages()
         setLoggedIn(false);
         setAuthKey('');
         setUser("");
@@ -148,9 +170,8 @@ const AuthContextProvider = (props) => {
         const userDetails = await getUserDetails(id)
         if(userDetails.image !== null && userDetails.image !== undefined) {
             setUserImage(userDetails.image)
-            console.log(userDetails.image)
+            setSmallUserImage(userDetails.image + '?size=PORTADA')
         }
-
         setUserDetails(userDetails)
     }
 
@@ -164,7 +185,7 @@ const AuthContextProvider = (props) => {
                 }
             );
 
-            const res = await handleJWT(response.headers.get('x-jwt'), rememberMe)
+            const res = await handleJWT(response.headers.get('x-jwt'), response.headers.get('x-refresh-token'), rememberMe)
             return res
         } catch (error) {
             console.log(error);
@@ -221,6 +242,10 @@ const AuthContextProvider = (props) => {
         }
     }
 
+    const changeUserRole = async () => {
+        userDetails.role = "LENDER"
+    }
+
 
     return <AuthContext.Provider
         value={{
@@ -230,9 +255,11 @@ const AuthContextProvider = (props) => {
             user,
             userDetails,
             userImage,
+            smallUserImage,
             handleForgotPassword,
             handleChangePassword,
-            uploadUserImage
+            uploadUserImage,
+            changeUserRole
         }}>{props.children}</AuthContext.Provider>
 }
 

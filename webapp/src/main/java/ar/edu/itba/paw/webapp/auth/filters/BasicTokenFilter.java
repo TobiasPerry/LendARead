@@ -88,8 +88,8 @@ public class BasicTokenFilter extends OncePerRequestFilter {
                 );
             }
         User user = userService.getUser(username);
-        response.setHeader("X-JWT", jwtTokenUtil.generateJwtToken(authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
-        response.setHeader("X-Refresh-Token", jwtTokenUtil.generateRefreshToken( authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
+        response.setHeader(JwtTokenUtil.JWT_HEADER, jwtTokenUtil.generateJwtToken(authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
+        response.setHeader(JwtTokenUtil.JWT_REFRESH_HEADER, jwtTokenUtil.generateRefreshToken( authentication,JwtTokenUtil.getBaseUrl(request) + "/api/users/" + user.getId()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         }catch (Exception e){

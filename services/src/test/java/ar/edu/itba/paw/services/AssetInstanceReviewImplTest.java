@@ -4,6 +4,7 @@ import ar.edu.itba.paw.exceptions.LendingNotFoundException;
 import ar.edu.itba.paw.exceptions.UnableToAddReviewException;
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
+import ar.edu.itba.paw.interfaces.UserService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
@@ -16,6 +17,7 @@ import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceReviewsDao;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,7 +36,7 @@ public class AssetInstanceReviewImplTest {
     private UserAssetInstanceService userAssetInstanceService;
 
     @Mock
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Mock
     private AssetInstanceReviewsDao assetInstanceReviewsDao;
@@ -43,7 +45,10 @@ public class AssetInstanceReviewImplTest {
 
     @InjectMocks
     private AssetInstanceReviewsServiceImpl assetInstanceReviewsService;
-
+    @Before
+    public void setUp() throws UserNotFoundException {
+        when(userService.getCurrentUser()).thenReturn(new User( "EMAIL", "", "","", Behaviour.BORROWER,""));
+    }
     @Test(expected = UnableToAddReviewException.class)
     public void addReviewLendingNotExistsTest() throws LendingNotFoundException, UserNotFoundException, UnableToAddReviewException {
         // 1 - Precondiciones
@@ -72,7 +77,6 @@ public class AssetInstanceReviewImplTest {
     public void canReviewTest() throws LendingNotFoundException, UserNotFoundException {
         // 1 - Precondiciones
         when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(new Lending( 0L,new AssetInstance(0, new Asset(), PhysicalCondition.ASNEW, new User(), new Location(), new Image(), AssetState.PRIVATE,0, ""),new User( "EMAIL", "", "","", Behaviour.BORROWER,""), LocalDate.now(),LocalDate.now(), LendingState.FINISHED));
-        when(userService.getCurrentUser()).thenReturn(new User( "EMAIL", "", "","", Behaviour.BORROWER,""));
         // 2 - Ejercitación
         boolean canReview = assetInstanceReviewsService.canReview(0, 0);
 
@@ -82,8 +86,7 @@ public class AssetInstanceReviewImplTest {
     @Test
     public void canNotReviewTest() throws LendingNotFoundException, UserNotFoundException {
         // 1 - Precondiciones
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(new Lending( 0L,new AssetInstance(0, new Asset(), PhysicalCondition.ASNEW, new User(), new Location(), new Image(), AssetState.PRIVATE,0, ""),new User( "EMAIL", "", "","", Behaviour.BORROWER,""), LocalDate.now(),LocalDate.now(), LendingState.ACTIVE));
-        when(userService.getCurrentUser()).thenReturn(new User( "EMAIL", "", "","", Behaviour.BORROWER,""));
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(new Lending( new AssetInstance(0, new Asset(), PhysicalCondition.ASNEW, new User(), new Location(), new Image(), AssetState.PRIVATE,0, ""),new User( "EMAIL", "", "","", Behaviour.BORROWER,""), LocalDate.now(),LocalDate.now(), LendingState.ACTIVE));
         // 2 - Ejercitación
         boolean canReview = assetInstanceReviewsService.canReview(0, 0);
 

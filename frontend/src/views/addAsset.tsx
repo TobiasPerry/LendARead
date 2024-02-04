@@ -3,11 +3,15 @@ import { useState, useEffect, useContext, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
-import { api } from '../hooks/api/api.ts'
 import useLocations from '../hooks/locations/useLocations.ts'
+import useChangeRole from '../hooks/users/useChangeRole.ts'
+import useLanguages from '../hooks/languages/useLanguages.ts'
+import useAsset from '../hooks/asset/useAsset.ts'
+import useAssetInstance from '../hooks/assetInstance/useAssetInstance.ts'
 import {AuthContext} from "../contexts/authContext.tsx";
 import NewLenderModal from '../components/modals/NewLenderModal.tsx'
 import noImagePlacegolder from '../../public/static/no_image_placeholder.jpg'
+import LocationModal from "../components/modals/LocationModal.tsx";
 
 const ISBN_API_BASE_URL = 'https://openlibrary.org';
 
@@ -23,6 +27,10 @@ const AddAsset = () => {
     
     const {t} = useTranslation();
     const navigate = useNavigate();
+    const { makeLender } = useChangeRole();
+    const { getAllLanguages } = useLanguages();
+    const { uploadAssetInstanceImage, uploadAssetInstance } = useAssetInstance();
+    const { uploadAsset, getAssetByIsbn } = useAsset();
 
     const states = [
         ["ASNEW", t('ASNEW')],
@@ -46,13 +54,14 @@ const AddAsset = () => {
     const [step, setStep] = useState(1);
     const [languages, setLanguages] = useState<LanguagesDTO>([])
     const [showLocModal, setShowLocModal] = useState(false);
-    const {getLocations, addLocation} = useLocations()
+    const {addLocation, getAllLocations} = useLocations()
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([])
     const [selectedLocation, setSelectedLocation] = useState<any>({})
     const alreadyHaveAsset = useRef(false)
     const assetId = useRef(-1)
 
+    const [newLocationModal, setNewLocationModal] = useState(false)
 
     // Data from the form
     const [isbn, setIsbn] = useState('');
@@ -70,16 +79,19 @@ const AddAsset = () => {
     const handleLocationSave = async (newLocation: any) => {
         setShowLocModal(false);
         // First, make the user lender
-        const resChangeRole = await api.patch(`/users/${user}`, {"role": "LENDER"}, {headers: {"Content-Type": "application/vnd.user.v1+json"}})
-        if(resChangeRole.status !== 204){
-            console.log(resChangeRole.status)
+        const roleChanged = await makeLender(user)
+
+        if (!roleChanged) {
+            console.error("Error en cambiar el rol")
+            setShowLocModal(true)
+            return 
         }
 
         const resAddLocation = await addLocation(newLocation)
         if(!resAddLocation){
             console.error("Error en cargar la ubicacion")
         }else{ 
-            getLocations(user).then((response) => {
+            getAllLocations(user).then((response) => {
                 setLocations(response)
             })
         }
@@ -94,20 +106,19 @@ const AddAsset = () => {
     }, [locations])
 
     useEffect(() => {
-        api.get('/languages').then((response) => {
-            setLanguages(response.data)
+        getAllLanguages().then((response) => {
+            setLanguages(response)
         })
     }, [])
 
     useEffect(() => {
-        getLocations(user).then((response) => {
+        getAllLocations(user).then((response) => {
             setLocations(response)
         })
     }, [])
 
     useEffect(() => {
-        console.log(userDetails.role)
-        if(userDetails.role !== "LENDER"){
+        if(userDetails.role != "LENDER"){
             setShowLocModal(true)
         }
     }, []);
@@ -250,12 +261,9 @@ const AddAsset = () => {
         let book = null;
         // TODO: First try with our API
         // This returns a string
-        const response = await api.get('/assets?itemsPerPage=2&page=1&isbn=' + isbn)
-        if (response.status == 200 && response.data.length > 0) {
-            book = response.data[0]
-            const langId = book.language.split('/').pop()
-            const langResponse = await api.get('/languages/' + langId)
-            book.lang = langResponse.data.code
+        const asset = await getAssetByIsbn(isbn);
+        if (asset) {
+            book = asset
             alreadyHaveAsset.current = true
             assetId.current = book.selfUrl.split('/').pop()
         } else {
@@ -433,31 +441,22 @@ const AddAsset = () => {
     }
 
     const handleSubmit = async () => {
-        const asset = {
-            isbn: isbn,
-            title: title,
-            author: author,
-            language: language,
-            description: description
-        }
-
         // Print the type of borrowTimeType
         const maxDays = (borrowTimeQuantity * (borrowTimeType as number)) // The LSP is saying that it is not a number, but printing the type gives "number". Idk
 
         // First, post the image
-        const responseImage = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
-        if (responseImage.status !== 201) {
-            return false;     
-        }         
+        const imageId = await uploadAssetInstanceImage(image)
+        if (imageId === -1) {
+            return false;
+        }
 
         // Then, if the asset is new, post it
-        const imageId: number = parseInt(responseImage.headers.location.split('/').pop())
         if (!alreadyHaveAsset.current) {
-            const responseAsset = await api.post("/assets", asset, {headers: {"Content-type": "application/vnd.asset.v1+json"}})
-            if (responseAsset.status !== 201) {
-                return false;     
+            const uploadedAssetId = await uploadAsset(isbn, title, author, language, description)
+            if (uploadedAssetId === -1) {
+                return false;
             }
-            assetId.current = responseAsset.headers.location.split('/').pop()
+            assetId.current = uploadedAssetId
         } 
         
         // Lastly, the assetInstnace
@@ -465,18 +464,17 @@ const AddAsset = () => {
             physicalCondition: physicalCondition,
             maxDays: maxDays,
             isReservable: acceptsReservations,
-            imageId: imageId,
-            locationId: locationId,
+            imageId: imageId.toString(),
+            locationId: locationId.toString(),
             description: description,
             status: "PUBLIC",
-            assetId: assetId.current,
+            assetId: assetId.current.toString()
         }
 
-        const assetInstanceResponse = await api.post("/assetInstances", assetInstnace, {headers: {"Content-type": "application/vnd.assetInstance.v1+json"}})
-        if (assetInstanceResponse.status !== 201) {
+        const assetInstanceId = await uploadAssetInstance(assetInstnace)
+        if (assetInstanceId === -1) {
             return false;     
         }
-        const assetInstanceId = assetInstanceResponse.data.selfUrl.split('/').pop()
         navigate(`/userBook/${assetInstanceId}?state=owned`)
     }
 
@@ -514,6 +512,13 @@ const AddAsset = () => {
         setStep(step - 1);
     }
 
+    const handleSaveNewLocation = async (formData: any) => {
+        const res = await addLocation(formData)
+        if (res) {
+            setNewLocationModal(false)
+        }
+    }
+
 
     // TODO Check classes
     return (
@@ -523,6 +528,11 @@ const AddAsset = () => {
             showModal={showLocModal}
             handleClose={() =>{navigate(-1)}}
             handleSave={handleLocationSave}
+        />
+        <LocationModal
+            handleSave={handleSaveNewLocation}
+            location={()=>{}} showModal={newLocationModal}
+            handleClose={()=>{setNewLocationModal(false)}}
         />
         <div className="addasset-container flex-column">
             <h1 className="text-center mb-5">{t('addAsset.title')}</h1>
@@ -624,12 +634,17 @@ const AddAsset = () => {
                         <fieldset className='info-container d-none'>
                             <h2>{t('addAsset.location.detail')}</h2>
                             <div className='location-selector'>
-                                <select id='location-select' className='form-select' onChange={(e) => {changeSelectedLocation(e.target.value)}}>
+                                <select id='location-select' className='form-select' onChange={(e) => {
+                                    changeSelectedLocation(e.target.value)
+                                }}>
                                     {locations.map((location) => {
                                         const locId = location.selfUrl.split('/').pop()
                                         return <option key={locId} value={locId}>{location.name}</option>
                                     })}
                                 </select>
+                                <p className="text-clickable mt-3" onClick={() => {setNewLocationModal(true)}}>
+                                    {t('addAsset.location.new')}
+                                </p>
                                 <small id='location-error' className="text-danger small d-none">{t('addAsset.location.validation-error')}</small>
                                 <div className='flex-grow-1 location-display'>
                                     <div className="field-set">

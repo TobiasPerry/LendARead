@@ -29,16 +29,15 @@ const useLendings = () => {
                 }
             })
 
-            //@ts-ignore
-            const linkHeader: any = lendingsResponse.headers.get("Link");
-            const totalPages = extractTotalPages(linkHeader);
-            setTotalPages(totalPages);
-
-            const lendings = lendingsResponse.data
-            if (lendings.length === 0) {
-                setLendings([])
-                return
-            }
+        //@ts-ignore
+        const linkHeader: any = lendingsResponse.headers.get("Link");
+        const totalPages = extractTotalPages(linkHeader);
+        setTotalPages(totalPages);
+        if (lendingsResponse.status === 204) {
+            setLendings([])
+            return
+        }
+        const lendings = lendingsResponse.data
 
             const mappedLendings = lendings.map(async (lending: LendingApi) => {
                 const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data

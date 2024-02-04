@@ -53,7 +53,8 @@ export interface ShowReview {
     userName: string,
     role: string,
     userImage: string,
-    rating: number
+    rating: number,
+    userId: number
 }
 
 const useReview = () => {
@@ -269,12 +270,14 @@ const useReview = () => {
             // I get the response from assetInstance/:id/review/:id so i need to go and get data from the reviewer
             const res = await api_.get(review.reviewer);
             const data = res.data
+            console.log(data.userImage)
             return {
                 text: review.review,
                 rating: review.rating,
                 role: data.role,
                 userName: data.userName,
-                userImage: data.userImage
+                userImage: data.image,
+                userId: data.id
             }
         }catch (e) {
             return null;
