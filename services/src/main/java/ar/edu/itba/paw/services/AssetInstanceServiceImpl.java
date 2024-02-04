@@ -118,7 +118,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         Asset book ;
         Location location;
         User user = userService.getCurrentUser();
-        book = assetService.getBookById(assetId).orElseThrow(AssetNotExistException::new);
+        book = assetService.getAssetById(assetId).orElseThrow(AssetNotExistException::new);
         location =   locationsService.getLocation(locationId).orElseThrow(LocationNotExistException::new);
         if (!location.isActive()) throw new LocationNotExistException();
         if (!location.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();

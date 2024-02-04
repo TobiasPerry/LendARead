@@ -40,7 +40,7 @@ public class AssetImplTest {
         when(assetDao.addAsset(any())).thenThrow(new BookAlreadyExistException());
 
         // 2 - Ejercitación
-        assetService.addBook("", "", "", "");
+        assetService.addAsset("", "", "", "");
 
         // 3 - Assertions
         Assert.fail();
@@ -51,7 +51,7 @@ public class AssetImplTest {
         when(languagesService.getLanguage(any())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        assetService.addBook("", "", "", "");
+        assetService.addAsset("", "", "", "");
 
         // 3 - Assertions
         Assert.fail();
@@ -62,7 +62,7 @@ public class AssetImplTest {
         when(assetDao.getBookById(any())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        Assert.assertEquals(Optional.empty(),assetService.getBookById(0L));
+        Assert.assertEquals(Optional.empty(),assetService.getAssetById(0L));
 
     }
 
