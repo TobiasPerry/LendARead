@@ -3,9 +3,9 @@ package ar.edu.itba.paw.interfaces;
 //import models.assetExistanceContext.interfaces.Book;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstance;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.PhysicalCondition;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstance;
+import ar.edu.itba.paw.models.assetExistanceContext.PhysicalCondition;
+import ar.edu.itba.paw.models.assetLendingContext.AssetState;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 

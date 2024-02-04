@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.interfaces;
 
 import ar.edu.itba.paw.exceptions.*;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
+import ar.edu.itba.paw.models.userContext.User;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
 import java.time.LocalDate;

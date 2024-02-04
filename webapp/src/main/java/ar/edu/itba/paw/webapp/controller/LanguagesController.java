@@ -3,7 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.webapp.dto.LanguagesDTO;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;

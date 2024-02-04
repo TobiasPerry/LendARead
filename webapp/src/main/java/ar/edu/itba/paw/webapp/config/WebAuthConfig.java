@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.config;
 
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
+import ar.edu.itba.paw.models.userContext.Behaviour;
 import ar.edu.itba.paw.webapp.auth.JwtTokenUtil;
 import ar.edu.itba.paw.webapp.auth.ForbiddenDeniedHandler;
 import ar.edu.itba.paw.webapp.auth.UnauthorizedRequestHandler;

@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.itba.edu.paw.persistenceinterfaces.LanguageDao;

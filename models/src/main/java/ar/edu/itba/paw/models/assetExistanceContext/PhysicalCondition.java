@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.assetExistanceContext.implementations;
+package ar.edu.itba.paw.models.assetExistanceContext;
 
 public enum PhysicalCondition {
     ASNEW(),

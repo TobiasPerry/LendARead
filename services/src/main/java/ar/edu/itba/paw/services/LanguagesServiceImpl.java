@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfaces.LanguagesService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.itba.edu.paw.persistenceinterfaces.LanguageDao;
 import org.slf4j.Logger;

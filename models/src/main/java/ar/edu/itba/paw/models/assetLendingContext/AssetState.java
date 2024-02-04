@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.assetLendingContext.implementations;
+package ar.edu.itba.paw.models.assetLendingContext;
 
 public enum AssetState {
     PUBLIC(){

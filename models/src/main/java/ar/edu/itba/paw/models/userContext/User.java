@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.models.userContext.implementations;
+package ar.edu.itba.paw.models.userContext;
 
 import ar.edu.itba.paw.models.miscellaneous.Image;
 import org.hibernate.annotations.Formula;

@@ -4,7 +4,7 @@ import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.LendingService;
 import ar.edu.itba.paw.interfaces.UserAssetInstanceService;
 import ar.edu.itba.paw.interfaces.UserService;
-import ar.edu.itba.paw.models.assetLendingContext.implementations.Lending;
+import ar.edu.itba.paw.models.assetLendingContext.Lending;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.LendingDTO;
 import ar.edu.itba.paw.webapp.form.BorrowAssetForm;

@@ -1,9 +1,9 @@
-package ar.edu.itba.paw.models.assetExistanceContext.implementations;
+package ar.edu.itba.paw.models.assetExistanceContext;
 
-import ar.edu.itba.paw.models.assetLendingContext.implementations.AssetState;
+import ar.edu.itba.paw.models.assetLendingContext.AssetState;
 import ar.edu.itba.paw.models.miscellaneous.Image;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.userContext.Location;
+import ar.edu.itba.paw.models.userContext.User;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;

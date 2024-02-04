@@ -1,6 +1,6 @@
 package ar.itba.edu.paw.persistenceinterfaces;
 
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
+import ar.edu.itba.paw.models.assetExistanceContext.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 
 import java.util.Optional;

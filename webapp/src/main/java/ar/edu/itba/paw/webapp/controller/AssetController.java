@@ -5,7 +5,7 @@ import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.exceptions.UnableToCreateAssetException;
 import ar.edu.itba.paw.interfaces.AssetService;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.Asset;
+import ar.edu.itba.paw.models.assetExistanceContext.Asset;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 import ar.edu.itba.paw.webapp.dto.AssetDTO;
 import ar.edu.itba.paw.webapp.form.AddAssetForm;

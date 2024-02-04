@@ -2,7 +2,7 @@ package ar.edu.itba.paw.services;
 
 
 import ar.edu.itba.paw.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.userContext.implementations.Behaviour;
+import ar.edu.itba.paw.models.userContext.Behaviour;
 import ar.itba.edu.paw.persistenceinterfaces.UserDao;
 import org.junit.Assert;
 import org.junit.Test;

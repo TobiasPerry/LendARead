@@ -2,9 +2,9 @@ package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.*;
-import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
-import ar.edu.itba.paw.models.userContext.implementations.Location;
-import ar.edu.itba.paw.models.userContext.implementations.User;
+import ar.edu.itba.paw.models.assetExistanceContext.AssetInstanceReview;
+import ar.edu.itba.paw.models.userContext.Location;
+import ar.edu.itba.paw.models.userContext.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
