@@ -3,7 +3,6 @@ import { useState, useEffect, useContext, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
-import { api } from '../hooks/api/api.ts'
 import useLocations from '../hooks/locations/useLocations.ts'
 import useChangeRole from '../hooks/users/useChangeRole.ts'
 import useLanguages from '../hooks/languages/useLanguages.ts'
@@ -30,8 +29,8 @@ const AddAsset = () => {
     const navigate = useNavigate();
     const { makeLender } = useChangeRole();
     const { getAllLanguages } = useLanguages();
-    const { uploadAssetInstanceImage } = useAssetInstance();
-    const { uploadAsset } = useAsset();
+    const { uploadAssetInstanceImage, uploadAssetInstance } = useAssetInstance();
+    const { uploadAsset, getAssetByIsbn } = useAsset();
 
     const states = [
         ["ASNEW", t('ASNEW')],
@@ -108,7 +107,7 @@ const AddAsset = () => {
 
     useEffect(() => {
         getAllLanguages().then((response) => {
-            setLanguages(response.data)
+            setLanguages(response)
         })
     }, [])
 
@@ -262,12 +261,9 @@ const AddAsset = () => {
         let book = null;
         // TODO: First try with our API
         // This returns a string
-        const response = await api.get('/assets?itemsPerPage=2&page=1&isbn=' + isbn)
-        if (response.status == 200 && response.data.length > 0) {
-            book = response.data[0]
-            const langId = book.language.split('/').pop()
-            const langResponse = await api.get('/languages/' + langId)
-            book.lang = langResponse.data.code
+        const asset = await getAssetByIsbn(isbn);
+        if (asset) {
+            book = asset
             alreadyHaveAsset.current = true
             assetId.current = book.selfUrl.split('/').pop()
         } else {
@@ -468,18 +464,17 @@ const AddAsset = () => {
             physicalCondition: physicalCondition,
             maxDays: maxDays,
             isReservable: acceptsReservations,
-            imageId: imageId,
-            locationId: locationId,
+            imageId: imageId.toString(),
+            locationId: locationId.toString(),
             description: description,
             status: "PUBLIC",
-            assetId: assetId.current,
+            assetId: assetId.current.toString()
         }
 
-        const assetInstanceResponse = await api.post("/assetInstances", assetInstnace, {headers: {"Content-type": "application/vnd.assetInstance.v1+json"}})
-        if (assetInstanceResponse.status !== 201) {
+        const assetInstanceId = await uploadAssetInstance(assetInstnace)
+        if (assetInstanceId === -1) {
             return false;     
         }
-        const assetInstanceId = assetInstanceResponse.data.selfUrl.split('/').pop()
         navigate(`/userBook/${assetInstanceId}?state=owned`)
     }
 

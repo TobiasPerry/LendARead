@@ -24,7 +24,7 @@ const BookCard = ({ book }) => {
         assetInstanceNumber,
     } = book;
 
-    const url_book_image = "url('" + image + "')"
+    const url_book_image = "url('" + image + '?size=PORTADA' + "')"
 
     const {user} = useContext(AuthContext)
 

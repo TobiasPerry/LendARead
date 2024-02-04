@@ -19,9 +19,23 @@ const useAsset = () => {
         return parseInt(response.headers.location.split('/').pop());
     }
 
-    return {
-        uploadAsset
+    const getAssetByIsbn = async (isbn: string): Promise<any> => {
+        const response = await api.get('/assets?itemsPerPage=2&page=1&isbn=' + isbn)
+        if (response.status == 200 && response.data.length > 0) {
+            const book = response.data[0]
+            const langId = book.language.split('/').pop()
+            const langResponse = await api.get('/languages/' + langId)
+            book.lang = langResponse.data.code
+            return book
+        } 
+        return null
     }
+    return {
+        uploadAsset,
+        getAssetByIsbn
+    }
+
+    
 }
 
 export default useAsset;
