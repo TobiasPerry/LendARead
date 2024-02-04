@@ -48,7 +48,10 @@ const useLendings = () => {
         const linkHeader: any = lendingsResponse.headers.get("Link");
         const totalPages = extractTotalPages(linkHeader);
         setTotalPages(totalPages);
-
+        if (lendingsResponse.status === 204) {
+            setLendings([])
+            return
+        }
         const lendings = lendingsResponse.data
 
         const mappedLendings = lendings.map(async (lending: LendingApi) => {

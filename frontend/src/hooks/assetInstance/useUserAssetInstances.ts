@@ -124,8 +124,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
            })
 
            setTotalPages(extractTotalPages(lendings.headers["link"]))
-
-           if (lendings.data.length == 0) {
+           if (lendings.data.length == 0|| lendings.status === 204) {
                setIsLoading(false)
                setBooks([])
            }
@@ -198,7 +197,9 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
             const assetinstances = await api.get(`/assetInstances`, params )
 
             setTotalPages(extractTotalPages(assetinstances.headers["link"]))
-
+            if (assetinstances.status === 204) {
+                return []
+            }
 
             const booksRetrieved = await Promise.all(assetinstances.data.map(async (assetinstance) => {
 

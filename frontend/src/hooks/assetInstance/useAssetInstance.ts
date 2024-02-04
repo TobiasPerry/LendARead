@@ -122,6 +122,9 @@ const useAssetInstance = () => {
 
             const data = await api.get(url)
             const pages = extractTotalPages(data.headers["link"])
+            if (data.status === 204) {
+                return { books: [], pages };
+            }
             const body = data.data
 
             // Array para almacenar todas las promesas de las llamadas en paralelo
