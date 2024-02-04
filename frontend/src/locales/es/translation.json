@@ -405,7 +405,7 @@
     "failedGettingLocations": "Error al obtener ubicaciones",
     "failedToFetchBorrowerReviews": "Error al obtener reseñas del prestatario",
     "failedToChangeRole": "Error al cambiar de rol",
-    "failedDeletingAssetDetails": "Error al eliminar detalles del activo",
+    "failedDeletingAssetDetails": "Error al eliminar detalles del activo"
   },
   "not_allowed": {
     "title": "No permitido",
