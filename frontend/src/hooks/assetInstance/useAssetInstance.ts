@@ -4,6 +4,7 @@ import i18n from "../../i18n.js"
 import canPlayThrough = Simulate.canPlayThrough;
 import Vnd from "../api/types.ts";
 import types from "../api/types.ts";
+import { AssetInstanceApi } from "./useUserAssetInstances.ts";
 
 export const getErrorMsg = (response) => {
     console.log(response.headers["content-type"])
@@ -288,13 +289,24 @@ const useAssetInstance = () => {
         return parseInt(responseImage.headers.location.split('/').pop());
     }
 
+    const uploadAssetInstance = async (assetInstance: any): Promise<number> => {
+        const response = await api.post("/assetInstances", assetInstance, {headers: {"Content-type": "application/vnd.assetInstance.v1+json"}})
+        if (response.status !== 201) {
+            console.error("Error uploading assetInstance: ", response)
+            return -1;
+        }
+        const assetInstanceId = parseInt(response.data.selfUrl.split('/').pop())
+        return assetInstanceId;
+    }
+
     return {
         handleAllAssetInstances,
         handleAssetInstance,
         handleGetLanguages,
         handleSendLendingRequest,
         handleGetReservedDays,
-        uploadAssetInstanceImage
+        uploadAssetInstanceImage,
+        uploadAssetInstance
     };
 }
 

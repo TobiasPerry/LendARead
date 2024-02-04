@@ -30,7 +30,7 @@ const AddAsset = () => {
     const navigate = useNavigate();
     const { makeLender } = useChangeRole();
     const { getAllLanguages } = useLanguages();
-    const { uploadAssetInstanceImage } = useAssetInstance();
+    const { uploadAssetInstanceImage, uploadAssetInstance } = useAssetInstance();
     const { uploadAsset } = useAsset();
 
     const states = [
@@ -108,7 +108,7 @@ const AddAsset = () => {
 
     useEffect(() => {
         getAllLanguages().then((response) => {
-            setLanguages(response.data)
+            setLanguages(response)
         })
     }, [])
 
@@ -468,18 +468,17 @@ const AddAsset = () => {
             physicalCondition: physicalCondition,
             maxDays: maxDays,
             isReservable: acceptsReservations,
-            imageId: imageId,
-            locationId: locationId,
+            imageId: imageId.toString(),
+            locationId: locationId.toString(),
             description: description,
             status: "PUBLIC",
-            assetId: assetId.current,
+            assetId: assetId.current.toString()
         }
 
-        const assetInstanceResponse = await api.post("/assetInstances", assetInstnace, {headers: {"Content-type": "application/vnd.assetInstance.v1+json"}})
-        if (assetInstanceResponse.status !== 201) {
+        const assetInstanceId = await uploadAssetInstance(assetInstnace)
+        if (assetInstanceId === -1) {
             return false;     
         }
-        const assetInstanceId = assetInstanceResponse.data.selfUrl.split('/').pop()
         navigate(`/userBook/${assetInstanceId}?state=owned`)
     }
 
