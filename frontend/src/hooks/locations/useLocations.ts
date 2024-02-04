@@ -87,12 +87,11 @@ const useLocations = () => {
             const response = await getLocations(user);
             await setLocations(response);
         } catch (error) {
-            console.error("Failed to fetch locations:", error);
         }
     }
 
     return {
-        editLocation, deleteLocation, getLocations, addLocation, isLoading, fetchLocation, locations, editingLocation, setEditingLocation, emptyLocation
+        editLocation, deleteLocation, getLocations, addLocation, isLoading, fetchLocation, locations, editingLocation, setEditingLocation, emptyLocation, error
     }
 }
 

@@ -1,4 +1,15 @@
 {
+  "errors": {
+    "failedDeletingAssetDetails": "Failed deleting asset details",
+    "failedFetchingAssetDetails": "Failed fetching asset details",
+    "failedPatchAsset": "Failed patching asset",
+    "failedPostImage": "Failed posting image",
+    "failedAddingLocation": "Failed adding location",
+    "failedPatchLocation": "Failed patching location",
+    "failedToFetchLendings": "Failed to fetch lendings",
+    "failedDeleteLocation": "Failed deleting location",
+    "failedToFetchBooks": "Failed to fetch user books"
+  },
   "Open main menu": "Open main menu",
   "Your profile": "Your Profile",
   "Dashboard": "Dashboard",

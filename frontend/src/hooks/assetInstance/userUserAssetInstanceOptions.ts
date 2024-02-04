@@ -9,20 +9,12 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
     const {t} = useTranslation()
     const [error, setError] = useState({status: false, text: ""})
 
-    const handlePatch = (response) => {
-        if(response.request.status !== 204 && response.request.status !== 200) {
-            setError({status: true, text: "error.failedPatchAsset"})
-            throw Error()
-        }
-
-    }
     const editAssetVisbility = async (asset: any) => {
         try {
             const response = await api.patch(asset.assetinstance.selfUrl, {status: asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
                 {
                     headers: {"Content-type": types.VND_ASSET_INSTANCE}
                 })
-            handlePatch(response)
             await fetchUserAssetDetails()
         } catch (e) {
            setError({status: true, text: "error.failedPatchAsset"})
@@ -37,7 +29,6 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
                     headers: {"Content-type": types.VND_ASSET_INSTANCE
                     }
                 })
-            handlePatch(response)
             await fetchUserAssetDetails()
         } catch (e) {
             setError({status: true, text: "error.failedPatchAsset"})
@@ -80,7 +71,6 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
                         "Content-type": types.VND_ASSET_INSTANCE
                     }
                 })
-            handlePatch(response)
             await fetchUserAssetDetails()
         } catch (e) {
             setError({status: true, text: "error.failedPatchAsset"})
