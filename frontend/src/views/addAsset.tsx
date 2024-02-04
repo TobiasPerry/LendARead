@@ -7,6 +7,8 @@ import { api } from '../hooks/api/api.ts'
 import useLocations from '../hooks/locations/useLocations.ts'
 import useChangeRole from '../hooks/users/useChangeRole.ts'
 import useLanguages from '../hooks/languages/useLanguages.ts'
+import useAsset from '../hooks/asset/useAsset.ts'
+import useAssetInstance from '../hooks/assetInstance/useAssetInstance.ts'
 import {AuthContext} from "../contexts/authContext.tsx";
 import NewLenderModal from '../components/modals/NewLenderModal.tsx'
 import noImagePlacegolder from '../../public/static/no_image_placeholder.jpg'
@@ -28,6 +30,8 @@ const AddAsset = () => {
     const navigate = useNavigate();
     const { makeLender } = useChangeRole();
     const { getAllLanguages } = useLanguages();
+    const { uploadAssetInstanceImage } = useAssetInstance();
+    const { uploadAsset } = useAsset();
 
     const states = [
         ["ASNEW", t('ASNEW')],
@@ -441,31 +445,22 @@ const AddAsset = () => {
     }
 
     const handleSubmit = async () => {
-        const asset = {
-            isbn: isbn,
-            title: title,
-            author: author,
-            language: language,
-            description: description
-        }
-
         // Print the type of borrowTimeType
         const maxDays = (borrowTimeQuantity * (borrowTimeType as number)) // The LSP is saying that it is not a number, but printing the type gives "number". Idk
 
         // First, post the image
-        const responseImage = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
-        if (responseImage.status !== 201) {
-            return false;     
-        }         
+        const imageId = await uploadAssetInstanceImage(image)
+        if (imageId === -1) {
+            return false;
+        }
 
         // Then, if the asset is new, post it
-        const imageId: number = parseInt(responseImage.headers.location.split('/').pop())
         if (!alreadyHaveAsset.current) {
-            const responseAsset = await api.post("/assets", asset, {headers: {"Content-type": "application/vnd.asset.v1+json"}})
-            if (responseAsset.status !== 201) {
-                return false;     
+            const uploadedAssetId = await uploadAsset(isbn, title, author, language, description)
+            if (uploadedAssetId === -1) {
+                return false;
             }
-            assetId.current = responseAsset.headers.location.split('/').pop()
+            assetId.current = uploadedAssetId
         } 
         
         // Lastly, the assetInstnace
