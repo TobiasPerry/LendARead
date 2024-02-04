@@ -51,6 +51,7 @@ export default function App() {
                             <Route path="review/borrower/:lendingNumber" element={<RequireAuth> <ReviewBorrower /> </RequireAuth>} />
                             <Route path="addAssetView" element={<RequireAuth > <AddAsset /> </RequireAuth>} />
                             <Route path="book/:bookNumber/reviews" element={<ReviewsAssetInstance/>}/>
+                            <Route path="notfound" element={<NotFound />} />
                             <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>

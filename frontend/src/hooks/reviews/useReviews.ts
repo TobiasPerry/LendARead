@@ -29,7 +29,7 @@ const useReviews = () => {
 
 
     const {retrieveUserDetails} = useUserDetails()
-    const PAGE_SIZE = 2
+    const PAGE_SIZE = 3
 
 
     const fetchLendingReviews = async (lending: any) => {

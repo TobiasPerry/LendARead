@@ -79,9 +79,10 @@ const useUserAssetInstance = (location, id) => {
             } else
                 await setAssetDetails(assetDetails_)
 
-            await setIsLoading(false)
+            setIsLoading(false)
         } catch (e) {
             setError({state: true, text: t("errors.failedFetchingAssetDetails")})
+            setIsLoading(false)
         }
     }
 
@@ -95,7 +96,7 @@ const useUserAssetInstance = (location, id) => {
 
 
     return {
-        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance, isLoading, isOwner
+        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance, isLoading, isOwner, error
     }
 }
 

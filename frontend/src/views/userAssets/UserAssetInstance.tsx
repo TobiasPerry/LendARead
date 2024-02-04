@@ -25,7 +25,8 @@ const UserAssetInstance = () => {
         deleteAssetInstance,
         state,
         isLoading,
-        isOwner
+        isOwner,
+        error
     } = useUserAssetInstance(location, id)
 
 
@@ -41,6 +42,10 @@ const UserAssetInstance = () => {
         fetchUserAssetDetails().then()
     }, [id])
 
+    useEffect(() => {
+        if(error.state && error.text === t("errors.failedFetchingAssetDetails"))
+            navigate("/notfound")
+    }, [error])
 
     return (
         <LoadingAccessWrapper isLoading={isLoading} documentTitle={assetDetails.title} isOwner={isOwner}>
