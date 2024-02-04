@@ -270,6 +270,7 @@ const AddAsset = () => {
             // If it is not in our API, try with OpenLibrary API
             book = await getBookOpenLib(isbn);
         }
+        const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
 
         if (book) {
             const titleInput = document.getElementById('title') as HTMLInputElement;
@@ -293,7 +294,6 @@ const AddAsset = () => {
             }
 
             // const languageInput = document.getElementById('language') as HTMLInputElement;
-            const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
             if (book.lang) {
                 let selectedLang = languages.filter((language) => { return language.code == book.lang })[0]
                 if (selectedLang) {
@@ -301,13 +301,12 @@ const AddAsset = () => {
                     languageSelect.disabled = true;
                     setLanguage(selectedLang.code)
                 } else {
-                    languageSelect.value = '';
                     languageSelect.disabled = false;
                 }
             } else {
-                languageSelect.value = '';
                 languageSelect.disabled = false;
             }
+    
 
         } else {
             const titleInput = document.getElementById('title') as HTMLInputElement;
@@ -319,6 +318,7 @@ const AddAsset = () => {
             const languageInput = document.getElementById('language') as HTMLInputElement;
             languageInput.value = '';
             languageInput.readOnly = false;
+            languageSelect.disabled = false;
         }
 
         nextBtn.disabled = false;
@@ -353,7 +353,7 @@ const AddAsset = () => {
             error.classList.add('d-none');
         }
 
-        if (!languageSelect.value ) {
+        if (!languageSelect.value || languageSelect.value == 'invalid' ) {
             valid = false;
             const error = document.getElementById('language-error') as HTMLInputElement;
             error.classList.remove('d-none');
@@ -589,7 +589,7 @@ const AddAsset = () => {
                                 <div className='field'>
                                     <label htmlFor='language' className='form-label'>{t('addAsset.bookInfo.language')}</label>
                                     <select className='form-control round' id='languageSelect' defaultValue={'invalid'} onChange={(e) => setLanguage(e.target.value)} disabled>
-                                        <option key='invalid' value='' disabled>{t('addAsset.bookInfo.selectLanguage')}</option>
+                                        <option key='invalid' value='invalid' disabled>{t('addAsset.bookInfo.selectLanguage')}</option>
                                         {   
                                             languages.map((language) => {
                                                 return <option key={language.code} value={language.code}>{language.name}</option>
