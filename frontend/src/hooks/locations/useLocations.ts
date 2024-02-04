@@ -26,6 +26,9 @@ const useLocations = () => {
 
     const currentLanguage = i18n.language;
     const PAGE_SIZE = 6
+    const [error, setError] = useState({status: false, text: ""})
+
+
 
     const editLocation = async (location: any) => {
         try {
@@ -33,14 +36,13 @@ const useLocations = () => {
                 {
                     headers: {
                         "Content-Type": Vnd.VND_LOCATION,
-                        "Accept-Language": currentLanguage
                     }
                 }
             )
             // @ts-ignore
             return true
         } catch (error) {
-            console.error(error)
+            setError({status: true, text: "error.failedPatchLocation"})
             return false
         }
     }
@@ -51,6 +53,7 @@ const useLocations = () => {
             // @ts-ignore
             return true
         } catch (error) {
+            setError({status: true, text: "error.failedDeleteLocation"})
             return false
         }
     }
@@ -59,9 +62,6 @@ const useLocations = () => {
         setIsLoading(true)
         try {
             const response = await api.get(`/locations`, {
-                headers: {
-                    "Accept-Language": currentLanguage
-                },
                 params: {
                     userId: userId,
                     page: page,
@@ -76,6 +76,7 @@ const useLocations = () => {
             }
             return response.data
         } catch (error) {
+            setError({status: true, text: "error.failedPatchLocation"})
             setIsLoading(false)
             return []
         }
@@ -129,6 +130,7 @@ const useLocations = () => {
                     "Accept-Language": currentLanguage
                 }
             });
+            return true;
 
             if (response.status === 201) {
                 return true
@@ -138,6 +140,7 @@ const useLocations = () => {
                 return false
             }
         } catch (e) {
+            setError({status: true, text: "error.failedAddingLocation"})
             return false
         }
     }

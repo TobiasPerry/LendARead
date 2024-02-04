@@ -5,27 +5,7 @@ import {extractId, LendingApi} from "../assetInstance/useUserAssetInstances.ts";
 // @ts-ignore
 import photoPlaceholder from "../../../public/static/profile_placeholder.jpeg";
 import {extractTotalPages} from "../assetInstance/useAssetInstance.ts";
-
-function parseLinkHeader(header) {
-    if (!header || header.length === 0) {
-        return {};
-    }
-
-    // Split parts by comma and parse each part into a named link
-    return header.split(',').reduce((links, part) => {
-        const section = part.split(';');
-        if (section.length !== 2) {
-            throw new Error("section could not be split on ';'");
-        }
-
-        const url = section[0].replace(/<(.*)>/, '$1').trim();
-        const name = section[1].replace(/rel="(.*)"/, '$1').trim();
-
-        links[name] = url;
-
-        return links;
-    }, {});
-}
+import {useTranslation} from "react-i18next";
 
 const useLendings = () => {
 
@@ -34,15 +14,20 @@ const useLendings = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const PAGE_SIZE = 3
     const [asset_, setAsset_] = useState(null)
+    const {t} = useTranslation()
+    const [error, setError] = useState({state: false, text: ""})
+
     const getLendings = async (asset, newPage = 1) => {
         if(asset === undefined || asset === null || asset.assetinstance === undefined) return
 
-
-        const lendingsResponse = await api.get("/lendings",{ params: {
-            assetInstanceId: asset.assetinstanceid,
-            page: newPage,
-            itemsPerPage: PAGE_SIZE,
-        }})
+        try {
+            const lendingsResponse = await api.get("/lendings", {
+                params: {
+                    assetInstanceId: asset.assetinstanceid,
+                    page: newPage,
+                    itemsPerPage: PAGE_SIZE,
+                }
+            })
 
         //@ts-ignore
         const linkHeader: any = lendingsResponse.headers.get("Link");
@@ -54,22 +39,26 @@ const useLendings = () => {
         }
         const lendings = lendingsResponse.data
 
-        const mappedLendings = lendings.map(async (lending: LendingApi) => {
-            const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data
-            let image = user.image === undefined ? photoPlaceholder : user.image + "?size=CUADRADA"
+            const mappedLendings = lendings.map(async (lending: LendingApi) => {
+                const user: UserDetailsApi = (await api_.get(lending.borrowerUrl)).data
+                let image = user.image === undefined ? photoPlaceholder : user.image + "?size=CUADRADA"
 
-            return {
-                startDate: lending.lendDate,
-                endDate: lending.devolutionDate,
-                userName: user.userName,
-                userImage: image,
-                id: lending.id,
-                state: lending.state
-            }
-        })
+                return {
+                    startDate: lending.lendDate,
+                    endDate: lending.devolutionDate,
+                    userName: user.userName,
+                    userImage: image,
+                    id: lending.id,
+                    state: lending.state
+                }
+            })
 
-        const lendings_ = await Promise.all(mappedLendings)
-        await setLendings(lendings_)
+            const lendings_ = await Promise.all(mappedLendings)
+            await setLendings(lendings_)
+        } catch (e) {
+            setError({state: true, text: t("errors.failedToFetchLendings")})
+            setLendings([])
+        }
     }
 
     const changePage = async (page) => {

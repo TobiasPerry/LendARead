@@ -3,6 +3,7 @@ import {useContext, useState} from 'react';
 import {api, api_} from '../api/api.ts';
 import authContext, {AuthContext} from "../../contexts/authContext.tsx";
 import {extractTotalPages} from "./useAssetInstance.ts";
+import {useTranslation} from "react-i18next";
 
 export const checkFinished = (asset) => {
     return asset !== undefined && asset.lendingStatus === "FINISHED"
@@ -88,10 +89,17 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
     const [totalPages, setTotalPages] = useState(1);
     const [books, setBooks] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-
+    const [error, setError] = useState({state: false, text: ""})
+    const {t} = useTranslation()
 
    const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
 
+       setIsLoading(true)
+       const queryparams = {
+           'page': newPage,
+           'itemsPerPage': PAGE_SIZE,
+           'sortDirection': newSort.order,
+       }
         setIsLoading(true)
        try {
            const queryparams = {
@@ -154,39 +162,29 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
 
            const lendedBooks = await Promise.all(lendedBooksPromises);
            const validLendedBooks = lendedBooks.filter(book => book !== null);
-
-
+           setIsLoading(false)
            setBooks(validLendedBooks)
-       } catch (e) {
-
+       } catch (error) {
+           setError({state: true, text: t("errors.failedToFetchLendings")})
+           setIsLoading(false)
+           setBooks([])
        }
-       setIsLoading(false)
+
    }
 
+
+
     const fetchMyBooks =  async (newPage: number, newSort: any, newFilter: string) => {
+
         setIsLoading(true)
-
-        try {
-            const retrievedBooks = await fetchMyBooks2(newPage, newSort, newFilter)
-            setBooks(retrievedBooks)
-        } catch (e) {
-
-        }
-
-        setIsLoading(false)
-    }
-
-    const fetchMyBooks2 =  async (newPage: number, newSort: any, newFilter: string) => {
-
-        try {
-            const params = {
-                params: {
-                    'userId': user,
-                    'page': newPage,
-                    'itemsPerPage': PAGE_SIZE,
-                    'sortDirection': newSort.order,
-                }
+        const params = {
+            params: {
+                'userId': user,
+                'page': newPage,
+                'itemsPerPage': PAGE_SIZE,
+                'sortDirection': newSort.order,
             }
+        }
 
             if(statusAdapterApi[`${newFilter}`] !== undefined)
                 params.params['status'] =  statusAdapterApi[`${newFilter}`]
@@ -195,6 +193,9 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
                 params.params['sort'] = sortAdapterApi[`${newSort.column}`]
 
             const assetinstances = await api.get(`/assetInstances`, params )
+
+        try {
+        const assetinstances = await api.get(`/assetInstances`, params )
 
             setTotalPages(extractTotalPages(assetinstances.headers["link"]))
             if (assetinstances.status === 204) {
@@ -223,10 +224,12 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
                 };
             }));
 
-            return booksRetrieved;
+            setBooks(booksRetrieved)
+            setIsLoading(false)
         } catch (error) {
-            console.error("Error:", error);
-            return [];
+            setError({state: true, text: t("errors.failedToFetchBooks")})
+            setIsLoading(false)
+            setBooks([]);
         }
 
 
@@ -241,7 +244,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
         setCurrentPage(newPage);
     };
 
-    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading, setCurrentPage};
+    return { setFilter, filter, applyFilterAndSort: fetchMyBooks, sort, setSort, currentPage, changePageMyBooks, changePageLendings, totalPages, books, setBooks, fetchLendings, isLoading, setCurrentPage, error};
 };
 
 export default useUserAssetInstances;

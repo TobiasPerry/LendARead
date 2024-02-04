@@ -80,6 +80,8 @@ const AuthContextProvider = (props) => {
     const refreshToken = isInLocalStorage ? localStorage.getItem("refreshToken") : sessionStorage.getItem("refreshToken")
     const [authKey, setAuthKey] = useState(token);
 
+    const { i18n } = useTranslation();
+    const currentLanguage = i18n.language;
     const {t} = useTranslation()
 
     api.defaults.headers.common['Authorization'] = `Bearer ${authKey}`;
