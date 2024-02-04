@@ -66,7 +66,7 @@ public class AssetController {
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET})
     public Response getAsset(@PathParam("id") final Long id) throws AssetNotFoundException {
-        Asset book = as.getBookById(id);
+        Asset book = as.getBookById(id).orElseThrow(AssetNotFoundException::new);
 
         LOGGER.info("GET asset/ id:{}",book.getId());
         Response.ResponseBuilder response = Response.ok(AssetDTO.fromAsset(uriInfo,book));

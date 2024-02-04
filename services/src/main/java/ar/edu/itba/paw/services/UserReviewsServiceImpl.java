@@ -45,9 +45,9 @@ public class UserReviewsServiceImpl implements UserReviewsService {
         Lending lending ;
         User recipientUser ;
         try{
-            lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+            lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId).orElseThrow(UnableToAddReviewException::new);
             recipientUser = userService.getUserById(recipient);
-        }catch ( UserNotFoundException | LendingNotFoundException e) {
+        }catch ( UserNotFoundException  e) {
             throw new UnableToAddReviewException();
         }
         User reviewerUser = userService.getCurrentUser();
@@ -60,7 +60,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional(readOnly = true)
     @Override
     public boolean lenderCanReview(final int recipientId,final int lendingId) throws UserNotFoundException, LendingNotFoundException {
-        final Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        final Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId).orElseThrow(LendingNotFoundException::new);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser().getEmail());
 
         return !hasReview && lending.getAssetInstance().getOwner().equals(userService.getCurrentUser()) && lending.getUserReference().getId() == recipientId && lending.getActive().equals(LendingState.FINISHED);
@@ -69,7 +69,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
     @Transactional(readOnly = true)
     @Override
     public boolean borrowerCanReview(final int recipientId,int lendingId) throws UserNotFoundException, LendingNotFoundException {
-        final Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        final Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId).orElseThrow(LendingNotFoundException::new);
         boolean hasReview = userHasReview(lendingId, userService.getCurrentUser().getEmail());
         return !hasReview && lending.getUserReference().equals(userService.getCurrentUser()) && lending.getAssetInstance().getOwner().getId() == recipientId && lending.getActive().equals(LendingState.FINISHED);
     }

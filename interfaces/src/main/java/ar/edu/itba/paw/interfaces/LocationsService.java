@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface LocationsService {
 
     Location addLocation(final String name, final String locality, final String province, final String country, final String zipcode) throws UserNotFoundException;
-    Location getLocation(final int locationId) throws LocationNotFoundException;
+    Optional<Location> getLocation(final int locationId) ;
     void editLocation(final Location lc);
     void editLocationById(final int locationId, final Optional<String> name, final Optional<String> locality, final Optional<String> province, final Optional<String> country, final Optional<String> zipcode) throws LocationNotFoundException;
     PagingImpl<Location> getLocations(final Integer userId, final int page, final int itemsPerPage) ;

@@ -93,7 +93,7 @@ public class AssetInstanceServiceImplTest {
 
         // 2 - Ejercitación
 
-        assetInstanceService.getAssetInstance(1);
+        assetInstanceService.getAssetInstance(1).orElseThrow(AssetInstanceNotFoundException::new);
 
         // 3 - Assertions
         Assert.fail();

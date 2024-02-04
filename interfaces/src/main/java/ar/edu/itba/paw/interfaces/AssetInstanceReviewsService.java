@@ -4,10 +4,12 @@ import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
 import ar.edu.itba.paw.models.viewsContext.implementations.PagingImpl;
 
+import java.util.Optional;
+
 public interface AssetInstanceReviewsService {
 
     AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws  UserNotFoundException,  UnableToAddReviewException;
-    AssetInstanceReview getReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
+    Optional<AssetInstanceReview> getReviewById(final int reviewId) ;
 
     void deleteReviewById(final int reviewId) throws AssetInstanceReviewNotFoundException;
     PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage, int assetInstanceId) throws AssetInstanceNotFoundException;

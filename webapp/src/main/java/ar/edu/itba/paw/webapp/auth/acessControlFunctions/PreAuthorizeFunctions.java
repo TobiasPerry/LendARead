@@ -14,6 +14,8 @@ import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class PreAuthorizeFunctions {
 
@@ -84,7 +86,9 @@ public class PreAuthorizeFunctions {
     }
     public boolean canChangeLendingStatus(final int lendingId,final String status){
         try {
-            Lending lending = uais.getBorrowedAssetInstance(lendingId);
+            Optional<Lending> lendingOptional = uais.getBorrowedAssetInstance(lendingId);
+            if (!lendingOptional.isPresent()) return true;
+            Lending lending = lendingOptional.get();
             switch (status){
                 case "REJECTED":
                 case "FINISHED":
@@ -95,8 +99,6 @@ public class PreAuthorizeFunctions {
                 default:
                     return true;
             }
-        } catch (LendingNotFoundException e) {
-            return true;
         }catch (UserNotFoundException e){
             return false;
         }

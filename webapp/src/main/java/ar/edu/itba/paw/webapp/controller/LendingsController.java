@@ -74,7 +74,7 @@ public class LendingsController {
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_LENDING})
     public Response getLending(@PathParam("id") final int id) throws LendingNotFoundException {
-        Lending lending = uais.getBorrowedAssetInstance(id);
+        Lending lending = uais.getBorrowedAssetInstance(id).orElseThrow(LendingNotFoundException::new);
         LOGGER.info("GET lendings/ id:{}",id);
         return Response.ok(LendingDTO.fromLending(lending, uriInfo)).build();
     }

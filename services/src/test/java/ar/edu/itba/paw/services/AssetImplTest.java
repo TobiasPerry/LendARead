@@ -37,7 +37,7 @@ public class AssetImplTest {
     @Test(expected = AssetAlreadyExistException.class)
     public void addBookAlreadyExistTest() throws AssetAlreadyExistException, UnableToCreateAssetException, LanguageNotFoundException, BookAlreadyExistException {
         // 1 - Precondiciones
-        when(languagesService.getLanguage(any())).thenReturn(new Language());
+        when(languagesService.getLanguage(any())).thenReturn(Optional.of(new Language()));
         when(assetDao.addAsset(any())).thenThrow(new BookAlreadyExistException());
 
         // 2 - Ejercitación
@@ -49,7 +49,7 @@ public class AssetImplTest {
     @Test(expected = UnableToCreateAssetException.class)
     public void addBookLanguageNotFoundTest() throws AssetAlreadyExistException, UnableToCreateAssetException, LanguageNotFoundException, BookAlreadyExistException {
         // 1 - Precondiciones
-        when(languagesService.getLanguage(any())).thenThrow(new LanguageNotFoundException());
+        when(languagesService.getLanguage(any())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
         assetService.addBook("", "", "", "");

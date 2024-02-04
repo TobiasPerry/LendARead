@@ -66,7 +66,7 @@ public class AssetInstanceController {
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     public Response getUserAssetsInstances(@PathParam("id") final int id) throws AssetInstanceNotFoundException {
-        final AssetInstance assetInstance = ais.getAssetInstance(id);
+        final AssetInstance assetInstance = ais.getAssetInstance(id).orElseThrow(AssetInstanceNotFoundException::new);
         LOGGER.info("GET assetInstances/{}",id);
         AssetsInstancesDTO assetDTO = AssetsInstancesDTO.fromAssetInstance(uriInfo,assetInstance);
         Response.ResponseBuilder response = Response.ok(assetDTO);
@@ -162,7 +162,7 @@ public class AssetInstanceController {
     @Path("/{id}/reviews/{idReview}")
     @Produces(value = {Vnd.VND_ASSET_INSTANCE_REVIEW})
     public Response getAssetInstanceReview(@PathParam("id") final int id, @PathParam("idReview") final int idReview) throws  AssetInstanceReviewNotFoundException {
-        AssetInstanceReview review = air.getReviewById(idReview);
+        AssetInstanceReview review = air.getReviewById(idReview).orElseThrow(AssetInstanceReviewNotFoundException::new);
         LOGGER.info("GET assetInstances/{}/reviews/{}",id,idReview);
         return Response.ok(AssetInstanceReviewDTO.fromAssetInstanceReview(review,uriInfo)).build();
     }

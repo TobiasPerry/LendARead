@@ -20,11 +20,6 @@ public class LanguageValidationImpl implements ConstraintValidator<Language,Stri
         if (s == null || s.length() == 0) {
             return true;
         }
-        try {
-            languagesService.getLanguage(s);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return languagesService.getLanguage(s).isPresent();
     }
 }

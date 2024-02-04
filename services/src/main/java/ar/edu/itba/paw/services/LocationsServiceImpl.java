@@ -30,8 +30,6 @@ public class LocationsServiceImpl implements LocationsService {
         this.locationsDao = locationsDao;
         this.userService = userService;
     }
-
-
     @Override
     @Transactional
     public Location addLocation(String name, String locality, String province, String country, String zipcode) throws UserNotFoundException {
@@ -45,21 +43,14 @@ public class LocationsServiceImpl implements LocationsService {
 
     @Override
     @Transactional(readOnly = true)
-    public Location getLocation(int locationId) throws LocationNotFoundException {
-       return locationsDao.getLocation(locationId).orElseThrow(LocationNotFoundException::new);
+    public Optional<Location> getLocation(int locationId)  {
+       return locationsDao.getLocation(locationId);
     }
-
-
-
     @Override
     @Transactional
     public void editLocation(Location lc) {
          locationsDao.editLocation(lc);
     }
-
-
-
-
 
     @Override
     @Transactional
@@ -83,7 +74,7 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     @Transactional
     public void deleteLocationById(int locationId) throws LocationNotFoundException, UnableToDeleteLocationException {
-        Location location = getLocation(locationId);
+        Location location = getLocation(locationId).orElseThrow(LocationNotFoundException::new);
         if (!location.isActive()) {
             throw new UnableToDeleteLocationException();
         }

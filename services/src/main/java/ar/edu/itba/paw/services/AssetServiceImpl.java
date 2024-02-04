@@ -40,11 +40,8 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Asset addBook(String isbn, String author, String title, String languageId) throws AssetAlreadyExistException, UnableToCreateAssetException {
         try {
-            Language language = ls.getLanguage(languageId);
+            Language language = ls.getLanguage(languageId).orElseThrow(UnableToCreateAssetException::new);
             return ad.addAsset(new Asset(isbn, author, title, language));
-        }
-        catch (LanguageNotFoundException e) {
-            throw new UnableToCreateAssetException();
         }
         catch (BookAlreadyExistException e) {
             throw new AssetAlreadyExistException();
@@ -54,16 +51,14 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional(readOnly = true)
     @Override
-    public Asset getBookById(Long id) throws AssetNotFoundException {
-        Optional<Asset> asset =  ad.getBookById(id);
-        asset.orElseThrow(AssetNotFoundException::new);
-        return asset.get();
+    public Optional<Asset> getBookById(Long id)  {
+        return ad.getBookById(id);
     }
 
     @Transactional
     @Override
     public void updateBook(Long id, String isbn, String author, String title, String language) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
-        Asset asset = getBookById(id);
+        Asset asset = getBookById(id).orElseThrow(AssetNotFoundException::new);
         Optional<Asset> assetWithSameIsbn = ad.getBookByIsbn(isbn);
         if (isbn != null) {
             if (assetWithSameIsbn.isPresent() && !assetWithSameIsbn.get().getId().equals(asset.getId())) {
@@ -78,7 +73,7 @@ public class AssetServiceImpl implements AssetService {
             asset.setTitle(title);
         }
         if (language != null) {
-            asset.setLanguage(ls.getLanguage(language));
+            asset.setLanguage(ls.getLanguage(language).orElseThrow(LanguageNotFoundException::new));
         }
     }
 }

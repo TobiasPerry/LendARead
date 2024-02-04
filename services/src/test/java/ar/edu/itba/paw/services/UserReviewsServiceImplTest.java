@@ -79,7 +79,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(new User(USER_ID, EMAIL, NAME, TELEPHONE, PASSWORD_ENCODED, Behaviour.LENDER, LOCALE));
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING));
 
         // 2 - Ejercitación
         boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
@@ -93,7 +93,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.of(USER_REVIEW));
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING));
 
         // 2 - Ejercitación
         boolean returnValue = userReviewsServiceImpl.lenderCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
@@ -107,7 +107,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING));
 
 
         // 2 - Ejercitación
@@ -122,7 +122,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING_NOT_FINISHED);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING_NOT_FINISHED));
 
 
         // 2 - Ejercitación
@@ -139,7 +139,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING));
 
 
         // 2 - Ejercitación
@@ -155,7 +155,7 @@ public class UserReviewsServiceImplTest {
         when(userService.getCurrentUser()).thenReturn(USER);
         //when(userService.getUser(anyString())).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.of(USER_REVIEW));
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING));
 
 
         // 2 - Ejercitación
@@ -170,7 +170,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(USER_DIFFERENT);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING));
 
         // 2 - Ejercitación
         boolean returnValue = userReviewsServiceImpl.borrowerCanReview(USER_ID, Math.toIntExact(LENDING.getId()));
@@ -184,7 +184,7 @@ public class UserReviewsServiceImplTest {
         // 1 - Precondiciones
         when(userService.getCurrentUser()).thenReturn(USER);
         when(userReviewsDao.getUserReviewsByLendingIdAndUser(anyInt(), anyString())).thenReturn(Optional.empty());
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(LENDING_NOT_FINISHED);
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.of(LENDING_NOT_FINISHED));
 
 
         // 2 - Ejercitación

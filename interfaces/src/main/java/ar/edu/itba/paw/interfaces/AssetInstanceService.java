@@ -12,7 +12,7 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import java.util.Optional;
 
 public interface AssetInstanceService {
-    AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException;
+    Optional<AssetInstance> getAssetInstance(final int id) throws AssetInstanceNotFoundException;
 
 
     AbstractPage<AssetInstance> getAllAssetsInstances(final int pageNum, final int itemPerPage, final SearchQuery searchQuery);
