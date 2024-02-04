@@ -78,6 +78,7 @@ const DiscoveryView =  () => {
     const clickSearch = (event) => {
         if(inputValue !== ""){
             setSearch(inputValue)
+            setCurrentPage(1)
         }
     };
     const handleSearch = (event) => {
