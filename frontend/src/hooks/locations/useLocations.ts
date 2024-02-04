@@ -15,12 +15,13 @@ export interface LocationApi {
 const useLocations = () => {
 
     const {user} = useContext(AuthContext)
-    const { i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(false)
     const emptyLocation = {name: "", province: "", country: "", locality: "", zipcode: 0, id: -1}
     const [locations, setLocations] = useState([emptyLocation]);
     const [editingLocation, setEditingLocation] = useState(emptyLocation);
-    const currentLanguage = i18n.language;
+    const [error, setError] = useState({status: false, text: ""})
+
+
 
     const editLocation = async (location: any) => {
         try {
@@ -28,14 +29,13 @@ const useLocations = () => {
                 {
                     headers: {
                         "Content-Type": Vnd.VND_LOCATION,
-                        "Accept-Language": currentLanguage
                     }
                 }
             )
             // @ts-ignore
             return true
         } catch (error) {
-            console.log(error)
+            setError({status: true, text: "error.failedPatchLocation"})
             return false
         }
     }
@@ -46,6 +46,7 @@ const useLocations = () => {
             // @ts-ignore
             return true
         } catch (error) {
+            setError({status: true, text: "error.failedDeleteLocation"})
             return false
         }
     }
@@ -54,9 +55,6 @@ const useLocations = () => {
         setIsLoading(true)
         try {
             const response = await api.get(`/locations`, {
-                headers: {
-                    "Accept-Language": currentLanguage
-                },
                 params: {
                     userId: userId
                 }
@@ -64,6 +62,7 @@ const useLocations = () => {
             setIsLoading(false)
             return response.data
         } catch (error) {
+            setError({status: true, text: "error.failedPatchLocation"})
             setIsLoading(false)
             return []
         }
@@ -74,11 +73,11 @@ const useLocations = () => {
             const response = await api.post('/locations', location, {
                 headers: {
                     "Content-Type": Vnd.VND_LOCATION,
-                    "Accept-Language": currentLanguage
                 }
             });
-            return response.status !== 400;
+            return true;
         } catch (e) {
+            setError({status: true, text: "error.failedAddingLocation"})
             return false
         }
     }
