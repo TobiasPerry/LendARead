@@ -16,7 +16,7 @@ const LendingsReviews = ({asset}) => {
 
     return (
         <>
-        {
+        {lendingReviews.length > 0 &&
                 <div className="lendings-container">
                     <h3 className="lendings-title">{t('reviews_text')}</h3>
                     <UserReviews totalPages={1} changePage={() => {}} currentPage={1} reviews={lendingReviews} />
