@@ -12,6 +12,7 @@ import {useParams} from "react-router-dom";
 import UserProfileExternal from "../../components/userDetails/UserProfileExternal.tsx";
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
 import NotFound from "../NotFound.tsx";
+import LoadingAnimation from "../../components/LoadingAnimation.tsx";
 
 const ProfileView = () => {
 
@@ -21,6 +22,7 @@ const ProfileView = () => {
     const [selectedTab, setSelectedTab] = useState("lender_reviews")
     const [isCurrentUser, setIsCurrentUser] = useState(false)
     const {getUserDetails, notFound, userDetails} = useUserDetails()
+    const [loading, setLoading] = useState(true)
 
     const {
         lenderReviews,
@@ -37,49 +39,61 @@ const ProfileView = () => {
     useEffect(() => {
         if(user !== undefined && id !== undefined && id === user){
             setIsCurrentUser(true)
+            setLoading(false)
         }else{
             setIsCurrentUser(false)
-            getUserDetails(id).then()
+            getUserDetails(id).then(()=>{
+                setLoading(false)
+            })
         }
         if(id !== undefined)
-            fetchReviews(id).then()
+            fetchReviews(id).then();
+
     }, [id, user])
 
 
     return (
         <>
             {
-                notFound ? (
-                    <NotFound/>
+                loading ? (
+                    <LoadingAnimation/>
                 ) : (
-                    <div className="main-class">
-                        <div className="user-container">
-                            <div className="info-container w-100 mt-10" id="user-info">
-                                {isCurrentUser && <UserProfile/>}
-                                {!isCurrentUser && <UserProfileExternal userDetails={userDetails}/>}
-                                <hr/>
-                                <div className="tabs-container">
-                                    <UserProfileTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
+                    <>
+                        {
+                            notFound ? (
+                                <NotFound/>
+                            ) : (
+                                <div className="main-class">
+                                    <div className="user-container">
+                                        <div className="info-container w-100 mt-10" id="user-info">
+                                            {isCurrentUser && <UserProfile/>}
+                                            {!isCurrentUser && <UserProfileExternal userDetails={userDetails}/>}
+                                            <hr/>
+                                            <div className="tabs-container">
+                                                <UserProfileTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
+                                            </div>
+                                            <div className="tab-content">
+                                                {selectedTab === "lender_reviews" &&
+                                                    <UserReviews
+                                                        reviews={lenderReviews}
+                                                        changePage={(page: number) => changePageLenderReviews(page, id)}
+                                                        currentPage={currentPageLenderReviews}
+                                                        totalPages={totalPagesLenderReviews}/>
+                                                }
+                                                {selectedTab === "borrower_reviews" &&
+                                                    <UserReviews
+                                                        reviews={borrowerReviews}
+                                                        changePage={(page: number) => changePageBorrowerReviews(page, id)}
+                                                        currentPage={currentPageBorrowerReviews}
+                                                        totalPages={totalPagesBorrowerReviews}/>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="tab-content">
-                                    {selectedTab === "lender_reviews" &&
-                                        <UserReviews
-                                            reviews={lenderReviews}
-                                            changePage={(page: number) => changePageLenderReviews(page, id)}
-                                            currentPage={currentPageLenderReviews}
-                                            totalPages={totalPagesLenderReviews}/>
-                                    }
-                                    {selectedTab === "borrower_reviews" &&
-                                        <UserReviews
-                                            reviews={borrowerReviews}
-                                            changePage={(page: number) => changePageBorrowerReviews(page, id)}
-                                            currentPage={currentPageBorrowerReviews}
-                                            totalPages={totalPagesBorrowerReviews}/>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            )
+                        }
+                    </>
                 )
             }
         </>
