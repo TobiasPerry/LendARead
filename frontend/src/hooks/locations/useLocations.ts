@@ -18,7 +18,9 @@ const useLocations = () => {
     const { user } = useContext(AuthContext)
     const { i18n } = useTranslation();
     const [isLoading, setIsLoading] = useState(false)
-    const emptyLocation = { name: "", province: "", country: "", locality: "", zipcode: 0, id: -1 }
+    const emptyLocation = { name: "", province: "", country: "", locality: "", zipcode: 0, id: -1,
+        selfUrl: ""
+    }
     const [locations, setLocations] = useState([emptyLocation]);
     const [editingLocation, setEditingLocation] = useState(emptyLocation);
     const [totalPages, setTotalPages] = useState(1)
