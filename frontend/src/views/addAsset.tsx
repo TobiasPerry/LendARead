@@ -3,7 +3,6 @@ import { useState, useEffect, useContext, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
-import { api } from '../hooks/api/api.ts'
 import useLocations from '../hooks/locations/useLocations.ts'
 import useChangeRole from '../hooks/users/useChangeRole.ts'
 import useLanguages from '../hooks/languages/useLanguages.ts'
@@ -31,7 +30,7 @@ const AddAsset = () => {
     const { makeLender } = useChangeRole();
     const { getAllLanguages } = useLanguages();
     const { uploadAssetInstanceImage, uploadAssetInstance } = useAssetInstance();
-    const { uploadAsset } = useAsset();
+    const { uploadAsset, getAssetByIsbn } = useAsset();
 
     const states = [
         ["ASNEW", t('ASNEW')],
@@ -262,12 +261,9 @@ const AddAsset = () => {
         let book = null;
         // TODO: First try with our API
         // This returns a string
-        const response = await api.get('/assets?itemsPerPage=2&page=1&isbn=' + isbn)
-        if (response.status == 200 && response.data.length > 0) {
-            book = response.data[0]
-            const langId = book.language.split('/').pop()
-            const langResponse = await api.get('/languages/' + langId)
-            book.lang = langResponse.data.code
+        const asset = await getAssetByIsbn(isbn);
+        if (asset) {
+            book = asset
             alreadyHaveAsset.current = true
             assetId.current = book.selfUrl.split('/').pop()
         } else {
