@@ -1,28 +1,51 @@
 import {api} from "../api/api.ts";
 import {extractId} from "./useUserAssetInstances.ts";
 import types from "../api/types.ts";
+import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
 
+    const {t} = useTranslation()
+    const [error, setError] = useState({status: false, text: ""})
+
     const editAssetVisbility = async (asset: any) => {
-        await api.patch(asset.assetinstance.selfUrl, { status:  asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
-            {
-                headers: {"Content-type": types.VND_ASSET_INSTANCE}
-            })
-        await fetchUserAssetDetails()
+        try {
+            const response = await api.patch(asset.assetinstance.selfUrl, {status: asset.assetinstance.status === "PUBLIC" ? "PRIVATE" : "PUBLIC"},
+                {
+                    headers: {"Content-type": types.VND_ASSET_INSTANCE}
+                })
+            await fetchUserAssetDetails()
+        } catch (e) {
+           setError({status: true, text: "error.failedPatchAsset"})
+        }
     }
 
     const editAssetReservability = async (asset: any) => {
 
-        await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
-            {
-                headers: {"Content-type": types.VND_ASSET_INSTANCE
-                }
-            })
+        try {
+            const response = await api.patch(asset.assetinstance.selfUrl, {isReservable: !asset.isReservable},
+                {
+                    headers: {"Content-type": types.VND_ASSET_INSTANCE
+                    }
+                })
+            await fetchUserAssetDetails()
+        } catch (e) {
+            setError({status: true, text: "error.failedPatchAsset"})
+        }
 
-        await fetchUserAssetDetails()
+
     }
 
+    const postImage = async (image) => {
+        try {
+            const response: any = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
+            return extractId(response.headers.get("Location"))
+        } catch (e) {
+           setError({status: true, text: t("error.failedPostImage")})
+        }
+
+    }
     const editAsset = async (asset: any, originalAsset: any) => {
 
         //working on image
@@ -37,26 +60,28 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
        }
 
         if(image !== undefined && image !== null) {
-            const response: any = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
-
-            const imageId = extractId(response.headers.get("Location"))
             // @ts-ignore
-            data = {...data, imageId: imageId,}
+            data = {...data, imageId: await postImage(image)}
         }
 
-        await api.patch(originalAsset.assetinstance.selfUrl, data,
-            {
-                headers: {
-                    "Content-type": types.VND_ASSET_INSTANCE
-                }
-            })
-        await fetchUserAssetDetails()
+        try {
+            const response = await api.patch(originalAsset.assetinstance.selfUrl, data,
+                {
+                    headers: {
+                        "Content-type": types.VND_ASSET_INSTANCE
+                    }
+                })
+            await fetchUserAssetDetails()
+        } catch (e) {
+            setError({status: true, text: "error.failedPatchAsset"})
+        }
+
 
     }
 
 
     return {
-        editAssetVisbility, editAssetReservability, editAsset
+        editAssetVisbility, editAssetReservability, editAsset, error
     }
 }
 

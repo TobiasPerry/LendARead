@@ -1,0 +1,29 @@
+// import { render, screen } from '@testing-library/react';
+// import React from 'react'; // Add this line
+// import Dummy from "../views/dummyView.tsx";
+// import {setupTests} from "../testUtils/setupTests.js.ts";
+//
+// setupTests()
+// describe('Landing Component', () => {
+//     test('renders without crashing', () => {
+//         render(
+//            <Dummy />
+//         );
+//         const titleElement = screen.getByText("does this pass tests??");
+//         expect(titleElement).toBeInTheDocument();
+//     });
+// });
+import { describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+import Dummy from '../views/dummyView.tsx'; // Assuming the component path
+
+describe('Dummy Component', () => {
+    it('renders the text "does this pass tests??"', () => {
+        render(<Dummy />);
+
+        // Use Vitest's built-in assertion:
+        const textElement = screen.getByText("does this pass tests??");
+        expect(textElement).toBeInTheDocument();
+    });
+});
