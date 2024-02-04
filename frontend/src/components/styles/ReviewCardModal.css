@@ -1,0 +1,42 @@
+.custom-modal {
+    border-radius: 30px;
+    min-width: 300px;
+    max-width: 50%;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.card-body {
+    width: 500px;
+}
+
+.review-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.reviewer-image {
+    width: 200px;
+    height: 200px;
+    margin-right: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.review-details {
+    flex-grow: 1;
+}
+
+.reviewer-name, .reviewer-email {
+    margin-bottom: 2px;
+}
+
+.review-text {
+    max-height: 200px;
+    overflow-y: auto;
+}

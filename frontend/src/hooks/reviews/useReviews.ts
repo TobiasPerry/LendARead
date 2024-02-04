@@ -27,7 +27,7 @@ const useReviews = () => {
 
 
     const {retrieveUserDetails} = useUserDetails()
-    const PAGE_SIZE = 3
+    const PAGE_SIZE = 2
 
 
 

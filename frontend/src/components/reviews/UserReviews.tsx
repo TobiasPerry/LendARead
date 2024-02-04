@@ -3,10 +3,12 @@ import Pagination from "../Pagination.tsx";
 import {ReviewApi} from "../../hooks/reviews/useReviews.ts";
 import ReviewCardModal from "../modals/ReviewCardModal.tsx";
 import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 const UserReviews = ({reviews,changePage, currentPage, totalPages}) => {
 
     const [showModal, setShowModal] = useState(false)
+    const {t} = useTranslation()
     const [currentReview, setCurrentReview] = useState({
         lending: "",
         rating: 0,
@@ -32,7 +34,14 @@ const UserReviews = ({reviews,changePage, currentPage, totalPages}) => {
                     ? reviews.map((review: ReviewApi, index) =>
                         <ProfileReviewCard key={index} review={review} clickedReview={handleClickedReview}/>
                     )
-                    : <p>No Lender reviews yet</p>
+                    : <div style={{
+                        textAlign: "center",
+                        width: "100%",
+                        marginTop: "20px",
+                        marginBottom: "20px"
+                    }}>
+                        {t('no_reviews')}
+                      </div>
             )}
         </div>
         <Pagination changePage={changePage} currentPage={currentPage} totalPages={totalPages}/>

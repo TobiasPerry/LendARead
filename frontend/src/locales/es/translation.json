@@ -470,5 +470,6 @@
   "rejected_text": "El préstamo fue rechazado, no hay opciones disponibles",
   "finished_text": "El préstamo ha terminado y ya has escrito una reseña del usuario, no hay opciones disponibles",
   "newLocation": "Detalles de Ubicación",
-  "name": "Nombre"
+  "name": "Nombre",
+  "no_reviews": "No hay reseñas"
 }

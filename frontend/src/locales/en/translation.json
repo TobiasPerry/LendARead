@@ -467,5 +467,6 @@
   "BORROWER": "Borrower",
   "LENDER": "Lender",
   "date": "{{month}}/{{day}}/{{year}}",
-  "date_for_calendar": "MM/dd/yyyy"
+  "date_for_calendar": "MM/dd/yyyy",
+  "no_reviews": "No reviews"
 }
