@@ -450,10 +450,12 @@
         "subtitle": "From now on, you will be able to lend books, and within your profile, you can see your books and modify them. To do this, it is necessary to add the default location for your books",
       "cancel": "I do not want to be a lender"
     },
+    "modalTitle": "Add new book",
     "location": {
         "detail": "Location",
         "info": "Location Info",
         "name": "Name",
+      "nama": "Name",
         "country": "Country",
         "province": "Province",
         "locality": "City",
