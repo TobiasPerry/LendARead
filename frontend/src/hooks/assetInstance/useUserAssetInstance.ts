@@ -13,6 +13,7 @@ const useUserAssetInstance = (location, id) => {
     const [hasActiveLendings, setHasActiveLendings] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
+    const [error, setError] = useState({state: false, text: ""})
     const {user} = useContext(AuthContext)
 
     const checkIsOwner = async (user: string, lending: LendingApi, assetinstance: AssetInstanceApi) => {
@@ -80,7 +81,11 @@ const useUserAssetInstance = (location, id) => {
     }
 
     const deleteAssetInstance = async (asset: any) => {
-        await api.delete(asset.selfUrl)
+        try {
+            const response = await api.delete(asset.selfUrl)
+        } catch (e) {
+
+        }
     }
 
 

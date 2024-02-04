@@ -30,6 +30,7 @@ describe('useAssetInstance functions', () => {
             data: [],
             headers: {},
         };
+        // @ts-ignore
         vi.fn(api.get).mockResolvedValueOnce(mockApiResponse); // Mock api.get
 
         // Test
@@ -53,6 +54,7 @@ describe('useAssetInstance functions', () => {
             data: [],
             headers: {},
         };
+        // @ts-ignore
         vi.fn(api.get).mockResolvedValueOnce(mockApiResponse); // Mock api.get
 
         // Test

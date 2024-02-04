@@ -10,7 +10,7 @@ const LoadingAnimationWhite = () => {
                 alignItems: 'center',
                 height: '100%', // Take full height of the parent
                 width: '100%', // Take full width of the parent
-                backgroundColor: 'white', // Set background color to white
+                backgroundColor: 'transparent', // Set background color to white
                 margin: "auto",
                 top: 0,
                 left: 0,
