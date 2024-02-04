@@ -132,7 +132,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
             })
 
             setTotalPages(extractTotalPages(lendings.headers["link"]))
-            if (lendings.data.length == 0|| lendings.status === 204) {
+            if (lendings.data.length == 0|| lendings.request.status === 204) {
                 setIsLoading(false)
                 setBooks([])
             }
@@ -192,14 +192,12 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
         if(sortAdapterApi[`${newSort.column}`] !== undefined)
             params.params['sort'] = sortAdapterApi[`${newSort.column}`]
 
-        const assetinstances = await api.get(`/assetInstances`, params )
-
         try {
             const assetinstances = await api.get(`/assetInstances`, params )
 
             setTotalPages(extractTotalPages(assetinstances.headers["link"]))
 
-            if (assetinstances.status === 204 || assetinstances.data.length == 0) {
+            if (assetinstances.request.status === 204 || assetinstances.data.length == 0) {
                 setIsLoading(false)
                 setBooks([]);
             }

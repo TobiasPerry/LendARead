@@ -382,10 +382,14 @@
     }
   },
   "BORROWER": "Prestatario",
+  "ASSET_INSTANCE": "Activo",
   "LENDER": "Prestador",
   "date": "{{day}}/{{month}}/{{year}}",
   "date_for_calendar": "dd/MM/yyyy",
   "errors": {
+    "failedToFetchBorrowerReview": "Error al obtener reseña del prestatario",
+    "failedToFetchLenderReview": "Error al obtener reseña del prestamista",
+    "failedToFetchAssetInstanceReview": "Error al obtener reseñas del activo",
     "failedPatchAsset": "Error al modificar activo",
     "failedFetchingAssetDetails": "Error al obtener detalles del activo",
     "failedPostImage": "Error al publicar imagen",
@@ -471,5 +475,6 @@
   "finished_text": "El préstamo ha terminado y ya has escrito una reseña del usuario, no hay opciones disponibles",
   "newLocation": "Detalles de Ubicación",
   "name": "Nombre",
-  "no_reviews": "No hay reseñas"
+  "no_reviews": "No hay reseñas",
+  "reviews_text": "Reseñas"
 }
