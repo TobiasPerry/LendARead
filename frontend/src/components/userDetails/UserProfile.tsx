@@ -2,6 +2,7 @@ import {useContext, useRef, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import UserRating from "../userAssets/UserRatingDiv.tsx";
 
 const UserProfile = () => {
     const { t } = useTranslation();
@@ -60,10 +61,10 @@ const UserProfile = () => {
                             {showConfirmation && (
                                 <>
                                     <div className="user-change-picture-container" style={{backgroundColor: "#53b453"}} onClick={handleSave}>
-                                        <i className="fas fa-thumbs-up fa-solid "></i>
+                                        <i className="fas fa-check fa-solid "></i>
                                     </div>
                                     <div className="user-change-picture-container discard-image" onClick={handleDiscard}>
-                                        <i className="fas fa-thumbs-down fa-solid "></i>
+                                        <i className="fas fa-times fa-solid "></i>
                                     </div>
                                 </>
                             )}
@@ -77,33 +78,11 @@ const UserProfile = () => {
                 </div>
             </div>
             <div className="d-flex flex-row">
-            <div className="user-info-profile">
-                <h1>{userDetails.userName}</h1>
-                <p className="grey-text">
-                    <>
-                        { userDetails.role === "LENDER" &&
-                            <>
-                                {t('userProfile.lender')}
-                                <span className="user-role-stars">
-                                        {userDetails.ratingAsLender <= 0 ? (
-                                            "-.- ") : (
-                                            Math.round(userDetails.ratingAsLender * 10) / 10
-                                        )}
-                                    ★ </span>
-                            </>
-                        }
-                    </>
-                    <>
-                        {t('userProfile.borrower')}
-                        <span className="user-role-stars">
-                            {userDetails.ratingAsBorrower <= 0 ? (
-                                "-.- ") : (
-                                Math.round(userDetails.ratingAsBorrower * 10) / 10
-                            )}
-                        ★</span>
-                    </>
-                </p>
-            </div>
+
+                <div className="user-info-profile">
+                    <h1>{userDetails.userName}</h1>
+                    <UserRating userDetails={userDetails} />
+                </div>
                 { userDetails.role === "LENDER" &&
                 <Link  to={"/locations"} style={{width: "150px", padding: "10px 5px", height: "50px", margin: "auto", marginTop: "30px"}}>
                 <button>

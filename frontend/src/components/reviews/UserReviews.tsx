@@ -38,7 +38,8 @@ const UserReviews = ({reviews,changePage, currentPage, totalPages}) => {
                         textAlign: "center",
                         width: "100%",
                         marginTop: "20px",
-                        marginBottom: "20px"
+                        marginBottom: "20px",
+                        fontWeight: "bold",
                     }}>
                         {t('no_reviews')}
                       </div>

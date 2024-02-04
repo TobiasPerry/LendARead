@@ -3,6 +3,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import {Link} from "react-router-dom";
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
+import UserRating from "../userAssets/UserRatingDiv.tsx";
 
 const UserProfileRefactor = ({user }) => {
     const { t } = useTranslation();
@@ -22,30 +23,7 @@ const UserProfileRefactor = ({user }) => {
             <div className="d-flex flex-row">
                 <div className="user-info-profile">
                     <h1>{userDetails.userName}</h1>
-                    <p className="grey-text">
-                        <>
-                            { userDetails.role === "LENDER" &&
-                                <>
-                                    {t('userProfile.lender')}
-                                    <span className="user-role-stars">
-                                        {userDetails.ratingAsLender <= 0 ? (
-                                            "-.- ") : (
-                                            Math.round(userDetails.ratingAsLender * 10) / 10
-                                        )}
-                                        ★ </span>
-                                </>
-                            }
-                        </>
-                        <>
-                            {t('userProfile.borrower')}
-                            <span className="user-role-stars">
-                            {userDetails.ratingAsBorrower <= 0 ? (
-                                "-.- ") : (
-                                Math.round(userDetails.ratingAsBorrower * 10) / 10
-                            )}
-                                ★</span>
-                        </>
-                    </p>
+                    <UserRating userDetails={userDetails} />
                 </div>
             </div>
         </div>
