@@ -10,6 +10,9 @@ public class StaticCache {
     public static void setUnconditionalCache(Response.ResponseBuilder responseBuilder) {
         final CacheControl cacheControl = new CacheControl();
         cacheControl.setMaxAge(MAX_TIME);
+        cacheControl.getCacheExtension().put("public", "");
+        cacheControl.getCacheExtension().put("immutable", "");
+        cacheControl.setNoTransform(true);
         responseBuilder.cacheControl(cacheControl);
     }
     public static Response.ResponseBuilder getConditionalCacheResponse(Request request, EntityTag eTag) {

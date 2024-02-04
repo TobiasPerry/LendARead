@@ -118,7 +118,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .and().headers().cacheControl().disable().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new UnauthorizedRequestHandler())
                 .accessDeniedHandler(new ForbiddenDeniedHandler())
