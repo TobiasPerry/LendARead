@@ -22,12 +22,12 @@ const UserLink = ({asset, state}) => {
     const {userDetails, getUserDetails} = useUserDetails()
 
     return (
-        <Link to={`/user/${userId}`}>
-            <div>
-            <img src={userDetails.image} className="rounded-circle" width="30" height="30" alt="logo"/>
-            <span>{userDetails.userName}</span>
-              <UserRating userDetails={userDetails}/>
-            </div>
+        <Link to={`/user/${userId}`} >
+                <div className={"d-flex flex-row gap-3"} style={{borderRadius: "10px",  paddingTop: "10px"}}>
+                    <img src={userDetails.image} className="rounded-circle" width="30" height="30" alt="logo"/>
+                    <span>{userDetails.userName}</span>
+                    <UserRating userDetails={userDetails}/>
+                </div>
         </Link>
     );
 }

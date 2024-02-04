@@ -5,7 +5,7 @@ const UserRating = ({userDetails}) => {
 
     return (
         <>
-            <p className="grey-text">
+            <p >
                 <>
                     { userDetails.role === "LENDER" &&
                         <>
