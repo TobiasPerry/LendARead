@@ -7,10 +7,9 @@ import types from "../api/types.ts";
 import { AssetInstanceApi } from "./useUserAssetInstances.ts";
 
 export const getErrorMsg = (response) => {
-    console.log(response.headers["content-type"])
-    console.log(Vnd.VND_VALIDATION_ERROR)
+
     if(response.headers["content-type"] === Vnd.VND_VALIDATION_ERROR){
-        console.log(response)
+
         let toReturn= ""
         response.data.errors.forEach((error)=>{
             toReturn += `${error.field}: ${error.message}\n`
@@ -82,6 +81,7 @@ const useAssetInstance = () => {
         let currentPage = 1
         const languages : language[] = []
         const data = await api.get(base_url + `&page=${currentPage}`)
+
         // Read the amount of pages
         const pages = extractTotalPages(data.headers["link"])
 
@@ -168,7 +168,6 @@ const useAssetInstance = () => {
 
             return { books, pages };
         } catch (error) {
-            console.log("Error:", error);
             return null;
         }
 
@@ -208,7 +207,6 @@ const useAssetInstance = () => {
                 maxLendingDays: body_instance.maxLendingDays
             };
         }catch (e){
-            console.log("error");
             return null;
         }
     }
