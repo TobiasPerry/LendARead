@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 
@@ -50,7 +47,7 @@ public class AssetController {
     @Produces(value = {Vnd.VND_ASSET})
     public Response getAssets(
             @Valid @BeanParam final AssetsGetForm assetsGetForm) {
-        PagingImpl<Asset> books = as.getBooks(assetsGetForm.getPage(),assetsGetForm.getItemsPerPage(), assetsGetForm.getIsbn(), assetsGetForm.getAuthor(), assetsGetForm.getTitle(), assetsGetForm.getLanguage());
+        PagingImpl<Asset> books = as.getAssets(assetsGetForm.getPage(),assetsGetForm.getItemsPerPage(), assetsGetForm.getIsbn(), assetsGetForm.getAuthor(), assetsGetForm.getTitle(), assetsGetForm.getLanguage());
         if (books.getTotalPages() == 0 || books.getList().isEmpty()) {
             return Response.noContent().build();
         }
@@ -58,20 +55,21 @@ public class AssetController {
         List<AssetDTO> assetsDTO = AssetDTO.fromBooks( books.getList(),uriInfo);
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<AssetDTO>>(assetsDTO) {});
         PaginatedData.paginatedData(response, books, uriInfo);
-        StaticCache.setUnconditionalCache(response);
         return response.build();
     }
 
     @GET
     @Path("/{id}")
     @Produces(value = {Vnd.VND_ASSET})
-    public Response getAsset(@PathParam("id") final Long id) throws AssetNotFoundException {
-        Asset book = as.getBookById(id).orElseThrow(AssetNotFoundException::new);
-
-        LOGGER.info("GET asset/ id:{}",book.getId());
-        Response.ResponseBuilder response = Response.ok(AssetDTO.fromAsset(uriInfo,book));
-        StaticCache.setUnconditionalCache(response);
-
+    public Response getAsset(@Context javax.ws.rs.core.Request request,@PathParam("id") final Long id) throws AssetNotFoundException {
+        Asset book = as.getAssetById(id).orElseThrow(AssetNotFoundException::new);
+        EntityTag eTag = new EntityTag(String.valueOf(book.hashCode()));
+        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
+        if (response == null) {
+            LOGGER.info("GET asset/ id:{}",id);
+            return Response.ok(AssetDTO.fromAsset(uriInfo,book)).tag(eTag).build();
+        }
+        LOGGER.info("GET asset/ id:{} 304",id);
         return response.build();
     }
 
@@ -79,7 +77,7 @@ public class AssetController {
     @Consumes(value = {Vnd.VND_ASSET})
     @Produces(value = {Vnd.VND_ASSET})
     public Response createAsset(@Valid @RequestBody final AddAssetForm assetForm) throws  AssetAlreadyExistException, UnableToCreateAssetException {
-         Asset book = as.addBook(assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
+         Asset book = as.addAsset(assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
          LOGGER.info("POST asset/ id:{}",book.getId());
         final URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(String.valueOf(book.getId())).build();
@@ -89,7 +87,7 @@ public class AssetController {
     @Path("/{id}")
     @Consumes(value = {Vnd.VND_ASSET})
     public Response updateAsset(@PathParam("id") final Long id, @Valid final PatchAssetForm assetForm) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
-         as.updateBook(id,assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
+         as.updateAsset(id,assetForm.getIsbn(),assetForm.getAuthor(),assetForm.getTitle(),assetForm.getLanguage());
         LOGGER.info("PATCH asset/ id:{}",id);
         return Response.noContent().build();
     }

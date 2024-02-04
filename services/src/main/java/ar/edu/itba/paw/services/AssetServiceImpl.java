@@ -32,13 +32,13 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional(readOnly = true)
     @Override
-    public PagingImpl<Asset> getBooks(final int page, final int itemsPerPage, final String isbn, final String author, final String title, final String language) {
+    public PagingImpl<Asset> getAssets(final int page, final int itemsPerPage, final String isbn, final String author, final String title, final String language) {
         return ad.getBooks(page,itemsPerPage,isbn, author, title, language);
     }
 
     @Transactional
     @Override
-    public Asset addBook(String isbn, String author, String title, String languageId) throws AssetAlreadyExistException, UnableToCreateAssetException {
+    public Asset addAsset(String isbn, String author, String title, String languageId) throws AssetAlreadyExistException, UnableToCreateAssetException {
         try {
             Language language = ls.getLanguage(languageId).orElseThrow(UnableToCreateAssetException::new);
             return ad.addAsset(new Asset(isbn, author, title, language));
@@ -51,14 +51,14 @@ public class AssetServiceImpl implements AssetService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Asset> getBookById(Long id)  {
+    public Optional<Asset> getAssetById(Long id)  {
         return ad.getBookById(id);
     }
 
     @Transactional
     @Override
-    public void updateBook(Long id, String isbn, String author, String title, String language) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
-        Asset asset = getBookById(id).orElseThrow(AssetNotFoundException::new);
+    public void updateAsset(Long id, String isbn, String author, String title, String language) throws AssetNotFoundException, LanguageNotFoundException, AssetAlreadyExistException {
+        Asset asset = getAssetById(id).orElseThrow(AssetNotFoundException::new);
         Optional<Asset> assetWithSameIsbn = ad.getBookByIsbn(isbn);
         if (isbn != null) {
             if (assetWithSameIsbn.isPresent() && !assetWithSameIsbn.get().getId().equals(asset.getId())) {
