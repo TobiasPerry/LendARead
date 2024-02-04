@@ -31,14 +31,16 @@ public class UserServiceImplTest {
     private static final Behaviour BEHAVIOUR = Behaviour.BORROWER;
 
 
-    @Test()
+    @Test(expected = UserNotFoundException.class)
     public void getUserTest() throws UserNotFoundException {
         // 1 - Precondiciones
         when(userDao.getUser(anyString())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        Assert.assertEquals(Optional.empty(),us.getUser(EMAIL));
+        us.getUser(EMAIL);
 
+        // 3 - Assertions
+        Assert.fail();
     }
 
     @Test(expected = UserNotFoundException.class)

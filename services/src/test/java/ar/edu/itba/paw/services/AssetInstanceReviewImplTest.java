@@ -53,7 +53,7 @@ public class AssetInstanceReviewImplTest {
     @Test(expected = UnableToAddReviewException.class)
     public void addReviewLendingNotExistsTest() throws LendingNotFoundException, UserNotFoundException, UnableToAddReviewException {
         // 1 - Precondiciones
-        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenThrow(new LendingNotFoundException());
+        when(userAssetInstanceService.getBorrowedAssetInstance(anyInt())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
        assetInstanceReviewsService.addReview(0, 0, "", 0);

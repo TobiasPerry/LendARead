@@ -73,7 +73,8 @@ public class AssetServiceImpl implements AssetService {
             asset.setTitle(title);
         }
         if (language != null) {
-            asset.setLanguage(ls.getLanguage(language).orElseThrow(LanguageNotFoundException::new));
+            Language lang = ls.getLanguage(language).orElseThrow(LanguageNotFoundException::new);
+            asset.setLanguage(lang);
         }
     }
 }
