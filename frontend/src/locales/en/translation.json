@@ -464,6 +464,7 @@
         "new": "Add new location"
     }
   },
+  "reviews_text": "Reviews",
   "BORROWER": "Borrower",
   "LENDER": "Lender",
   "date": "{{month}}/{{day}}/{{year}}",

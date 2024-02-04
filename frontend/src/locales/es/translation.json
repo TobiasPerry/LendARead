@@ -471,5 +471,6 @@
   "finished_text": "El préstamo ha terminado y ya has escrito una reseña del usuario, no hay opciones disponibles",
   "newLocation": "Detalles de Ubicación",
   "name": "Nombre",
-  "no_reviews": "No hay reseñas"
+  "no_reviews": "No hay reseñas",
+  "reviews_text": "Reseñas"
 }

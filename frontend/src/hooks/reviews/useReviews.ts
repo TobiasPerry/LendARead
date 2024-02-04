@@ -18,6 +18,8 @@ const useReviews = () => {
 
     const [lenderReviews, setLenderReviews] = useState([]);
     const [borrowerReviews, setBorrowerReviews] = useState([]);
+    const [lendingReviews, setLendingReviews] = useState([])
+
     const [currentPageLenderReviews, setPageLenderReviews] = useState(1)
     const [currentPageBorrowerReviews, setPageBorrowerReviews] = useState(1)
     const [totalPagesLenderReviews, setTotalPagesLenderReviews] = useState(1)
@@ -30,6 +32,24 @@ const useReviews = () => {
     const PAGE_SIZE = 2
 
 
+    const fetchLendingReviews = async (lending: any) => {
+        console.log(lending)
+        const reviews = []
+
+        if(lending.hasProperty('borrowerReviewUrl')) {
+            const borrowerReview = await api.get(lending.borrowerReviewUrl)
+            const borrowerReviewDetails = await retrieveUserDetails(extractId(borrowerReview.data.reviewer))
+            reviews.push({...borrowerReview.data, reviewerDetails: borrowerReviewDetails, reviewerId: extractId(borrowerReview.data.reviewer)})
+        }
+
+        if(lending.hasProperty('lenderReviewUrl')) {
+            const lenderReview = await api.get(lending.lenderReviewUrl)
+            const lenderReviewDetails = await retrieveUserDetails(extractId(lenderReview.data.reviewer))
+            reviews.push({...lenderReview.data, reviewerDetails: lenderReviewDetails, reviewerId: extractId(lenderReview.data.reviewer)})
+        }
+        console.log(reviews)
+        setLendingReviews(reviews)
+    }
 
     const fetchLenderReviews = async (page: number, user:string) => {
         try {
@@ -111,7 +131,9 @@ const useReviews = () => {
         totalPagesBorrowerReviews,
         totalPagesLenderReviews,
         changePageLenderReviews,
-        changePageBorrowerReviews
+        changePageBorrowerReviews,
+        lendingReviews,
+        fetchLendingReviews
     }
 }
 
