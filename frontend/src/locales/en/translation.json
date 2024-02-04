@@ -1,5 +1,8 @@
 {
   "errors": {
+    "failedToFetchBorrowerReview": "Failed to fetch borrower review",
+    "failedToFetchLenderReview": "Failed to fetch lender review",
+    "failedToFetchAssetInstanceReviews": "Failed to fetch asset instance reviews",
     "failedDeletingAssetDetails": "Failed deleting asset details",
     "failedFetchingAssetDetails": "Failed fetching asset details",
     "failedPatchAsset": "Failed patching asset",
