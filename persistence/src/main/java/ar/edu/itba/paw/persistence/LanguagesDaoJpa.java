@@ -26,7 +26,7 @@ public class LanguagesDaoJpa implements LanguageDao {
         StringBuilder sb = new StringBuilder("SELECT distinct(l.id) FROM languages l ");
         boolean first = true;
         if (isUsed != null && isUsed) {
-            sb.append("join book a on l.id = a.lang ");
+            sb.append("join book a on l.id = a.lang join assetInstance ai on a.uid = ai.assetId where ai.status = 'PUBLIC' ");
             first = false;
         }
         final int offset = (page - 1) * itemsPerPage;
