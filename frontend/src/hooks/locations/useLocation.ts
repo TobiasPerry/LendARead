@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {api_} from "../api/api";
 import {LocationApi} from "./useLocations";
-import {useTranslation} from "react-i18next/index";
+import {useTranslation} from "react-i18next";
 
 const useLocationAsset = () => {
 

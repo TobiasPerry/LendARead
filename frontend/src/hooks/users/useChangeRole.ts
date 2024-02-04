@@ -1,7 +1,7 @@
 import { api } from '../api/api.ts';
 import {useContext, useState} from 'react';
 import { AuthContext } from '../../contexts/authContext.tsx';
-import {useTranslation} from "react-i18next/index";
+import {useTranslation} from "react-i18next";
 
 const useChangeRole = () => {
     // @ts-ignore
