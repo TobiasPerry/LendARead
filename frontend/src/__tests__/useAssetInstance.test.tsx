@@ -3,6 +3,7 @@ import useAssetInstance from "../hooks/assetInstance/useAssetInstance.ts";
 import { api, api_ } from "../hooks/api/api.ts";
 import {Simulate} from "react-dom/test-utils";
 import error = Simulate.error;
+import Vnd from "../hooks/api/types.ts";
 
 const currentDate = new Date();
 const year = currentDate.getFullYear();
@@ -136,7 +137,7 @@ describe('useAssetInstance functions', () => {
         expect(api.get).toHaveBeenCalledTimes(1);
     });
 
-    it('handleGetReservedDays should return error for an invalid assetInstanceId', async  () => {
+    it('handleGetReservedDays should manage error for an invalid assetInstanceId', async  () => {
         // Mock
         vi.mocked(api.get).mockResolvedValue(() => {throw error});
 
@@ -147,6 +148,59 @@ describe('useAssetInstance functions', () => {
         expect(result).toBeNull()
     });
 
+    it('handleSendLendingRequest when post is OK', async () => {
+        // Mock
+        vi.mocked(api.post).mockResolvedValue({
+            status: 201,
+            data: {
+                id: 10
+            },
+            headers:{}
+        });
 
+        // Test
+        const res = await useAssetInstance().handleSendLendingRequest({})
+
+        // Asset
+        expect(res).toStrictEqual({
+            lendingId: 10,
+            error: false,
+            errorMessage: ""
+        })
+
+    });
+
+    it('handleSendLendingRequest when post is not OK', async () => {
+        // Mock
+        vi.mocked(api.post).mockRejectedValue({
+            response: {
+                status: 400,
+                data: {
+                    errors: [
+                        {
+                            field: "Error",
+                            message: "This is the error message"
+                        }
+                    ],
+                    errorsCount: 1
+                },
+                headers: {
+                    "content-type": Vnd.VND_VALIDATION_ERROR
+                }
+            }
+        });
+
+        // Test
+        const res = await useAssetInstance().handleSendLendingRequest({})
+console.log(res)
+        // Asset
+        expect(res).toStrictEqual({
+                errorMessage: 'Error: This is the error message\n',
+                error: true,
+                lendingId: -1
+            }
+        )
+
+    });
 
 });

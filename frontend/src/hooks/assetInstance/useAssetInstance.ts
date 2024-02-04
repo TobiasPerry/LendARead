@@ -269,7 +269,6 @@ const useAssetInstance = () => {
                 errorMessage: ""
             }
         }catch (e){
-            console.error("Error: " + e.response.status);
             const errorMsg = getErrorMsg(e.response);
             return {
                 errorMessage: errorMsg,
