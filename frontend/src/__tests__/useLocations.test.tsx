@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import axios, { AxiosInstance } from 'axios';
-import { renderHook } from '@testing-library/react-hooks';
+//import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import useLocations from '../hooks/locations/useLocations';
 import { AuthContext } from '../contexts/authContext.tsx'; // Replace with the correct path
 
