@@ -2,7 +2,6 @@ package ar.edu.itba.paw.services;
 
 
 import ar.edu.itba.paw.exceptions.AssetAlreadyExistException;
-import ar.edu.itba.paw.exceptions.AssetNotFoundException;
 import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.exceptions.UnableToCreateAssetException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
@@ -37,7 +36,7 @@ public class AssetImplTest {
     @Test(expected = AssetAlreadyExistException.class)
     public void addBookAlreadyExistTest() throws AssetAlreadyExistException, UnableToCreateAssetException, LanguageNotFoundException, BookAlreadyExistException {
         // 1 - Precondiciones
-        when(languagesService.getLanguage(any())).thenReturn(new Language());
+        when(languagesService.getLanguage(any())).thenReturn(Optional.of(new Language()));
         when(assetDao.addAsset(any())).thenThrow(new BookAlreadyExistException());
 
         // 2 - Ejercitación
@@ -49,7 +48,7 @@ public class AssetImplTest {
     @Test(expected = UnableToCreateAssetException.class)
     public void addBookLanguageNotFoundTest() throws AssetAlreadyExistException, UnableToCreateAssetException, LanguageNotFoundException, BookAlreadyExistException {
         // 1 - Precondiciones
-        when(languagesService.getLanguage(any())).thenThrow(new LanguageNotFoundException());
+        when(languagesService.getLanguage(any())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
         assetService.addBook("", "", "", "");
@@ -57,16 +56,14 @@ public class AssetImplTest {
         // 3 - Assertions
         Assert.fail();
     }
-    @Test(expected = AssetNotFoundException.class)
-    public void getBookByIdNotFoundTest() throws AssetNotFoundException {
+    @Test()
+    public void getBookByIdNotFoundTest()  {
         // 1 - Precondiciones
         when(assetDao.getBookById(any())).thenReturn(Optional.empty());
 
         // 2 - Ejercitación
-        assetService.getBookById(0L);
+        Assert.assertEquals(Optional.empty(),assetService.getBookById(0L));
 
-        // 3 - Assertions
-        Assert.fail();
     }
 
 

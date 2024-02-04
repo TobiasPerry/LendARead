@@ -55,7 +55,7 @@ public class LanguagesController {
     @Path("/{code}")
     @Produces(value = {Vnd.VND_LANGUAGE})
     public Response getUserAssetsInstances(final @PathParam("code") String code) throws LanguageNotFoundException {
-        Language language = ls.getLanguage(code);
+        Language language = ls.getLanguage(code).orElseThrow(LanguageNotFoundException::new);
         LanguagesDTO languagesDTO = LanguagesDTO.fromLanguage(language);
         Response.ResponseBuilder response = Response.ok(languagesDTO);
         StaticCache.setUnconditionalCache(response);

@@ -44,14 +44,10 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
     @Override
     public AssetInstanceReview addReview(final int assetId,final int lendingId,final String review,final int rating) throws  UserNotFoundException, UnableToAddReviewException {
         Lending lending;
-        try {
-           lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
-           if (lending.getAssetInstance().getId() != assetId) {
-               throw new UnableToAddReviewException();
-           }
-       }catch (LendingNotFoundException e) {
-           throw new UnableToAddReviewException();
-       }
+        lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId).orElseThrow(UnableToAddReviewException::new);
+        if (lending.getAssetInstance().getId() != assetId) {
+            throw new UnableToAddReviewException();
+        }
         AssetInstanceReview assetInstanceReview = new AssetInstanceReview(lending, review, userService.getCurrentUser(),rating) ;
        assetInstanceReviewsDao.addReview(assetInstanceReview);
        LOGGER.info("Asset review added for lending {}", assetInstanceReview.getLending().getId());
@@ -60,8 +56,8 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
 
     @Transactional(readOnly = true)
     @Override
-    public AssetInstanceReview getReviewById(int reviewId) throws AssetInstanceReviewNotFoundException {
-        return assetInstanceReviewsDao.getReviewById(reviewId).orElseThrow(AssetInstanceReviewNotFoundException::new);
+    public Optional<AssetInstanceReview> getReviewById(int reviewId)  {
+        return assetInstanceReviewsDao.getReviewById(reviewId);
     }
 
     @Transactional
@@ -73,16 +69,18 @@ public class AssetInstanceReviewsServiceImpl implements AssetInstanceReviewsServ
 
     @Transactional(readOnly = true)
     @Override
-    public boolean canReview(final int assetInstanceId,final int lendingId) throws LendingNotFoundException, UserNotFoundException {
+    public boolean canReview(final int assetInstanceId,final int lendingId) throws UserNotFoundException {
         Optional<AssetInstanceReview> assetInstanceReview = assetInstanceReviewsDao.getReviewByLendingId(lendingId);
-        Lending lending = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        Optional<Lending> lendingOptional = userAssetInstanceService.getBorrowedAssetInstance(lendingId);
+        if (!lendingOptional.isPresent())return false;
+        Lending lending = lendingOptional.get();
         return !assetInstanceReview.isPresent() && lending.getActive().equals(LendingState.FINISHED) && lending.getUserReference().getEmail().equals(userService.getCurrentUser().getEmail()) && lending.getAssetInstance().getId() == assetInstanceId;
 
     }
     @Transactional(readOnly = true)
     @Override
     public PagingImpl<AssetInstanceReview> getAssetInstanceReviewsById(int pageNum, int itemsPerPage,int assetInstanceId) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId);
+        AssetInstance assetInstance = assetInstanceService.getAssetInstance(assetInstanceId).orElseThrow(AssetInstanceNotFoundException::new);
         return assetInstanceReviewsDao.getAssetInstanceReviews(pageNum,itemsPerPage,assetInstance);
     }
 }

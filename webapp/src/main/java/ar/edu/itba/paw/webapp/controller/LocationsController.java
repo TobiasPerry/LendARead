@@ -69,7 +69,7 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     public Response getLocationById(@PathParam("id") final Integer locationId) throws LocationNotFoundException {
 
-        final Location location = ls.getLocation(locationId);
+        final Location location = ls.getLocation(locationId).orElseThrow(LocationNotFoundException::new);
         Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
         LOGGER.info("GET location/ id:{}",locationId);
         return response.build();

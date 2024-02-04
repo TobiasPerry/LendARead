@@ -2,9 +2,13 @@ package ar.edu.itba.paw.webapp.auth.acessControlFunctions;
 
 import ar.edu.itba.paw.exceptions.*;
 import ar.edu.itba.paw.interfaces.*;
+import ar.edu.itba.paw.models.assetExistanceContext.implementations.AssetInstanceReview;
+import ar.edu.itba.paw.models.userContext.implementations.Location;
 import ar.edu.itba.paw.models.userContext.implementations.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class AccessFunctions {
@@ -45,10 +49,10 @@ public class AccessFunctions {
         try {
             if (userService.getCurrentUser() == null)
                 return false;
-            return locationsService.getLocation(id).getUser().getEmail().equals(userService.getCurrentUser().getEmail());
-        }catch (LocationNotFoundException e){
-            return true;
-        } catch (UserNotFoundException e) {
+            Optional<Location> location = locationsService.getLocation(id);
+            if (!location.isPresent()) return true;
+            return location.get().getUser().getEmail().equals(userService.getCurrentUser().getEmail());
+        }catch (UserNotFoundException e) {
             return false;
         }
     }
@@ -79,9 +83,10 @@ public class AccessFunctions {
         try {
             if  (userService.getCurrentUser() == null)
                 return false;
-            return assetInstanceReviewsService.getReviewById(idReview).getReviewer().getEmail().equals(userService.getCurrentUser().getEmail());
-        } catch (AssetInstanceReviewNotFoundException e) {
-            return true;
+            Optional<AssetInstanceReview> review = assetInstanceReviewsService.getReviewById(idReview);
+            if (!review.isPresent())
+                return true;
+            return  review.get().getReviewer().getEmail().equals(userService.getCurrentUser().getEmail());
         } catch (UserNotFoundException e) {
             return false;
         }

@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.interfaces.ImageService;
 import ar.edu.itba.paw.models.miscellaneous.Image;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
@@ -26,10 +25,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional(readOnly = true)
     @Override
-    public Image getImage(int id) throws ImageNotFoundException {
-        Optional<Image> image = imagesDao.getImage(id);
-        image.orElseThrow(ImageNotFoundException::new);
-        return image.get();
+    public Optional<Image> getImage(int id)  {
+       return imagesDao.getImage(id);
+
     }
 
     @Transactional

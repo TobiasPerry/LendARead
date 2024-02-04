@@ -52,13 +52,8 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional(readOnly = true)
     @Override
-    public AssetInstance getAssetInstance(final int id) throws AssetInstanceNotFoundException {
-        Optional<AssetInstance> assetInstanceOpt = this.assetInstanceDao.getAssetInstance(id);
-        if (!assetInstanceOpt.isPresent()) {
-            LOGGER.info("Failed to find the asset instance");
-            throw new AssetInstanceNotFoundException();
-        }
-        return assetInstanceOpt.get();
+    public Optional<AssetInstance> getAssetInstance(final int id)  {
+        return assetInstanceDao.getAssetInstance(id);
     }
 
 
@@ -78,8 +73,8 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
 
     @Transactional
     @Override
-    public void removeAssetInstance(final int id) throws AssetInstanceNotFoundException, UnableToDeleteAssetInstanceException {
-        AssetInstance assetInstance = getAssetInstance(id);
+    public void removeAssetInstance(final int id) throws UnableToDeleteAssetInstanceException {
+        AssetInstance assetInstance = getAssetInstance(id).orElseThrow(UnableToDeleteAssetInstanceException::new);
         if (assetInstance.getAssetState() == AssetState.DELETED) {
             LOGGER.info("Asset instance already deleted");
             throw new UnableToDeleteAssetInstanceException();
@@ -90,35 +85,24 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     @Transactional(readOnly = true)
     @Override
     public boolean isOwner(final int id, final String email) throws AssetInstanceNotFoundException {
-        AssetInstance assetInstance = getAssetInstance(id);
+        AssetInstance assetInstance = getAssetInstance(id).orElseThrow(AssetInstanceNotFoundException::new);
         return assetInstance.getOwner().getEmail().equals(email);
     }
     @Transactional
     @Override
     public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final Optional<Integer> imageId,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException {
-        AssetInstance assetInstance = getAssetInstance(id);
+        AssetInstance assetInstance = getAssetInstance(id).orElseThrow(AssetInstanceNotFoundException::new);
         User user = userService.getCurrentUser();
 
         if (location.isPresent()) {
-            Location loc;
-            try {
-                loc = locationsService.getLocation(location.get());
-                if (!loc.isActive())
-                    throw new LocationNotExistException();
-                if (!loc.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();
-
-            } catch (LocationNotFoundException e) {
+            Location loc = locationsService.getLocation(location.get()).orElseThrow(LocationNotExistException::new);
+            if (!loc.isActive())
                 throw new LocationNotExistException();
-            }
+            if (!loc.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();
             assetInstance.setLocation(loc);
         }
         if (imageId.isPresent()) {
-            Image image1;
-            try {
-                image1 = imageService.getImage(imageId.get());
-            }catch (ImageNotFoundException e) {
-                throw new ImageNotExistException();
-            }
+            Image image1 =  imageService.getImage(imageId.get()).orElseThrow(ImageNotExistException::new);
             assetInstance.setImage(image1);
         }
         description.ifPresent(assetInstance::setDescription);
@@ -134,25 +118,14 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         Asset book ;
         Location location;
         User user = userService.getCurrentUser();
-        try {
-            book = assetService.getBookById(assetId);
-            location =   locationsService.getLocation(locationId);
-            if (!location.isActive()) throw new LocationNotExistException();
-            if (!location.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();
-        }
-        catch (AssetNotFoundException e) {
-            throw new AssetNotExistException();
-        }
-        catch (LocationNotFoundException e) {
-            throw new LocationNotExistException();
-        }
-        Image image ;
-        try {
-            image = imageService.getImage(imageId);
-        }
-        catch (ImageNotFoundException e) {
-            throw new ImageNotExistException();
-        }
+        book = assetService.getBookById(assetId).orElseThrow(AssetNotExistException::new);
+        location =   locationsService.getLocation(locationId).orElseThrow(LocationNotExistException::new);
+        if (!location.isActive()) throw new LocationNotExistException();
+        if (!location.getUser().getEmail().equals(user.getEmail())) throw new UserIsNotOwnerException();
+
+
+        Image image = imageService.getImage(imageId).orElseThrow(ImageNotExistException::new);
+
         AssetInstance assetInstance = new AssetInstance();
         assetInstance.setBook(book);
         assetInstance.setLocation(location);

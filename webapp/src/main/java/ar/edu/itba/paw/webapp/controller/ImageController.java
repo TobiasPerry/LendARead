@@ -39,7 +39,7 @@ public class ImageController {
     @Produces({ "image/png", "image/jpeg", "image/gif", MediaType.APPLICATION_JSON })
     public Response getImage(@PathParam("id") final int id,
                              @QueryParam("size")  @DefaultValue("FULL") @Pattern(regexp = ("FULL|CUADRADA|PORTADA"),message = "{Image.size.pattern}") final String size) throws ImageNotFoundException, IOException {
-        Image image = imageService.getImage(id);
+        Image image = imageService.getImage(id).orElseThrow(ImageNotFoundException::new);
         byte [] imageBytes = image.getPhoto();
         Response.ResponseBuilder responseBuilder = Response.ok(ImagesSizes.valueOf(size).resizeImage(imageBytes));
         StaticCache.setUnconditionalCache(responseBuilder);

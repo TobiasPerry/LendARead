@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.exceptions.LanguageNotFoundException;
 import ar.edu.itba.paw.interfaces.LanguagesService;
 import ar.edu.itba.paw.models.assetExistanceContext.implementations.Language;
 import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
@@ -32,10 +31,8 @@ public class LanguagesServiceImpl implements LanguagesService {
     }
     @Transactional(readOnly = true)
     @Override
-    public Language getLanguage(String code) throws LanguageNotFoundException {
-       Optional<Language> langOpt = this.languageDao.getLanguage(code);
-       LOGGER.debug("Language with code {} ", code);
-       langOpt.orElseThrow(LanguageNotFoundException::new);
-       return langOpt.get();
+    public Optional<Language> getLanguage(String code)  {
+       return this.languageDao.getLanguage(code);
+
     }
 }
