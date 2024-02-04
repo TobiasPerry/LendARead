@@ -27,26 +27,30 @@ public class LanguagesController {
     private final LanguagesService ls;
     @Context
     private UriInfo uriInfo;
+
     @Autowired
     public LanguagesController(final LanguagesService ls) {
         this.ls = ls;
     }
+
     @GET
     @Produces(value = {Vnd.VND_LANGUAGE})
     public Response getUserAssetsInstances(final @QueryParam("page") @DefaultValue("1") int page,
-                                           final @QueryParam("itemsPerPage") @DefaultValue("200") int pageSize,
+                                           final @QueryParam("itemsPerPage") @DefaultValue("500") int pageSize,
                                            final @QueryParam("isUsed") Boolean isUsed
-                                           ) {
+    ) {
         AbstractPage<Language> languages = ls.getLanguages(page, pageSize, isUsed);
         if (languages.getTotalPages() == 0 || languages.getList().isEmpty()) {
             return Response.noContent().build();
         }
         List<LanguagesDTO> languagesDTOS = LanguagesDTO.fromLanguages(languages.getList());
-        Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {});
+        Response.ResponseBuilder response = Response.ok(new GenericEntity<List<LanguagesDTO>>(languagesDTOS) {
+        });
         PaginatedData.paginatedData(response, languages, uriInfo);
         StaticCache.setUnconditionalCache(response);
         return response.build();
     }
+
     @GET
     @Path("/{code}")
     @Produces(value = {Vnd.VND_LANGUAGE})
