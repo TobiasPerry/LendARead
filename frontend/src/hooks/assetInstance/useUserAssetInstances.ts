@@ -92,85 +92,85 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
     const [error, setError] = useState({state: false, text: ""})
     const {t} = useTranslation()
 
-   const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
+    const fetchLendings =  async (newPage: number, newSort: any, newFilter: string, isLender: boolean) => {
 
-       setIsLoading(true)
-       const queryparams = {
-           'page': newPage,
-           'itemsPerPage': PAGE_SIZE,
-           'sortDirection': newSort.order,
-       }
         setIsLoading(true)
-       try {
-           const queryparams = {
-               'page': newPage,
-               'itemsPerPage': PAGE_SIZE,
-               'sortDirection': newSort.order,
-           }
+        const queryparams = {
+            'page': newPage,
+            'itemsPerPage': PAGE_SIZE,
+            'sortDirection': newSort.order,
+        }
+        setIsLoading(true)
+        try {
+            const queryparams = {
+                'page': newPage,
+                'itemsPerPage': PAGE_SIZE,
+                'sortDirection': newSort.order,
+            }
 
-           if (isLender)
-               queryparams['lenderId'] = user
-           else
-               queryparams['borrowerId'] = user
+            if (isLender)
+                queryparams['lenderId'] = user
+            else
+                queryparams['borrowerId'] = user
 
-           if (lendingStatusAdapterApi[`${newFilter}`] !== undefined)
-               queryparams['state'] = lendingStatusAdapterApi[`${newFilter}`]
+            if (lendingStatusAdapterApi[`${newFilter}`] !== undefined)
+                queryparams['state'] = lendingStatusAdapterApi[`${newFilter}`]
 
-           if (sortAdapterApi[`${newSort.column}`] !== undefined && newSort.column !== "user")
-               queryparams['sort'] = sortAdapterApi[`${newSort.column}`]
+            if (sortAdapterApi[`${newSort.column}`] !== undefined && newSort.column !== "user")
+                queryparams['sort'] = sortAdapterApi[`${newSort.column}`]
 
-           if (newSort.column === "user") {
-               if (isLender)
-                   queryparams['sort'] = 'LENDER_USER'
-               else
-                   queryparams['sort'] = 'BORROWER_USER'
-           }
+            if (newSort.column === "user") {
+                if (isLender)
+                    queryparams['sort'] = 'LENDER_USER'
+                else
+                    queryparams['sort'] = 'BORROWER_USER'
+            }
 
 
-           const lendings = await api.get(`/lendings`, {
-               params: queryparams
-           })
+            const lendings = await api.get(`/lendings`, {
+                params: queryparams
+            })
 
-           setTotalPages(extractTotalPages(lendings.headers["link"]))
-           if (lendings.data.length == 0|| lendings.status === 204) {
-               setIsLoading(false)
-               setBooks([])
-           }
+            setTotalPages(extractTotalPages(lendings.headers["link"]))
+            if (lendings.data.length == 0|| lendings.status === 204) {
+                setIsLoading(false)
+                setBooks([])
+            }
 
-           const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
-               try {
-                   const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
-                   const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
-                   const userReference = !isLender ? lending.lenderUrl : lending.borrowerUrl;
-                   const user = (await api_.get(userReference)).data;
+            const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
+                try {
+                    const assetinstance: AssetInstanceApi = (await api_.get(lending.assetInstance)).data;
+                    const asset: AssetApi = (await api_.get(assetinstance.assetReference)).data;
+                    const userReference = !isLender ? lending.lenderUrl : lending.borrowerUrl;
+                    const user = (await api_.get(userReference)).data;
 
-                   return {
-                       imageUrl: assetinstance.imageReference,
-                       title: asset.title,
-                       start_date: lending.lendDate,
-                       return_date: lending.devolutionDate,
-                       user: user.userName,
-                       physicalCondition: assetinstance.physicalCondition,
-                       id: lending.id,
-                       lendingStatus: lending.state
-                   };
-               } catch (error) {
-                   console.error("Error in processing lending:", lending, error);
-                   return null;
-               }
-           });
+                    return {
+                        imageUrl: assetinstance.imageReference,
+                        title: asset.title,
+                        start_date: lending.lendDate,
+                        return_date: lending.devolutionDate,
+                        user: user.userName,
+                        physicalCondition: assetinstance.physicalCondition,
+                        id: lending.id,
+                        lendingStatus: lending.state
+                    };
+                } catch (error) {
+                    console.error("Error in processing lending:", lending, error);
+                    return null;
+                }
+            });
 
-           const lendedBooks = await Promise.all(lendedBooksPromises);
-           const validLendedBooks = lendedBooks.filter(book => book !== null);
-           setIsLoading(false)
-           setBooks(validLendedBooks)
-       } catch (error) {
-           setError({state: true, text: t("errors.failedToFetchLendings")})
-           setIsLoading(false)
-           setBooks([])
-       }
+            const lendedBooks = await Promise.all(lendedBooksPromises);
+            const validLendedBooks = lendedBooks.filter(book => book !== null);
+            setIsLoading(false)
+            setBooks(validLendedBooks)
+        } catch (error) {
+            setError({state: true, text: t("errors.failedToFetchLendings")})
+            setIsLoading(false)
+            setBooks([])
+        }
 
-   }
+    }
 
 
 
@@ -186,20 +186,22 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
             }
         }
 
-            if(statusAdapterApi[`${newFilter}`] !== undefined)
-                params.params['status'] =  statusAdapterApi[`${newFilter}`]
+        if(statusAdapterApi[`${newFilter}`] !== undefined)
+            params.params['status'] =  statusAdapterApi[`${newFilter}`]
 
-            if(sortAdapterApi[`${newSort.column}`] !== undefined)
-                params.params['sort'] = sortAdapterApi[`${newSort.column}`]
+        if(sortAdapterApi[`${newSort.column}`] !== undefined)
+            params.params['sort'] = sortAdapterApi[`${newSort.column}`]
 
-            const assetinstances = await api.get(`/assetInstances`, params )
-
-        try {
         const assetinstances = await api.get(`/assetInstances`, params )
 
+        try {
+            const assetinstances = await api.get(`/assetInstances`, params )
+
             setTotalPages(extractTotalPages(assetinstances.headers["link"]))
-            if (assetinstances.status === 204) {
-                return []
+
+            if (assetinstances.status === 204 || assetinstances.data.length == 0) {
+                setIsLoading(false)
+                setBooks([]);
             }
 
             const booksRetrieved = await Promise.all(assetinstances.data.map(async (assetinstance) => {
