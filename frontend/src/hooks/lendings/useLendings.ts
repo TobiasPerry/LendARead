@@ -67,7 +67,7 @@ const useLendings = () => {
     };
 
     return {
-        lendings, totalPages, currentPage, changePage, getLendings, setAsset_
+        lendings, totalPages, currentPage, changePage, getLendings, setAsset_, error
     }
 }
 

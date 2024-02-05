@@ -7,7 +7,7 @@ import {extractDate} from "../../hooks/api/types.ts";
 
 const BookStatus = ({asset, state}) => {
     const { t } = useTranslation();
-    const {getLocation, location} = useLocationAsset()
+    const {getLocation, location, error} = useLocationAsset()
 
     useEffect(() => {
         getLocation(asset).then();
@@ -36,6 +36,7 @@ const BookStatus = ({asset, state}) => {
                     <h5><strong>{t("visibility")}</strong>: {t(`${asset.status}`)}</h5>
                 </div>
             }
+            {error.state && <Snackbar message={error.text} />}
         </>
     );
 };
