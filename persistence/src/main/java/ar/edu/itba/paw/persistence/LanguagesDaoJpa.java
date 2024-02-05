@@ -23,14 +23,14 @@ public class LanguagesDaoJpa implements LanguageDao {
 
     @Override
     public AbstractPage<Language>getLanguages(final int page, final int itemsPerPage,final Boolean isUsed) {
-        StringBuilder sb = new StringBuilder("SELECT distinct(l.id) FROM languages l ");
+        StringBuilder sb = new StringBuilder("SELECT distinct(l.name) FROM languages l ");
         boolean first = true;
         if (isUsed != null && isUsed) {
             sb.append("join book a on l.id = a.lang join assetInstance ai on a.uid = ai.assetId where ai.status = 'PUBLIC' ");
             first = false;
         }
         final int offset = (page - 1) * itemsPerPage;
-        String pagination = " LIMIT :limit OFFSET :offset ";
+        String pagination = " order by l.name LIMIT :limit OFFSET :offset";
         final Query queryCount = em.createNativeQuery(sb.toString());
         sb.append(pagination);
         final Query queryNative  = em.createNativeQuery(sb.toString());
@@ -51,7 +51,7 @@ public class LanguagesDaoJpa implements LanguageDao {
             return new PagingImpl<>(Collections.emptyList(), 0, 0);
 
         // Get the AssetInstances that match those IDs for given page
-        final TypedQuery<Language> query = em.createQuery("FROM Language as l  WHERE l.code IN (:ids) ORDER BY l.code" , Language.class);
+        final TypedQuery<Language> query = em.createQuery("FROM Language as l  WHERE l.name IN (:ids) ORDER BY l.name" , Language.class);
         query.setParameter("ids", list);
         List<Language> assets = query.getResultList();
 
