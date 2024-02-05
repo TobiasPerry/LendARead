@@ -25,7 +25,7 @@ function Modal({
                             {title}
                         </h2>
 
-                        <button onClick={handleCloseModal} className="btn btn-secondary">
+                        <button onClick={handleCloseModal} className="btn btn-secondary" name="close">
                             <i className="fas fa-window-close fa-lg"></i>
                         </button>
                     </div>
