@@ -190,7 +190,7 @@ const AuthContextProvider = (props) => {
             const res = await handleJWT(response.headers.get('x-jwt'), response.headers.get('x-refresh-token'), rememberMe)
             return res
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return false;
         }
     };

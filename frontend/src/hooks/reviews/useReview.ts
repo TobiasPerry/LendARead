@@ -133,7 +133,7 @@ const useReview = () => {
             }
 
         }catch (e){
-            console.log("Error: " + e)
+            console.error("Error: " + e)
             return {info: null, exits: false};
         }
     }
@@ -204,7 +204,7 @@ const useReview = () => {
             }
 
         }catch (e){
-            console.log("Error")
+            console.error("Error")
             return {info: null, exists: false}
         }
     }
@@ -238,7 +238,7 @@ const useReview = () => {
             };
         }catch (e){
             const errorMsg = getErrorMsg(e.response)
-            console.log("error: " + e)
+            console.error("error: " + e)
             return {
                 userReviewResponse: null,
                 assetInstanceReviewResponse: null,
@@ -270,7 +270,6 @@ const useReview = () => {
             // I get the response from assetInstance/:id/review/:id so i need to go and get data from the reviewer
             const res = await api_.get(review.reviewer);
             const data = res.data
-            console.log(data.userImage)
             return {
                 text: review.review,
                 rating: review.rating,

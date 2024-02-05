@@ -22,7 +22,6 @@ const LoginView = ({redirect}) => {
     const handleLogin = async (e: any) => {
         e.preventDefault()
         const loginSuccess = await login(email, password, rememberMe)
-        console.log(loginSuccess)
         if(loginSuccess) {
             if (redirect) navigate(-1)
         }

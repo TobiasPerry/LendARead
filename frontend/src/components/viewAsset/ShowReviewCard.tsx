@@ -28,10 +28,8 @@ const ShowReviewCard = ({review}) => {
 
     useEffect(() => {
         if (hasImage) {
-            console.log("si img")
             setImgSrc(data.userImage + '?size=PORTADA')
         } else {
-            console.log("no img")
             setImgSrc(ProfilePlaceholder)
         }
     }, [hasImage]);
