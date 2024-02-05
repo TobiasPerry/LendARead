@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write \"src/components/*.{js,jsx,ts,tsx,json,css,scss,md}\" --ignore-path .prettierignore",
-    "test": "vitest run --disable-console-intercept --passWithNoTests --bail 1 "
+    "test": "vitest run --passWithNoTests --bail 1 "
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
