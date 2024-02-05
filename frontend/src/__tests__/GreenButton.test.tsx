@@ -3,7 +3,7 @@ import GreenButton from '../components/GreenButton.tsx';
 import userEvent from '@testing-library/user-event';
 import { it, vi } from 'vitest';
 
-describe('Landing Component', () => {
+describe('Test button component ', () => {
     it('renders the provided text on the button', () => {
         const buttonText = 'Click me!';
         render(<GreenButton action={() => {

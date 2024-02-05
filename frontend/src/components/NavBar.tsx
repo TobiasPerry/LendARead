@@ -87,7 +87,7 @@ export default function NavBar() {
 
                             { !isLoggedIn && (
                                 <li className="nav-item d-flex align-items-center">
-                                    <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/login">
+                                    <Link className="nav-link navItem" id="userHome"  aria-current="page" to="/login" data-testid="login-btn" >
                                         {t('navbar.login')}
                                     </Link>
                                 </li>
@@ -98,16 +98,16 @@ export default function NavBar() {
                                         <Link className="nav-link navItem" id="home" aria-current="page" to="/userAssets">{t('navbar.my_books')}</Link>
                                     </li>
                                     <li className="nav-item d-flex align-items-center">
-                                        <Link className="nav-link navItem" id="userView"  aria-current="page" to={`/user/${user}`}>
+                                        <Link className="nav-link navItem" id="userView"  aria-current="page" to={`/user/${user}`} data-testid="profile-btn">
 
                                         <span className="navbar-brand">
-                                            <img src={smallUserImage} className="rounded-circle" width="30" height="30" alt="logo"/>
+                                            <img src={smallUserImage} className="rounded-circle" width="30" height="30" alt="logo" data-testid="user-img"/>
                                         </span>
 
                                         </Link>
                                     </li>
                                     <li className="nav-item d-flex align-items-center">
-                                        <button className="nav-link navItem" id="logout" aria-current="page" onClick={handleLogout}>
+                                        <button className="nav-link navItem" id="logout" aria-current="page" onClick={handleLogout} data-testid="logout-btn">
                                             <i className="fas fa-sign-out-alt fa-x" ></i>
                                         </button>
                                     </li>
