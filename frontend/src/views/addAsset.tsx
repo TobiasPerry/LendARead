@@ -118,10 +118,13 @@ const AddAsset = () => {
     }, [])
 
     useEffect(() => {
+        if (user == "") {
+            setShowLocModal(false)
+        }
         if(userDetails.role != "LENDER"){
             setShowLocModal(true)
         }
-    }, []);
+    }, [user, userDetails]);
 
     const getAuthor = async (authors: any[]) => {
         if (authors.length === 0) {
