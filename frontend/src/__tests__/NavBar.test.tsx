@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import NavBar from '../components/NavBar.tsx';
 import React from 'react';
 import {expect, it, vi} from 'vitest';
@@ -99,4 +98,47 @@ describe('Test Navbar component on log in state ', () => {
         expect(userImg).toBeInTheDocument()
         expect(profileBtn).toBeInTheDocument()
     })
+
+    it(' show the user image', () => {
+        render(
+            <BrowserRouter>
+                <AuthContext.Provider value={
+                    {
+                        isLoggedIn: true,
+                        logout: vi.fn(),
+                        login: vi.fn(),
+                        handleChangePassword: vi.fn(),
+                        handleForgotPassword: vi.fn(),
+                        uploadUserImage: vi.fn(),
+                        changeUserRole: vi.fn(),
+                        user: "",
+                        userDetails: {
+                            email: "",
+                            image: "",
+                            rating: 0,
+                            ratingAsBorrower: 0,
+                            ratingAsLender: 0,
+                            role: "",
+                            selfUrl: "",
+                            telephone: "",
+                            userName: "",
+                        },
+                        userImage: "lendaread.com/api/image/12",
+                        smallUserImage: "lendaread.com/api/image/12",
+                    }
+                }>
+                    <NavBar/>
+                </AuthContext.Provider>
+            </BrowserRouter>
+        )
+
+        const userImg = screen.getByTestId('user-img')
+
+        // expect(userImg.src).toBe("lendaread.com/api/image/12")
+        console.log(userImg)
+        expect(userImg).toHaveAttribute('src', 'lendaread.com/api/image/12')
+
+    });
+
+
 })
