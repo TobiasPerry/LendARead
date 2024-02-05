@@ -192,7 +192,7 @@ describe('useAssetInstance functions', () => {
 
         // Test
         const res = await useAssetInstance().handleSendLendingRequest({})
-console.log(res)
+
         // Asset
         expect(res).toStrictEqual({
                 errorMessage: 'Error: This is the error message\n',

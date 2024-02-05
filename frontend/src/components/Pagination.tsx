@@ -22,6 +22,7 @@ const Pagination = ({totalPages, changePage, currentPage, }) => {
                                 id="previousPageButton"
                                 style={{borderColor: "rgba(255, 255, 255, 0)"}}
                                 onClick={() => changePage(currentPage - 1)}
+                                data-testid="previous-btn"
                         >
                             <i className="bi bi-chevron-left"></i>
                             {t('discovery.pagination.previous')}
@@ -38,6 +39,7 @@ const Pagination = ({totalPages, changePage, currentPage, }) => {
                                 id="nextPageButton"
                                 style={{borderColor: "rgba(255, 255, 255, 0)"}}
                                 onClick={() => changePage(currentPage + 1)}
+                                data-testid="next-btn"
                         >
                             {t('discovery.pagination.next')}
                             <i className="bi bi-chevron-right"></i>
