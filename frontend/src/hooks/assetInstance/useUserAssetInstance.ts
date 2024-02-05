@@ -13,6 +13,7 @@ const useUserAssetInstance = (location, id) => {
     const [isLoading, setIsLoading] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
     const [error, setError] = useState({state: false, text: ""})
+    const [hasLendingsNotFinished, setHasLendingsNotFinished] = useState(false)
     const {user} = useContext(AuthContext)
     const {t} = useTranslation()
 
@@ -34,6 +35,18 @@ const useUserAssetInstance = (location, id) => {
         }
     }
 
+    const getLendingsForAssetInstance = async (assetInstanceId) => {
+        try{
+            // Ask if there's any lending that is active or delivered
+            const res = await api.get(`/lendings?assetInstanceId=${assetInstanceId}&state=ACTIVE&state=DELIVERED`)
+            // If the response is not empty, is because there's a lending activer or delivered
+            if (res.status === 204) return false; // No content
+            return(res.data !== null && res.data !== undefined && res.data.length > 0)
+        }catch (e){
+            return false;
+        }
+    }
+
     const fetchUserAssetDetails = async () => {
         await setIsLoading(true)
 
@@ -49,6 +62,7 @@ const useUserAssetInstance = (location, id) => {
                 lending = lending_
             } else {
                 assetinstace = (await api.get(`/assetInstances/${id}`)).data
+                setHasLendingsNotFinished(await getLendingsForAssetInstance(id))
             }
 
             await checkIsOwner(user, lending, assetinstace)
@@ -96,7 +110,7 @@ const useUserAssetInstance = (location, id) => {
 
 
     return {
-        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance, isLoading, isOwner, error
+        assetDetails, fetchUserAssetDetails, state, hasActiveLendings, deleteAssetInstance, isLoading, isOwner, error, hasLendingsNotFinished
     }
 }
 

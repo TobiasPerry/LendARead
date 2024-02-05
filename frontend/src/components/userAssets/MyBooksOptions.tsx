@@ -7,7 +7,7 @@ import DeleteModal from "../modals/DeleteModal.tsx";
 import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
 import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
 import "../styles/MyBooksOptions.css";
-function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAssetDetails}) {
+function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAssetDetails, hasLendingsNotFinished}) {
     const { t } = useTranslation();
 
     const [showModalVisibility, setShowModalVisibility] = useState(false);
@@ -34,7 +34,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
         setShowModalEdit(true);
         await editAsset(editedAsset, originalAsset)
     }
-
+console.log(hasLendingsNotFinished)
     return (
         <div style={{
             backgroundColor: '#f0f5f0',
@@ -46,17 +46,21 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
         <h3>{t("shortcut")}</h3>
             <div className="d-flex flex-row">
             {!(asset.reservable && haveActiveLendings) && (
-                <button id="privatePublicBtn" className="btn btn-green m-1" onClick={() => setShowModalVisibility(true)}>
+                <>
                     {isPublic(asset.status) ? (
                         <>
-                            <i className="fas fa-eye-slash fa-lg"  ></i> {t('userBookDetails.makePrivate')}
+                            <button id="privatePublicBtn" className={`btn btn-green m-1`} onClick={() => setShowModalVisibility(true)}>
+                                    <i className="fas fa-eye-slash fa-lg"  ></i> {t('userBookDetails.makePrivate')}
+                            </button>
                         </>
                     ) : (
                         <>
-                            <i className="fas fa-eye fa-lg" ></i> {t('userBookDetails.makePublic')}
+                            <button id="privatePublicBtn" className={`btn btn-green m-1 ${(!asset.isReservable && hasLendingsNotFinished) ? 'disabled' : ''}`} onClick={() => setShowModalVisibility(true)}>
+                                <i className="fas fa-eye fa-lg" ></i> {t('userBookDetails.makePublic')}
+                            </button>
                         </>
                     )}
-                </button>
+                </>
             )}
 
             {!haveActiveLendings && (
