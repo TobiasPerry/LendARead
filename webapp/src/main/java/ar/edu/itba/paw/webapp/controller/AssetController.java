@@ -63,11 +63,12 @@ public class AssetController {
     @Produces(value = {Vnd.VND_ASSET})
     public Response getAsset(@Context javax.ws.rs.core.Request request,@PathParam("id") final Long id) throws AssetNotFoundException {
         Asset book = as.getAssetById(id).orElseThrow(AssetNotFoundException::new);
-        EntityTag eTag = new EntityTag(String.valueOf(book.hashCode()));
+        AssetDTO assetDTO = AssetDTO.fromAsset(uriInfo,book);
+        EntityTag eTag = new EntityTag(String.valueOf(assetDTO.hashCode()));
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         if (response == null) {
             LOGGER.info("GET asset/ id:{}",id);
-            return Response.ok(AssetDTO.fromAsset(uriInfo,book)).tag(eTag).build();
+            return Response.ok(assetDTO).tag(eTag).build();
         }
         LOGGER.info("GET asset/ id:{} 304",id);
         return response.build();
