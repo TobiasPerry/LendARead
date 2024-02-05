@@ -519,6 +519,9 @@ const AddAsset = () => {
         const res = await addLocation(formData)
         if (res) {
             setNewLocationModal(false)
+            getAllLocations(user).then((response) => {
+                setLocations(response)
+            })
         }
     }
 
