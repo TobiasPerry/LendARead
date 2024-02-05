@@ -119,7 +119,7 @@ public class AssetInstanceController {
     @Consumes(Vnd.VND_ASSET_INSTANCE)
     @Produces(value = {Vnd.VND_ASSET_INSTANCE})
     @Path("/{id}")
-    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @NotNull final AssetInstancePatchForm assetInstancePatchForm) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException {
+    public Response updateAssetInstance(@PathParam("id") final int id, @Valid @NotNull final AssetInstancePatchForm assetInstancePatchForm) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException, UnableToChangeAssetReservavilityException, UnableToChangeAssetStateException {
         ais.changeAssetInstance(id, Optional.ofNullable(assetInstancePatchForm.getPhysicalCondition()!= null? PhysicalCondition.fromString(assetInstancePatchForm.getPhysicalCondition()):null), Optional.ofNullable(assetInstancePatchForm.getMaxDays()), Optional.ofNullable(assetInstancePatchForm.getLocationId()), Optional.ofNullable(assetInstancePatchForm.getImageId()), Optional.ofNullable(assetInstancePatchForm.getDescription()), Optional.ofNullable(assetInstancePatchForm.getIsReservable()), Optional.ofNullable(assetInstancePatchForm.getStatus()));
         LOGGER.info("PATCH assetInstances/ id:{}",id);
         return Response.noContent().build();
