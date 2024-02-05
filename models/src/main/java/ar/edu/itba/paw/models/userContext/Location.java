@@ -112,7 +112,6 @@ final public class Location {
         result = 31 * result + (locality != null ? locality.hashCode() : 0);
         result = 31 * result + (province != null ? province.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (userReference != null ? userReference.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
