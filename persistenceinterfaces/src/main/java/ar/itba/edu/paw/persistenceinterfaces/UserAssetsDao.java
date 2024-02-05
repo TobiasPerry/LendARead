@@ -10,4 +10,5 @@ public interface UserAssetsDao {
     Optional<Lending> getBorrowedAsset(final int lendingId);
 
     Integer getActiveLendingsCount(final long assetInstanceId);
+     Integer getNonFinishedLendingsCount(final long assetInstanceId);
 }

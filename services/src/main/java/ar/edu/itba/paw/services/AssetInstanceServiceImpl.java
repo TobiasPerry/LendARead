@@ -15,6 +15,7 @@ import ar.edu.itba.paw.models.viewsContext.interfaces.AbstractPage;
 import ar.edu.itba.paw.models.viewsContext.interfaces.SearchQuery;
 import ar.itba.edu.paw.persistenceinterfaces.AssetInstanceDao;
 import ar.itba.edu.paw.persistenceinterfaces.ImagesDao;
+import ar.itba.edu.paw.persistenceinterfaces.UserAssetsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +39,19 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     private final UserService userService;
 
     private final AssetService assetService;
+    private final UserAssetsDao userAssetsDao;
+
 
 
 
     @Autowired
-    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final UserService userService,final AssetService assetService,final ImageService imageService) {
+    public AssetInstanceServiceImpl( final AssetInstanceDao assetInstanceDao, final ImagesDao imagesDao,final LocationsService locationsService,final UserService userService,final AssetService assetService,final ImageService imageService,final UserAssetsDao userAssetsDao) {
         this.assetInstanceDao = assetInstanceDao;
         this.imageService = imageService;
         this.locationsService = locationsService;
         this.userService = userService;
         this.assetService = assetService;
+        this.userAssetsDao = userAssetsDao;
     }
 
     @Transactional(readOnly = true)
@@ -90,7 +94,7 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
     }
     @Transactional
     @Override
-    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final Optional<Integer> imageId,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException {
+    public void changeAssetInstance(final int id, final Optional<PhysicalCondition> physicalCondition, final Optional<Integer> maxLendingDays, final Optional<Integer> location,final Optional<Integer> imageId,final Optional<String> description,final Optional<Boolean> isReservable,final Optional<String> state) throws AssetInstanceNotFoundException, LocationNotExistException, ImageNotExistException, UserNotFoundException, UserIsNotOwnerException, UnableToChangeAssetStateException, UnableToChangeAssetReservavilityException {
         AssetInstance assetInstance = getAssetInstance(id).orElseThrow(AssetInstanceNotFoundException::new);
         User user = userService.getCurrentUser();
 
@@ -108,7 +112,17 @@ public class AssetInstanceServiceImpl implements AssetInstanceService {
         description.ifPresent(assetInstance::setDescription);
         physicalCondition.ifPresent(assetInstance::setPhysicalCondition);
         maxLendingDays.ifPresent(assetInstance::setMaxLendingDays);
+        if (isReservable.isPresent() && !isReservable.get() && assetInstance.getIsReservable() && userAssetsDao.getNonFinishedLendingsCount(assetInstance.getId()) > 0) {
+            LOGGER.info("Asset reservable cannot convert to no reservable instance has active lendings, cannot change state");
+            throw new UnableToChangeAssetReservavilityException();
+        }
         isReservable.ifPresent(assetInstance::setIsReservable);
+
+        if (state.isPresent() && state.get().equals(AssetState.PUBLIC.toString()) && !assetInstance.getIsReservable() && userAssetsDao.getNonFinishedLendingsCount(assetInstance.getId()) > 0) {
+            LOGGER.info("Asset nonReservable instance has active lendings, cannot change state");
+            throw new UnableToChangeAssetStateException();
+        }
+
         state.ifPresent(s -> assetInstance.setAssetState(AssetState.fromString(s)));
 
     }
