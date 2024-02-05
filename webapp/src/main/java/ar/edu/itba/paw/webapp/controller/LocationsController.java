@@ -67,11 +67,12 @@ public class LocationsController {
     @Produces(value = { Vnd.VND_LOCATION })
     public Response getLocationById(@Context javax.ws.rs.core.Request request,@PathParam("id") final Integer locationId) throws LocationNotFoundException {
         final Location location = ls.getLocation(locationId).orElseThrow(LocationNotFoundException::new);
-        EntityTag eTag = new EntityTag(String.valueOf(location.hashCode()));
+        final LocationDTO locationDTO = LocationDTO.fromLocation(uriInfo,location);
+        EntityTag eTag = new EntityTag(String.valueOf(locationDTO.hashCode()));
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         if (response == null) {
             LOGGER.info("GET location/ id:{}",locationId);
-            return Response.ok(LocationDTO.fromLocation(uriInfo,location)).tag(eTag).build();
+            return Response.ok(locationDTO).tag(eTag).build();
         }
         LOGGER.info("GET location/ id:{} 304",locationId);
         return response.build();

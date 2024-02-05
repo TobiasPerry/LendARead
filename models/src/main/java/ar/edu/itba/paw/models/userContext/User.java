@@ -176,9 +176,9 @@ final public class User {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (locale != null ? locale.hashCode() : 0);
         result = 31 * result + (profilePhoto != null ? profilePhoto.hashCode() : 0);
-        result = 31 * result + (rating != +0.0f ? Float.floatToIntBits(rating) : 0);
-        result = 31 * result + (ratingAsLender != +0.0f ? Float.floatToIntBits(ratingAsLender) : 0);
-        result = 31 * result + (ratingAsBorrower != +0.0f ? Float.floatToIntBits(ratingAsBorrower) : 0);
+        result = 31 * result + (this.getRating() != +0.0f ? Float.floatToIntBits(this.rating) : 0);
+        result = 31 * result + (this.getRatingAsLender() != +0.0f ? Float.floatToIntBits(this.getRatingAsLender()) : 0);
+        result = 31 * result + (this.getRatingAsBorrower() != +0.0f ? Float.floatToIntBits(this.getRatingAsBorrower()) : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }

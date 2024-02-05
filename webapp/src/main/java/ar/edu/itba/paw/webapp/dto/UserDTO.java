@@ -38,4 +38,17 @@ public class UserDTO {
         return url.getBaseUriBuilder().path(EndpointsUrl.Users_URL).path(String.valueOf(user.getId())).build().toString();
     }
 
+    @Override
+    public int hashCode() {
+        int result = userName != null ? userName.hashCode() : 0;
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (rating != +0.0f ? Float.floatToIntBits(rating) : 0);
+        result = 31 * result + (ratingAsLender != +0.0f ? Float.floatToIntBits(ratingAsLender) : 0);
+        result = 31 * result + (ratingAsBorrower != +0.0f ? Float.floatToIntBits(ratingAsBorrower) : 0);
+        result = 31 * result + (selfUrl != null ? selfUrl.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
+    }
 }

@@ -121,7 +121,7 @@ const AddAsset = () => {
         if (user == "") {
             setShowLocModal(false)
         }
-        if(userDetails.role != "LENDER"){
+        if(userDetails.role == "BORROWER"){
             setShowLocModal(true)
         }
     }, [user, userDetails]);

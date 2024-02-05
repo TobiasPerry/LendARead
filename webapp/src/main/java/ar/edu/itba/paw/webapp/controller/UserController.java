@@ -71,11 +71,12 @@ public class UserController {
     @Produces(value = { Vnd.VND_USER })
     public Response getById(@Context javax.ws.rs.core.Request request,@PathParam("id") final int id) throws UserNotFoundException {
         final User user = us.getUserById(id);
-        EntityTag eTag = new EntityTag(String.valueOf(user.hashCode()));
+        final UserDTO userDTO = UserDTO.fromUser(uriInfo,user);
+        EntityTag eTag = new EntityTag(String.valueOf(userDTO.hashCode()));
         Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
         if (response == null) {
             LOGGER.info("GET user/ id:{}",id);
-            return Response.ok(UserDTO.fromUser(uriInfo,user)).tag(eTag).build();
+            return Response.ok(userDTO).tag(eTag).build();
         }
         LOGGER.info("GET user/ id:{} 304",id);
         return response.build();
