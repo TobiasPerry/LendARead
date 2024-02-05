@@ -14,6 +14,7 @@ import ar.edu.itba.paw.webapp.form.ResetPasswordTokenForm;
 import ar.edu.itba.paw.webapp.form.UserReviewForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 
@@ -71,10 +69,15 @@ public class UserController {
     @GET
     @Path("/{id}")
     @Produces(value = { Vnd.VND_USER })
-    public Response getById(@PathParam("id") final int id) throws UserNotFoundException {
+    public Response getById(@Context javax.ws.rs.core.Request request,@PathParam("id") final int id) throws UserNotFoundException {
         final User user = us.getUserById(id);
-        Response.ResponseBuilder response = Response.ok(UserDTO.fromUser(uriInfo,user));
-        LOGGER.info("GET user/ id:{}",id);
+        EntityTag eTag = new EntityTag(String.valueOf(user.hashCode()));
+        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
+        if (response == null) {
+            LOGGER.info("GET user/ id:{}",id);
+            return Response.ok(UserDTO.fromUser(uriInfo,user)).tag(eTag).build();
+        }
+        LOGGER.info("GET user/ id:{} 304",id);
         return response.build();
     }
 
