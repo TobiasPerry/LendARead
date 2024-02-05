@@ -259,8 +259,8 @@ const DiscoveryView =  () => {
                                     setBooksPerPage(24)
                                 }}>24</a></li>
                                 <li><a className="dropdown-item" id="mostRecent" onClick={() => {
-                                    setBooksPerPage(48)
-                                }}>48</a></li>
+                                    setBooksPerPage(36)
+                                }}>36</a></li>
                             </ul>
                         </div>
 
