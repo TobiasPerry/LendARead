@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Snackbar = ({ message, error, duration = 4000 }) => {
+const Snackbar = ({ message, error = true, duration = 4000 }) => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
