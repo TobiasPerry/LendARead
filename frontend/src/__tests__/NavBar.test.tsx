@@ -135,7 +135,6 @@ describe('Test Navbar component on log in state ', () => {
         const userImg = screen.getByTestId('user-img')
 
         // expect(userImg.src).toBe("lendaread.com/api/image/12")
-        console.log(userImg)
         expect(userImg).toHaveAttribute('src', 'lendaread.com/api/image/12')
 
     });

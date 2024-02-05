@@ -31,11 +31,11 @@ const BookDetails = ({data}) => {
 
 
                     <h3 className="textOverflow" id="authorClick" data-author="data-author">
-                        <span className="text-clickable ml-2">
+                        <span className="ml-2">
                                                 {data.author}
                                             </span>
                     </h3>
-                    <h6 id="physicalConditionClick" className="text-clickable">
+                    <h6 id="physicalConditionClick" >
                         <i><u>
                             {data.condition}
                         </u></i>
@@ -43,7 +43,7 @@ const BookDetails = ({data}) => {
 
                     <h6 id="languageClick" data-language="data-language"
                         style={{color: '#7d7c7c'}}>
-                        {t('language')}: <span className="text-clickable"> {data.language} </span>
+                        {t('language')}: <span > {data.language} </span>
                     </h6>
 
                     <h6 style={{color: '#7d7c7c'}}>

@@ -135,6 +135,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
             if (lendings.data.length == 0|| lendings.request.status === 204) {
                 setIsLoading(false)
                 setBooks([])
+                return;
             }
 
             const lendedBooksPromises = lendings.data.map(async (lending: LendingApi) => {
@@ -155,7 +156,6 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
                         lendingStatus: lending.state
                     };
                 } catch (error) {
-                    console.error("Error in processing lending:", lending, error);
                     return null;
                 }
             });
@@ -200,6 +200,7 @@ const useUserAssetInstances = (initialSort = { column: 'title', order: 'DESCENDI
             if (assetinstances.request.status === 204 || assetinstances.data.length == 0) {
                 setIsLoading(false)
                 setBooks([]);
+                return;
             }
 
             const booksRetrieved = await Promise.all(assetinstances.data.map(async (assetinstance) => {

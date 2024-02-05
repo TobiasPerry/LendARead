@@ -5,6 +5,7 @@ import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
 import Pagination from "../Pagination.tsx";
 import {Helmet} from "react-helmet";
 import LoadingWrapper from "../LoadingWrapper.tsx";
+import Snackbar from "../SnackBar.tsx";
 
 const MyBooksTable = ({handleRowClicked}) => {
     const { t } = useTranslation();
@@ -19,7 +20,8 @@ const MyBooksTable = ({handleRowClicked}) => {
         totalPages,
         books,
         isLoading,
-        setCurrentPage
+        setCurrentPage,
+        error
     } = useAssetInstances();
 
 
@@ -107,6 +109,7 @@ const MyBooksTable = ({handleRowClicked}) => {
             }
             <Pagination totalPages={totalPages} changePage={changePageMyBooks} currentPage={currentPage} />
         </div>
+          {error.state && <Snackbar message={error.text} />}
       </LoadingWrapper>
     );
 };

@@ -7,6 +7,7 @@ import DeleteModal from "../modals/DeleteModal.tsx";
 import EditAssetInstanceModal from "../modals/EditAssetInstanceModal.tsx";
 import userUserAssetInstanceOptions from "../../hooks/assetInstance/userUserAssetInstanceOptions.ts";
 import "../styles/MyBooksOptions.css";
+import Snackbar from "../SnackBar.tsx";
 function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAssetDetails, hasLendingsNotFinished}) {
     const { t } = useTranslation();
 
@@ -14,7 +15,7 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalDelete, setShowModalDelete] = useState(false);
     const [showModalReservable, setShowModalReservable] = useState(false)
-    const {editAssetVisbility, editAssetReservability, editAsset} = userUserAssetInstanceOptions(fetchUserAssetDetails)
+    const {editAssetVisbility, editAssetReservability, editAsset, error} = userUserAssetInstanceOptions(fetchUserAssetDetails)
 
     // const {editAssetVisbility} = userUserAssetInstanceOptions()
     const handleSubmitVisibilityModal = async () => {
@@ -34,7 +35,6 @@ function AssetOptionsMenu({ asset, haveActiveLendings, handleDelete, fetchUserAs
         setShowModalEdit(true);
         await editAsset(editedAsset, originalAsset)
     }
-console.log(hasLendingsNotFinished)
     return (
         <div style={{
             backgroundColor: '#f0f5f0',
@@ -111,6 +111,7 @@ console.log(hasLendingsNotFinished)
                     </button>
                 </div>
             </div>
+             {error.status && <Snackbar message={error.text} /> }
             <ChangeStatusModal handleSubmitModal={handleSubmitVisibilityModal} asset={asset}
                                showModal={showModalVisibility} handleCloseModal={() => setShowModalVisibility(false)}/>
             <ChangeReservabilityModal handleSubmitModal={handleSubmitReservabilityModal} asset={asset}

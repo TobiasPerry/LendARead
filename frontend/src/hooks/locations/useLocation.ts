@@ -36,7 +36,7 @@ const useLocationAsset = () => {
     }
 
     return {
-        getLocation, location
+        getLocation, location, error
     }
 }
 

@@ -157,7 +157,8 @@ const useReviews = () => {
         changePageLenderReviews,
         changePageBorrowerReviews,
         lendingReviews,
-        fetchLendingReviews
+        fetchLendingReviews,
+        error
     }
 }
 

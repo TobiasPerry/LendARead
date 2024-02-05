@@ -9,10 +9,6 @@ import {useEffect} from "react";
 
 function ReviewCardModal({ review, showModal, handleCloseModal }) {
     const { t } = useTranslation();
-    useEffect(() => {
-        if(review)
-            console.log(review)
-    }, [review])
 
     return (
         <>

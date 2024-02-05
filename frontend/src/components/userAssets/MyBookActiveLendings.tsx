@@ -5,11 +5,12 @@ import "../styles/myBookActiveLendings.css";
 import Pagination from "../Pagination.tsx";
 import {useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
+import Snackbar from "../SnackBar.tsx";
 import {extractDate} from "../../hooks/api/types.ts";
 
 const MyBookActiveLendings = ({ asset }) => {
     const navigate = useNavigate();
-    const { lendings, currentPage, changePage, totalPages, getLendings, setAsset_ } = useLendings();
+    const { lendings, currentPage, changePage, totalPages, getLendings, setAsset_, error} = useLendings();
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -53,6 +54,7 @@ const MyBookActiveLendings = ({ asset }) => {
                     <Pagination currentPage={currentPage} changePage={changePage} totalPages={totalPages} />
                 </div>
             ) : null}
+            {error.state && <Snackbar message={error.text} />}
         </>
 
     );

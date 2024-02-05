@@ -12,7 +12,8 @@ import LoadingAnimation from "../LoadingAnimation.tsx";
 import LoadingAnimationWhite from "../LoadingAnimationWhite.tsx";
 import Pagination from "../Pagination.tsx";
 import LoadingWrapper from "../LoadingWrapper.tsx";
-import {extractDate} from "../../hooks/api/types.ts"; // Path to your custom hook
+import {extractDate} from "../../hooks/api/types.ts";
+import Snackbar from "../SnackBar.tsx"; // Path to your custom hook
 
 const LendedBooksTable = ({isLender, handleRowClicked}) => {
     const { t } = useTranslation();
@@ -27,7 +28,8 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
         totalPages,
         books,
         isLoading,
-        setCurrentPage
+        setCurrentPage,
+        error
     } = useUserAssetInstances();
 
     useEffect(() => {
@@ -134,6 +136,7 @@ const LendedBooksTable = ({isLender, handleRowClicked}) => {
                 )}
                 <Pagination  currentPage={currentPage} totalPages={totalPages} changePage={(newPage) => changePageLendings(newPage, isLender)}/>
             </div>
+            {error.state && <Snackbar message={error.text} />}
         </LoadingWrapper>
     );
 };

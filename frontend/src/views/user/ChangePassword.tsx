@@ -8,12 +8,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../contexts/authContext.tsx";
 import "../styles/ChangePassword.css";
 import {Helmet} from "react-helmet";
-
-const Snackbar = ({ message, color }) => (
-    <div style={{ backgroundColor: color, color: 'white', position: 'fixed', bottom: '20px', left: '20px', padding: '10px', borderRadius: '5px' }}>
-        {message}
-    </div>
-);
+import Snackbar from "../../components/SnackBar.tsx";
 
 const ChangePasswordView = () => {
     const { t } = useTranslation();
@@ -23,7 +18,7 @@ const ChangePasswordView = () => {
     const [passwordError, setPasswordError] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [showSnackbar, setShowSnackbar] = useState({show: false, color: "", text: ""});
+    const [showSnackbar, setShowSnackbar] = useState({show: false, error: true, text: ""});
 
     const navigate = useNavigate()
     const location = useLocation();
@@ -40,7 +35,7 @@ const ChangePasswordView = () => {
 
     const handleResendToken = async (e: any) => {
         await handleForgotPassword(email)
-        setShowSnackbar({show: true, color: '#53b453', text: t('changePassword.resentToken')})
+        setShowSnackbar({show: true, error: false, text: t('changePassword.resentToken')})
     }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -56,7 +51,7 @@ const ChangePasswordView = () => {
         if(res === "true")
             navigate('/')
         else {
-            setShowSnackbar({show: true, color: '#dc3b4b', text: res})
+            setShowSnackbar({show: true, error: true, text: res})
         }
     };
 
@@ -166,7 +161,7 @@ const ChangePasswordView = () => {
 
                                 <div className="pt-1 mb-4 text-center">
                                     <input className="btn btn-light" type="submit" value={t('changePassword.changePasswordButton')} />
-                                    {showSnackbar.show && <Snackbar message={showSnackbar.text} color={showSnackbar.color} />}
+                                    {showSnackbar.show && <Snackbar message={showSnackbar.text} error={showSnackbar.error} />}
                                 </div>
 
                                 {/* Already Have Account Link */}

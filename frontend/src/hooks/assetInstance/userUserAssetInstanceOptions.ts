@@ -17,7 +17,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
                 })
             await fetchUserAssetDetails()
         } catch (e) {
-           setError({status: true, text: "error.failedPatchAsset"})
+           setError({status: true, text: t("errors.failedPatchAsset")})
         }
     }
 
@@ -31,7 +31,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
                 })
             await fetchUserAssetDetails()
         } catch (e) {
-            setError({status: true, text: "error.failedPatchAsset"})
+            setError({status: true, text: t("errors.failedPatchAsset")})
         }
 
 
@@ -42,7 +42,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
             const response: any = await api.post("/images", {image: image}, {headers: {"Content-type": "multipart/form-data"}})
             return extractId(response.headers.get("Location"))
         } catch (e) {
-           setError({status: true, text: t("error.failedPostImage")})
+           setError({status: true, text: t(t("errors.failedPostImage"))})
         }
 
     }
@@ -73,7 +73,7 @@ const userUserAssetInstanceOptions = (fetchUserAssetDetails) => {
                 })
             await fetchUserAssetDetails()
         } catch (e) {
-            setError({status: true, text: "error.failedPatchAsset"})
+            setError({status: true, text: t("errors.failedPatchAsset")})
         }
 
 

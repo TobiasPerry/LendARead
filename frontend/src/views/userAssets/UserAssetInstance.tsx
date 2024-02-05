@@ -11,6 +11,7 @@ import LendedBooksOptions from "../../components/userAssets/LendedBooksOptions.t
 import MyBookActiveLendings from "../../components/userAssets/MyBookActiveLendings.tsx";
 import LoadingAccessWrapper from "../../components/LoadingAccessWrapper.tsx";
 import LendingsReviews from "../../components/userAssets/LendingsReviews.tsx";
+import Snackbar from "../../components/SnackBar.tsx";
 
 const UserAssetInstance = () => {
 
@@ -89,6 +90,7 @@ const UserAssetInstance = () => {
                     </div>
                 </div>
             </div>
+            {error.state && <Snackbar message={error.text} />}
         </LoadingAccessWrapper>
     );
 };

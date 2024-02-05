@@ -8,6 +8,7 @@ import {Helmet} from "react-helmet";
 import LoadingWrapper from "../components/LoadingWrapper.tsx";
 import {Link} from "react-router-dom";
 import Pagination from "../components/Pagination.tsx";
+import Snackbar from "../components/SnackBar.tsx";
 
 
 const LocationsPage = () => {
@@ -23,7 +24,8 @@ const LocationsPage = () => {
         editingLocation,
         currentPage,
         changePageLocations,
-        totalPages
+        totalPages,
+        error
     } = useLocations()
     const [showModal, setShowModal] = useState(false);
     const {user} = useContext(AuthContext);
@@ -86,6 +88,7 @@ const LocationsPage = () => {
             </div>
             <LocationModal location={editingLocation} showModal={showModal} handleClose={() => {setShowModal(false); setEditingLocation(emptyLocation)}} handleSave={handleSave}/>
             <Pagination currentPage={currentPage} changePage={changePageLocations} totalPages={totalPages} />
+            {error.status && <Snackbar message={error.text} />}
         </div>
         </LoadingWrapper>
     );

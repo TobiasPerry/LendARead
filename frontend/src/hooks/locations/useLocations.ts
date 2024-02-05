@@ -45,7 +45,7 @@ const useLocations = () => {
             // @ts-ignore
             return true
         } catch (error) {
-            setError({status: true, text: t("error.failedPatchLocation")})
+            setError({status: true, text: t("errors.failedPatchLocation")})
             return false
         }
     }
@@ -56,7 +56,7 @@ const useLocations = () => {
             // @ts-ignore
             return true
         } catch (error) {
-            setError({status: true, text: t("error.failedDeleteLocation")})
+            setError({status: true, text: t("errors.failedDeleteLocation")})
             return false
         }
     }
@@ -79,7 +79,7 @@ const useLocations = () => {
             }
             return response.data
         } catch (error) {
-            setError({status: true, text: t("error.failedPatchLocation")})
+            setError({status: true, text: t("errors.failedPatchLocation")})
             setIsLoading(false)
             return []
         }
@@ -121,7 +121,7 @@ const useLocations = () => {
             return locations;
         } catch (error) {
             setIsLoading(false)
-            setError({status: true, text: t("error.failedGettingLocations")})
+            setError({status: true, text: t("errors.failedGettingLocations")})
             return []
         }
     }
@@ -138,11 +138,11 @@ const useLocations = () => {
             if (response.status === 201) {
                 return true
             } else {
-                setError({status: true, text: t("error.failedAddingLocation")})
+                setError({status: true, text: t("errors.failedAddingLocation")})
                 return false
             }
         } catch (e) {
-            setError({status: true, text: t("error.failedAddingLocation")})
+            setError({status: true, text: t("errors.failedAddingLocation")})
             return false
         }
     }
@@ -175,7 +175,8 @@ const useLocations = () => {
         emptyLocation,
         changePageLocations,
         currentPage,
-        totalPages
+        totalPages,
+        error
     }
 }
 

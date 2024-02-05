@@ -4,10 +4,11 @@ import Location from "../locations/Location.tsx";
 import useLocationAsset from "../../hooks/locations/useLocation.ts";
 import UserLink from "./UserLink.tsx";
 import {extractDate} from "../../hooks/api/types.ts";
+import Snackbar from "../SnackBar.tsx";
 
 const BookStatus = ({asset, state}) => {
     const { t } = useTranslation();
-    const {getLocation, location} = useLocationAsset()
+    const {getLocation, location, error} = useLocationAsset()
 
     useEffect(() => {
         getLocation(asset).then();
@@ -36,6 +37,7 @@ const BookStatus = ({asset, state}) => {
                     <h5><strong>{t("visibility")}</strong>: {t(`${asset.status}`)}</h5>
                 </div>
             }
+            {error.state && <Snackbar message={error.text} />}
         </>
     );
 };
