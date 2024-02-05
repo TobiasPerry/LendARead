@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.form.EditLocationForm;
 import ar.edu.itba.paw.webapp.form.LocationForm;
 import ar.edu.itba.paw.webapp.miscellaneous.EndpointsUrl;
 import ar.edu.itba.paw.webapp.miscellaneous.PaginatedData;
+import ar.edu.itba.paw.webapp.miscellaneous.StaticCache;
 import ar.edu.itba.paw.webapp.miscellaneous.Vnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +24,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -67,11 +65,15 @@ public class LocationsController {
     @GET
     @Path("/{id}")
     @Produces(value = { Vnd.VND_LOCATION })
-    public Response getLocationById(@PathParam("id") final Integer locationId) throws LocationNotFoundException {
-
+    public Response getLocationById(@Context javax.ws.rs.core.Request request,@PathParam("id") final Integer locationId) throws LocationNotFoundException {
         final Location location = ls.getLocation(locationId).orElseThrow(LocationNotFoundException::new);
-        Response.ResponseBuilder response = Response.ok(LocationDTO.fromLocation(uriInfo, location));
-        LOGGER.info("GET location/ id:{}",locationId);
+        EntityTag eTag = new EntityTag(String.valueOf(location.hashCode()));
+        Response.ResponseBuilder response = StaticCache.getConditionalCacheResponse(request, eTag);
+        if (response == null) {
+            LOGGER.info("GET location/ id:{}",locationId);
+            return Response.ok(LocationDTO.fromLocation(uriInfo,location)).tag(eTag).build();
+        }
+        LOGGER.info("GET location/ id:{} 304",locationId);
         return response.build();
     }
     @PATCH
