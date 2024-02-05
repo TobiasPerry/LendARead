@@ -205,9 +205,8 @@ const AuthContextProvider = (props) => {
     }
 
     const handleChangePassword = async (email: string, verficationCode: string, password: string, repeatedPassword: string) => {
-        try {
-            logout()
 
+        try {
             //login with verification code using base64
             const response: any = await api.get("/assets",
                 {
@@ -219,7 +218,9 @@ const AuthContextProvider = (props) => {
             const jwt = response.headers.get('x-jwt');
             const userId_ = extractUserId(jwt)
 
-            if(userId_ === "") {
+            const savedCredentials = await handleJWT(response.headers.get('x-jwt'), response.headers.get('x-refresh-token'), false)
+
+            if(userId_ === "" || !savedCredentials) {
                 return t('changePassword.invalidVerificationCode')
             }
 

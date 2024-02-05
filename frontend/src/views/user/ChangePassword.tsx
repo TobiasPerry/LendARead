@@ -39,7 +39,7 @@ const ChangePasswordView = () => {
     }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        if(!checkPassword())
+        if (!checkPassword())
             return;
 
         setIsLoading(true);
@@ -48,9 +48,9 @@ const ChangePasswordView = () => {
 
         setIsLoading(false);
 
-        if(res === "true")
+        if (res === "true") {
             navigate('/')
-        else {
+        } else {
             setShowSnackbar({show: true, error: true, text: res})
         }
     };
