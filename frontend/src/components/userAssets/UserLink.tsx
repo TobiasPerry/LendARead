@@ -1,9 +1,10 @@
 import {Link} from "react-router-dom";
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {extractId} from "../../hooks/assetInstance/useUserAssetInstances.ts";
 import {useTranslation} from "react-i18next";
 import UserRating from "./UserRatingDiv.tsx";
+import Snackbar from "../SnackBar.tsx";
 
 const UserLink = ({asset, state}) => {
 
@@ -19,7 +20,7 @@ const UserLink = ({asset, state}) => {
         }
     }, [asset])
 
-    const {userDetails, getUserDetails} = useUserDetails()
+    const {userDetails, getUserDetails, error} = useUserDetails()
 
     return (
         <Link to={`/user/${userId}`} >
@@ -28,6 +29,7 @@ const UserLink = ({asset, state}) => {
                     <span>{userDetails.userName}</span>
                     <UserRating userDetails={userDetails}/>
                 </div>
+        {error.state && <Snackbar message={error.text} />}
         </Link>
     );
 }

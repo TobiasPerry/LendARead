@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import {Link} from "react-router-dom";
 import LoadingAnimation from "../LoadingAnimation.tsx";
@@ -8,6 +8,7 @@ import ConfirmReturnModal from "../modals/ConfirmReturnModal.tsx";
 import useAssetInstance from "../../hooks/assetInstance/useAssetInstance.ts";
 import useUserLendedBooksOptions from "../../hooks/assetInstance/useUserLendedBooksOptions.ts";
 import "../styles/MyBooksOptions.css";
+import Snackbar from "../SnackBar.tsx";
 
 export const isRejected = (lending: any) => {
     return lending === "REJECTED"
@@ -40,7 +41,7 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
     const [showConfirmAssetModal, setShowConfirmAssetModal] = useState(false)
     const [showRejectAssetModal, setShowRejectAssetModal] = useState(false)
     const [showReturnAssetModal, setShowReturnAssetModal] = useState(false)
-    const {rejectLending, returnLending, confirmLending, canConfirmLending, canReview} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
+    const {rejectLending, returnLending, confirmLending, canConfirmLending, canReview, error} = useUserLendedBooksOptions(fetchUserAssetDetails, asset)
     const handleReturnAsset = async () => {
         setShowRejectAssetModal(false)
         await returnLending(asset)
@@ -160,6 +161,7 @@ function LendedBooksOptions({ asset, fetchUserAssetDetails }) {
                                         handleCloseModal={() => setShowReturnAssetModal(false)}
                                         asset={asset}
                                         handleSubmitModal={handleReturnAsset}/>
+                    {error.state && <Snackbar message={error.text} />}
         </div>
     );
 }

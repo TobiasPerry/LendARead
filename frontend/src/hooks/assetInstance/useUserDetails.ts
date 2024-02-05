@@ -37,7 +37,7 @@ const useUserDetails = () => {
     }
 
     return {
-        userDetails, getUserDetails, retrieveUserDetails, notFound
+        userDetails, getUserDetails, retrieveUserDetails, notFound, error
     }
 }
 

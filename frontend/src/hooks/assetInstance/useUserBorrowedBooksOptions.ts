@@ -24,7 +24,7 @@ const useUserBorrowedBooksOptions = (asset, fetchUserAssetInstance) => {
                 })
             await fetchUserAssetInstance()
         } catch (e) {
-            setError({state: true, text: t("error.cancelBorrowedBook")})
+            setError({state: true, text: t("errors.cancelBorrowedBook")})
         }
     }
 
@@ -33,7 +33,7 @@ const useUserBorrowedBooksOptions = (asset, fetchUserAssetInstance) => {
             const ans = !asset.lending.hasOwnProperty('lenderReviewUrl')
             setCanReview(ans)
         } catch (e) {
-            setError({state: true, text: t("error.failedCheckCanReview")})
+            setError({state: true, text: t("errors.failedCheckCanReview")})
             setCanReview(false)
         }
     }

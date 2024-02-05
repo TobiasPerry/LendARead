@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import useUserBorrowedBooksOptions from "../../hooks/assetInstance/useUserBorrowedBooksOptions.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 import CancelModal from "../modals/CancelModal.tsx";
 import {isActive, isCanceled, isDelivered, isFinished, isRejected} from "./LendedBooksOptions.tsx";
 import {Link} from "react-router-dom";
 import "../styles/MyBooksOptions.css";
+import Snackbar from "../SnackBar.tsx";
 
 const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
     const { t } = useTranslation();
-    const {cancelBorrowedBook, canReview} = useUserBorrowedBooksOptions(asset, fetchUserAssetInstance);
+    const {cancelBorrowedBook, canReview, error} = useUserBorrowedBooksOptions(asset, fetchUserAssetInstance);
     const [cancelModal, setCancelModal] = useState(false)
 
     if(asset === undefined || asset.lending === undefined) return (<></>);
@@ -59,6 +60,7 @@ const BorrowedBookOptions = ({asset, fetchUserAssetInstance}) => {
                     <div> {t("finished_text")} </div>
                 </div>
             }
+            {error.state && <Snackbar message={error.text} />}
         </div>
     );
 };
