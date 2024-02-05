@@ -27,7 +27,8 @@ const UserAssetInstance = () => {
         state,
         isLoading,
         isOwner,
-        error
+        error,
+        hasLendingsNotFinished
     } = useUserAssetInstance(location, id)
 
 
@@ -73,6 +74,7 @@ const UserAssetInstance = () => {
                             haveActiveLendings={hasActiveLendings}
                             handleDelete={handleDelete}
                             fetchUserAssetDetails={fetchUserAssetDetails}
+                            hasLendingsNotFinished={hasLendingsNotFinished}
                         />}
                         {state === "lended" && <LendedBooksOptions
                             asset={assetDetails}
