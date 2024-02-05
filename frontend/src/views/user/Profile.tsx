@@ -13,6 +13,7 @@ import UserProfileExternal from "../../components/userDetails/UserProfileExterna
 import useUserDetails from "../../hooks/assetInstance/useUserDetails.ts";
 import NotFound from "../NotFound.tsx";
 import LoadingAnimation from "../../components/LoadingAnimation.tsx";
+import Snackbar from "../../components/SnackBar.tsx";
 
 const ProfileView = () => {
 
@@ -33,7 +34,8 @@ const ProfileView = () => {
         totalPagesBorrowerReviews,
         changePageLenderReviews,
         changePageBorrowerReviews,
-        fetchReviews
+        fetchReviews,
+        error
     } = useReviews()
 
     useEffect(() => {
@@ -90,6 +92,7 @@ const ProfileView = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    {error.status && <Snackbar message={error.text} error={true} /> }
                                 </div>
                             )
                         }
