@@ -5,7 +5,7 @@ import VitePluginHtmlEnv from 'vite-plugin-html-env'
 import dotenv from 'dotenv'
 
 dotenv.config()
-const base = process.env.VITE_APP_BASE_PATH || '/'
+const base = process.env.VITE_APP_BASE_PATH || ''
 
 
 // https://vitejs.dev/config/
