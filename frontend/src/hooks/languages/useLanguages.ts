@@ -26,11 +26,11 @@ const useLanguages = () => {
             const response = await api.get(`/languages/${languageId}`)
             if (response.status !== 200) {
                 setError({state: true, text: t("errors.failedToFetchLanguages") + response})
-                return {}
+                return []
             }
             return response.data
         } catch (error) {
-            return {}
+            return []
         }
     }
     return {
