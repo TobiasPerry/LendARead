@@ -23,7 +23,7 @@ const ChangePasswordView = () => {
     const navigate = useNavigate()
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const emailParam = searchParams.get('email');
+    const emailParam = decodeURIComponent(searchParams.get('email'));
 
     const {handleChangePassword, handleForgotPassword} = useContext(AuthContext);
 

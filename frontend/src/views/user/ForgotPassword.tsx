@@ -20,7 +20,7 @@ const ForgotPasswordView = () => {
        const validEmail = await handleForgotPassword(email)
 
        if(validEmail)
-            navigate(`/changePassword?email=${email}`)
+           navigate(`/changePassword?email=${encodeURIComponent(email)}`);
         else
             setError(true)
     }
