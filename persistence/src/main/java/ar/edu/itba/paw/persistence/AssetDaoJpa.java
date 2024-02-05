@@ -103,7 +103,7 @@ public class AssetDaoJpa implements AssetDao {
             return new PagingImpl<>(Collections.emptyList(), page, totalPages);
 
         // Get the AssetInstances that match those IDs for given page
-        final TypedQuery<Asset> query = em.createQuery("FROM Asset as a  WHERE a.id IN (:ids) ORDER BY a.title" , Asset.class);
+        final TypedQuery<Asset> query = em.createQuery("FROM Asset as a  WHERE a.id IN (:ids)" , Asset.class);
         query.setParameter("ids", list);
         List<Asset> assets = query.getResultList();
 
