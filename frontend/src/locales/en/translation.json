@@ -141,6 +141,7 @@
     "deleteAsset": "Delete",
     "makeNotReservable": "Make non reservable",
     "makeReservable": "Make reservable",
+    "cannotMakeItNotReservable": "As long as it is reservable and has an ongoing lending, it cannot be NOT reservable",
     "inProgress": "In Progress",
     "verifyBook": "Verify Book",
     "rejectAssetTitle": "Reject Asset",
@@ -160,7 +161,8 @@
   "makeReview": "Make a Review",
   "userBookDetails": {
     "makePrivate": "Make Private",
-    "makePublic": "Make Public"
+    "makePublic": "Make Public",
+    "cannotMakeItPublic": "As long as it is not reservable and has an ongoing lending, it cannot be public"
   },
   "edit": "Edit",
   "delete": "Delete",

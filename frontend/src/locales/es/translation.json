@@ -109,6 +109,7 @@
     "deleteAsset": "Eliminar",
     "makeNotReservable": "Hacer no reservable",
     "makeReservable": "Hacer reservable",
+    "cannotMakeItNotReservable": "Mientras sea reservable y tenga prestamos en curso, el libro no podrá ser NO reservable",
     "changeVisibityPublic": {
       "button": "Hacer Público"
     },
@@ -128,7 +129,8 @@
   "makeReview": "Hacer una Reseña",
   "userBookDetails": {
     "makePrivate": "Hacer Privado",
-    "makePublic": "Hacer Público"
+    "makePublic": "Hacer Público",
+    "cannotMakeItPublic": "Minetra no sea reservable y tenga un prestamo en curso no podra ser publico"
   },
   "edit": "Editar",
   "delete": "Eliminar",
