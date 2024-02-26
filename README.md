@@ -1,4 +1,4 @@
-![Lend a read logo](webapp/src/main/webapp/static/images/logo-claro.png)
+![Lend a read logo](frontend/public/static/favicon-claro.png)
 # Lend a Read
 ## Idea
 The goal of the web application is to create a community of readers, where all of them can upload their books and request loans from each other. The aim is to allow readers to access books that would not normally be easily accessible.
