@@ -1,18 +1,15 @@
-![Lend a read logo](webapp/src/main/webapp/static/images/logo-oscuro.png)
+![Lend a read logo](webapp/src/main/webapp/static/images/logo-claro.png)
 # Lend a Read
 ## Idea
-El objetivo de la aplicacion web es poder crear una comunidad de lectores, donde todos estos pueden subir sus libros y solictar prestamos entre si. El objetivo es
-permitir que lectores puedan leer a libros que normalmente no seria facilmenete accesibles. 
+The goal of the web application is to create a community of readers, where all of them can upload their books and request loans from each other. The aim is to allow readers to access books that would not normally be easily accessible.
 
-Por ejemplo, imaginemos al usuario Marco, que le gusta leer filosfia en multiples
-idiomas. Gracias a que otros lectores con familia de descendencia alemana (por ejemplo), puede pedir prestado algun libro de filosifa de algun autor aleman que no podria haber leido yendo a una biblioteca en Argentina.
+For example, let's imagine the user Marco, who enjoys reading philosophy in multiple languages. Thanks to other readers with German heritage (for example), he can borrow a philosophy book from a German author that he could not have read by going to a library in Argentina.
 
-
-## Usuarios
-**Usuario con permiso lender y (borrower por herencia):**
+## Users
+**User with lender and borrower permissionsr:**
 * Email: lender@lendaread.com.ar
 * Password: PAW-2023a-03
 
-**Usuario con permiso borrower:**
+**User with borrower permission:**
 * Email: borrower@lendaread.com.ar
 * Password: PAW-2023a-03
