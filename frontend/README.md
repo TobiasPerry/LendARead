@@ -19,5 +19,5 @@ Buildear el proyecto
 
 ```
 npm run build
-``
+```
 Va el quedar todo bajo el folder `/dist` ese el que hay deployear a S3
