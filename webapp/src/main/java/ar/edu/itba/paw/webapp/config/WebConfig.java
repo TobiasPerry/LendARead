@@ -60,6 +60,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return environment.getProperty("base_url");
     }
 
+    @Bean(name = "dbUrl")
+    public String dbUrl() {
+        return environment.getProperty("db_url");
+    }
+
+    @Bean(name = "dbUsername")
+    public String dbUsername() {
+        return environment.getProperty("db_username");
+    }
+
+    @Bean(name = "dbPassword")
+    public String dbPassword() {
+        return environment.getProperty("db_password");
+    }
+
     @Bean
     public TaskScheduler taskScheduler() {
         return new ConcurrentTaskScheduler(); //single threaded by default
@@ -118,11 +133,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         ds.setDriverClass(org.postgresql.Driver.class);
         // Que base de datos me conecto
-        ds.setUrl("jdbc:postgresql://10.16.1.110/paw-2023a-03");
+        ds.setUrl(dbUrl());
 //      ds.setUrl("jdbc:postgresql://localhost/paw");
 
-        ds.setUsername("paw-2023a-03");
-        ds.setPassword("1SRcd8pto");
+        ds.setUsername(dbUsername());
+        ds.setPassword(dbPassword());
 //       ds.setUsername("postgres");
 //        ds.setPassword("root");
 
