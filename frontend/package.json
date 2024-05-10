@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsc && vite",
-    "build": "tsc && vite build && echo '<%@ page session=\"false\" %> ' | cat - ./dist/index.html > temp && mv temp ./dist/index.html",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write \"src/components/*.{js,jsx,ts,tsx,json,css,scss,md}\" --ignore-path .prettierignore",

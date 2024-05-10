@@ -60,21 +60,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return environment.getProperty("base_url");
     }
 
-    @Bean(name = "dbUrl")
-    public String dbUrl() {
-        return environment.getProperty("db_url");
-    }
-
-    @Bean(name = "dbUsername")
-    public String dbUsername() {
-        return environment.getProperty("db_username");
-    }
-
-    @Bean(name = "dbPassword")
-    public String dbPassword() {
-        return environment.getProperty("db_password");
-    }
-
     @Bean
     public TaskScheduler taskScheduler() {
         return new ConcurrentTaskScheduler(); //single threaded by default
@@ -133,15 +118,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         ds.setDriverClass(org.postgresql.Driver.class);
         // Que base de datos me conecto
-        ds.setUrl(dbUrl());
+        ds.setUrl("jdbc:postgresql://paw1.c5qisuzel0mw.us-east-1.rds.amazonaws.com:5432/");
 //      ds.setUrl("jdbc:postgresql://localhost/paw");
 
-        ds.setUsername(dbUsername());
-        ds.setPassword(dbPassword());
+        ds.setUsername("postgres");
+        ds.setPassword("1SRcd8pto");
 //       ds.setUsername("postgres");
 //        ds.setPassword("root");
 
-        LOGGER.debug("DATA SOURCE CREATED");
+        LOGGER.debug("DATA SOURCE CREATED SE CAMBIO EL WAR ASDFDSAFASDFASDFF");
 
         return ds;
     }

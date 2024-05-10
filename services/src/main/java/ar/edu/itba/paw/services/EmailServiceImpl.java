@@ -21,9 +21,17 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+
+import com.amazonaws.services.lambda.AWSLambda;
+import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
+import com.amazonaws.services.lambda.model.InvokeRequest;
+import com.amazonaws.services.lambda.model.InvokeResult;
+import java.nio.ByteBuffer;
 
 @Service
 class EmailServiceImpl implements EmailService {
@@ -47,6 +55,7 @@ class EmailServiceImpl implements EmailService {
 
     }
 
+
     private void sendEmail(final String addressTo, final String subject, final String message) {
         LOGGER.debug("Sending email to {}", addressTo);
         MimeMessage msj = javaMailSender.createMimeMessage();
@@ -55,9 +64,20 @@ class EmailServiceImpl implements EmailService {
             msj.setRecipient(Message.RecipientType.TO, new InternetAddress(addressTo));
             msj.setSubject(subject);
             msj.setContent(message, "text/html");
-            javaMailSender.send(msj);
-        } catch (MessagingException e) {
-            LOGGER.error("Failed to send email to {}", addressTo);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            msj.writeTo(outputStream);
+            ByteBuffer buf = ByteBuffer.wrap(outputStream.toByteArray());
+
+            AWSLambda lambda = AWSLambdaClientBuilder.standard().build();
+            InvokeRequest invokeRequest = new InvokeRequest()
+                    .withFunctionName("EmailSenderFunction") // Nombre de tu función Lambda
+                    .withPayload(buf);
+            InvokeResult invokeResult = lambda.invoke(invokeRequest);
+            LOGGER.debug("Lambda response: {}", new String(invokeResult.getPayload().array()));
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to send email to {}", addressTo, e);
         }
     }
 
